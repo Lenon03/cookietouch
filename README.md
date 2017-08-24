@@ -1,9 +1,9 @@
-<a href="url"><img src="https://img4.hostingpics.net/pics/628470cookieicon.png" align="left" height="80" width="80" ></a>
-<center>
-	<h1>CookieTouch</h1>
-  [![Build Status](https://travis-ci.com/yovanoc/cookietouch.svg?token=CsyuGw9LBBp1xppwPz3s&branch=master)](https://travis-ci.com/yovanoc/cookietouch)
-  [![Build status](https://ci.appveyor.com/api/projects/status/01cr2xbnl9y7noru?svg=true)](https://ci.appveyor.com/project/yovanoc/cookietouch)
-</center>
+
+![CookieTouch-Logo](https://img4.hostingpics.net/pics/628470cookieicon.png =200x100)
+
+## CookieTouch
+[![Build Status](https://travis-ci.com/yovanoc/cookietouch.svg?token=CsyuGw9LBBp1xppwPz3s&branch=master)](https://travis-ci.com/yovanoc/cookietouch)
+[![Build status](https://ci.appveyor.com/api/projects/status/01cr2xbnl9y7noru?svg=true)](https://ci.appveyor.com/project/yovanoc/cookietouch)
 
 ###### Bot Dofus OpenSource en C#.
 

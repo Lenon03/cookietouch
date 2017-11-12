@@ -1,5 +1,6 @@
 import Dispatcher from '../utils/dispatcher'
 import EventHub from '../utils/event'
+import axios from 'axios'
 
 export default class ConnectionFrame {
   constructor () {
@@ -65,12 +66,17 @@ export default class ConnectionFrame {
       data: "Hey, t'es connecté!"
     })
 
-    const regex = /[^/]+$/
-    var m = regex.exec(account.haapi.config.assetsUrl)
+    // const regex = /[^/]+$/
+    // var m = regex.exec(account.haapi.config.assetsUrl)
+    // assetsVersion => m[0]
 
-    account.client.send('checkAssetsVersion', {
-      staticDataVersion: '45b',
-      assetsVersion: m[0]
+
+    axios.get("https://proxyconnection.touch.dofus.com/assetsVersions.json")
+    .then(response => {
+      account.client.send('checkAssetsVersion', {
+        staticDataVersion: response.data.staticDataVersion,
+        assetsVersion: response.data.assetsVersion
+      })
     })
   }
 

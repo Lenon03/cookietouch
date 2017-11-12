@@ -22,8 +22,8 @@ export default class MovementsManager {
     }
 
     moveToCellId (cellId) {
-        if (this.account.character.map.mapId === cellId) return
-        
+        if (this.account.character.cellID === cellId) return
+
         var path = PathFinder.getPath(this.account.character.cellId, cellId)
         PathFinder.logPath(path)
 

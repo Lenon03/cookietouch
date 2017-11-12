@@ -60,6 +60,6 @@ export default class Map {
 
     account.character.cellId = data.actors[0].disposition.cellId
 
-    account.movementsManager.moveToCellId(450)
+    account.movementsManager.moveToCellId(320)
   }
 }

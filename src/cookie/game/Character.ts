@@ -1,6 +1,7 @@
 import { Managers } from "../managers";
 import { Account } from "./Account";
 import { CharacterState } from "./CharacterState";
+import Inventory from "./Inventory";
 import Map from "./Map";
 
 export default class Character {
@@ -12,6 +13,8 @@ export default class Character {
   public restrictions: any;
   public stats: any;
   public infos: any;
+  public inventory: Inventory;
+  public spellList: any;
 
   private account: Account;
 
@@ -20,7 +23,7 @@ export default class Character {
     this.state = CharacterState.IDLE;
     this.managers = new Managers(this.account);
     this.map = new Map(this.account);
-
+    this.inventory = new Inventory(this.account);
     this.register();
   }
 
@@ -29,6 +32,8 @@ export default class Character {
                 this.HandleSetCharacterRestrictionsMessage, this);
     this.account.dispatcher.register("CharacterStatsListMessage",
                 this.HandleCharacterStatsListMessage, this);
+    this.account.dispatcher.register("SpellListMessage",
+                this.HandleSpellListMessage, this);
   }
 
   private HandleSetCharacterRestrictionsMessage(account: Account, data: any) {
@@ -37,5 +42,8 @@ export default class Character {
 
   private HandleCharacterStatsListMessage(account: Account, data: any) {
     account.character.stats = data.stats;
+  }
+  private HandleSpellListMessage(account: Account, data: any) {
+    account.character.spellList = data.spells;
   }
 }

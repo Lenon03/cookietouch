@@ -3,6 +3,7 @@ import { Account } from "./Account";
 import { CharacterState } from "./CharacterState";
 import Inventory from "./Inventory";
 import Map from "./Map";
+import { Spell } from "./Spell";
 
 export default class Character {
 
@@ -14,7 +15,7 @@ export default class Character {
   public stats: any;
   public infos: any;
   public inventory: Inventory;
-  public spellList: any;
+  public spells: Spell[];
 
   private account: Account;
 
@@ -44,6 +45,6 @@ export default class Character {
     account.character.stats = data.stats;
   }
   private HandleSpellListMessage(account: Account, data: any) {
-    account.character.spellList = data.spells;
+    account.character.spells = data.spells;
   }
 }

@@ -1,4 +1,4 @@
-import MovementsManager from "../utils/MovementsManager";
+import { MovementsManager } from "../managers/MovementsManager";
 import { Account } from "./Account";
 import { CharacterState } from "./CharacterState";
 import Map from "./Map";

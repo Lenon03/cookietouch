@@ -1,6 +1,6 @@
-import DofusTouchClient from "../dofus/DofusTouchClient";
-import HaapiConnection from "../dofus/HaapiConnection";
 import ConnectionFrame from "../frames/ConnectionFrame";
+import DofusTouchClient from "../network/DofusTouchClient";
+import HaapiConnection from "../network/HaapiConnection";
 import Dispatcher from "../utils/Dispatcher";
 import Character from "./Character";
 
@@ -39,7 +39,7 @@ export class Account {
     this.frames();
   }
 
-  public connect() {
+  public start() {
     this.haapi.processHaapi(this.username, this.password)
     .then(() => {
       console.log("Haapi : ", this.haapi);
@@ -47,7 +47,7 @@ export class Account {
     });
   }
 
-  public disconnect() {
+  public stop() {
     this.client.close();
   }
 

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Account } from "../data/Account";
-import { PathFinder } from "./PathFinder";
+import { PathFinder } from "../dofus/PathFinder";
+import { Account } from "../game/Account";
 
-export default class MovementsManager {
+export class MovementsManager {
 
   private account: Account;
   private jsonMap: {};

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Account } from "../data/Account";
+import { Account } from "../game/Account";
 import { randomString } from "../utils/Random";
 
 export default class ConnectionFrame {
@@ -152,7 +152,7 @@ export default class ConnectionFrame {
   }
 
   public HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
-    account.disconnect();
+    account.stop();
   }
 
   public HandleCharactersListMessage(account: Account, data: any) {

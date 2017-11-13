@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Account } from "../../bot/data/Account";
+import { Account } from "../../cookie/game/Account";
 
 export class App extends React.Component<{}, {}> {
 
@@ -9,7 +9,7 @@ export class App extends React.Component<{}, {}> {
     super(props);
 
     this.account = new Account("cookieproject1", "azerty123456");
-    this.account.connect();
+    this.account.start();
   }
 
   public render() {

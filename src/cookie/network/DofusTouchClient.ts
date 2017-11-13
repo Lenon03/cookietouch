@@ -5,6 +5,14 @@ const Primus = require("./primus"); // tslint:disable-line
 
 export default class DofusTouchClient {
 
+  public static getAssetsVersions(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      axios.get("https://proxyconnection.touch.dofus.com/assetsVersions.json")
+      .then((response) => {
+        resolve(response.data);
+      });
+    });
+  }
   public static getAppVersion(): Promise<string> {
     return new Promise((resolve, reject) => {
       axios.get("https://itunes.apple.com/lookup?id=1041406978").then((response) => {
@@ -24,18 +32,24 @@ export default class DofusTouchClient {
   }
 
   public server: any;
+  public appVersion: string;
+  public buildVersion: string;
+  public assetsVersion: string;
+  public staticDataVersion: string;
 
   private account: Account;
   private socket: any;
   private sessionId: string;
   private migrating: boolean = false;
-  private appVersion: string;
-  private buildVersion: string;
 
   constructor(account: Account) {
     this.account = account;
     DofusTouchClient.getAppVersion().then((version) => (this.appVersion = version));
     DofusTouchClient.getBuildVersion().then((version) => (this.buildVersion = version));
+    DofusTouchClient.getAssetsVersions().then((data) => {
+      this.assetsVersion = data.assetsVersion;
+      this.staticDataVersion = data.staticDataVersion;
+    });
   }
 
   public connect(sessionId: string, url: string) {

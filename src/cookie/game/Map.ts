@@ -3,13 +3,13 @@ import { CharacterState } from "./CharacterState";
 
 export default class Map {
 
-  public actors: any;
-  public fights: any;
-  public houses: any;
-  public interactiveElements: any;
+  public actors: any[];
+  public fights: any[];
+  public houses: any[];
+  public interactiveElements: any[];
   public mapId: number;
-  public statedElements: any;
-  public obstacles: any;
+  public statedElements: any[];
+  public obstacles: any[];
   public subAreaId: number;
 
   private account: Account;
@@ -37,6 +37,10 @@ export default class Map {
       this.HandleCurrentMapMessage, this);
     this.account.dispatcher.register("GameMapMovementMessage",
       this.HandleGameMapMovementMessage, this);
+    this.account.dispatcher.register("GameContextRemoveElementMessage",
+      this.HandleGameContextRemoveElementMessage, this);
+    this.account.dispatcher.register("GameRolePlayShowActorMessage",
+      this.HandleGameRolePlayShowActorMessage, this);
   }
 
   private HandleGameMapMovementMessage(account: Account, data: any) {
@@ -72,5 +76,14 @@ export default class Map {
     account.character.cellId = data.actors[0].disposition.cellId;
 
     account.character.managers.movements.moveToCellId(345);
+  }
+
+  private HandleGameContextRemoveElementMessage(account: Account, data: any) {
+    const actor =  this.account.character.map.actors.filter((p: any) => p.contextualId === data.id);
+    this.account.character.map.actors.splice(this.account.character.map.actors.indexOf(actor), 1);
+  }
+
+  private HandleGameRolePlayShowActorMessage(account: Account, data: any) {
+     account.character.map.actors.push(data.informations);
   }
 }

@@ -74,17 +74,9 @@ export default class ConnectionFrame {
     //   data: "Hey, t'es connecté!",
     // });
     console.log("Connecté au serveur d'authentification");
-
-    // const regex = /[^/]+$/
-    // var m = regex.exec(account.haapi.config.assetsUrl)
-    // assetsVersion => m[0]
-
-    axios.get("https://proxyconnection.touch.dofus.com/assetsVersions.json")
-    .then((response) => {
-      account.client.send("checkAssetsVersion", {
-        assetsVersion: response.data.assetsVersion,
-        staticDataVersion: response.data.staticDataVersion,
-      });
+    account.client.send("checkAssetsVersion", {
+      assetsVersion: account.client.assetsVersion,
+      staticDataVersion: account.client.staticDataVersion,
     });
   }
 

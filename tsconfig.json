@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "removeComments": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "noImplicitAny": true,
+    "outDir": "./build/",
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

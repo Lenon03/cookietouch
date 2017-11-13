@@ -5,7 +5,7 @@ import { randomString } from "../utils/Random";
 export default class ConnectionFrame {
 
   private account: Account;
-  private access: any;
+  private access: string;
   private sequenceNumber: number = 0;
 
   constructor(account: Account) {
@@ -98,9 +98,17 @@ export default class ConnectionFrame {
   }
 
   public HandleServersListMessage(account: Account, data: any) {
-    account.client.sendMessage("ServerSelectionMessage", {
-      serverId: data.servers[0].id,
-    });
+    for (const server of data.servers) {
+      if (server.isSelectable && server.charactersCount > 0) {
+        account.client.sendMessage("ServerSelectionMessage", {
+          serverId: server.id,
+        });
+        return;
+      }
+    }
+
+    console.log("Aucuns serveurs n'a pu être selectionné.");
+    account.client.close();
   }
 
   public HandleIdentificationSuccessMessage(account: Account, data: any) {
@@ -123,9 +131,10 @@ export default class ConnectionFrame {
         account.client.migrate(this.access);
         break;
       case "CONNECTION_FAILED":
+        account.stop();
         break;
       default:
-        //
+        break;
     }
   }
 
@@ -148,7 +157,7 @@ export default class ConnectionFrame {
   }
 
   public HandleAuthenticationTicketAcceptedMessage(account: Account, data: any) {
-    account.client.sendMessage("CharactersListRequestMessage", null);
+    account.client.sendMessage("CharactersListRequestMessage");
   }
 
   public HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
@@ -168,15 +177,15 @@ export default class ConnectionFrame {
       accountSessionId: account.login,
       isSubscriber: account.subscriptionEndDate !== 0,
     });
-    account.client.send("moneyGoultinesAmountRequest", null);
-    account.client.sendMessage("QuestListRequestMessage", null);
-    account.client.sendMessage("FriendsGetListMessage", null);
-    account.client.sendMessage("IgnoredGetListMessage", null);
-    account.client.sendMessage("SpouseGetInformationsMessage", null);
-    account.client.send("bakSoftToHardCurrentRateRequest", null);
-    account.client.send("bakHardToSoftCurrentRateRequest", null);
-    account.client.send("restoreMysteryBox", null);
+    account.client.send("moneyGoultinesAmountRequest");
+    account.client.sendMessage("QuestListRequestMessage");
+    account.client.sendMessage("FriendsGetListMessage");
+    account.client.sendMessage("IgnoredGetListMessage");
+    account.client.sendMessage("SpouseGetInformationsMessage");
+    account.client.send("bakSoftToHardCurrentRateRequest");
+    account.client.send("bakHardToSoftCurrentRateRequest");
+    account.client.send("restoreMysteryBox");
     account.client.sendMessage("ClientKeyMessage", { key: randomString(21) });
-    account.client.sendMessage("GameContextCreateRequestMessage", null);
+    account.client.sendMessage("GameContextCreateRequestMessage");
   }
 }

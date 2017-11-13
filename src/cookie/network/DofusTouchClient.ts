@@ -89,19 +89,40 @@ export default class DofusTouchClient {
     this.socket.open();
   }
 
-  public send(callName: string, data: any) {
-    const msg = { call: callName, data };
+  public send(call: string, data?: any) {
+    // Si data est null et que call est different de sendMessage,
+    // c'est un simple call sans data. Sinon c'est un sendMessage sans data.
+    // Si data est pas null et que call est different de sendMessage
+    // C'est
+    let msg;
+    let msgName;
+
+    if (call === "sendMessage") {
+      msgName = data.type;
+      if (data.data) {
+        msg = { call, data };
+      } else {
+        msg = { call, data: { type: data.type } };
+      }
+    } else {
+      msgName = call;
+      if (data) {
+        msg = { call, data };
+      } else {
+        msg = { call };
+      }
+    }
+
     console.log("Sent: ", msg);
-    const test = msg.call === "sendMessage" ? msg.data.type : msg.call;
     // EventHub.$emit("logs", {
     //   action: "SND",
     //   data: test,
     // });
-    this.account.dispatcher.emit(test, this.account, data);
+    this.account.dispatcher.emit(msgName, this.account, data);
     this.socket.write(msg);
   }
 
-  public sendMessage(messageName: string, data: {}) {
+  public sendMessage(messageName: string, data?: any) {
     this.send("sendMessage", { type: messageName, data });
   }
 

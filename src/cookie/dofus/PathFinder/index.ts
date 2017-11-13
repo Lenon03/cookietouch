@@ -423,7 +423,8 @@ export class PathFinder {
     }
   }
 
-  private static addCandidates(path: any, di: number, dj: number, candidates: CellPath[], allowDiagonals: boolean) {
+  private static addCandidates(path: CellPath, di: number, dj: number,
+                               candidates: CellPath[], allowDiagonals: boolean) {
     const i = path.i;
     const j = path.j;
     const c = this.grid[i][j];
@@ -471,13 +472,13 @@ export class PathFinder {
     }
   }
 
-  private static canMoveDiagonallyTo(c1: any, c2: any, c3: any, c4: any) {
+  private static canMoveDiagonallyTo(c1: CellPathData, c2: CellPathData, c3: CellPathData, c4: CellPathData) {
     // Can move between c1 and c2 diagonally only if c1 and c2 are
     // compatible and if c1 is compatible either with c3 or c4
     return this.areCommunicating(c1, c2) && (this.areCommunicating(c1, c3) || this.areCommunicating(c1, c4));
   }
 
-  private static areCommunicating(c1: any, c2: any) {
+  private static areCommunicating(c1: CellPathData, c2: CellPathData) {
     // Cells are compatible only if they either have the same floor height...
     if (c1.floor === c2.floor) {
       // Same height

@@ -8,7 +8,7 @@ export class CellPathData {
   public zone: number = -1;
   public speed: number = 1;
   public weight: number = 0;
-  public candidateRef: CellPath = null;
+  public candidateRef: CellPath;
   public f: number = 0;
 
   constructor(i: number, j: number) {

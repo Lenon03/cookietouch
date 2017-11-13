@@ -143,7 +143,7 @@ export default class ConnectionFrame {
 
   public HandleHelloGameMessage(account: Account, data: any) {
     account.client.sendMessage("AuthenticationTicketMessage", {
-      lang: "fr",
+      lang: account.lang,
       ticket: account.ticket,
     });
   }

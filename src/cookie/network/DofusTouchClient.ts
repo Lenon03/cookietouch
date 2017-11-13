@@ -151,7 +151,7 @@ export default class DofusTouchClient {
           appVersion: this.appVersion,
           buildVersion: this.buildVersion,
           client: "android",
-          language: "fr",
+          language: this.account.lang,
           server: "login",
         });
       } else {
@@ -160,7 +160,7 @@ export default class DofusTouchClient {
           appVersion: this.appVersion,
           buildVersion: this.buildVersion,
           client: "android",
-          language: "fr",
+          language: this.account.lang,
           server: this.server,
         });
       }

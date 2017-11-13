@@ -44,15 +44,18 @@ export default class Map {
   }
 
   private HandleGameMapMovementMessage(account: Account, data: any) {
+    const last = data.keyMovements[data.keyMovements.length - 1];
+
     if (data.actorId === account.character.infos.id) {
       console.log("OLD CELL ", account.character.cellId);
 
-      const last = data.keyMovements[data.keyMovements.length - 1];
       account.character.cellId = last;
       account.character.state = CharacterState.MOVING;
 
       console.log("CHARACTER STATE (moving): ", account.character.state, account.character.cellId);
     }
+
+    // TODO: Update cellId on the actors
   }
 
   private HandleCurrentMapMessage(account: Account, data: any) {

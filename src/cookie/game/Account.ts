@@ -25,12 +25,14 @@ export class Account {
   public secretQuestion: string;
   public subscriptionEndDate: number;
   public wasAlreadyConnected: boolean;
+  public lang: string;
 
   private connectionFrame: ConnectionFrame;
 
-  constructor(username: string, password: string) {
+  constructor(username: string, password: string, lang: string = "fr") {
     this.username = username;
     this.password = password;
+    this.lang = lang;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
     this.character = new Character(this);

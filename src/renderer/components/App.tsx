@@ -8,7 +8,7 @@ export class App extends React.Component<{}, {}> {
   constructor(props: {}) {
     super(props);
 
-    this.account = new Account("cookieproject1", "azerty123456");
+    this.account = new Account("cookieproject1", "azerty123456", "en");
     this.account.start();
   }
 

@@ -2,7 +2,6 @@ import DofusTouchClient from "../dofus/DofusTouchClient";
 import HaapiConnection from "../dofus/HaapiConnection";
 import ConnectionFrame from "../frames/ConnectionFrame";
 import Dispatcher from "../utils/Dispatcher";
-import MovementsManager from "../utils/MovementsManager";
 import Character from "./Character";
 
 export class Account {
@@ -12,7 +11,6 @@ export class Account {
   public character: Character;
   public client: DofusTouchClient;
   public haapi: HaapiConnection;
-  public movementsManager: MovementsManager;
   public dispatcher: Dispatcher;
   public salt: string;
   public key: number[];
@@ -35,17 +33,18 @@ export class Account {
     this.password = password;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
-    this.movementsManager = new MovementsManager(this);
     this.character = new Character(this);
     this.client = new DofusTouchClient(this);
 
     this.frames();
   }
 
-  public async connect() {
-    await this.haapi.processHaapi(this.username, this.password);
-    console.log("Haapi : ", this.haapi);
-    this.client.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
+  public connect() {
+    this.haapi.processHaapi(this.username, this.password)
+    .then(() => {
+      console.log("Haapi : ", this.haapi);
+      this.client.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
+    });
   }
 
   public disconnect() {

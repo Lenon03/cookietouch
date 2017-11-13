@@ -56,7 +56,7 @@ export default class Map {
       mapId: data.mapId,
     });
 
-    account.movementsManager.updateMap(data.mapId);
+    account.character.movementsManager.updateMap(data.mapId);
   }
 
   private HandleMapComplementaryInformationsDataMessage(account: Account, data: any) {
@@ -71,6 +71,6 @@ export default class Map {
 
     account.character.cellId = data.actors[0].disposition.cellId;
 
-    account.movementsManager.moveToCellId(account.character.cellId + 5);
+    account.character.movementsManager.moveToCellId(account.character.cellId + 5);
   }
 }

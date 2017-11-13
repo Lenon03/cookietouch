@@ -1,3 +1,4 @@
+import MovementsManager from "../utils/MovementsManager";
 import { Account } from "./Account";
 import { CharacterState } from "./CharacterState";
 import Map from "./Map";
@@ -5,6 +6,7 @@ import Map from "./Map";
 export default class Character {
 
   public state: CharacterState;
+  public movementsManager: MovementsManager;
   public map: Map;
   public cellId: number;
   public restrictions: any;
@@ -16,6 +18,7 @@ export default class Character {
   constructor(account: Account) {
     this.account = account;
     this.state = CharacterState.IDLE;
+    this.movementsManager = new MovementsManager(this.account);
     this.map = new Map(this.account);
 
     this.register();

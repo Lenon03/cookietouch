@@ -24,7 +24,9 @@ export default class SecurityFrame {
   }
 
   private HandleTextInformationMessage(account: Account, data: any) {
-    console.log("Vous avez atteint la limite de combat journalière.");
+    if (data.msgId === 245) {
+      console.log("Vous avez atteint la limite de combat journalière.");
+    }
   }
 
   private HandleAccountLoggingKickedMessage(account: Account, data: any) {

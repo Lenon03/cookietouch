@@ -1,6 +1,7 @@
 import Account from "../../Account";
+import { CharacterState } from "../character/CharacterState";
 import { MapChangeDirections } from "../managers/movements/MapChangeDirections";
-import { CharacterState } from "./../character/CharacterState";
+import { MovementRequestResults } from "../managers/movements/MovementRequestResults";
 
 export default class Map {
 
@@ -22,11 +23,14 @@ export default class Map {
     this.events();
   }
 
+  public occupiedCells(): number[] {
+    // TODO: TODO.
+    return [];
+  }
+
   private events() {
     this.account.dispatcher.register("GameMapMovementConfirmMessage",
       (account: Account, data: any) => {
-        account.game.character.state = CharacterState.IDLE;
-
         console.log("CHARACTER STATE (confirm): ",
           CharacterState[account.game.character.state], account.game.character.cellId);
       }, this);
@@ -47,12 +51,11 @@ export default class Map {
 
   private HandleGameMapMovementMessage(account: Account, data: any) {
     const last = data.keyMovements[data.keyMovements.length - 1];
-
+    console.log("MOVED MOVED MOVED MOVED MOVED MOVED MOVED MOVED MOVED");
     if (data.actorId === account.game.character.infos.id) {
       console.log("OLD CELL ", account.game.character.cellId);
 
       account.game.character.cellId = last;
-      account.game.character.state = CharacterState.MOVING;
 
       console.log("CHARACTER STATE (moving): ",
         CharacterState[account.game.character.state], account.game.character.cellId);
@@ -81,18 +84,19 @@ export default class Map {
 
     account.game.character.cellId = data.actors[0].disposition.cellId;
 
-    // const randomCell = Math.floor((Math.random() * 560) + 0);
-    // console.log("Go To Cell: ", randomCell);
-    // account.game.character.managers.movements.moveToCell(randomCell);
+    const randomCell = Math.floor((Math.random() * 560) + 0);
+    console.log("Go To Cell: ", randomCell);
+    const result = account.game.managers.movements.moveToCell(randomCell);
+    console.log("Changed Cell? => ", MovementRequestResults[result]);
 
-    const result = account.game.managers.movements.changeMap(MapChangeDirections.Top);
-    console.log("Changed? => ", result);
+    // const randomMap = MapChangeDirections.Top;
+    // console.log("Go To Map: ", randomMap);
+    // const result = account.game.managers.movements.changeMap(randomMap);
+    // console.log("Changed Map? => ", result);
   }
 
   private HandleGameContextRemoveElementMessage(account: Account, data: any) {
-    // TODO: Show to Sapientia how to remove properly element from an array
-    const actor = this.account.game.map.actors.filter((p: any) => p.contextualId === data.id);
-    this.account.game.map.actors.splice(this.account.game.map.actors.indexOf(actor), 1);
+    this.account.game.map.actors = this.account.game.map.actors.filter((p: any) => p.contextualId !== data.id);
   }
 
   private HandleGameRolePlayShowActorMessage(account: Account, data: any) {

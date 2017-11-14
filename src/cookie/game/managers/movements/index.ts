@@ -3,6 +3,8 @@ import Account from "../../../Account";
 import PathFinder from "../../../core/PathFinder";
 import Cell from "../../../core/PathFinder/Cell";
 import Map from "../../../core/PathFinder/Map";
+import PathDuration from "../../../core/PathFinder/PathDuration";
+import { CharacterState } from "../../character/CharacterState";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
@@ -17,6 +19,11 @@ export default class MovementsManager {
   constructor(account: Account) {
     this.account = account;
     PathFinder.Init();
+
+    this.account.dispatcher.register("GameMapMovementMessage",
+      this.HandleGameMapMovementMessage, this);
+    this.account.dispatcher.register("GameMapNoMovementMessage",
+      this.HandleGameMapNoMovementMessage, this);
   }
 
   public updateMap(mapId: number): Promise<any> {
@@ -50,7 +57,8 @@ export default class MovementsManager {
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    const path = PathFinder.getPath(this.account.game.character.cellId, cellId);
+    const path = PathFinder.getPath(this.account.game.character.cellId, cellId,
+      this.account.game.map.occupiedCells(), true, stopNextToTarget);
     console.log(PathFinder.logPath(path));
 
     if (path.length === 0) {
@@ -181,13 +189,66 @@ export default class MovementsManager {
       keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
       mapId: this.account.game.map.id,
     });
-
-    this.confirmMove(this.currentPath);
   }
 
   private confirmMove(path: number[]): void {
     setTimeout(() => {
       this.account.network.sendMessage("GameMapMovementConfirmMessage");
     }, 250 * path.length);
+  }
+
+  private HandleGameMapNoMovementMessage(account: Account, data: any) {
+    if (this.currentPath === null) {
+      return;
+    }
+
+    setTimeout(() => {
+      if (this.currentPath === null) {
+        return;
+      }
+
+      console.log("Path:", this.currentPath);
+
+      this.sendMoveMessage();
+    }, 5000);
+  }
+
+  private HandleGameMapMovementMessage(account: Account, data: any) {
+    if (data.actorId === account.game.character.infos.id
+      && data.keyMovements[0] === this.currentPath[0]
+      && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
+      // TODO: Not sure if it is the best way to handle character's state,
+      // and to handle map changements.
+      account.game.character.state = CharacterState.MOVING;
+
+      const duration = PathDuration.calculate(this.currentPath);
+      setTimeout(() => {
+        account.network.sendMessage("GameMapMovementConfirmMessage");
+
+        account.game.character.state = CharacterState.IDLE;
+
+        if (this.neighbourMapId === 0) {
+          // Trigger event MovementFinished
+          this.onMovementFinished();
+        } else {
+          this.currentPath = null;
+
+          if (this.neighbourMapId !== 0) {
+            console.log("ChangeMapMessage ChangeMapMessage ChangeMapMessage ChangeMapMessage");
+            account.network.sendMessage("ChangeMapMessage", {
+              mapId: this.neighbourMapId,
+            });
+
+            this.neighbourMapId = 0;
+          }
+        }
+      }, duration);
+    }
+  }
+
+  private onMovementFinished() {
+    this.currentPath = null;
+    this.neighbourMapId = 0;
+    // Trigger event MovementFinished
   }
 }

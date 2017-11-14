@@ -1,7 +1,5 @@
-import { Managers } from "../managers";
-import { DataTypes } from "../managers/data/DataTypes";
-import { Account } from "./Account";
-import { ObjectItem } from "./ObjectItem";
+import Account from "./Account";
+import ObjectItem from "./ObjectItem";
 
 export default class Inventory {
   public kamas: number;

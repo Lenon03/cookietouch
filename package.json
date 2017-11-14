@@ -44,7 +44,6 @@
     "@types/react": "^16.0.22",
     "@types/react-dom": "^16.0.3",
     "axios": "^0.17.1",
-    "moment": "^2.19.2",
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
     "typescript": "^2.6.1"

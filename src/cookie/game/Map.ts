@@ -1,4 +1,4 @@
-import { Account } from "./Account";
+import Account from "./Account";
 import { CharacterState } from "./CharacterState";
 
 export default class Map {
@@ -78,7 +78,9 @@ export default class Map {
 
     account.character.cellId = data.actors[0].disposition.cellId;
 
-    account.character.managers.movements.moveToCellId(345);
+    const randomCell = Math.floor((Math.random() * 560) + 0);
+    console.log("Go To Cell: ", randomCell);
+    account.character.managers.movements.moveToCellId(randomCell);
   }
 
   private HandleGameContextRemoveElementMessage(account: Account, data: any) {

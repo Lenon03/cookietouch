@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Account } from "../../cookie/game/Account";
+import Account from "../../cookie/game/Account";
 
 export class App extends React.Component<{}, {}> {
 

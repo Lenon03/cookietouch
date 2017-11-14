@@ -1,4 +1,4 @@
-export class CellPath {
+export default class CellPath {
 
   public i: number;
   public j: number;

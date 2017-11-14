@@ -1,6 +1,6 @@
-import { CellPath } from "./CellPath";
+import CellPath from "./CellPath";
 
-export class CellPathData {
+export default class CellPathData {
 
   public i: number;
   public j: number;
@@ -8,7 +8,7 @@ export class CellPathData {
   public zone: number = -1;
   public speed: number = 1;
   public weight: number = 0;
-  public candidateRef: CellPath;
+  public candidateRef: CellPath = null;
   public f: number = 0;
 
   constructor(i: number, j: number) {

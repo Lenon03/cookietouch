@@ -1,4 +1,4 @@
-export class ObjectItem {
+export default class ObjectItem {
   public position: number;
   public objectGID: number;
   public objectUID: number;

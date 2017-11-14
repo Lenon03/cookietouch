@@ -1,13 +1,14 @@
 import axios from "axios";
-import { PathFinder } from "../../dofus/PathFinder";
-import { Account } from "../../game/Account";
+import PathFinder from "../../dofus/PathFinder";
+import Map from "../../dofus/PathFinder/Map";
+import Account from "../../game/Account";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
 export default class MovementsManager {
 
   private account: Account;
-  private jsonMap: any;
+  private map: Map;
 
   constructor(account: Account) {
     this.account = account;
@@ -18,8 +19,8 @@ export default class MovementsManager {
     return new Promise((resolve, reject) => {
       axios.get(this.account.haapi.config.assetsUrl + "/maps/" + mapId + ".json")
 
-        .then((response) => this.jsonMap = response.data)
-        .then(() => PathFinder.fillPathGrid(this.jsonMap))
+        .then((response) => this.map = response.data)
+        .then(() => PathFinder.fillPathGrid(this.map))
         .then(() => resolve());
     });
   }
@@ -31,7 +32,8 @@ export default class MovementsManager {
     console.log(PathFinder.logPath(path));
 
     this.account.client.sendMessage("GameMapMovementRequestMessage", {
-      keyMovements: PathFinder.compressPath(path),
+      // keyMovements: PathFinder.compressPath(path),
+      keyMovements: path, // NOTE: Check if we don't have to really compress the path
       mapId: this.account.character.map.mapId,
     });
 
@@ -47,13 +49,13 @@ export default class MovementsManager {
   public canChangeMap(cellId: number, direction: MapChangeDirections): boolean {
     switch (direction) {
       case MapChangeDirections.Left:
-        return (this.jsonMap.cells[cellId].c & direction) > 0 && cellId % 14 === 0;
+        return (this.map.cells[cellId].c & direction) > 0 && cellId % 14 === 0;
       case MapChangeDirections.Right:
-        return (this.jsonMap.cells[cellId].c & direction) > 0 && cellId % 14 === 13;
+        return (this.map.cells[cellId].c & direction) > 0 && cellId % 14 === 13;
       case MapChangeDirections.Top:
-        return (this.jsonMap.cells[cellId].c & direction) > 0 && cellId < 28;
+        return (this.map.cells[cellId].c & direction) > 0 && cellId < 28;
       case MapChangeDirections.Bottom:
-        return (this.jsonMap.cells[cellId].c & direction) > 0 && cellId > 531;
+        return (this.map.cells[cellId].c & direction) > 0 && cellId > 531;
     }
   }
 

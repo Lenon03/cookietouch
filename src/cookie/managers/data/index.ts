@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Account } from "../../game/Account";
+import Account from "../../game/Account";
 import { DataTypes } from "./DataTypes";
 
 export default class DataManager {

@@ -4,7 +4,7 @@ import HaapiConnection from "../network/HaapiConnection";
 import Dispatcher from "../utils/Dispatcher";
 import Character from "./Character";
 
-export class Account {
+export default class Account {
 
   public username: string;
   public password: string;

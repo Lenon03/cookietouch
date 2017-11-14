@@ -1,9 +1,9 @@
-import { Managers } from "../managers";
-import { Account } from "./Account";
+import Managers from "../managers";
+import Account from "./Account";
 import { CharacterState } from "./CharacterState";
 import Inventory from "./Inventory";
 import Map from "./Map";
-import { Spell } from "./Spell";
+import Spell from "./Spell";
 
 export default class Character {
 

@@ -1,8 +1,8 @@
-import { Account } from "../game/Account";
+import Account from "../game/Account";
 import DataManager from "./data";
 import MovementsManager from "./movements";
 
-export class Managers {
+export default class Managers {
   public movements: MovementsManager;
   public data: DataManager;
 

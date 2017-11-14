@@ -1,7 +1,9 @@
-import { CellPath } from "./CellPath";
-import { CellPathData } from "./CellPathData";
+import Cell from "./Cell";
+import CellPath from "./CellPath";
+import CellPathData from "./CellPathData";
+import Map from "./Map";
 
-export class PathFinder {
+export default class PathFinder {
 
   public static Init() {
     this.constructMapPoints();
@@ -15,7 +17,7 @@ export class PathFinder {
     }
   }
 
-  public static fillPathGrid(map: any) {
+  public static fillPathGrid(map: Map) {
     // TODO: add whether a map uses the old system onto the map data
     // when it is generated on the server side
     // oldMovementSystem = map.usesOldMovementSystem;
@@ -198,7 +200,9 @@ export class PathFinder {
   }
 
   public static compressPath(path: number[]): number[] {
-    if (path.length === 1) { return path; } // si on est deja sur la cell pas besoin de calculer
+    if (path.length === 1) {
+      return path;
+    } // si on est deja sur la cell pas besoin de calculer
     const compressedPath = [];
     let prevCellId = path[0];
     let prevDirection = -1;
@@ -219,21 +223,32 @@ export class PathFinder {
       } else {
         if (coord.y === prevY) {
           // move horizontaly
-          direction = coord.x > prevX ? 7 : 3;
+          direction = coord.x > prevX
+            ? 7
+            : 3;
         } else if (coord.x === prevX) {
           // move verticaly
-          direction = coord.y > prevY ? 1 : 5;
+          direction = coord.y > prevY
+            ? 1
+            : 5;
         } else {
           // move in diagonal
           if (coord.x > prevX) {
-            direction = coord.y > prevY ? 0 : 6;
+            direction = coord.y > prevY
+              ? 0
+              : 6;
           } else {
-            direction = coord.y > prevY ? 2 : 4;
+            direction = coord.y > prevY
+              ? 2
+              : 4;
           }
         }
       }
 
       if (direction !== prevDirection) {
+        console.log("prevCellId 1", prevCellId);
+        console.log("direction 1", direction);
+        console.log("ERROR 1", prevCellId + (direction << 12));
         compressedPath.push(prevCellId + (direction << 12));
         prevDirection = direction;
       }
@@ -243,6 +258,9 @@ export class PathFinder {
       prevY = coord.y;
     }
 
+    console.log("prevCellId 2", prevCellId);
+    console.log("prevDirection 2", prevDirection);
+    console.log("ERROR 2", prevCellId + (prevDirection << 12));
     compressedPath.push(prevCellId + (prevDirection << 12));
 
     return compressedPath;
@@ -361,7 +379,7 @@ export class PathFinder {
   private static ELEVATION_TOLERANCE = 11.825;
   private static WIDTH = 33 + 2;
   private static HEIGHT = 34 + 2;
-  private static mapPointToCellId: any[string] = [];
+  private static mapPointToCellId: any[any] = [];
   private static oldMovementSystem: boolean;
   private static firstCellZone: number;
   private static grid: CellPathData[][] = [];
@@ -384,7 +402,7 @@ export class PathFinder {
     return this.mapPointToCellId[x + "_" + y];
   }
 
-  private static updateCellPath(cell: any, cellPath: any) {
+  private static updateCellPath(cell: Cell, cellPath: CellPathData) {
     if ((cell !== undefined) && (cell.l & 1)) {
       cellPath.floor = cell.f || 0;
       cellPath.zone = cell.z || 0;

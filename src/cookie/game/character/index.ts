@@ -1,5 +1,4 @@
 import Account from "../../Account";
-import Managers from "../managers";
 import { CharacterState } from "./CharacterState";
 import Inventory from "./Inventory";
 import Spell from "./Spell";
@@ -7,7 +6,6 @@ import Spell from "./Spell";
 export default class Character {
 
   public state: CharacterState;
-  public managers: Managers;
   public cellId: number;
   public restrictions: any;
   public stats: any;
@@ -22,7 +20,6 @@ export default class Character {
   constructor(account: Account) {
     this.account = account;
     this.state = CharacterState.IDLE;
-    this.managers = new Managers(this.account);
     this.inventory = new Inventory(this.account);
     this.register();
   }

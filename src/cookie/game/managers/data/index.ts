@@ -14,7 +14,7 @@ export default class DataManager {
     return new Promise((resolve, reject) => {
       const params = {
         lang: this.account.lang,
-        v: this.account.client.assetsVersion,
+        v: this.account.network.assetsVersion,
       };
       axios.post(`${this.account.haapi.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`,
         {

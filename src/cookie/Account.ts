@@ -1,4 +1,4 @@
-import ConnectionFrame from "./frames/ConnectionFrame";
+import Frames from "./frames";
 import Game from "./game";
 import DofusTouchClient from "./network/DofusTouchClient";
 import HaapiConnection from "./network/HaapiConnection";
@@ -9,7 +9,7 @@ export default class Account {
   public username: string;
   public password: string;
   public game: Game;
-  public client: DofusTouchClient;
+  public network: DofusTouchClient;
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
   public salt: string;
@@ -27,7 +27,7 @@ export default class Account {
   public wasAlreadyConnected: boolean;
   public lang: string;
 
-  private connectionFrame: ConnectionFrame;
+  private frames: Frames;
 
   constructor(username: string, password: string, lang: string = "fr") {
     this.username = username;
@@ -35,25 +35,20 @@ export default class Account {
     this.lang = lang;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
+    this.network = new DofusTouchClient(this);
     this.game = new Game(this);
-    this.client = new DofusTouchClient(this);
-
-    this.frames();
+    this.frames = new Frames(this);
   }
 
   public start() {
     this.haapi.processHaapi(this.username, this.password)
       .then(() => {
         console.log("Haapi : ", this.haapi);
-        this.client.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
+        this.network.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
       });
   }
 
   public stop() {
-    this.client.close();
-  }
-
-  private frames() {
-    this.connectionFrame = new ConnectionFrame(this);
+    this.network.close();
   }
 }

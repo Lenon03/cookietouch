@@ -140,7 +140,7 @@ export default class DofusTouchClient {
     this.send("sendMessage", { type: messageName, data });
   }
 
-  public setCurrentConnection() {
+  private setCurrentConnection() {
     this.socket.on("open", () => {
       console.log("Connection opened");
 

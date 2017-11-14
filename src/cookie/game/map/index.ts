@@ -8,7 +8,7 @@ export default class Map {
   public fights: any[];
   public houses: any[];
   public interactiveElements: any[];
-  public mapId: number;
+  public id: number;
   public statedElements: any[];
   public obstacles: any[];
   public subAreaId: number;
@@ -62,11 +62,11 @@ export default class Map {
   }
 
   private HandleCurrentMapMessage(account: Account, data: any) {
-    account.client.sendMessage("MapInformationsRequestMessage", {
+    account.network.sendMessage("MapInformationsRequestMessage", {
       mapId: data.mapId,
     });
 
-    account.game.character.managers.movements.updateMap(data.mapId);
+    account.game.managers.movements.updateMap(data.mapId);
   }
 
   private HandleMapComplementaryInformationsDataMessage(account: Account, data: any) {
@@ -74,7 +74,7 @@ export default class Map {
     account.game.map.fights = data.fights;
     account.game.map.houses = data.houses;
     account.game.map.interactiveElements = data.interactiveElements;
-    account.game.map.mapId = data.mapId;
+    account.game.map.id = data.mapId;
     account.game.map.statedElements = data.statedElements;
     account.game.map.obstacles = data.obstacles;
     account.game.map.subAreaId = data.subAreaId;
@@ -85,7 +85,7 @@ export default class Map {
     // console.log("Go To Cell: ", randomCell);
     // account.game.character.managers.movements.moveToCell(randomCell);
 
-    const result = account.game.character.managers.movements.changeMap(MapChangeDirections.Top);
+    const result = account.game.managers.movements.changeMap(MapChangeDirections.Top);
     console.log("Changed? => ", result);
   }
 

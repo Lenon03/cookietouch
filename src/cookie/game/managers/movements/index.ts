@@ -136,10 +136,16 @@ export default class MovementsManager {
   private moveToChangeMap(cellId: number): boolean {
     switch (this.moveToCell(cellId)) {
       case MovementRequestResults.MOVED:
+        console.log(`${this.account.game.map.id} Moving to change map`);
         return true;
       case MovementRequestResults.ALREADY_THERE:
+        this.account.network.sendMessage("ChangeMapMessage", {
+          mapId: this.neighbourMapId,
+        });
+        this.neighbourMapId = 0;
         return false;
       default:
+        console.log(`Path to ${cellId} failed or is blocked.`);
         this.neighbourMapId = 0;
         return false;
     }
@@ -170,10 +176,10 @@ export default class MovementsManager {
   }
 
   private sendMoveMessage() {
-    this.account.client.sendMessage("GameMapMovementRequestMessage", {
+    this.account.network.sendMessage("GameMapMovementRequestMessage", {
       // keyMovements: PathFinder.compressPath(this.currentPath),
       keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
-      mapId: this.account.game.map.mapId,
+      mapId: this.account.game.map.id,
     });
 
     this.confirmMove(this.currentPath);
@@ -181,7 +187,7 @@ export default class MovementsManager {
 
   private confirmMove(path: number[]): void {
     setTimeout(() => {
-      this.account.client.sendMessage("GameMapMovementConfirmMessage");
+      this.account.network.sendMessage("GameMapMovementConfirmMessage");
     }, 250 * path.length);
   }
 }

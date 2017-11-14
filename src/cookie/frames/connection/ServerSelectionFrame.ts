@@ -1,0 +1,76 @@
+import Account from "../../Account";
+
+export default class ServerSelectionFrame {
+
+  private account: Account;
+  private access: string;
+
+  constructor(account: Account) {
+    this.account = account;
+    this.register();
+  }
+
+  private register() {
+    this.account.dispatcher.register("ServersListMessage", this.HandleServersListMessage, this);
+    this.account.dispatcher.register("SelectedServerDataMessage", this.HandleSelectedServerDataMessage, this);
+    this.account.dispatcher.register("serverDisconnecting", this.HandleserverDisconnecting, this);
+    this.account.dispatcher.register("HelloGameMessage", this.HandleHelloGameMessage, this);
+    this.account.dispatcher.register("AuthenticationTicketAcceptedMessage",
+      this.HandleAuthenticationTicketAcceptedMessage, this);
+    this.account.dispatcher.register("AuthenticationTicketRefusedMessage",
+      this.HandleAuthenticationTicketRefusedMessage, this);
+  }
+
+  private HandleServersListMessage(account: Account, data: any) {
+    for (const server of data.servers) {
+      if (server.isSelectable && server.charactersCount > 0) {
+        account.network.sendMessage("ServerSelectionMessage", {
+          serverId: server.id,
+        });
+        return;
+      }
+    }
+
+    console.log("Aucuns serveurs n'a pu être selectionné.");
+    account.network.close();
+  }
+
+  private HandleserverDisconnecting(account: Account, data: any) {
+    switch (data.reason) {
+      case "SERVER_GONE":
+        account.network.migrate(this.access);
+        break;
+      case "CONNECTION_FAILED":
+        account.stop();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private HandleSelectedServerDataMessage(account: Account, data: any) {
+    account.ticket = data.ticket;
+    this.access = data._access;
+
+    account.network.server = {
+      address: data.address,
+      id: data.serverId,
+      port: data.port,
+    };
+  }
+
+  private HandleHelloGameMessage(account: Account, data: any) {
+    account.network.sendMessage("AuthenticationTicketMessage", {
+      lang: account.lang,
+      ticket: account.ticket,
+    });
+  }
+
+  private HandleAuthenticationTicketAcceptedMessage(account: Account, data: any) {
+    account.network.sendMessage("CharactersListRequestMessage");
+  }
+
+  private HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
+    account.stop();
+  }
+}

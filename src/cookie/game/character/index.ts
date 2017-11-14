@@ -35,6 +35,8 @@ export default class Character {
       this.HandleCharacterStatsListMessage, this);
     this.account.dispatcher.register("SpellListMessage",
       this.HandleSpellListMessage, this);
+    this.account.dispatcher.register("CharacterLevelUpMessage",
+      this.HandleCharacterLevelUpMessage, this);
   }
 
   private HandleSetCharacterRestrictionsMessage(account: Account, data: any) {
@@ -46,5 +48,8 @@ export default class Character {
   }
   private HandleSpellListMessage(account: Account, data: any) {
     account.game.character.spells = data.spells;
+  }
+  private HandleCharacterLevelUpMessage(account: Account, data: any) {
+    console.log("Vous venez de passer niveau : " + data.newLevel);
   }
 }

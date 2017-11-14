@@ -1,3 +1,4 @@
+import { MapChangeDirections } from "../managers/movements/MapChangeDirections";
 import Account from "./Account";
 import { CharacterState } from "./CharacterState";
 
@@ -23,11 +24,12 @@ export default class Map {
 
   private events() {
     this.account.dispatcher.register("GameMapMovementConfirmMessage",
-          (account: Account, data: any) => {
-            account.character.state = CharacterState.IDLE;
+      (account: Account, data: any) => {
+        account.character.state = CharacterState.IDLE;
 
-            console.log("CHARACTER STATE (confirm): ", account.character.state, account.character.cellId);
-          }, this);
+        console.log("CHARACTER STATE (confirm): ",
+          CharacterState[account.character.state], account.character.cellId);
+      }, this);
   }
 
   private register() {
@@ -52,7 +54,7 @@ export default class Map {
       account.character.cellId = last;
       account.character.state = CharacterState.MOVING;
 
-      console.log("CHARACTER STATE (moving): ", account.character.state, account.character.cellId);
+      console.log("CHARACTER STATE (moving): ", CharacterState[account.character.state], account.character.cellId);
     }
 
     // TODO: Update cellId on the actors
@@ -78,17 +80,21 @@ export default class Map {
 
     account.character.cellId = data.actors[0].disposition.cellId;
 
-    const randomCell = Math.floor((Math.random() * 560) + 0);
-    console.log("Go To Cell: ", randomCell);
-    account.character.managers.movements.moveToCellId(randomCell);
+    // const randomCell = Math.floor((Math.random() * 560) + 0);
+    // console.log("Go To Cell: ", randomCell);
+    // account.character.managers.movements.moveToCell(randomCell);
+
+    const result = account.character.managers.movements.changeMap(MapChangeDirections.Top);
+    console.log("Changed? => ", result);
   }
 
   private HandleGameContextRemoveElementMessage(account: Account, data: any) {
-    const actor =  this.account.character.map.actors.filter((p: any) => p.contextualId === data.id);
+    // TODO: Show to Sapientia how to remove properly element from an array
+    const actor = this.account.character.map.actors.filter((p: any) => p.contextualId === data.id);
     this.account.character.map.actors.splice(this.account.character.map.actors.indexOf(actor), 1);
   }
 
   private HandleGameRolePlayShowActorMessage(account: Account, data: any) {
-     account.character.map.actors.push(data.informations);
+    account.character.map.actors.push(data.informations);
   }
 }

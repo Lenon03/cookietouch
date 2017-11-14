@@ -43,10 +43,10 @@ export default class Account {
 
   public start() {
     this.haapi.processHaapi(this.username, this.password)
-    .then(() => {
-      console.log("Haapi : ", this.haapi);
-      this.client.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
-    });
+      .then(() => {
+        console.log("Haapi : ", this.haapi);
+        this.client.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
+      });
   }
 
   public stop() {

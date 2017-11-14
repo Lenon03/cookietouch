@@ -30,13 +30,17 @@ export default class Character {
     this.register();
   }
 
+  public isBusy(): boolean {
+    return this.state !== CharacterState.IDLE && this.state !== CharacterState.REGENERATING;
+  }
+
   private register() {
     this.account.dispatcher.register("SetCharacterRestrictionsMessage",
-                this.HandleSetCharacterRestrictionsMessage, this);
+      this.HandleSetCharacterRestrictionsMessage, this);
     this.account.dispatcher.register("CharacterStatsListMessage",
-                this.HandleCharacterStatsListMessage, this);
+      this.HandleCharacterStatsListMessage, this);
     this.account.dispatcher.register("SpellListMessage",
-                this.HandleSpellListMessage, this);
+      this.HandleSpellListMessage, this);
   }
 
   private HandleSetCharacterRestrictionsMessage(account: Account, data: any) {

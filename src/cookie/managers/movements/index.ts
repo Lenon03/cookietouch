@@ -1,5 +1,6 @@
 import axios from "axios";
 import PathFinder from "../../dofus/PathFinder";
+import Cell from "../../dofus/PathFinder/Cell";
 import Map from "../../dofus/PathFinder/Map";
 import Account from "../../game/Account";
 import { MapChangeDirections } from "./MapChangeDirections";
@@ -7,8 +8,11 @@ import { MovementRequestResults } from "./MovementRequestResults";
 
 export default class MovementsManager {
 
+  public map: Map;
+
   private account: Account;
-  private map: Map;
+  private currentPath: number[] = null;
+  private neighbourMapId: number = 0;
 
   constructor(account: Account) {
     this.account = account;
@@ -19,31 +23,55 @@ export default class MovementsManager {
     return new Promise((resolve, reject) => {
       axios.get(this.account.haapi.config.assetsUrl + "/maps/" + mapId + ".json")
 
-        .then((response) => this.map = response.data)
+        .then((response) => {
+          const data = response.data;
+          const map = new Map(data.id, data.topNeighbourId,
+            data.bottomNeighbourId, data.leftNeighbourId, data.rightNeighbourId);
+          for (const cell of data.cells) {
+            map.cells.push(new Cell(cell.l, cell.f, cell.c, cell.s, cell.z));
+          }
+          this.map = map;
+        })
         .then(() => PathFinder.fillPathGrid(this.map))
         .then(() => resolve());
     });
   }
 
-  public moveToCellId(cellId: number): void {
-    if (this.account.character.cellId === cellId) { return; }
+  public moveToCell(cellId: number, stopNextToTarget: boolean = false): MovementRequestResults {
+    if (cellId < 0 || cellId > 560) {
+      return MovementRequestResults.FAILED;
+    }
+
+    if (this.account.character.isBusy() || this.currentPath !== null) {
+      return MovementRequestResults.FAILED;
+    }
+
+    if (this.account.character.cellId === cellId) {
+      return MovementRequestResults.ALREADY_THERE;
+    }
 
     const path = PathFinder.getPath(this.account.character.cellId, cellId);
     console.log(PathFinder.logPath(path));
 
-    this.account.client.sendMessage("GameMapMovementRequestMessage", {
-      // keyMovements: PathFinder.compressPath(path),
-      keyMovements: path, // NOTE: Check if we don't have to really compress the path
-      mapId: this.account.character.map.mapId,
-    });
+    if (path.length === 0) {
+      return MovementRequestResults.FAILED;
+    }
 
-    this.confirmMove(path);
-  }
+    if (!stopNextToTarget && path[path.length - 1] !== cellId) {
+      return MovementRequestResults.PATH_BLOCKED;
+    }
 
-  public confirmMove(path: number[]): void {
-    setTimeout(() => {
-      this.account.client.sendMessage("GameMapMovementConfirmMessage");
-    }, 250 * path.length);
+    if (stopNextToTarget && path.length === 1 && path[0] === this.account.character.cellId) {
+      return MovementRequestResults.ALREADY_THERE;
+    }
+
+    if (stopNextToTarget && path.length === 2 && path[0] === this.account.character.cellId && path[1] === cellId) {
+      return MovementRequestResults.ALREADY_THERE;
+    }
+
+    this.currentPath = path;
+    this.sendMoveMessage();
+    return MovementRequestResults.MOVED;
   }
 
   public canChangeMap(cellId: number, direction: MapChangeDirections): boolean {
@@ -60,10 +88,100 @@ export default class MovementsManager {
   }
 
   public changeMap(direction: MapChangeDirections): boolean {
+    if (this.account.character.isBusy() || this.neighbourMapId !== 0) {
+      return false;
+    }
+
+    let changeMapCells = this.getChangeMapCells(direction);
+
+    while (changeMapCells.length > 0) {
+      const cellId = changeMapCells[Math.floor(Math.random() * changeMapCells.length)];
+
+      // TODO: Check here if there is a monster in this cell, if yes, skip it.
+
+      this.neighbourMapId = this.getNeighbourMapId(direction);
+
+      if (this.neighbourMapId === 0) {
+        return false;
+      }
+
+      if (this.moveToChangeMap(cellId)) {
+        return true;
+      }
+
+      changeMapCells = changeMapCells.filter((c) => c !== cellId);
+    }
+
     return false;
   }
 
   public changeMapWithCellId(direction: MapChangeDirections, cellId: number): boolean {
-    return false;
+    if (this.account.character.isBusy() || this.neighbourMapId === 0) {
+      return false;
+    }
+
+    if (!this.canChangeMap(cellId, direction)) {
+      return false;
+    }
+
+    this.neighbourMapId = this.getNeighbourMapId(direction);
+
+    if (this.neighbourMapId === 0) {
+      return false;
+    }
+
+    return this.moveToChangeMap(cellId);
+  }
+
+  private moveToChangeMap(cellId: number): boolean {
+    switch (this.moveToCell(cellId)) {
+      case MovementRequestResults.MOVED:
+        return true;
+      case MovementRequestResults.ALREADY_THERE:
+        return false;
+      default:
+        this.neighbourMapId = 0;
+        return false;
+    }
+  }
+
+  private getChangeMapCells(direction: MapChangeDirections): number[] {
+    let cells: number[] = [];
+    for (let i = 0; i < 560; i++) {
+      cells.push(i);
+    }
+    cells = cells.filter((c) => this.canChangeMap(c, direction));
+    return cells;
+  }
+
+  private getNeighbourMapId(direction: MapChangeDirections) {
+    switch (direction) {
+      case MapChangeDirections.Bottom:
+        return this.map.bottomNeighbourId;
+      case MapChangeDirections.Top:
+        return this.map.topNeighbourId;
+      case MapChangeDirections.Left:
+        return this.map.leftNeighbourId;
+      case MapChangeDirections.Right:
+        return this.map.rightNeighbourId;
+      default:
+        return 0;
+    }
+  }
+
+  private sendMoveMessage() {
+    this.account.client.sendMessage("GameMapMovementRequestMessage", {
+      // keyMovements: PathFinder.compressPath(this.currentPath),
+      keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
+      mapId: this.account.character.map.mapId,
+    });
+
+    this.confirmMove(this.currentPath);
+  }
+
+  private confirmMove(path: number[]): void {
+    setTimeout(() => {
+      this.account.client.sendMessage("GameMapMovementConfirmMessage");
+    }, 250 * path.length);
   }
 }

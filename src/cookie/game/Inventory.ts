@@ -12,9 +12,9 @@ export default class Inventory {
   }
   private register() {
     this.account.dispatcher.register("InventoryContentMessage",
-                this.HandleInventoryContentMessage, this);
+      this.HandleInventoryContentMessage, this);
     this.account.dispatcher.register("InventoryWeightMessage",
-                this.HandleInventoryWeightMessage, this);
+      this.HandleInventoryWeightMessage, this);
   }
 
   private HandleInventoryContentMessage(account: Account, data: any) {

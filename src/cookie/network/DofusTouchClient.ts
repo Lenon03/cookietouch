@@ -8,9 +8,9 @@ export default class DofusTouchClient {
   public static getAssetsVersions(): Promise<any> {
     return new Promise((resolve, reject) => {
       axios.get("https://proxyconnection.touch.dofus.com/assetsVersions.json")
-      .then((response) => {
-        resolve(response.data);
-      });
+        .then((response) => {
+          resolve(response.data);
+        });
     });
   }
   public static getAppVersion(): Promise<string> {
@@ -123,7 +123,7 @@ export default class DofusTouchClient {
       if (data) {
         msg = { call, data };
       } else {
-        msg = { call };
+        msg = { call };
       }
     }
 

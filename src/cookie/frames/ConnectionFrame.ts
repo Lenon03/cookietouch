@@ -1,5 +1,5 @@
 import axios from "axios";
-import Account from "../game/Account";
+import Account from "../Account";
 import { randomString } from "../utils/Random";
 
 export default class ConnectionFrame {
@@ -163,7 +163,7 @@ export default class ConnectionFrame {
   }
 
   public HandleCharacterSelectedSuccessMessage(account: Account, data: any) {
-    account.character.infos = data.infos;
+    account.game.character.infos = data.infos;
 
     account.client.sendMessage("kpiStartSession", {
       accountSessionId: account.login,

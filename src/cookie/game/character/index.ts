@@ -1,15 +1,13 @@
+import Account from "../../Account";
 import Managers from "../managers";
-import Account from "./Account";
 import { CharacterState } from "./CharacterState";
 import Inventory from "./Inventory";
-import Map from "./Map";
 import Spell from "./Spell";
 
 export default class Character {
 
   public state: CharacterState;
   public managers: Managers;
-  public map: Map;
   public cellId: number;
   public restrictions: any;
   public stats: any;
@@ -25,7 +23,6 @@ export default class Character {
     this.account = account;
     this.state = CharacterState.IDLE;
     this.managers = new Managers(this.account);
-    this.map = new Map(this.account);
     this.inventory = new Inventory(this.account);
     this.register();
   }
@@ -44,13 +41,13 @@ export default class Character {
   }
 
   private HandleSetCharacterRestrictionsMessage(account: Account, data: any) {
-    account.character.restrictions = data.restrictions;
+    account.game.character.restrictions = data.restrictions;
   }
 
   private HandleCharacterStatsListMessage(account: Account, data: any) {
-    account.character.stats = data.stats;
+    account.game.character.stats = data.stats;
   }
   private HandleSpellListMessage(account: Account, data: any) {
-    account.character.spells = data.spells;
+    account.game.character.spells = data.spells;
   }
 }

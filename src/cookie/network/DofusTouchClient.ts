@@ -1,5 +1,5 @@
 import axios from "axios";
-import Account from "../game/Account";
+import Account from "../Account";
 import Dispatcher from "../utils/Dispatcher";
 const Primus = require("./primus"); // tslint:disable-line
 

@@ -1,8 +1,8 @@
 import axios from "axios";
-import PathFinder from "../../dofus/PathFinder";
-import Cell from "../../dofus/PathFinder/Cell";
-import Map from "../../dofus/PathFinder/Map";
-import Account from "../../game/Account";
+import Account from "../../../Account";
+import PathFinder from "../../../core/PathFinder";
+import Cell from "../../../core/PathFinder/Cell";
+import Map from "../../../core/PathFinder/Map";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
@@ -42,15 +42,15 @@ export default class MovementsManager {
       return MovementRequestResults.FAILED;
     }
 
-    if (this.account.character.isBusy() || this.currentPath !== null) {
+    if (this.account.game.character.isBusy() || this.currentPath !== null) {
       return MovementRequestResults.FAILED;
     }
 
-    if (this.account.character.cellId === cellId) {
+    if (this.account.game.character.cellId === cellId) {
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    const path = PathFinder.getPath(this.account.character.cellId, cellId);
+    const path = PathFinder.getPath(this.account.game.character.cellId, cellId);
     console.log(PathFinder.logPath(path));
 
     if (path.length === 0) {
@@ -61,11 +61,11 @@ export default class MovementsManager {
       return MovementRequestResults.PATH_BLOCKED;
     }
 
-    if (stopNextToTarget && path.length === 1 && path[0] === this.account.character.cellId) {
+    if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.character.cellId) {
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    if (stopNextToTarget && path.length === 2 && path[0] === this.account.character.cellId && path[1] === cellId) {
+    if (stopNextToTarget && path.length === 2 && path[0] === this.account.game.character.cellId && path[1] === cellId) {
       return MovementRequestResults.ALREADY_THERE;
     }
 
@@ -88,7 +88,7 @@ export default class MovementsManager {
   }
 
   public changeMap(direction: MapChangeDirections): boolean {
-    if (this.account.character.isBusy() || this.neighbourMapId !== 0) {
+    if (this.account.game.character.isBusy() || this.neighbourMapId !== 0) {
       return false;
     }
 
@@ -116,7 +116,7 @@ export default class MovementsManager {
   }
 
   public changeMapWithCellId(direction: MapChangeDirections, cellId: number): boolean {
-    if (this.account.character.isBusy() || this.neighbourMapId === 0) {
+    if (this.account.game.character.isBusy() || this.neighbourMapId === 0) {
       return false;
     }
 
@@ -173,7 +173,7 @@ export default class MovementsManager {
     this.account.client.sendMessage("GameMapMovementRequestMessage", {
       // keyMovements: PathFinder.compressPath(this.currentPath),
       keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
-      mapId: this.account.character.map.mapId,
+      mapId: this.account.game.map.mapId,
     });
 
     this.confirmMove(this.currentPath);

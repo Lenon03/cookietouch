@@ -1,14 +1,14 @@
-import ConnectionFrame from "../frames/ConnectionFrame";
-import DofusTouchClient from "../network/DofusTouchClient";
-import HaapiConnection from "../network/HaapiConnection";
-import Dispatcher from "../utils/Dispatcher";
-import Character from "./Character";
+import ConnectionFrame from "./frames/ConnectionFrame";
+import Game from "./game";
+import DofusTouchClient from "./network/DofusTouchClient";
+import HaapiConnection from "./network/HaapiConnection";
+import Dispatcher from "./utils/Dispatcher";
 
 export default class Account {
 
   public username: string;
   public password: string;
-  public character: Character;
+  public game: Game;
   public client: DofusTouchClient;
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
@@ -35,7 +35,7 @@ export default class Account {
     this.lang = lang;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
-    this.character = new Character(this);
+    this.game = new Game(this);
     this.client = new DofusTouchClient(this);
 
     this.frames();

@@ -1,4 +1,5 @@
-import Account from "./Account";
+import Account from "../../../Account";
+import { DataTypes } from "../../managers/data/DataTypes";
 import ObjectItem from "./ObjectItem";
 
 export default class Inventory {
@@ -23,7 +24,7 @@ export default class Inventory {
   }
 
   private HandleInventoryWeightMessage(account: Account, data: any) {
-    account.character.weight = data.weight;
-    account.character.weightMax = data.weightMax;
+    account.game.character.weight = data.weight;
+    account.game.character.weightMax = data.weightMax;
   }
 }

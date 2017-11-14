@@ -1,4 +1,4 @@
-import Account from "../game/Account";
+import Account from "../../Account";
 import DataManager from "./data";
 import MovementsManager from "./movements";
 

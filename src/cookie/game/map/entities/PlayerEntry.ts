@@ -13,4 +13,8 @@ export default class PlayerEntry extends MovableEntity {
     this.cellId = infos.disposition.cellId;
     this.level = infos.alignmentInfos.characterPower - this.id;
   }
+
+  public UpdateTeleportOnSameMapMessage(message: any) {
+    this.cellId = message.cellId;
+  }
 }

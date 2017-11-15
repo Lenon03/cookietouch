@@ -14,11 +14,11 @@ export default class QueueFrame {
     this.account.dispatcher.register("LoginQueueStatusMessage", this.HandleLoginQueueStatusMessage, this);
   }
 
-  private HandleQueueStatusMessage(account: Account, data: any) {
+  private async HandleQueueStatusMessage(account: Account, data: any) {
     console.log(`[Queue] Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 
-  private HandleLoginQueueStatusMessage(account: Account, data: any) {
+  private async HandleLoginQueueStatusMessage(account: Account, data: any) {
     console.log(`[LoginQueue] Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 }

@@ -1,6 +1,7 @@
 import Data from "../Data";
 
 export default class Npcs extends Data {
+  public nameId: string;
   public dialogMessages: number[][];
   public dialogReplies: number[][];
   public actions: number[];

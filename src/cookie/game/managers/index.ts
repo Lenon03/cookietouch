@@ -4,7 +4,6 @@ import MovementsManager from "./movements";
 
 export default class Managers {
   public movements: MovementsManager;
-  public data: DataManager;
 
   private account: Account;
 

@@ -1,7 +1,7 @@
 export default class MovableEntity {
   public cellId: number;
 
-  public update(message: any) {
-    this.cellId = message.keyMovements[message.keyMovements - 1];
+  public UpdateGameMapMovementMessage(message: any) {
+    this.cellId = message.keyMovements[message.keyMovements.length - 1];
   }
 }

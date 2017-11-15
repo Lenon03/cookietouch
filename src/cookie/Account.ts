@@ -1,3 +1,4 @@
+import { AccountStates } from "./AccountStates";
 import Frames from "./frames";
 import Game from "./game";
 import DofusTouchClient from "./network/DofusTouchClient";
@@ -26,6 +27,7 @@ export default class Account {
   public subscriptionEndDate: number;
   public wasAlreadyConnected: boolean;
   public lang: string;
+  public state: AccountStates;
 
   private frames: Frames;
 
@@ -33,6 +35,7 @@ export default class Account {
     this.username = username;
     this.password = password;
     this.lang = lang;
+    this.state = AccountStates.NONE;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
     this.network = new DofusTouchClient(this);
@@ -50,5 +53,9 @@ export default class Account {
 
   public stop() {
     this.network.close();
+  }
+
+  get isBusy(): boolean {
+    return this.state !== AccountStates.NONE && this.state !== AccountStates.REGENERATING;
   }
 }

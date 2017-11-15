@@ -1,11 +1,9 @@
 import Account from "../../Account";
-import { CharacterState } from "./CharacterState";
 import Inventory from "./Inventory";
 import Spell from "./Spell";
 
 export default class Character {
 
-  public state: CharacterState;
   public cellId: number;
   public restrictions: any;
   public stats: any;
@@ -17,13 +15,12 @@ export default class Character {
 
   constructor(account: Account) {
     this.account = account;
-    this.state = CharacterState.IDLE;
     this.inventory = new Inventory(this.account);
     this.register();
   }
 
-  public isBusy(): boolean {
-    return this.state !== CharacterState.IDLE && this.state !== CharacterState.REGENERATING;
+  get id() {
+    return this.infos.id;
   }
 
   private register() {

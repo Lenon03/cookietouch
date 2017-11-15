@@ -8,6 +8,6 @@ export default class SkillEntry {
   constructor(skill: InteractiveElementSkill) {
     this.id = skill.skillId;
     this.instanceUid = skill.skillInstanceUid;
-    this.name = skill.name;
+    this.name = skill._name;
   }
 }

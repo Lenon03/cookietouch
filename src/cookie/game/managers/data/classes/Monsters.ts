@@ -1,6 +1,7 @@
 import Data from "../Data";
 
 export default class Monsters extends Data {
+  public nameId: string;
   public gfxId: number;
   public race: number;
   public grades: any[];

@@ -15,7 +15,7 @@ export default class InteractiveElementEntry {
   constructor(elem: InteractiveElement) {
     this.id = elem.elementId;
     this.elementTypeId = elem.elementTypeId;
-    this.name = elem.name;
+    this.name = elem._name;
 
     for (const e of elem.enabledSkills) {
       this.enabledSkills.push(new SkillEntry(e));

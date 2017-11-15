@@ -11,7 +11,7 @@ export default class GameRolePlayCharacterInformations extends GameRolePlayHuman
                 disposition: EntityDispositionInformations = null,
                 name: string = "", accountId = 0, humanoidInfos: HumanInformations = null,
                 alignmentInfos: ActorAlignmentInformations = null) {
-      super(contextualId, look, disposition, name, accountId);
-      this.humanoidInfo = humanoidInfos;
+      super(contextualId, look, disposition, name, accountId, humanoidInfos);
+      this.alignmentInfos = alignmentInfos;
     }
 }

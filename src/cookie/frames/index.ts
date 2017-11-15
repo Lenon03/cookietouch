@@ -5,6 +5,7 @@ import SecurityFrame from "./common/SecurityFrame";
 import CharacterSelectionFrame from "./connection/CharacterSelectionFrame";
 import IdentificationFrame from "./connection/IdentificationFrame";
 import ServerSelectionFrame from "./connection/ServerSelectionFrame";
+import MapFrame from "./game/MapFrame";
 
 export default class Frames {
 
@@ -14,6 +15,7 @@ export default class Frames {
   private characterSelection: CharacterSelectionFrame;
   private identification: IdentificationFrame;
   private serverSelection: ServerSelectionFrame;
+  private map: MapFrame;
 
   private account: Account;
 
@@ -26,5 +28,6 @@ export default class Frames {
     this.characterSelection = new CharacterSelectionFrame(this.account);
     this.identification = new IdentificationFrame(this.account);
     this.serverSelection = new ServerSelectionFrame(this.account);
+    this.map = new MapFrame(this.account);
   }
 }

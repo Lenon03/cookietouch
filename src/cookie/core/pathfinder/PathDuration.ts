@@ -46,6 +46,7 @@ export default class PathDuration {
       prevY = coord.y;
     }
 
+    console.log("[PathDuration] The duration for your movemnt is: " + duration);
     return duration;
   }
 

@@ -15,14 +15,10 @@ export default class IdentificationFrame {
     this.account.dispatcher.register("IdentificationSuccessMessage", this.HandleIdentificationSuccessMessage, this);
   }
 
-  private HandleHelloConnectMessage(account: Account, data: any) {
+  private async HandleHelloConnectMessage(account: Account, data: any) {
     account.key = data.key;
     account.salt = data.salt;
 
-    // EventHub.$emit("logs", {
-    //   action: "INFO",
-    //   data: "Hey, t'es connecté!",
-    // });
     console.log("Connecté au serveur d'authentification");
     account.network.send("checkAssetsVersion", {
       assetsVersion: account.network.assetsVersion,
@@ -30,7 +26,7 @@ export default class IdentificationFrame {
     });
   }
 
-  private HandleassetsVersionChecked(account: Account, data: any) {
+  private async HandleassetsVersionChecked(account: Account, data: any) {
     account.network.send("login", {
       key: account.key,
       salt: account.salt,
@@ -39,7 +35,7 @@ export default class IdentificationFrame {
     });
   }
 
-  private HandleIdentificationSuccessMessage(account: Account, data: any) {
+  private async HandleIdentificationSuccessMessage(account: Account, data: any) {
     account.accountCreation = data.accountCreation;
     account.accountId = data.accountId;
     account.communityId = data.communityId;

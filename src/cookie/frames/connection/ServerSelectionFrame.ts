@@ -21,7 +21,7 @@ export default class ServerSelectionFrame {
       this.HandleAuthenticationTicketRefusedMessage, this);
   }
 
-  private HandleServersListMessage(account: Account, data: any) {
+  private async HandleServersListMessage(account: Account, data: any) {
     for (const server of data.servers) {
       if (server.isSelectable && server.charactersCount > 0) {
         account.network.sendMessage("ServerSelectionMessage", {
@@ -35,7 +35,7 @@ export default class ServerSelectionFrame {
     account.network.close();
   }
 
-  private HandleserverDisconnecting(account: Account, data: any) {
+  private async HandleserverDisconnecting(account: Account, data: any) {
     switch (data.reason) {
       case "SERVER_GONE":
         account.network.migrate(this.access);
@@ -48,7 +48,7 @@ export default class ServerSelectionFrame {
     }
   }
 
-  private HandleSelectedServerDataMessage(account: Account, data: any) {
+  private async HandleSelectedServerDataMessage(account: Account, data: any) {
     account.ticket = data.ticket;
     this.access = data._access;
 
@@ -59,18 +59,18 @@ export default class ServerSelectionFrame {
     };
   }
 
-  private HandleHelloGameMessage(account: Account, data: any) {
+  private async HandleHelloGameMessage(account: Account, data: any) {
     account.network.sendMessage("AuthenticationTicketMessage", {
       lang: account.lang,
       ticket: account.ticket,
     });
   }
 
-  private HandleAuthenticationTicketAcceptedMessage(account: Account, data: any) {
+  private async HandleAuthenticationTicketAcceptedMessage(account: Account, data: any) {
     account.network.sendMessage("CharactersListRequestMessage");
   }
 
-  private HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
+  private async HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
     account.stop();
   }
 }

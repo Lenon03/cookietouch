@@ -16,20 +16,20 @@ export default class SecurityFrame {
     this.account.dispatcher.register("AccountLoggingKickedMessage", this.HandleAccountLoggingKickedMessage, this);
   }
 
-  private HandleSequenceNumberRequestMessage(account: Account, data: any) {
+  private async HandleSequenceNumberRequestMessage(account: Account, data: any) {
     this.sequenceNumber++;
     account.network.sendMessage("SequenceNumberMessage", {
       number: this.sequenceNumber,
     });
   }
 
-  private HandleTextInformationMessage(account: Account, data: any) {
+  private async HandleTextInformationMessage(account: Account, data: any) {
     if (data.msgId === 245) {
       console.log("Vous avez atteint la limite de combat journalière.");
     }
   }
 
-  private HandleAccountLoggingKickedMessage(account: Account, data: any) {
+  private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
     console.log(`Vous êtes kick encore pour ${data.days} jours, ${data.hours}, et ${data.minutes} minutes.`);
   }
 }

@@ -1,8 +1,9 @@
 import axios from "axios";
 import Account from "../../../Account";
+import { AccountStates } from "../../../AccountStates";
 import PathFinder from "../../../core/PathFinder";
 import PathDuration from "../../../core/PathFinder/PathDuration";
-import { CharacterState } from "../../character/CharacterState";
+import LiteEvent from "../../../utils/LiteEvent";
 import Cell from "./Cell";
 import Map from "./Map";
 import { MapChangeDirections } from "./MapChangeDirections";
@@ -12,6 +13,9 @@ export default class MovementsManager {
 
   public map: Map;
 
+  public get MovementFinished() { return this.onMovementFinished.expose(); }
+  private readonly onMovementFinished = new LiteEvent<boolean>();
+
   private account: Account;
   private currentPath: number[] = null;
   private neighbourMapId: number = 0;
@@ -19,14 +23,9 @@ export default class MovementsManager {
   constructor(account: Account) {
     this.account = account;
     PathFinder.Init();
-
-    this.account.dispatcher.register("GameMapMovementMessage",
-      this.HandleGameMapMovementMessage, this);
-    this.account.dispatcher.register("GameMapNoMovementMessage",
-      this.HandleGameMapNoMovementMessage, this);
   }
 
-  public updateMap(mapId: number): Promise<any> {
+  public updateMap(mapId: number): Promise<Map> {
     return new Promise((resolve, reject) => {
       axios.get(this.account.haapi.config.assetsUrl + "/maps/" + mapId + ".json")
 
@@ -40,7 +39,7 @@ export default class MovementsManager {
           this.map = map;
         })
         .then(() => PathFinder.fillPathGrid(this.map))
-        .then(() => resolve());
+        .then(() => resolve(this.map));
     });
   }
 
@@ -49,7 +48,7 @@ export default class MovementsManager {
       return MovementRequestResults.FAILED;
     }
 
-    if (this.account.game.character.isBusy() || this.currentPath !== null) {
+    if (this.account.isBusy || this.currentPath !== null) {
       return MovementRequestResults.FAILED;
     }
 
@@ -96,7 +95,7 @@ export default class MovementsManager {
   }
 
   public changeMap(direction: MapChangeDirections): boolean {
-    if (this.account.game.character.isBusy() || this.neighbourMapId !== 0) {
+    if (this.account.isBusy || this.neighbourMapId !== 0) {
       return false;
     }
 
@@ -105,7 +104,10 @@ export default class MovementsManager {
     while (changeMapCells.length > 0) {
       const cellId = changeMapCells[Math.floor(Math.random() * changeMapCells.length)];
 
-      // TODO: Check here if there is a monster in this cell, if yes, skip it.
+      // Ignore the cell if a group of monsters is on it
+      if (this.account.game.map.monstersGroups.find((m) => m.cellId === cellId)) {
+        continue;
+      }
 
       this.neighbourMapId = this.getNeighbourMapId(direction);
 
@@ -113,6 +115,7 @@ export default class MovementsManager {
         return false;
       }
 
+      // Only return true so that if one cell fails, we try the others
       if (this.moveToChangeMap(cellId)) {
         return true;
       }
@@ -124,7 +127,7 @@ export default class MovementsManager {
   }
 
   public changeMapWithCellId(direction: MapChangeDirections, cellId: number): boolean {
-    if (this.account.game.character.isBusy() || this.neighbourMapId === 0) {
+    if (this.account.isBusy || this.neighbourMapId === 0) {
       return false;
     }
 
@@ -139,6 +142,54 @@ export default class MovementsManager {
     }
 
     return this.moveToChangeMap(cellId);
+  }
+
+  public UpdateGameMapMovementMessage(account: Account, data: any) {
+    if (data.actorId === account.game.character.infos.id
+      && data.keyMovements[0] === this.currentPath[0]
+      && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
+      // TODO: Not sure if it is the best way to handle character's state,
+      // and to handle map changements.
+      account.state = AccountStates.MOVING;
+
+      const duration = PathDuration.calculate(this.currentPath);
+      setTimeout(() => {
+        account.network.sendMessage("GameMapMovementConfirmMessage");
+
+        account.state = AccountStates.NONE;
+
+        if (this.neighbourMapId === 0) {
+          this.OnMovementFinished(true);
+        } else {
+          this.currentPath = null;
+
+          if (this.neighbourMapId !== 0) {
+            console.log("ChangeMapMessage ChangeMapMessage ChangeMapMessage ChangeMapMessage");
+            account.network.sendMessage("ChangeMapMessage", {
+              mapId: this.neighbourMapId,
+            });
+
+            this.neighbourMapId = 0;
+          }
+        }
+      }, duration);
+    }
+  }
+
+  public UpdateGameMapNoMovementMessage(account: Account, data: any) {
+    if (this.currentPath === null) {
+      return;
+    }
+
+    setTimeout(() => {
+      if (this.currentPath === null) {
+        return;
+      }
+
+      console.log("Path:", this.currentPath);
+
+      this.sendMoveMessage();
+    }, 5000);
   }
 
   private moveToChangeMap(cellId: number): boolean {
@@ -197,56 +248,9 @@ export default class MovementsManager {
     }, 250 * path.length);
   }
 
-  private HandleGameMapNoMovementMessage(account: Account, data: any) {
-    if (this.currentPath === null) {
-      return;
-    }
-
-    setTimeout(() => {
-      if (this.currentPath === null) {
-        return;
-      }
-
-      console.log("Path:", this.currentPath);
-
-      this.sendMoveMessage();
-    }, 5000);
-  }
-
-  private HandleGameMapMovementMessage(account: Account, data: any) {
-    if (data.actorId === account.game.character.infos.id
-      && data.keyMovements[0] === this.currentPath[0]
-      && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
-      // TODO: Not sure if it is the best way to handle character's state,
-      // and to handle map changements.
-      account.game.character.state = CharacterState.MOVING;
-
-      const duration = PathDuration.calculate(this.currentPath);
-      setTimeout(() => {
-        account.network.sendMessage("GameMapMovementConfirmMessage");
-
-        account.game.character.state = CharacterState.IDLE;
-
-        if (this.neighbourMapId === 0) {
-          this.onMovementFinished();
-        } else {
-          this.currentPath = null;
-
-          if (this.neighbourMapId !== 0) {
-            console.log("ChangeMapMessage ChangeMapMessage ChangeMapMessage ChangeMapMessage");
-            account.network.sendMessage("ChangeMapMessage", {
-              mapId: this.neighbourMapId,
-            });
-
-            this.neighbourMapId = 0;
-          }
-        }
-      }, duration);
-    }
-  }
-
-  private onMovementFinished() {
+  private OnMovementFinished(success: boolean) {
     this.currentPath = null;
     this.neighbourMapId = 0;
+    this.onMovementFinished.trigger(success);
   }
 }

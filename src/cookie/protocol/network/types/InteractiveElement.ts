@@ -5,12 +5,7 @@ export default class InteractiveElement {
   public disabledSkills: InteractiveElementSkill[];
   public elementId: number;
   public elementTypeId: number;
-
-  private _name: string; // tslint:disable-line
-
-  get name() {
-    return this._name;
-  }
+  public _name: string; // tslint:disable-line
 
   constructor(elementId = 0, elementTypeId = 0,
               enabledSkills: InteractiveElementSkill[] = null, disabledSkills: InteractiveElementSkill[] = null) {

@@ -1,6 +1,6 @@
 import MonsterInGroupLightInformations from "../../../protocol/network/types/MonsterInGroupLightInformations";
 import DataManager from "../../managers/data";
-import Monsters from "../../managers/data/classes/Monsters";
+import DataClasses from "../../managers/data/classes";
 
 export default class MonsterEntry {
   public genericId: number;
@@ -14,7 +14,7 @@ export default class MonsterEntry {
   constructor(infos: MonsterInGroupLightInformations) {
     this.genericId = infos.creatureGenericId;
     this.grade = infos.grade;
-    DataManager.get(Monsters, this.genericId).then((data) => {
+    DataManager.get(DataClasses.Monsters, this.genericId).then((data) => {
       const m = data[0].object;
       this.name = m.nameId;
       this.level = m.grades[this.grade - 1].level;

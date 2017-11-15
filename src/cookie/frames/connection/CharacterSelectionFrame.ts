@@ -16,13 +16,13 @@ export default class CharacterSelectionFrame {
       this.HandleCharacterSelectedSuccessMessage, this);
   }
 
-  private HandleCharactersListMessage(account: Account, data: any) {
+  private async HandleCharactersListMessage(account: Account, data: any) {
     account.network.sendMessage("CharacterSelectionMessage", {
       id: data.characters[0].id,
     });
   }
 
-  private HandleCharacterSelectedSuccessMessage(account: Account, data: any) {
+  private async HandleCharacterSelectedSuccessMessage(account: Account, data: any) {
     account.game.character.infos = data.infos;
 
     account.network.sendMessage("kpiStartSession", {

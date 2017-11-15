@@ -1,4 +1,5 @@
 import Account from "../../Account";
+import DTConstants from "../../protocol/DTConstants";
 
 export default class IdentificationFrame {
 
@@ -21,8 +22,8 @@ export default class IdentificationFrame {
 
     console.log("Connecté au serveur d'authentification");
     account.network.send("checkAssetsVersion", {
-      assetsVersion: account.network.assetsVersion,
-      staticDataVersion: account.network.staticDataVersion,
+      assetsVersion: DTConstants.assetsVersion,
+      staticDataVersion: DTConstants.staticDataVersion,
     });
   }
 

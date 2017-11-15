@@ -1,8 +1,9 @@
 import { AccountStates } from "./AccountStates";
 import Frames from "./frames";
 import Game from "./game";
+import Network from "./network";
 import HaapiConnection from "./network/HaapiConnection";
-import Network from "./network/Network";
+import DTConstants from "./protocol/DTConstants";
 import Dispatcher from "./utils/Dispatcher";
 
 export default class Account {
@@ -32,6 +33,7 @@ export default class Account {
   private frames: Frames;
 
   constructor(username: string, password: string, lang: string = "fr") {
+    DTConstants.Init();
     this.username = username;
     this.password = password;
     this.lang = lang;
@@ -47,7 +49,7 @@ export default class Account {
     this.haapi.processHaapi(this.username, this.password)
       .then(() => {
         console.log("Haapi : ", this.haapi);
-        this.network.connect(this.haapi.config.sessionId, this.haapi.config.dataUrl);
+        this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
       });
   }
 

@@ -1,6 +1,5 @@
 import Account from "../../Account";
 import Inventory from "./Inventory";
-import Spell from "./Spell";
 
 export default class Character {
 
@@ -9,7 +8,7 @@ export default class Character {
   public stats: any;
   public infos: any;
   public inventory: Inventory;
-  public spells: Spell[];
+  // public spells: Spell[];
 
   private account: Account;
 
@@ -42,7 +41,7 @@ export default class Character {
     account.game.character.stats = data.stats;
   }
   private HandleSpellListMessage(account: Account, data: any) {
-    account.game.character.spells = data.spells;
+    // account.game.character.spells = data.spells;
   }
   private HandleCharacterLevelUpMessage(account: Account, data: any) {
     console.log("Vous venez de passer niveau : " + data.newLevel);

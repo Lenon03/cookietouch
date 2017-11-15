@@ -5,6 +5,7 @@ import PathFinder from "../../../core/PathFinder";
 import PathDuration from "../../../core/PathFinder/PathDuration";
 import Map from "../../../protocol/data/map";
 import Cell from "../../../protocol/data/map/Cell";
+import DTConstants from "../../../protocol/DTConstants";
 import LiteEvent from "../../../utils/LiteEvent";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
@@ -27,7 +28,7 @@ export default class MovementsManager {
 
   public updateMap(mapId: number): Promise<Map> {
     return new Promise((resolve, reject) => {
-      axios.get(this.account.haapi.config.assetsUrl + "/maps/" + mapId + ".json")
+      axios.get(DTConstants.config.assetsUrl + "/maps/" + mapId + ".json")
 
         .then((response) => {
           const data = response.data;

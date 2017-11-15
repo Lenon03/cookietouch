@@ -3,7 +3,6 @@ import Account from "../../Account";
 export default class ServerSelectionFrame {
 
   private account: Account;
-  private access: string;
 
   constructor(account: Account) {
     this.account = account;
@@ -38,7 +37,7 @@ export default class ServerSelectionFrame {
   private async HandleserverDisconnecting(account: Account, data: any) {
     switch (data.reason) {
       case "SERVER_GONE":
-        account.network.migrate(this.access);
+        account.network.migrate(account.network.access);
         break;
       case "CONNECTION_FAILED":
         account.stop();
@@ -50,7 +49,7 @@ export default class ServerSelectionFrame {
 
   private async HandleSelectedServerDataMessage(account: Account, data: any) {
     account.ticket = data.ticket;
-    this.access = data._access;
+    account.network.access = data._access;
 
     account.network.server = {
       address: data.address,

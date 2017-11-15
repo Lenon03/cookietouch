@@ -1,15 +1,12 @@
 import axios from "axios";
 import Account from "../../Account";
+import DTConstants from "../DTConstants";
 import Data from "./Data";
 import { DataTypes } from "./DataTypes";
 
 export interface IDataResponse<T> {
   id: number;
   object: T;
-}
-
-function init(target: any) {
-  target.init();
 }
 
 export default class DataManager {
@@ -22,9 +19,9 @@ export default class DataManager {
     return new Promise((resolve, reject) => {
       const params = {
         lang: this.account.lang,
-        v: this.account.network.assetsVersion,
+        v: DTConstants.assetsVersion,
       };
-      axios.post(`${this.account.haapi.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`,
+      axios.post(`${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`,
         {
           class: type.name,
           ids,

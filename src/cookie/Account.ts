@@ -33,7 +33,6 @@ export default class Account {
   private frames: Frames;
 
   constructor(username: string, password: string, lang: string = "fr") {
-    DTConstants.Init();
     this.username = username;
     this.password = password;
     this.lang = lang;

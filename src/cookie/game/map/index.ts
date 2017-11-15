@@ -227,7 +227,7 @@ export default class Map {
   public async UpdateGameRolePlayShowActorMessage(account: Account, message: any) {
     if (message.informations._type === "GameRolePlayCharacterInformations") {
       const pe = new PlayerEntry(message.informations);
-      this._players.add(pe.id, pe);
+      this._players.add(pe.id, pe); // TODO: See why there is an error when adding.
       this.onPlayerJoined.trigger(pe);
     } else if (message.informations._type === "GameRolePlayGroupMonsterInformations") {
       const mge = new MonstersGroupEntry(message.informations);
@@ -286,8 +286,8 @@ export default class Map {
   }
 
   public async UpdateStatedElementUpdatedMessage(account: Account, message: any) {
-    if (this._statedElements.remove(message.statedElement.ElementId)) {
-      this._statedElements.add(message.statedElement.ElementId, new StatedElementEntry(message.statedElement));
+    if (this._statedElements.remove(message.statedElement.elementId)) {
+      this._statedElements.add(message.statedElement.elementId, new StatedElementEntry(message.statedElement));
     }
 
     this.onInteractivesUpdated.trigger();
@@ -309,7 +309,6 @@ export default class Map {
 
   private removeEntity(id: number) {
     const p = this.getPlayer(id);
-    console.log("Remove player ", p);
     if (p !== null) {
       this._players.remove(id);
       this.onPlayerLeft.trigger(p);

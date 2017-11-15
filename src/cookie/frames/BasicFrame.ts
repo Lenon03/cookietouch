@@ -64,7 +64,7 @@ export default class BasicFrame {
     }
     console.log("(" + channel + ") [" + data.senderName + "] : " + data.content);
 
-    const res = account.game.managers.movements.changeMap(MapChangeDirections.Right);
+    const res = account.game.managers.movements.changeMap(MapChangeDirections.Left);
     console.log("Movement Results: ", res);
   }
 

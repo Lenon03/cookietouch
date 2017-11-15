@@ -68,14 +68,17 @@ export default class MovementsManager {
     }
 
     if (!stopNextToTarget && path[path.length - 1] !== cellId) {
+      console.log("[MovementsManager] Path Blocked.");
       return MovementRequestResults.PATH_BLOCKED;
     }
 
     if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.character.cellId) {
+      console.log("[MovementsManager] Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
 
     if (stopNextToTarget && path.length === 2 && path[0] === this.account.game.character.cellId && path[1] === cellId) {
+      console.log("[MovementsManager] Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
 

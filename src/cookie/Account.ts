@@ -16,7 +16,7 @@ export default class Account {
   public salt: string;
   public key: number[];
   public ticket: string;
-  public server: any;
+  public server: object;
   public accountCreation: number;
   public accountId: number;
   public communityId: number;

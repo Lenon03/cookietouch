@@ -1,4 +1,5 @@
 import Account from "../Account";
+import { MapChangeDirections } from "../game/managers/movements/MapChangeDirections";
 import { ChatChannelsMultiEnum } from "../protocol/enums/ChatChannelsMultiEnum";
 
 export default class BasicFrame {
@@ -62,7 +63,9 @@ export default class BasicFrame {
        }
     }
     console.log("(" + channel + ") [" + data.senderName + "] : " + data.content);
-    console.log(account.game.map);
+
+    const res = account.game.managers.movements.changeMap(MapChangeDirections.Right);
+    console.log("Movement Results: ", res);
   }
 
   private async HandleChatServerWithObjectMessage(account: Account, data: any) {

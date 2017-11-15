@@ -45,10 +45,12 @@ export default class MovementsManager {
 
   public moveToCell(cellId: number, stopNextToTarget: boolean = false): MovementRequestResults {
     if (cellId < 0 || cellId > 560) {
+      console.log("[MovementsManager] Invalid CellId.");
       return MovementRequestResults.FAILED;
     }
 
     if (this.account.isBusy || this.currentPath !== null) {
+      console.log("[MovementsManager] IsBusy: " + this.account.isBusy + " , PathNotNull: " + this.currentPath !== null);
       return MovementRequestResults.FAILED;
     }
 
@@ -56,11 +58,12 @@ export default class MovementsManager {
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    const path = PathFinder.getPath(this.account.game.character.cellId, cellId,
+    const path = PathFinder.getPath(this.account.game.map.playedCharacter.cellId, cellId,
       this.account.game.map.occupiedCells, true, stopNextToTarget);
     console.log(PathFinder.logPath(path));
 
     if (path.length === 0) {
+      console.log("[MovementsManager] Empty Path.");
       return MovementRequestResults.FAILED;
     }
 

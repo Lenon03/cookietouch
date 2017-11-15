@@ -25,11 +25,11 @@ export default class Map {
   public subArea: string;
   public posX: number;
   public posY: number;
-  public playedCharacter: PlayerEntry;
+  public playedCharacter: PlayerEntry = null;
   public teleportableCells: number[] = [];
   public blacklistedMonsters: number[] = [];
-  public zaap: ElementInCellEntry;
-  public zaapi: ElementInCellEntry;
+  public zaap: ElementInCellEntry = null;
+  public zaapi: ElementInCellEntry = null;
 
   // to keep?
   public houses: any[];
@@ -151,8 +151,8 @@ export default class Map {
     return coords === this.id.toString() || coords === this.currentPosition;
   }
 
-  public getPlayer(id: number) {
-    if (this.playedCharacter !== undefined && this.playedCharacter.id === id) {
+  public getPlayer(id: number): PlayerEntry {
+    if (this.playedCharacter !== null && this.playedCharacter.id === id) {
       return this.playedCharacter;
     }
 
@@ -248,7 +248,7 @@ export default class Map {
 
   public async UpdateGameMapMovementMessage(account: Account, message: any) {
     const player = this.getPlayer(message.actorId);
-    if (player) {
+    if (player !== null) {
       player.UpdateGameMapMovementMessage(message);
 
       if (player === this.playedCharacter) {
@@ -267,9 +267,10 @@ export default class Map {
   }
 
   public async UpdateInteractiveElementUpdatedMessage(account: Account, message: any) {
-    this._interactives.remove(message.interactiveElement.elementId);
-    this._interactives.add(message.interactiveElement.elementId,
-      new InteractiveElementEntry(message.interactiveElement));
+    if (this._interactives.remove(message.interactiveElement.elementId)) {
+      this._interactives.add(message.interactiveElement.elementId,
+        new InteractiveElementEntry(message.interactiveElement));
+    }
 
     this.onInteractivesUpdated.trigger();
   }
@@ -285,8 +286,10 @@ export default class Map {
   }
 
   public async UpdateStatedElementUpdatedMessage(account: Account, message: any) {
-    this._statedElements.remove(message.statedElement.ElementId);
-    this._statedElements.add(message.statedElement.ElementId, new StatedElementEntry(message.statedElement));
+    if (this._statedElements.remove(message.statedElement.ElementId)) {
+      this._statedElements.add(message.statedElement.ElementId, new StatedElementEntry(message.statedElement));
+    }
+
     this.onInteractivesUpdated.trigger();
   }
 
@@ -306,7 +309,8 @@ export default class Map {
 
   private removeEntity(id: number) {
     const p = this.getPlayer(id);
-    if (p) {
+    console.log("Remove player ", p);
+    if (p !== null) {
       this._players.remove(id);
       this.onPlayerLeft.trigger(p);
       this.onEntitiesUpdated.trigger();

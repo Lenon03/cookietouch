@@ -1,6 +1,6 @@
 import * as React from "react";
 import Account from "../../cookie/Account";
-import DTConstants from "../../cookie/protocol/DTConstants";
+import { MapChangeDirections } from "../../cookie/game/managers/movements/MapChangeDirections";
 
 export class App extends React.Component<{}, {}> {
 
@@ -18,8 +18,19 @@ export class App extends React.Component<{}, {}> {
         <h1>CookieTouch</h1>
         <button onClick={() => this.start()}>Start</button>
         <button onClick={() => this.stop()}>Stop</button>
+        <hr />
+
+        <button onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
+        <button onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
+        <button onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
+        <button onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
       </div>
     );
+  }
+
+  private changeMap(dir: MapChangeDirections) {
+    const res = this.account.game.managers.movements.changeMap(dir);
+    console.log("Movement Result: ", res);
   }
 
   private start() {

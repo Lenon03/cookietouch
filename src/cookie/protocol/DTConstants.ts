@@ -8,20 +8,13 @@ export default class DTConstants {
   public static staticDataVersion: string;
   public static config: any;
 
-  public static Init() {
-    DTConstants.getConfig().then((data) => {
-      this.config = data;
-    });
-    DTConstants.getAssetsVersions().then((data) => {
-      this.assetsVersion = data.assetVersion;
-      this.staticDataVersion = data.staticDataVersion;
-    });
-    DTConstants.getAppVersion().then((data) => {
-      this.appVersion = data;
-    });
-    DTConstants.getBuildVersion().then((data) => {
-      this.buildVersion = data;
-    });
+  public static async Init() {
+    this.config = await DTConstants.getConfig();
+    const m = await DTConstants.getAssetsVersions();
+    this.assetsVersion = m.assetsVersion;
+    this.staticDataVersion = m.staticDataVersion;
+    this.appVersion = await DTConstants.getAppVersion();
+    this.buildVersion = await DTConstants.getBuildVersion();
   }
 
   public static getConfig(): Promise<any> {

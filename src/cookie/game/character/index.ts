@@ -12,8 +12,6 @@ export default class Character {
   public infos: any;
   public inventory: Inventory;
   public spells: Spell[];
-  public weight: number;
-  public weightMax: number;
 
   private account: Account;
 

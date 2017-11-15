@@ -1,4 +1,6 @@
+import Dictionary from "../../../utils/Dictionary";
 import Cell from "./Cell";
+import GraphicalElement from "./GraphicalElement";
 
 export default class Map {
   public id: number;
@@ -7,6 +9,7 @@ export default class Map {
   public leftNeighbourId: number;
   public rightNeighbourId: number;
   public cells: Cell[] = [];
+  public midgroundLayer = new Dictionary<number, GraphicalElement[]>();
 
   constructor(id: number, topNeighbourId: number, bottomNeighbourId: number,
               leftNeighbourId: number, rightNeighbourId: number) {

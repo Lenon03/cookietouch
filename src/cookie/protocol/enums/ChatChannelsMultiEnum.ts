@@ -1,4 +1,4 @@
-export enum ChatChannels {
+export enum ChatChannelsMultiEnum {
   CHANNEL_GLOBAL = 0,
   CHANNEL_TEAM = 1,
   CHANNEL_GUILD = 2,
@@ -9,5 +9,6 @@ export enum ChatChannels {
   CHANNEL_NOOB = 7,
   CHANNEL_ADMIN = 8,
   PSEUDO_CHANNEL_PRIVATE = 9,
+  CHANNEL_ADS = 12,
   CHANNEL_ARENA = 13,
 }

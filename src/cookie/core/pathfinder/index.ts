@@ -1,7 +1,7 @@
-import Cell from "./Cell";
+import Cell from "../../game/managers/movements/Cell";
+import Map from "../../game/managers/movements/Map";
 import CellPath from "./CellPath";
 import CellPathData from "./CellPathData";
-import Map from "./Map";
 import PathDuration from "./PathDuration";
 
 export default class PathFinder {

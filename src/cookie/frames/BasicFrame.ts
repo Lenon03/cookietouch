@@ -1,5 +1,5 @@
 import Account from "../Account";
-import { ChatChannels } from "../protocol/enums/ChatChannels";
+import { ChatChannelsMultiEnum } from "../protocol/enums/ChatChannelsMultiEnum";
 
 export default class BasicFrame {
 
@@ -40,35 +40,35 @@ export default class BasicFrame {
     // });
     let channel;
     switch (data.channel) {
-       case ChatChannels.CHANNEL_NOOB: {
+       case ChatChannelsMultiEnum.CHANNEL_NOOB: {
          channel = "Débutant";
          break;
        }
-       case ChatChannels.CHANNEL_TEAM: {
+       case ChatChannelsMultiEnum.CHANNEL_TEAM: {
          channel = "Equipe";
          break;
        }
-       case ChatChannels.CHANNEL_GLOBAL: {
+       case ChatChannelsMultiEnum.CHANNEL_GLOBAL: {
          channel = "Général";
          break;
        }
-       case ChatChannels.CHANNEL_GUILD: {
+       case ChatChannelsMultiEnum.CHANNEL_GUILD: {
          channel = "Guilde";
          break;
        }
-       case ChatChannels.CHANNEL_PARTY: {
+       case ChatChannelsMultiEnum.CHANNEL_PARTY: {
          channel = "Groupe";
          break;
        }
-       case ChatChannels.CHANNEL_SALES: {
+       case ChatChannelsMultiEnum.CHANNEL_SALES: {
          channel = "Commerce";
          break;
        }
-       case ChatChannels.CHANNEL_SEEK: {
+       case ChatChannelsMultiEnum.CHANNEL_SEEK: {
          channel = "Recrutement";
          break;
        }
-       case ChatChannels.PSEUDO_CHANNEL_PRIVATE: {
+       case ChatChannelsMultiEnum.PSEUDO_CHANNEL_PRIVATE: {
          channel = "Privé";
          break;
        }
@@ -76,42 +76,7 @@ export default class BasicFrame {
     console.log("(" + channel + ") [" + data.senderName + "] : " + data.content);
   }
   public HandleChatServerWithObjectMessage(account: Account, data: any) {
-    // data.objects = objects in message
-    let channel;
-    switch (data.channel) {
-       case ChatChannels.CHANNEL_NOOB: {
-         channel = "Débutant";
-         break;
-       }
-       case ChatChannels.CHANNEL_TEAM: {
-         channel = "Equipe";
-         break;
-       }
-       case ChatChannels.CHANNEL_GLOBAL: {
-         channel = "Général";
-         break;
-       }
-       case ChatChannels.CHANNEL_GUILD: {
-         channel = "Guilde";
-         break;
-       }
-       case ChatChannels.CHANNEL_PARTY: {
-         channel = "Groupe";
-         break;
-       }
-       case ChatChannels.CHANNEL_SALES: {
-         channel = "Commerce";
-         break;
-       }
-       case ChatChannels.CHANNEL_SEEK: {
-         channel = "Recrutement";
-         break;
-       }
-       case ChatChannels.PSEUDO_CHANNEL_PRIVATE: {
-         channel = "Privé";
-         break;
-       }
-    }
-    console.log("(" + channel + ") [" + data.senderName + "] : " + data.content);
+    // TODO: data.objects = objects in message
+    this.HandleChatServerMessage(account, data);
   }
 }

@@ -1,10 +1,10 @@
 import axios from "axios";
 import Account from "../../../Account";
 import PathFinder from "../../../core/PathFinder";
-import Cell from "../../../core/PathFinder/Cell";
-import Map from "../../../core/PathFinder/Map";
 import PathDuration from "../../../core/PathFinder/PathDuration";
 import { CharacterState } from "../../character/CharacterState";
+import Cell from "./Cell";
+import Map from "./Map";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
@@ -58,7 +58,7 @@ export default class MovementsManager {
     }
 
     const path = PathFinder.getPath(this.account.game.character.cellId, cellId,
-      this.account.game.map.occupiedCells(), true, stopNextToTarget);
+      this.account.game.map.occupiedCells, true, stopNextToTarget);
     console.log(PathFinder.logPath(path));
 
     if (path.length === 0) {
@@ -228,7 +228,6 @@ export default class MovementsManager {
         account.game.character.state = CharacterState.IDLE;
 
         if (this.neighbourMapId === 0) {
-          // Trigger event MovementFinished
           this.onMovementFinished();
         } else {
           this.currentPath = null;
@@ -249,6 +248,5 @@ export default class MovementsManager {
   private onMovementFinished() {
     this.currentPath = null;
     this.neighbourMapId = 0;
-    // Trigger event MovementFinished
   }
 }

@@ -11,6 +11,6 @@ export default class Managers {
   constructor(account: Account) {
     this.account = account;
     this.movements = new MovementsManager(account);
-    this.data = new DataManager(account);
+    DataManager.init(account);
   }
 }

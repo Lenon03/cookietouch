@@ -5,6 +5,9 @@ import ObjectItem from "./ObjectItem";
 export default class Inventory {
   public kamas: number;
   public objects: ObjectItem[];
+  public weight: number;
+  public weightMax: number;
+
   private account: Account;
 
   constructor(account: Account) {
@@ -24,7 +27,7 @@ export default class Inventory {
   }
 
   private HandleInventoryWeightMessage(account: Account, data: any) {
-    account.game.character.weight = data.weight;
-    account.game.character.weightMax = data.weightMax;
+    this.weight = data.weight;
+    this.weightMax = data.weightMax;
   }
 }

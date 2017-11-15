@@ -6,7 +6,9 @@
   "jsRules": {},
   "rules": {
     "no-console": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-snake-case"]
+
   },
   "rulesDirectory": []
 }

@@ -1,6 +1,6 @@
+import DataManager from "../../../protocol/data";
+import Npcs from "../../../protocol/data/classes/Npcs";
 import GameRolePlayNpcInformations from "../../../protocol/network/types/GameRolePlayNpcInformations";
-import DataManager from "../../managers/data";
-import Npcs from "../../managers/data/classes/Npcs";
 
 export default class NpcEntry {
   public id: number;

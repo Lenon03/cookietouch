@@ -1,5 +1,5 @@
-import Cell from "../../game/managers/movements/Cell";
-import Map from "../../game/managers/movements/Map";
+import Map from "../../protocol/data/map";
+import Cell from "../../protocol/data/map/Cell";
 import CellPath from "./CellPath";
 import CellPathData from "./CellPathData";
 import PathDuration from "./PathDuration";

@@ -1,10 +1,10 @@
 import Account from "../../Account";
+import DataManager from "../../protocol/data";
+import DataClasses from "../../protocol/data/classes";
+import MapData from "../../protocol/data/map";
 import HouseInformations from "../../protocol/network/types/HouseInformations";
 import Dictionary from "../../utils/Dictionary";
 import LiteEvent from "../../utils/LiteEvent";
-import DataManager from "../managers/data/";
-import DataClasses from "../managers/data/classes";
-import MapData from "../managers/movements/Map";
 import { MapChangeDirections } from "../managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "../managers/movements/MovementRequestResults";
 import MonsterEntry from "./entities/MonsterEntry";

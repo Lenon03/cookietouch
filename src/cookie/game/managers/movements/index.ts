@@ -3,9 +3,9 @@ import Account from "../../../Account";
 import { AccountStates } from "../../../AccountStates";
 import PathFinder from "../../../core/PathFinder";
 import PathDuration from "../../../core/PathFinder/PathDuration";
+import Map from "../../../protocol/data/map";
+import Cell from "../../../protocol/data/map/Cell";
 import LiteEvent from "../../../utils/LiteEvent";
-import Cell from "./Cell";
-import Map from "./Map";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
@@ -167,7 +167,6 @@ export default class MovementsManager {
           this.currentPath = null;
 
           if (this.neighbourMapId !== 0) {
-            console.log("ChangeMapMessage ChangeMapMessage ChangeMapMessage ChangeMapMessage");
             account.network.sendMessage("ChangeMapMessage", {
               mapId: this.neighbourMapId,
             });
@@ -188,8 +187,6 @@ export default class MovementsManager {
       if (this.currentPath === null) {
         return;
       }
-
-      console.log("Path:", this.currentPath);
 
       this.sendMoveMessage();
     }, 5000);
@@ -243,12 +240,6 @@ export default class MovementsManager {
       keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
       mapId: this.account.game.map.id,
     });
-  }
-
-  private confirmMove(path: number[]): void {
-    setTimeout(() => {
-      this.account.network.sendMessage("GameMapMovementConfirmMessage");
-    }, 250 * path.length);
   }
 
   private OnMovementFinished(success: boolean) {

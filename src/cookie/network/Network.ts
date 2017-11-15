@@ -3,7 +3,7 @@ import Account from "../Account";
 import Dispatcher from "../utils/Dispatcher";
 const Primus = require("./primus"); // tslint:disable-line
 
-export default class DofusTouchClient {
+export default class Network {
 
   public static getAssetsVersions(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -44,9 +44,9 @@ export default class DofusTouchClient {
 
   constructor(account: Account) {
     this.account = account;
-    DofusTouchClient.getAppVersion().then((version) => (this.appVersion = version));
-    DofusTouchClient.getBuildVersion().then((version) => (this.buildVersion = version));
-    DofusTouchClient.getAssetsVersions().then((data) => {
+    Network.getAppVersion().then((version) => (this.appVersion = version));
+    Network.getBuildVersion().then((version) => (this.buildVersion = version));
+    Network.getAssetsVersions().then((data) => {
       this.assetsVersion = data.assetsVersion;
       this.staticDataVersion = data.staticDataVersion;
     });

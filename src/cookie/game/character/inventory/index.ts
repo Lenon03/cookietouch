@@ -1,5 +1,4 @@
 import Account from "../../../Account";
-import { DataTypes } from "../../managers/data/DataTypes";
 import ObjectItem from "./ObjectItem";
 
 export default class Inventory {

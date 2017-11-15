@@ -1,5 +1,5 @@
 import Account from "../../Account";
-import DataManager from "./data";
+import DataManager from "../../protocol/data";
 import MovementsManager from "./movements";
 
 export default class Managers {

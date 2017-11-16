@@ -9,6 +9,8 @@ import EntityLook from "../../protocol/network/types/EntityLook";
 import LiteEvent from "../../utils/LiteEvent";
 import { BoostableStats } from "./BoostableStats";
 import CharacterStats from "./CharacterStats";
+import Jobs from "./jobs";
+import Mount from "./mount";
 import { PlayerStatusEnum } from "./PlayerStatusEnum";
 import SpellEntry from "./SpellEntry";
 
@@ -26,6 +28,9 @@ export default class Character {
   public stats: CharacterStats;
   public lifeStatus: PlayerLifeStatusEnum;
   public spells: SpellEntry[];
+  public mount: Mount;
+  public jobs: Jobs;
+
   private regenTimer: NodeJS.Timer = null;
 
   public get CharacterSelected() { return this.onCharacterSelected.expose(); }
@@ -36,10 +41,7 @@ export default class Character {
   private readonly onSpellsUpdated = new LiteEvent<void>();
   /*
   public inventory: Inventory;
-  public jobs: Jobs;
-  public mount: Mount;
   */
-
   private account: Account;
 
   constructor(account: Account) {
@@ -47,10 +49,10 @@ export default class Character {
 
     this.stats = new CharacterStats();
     this.spells = new Array<SpellEntry>();
+    this.mount = new Mount(account);
+    this.jobs = new Jobs(account);
     /*
     this.inventory = new Inventory(account);
-    this.jobs = new Jobs(account);
-    this.mount = new Mount(account);
     */
   }
 

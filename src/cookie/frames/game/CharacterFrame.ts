@@ -98,26 +98,26 @@ export default class CharacterFrame {
   }
 
   private async HandleJobDescriptionMessage(account: Account, message: any) {
-    // account.game.character.jobs.UpdateJobDescriptionMessage(message);
+    account.game.character.jobs.UpdateJobDescriptionMessage(message);
   }
 
   private async HandleJobExperienceMultiUpdateMessage(account: Account, message: any) {
-    // await account.game.character.jobs.UpdateJobExperienceMultiUpdateMessage(message);
+    await account.game.character.jobs.UpdateJobExperienceMultiUpdateMessage(message);
   }
 
   private async HandleJobExperienceUpdateMessage(account: Account, message: any) {
-    // await account.game.character.jobs.UpdateJobExperienceUpdateMessage(message);
+    await account.game.character.jobs.UpdateJobExperienceUpdateMessage(message);
   }
 
   private async HandleMountXpRatioMessage(account: Account, message: any) {
-    // await account.game.character.mount.UpdateMountXpRatioMessage(message);
+    await account.game.character.mount.UpdateMountXpRatioMessage(message);
   }
 
   private async HandleMountRidingMessage(account: Account, message: any) {
-    // await account.game.character.mount.UpdateMountRidingMessage(message);
+    await account.game.character.mount.UpdateMountRidingMessage(message);
   }
 
   private async HandleMountSetMessage(account: Account, message: any) {
-    // await account.game.character.mount.UpdateMountSetMessage(message);
+    await account.game.character.mount.UpdateMountSetMessage(message);
   }
 }

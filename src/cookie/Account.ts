@@ -16,7 +16,6 @@ export default class Account {
   public network: Network;
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
-  public state: AccountStates;
   public framesData: FramesData;
 
   public get StateChanged() { return this.onStateChanged.expose(); }
@@ -29,6 +28,7 @@ export default class Account {
   private readonly onRecaptchaResolved = new LiteEvent<{account: Account, success: boolean}>();
 
   private frames: Frames;
+  private _state: AccountStates;
 
   constructor(username: string, password: string, lang: string = "fr") {
     this.data = new AccountData(username, password, lang);
@@ -43,6 +43,15 @@ export default class Account {
       this.state = AccountStates.DISCONNECTED;
       this.onDisconnected.trigger();
     });
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  set state(state: AccountStates) {
+    this._state = state;
+    this.onStateChanged.trigger();
   }
 
   public start() {

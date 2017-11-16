@@ -1,4 +1,5 @@
 export default class CharacterBaseCharacteristic {
+
   public base: number;
   public objectsAndMountBonus: number;
   public alignGiftBonus: number;

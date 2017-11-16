@@ -3,6 +3,7 @@ import Account from "../../../Account";
 import { AccountStates } from "../../../AccountStates";
 import PathFinder from "../../../core/PathFinder";
 import PathDuration from "../../../core/PathFinder/PathDuration";
+import IClearable from "../../../IClearable";
 import Map from "../../../protocol/data/map";
 import Cell from "../../../protocol/data/map/Cell";
 import DTConstants from "../../../protocol/DTConstants";
@@ -10,7 +11,7 @@ import LiteEvent from "../../../utils/LiteEvent";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
-export default class MovementsManager {
+export default class MovementsManager implements IClearable {
 
   public map: Map;
 
@@ -55,7 +56,7 @@ export default class MovementsManager {
       return MovementRequestResults.FAILED;
     }
 
-    if (this.account.game.character.cellId === cellId) {
+    if (this.account.game.map.playedCharacter.cellId === cellId) {
       return MovementRequestResults.ALREADY_THERE;
     }
 
@@ -73,12 +74,13 @@ export default class MovementsManager {
       return MovementRequestResults.PATH_BLOCKED;
     }
 
-    if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.character.cellId) {
+    if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.map.playedCharacter.cellId) {
       console.log("[MovementsManager] Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    if (stopNextToTarget && path.length === 2 && path[0] === this.account.game.character.cellId && path[1] === cellId) {
+    if (stopNextToTarget && path.length === 2
+      && path[0] === this.account.game.map.playedCharacter.cellId && path[1] === cellId) {
       console.log("[MovementsManager] Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
@@ -152,7 +154,7 @@ export default class MovementsManager {
   }
 
   public UpdateGameMapMovementMessage(account: Account, data: any) {
-    if (data.actorId === account.game.character.infos.id
+    if (data.actorId === account.game.character.id
       && data.keyMovements[0] === this.currentPath[0]
       && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
       // TODO: Not sure if it is the best way to handle character's state,
@@ -194,6 +196,11 @@ export default class MovementsManager {
 
       this.sendMoveMessage();
     }, 5000);
+  }
+
+  public clear() {
+    this.currentPath = null;
+    this.neighbourMapId = 0;
   }
 
   private moveToChangeMap(cellId: number): boolean {

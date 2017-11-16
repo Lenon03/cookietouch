@@ -1,6 +1,7 @@
 import * as React from "react";
 import Account from "../../cookie/Account";
 import { MapChangeDirections } from "../../cookie/game/managers/movements/MapChangeDirections";
+import DataManager from "../../cookie/protocol/data";
 import DTConstants from "../../cookie/protocol/DTConstants";
 
 export class App extends React.Component<{}, {}> {
@@ -11,6 +12,7 @@ export class App extends React.Component<{}, {}> {
     super(props);
     DTConstants.Init();
     this.account = new Account("cookieproject1", "azerty123456");
+    DataManager.init(this.account);
   }
 
   public render() {

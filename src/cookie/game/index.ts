@@ -1,9 +1,10 @@
 import Account from "../account";
+import IClearable from "../IClearable";
 import Character from "./character";
 import Managers from "./managers";
 import Map from "./Map";
 
-export default class Game {
+export default class Game implements IClearable {
 
   public managers: Managers;
   public character: Character;
@@ -17,5 +18,11 @@ export default class Game {
     this.managers = new Managers(this.account);
     this.character = new Character(this.account);
     this.map = new Map(this.account);
+  }
+
+  public clear() {
+    this.character.clear();
+    this.managers.clear();
+    this.map.clear();
   }
 }

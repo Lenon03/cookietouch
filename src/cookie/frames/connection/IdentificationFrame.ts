@@ -17,8 +17,8 @@ export default class IdentificationFrame {
   }
 
   private async HandleHelloConnectMessage(account: Account, data: any) {
-    account.key = data.key;
-    account.salt = data.salt;
+    account.framesData.key = data.key;
+    account.framesData.salt = data.salt;
 
     console.log("Connecté au serveur d'authentification");
     account.network.send("checkAssetsVersion", {
@@ -29,23 +29,23 @@ export default class IdentificationFrame {
 
   private async HandleassetsVersionChecked(account: Account, data: any) {
     account.network.send("login", {
-      key: account.key,
-      salt: account.salt,
+      key: account.framesData.key,
+      salt: account.framesData.salt,
       token: account.haapi.token,
-      username: account.username,
+      username: account.data.username,
     });
   }
 
   private async HandleIdentificationSuccessMessage(account: Account, data: any) {
-    account.accountCreation = data.accountCreation;
-    account.accountId = data.accountId;
-    account.communityId = data.communityId;
-    account.hasRights = data.hasRights;
-    account.login = data.login;
-    account.nickname = data.nickname;
-    account.secretQuestion = data.secretQuestion;
-    account.subscriptionEndDate = data.subscriptionEndDate;
-    account.wasAlreadyConnected = data.wasAlreadyConnected;
+    account.data.accountCreation = data.accountCreation;
+    account.data.accountId = data.accountId;
+    account.data.communityId = data.communityId;
+    account.data.hasRights = data.hasRights;
+    account.data.login = data.login;
+    account.data.nickname = data.nickname;
+    account.data.secretQuestion = data.secretQuestion;
+    account.data.subscriptionEndDate = data.subscriptionEndDate;
+    account.data.wasAlreadyConnected = data.wasAlreadyConnected;
 
     console.log("Account", account);
   }

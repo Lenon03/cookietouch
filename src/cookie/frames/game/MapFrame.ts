@@ -106,7 +106,7 @@ export default class MapFrame {
   private async HandleTeleportOnSameMapMessage(account: Account, message: any) {
     const player = account.game.map.players.find((p) => p.id === message.targetId);
 
-    if (player) {
+    if (player !== null) {
       player.UpdateTeleportOnSameMapMessage(message);
     }
   }

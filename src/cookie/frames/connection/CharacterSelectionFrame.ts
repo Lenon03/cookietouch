@@ -14,20 +14,21 @@ export default class CharacterSelectionFrame {
     this.account.dispatcher.register("CharactersListMessage", this.HandleCharactersListMessage, this);
     this.account.dispatcher.register("CharacterSelectedSuccessMessage",
       this.HandleCharacterSelectedSuccessMessage, this);
+    this.account.dispatcher.register("GameContextCreateMessage",
+      this.HandleGameContextCreateMessage, this);
   }
 
-  private async HandleCharactersListMessage(account: Account, data: any) {
+  private async HandleCharactersListMessage(account: Account, message: any) {
     account.network.sendMessage("CharacterSelectionMessage", {
-      id: data.characters[0].id,
+      id: message.characters[0].id,
     });
   }
 
-  private async HandleCharacterSelectedSuccessMessage(account: Account, data: any) {
-    account.game.character.infos = data.infos;
-
+  private async HandleCharacterSelectedSuccessMessage(account: Account, message: any) {
+    account.game.character.UpdateCharacterSelectedSuccessMessage(message);
     account.network.sendMessage("kpiStartSession", {
-      accountSessionId: account.login,
-      isSubscriber: account.subscriptionEndDate !== 0,
+      accountSessionId: account.data.login,
+      isSubscriber: account.data.subscriptionEndDate !== 0,
     });
     account.network.send("moneyGoultinesAmountRequest");
     account.network.sendMessage("QuestListRequestMessage");
@@ -39,5 +40,12 @@ export default class CharacterSelectionFrame {
     account.network.send("restoreMysteryBox");
     account.network.sendMessage("ClientKeyMessage", { key: randomString(21) });
     account.network.sendMessage("GameContextCreateRequestMessage");
+  }
+
+  private async HandleGameContextCreateMessage(account: Account, message: any) {
+    if (!account.framesData.initialized && message.context === 1) {
+      await account.network.sendMessage("ObjectAveragePricesGetMessage");
+      account.framesData.initialized = true;
+    }
   }
 }

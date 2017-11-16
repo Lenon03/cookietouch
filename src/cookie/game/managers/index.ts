@@ -1,8 +1,8 @@
 import Account from "../../Account";
-import DataManager from "../../protocol/data";
+import IClearable from "../../IClearable";
 import MovementsManager from "./movements";
 
-export default class Managers {
+export default class Managers implements IClearable {
   public movements: MovementsManager;
 
   private account: Account;
@@ -10,6 +10,10 @@ export default class Managers {
   constructor(account: Account) {
     this.account = account;
     this.movements = new MovementsManager(account);
-    DataManager.init(account);
   }
+
+  public clear() {
+    this.movements.clear();
+  }
+
 }

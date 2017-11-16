@@ -1,4 +1,5 @@
 import Account from "../../Account";
+import IClearable from "../../IClearable";
 import DataManager from "../../protocol/data";
 import DataClasses from "../../protocol/data/classes";
 import MapData from "../../protocol/data/map";
@@ -15,7 +16,7 @@ import ElementInCellEntry from "./interactives/ElementInCellEntry";
 import InteractiveElementEntry from "./interactives/InteractiveElementEntry";
 import StatedElementEntry from "./interactives/StatedElementEntry";
 
-export default class Map {
+export default class Map implements IClearable {
 
   private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
   private static readonly doorTypeIds = [-1, 128, 168, 16];
@@ -30,12 +31,6 @@ export default class Map {
   public blacklistedMonsters: number[] = [];
   public zaap: ElementInCellEntry = null;
   public zaapi: ElementInCellEntry = null;
-
-  // to keep?
-  public houses: any[];
-  public houseInformations: HouseInformations[] = [];
-  public obstacles: any[];
-  // end to keep
 
   get players() { return this._players.values(); }
   get npcs() { return this._npcs.values(); }
@@ -84,6 +79,15 @@ export default class Map {
 
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public clear() {
+    this._joinedFight = false;
+    this.data = null;
+    this.area = null;
+    this.subArea = null;
+    this.posX = 0;
+    this.posY = 0;
   }
 
   public isCellTeleportable(cellId: number): boolean {

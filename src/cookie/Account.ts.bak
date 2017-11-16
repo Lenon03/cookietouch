@@ -1,7 +1,5 @@
-import AccountData from "./AccountData";
 import { AccountStates } from "./AccountStates";
 import Frames from "./frames";
-import FramesData from "./frames/FramesData";
 import Game from "./game";
 import Network from "./network";
 import HaapiConnection from "./network/HaapiConnection";
@@ -11,13 +9,27 @@ import LiteEvent from "./utils/LiteEvent";
 
 export default class Account {
 
-  public data: AccountData;
+  public username: string;
+  public password: string;
   public game: Game;
   public network: Network;
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
+  public salt: string;
+  public key: number[];
+  public ticket: string;
+  public server: object;
+  public accountCreation: number;
+  public accountId: number;
+  public communityId: number;
+  public hasRights: boolean;
+  public login: number;
+  public nickname: string;
+  public secretQuestion: string;
+  public subscriptionEndDate: number;
+  public wasAlreadyConnected: boolean;
+  public lang: string;
   public state: AccountStates;
-  public framesData: FramesData;
 
   public get StateChanged() { return this.onStateChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
@@ -31,28 +43,22 @@ export default class Account {
   private frames: Frames;
 
   constructor(username: string, password: string, lang: string = "fr") {
-    this.data = new AccountData(username, password, lang);
-    this.framesData = new FramesData();
+    this.username = username;
+    this.password = password;
+    this.lang = lang;
     this.state = AccountStates.DISCONNECTED;
     this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
     this.network = new Network(this);
     this.game = new Game(this);
     this.frames = new Frames(this);
-    this.network.Disconnected.on(() => {
-      this.state = AccountStates.DISCONNECTED;
-      this.onDisconnected.trigger();
-    });
   }
 
   public start() {
-    this.framesData.clear();
-    this.network.clear();
-    this.game.clear();
-    this.haapi.processHaapi(this.data.username, this.data.password)
+    
+    this.haapi.processHaapi(this.username, this.password)
       .then(() => {
         console.log("Haapi : ", this.haapi);
-        this.state = AccountStates.CONNECTING;
         this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
       });
   }
@@ -63,24 +69,5 @@ export default class Account {
 
   get isBusy(): boolean {
     return this.state !== AccountStates.NONE && this.state !== AccountStates.REGENERATING;
-  }
-
-  get isFighting() {
-    return this.state === AccountStates.FIGHTING;
-  }
-
-  get isGathering() {
-    return this.state === AccountStates.GATHERING;
-  }
-
-  get isInDialog() {
-    return this.state === AccountStates.STORAGE || AccountStates.TALKING
-      || AccountStates.EXCHANGE || AccountStates.BUYING || AccountStates.SELLING;
-  }
-
-  public leaveDialog() {
-    if (this.isInDialog) {
-      this.network.sendMessage("LeaveDialogRequestMessage");
-    }
   }
 }

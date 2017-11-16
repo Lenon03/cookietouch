@@ -3,7 +3,6 @@ import Account from "../../Account";
 export default class SecurityFrame {
 
   private account: Account;
-  private sequenceNumber: number = 0;
 
   constructor(account: Account) {
     this.account = account;
@@ -17,9 +16,9 @@ export default class SecurityFrame {
   }
 
   private async HandleSequenceNumberRequestMessage(account: Account, data: any) {
-    this.sequenceNumber++;
+    account.framesData.sequence++;
     account.network.sendMessage("SequenceNumberMessage", {
-      number: this.sequenceNumber,
+      number: account.framesData.sequence,
     });
   }
 

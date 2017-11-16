@@ -48,7 +48,7 @@ export default class ServerSelectionFrame {
   }
 
   private async HandleSelectedServerDataMessage(account: Account, data: any) {
-    account.ticket = data.ticket;
+    account.framesData.ticket = data.ticket;
     account.network.access = data._access;
 
     account.network.server = {
@@ -60,8 +60,8 @@ export default class ServerSelectionFrame {
 
   private async HandleHelloGameMessage(account: Account, data: any) {
     account.network.sendMessage("AuthenticationTicketMessage", {
-      lang: account.lang,
-      ticket: account.ticket,
+      lang: account.data.lang,
+      ticket: account.framesData.ticket,
     });
   }
 

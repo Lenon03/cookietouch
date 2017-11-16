@@ -1,10 +1,12 @@
 import axios from "axios";
 import Account from "../Account";
+import IClearable from "../IClearable";
 import DTConstants from "../protocol/DTConstants";
 import Dispatcher from "../utils/Dispatcher";
+import LiteEvent from "../utils/LiteEvent";
 const Primus = require("./primus"); // tslint:disable-line
 
-export default class Network {
+export default class Network implements IClearable {
   public server: object;
   public access: string;
   private account: Account;
@@ -12,8 +14,22 @@ export default class Network {
   private sessionId: string;
   private migrating: boolean = false;
 
+  public get Disconnected() { return this.onDisconnected.expose(); }
+  public get MessageSent() { return this.onMessageSent.expose(); }
+  public get MessageReceived() { return this.onMessageReceived.expose(); }
+  private readonly onDisconnected = new LiteEvent<void>();
+  private readonly onMessageSent = new LiteEvent<{type: string, data: any}>();
+  private readonly onMessageReceived = new LiteEvent<{type: string, data: any}>();
+
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public clear() {
+    this.sessionId = null;
+    this.server = null;
+    this.access = null;
+    this.migrating = false;
   }
 
   public connect(sessionId: string, url: string) {
@@ -64,6 +80,7 @@ export default class Network {
       }
 
       console.log("Sent: ", msg);
+      this.onMessageReceived.trigger({ type: msgName, data});
       this.account.dispatcher.emit(msgName, this.account, data);
       this.socket.write(msg);
       resolve();
@@ -88,7 +105,7 @@ export default class Network {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: this.account.lang,
+          language: this.account.data.lang,
           server: "login",
         });
       } else {
@@ -97,7 +114,7 @@ export default class Network {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: this.account.lang,
+          language: this.account.data.lang,
           server: this.server,
         });
       }
@@ -105,6 +122,7 @@ export default class Network {
 
     this.socket.on("data", (data: any) => {
       console.log("Received: ", data);
+      this.onMessageReceived.trigger({ type: data._messageType, data});
       this.account.dispatcher.emit(data._messageType, this.account, data);
     });
 
@@ -159,6 +177,7 @@ export default class Network {
 
     this.socket.on("destroy", () => {
       console.log("Connection destroyed");
+      this.onDisconnected.trigger();
     });
   }
 

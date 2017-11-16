@@ -20,8 +20,7 @@ export default class Job {
   }
 
   public hasCollectSkills(id: number) {
-    // TODO: Replace null by undefined ??
-    return this.jobs.find((j) => j.collectSkills.find((s) => s.interactiveId === id) !== null) !== null;
+    return this.jobs.find((j) => j.collectSkills.find((s) => s.interactiveId === id) !== undefined) !== undefined;
   }
 
   get collectSkillsIds() {
@@ -33,7 +32,7 @@ export default class Job {
     this._jobsInitialized = false;
     this.jobs = new Array<JobEntry>();
 
-    const jobsData = await DataManager.get(Jobs, message.jobsDescription.map((f: any) => f.id));
+    const jobsData = await DataManager.get(Jobs, ...message.jobsDescription.map((f: any) => f.id));
 
     for (const job of message.jobsDescription) {
       const jobEntry = new JobEntry(job, jobsData.find((f) => f.id === job.jobId).object);

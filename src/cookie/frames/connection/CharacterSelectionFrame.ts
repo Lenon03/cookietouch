@@ -1,5 +1,5 @@
-import Account from "../../Account";
-import { randomString } from "../../utils/Random";
+import Account from "@account";
+import { randomString } from "@utils/Random";
 
 export default class CharacterSelectionFrame {
 

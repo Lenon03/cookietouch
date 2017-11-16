@@ -1,4 +1,4 @@
-import InteractiveElement from "../../../protocol/network/types/InteractiveElement";
+import InteractiveElement from "@protocol/network/types/InteractiveElement";
 import SkillEntry from "./skills/SkillEntry";
 
 export default class InteractiveElementEntry {

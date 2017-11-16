@@ -1,5 +1,5 @@
-import Skills from "../../../../protocol/data/classes/Skills";
-import SkillActionDescriptionCollect from "../../../../protocol/network/types/SkillActionDescriptionCollect";
+import Skills from "@protocol/data/classes/Skills";
+import SkillActionDescriptionCollect from "@protocol/network/types/SkillActionDescriptionCollect";
 
 export default class CollectSkillEntry {
   public id: number;

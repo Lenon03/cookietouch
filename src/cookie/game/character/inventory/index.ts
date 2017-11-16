@@ -1,9 +1,9 @@
-import Account from "../../../Account";
-import DataManager from "../../../protocol/data";
-import Items from "../../../protocol/data/classes/Items";
-import { CharacterInventoryPositionEnum } from "../../../protocol/enums/CharacterInventoryPositionEnum";
-import Dictionary from "../../../utils/Dictionary";
-import LiteEvent from "../../../utils/LiteEvent";
+import Account from "@account";
+import DataManager from "@protocol/data";
+import Items from "@protocol/data/classes/Items";
+import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import Dictionary from "@utils/Dictionary";
+import LiteEvent from "@utils/LiteEvent";
 import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
 import ObjectEntry from "./ObjectEntry";
 

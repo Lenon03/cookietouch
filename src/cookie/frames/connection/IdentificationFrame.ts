@@ -1,5 +1,5 @@
-import Account from "../../Account";
-import DTConstants from "../../protocol/DTConstants";
+import Account from "@account";
+import DTConstants from "@protocol/DTConstants";
 
 export default class IdentificationFrame {
 

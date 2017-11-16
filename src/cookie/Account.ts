@@ -1,3 +1,5 @@
+import Dispatcher from "@utils/Dispatcher";
+import LiteEvent from "@utils/LiteEvent";
 import AccountData from "./AccountData";
 import { AccountStates } from "./AccountStates";
 import Frames from "./frames";
@@ -6,8 +8,6 @@ import Game from "./game";
 import Network from "./network";
 import HaapiConnection from "./network/HaapiConnection";
 import DTConstants from "./protocol/DTConstants";
-import Dispatcher from "./utils/Dispatcher";
-import LiteEvent from "./utils/LiteEvent";
 
 export default class Account {
 

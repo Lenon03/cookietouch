@@ -1,6 +1,6 @@
-import DataManager from "../../../protocol/data";
-import DataClasses from "../../../protocol/data/classes";
-import MonsterInGroupLightInformations from "../../../protocol/network/types/MonsterInGroupLightInformations";
+import DataManager from "@protocol/data";
+import DataClasses from "@protocol/data/classes";
+import MonsterInGroupLightInformations from "@protocol/network/types/MonsterInGroupLightInformations";
 
 export default class MonsterEntry {
   public genericId: number;

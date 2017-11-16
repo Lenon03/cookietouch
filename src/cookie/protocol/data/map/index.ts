@@ -1,4 +1,4 @@
-import Dictionary from "../../../utils/Dictionary";
+import Dictionary from "@utils/Dictionary";
 import Cell from "./Cell";
 import GraphicalElement from "./GraphicalElement";
 

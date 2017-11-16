@@ -1,5 +1,5 @@
-import Account from "../../Account";
-import { AccountStates } from "../../AccountStates";
+import { AccountStates } from "@/AccountStates";
+import Account from "@account";
 
 export default class MapFrame {
 

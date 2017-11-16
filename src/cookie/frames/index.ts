@@ -1,4 +1,4 @@
-import Account from "../Account";
+import Account from "@account";
 import QueueFrame from "./common/QueueFrame";
 import SecurityFrame from "./common/SecurityFrame";
 import CharacterSelectionFrame from "./connection/CharacterSelectionFrame";

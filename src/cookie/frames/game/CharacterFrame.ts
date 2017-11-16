@@ -1,4 +1,4 @@
-import Account from "../../Account";
+import Account from "@account";
 
 export default class CharacterFrame {
   private account: Account;

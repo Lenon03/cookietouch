@@ -1,4 +1,4 @@
-import Dictionary from "../../utils/Dictionary";
+import Dictionary from "@utils/Dictionary";
 import AnimDuration from "./AnimDuration";
 import Extensions, { ICoord } from "./Extensions";
 

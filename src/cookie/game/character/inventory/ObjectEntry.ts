@@ -1,12 +1,11 @@
-import DataManager from "../../../protocol/data";
-import Items from "../../../protocol/data/classes/Items";
-import ItemTypes from "../../../protocol/data/classes/ItemTypes";
-import DTConstants from "../../../protocol/DTConstants";
-import { CharacterInventoryPositionEnum } from "../../../protocol/enums/CharacterInventoryPositionEnum";
-import ObjectEffectInteger from "../../../protocol/network/types/ObjectEffectInteger";
-import ObjectItem from "../../../protocol/network/types/ObjectItem";
-import { ObjectTypes } from "./InventoryHelper";
-import InventoryHelper from "./InventoryHelper";
+import DataManager from "@protocol/data";
+import Items from "@protocol/data/classes/Items";
+import ItemTypes from "@protocol/data/classes/ItemTypes";
+import DTConstants from "@protocol/DTConstants";
+import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import ObjectEffectInteger from "@protocol/network/types/ObjectEffectInteger";
+import ObjectItem from "@protocol/network/types/ObjectItem";
+import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
 
 export default class ObjectEntry {
   public gid: number;

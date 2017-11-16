@@ -1,13 +1,13 @@
+import { AccountStates } from "@/AccountStates";
+import PathFinder from "@/core/PathFinder";
+import PathDuration from "@/core/PathFinder/PathDuration";
+import IClearable from "@/IClearable";
+import Account from "@account";
+import Map from "@protocol/data/map";
+import Cell from "@protocol/data/map/Cell";
+import DTConstants from "@protocol/DTConstants";
+import LiteEvent from "@utils/LiteEvent";
 import axios from "axios";
-import Account from "../../../Account";
-import { AccountStates } from "../../../AccountStates";
-import PathFinder from "../../../core/PathFinder";
-import PathDuration from "../../../core/PathFinder/PathDuration";
-import IClearable from "../../../IClearable";
-import Map from "../../../protocol/data/map";
-import Cell from "../../../protocol/data/map/Cell";
-import DTConstants from "../../../protocol/DTConstants";
-import LiteEvent from "../../../utils/LiteEvent";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 

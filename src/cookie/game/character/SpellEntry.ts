@@ -1,8 +1,8 @@
-import DataManager from "../../protocol/data";
-import DataClasses from "../../protocol/data/classes";
-import Spells from "../../protocol/data/classes/Spells";
-import DTConstants from "../../protocol/DTConstants";
-import SpellItem from "../../protocol/network/types/SpellItem";
+import DataManager from "@protocol/data";
+import DataClasses from "@protocol/data/classes";
+import Spells from "@protocol/data/classes/Spells";
+import DTConstants from "@protocol/DTConstants";
+import SpellItem from "@protocol/network/types/SpellItem";
 
 export default class SpellEntry {
   public id: number;

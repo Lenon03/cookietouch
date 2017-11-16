@@ -1,8 +1,8 @@
-import Account from "../../../Account";
-import DataManager from "../../../protocol/data";
-import Jobs from "../../../protocol/data/classes/Jobs";
-import LiteEvent from "../../../utils/LiteEvent";
-import { sleep } from "../../../utils/Time";
+import Account from "@account";
+import DataManager from "@protocol/data";
+import Jobs from "@protocol/data/classes/Jobs";
+import LiteEvent from "@utils/LiteEvent";
+import { sleep } from "@utils/Time";
 import JobEntry from "./JobEntry";
 
 export default class Job {

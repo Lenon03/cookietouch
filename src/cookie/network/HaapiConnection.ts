@@ -1,5 +1,5 @@
+import DTConstants from "@protocol/DTConstants";
 import axios from "axios";
-import DTConstants from "../protocol/DTConstants";
 
 export default class HaapiConnection {
 

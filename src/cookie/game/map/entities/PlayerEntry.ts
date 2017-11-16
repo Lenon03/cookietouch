@@ -1,4 +1,4 @@
-import GameRolePlayCharacterInformations from "../../../protocol/network/types/GameRolePlayCharacterInformations";
+import GameRolePlayCharacterInformations from "@protocol/network/types/GameRolePlayCharacterInformations";
 import MovableEntity from "./MovableEntity";
 
 export default class PlayerEntry extends MovableEntity {

@@ -1,9 +1,9 @@
+import IClearable from "@/IClearable";
+import Account from "@account";
+import DTConstants from "@protocol/DTConstants";
+import Dispatcher from "@utils/Dispatcher";
+import LiteEvent from "@utils/LiteEvent";
 import axios from "axios";
-import Account from "../Account";
-import IClearable from "../IClearable";
-import DTConstants from "../protocol/DTConstants";
-import Dispatcher from "../utils/Dispatcher";
-import LiteEvent from "../utils/LiteEvent";
 const Primus = require("./primus"); // tslint:disable-line
 
 export default class Network implements IClearable {

@@ -1,4 +1,4 @@
-import GameRolePlayGroupMonsterInformations from "../../../protocol/network/types/GameRolePlayGroupMonsterInformations";
+import GameRolePlayGroupMonsterInformations from "@protocol/network/types/GameRolePlayGroupMonsterInformations";
 import MonsterEntry from "./MonsterEntry";
 import MovableEntity from "./MovableEntity";
 

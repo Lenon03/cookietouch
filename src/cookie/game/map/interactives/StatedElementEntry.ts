@@ -1,4 +1,4 @@
-import StatedElement from "../../../protocol/network/types/StatedElement";
+import StatedElement from "@protocol/network/types/StatedElement";
 
 export default class StatedElementEntry {
   public cellId: number;

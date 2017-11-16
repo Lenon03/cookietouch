@@ -1,4 +1,4 @@
-import CharacterBaseCharacteristic from "../../protocol/network/types/CharacterBaseCharacteristic";
+import CharacterBaseCharacteristic from "@protocol/network/types/CharacterBaseCharacteristic";
 
 export default class CharacterStats {
   public lifePoints: number;

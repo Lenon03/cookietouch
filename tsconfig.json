@@ -9,8 +9,10 @@
     "outDir": "./build",
     "baseUrl": "./src",
     "paths": {
+      "@/*": ["cookie/*"],
       "@account": ["cookie/Account.ts"],
-      "@protocol/*": ["cookie/protocol/*"]
+      "@protocol/*": ["cookie/protocol/*"],
+      "@utils/*": ["cookie/utils/*"]
     }
   },
   "include": [

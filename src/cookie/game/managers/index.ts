@@ -1,5 +1,5 @@
-import Account from "../../Account";
-import IClearable from "../../IClearable";
+import IClearable from "@/IClearable";
+import Account from "@account";
 import MovementsManager from "./movements";
 
 export default class Managers implements IClearable {

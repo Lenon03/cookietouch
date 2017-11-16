@@ -9,6 +9,7 @@ import EntityLook from "../../protocol/network/types/EntityLook";
 import LiteEvent from "../../utils/LiteEvent";
 import { BoostableStats } from "./BoostableStats";
 import CharacterStats from "./CharacterStats";
+import Inventory from "./inventory";
 import Jobs from "./jobs";
 import Mount from "./mount";
 import { PlayerStatusEnum } from "./PlayerStatusEnum";
@@ -30,6 +31,7 @@ export default class Character {
   public spells: SpellEntry[];
   public mount: Mount;
   public jobs: Jobs;
+  public inventory: Inventory;
 
   private regenTimer: NodeJS.Timer = null;
 
@@ -39,9 +41,7 @@ export default class Character {
   private readonly onCharacterSelected = new LiteEvent<void>();
   private readonly onStatsUpdated = new LiteEvent<void>();
   private readonly onSpellsUpdated = new LiteEvent<void>();
-  /*
-  public inventory: Inventory;
-  */
+
   private account: Account;
 
   constructor(account: Account) {
@@ -51,9 +51,7 @@ export default class Character {
     this.spells = new Array<SpellEntry>();
     this.mount = new Mount(account);
     this.jobs = new Jobs(account);
-    /*
     this.inventory = new Inventory(account);
-    */
   }
 
   get freeSoul() {
@@ -286,7 +284,7 @@ export default class Character {
 
   public async UpdateCharacterStatsListMessage(message: any) {
     this.stats.UpdateCharacterStatsListMessage(message);
-    // this.inventory.UpdateCharacterStatsListMessage(message);
+    this.inventory.UpdateCharacterStatsListMessage(message);
     this.onStatsUpdated.trigger();
   }
 

@@ -33,7 +33,7 @@ export default class CharacterStats {
     this.experienceNextLevelFloor = message.stats.experienceNextLevelFloor;
     this.statsPoints = message.stats.statsPoints;
     this.spellsPoints = message.stats.spellsPoints;
-    this.actionPoints = message.stats.actionsPoints;
+    this.actionPoints = message.stats.actionPoints;
     this.movementPoints = message.stats.movementPoints;
     this.initiative = message.stats.initiative;
     this.prospecting = message.stats.prospecting;

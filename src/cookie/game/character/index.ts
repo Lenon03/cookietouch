@@ -339,7 +339,7 @@ export default class Character {
   }
 
   public UpdateLifePointsRegenBeginMessage(message: any) {
-    this.regenTimer = global.setInterval(this.regenTimerCallBack, message.regenRate * 100);
+    this.regenTimer = global.setInterval(this.regenTimerCallBack.bind(this), message.regenRate * 100);
   }
 
   public UpdateLifePointsRegenEndMessage(message: any) {

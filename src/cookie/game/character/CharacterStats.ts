@@ -22,4 +22,42 @@ export default class CharacterStats {
   public intelligence: CharacterBaseCharacteristic;
   public chance: CharacterBaseCharacteristic;
   public agility: CharacterBaseCharacteristic;
+
+  public UpdateCharacterStatsListMessage(message: any) {
+    this.lifePoints = message.stats.lifePoints;
+    this.maxLifePoints = message.stats.maxLifePoints;
+    this.energyPoints = message.stats.energyPoints;
+    this.maxEnergyPoints = message.stats.maxEnergyPoints;
+    this.experience = message.stats.experience;
+    this.experienceLevelFloor = message.stats.experienceLevelFloor;
+    this.experienceNextLevelFloor = message.stats.experienceNextLevelFloor;
+    this.statsPoints = message.stats.statsPoints;
+    this.spellsPoints = message.stats.spellsPoints;
+    this.actionPoints = message.stats.actionsPoints;
+    this.movementPoints = message.stats.movementPoints;
+    this.initiative = message.stats.initiative;
+    this.prospecting = message.stats.prospecting;
+    this.range = message.stats.range;
+    this.summonableCreaturesBoost = message.stats.summonableCreaturesBoost;
+    this.vitality = message.stats.vitality;
+    this.wisdom = message.stats.wisdom;
+    this.strength = message.stats.strength;
+    this.intelligence = message.stats.intelligence;
+    this.chance = message.stats.chance;
+    this.agility = message.stats.agility;
+  }
+
+  public UpdateCharacterExperienceGainMessage(message: any) {
+    this.experience += message.experienceCharacter;
+  }
+
+  public UpdateLifePointsRegenEndMessage(message: any) {
+    this.lifePoints = message.lifePoints;
+    this.maxLifePoints = message.maxLifePoints;
+  }
+
+  public UpdateUpdateLifePointsMessage(message: any) {
+    this.lifePoints = message.lifePoints;
+    this.maxLifePoints = message.maxLifePoints;
+  }
 }

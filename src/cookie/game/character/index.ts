@@ -1,5 +1,8 @@
 import Account from "../../Account";
+import { AccountStates } from "../../AccountStates";
+import DataManager from "../../protocol/data";
 import Breeds from "../../protocol/data/classes/Breeds";
+import Spells from "../../protocol/data/classes/Spells";
 import { BreedEnum } from "../../protocol/enums/BreedEnum";
 import { PlayerLifeStatusEnum } from "../../protocol/enums/PlayerLifeStatusEnum";
 import EntityLook from "../../protocol/network/types/EntityLook";
@@ -255,19 +258,134 @@ export default class Character {
     });
   }
 
+  // TODO: skinurl
+  public getSkinUrl(mode: string, orientation: number, width: number, height: number, zoom: number): string {
+    return "We have to do this method ^^";
+  }
+
   public clear() {
     this.isSelected = false;
   }
 
-  public UpdateCharacterSelectedSuccessMessage(message: any) {
-    //
+  public async UpdateCharacterSelectedSuccessMessage(message: any) {
+    this.id = message.infos.id;
+    this.name = message.infos.name;
+    this.level = message.infos.level;
+    this.breed = message.infos.breed;
+    this.sex = message.infos.sex;
+    this.look = message.infos.entityLook;
+    this.skinUrl = this.getSkinUrl("full", 1, 128, 256, 0);
+    const breedResponse = await DataManager.get(Breeds, message.infos.breed);
+    this.breedData = breedResponse[0].object;
+    this.status = PlayerStatusEnum.AVAILABLE;
+    this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
+    this.isSelected = true;
+    this.onCharacterSelected.trigger();
+  }
+
+  public async UpdateCharacterStatsListMessage(message: any) {
+    this.stats.UpdateCharacterStatsListMessage(message);
+    // this.inventory.UpdateCharacterStatsListMessage(message);
+    this.onStatsUpdated.trigger();
+  }
+
+  public async UpdateCharacterLevelUpMessage(message: any) {
+    this.level = message.newLevel;
+    this.onStatsUpdated.trigger();
+  }
+
+  public async UpdateGameRolePlayPlayerLifeStatusMessage(message: any) {
+    this.lifeStatus = message.state;
+  }
+
+  public async UpdatePlayerStatusUpdateMessage(message: any) {
+    this.status = message.status.statusId;
+  }
+
+  public async UpdateSpellListMessage(message: any) {
+    this.spells = new Array<SpellEntry>();
+
+    const ids = message.spells.map((s: any) => s.spellId);
+    const spells = await DataManager.get(Spells, ...ids);
+
+    for (const sp of message.spells) {
+      const spell = spells.find((f) => f.id === sp.spellId);
+      this.spells.push(new SpellEntry(sp, spell.object));
+    }
+    this.onSpellsUpdated.trigger();
+  }
+
+  public async UpdateSpellUpgradeSuccessMessage(message: any) {
+    const spell = this.getSpell(message.spellId);
+    if (spell !== null) {
+      spell.UpdateSpellUpgradeSuccessMessage(message);
+    } else {
+      this.spells.push(new SpellEntry(message.spellId, message.spellLevel));
+       // TODO: Check if the new added spellEntry contains good data.
+      console.log("SpellEntryAddedOnUpgrade => ", this.spells);
+    }
+    this.onSpellsUpdated.trigger();
+  }
+
+  public async UpdateEmotePlayMessage(message: any) {
+    if (message.actorId !== this.id) {
+      return;
+    }
+
+    if (message.emoteId === 1 && this.account.state !== AccountStates.REGENERATING) {
+      this.account.state = AccountStates.REGENERATING;
+    } else if (message.emoteId === 0 && this.account.state === AccountStates.REGENERATING) {
+      this.account.state = AccountStates.NONE;
+    }
+  }
+
+  public UpdateLifePointsRegenBeginMessage(message: any) {
+    this.regenTimer = global.setInterval(this.regenTimerCallBack, message.regenRate * 100);
+  }
+
+  public UpdateLifePointsRegenEndMessage(message: any) {
+    global.clearInterval(this.regenTimer);
   }
 
   private regenTimerCallBack() {
-    //
+    if (this.stats.lifePoints >= this.stats.maxLifePoints) {
+      global.clearInterval(this.regenTimer);
+      return;
+    }
+    this.stats.lifePoints++;
   }
 
   private getNeededPointsToBoostStat(stat: BoostableStats): number {
-    return -1;
+    let data: number[][] = null;
+    let baseStats = 0;
+
+    switch (stat) {
+      case BoostableStats.AGILITY:
+        data = this.breedData.statsPointsForAgility;
+        baseStats = this.stats.agility.base;
+        break;
+      case BoostableStats.CHANCE:
+        data = this.breedData.statsPointsForChance;
+        baseStats = this.stats.chance.base;
+        break;
+      case BoostableStats.INTELLIGENCE:
+        data = this.breedData.statsPointsForIntelligence;
+        baseStats = this.stats.intelligence.base;
+        break;
+      case BoostableStats.STRENGTH:
+        data = this.breedData.statsPointsForStrength;
+        baseStats = this.stats.strength.base;
+        break;
+      case BoostableStats.VITALITY:
+        data = this.breedData.statsPointsForVitality;
+        baseStats = this.stats.vitality.base;
+        break;
+      case BoostableStats.WISDOM:
+        data = this.breedData.statsPointsForWisdom;
+        baseStats = this.stats.wisdom.base;
+        break;
+    }
+
+    return data.find((d) => baseStats >= d[0])[1]; // TODO: Replace by findLast
   }
 }

@@ -3,17 +3,17 @@ import ProtectedEntityWaitingForHelpInfo from "./ProtectedEntityWaitingForHelpIn
 
 export default class PrismFightersInformation {
 
-  public allycharactersinformations: CharacterMinimalPlusLookInformations[];
-  public enemycharactersinformations: CharacterMinimalPlusLookInformations[];
-  public subareaid: number;
-  public waitingforhelpinfo: ProtectedEntityWaitingForHelpInfo;
+  public allyCharactersInformations: CharacterMinimalPlusLookInformations[];
+  public enemyCharactersInformations: CharacterMinimalPlusLookInformations[];
+  public subAreaId: number;
+  public waitingForHelpInfo: ProtectedEntityWaitingForHelpInfo;
 
-  constructor(subareaid = 0, waitingforhelpinfo: ProtectedEntityWaitingForHelpInfo,
-              allycharactersinformations: CharacterMinimalPlusLookInformations[],
-              enemycharactersinformations: CharacterMinimalPlusLookInformations[]) {
-    this.allycharactersinformations = allycharactersinformations;
-    this.enemycharactersinformations = enemycharactersinformations;
-    this.subareaid = subareaid;
-    this.waitingforhelpinfo = waitingforhelpinfo;
+  constructor(subAreaId = 0, waitingForHelpInfo: ProtectedEntityWaitingForHelpInfo,
+              allyCharactersInformations: CharacterMinimalPlusLookInformations[],
+              enemyCharactersInformations: CharacterMinimalPlusLookInformations[]) {
+    this.allyCharactersInformations = allyCharactersInformations;
+    this.enemyCharactersInformations = enemyCharactersInformations;
+    this.subAreaId = subAreaId;
+    this.waitingForHelpInfo = waitingForHelpInfo;
   }
 }

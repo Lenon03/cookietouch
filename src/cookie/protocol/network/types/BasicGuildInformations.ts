@@ -1,10 +1,10 @@
 export default class BasicGuildInformations {
 
-  public guildid: number;
-  public guildname: string;
+  public guildId: number;
+  public guildName: string;
 
-  constructor(guildid = 0, guildname = "") {
-    this.guildid = guildid;
-    this.guildname = guildname;
+  constructor(guildId = 0, guildName = "") {
+    this.guildId = guildId;
+    this.guildName = guildName;
   }
 }

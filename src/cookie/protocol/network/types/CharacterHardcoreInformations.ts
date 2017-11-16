@@ -3,15 +3,15 @@ import EntityLook from "./EntityLook";
 
 export default class CharacterHardcoreInformations extends CharacterBaseInformations {
 
-  public deathstate: number;
-  public deathcount: number;
-  public deathmaxlevel: number;
+  public deathState: number;
+  public deathCount: number;
+  public deathMaxLevel: number;
 
   constructor(id = 0, level = 0, name = "", entitylook: EntityLook, breed = 0,
-              sex = false, deathstate = 0, deathcount = 0, deathmaxlevel = 0) {
+              sex = false, deathState = 0, deathCount = 0, deathMaxLevel = 0) {
     super(id, level, name, entitylook, breed, sex);
-    this.deathstate = deathstate;
-    this.deathcount = deathcount;
-    this.deathmaxlevel = deathmaxlevel;
+    this.deathState = deathState;
+    this.deathCount = deathCount;
+    this.deathMaxLevel = deathMaxLevel;
   }
 }

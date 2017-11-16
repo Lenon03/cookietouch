@@ -1,10 +1,10 @@
 export default class AchievementRewardable {
 
   public id: number;
-  public finishedlevel: number;
+  public finishedLevel: number;
 
-  constructor(id = 0, finishedlevel = 0) {
+  constructor(id = 0, finishedLevel = 0) {
     this.id = id;
-    this.finishedlevel = finishedlevel;
+    this.finishedLevel = finishedLevel;
   }
 }

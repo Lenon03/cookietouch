@@ -2,14 +2,13 @@ import CharacterBaseCharacteristic from "./CharacterBaseCharacteristic";
 
 export default class CharacterSpellModification {
 
-  public modificationtype: number;
-  public spellid: number;
+  public modificationType: number;
+  public spellId: number;
   public value: CharacterBaseCharacteristic;
 
-  constructor(modificationtype = 0, spellid = 0, value: CharacterBaseCharacteristic) {
-    this.modificationtype = modificationtype;
-    this.spellid = spellid;
-    this.value = value;
+  constructor(modificationType = 0, spellId = 0, value: CharacterBaseCharacteristic) {
+    this.modificationType = modificationType;
+    this.spellId = spellId;
     this.value = value;
   }
 }

@@ -4,11 +4,11 @@ import GuildInformations from "./GuildInformations";
 
 export default class AlliancedGuildFactSheetInformations extends GuildInformations {
 
-  public allianceinfos: BasicNamedAllianceInformations;
+  public allianceInfos: BasicNamedAllianceInformations;
 
-  constructor(guildid = 0, guildname = "", guildemblem: GuildEmblem,
-              allianceinfos: BasicNamedAllianceInformations) {
-    super(guildid, guildname, guildemblem);
-    this.allianceinfos = allianceinfos;
+  constructor(guildId = 0, guildName = "", guildEmblem: GuildEmblem,
+              allianceInfos: BasicNamedAllianceInformations) {
+    super(guildId, guildName, guildEmblem);
+    this.allianceInfos = allianceInfos;
   }
 }

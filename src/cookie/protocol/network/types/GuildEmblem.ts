@@ -1,14 +1,14 @@
 export default class GuildEmblem {
 
-  public symbolshape: number;
-  public symbolcolor: number;
-  public backgroundshape: number;
-  public backgroundcolor: number;
+  public symbolShape: number;
+  public symbolColor: number;
+  public backgroundShape: number;
+  public backgroundColor: number;
 
-  constructor(symbolshape = 0, symbolcolor = 0, backgroundshape = 0, backgroundcolor = 0) {
-    this.symbolshape = symbolshape;
-    this.symbolcolor = symbolcolor;
-    this.backgroundshape = backgroundshape;
-    this.backgroundcolor = backgroundcolor;
+  constructor(symbolShape = 0, symbolColor = 0, backgroundShape = 0, backgroundColor = 0) {
+    this.symbolShape = symbolShape;
+    this.symbolColor = symbolColor;
+    this.backgroundShape = backgroundShape;
+    this.backgroundColor = backgroundColor;
   }
 }

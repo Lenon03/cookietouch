@@ -1,19 +1,22 @@
-export default class AllianceInsiderPrismInformation {
+import PrismInformation from "./PrismInformation";
 
-  public lasttimeslotmodificationdate: number;
-  public lasttimeslotmodificationauthorguildid: number;
-  public lasttimeslotmodificationauthorid: number;
-  public lasttimeslotmodificationauthorname: string;
-  public hasteleportermodule: boolean;
+export default class AllianceInsiderPrismInformation extends PrismInformation {
+
+  public lastTimesLotModificationDate: number;
+  public lastTimesLotModificationAuthorGuildId: number;
+  public lastTimesLotModificationAuthorId: number;
+  public lastTimesLotModificationAuthorName: string;
+  public hasTeleporterModule: boolean;
 
   constructor(typeid = 0, state = 1, nextvulnerabilitydate = 0, placementdate = 0,
-              rewardtokencount = 0, lasttimeslotmodificationdate = 0, lasttimeslotmodificationauthorguildid = 0,
-              lasttimeslotmodificationauthorid = 0, lasttimeslotmodificationauthorname = "",
-              hasteleportermodule = false) {
-    this.lasttimeslotmodificationdate = lasttimeslotmodificationdate;
-    this.lasttimeslotmodificationauthorguildid = lasttimeslotmodificationauthorguildid;
-    this.lasttimeslotmodificationauthorid = lasttimeslotmodificationauthorid;
-    this.lasttimeslotmodificationauthorname = lasttimeslotmodificationauthorname;
-    this.hasteleportermodule = hasteleportermodule;
+              rewardtokencount = 0, lastTimesLotModificationDate = 0, lastTimesLotModificationAuthorGuildId = 0,
+              lastTimesLotModificationAuthorId = 0, lastTimesLotModificationAuthorName = "",
+              hasTeleporterModule = false) {
+    super(typeid, state, nextvulnerabilitydate, placementdate, rewardtokencount);
+    this.lastTimesLotModificationDate = lastTimesLotModificationDate;
+    this.lastTimesLotModificationAuthorGuildId = lastTimesLotModificationAuthorGuildId;
+    this.lastTimesLotModificationAuthorId = lastTimesLotModificationAuthorId;
+    this.lastTimesLotModificationAuthorName = lastTimesLotModificationAuthorName;
+    this.hasTeleporterModule = hasTeleporterModule;
   }
 }

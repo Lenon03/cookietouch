@@ -1,20 +1,20 @@
 export default class PrismSubAreaInformation {
 
-  public worldx: number;
-  public worldy: number;
-  public mapid: number;
-  public subareaid: number;
+  public worldX: number;
+  public worldY: number;
+  public mapId: number;
+  public subAreaId: number;
   public alignment: number;
-  public isinfight: boolean;
-  public isfightable: boolean;
+  public isInFight: boolean;
+  public isFightable: boolean;
 
-  constructor(worldx = 0, worldy = 0, mapid = 0, subareaid = 0, alignment = 0, isinfight = false, isfightable = false) {
-    this.worldx = worldx;
-    this.worldy = worldy;
-    this.mapid = mapid;
-    this.subareaid = subareaid;
+  constructor(worldX = 0, worldY = 0, mapId = 0, subAreaId = 0, alignment = 0, isInFight = false, isFightable = false) {
+    this.worldX = worldX;
+    this.worldY = worldY;
+    this.mapId = mapId;
+    this.subAreaId = subAreaId;
     this.alignment = alignment;
-    this.isinfight = isinfight;
-    this.isfightable = isfightable;
+    this.isInFight = isInFight;
+    this.isFightable = isFightable;
   }
 }

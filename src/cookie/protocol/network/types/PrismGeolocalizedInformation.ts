@@ -2,15 +2,15 @@ import PrismInformation from "./PrismInformation";
 
 export default class PrismGeolocalizedInformation {
 
-public worldx: number;
-public worldy: number;
-public mapid: number;
+public worldX: number;
+public worldY: number;
+public mapId: number;
 public prism: PrismInformation;
 
-  constructor(subareaid = 0, allianceid = 0, worldx = 0, worldy = 0, mapid = 0, prism: PrismInformation) {
-    this.worldx = worldx;
-    this.worldy = worldy;
-    this.mapid = mapid;
+  constructor(subareaid = 0, allianceid = 0, worldX = 0, worldY = 0, mapId = 0, prism: PrismInformation) {
+    this.worldX = worldX;
+    this.worldY = worldY;
+    this.mapId = mapId;
     this.prism = prism;
   }
 }

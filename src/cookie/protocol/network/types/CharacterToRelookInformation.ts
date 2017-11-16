@@ -2,10 +2,10 @@ import AbstractCharacterInformation from "./AbstractCharacterInformation";
 
 export default class CharacterToRelookInformation extends AbstractCharacterInformation {
 
-  public cosmeticid: number;
+  public cosmeticId: number;
 
-  constructor(id = 0, cosmeticid = 0) {
+  constructor(id = 0, cosmeticId = 0) {
     super(id);
-    this.cosmeticid = cosmeticid;
+    this.cosmeticId = cosmeticId;
   }
 }

@@ -1,10 +1,10 @@
 export default class PrismSubareaEmptyInfo {
 
-  public subareaid: number;
-  public allianceid: number;
+  public subAreaId: number;
+  public allianceId: number;
 
-  constructor(subareaid = 0, allianceid = 0) {
-    this.subareaid = subareaid;
-    this.allianceid = allianceid;
+  constructor(subAreaId = 0, allianceId = 0) {
+    this.subAreaId = subAreaId;
+    this.allianceId = allianceId;
   }
 }

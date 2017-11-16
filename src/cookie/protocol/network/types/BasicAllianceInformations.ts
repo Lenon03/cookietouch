@@ -1,10 +1,10 @@
 export default class BasicAllianceInformations {
 
-  public allianceid: number;
-  public alliancetag: string;
+  public allianceId: number;
+  public allianceTag: string;
 
-  constructor(allianceid = 0, alliancetag = "") {
-    this.allianceid = allianceid;
-    this.alliancetag = alliancetag;
+  constructor(allianceId = 0, allianceTag = "") {
+    this.allianceId = allianceId;
+    this.allianceTag = allianceTag;
   }
 }

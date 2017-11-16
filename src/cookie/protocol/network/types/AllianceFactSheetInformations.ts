@@ -3,10 +3,10 @@ import GuildEmblem from "./GuildEmblem";
 
 export default class AllianceFactSheetInformations extends AllianceInformations {
 
-  public creationdate: number;
+  public creationDate: number;
 
-  constructor(allianceid = 0, alliancetag = "", alliancename = "", allianceemblem: GuildEmblem, creationdate = 0) {
-    super(allianceid, alliancetag, alliancename, allianceemblem);
-    this.creationdate = creationdate;
+  constructor(allianceId = 0, allianceTag = "", allianceName = "", allianceEmblem: GuildEmblem, creationDate = 0) {
+    super(allianceId, allianceTag, allianceName, allianceEmblem);
+    this.creationDate = creationDate;
   }
 }

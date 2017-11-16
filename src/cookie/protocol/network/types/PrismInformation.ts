@@ -1,16 +1,16 @@
 export default class PrismInformation {
 
-  public typeid: number;
+  public typeId: number;
   public state: number;
-  public nextvulnerabilitydate: number;
-  public placementdate: number;
-  public rewardtokencount: number;
+  public nextVulnerabilityDate: number;
+  public placementDate: number;
+  public rewardTokenCount: number;
 
-  constructor(typeid = 0, state = 1, nextvulnerabilitydate = 0, placementdate = 0, rewardtokencount = 0) {
-    this.typeid = typeid;
+  constructor(typeId = 0, state = 1, nextVulnerabilityDate = 0, placementDate = 0, rewardTokenCount = 0) {
+    this.typeId = typeId;
     this.state = state;
-    this.nextvulnerabilitydate = nextvulnerabilitydate;
-    this.placementdate = placementdate;
-    this.rewardtokencount = rewardtokencount;
+    this.nextVulnerabilityDate = nextVulnerabilityDate;
+    this.placementDate = placementDate;
+    this.rewardTokenCount = rewardTokenCount;
   }
 }

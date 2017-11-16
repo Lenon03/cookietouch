@@ -1,10 +1,10 @@
 export default class AdditionalTaxCollectorInformations {
 
-  public collectorcallername: string;
+  public collectorCallerName: string;
   public date: number;
 
-  constructor(collectorcallername = "", date = 0) {
-    this.collectorcallername = collectorcallername;
+  constructor(collectorCallerName = "", date = 0) {
+    this.collectorCallerName = collectorCallerName;
     this.date = date;
   }
 }

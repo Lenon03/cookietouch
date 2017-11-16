@@ -2,10 +2,10 @@ import BasicAllianceInformations from "./BasicAllianceInformations";
 
 export default class BasicNamedAllianceInformations extends BasicAllianceInformations {
 
-  public alliancename: string;
+  public allianceName: string;
 
-  constructor(allianceid = 0, alliancetag = "", alliancename = "") {
-    super(allianceid, alliancetag);
-    this.alliancename = alliancename;
+  constructor(allianceId = 0, allianceTag = "", allianceName = "") {
+    super(allianceId, allianceTag);
+    this.allianceName = allianceName;
   }
 }

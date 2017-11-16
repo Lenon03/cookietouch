@@ -1,10 +1,10 @@
 export default class AchievementObjective {
 
   public id: number;
-  public maxvalue: number;
+  public maxValue: number;
 
-  constructor(id = 0, maxvalue = 0) {
+  constructor(id = 0, maxValue = 0) {
     this.id = id;
-    this.maxvalue = maxvalue;
+    this.maxValue = maxValue;
   }
 }

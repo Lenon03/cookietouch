@@ -3,10 +3,10 @@ import GuildEmblem from "./GuildEmblem";
 
 export default class GuildInformations extends BasicGuildInformations {
 
-  public guildemblem: GuildEmblem;
+  public guildEmblem: GuildEmblem;
 
-  constructor(guildid = 0, guildname = "", guildemblem: GuildEmblem) {
+  constructor(guildid = 0, guildname = "", guildEmblem: GuildEmblem) {
     super(guildid, guildname);
-    this.guildemblem = guildemblem;
+    this.guildEmblem = guildEmblem;
   }
 }

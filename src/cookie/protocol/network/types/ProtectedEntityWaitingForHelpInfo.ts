@@ -1,12 +1,12 @@
 export default class ProtectedEntityWaitingForHelpInfo {
 
-  public timeleftbeforefight: number;
-  public waittimeforplacement: number;
-  public nbpositionfordefensors: number;
+  public timeLeftBeforeFight: number;
+  public waitTimeForPlacement: number;
+  public nbPositionForDefensors: number;
 
-  constructor(timeleftbeforefight = 0, waittimeforplacement = 0, nbpositionfordefensors = 0) {
-    this.timeleftbeforefight = timeleftbeforefight;
-    this.waittimeforplacement = waittimeforplacement;
-    this.nbpositionfordefensors = nbpositionfordefensors;
+  constructor(timeLeftBeforeFight = 0, waitTimeForPlacement = 0, nbPositionForDefensors = 0) {
+    this.timeLeftBeforeFight = timeLeftBeforeFight;
+    this.waitTimeForPlacement = waitTimeForPlacement;
+    this.nbPositionForDefensors = nbPositionForDefensors;
   }
 }

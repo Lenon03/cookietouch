@@ -12,7 +12,8 @@
       "check-format",
       "allow-leading-underscore",
       "allow-snake-case"
-    ]
+    ],
+    "indent": [true, "spaces", 2]
   },
   "rulesDirectory": []
 }

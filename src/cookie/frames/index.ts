@@ -1,17 +1,17 @@
 import Account from "../Account";
-import BasicFrame from "./BasicFrame";
 import QueueFrame from "./common/QueueFrame";
 import SecurityFrame from "./common/SecurityFrame";
 import CharacterSelectionFrame from "./connection/CharacterSelectionFrame";
 import IdentificationFrame from "./connection/IdentificationFrame";
 import ServerSelectionFrame from "./connection/ServerSelectionFrame";
 import CharacterFrame from "./game/CharacterFrame";
+import ChatFrame from "./game/ChatFrame";
 import InventoryFrame from "./game/InventoryFrame";
 import MapFrame from "./game/MapFrame";
 
 export default class Frames {
 
-  private basic: BasicFrame;
+  private chat: ChatFrame;
   private queue: QueueFrame;
   private security: SecurityFrame;
   private characterSelection: CharacterSelectionFrame;
@@ -26,7 +26,7 @@ export default class Frames {
   constructor(account: Account) {
     this.account = account;
 
-    this.basic = new BasicFrame(this.account);
+    this.chat = new ChatFrame(this.account);
     this.queue = new QueueFrame(this.account);
     this.security = new SecurityFrame(this.account);
     this.characterSelection = new CharacterSelectionFrame(this.account);

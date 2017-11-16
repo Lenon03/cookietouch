@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 module.exports = {
   entry: "./src/renderer/index.tsx",
@@ -12,12 +13,15 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js", ".json"],
+    plugins: [
+      new TsConfigPathsPlugin(),
+    ]
   },
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
       {
         test: /\.tsx?$/,
@@ -39,9 +43,10 @@ module.exports = {
   },
 
   plugins: [
+    new CheckerPlugin(),
     // new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
     new webpack.ExternalsPlugin('commonjs', [
       'electron'
-    ])
+    ]),
   ]
 };

@@ -1,5 +1,5 @@
-import Account from "../Account";
-import { ChatChannelsMultiEnum } from "../protocol/enums/ChatChannelsMultiEnum";
+import Account from "@account";
+import { ChatChannelsMultiEnum } from "@protocol/enums/ChatChannelsMultiEnum";
 
 export default class BasicFrame {
 

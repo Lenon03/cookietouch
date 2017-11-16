@@ -6,7 +6,12 @@
     "sourceMap": true,
     "jsx": "react",
     "noImplicitAny": true,
-    "outDir": "./build/",
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "paths": {
+      "@account": ["cookie/Account.ts"],
+      "@protocol/*": ["cookie/protocol/*"]
+    }
   },
   "include": [
     "./src/**/*.ts"

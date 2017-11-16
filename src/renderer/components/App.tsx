@@ -11,8 +11,9 @@ export class App extends React.Component<{}, {}> {
   constructor(props: {}) {
     super(props);
     DTConstants.Init();
-    this.account = new Account("cookieproject1", "azerty123456");
-    DataManager.init(this.account);
+    const lang = "fr";
+    this.account = new Account("cookieproject1", "azerty123456", lang);
+    DataManager.Init(lang);
   }
 
   public render() {

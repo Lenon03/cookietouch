@@ -13,8 +13,6 @@ import { PlayerStatusEnum } from "./PlayerStatusEnum";
 import SpellEntry from "./SpellEntry";
 
 export default class Character {
-
-  public regenTimer: NodeJS.Timer = null;
   public breedData: Breeds;
   public isSelected: boolean;
   public name: string;
@@ -28,6 +26,7 @@ export default class Character {
   public stats: CharacterStats;
   public lifeStatus: PlayerLifeStatusEnum;
   public spells: SpellEntry[];
+  private regenTimer: NodeJS.Timer = null;
 
   public get CharacterSelected() { return this.onCharacterSelected.expose(); }
   public get StatsUpdated() { return this.onStatsUpdated.expose(); }

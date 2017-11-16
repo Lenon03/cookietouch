@@ -1,5 +1,4 @@
 import axios from "axios";
-import Account from "../../Account";
 import DTConstants from "../DTConstants";
 import Data from "./Data";
 import { DataTypes } from "./DataTypes";
@@ -11,14 +10,14 @@ export interface IDataResponse<T> {
 
 export default class DataManager {
 
-  public static init(account: Account) {
-    this.account = account;
+  public static Init(lang = "fr") {
+    this.lang = lang;
   }
 
   public static get<T extends Data>(type: { new(): T }, ...ids: number[]): Promise<Array<IDataResponse<T>>> {
     return new Promise((resolve, reject) => {
       const params = {
-        lang: this.account.data.lang,
+        lang: this.lang,
         v: DTConstants.assetsVersion,
       };
       axios.post(`${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`,
@@ -37,5 +36,5 @@ export default class DataManager {
     });
   }
 
-  private static account: Account;
+  private static lang: string;
 }

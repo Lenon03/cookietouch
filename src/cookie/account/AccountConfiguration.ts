@@ -1,4 +1,5 @@
 import { BoostableStats } from "@game/character/BoostableStats";
+import CharacterCreation from "./CharacterCreation";
 import SpellToBoostEntry from "./SpellToBoostEntry";
 
 export default class AccountConfiguration {
@@ -16,6 +17,7 @@ export default class AccountConfiguration {
   public disconnectUponFightsLimit: boolean;
   public spellsToBoost: SpellToBoostEntry[];
   public authorizedTradesFrom: number[];
+  public characterCreation: CharacterCreation;
 
   constructor() {
     this.showGeneralMessages = true;
@@ -32,5 +34,6 @@ export default class AccountConfiguration {
     this.disconnectUponFightsLimit = true;
     this.spellsToBoost = new Array<SpellToBoostEntry>();
     this.authorizedTradesFrom = [];
+    this.characterCreation = new CharacterCreation();
   }
 }

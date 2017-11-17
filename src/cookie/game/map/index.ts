@@ -42,6 +42,9 @@ export default class Map implements IClearable {
   get lockedStorages() { return this._lockedStorages.values(); }
   get id() { return this.data.id; }
   get currentPosition() { return `${this.posX},${this.posY}`; }
+  get labelPosition() {
+    return `${this.area} - ${this.subArea} [${this.posX},${this.posY}]`;
+  }
 
   get occupiedCells(): number[] {
     const pCells = this.players.map((p) => p.cellId);
@@ -65,7 +68,7 @@ export default class Map implements IClearable {
   private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
 
   private account: Account;
-  /* tslint:disable */
+
   private _players = new Dictionary<number, PlayerEntry>();
   private _npcs = new Dictionary<number, NpcEntry>();
   private _monstersGroups = new Dictionary<number, MonstersGroupEntry>();
@@ -75,7 +78,6 @@ export default class Map implements IClearable {
   private _phenixs = new Dictionary<number, ElementInCellEntry>();
   private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
   private _joinedFight: boolean;
-  /* tslint:enable */
 
   constructor(account: Account) {
     this.account = account;

@@ -14,9 +14,12 @@ export default class AccountData {
   public wasAlreadyConnected: boolean;
   public lang: string;
 
-  constructor(username: string, password: string, lang = "fr") {
+  constructor(username: string, password: string, lang = "fr", server = "", character = "", nickname = "") {
     this.username = username;
     this.password = password;
     this.lang = lang;
+    this.server = server;
+    this.character = character;
+    this.nickname = nickname;
   }
 }

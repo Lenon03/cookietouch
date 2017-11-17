@@ -1,38 +1,55 @@
 import Account from "@account";
+import { AccountStates } from "@account/AccountStates";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
 import axios from "axios";
+import { NetworkPhases } from "./NetworkPhases";
 const Primus = require("./primus"); // tslint:disable-line
 
 export default class Network implements IClearable {
   public server: object;
   public access: string;
+  public connected: boolean = false;
   private account: Account;
   private socket: any;
   private sessionId: string;
-  private migrating: boolean = false;
+  private _phase: NetworkPhases;
 
+  public get PhaseChanged() { return this.onPhaseChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
   public get MessageSent() { return this.onMessageSent.expose(); }
   public get MessageReceived() { return this.onMessageReceived.expose(); }
+  private readonly onPhaseChanged = new LiteEvent<NetworkPhases>();
   private readonly onDisconnected = new LiteEvent<void>();
   private readonly onMessageSent = new LiteEvent<{type: string, data: any}>();
   private readonly onMessageReceived = new LiteEvent<{type: string, data: any}>();
 
+  get phase() {
+    return this._phase;
+  }
+
+  set phase(phase: NetworkPhases) {
+    this._phase = phase;
+    this.onPhaseChanged.trigger(phase);
+  }
+
   constructor(account: Account) {
     this.account = account;
+    this._phase = NetworkPhases.NONE;
   }
 
   public clear() {
     this.sessionId = null;
     this.server = null;
     this.access = null;
-    this.migrating = false;
   }
 
   public connect(sessionId: string, url: string) {
+    if (this.connected || this.phase !== NetworkPhases.NONE) {
+      return;
+    }
     this.sessionId = sessionId;
     const currentUrl = this.makeSticky(url, this.sessionId);
     this.account.logger.logDebug("Primus", "Connecting to login server (" + currentUrl + ") ...");
@@ -48,7 +65,10 @@ export default class Network implements IClearable {
   }
 
   public migrate(url: string) {
-    this.migrating = true;
+    if (!this.connected || this.phase !== NetworkPhases.LOGIN) {
+      return;
+    }
+    this.phase = NetworkPhases.SWITCHING_TO_GAME;
     this.send("disconnecting", "SWITCHING_TO_GAME");
     this.socket.destroy();
     const currentUrl = this.makeSticky(url, this.sessionId);
@@ -96,10 +116,10 @@ export default class Network implements IClearable {
 
   private setCurrentConnection() {
     this.socket.on("open", () => {
+      this.connected = true;
       this.account.logger.logDebug("Primus", "Connection opened");
-      this.account.logger.logDebug("Primus", "MIGRATING: " + this.migrating);
 
-      if (this.migrating === false) {
+      if (this.phase === NetworkPhases.NONE) {
         this.send("connecting", {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
@@ -108,7 +128,6 @@ export default class Network implements IClearable {
           server: "login",
         });
       } else {
-        this.migrating = false;
         this.send("connecting", {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
@@ -172,11 +191,18 @@ export default class Network implements IClearable {
 
     this.socket.on("close", () => {
       this.account.logger.logDebug("Primus", "Connection closed");
+
+      this.connected = false;
+      if (this.phase === NetworkPhases.SWITCHING_TO_GAME && this.account) {
+        this.account.state = AccountStates.CONNECTING;
+      } else {
+        this.phase = NetworkPhases.NONE;
+      }
+      this.onDisconnected.trigger();
     });
 
     this.socket.on("destroy", () => {
       this.account.logger.logDebug("Primus", "Connection destroyed");
-      this.onDisconnected.trigger();
     });
   }
 

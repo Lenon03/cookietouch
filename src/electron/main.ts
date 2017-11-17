@@ -5,7 +5,10 @@ import * as url from "url";
 let win: BrowserWindow;
 
 const createWindow = () => {
-  win = new BrowserWindow({width: 1550, height: 850});
+  win = new BrowserWindow({
+    height: 850,
+    width: 1550,
+  });
   win.loadURL(url.format({
     pathname: path.join(app.getAppPath(), "/static/index.html"),
     protocol: "file:",

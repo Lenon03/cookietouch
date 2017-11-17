@@ -2,6 +2,7 @@ import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
+import Extensions from "../extensions";
 import Frames from "../frames";
 import FramesData from "../frames/FramesData";
 import Game from "../game";
@@ -21,6 +22,7 @@ export default class Account {
   public framesData: FramesData;
   public logger: Logger;
   public config: AccountConfiguration;
+  public extensions: Extensions;
 
   public get StateChanged() { return this.onStateChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
@@ -45,6 +47,7 @@ export default class Account {
     this.network = new Network(this);
     this.game = new Game(this);
     this.frames = new Frames(this);
+    this.extensions = new Extensions(this);
     this.network.Disconnected.on(() => {
       this.state = AccountStates.DISCONNECTED;
       this.onDisconnected.trigger();
@@ -64,6 +67,7 @@ export default class Account {
     this.framesData.clear();
     this.network.clear();
     this.game.clear();
+    this.extensions.clear();
     this.haapi.processHaapi(this.data.username, this.data.password)
       .then(() => {
         console.log("Haapi", this.haapi);

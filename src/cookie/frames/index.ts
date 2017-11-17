@@ -11,6 +11,7 @@ import ChatFrame from "./game/ChatFrame";
 import ExchangeFrame from "./game/ExchangeFrame";
 import InventoryFrame from "./game/InventoryFrame";
 import MapFrame from "./game/MapFrame";
+import NpcsFrame from "./game/NpcsFrame";
 
 export default class Frames {
 
@@ -26,6 +27,7 @@ export default class Frames {
   private achievements: AchievementsFrame;
   private bid: BidFrame;
   private exchange: ExchangeFrame;
+  private npcs: NpcsFrame;
 
   constructor(account: Account) {
     this.achievements = new AchievementsFrame(account);
@@ -40,5 +42,6 @@ export default class Frames {
     this.map = new MapFrame(account);
     this.inventory = new InventoryFrame(account);
     this.exchange = new ExchangeFrame(account);
+    this.npcs = new NpcsFrame(account);
   }
 }

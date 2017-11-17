@@ -6,6 +6,7 @@ import Chat from "./chat";
 import Exchange from "./Exchange";
 import Managers from "./managers";
 import Map from "./Map";
+import Npcs from "./Npcs";
 import Server from "./Server";
 
 export default class Game implements IClearable {
@@ -17,6 +18,7 @@ export default class Game implements IClearable {
   public server: Server;
   public bid: Bid;
   public exchange: Exchange;
+  public npcs: Npcs;
 
   constructor(account: Account) {
     this.managers = new Managers(account);
@@ -26,6 +28,7 @@ export default class Game implements IClearable {
     this.server = new Server(account);
     this.bid = new Bid(account);
     this.exchange = new Exchange(account);
+    this.npcs = new Npcs(account);
   }
 
   public clear() {

@@ -25,6 +25,9 @@ export default class SecurityFrame {
   private async HandleTextInformationMessage(account: Account, data: any) {
     if (data.msgId === 245) {
       this.account.logger.logDebug("", "Vous avez atteint la limite de combat journalière.");
+      if (this.account.config.disconnectUponFightsLimit) {
+        this.account.stop();
+      }
     }
   }
 

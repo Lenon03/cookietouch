@@ -67,6 +67,10 @@ export default class ChatFrame {
   }
 
   private async HandleChatServerMessage(account: Account, message: any) {
+    if (!this.isChannelEnabled(account, message.channel)) {
+      return;
+    }
+
     switch (message.channel) {
       case ChatChannelsMultiEnum.CHANNEL_ADMIN: {
         this.account.logger.log("Admin", `${message.senderName}: ${message.content}`, ChannelColors.ADMIN);
@@ -118,6 +122,35 @@ export default class ChatFrame {
   private async HandleChatServerCopyMessage(account: Account, message: any) {
     if (message.channel === ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE) {
       this.account.logger.log(`de ${message.receiverName}`, message.content, ChannelColors.PRIVATE);
+    }
+  }
+
+  private isChannelEnabled(account: Account, channel: ChatActivableChannelsEnum) {
+    switch (channel) {
+      case ChatActivableChannelsEnum.CHANNEL_GLOBAL: {
+        return account.config.showGeneralMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_GUILD: {
+        return account.config.showGuildMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_ALLIANCE: {
+        return account.config.showAllianceMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_NOOB: {
+        return account.config.showNoobMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_PARTY: {
+        return account.config.showPartyMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_SEEK: {
+        return account.config.showSeekMessages;
+      }
+      case ChatActivableChannelsEnum.CHANNEL_SALES: {
+        return account.config.showSaleMessages;
+      }
+      default: {
+        return true;
+      }
     }
   }
 }

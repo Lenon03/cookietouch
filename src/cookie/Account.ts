@@ -1,6 +1,8 @@
 import Logger from "@logger";
+import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
+import AccountConfiguration from "./AccountConfiguration";
 import AccountData from "./AccountData";
 import { AccountStates } from "./AccountStates";
 import Frames from "./frames";
@@ -8,7 +10,6 @@ import FramesData from "./frames/FramesData";
 import Game from "./game";
 import Network from "./network";
 import HaapiConnection from "./network/HaapiConnection";
-import DTConstants from "./protocol/DTConstants";
 
 export default class Account {
 
@@ -19,6 +20,7 @@ export default class Account {
   public dispatcher: Dispatcher;
   public framesData: FramesData;
   public logger: Logger;
+  public config: AccountConfiguration;
 
   public get StateChanged() { return this.onStateChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
@@ -35,6 +37,7 @@ export default class Account {
   constructor(username: string, password: string, lang: string = "fr") {
     this.logger = new Logger();
     this.data = new AccountData(username, password, lang);
+    this.config = new AccountConfiguration();
     this.framesData = new FramesData();
     this.state = AccountStates.DISCONNECTED;
     this.dispatcher = new Dispatcher();

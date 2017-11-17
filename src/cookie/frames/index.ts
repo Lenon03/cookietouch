@@ -4,6 +4,7 @@ import SecurityFrame from "./common/SecurityFrame";
 import CharacterSelectionFrame from "./connection/CharacterSelectionFrame";
 import IdentificationFrame from "./connection/IdentificationFrame";
 import ServerSelectionFrame from "./connection/ServerSelectionFrame";
+import AchievementsFrame from "./game/AchievementsFrames";
 import CharacterFrame from "./game/CharacterFrame";
 import ChatFrame from "./game/ChatFrame";
 import InventoryFrame from "./game/InventoryFrame";
@@ -20,12 +21,14 @@ export default class Frames {
   private map: MapFrame;
   private character: CharacterFrame;
   private inventory: InventoryFrame;
+  private achievements: AchievementsFrame;
 
   private account: Account;
 
   constructor(account: Account) {
     this.account = account;
 
+    this.achievements = new AchievementsFrame(this.account);
     this.chat = new ChatFrame(this.account);
     this.queue = new QueueFrame(this.account);
     this.security = new SecurityFrame(this.account);

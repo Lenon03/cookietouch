@@ -1,4 +1,4 @@
-import IClearable from "@/IClearable";
+import IClearable from "@utils/IClearable";
 
 export default class FramesData implements IClearable {
   public sequence: number;

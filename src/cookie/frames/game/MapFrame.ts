@@ -1,5 +1,5 @@
-import { AccountStates } from "@/AccountStates";
 import Account from "@account";
+import { AccountStates } from "@account/AccountStates";
 
 export default class MapFrame {
 
@@ -104,7 +104,7 @@ export default class MapFrame {
   }
 
   private async HandleTeleportOnSameMapMessage(account: Account, message: any) {
-    const player = account.game.map.players.find((p) => p.id === message.targetId);
+    const player = account.game.map.players.find((p: any) => p.id === message.targetId);
 
     if (player !== null) {
       player.UpdateTeleportOnSameMapMessage(message);

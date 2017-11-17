@@ -2,14 +2,14 @@ import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
+import Frames from "../frames";
+import FramesData from "../frames/FramesData";
+import Game from "../game";
+import Network from "../network";
+import HaapiConnection from "../network/HaapiConnection";
 import AccountConfiguration from "./AccountConfiguration";
 import AccountData from "./AccountData";
 import { AccountStates } from "./AccountStates";
-import Frames from "./frames";
-import FramesData from "./frames/FramesData";
-import Game from "./game";
-import Network from "./network";
-import HaapiConnection from "./network/HaapiConnection";
 
 export default class Account {
 

@@ -1,5 +1,5 @@
-import { AccountStates } from "@/AccountStates";
 import Account from "@account";
+import { AccountStates } from "@account/AccountStates";
 import * as React from "react";
 
 interface IInfosProps {

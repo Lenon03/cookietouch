@@ -1,5 +1,5 @@
-import { AccountStates } from "@/AccountStates";
 import Account from "@account";
+import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
 import Spells from "@protocol/data/classes/Spells";

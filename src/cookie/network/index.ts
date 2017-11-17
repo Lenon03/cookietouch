@@ -1,7 +1,7 @@
-import IClearable from "@/IClearable";
 import Account from "@account";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
+import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
 import axios from "axios";
 const Primus = require("./primus"); // tslint:disable-line

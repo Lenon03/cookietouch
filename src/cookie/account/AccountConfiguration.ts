@@ -1,4 +1,4 @@
-import { BoostableStats } from "./game/character/BoostableStats";
+import { BoostableStats } from "@game/character/BoostableStats";
 import SpellToBoostEntry from "./SpellToBoostEntry";
 
 export default class AccountConfiguration {

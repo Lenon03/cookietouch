@@ -10,7 +10,9 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],
-      "@account": ["cookie/Account.ts"],
+      "@account": ["cookie/account"],
+      "@account/*": ["cookie/account/*"],
+      "@game/*": ["cookie/game/*"],
       "@protocol/*": ["cookie/protocol/*"],
       "@utils/*": ["cookie/utils/*"],
       "@logger": ["cookie/core/logger"],

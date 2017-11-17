@@ -1,10 +1,10 @@
-import IClearable from "@/IClearable";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import DataClasses from "@protocol/data/classes";
 import MapData from "@protocol/data/map";
 import HouseInformations from "@protocol/network/types/HouseInformations";
 import Dictionary from "@utils/Dictionary";
+import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
 import { MapChangeDirections } from "../managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "../managers/movements/MovementRequestResults";

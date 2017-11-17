@@ -9,13 +9,13 @@ import { NetworkPhases } from "./NetworkPhases";
 const Primus = require("./primus"); // tslint:disable-line
 
 export default class Network implements IClearable {
-  public server: object;
-  public access: string;
   public connected: boolean = false;
   private account: Account;
   private socket: any;
   private sessionId: string;
   private _phase: NetworkPhases;
+  private server: any;
+  private access: string;
 
   public get PhaseChanged() { return this.onPhaseChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
@@ -64,7 +64,8 @@ export default class Network implements IClearable {
     }
   }
 
-  public migrate(url: string) {
+  public switchToGameServer(url: string, server: any) {
+    this.server = server;
     if (!this.connected || this.phase !== NetworkPhases.LOGIN) {
       return;
     }
@@ -193,12 +194,13 @@ export default class Network implements IClearable {
       this.account.logger.logDebug("Primus", "Connection closed");
 
       this.connected = false;
-      if (this.phase === NetworkPhases.SWITCHING_TO_GAME && this.account) {
+      this.onDisconnected.trigger();
+
+      if (this.phase === NetworkPhases.SWITCHING_TO_GAME /*&& this.account*/) {
         this.account.state = AccountStates.CONNECTING;
       } else {
         this.phase = NetworkPhases.NONE;
       }
-      this.onDisconnected.trigger();
     });
 
     this.socket.on("destroy", () => {

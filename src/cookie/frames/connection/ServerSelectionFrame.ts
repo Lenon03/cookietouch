@@ -1,4 +1,6 @@
+import { NetworkPhases } from "@/network/NetworkPhases";
 import Account from "@account";
+import { ServerStatusEnum } from "@protocol/enums/ServerStatusEnum";
 
 export default class ServerSelectionFrame {
 
@@ -20,24 +22,35 @@ export default class ServerSelectionFrame {
       this.HandleAuthenticationTicketRefusedMessage, this);
   }
 
-  private async HandleServersListMessage(account: Account, data: any) {
-    for (const server of data.servers) {
-      if (server.isSelectable && server.charactersCount > 0) {
-        account.network.sendMessage("ServerSelectionMessage", {
-          serverId: server.id,
-        });
-        return;
-      }
+  private async HandleServersListMessage(account: Account, message: any) {
+    const server = account.config.characterCreation.create ?
+      message.servers.find((s: any) => s.name === account.config.characterCreation.server)
+      : account.config.characterCreation.server === "-" ?
+        message.servers.find((s: any) => s.charactersCount > 0)
+        : message.servers.find((s: any) => s.name === account.data.server);
+
+    if (server === undefined || server.charactersCount === 0 && !account.config.characterCreation.create) {
+      account.logger.logError("", "Impossible de selectionner ce serveur");
+      account.stop();
+      return;
     }
 
-    this.account.logger.logDebug("", "Aucuns serveurs n'a pu être selectionné.");
-    account.network.close();
+    if (!server.isSelectable || server.status !== ServerStatusEnum.ONLINE) {
+      account.logger.logError("", `${server.name} ${ServerStatusEnum[server.status]}`);
+      account.stop();
+      return;
+    }
+
+    account.network.sendMessage("ServerSelectionMessage", {
+      serverId: server.id,
+    });
+    account.logger.logDebug("", `Selection du serveur ${server.name}`);
   }
 
-  private async HandleserverDisconnecting(account: Account, data: any) {
-    switch (data.reason) {
+  private async HandleserverDisconnecting(account: Account, message: any) {
+    switch (message.reason) {
       case "SERVER_GONE":
-        account.network.migrate(account.network.access);
+        account.stop();
         break;
       case "CONNECTION_FAILED":
         account.stop();
@@ -47,29 +60,31 @@ export default class ServerSelectionFrame {
     }
   }
 
-  private async HandleSelectedServerDataMessage(account: Account, data: any) {
-    account.framesData.ticket = data.ticket;
-    account.network.access = data._access;
+  private async HandleSelectedServerDataMessage(account: Account, message: any) {
+    account.game.server.UpdateSelectedServerDataMessage(message);
+    account.framesData.ticket = message.ticket;
 
-    account.network.server = {
-      address: data.address,
-      id: data.serverId,
-      port: data.port,
-    };
+    account.network.switchToGameServer(message._access, {
+      address: message.address,
+      id: message.serverId,
+      port: message.port,
+    });
   }
 
-  private async HandleHelloGameMessage(account: Account, data: any) {
+  private async HandleHelloGameMessage(account: Account, message: any) {
     account.network.sendMessage("AuthenticationTicketMessage", {
       lang: account.data.lang,
       ticket: account.framesData.ticket,
     });
+    account.network.phase = NetworkPhases.GAME;
   }
 
-  private async HandleAuthenticationTicketAcceptedMessage(account: Account, data: any) {
+  private async HandleAuthenticationTicketAcceptedMessage(account: Account, message: any) {
+    // TODO: Send this maybe at the TrustStatusMessage
     account.network.sendMessage("CharactersListRequestMessage");
   }
 
-  private async HandleAuthenticationTicketRefusedMessage(account: Account, data: any) {
+  private async HandleAuthenticationTicketRefusedMessage(account: Account, message: any) {
     account.stop();
   }
 }

@@ -1,0 +1,1720 @@
+31 - Larve Bleue
+34 - Larve Verte
+36 - Bouftou
+37 - Craqueleur
+39 - Lapino
+40 - Sanglier
+41 - Prespic
+42 - La Surpuissante
+43 - Tofu
+44 - Bwork Mage
+45 - Chaton
+46 - Larve Orange
+47 - Abraknyde
+48 - Tournesol Sauvage
+52 - Arakne
+53 - Bwork Mage
+54 - Chafer
+55 - Gelée Bleue
+56 - Gelée Menthe
+57 - Gelée Fraise
+58 - Gelée Royale Bleue
+59 - Champ Champ
+61 - Moskito
+62 - Chevaucheur de Karne
+63 - Crabe
+64 - Wabbit
+65 - Black Wabbit
+68 - Black Tiwabbit
+70 - Glutin Boxeur
+72 - Tiwabbit Kiafin
+74 - Bwork Archer
+75 - DragOeuf Doré Immature
+76 - DragOeuf Blanc
+78 - Rose Démoniaque
+79 - Pissenlit Diabolique
+81 - Kwak de Vent
+82 - DragOeuf Noir Immature
+83 - Kwak de Flamme
+84 - Kwak de Glace
+85 - Gelée Royale Menthe
+86 - Gelée Royale Fraise
+87 - DragOeuf Doré
+88 - DragOeuf de Saphir
+89 - DragOeuf Noir
+90 - DragOeuf Blanc Immature
+91 - DragOeuf Noir Éveillé
+93 - DragOeuf Blanc Éveillé
+94 - DragOeuf Doré Éveillé
+95 - DragOeuf de Saphir Éveillé
+96 - Tiwabbit
+97 - Wo Wabbit
+98 - Tofu
+99 - Grand Pa Wabbit
+100 - Fire Beule
+101 - Bouftou
+102 - Mulou
+103 - Prespic
+104 - Sanglier
+106 - Craqueleur
+107 - Dark Vlad
+108 - Rib
+110 - Chafer Invisible
+111 - Tofu Maléfique
+112 - Boo
+113 - Dragon Cochon
+114 - La Folle
+115 - La Bloqueuse
+116 - La Sacrifiée
+117 - La Gonflable
+118 - Mineur Sombre
+119 - Forgeron Sombre
+120 - Tofu lancé
+121 - Minotoror
+123 - Cochon de Lait
+124 - Maître Vampire
+125 - Paysan en Détresse
+126 - Souris Grise
+127 - Vampire
+134 - Boufton Blanc
+147 - Bouftou Royal
+148 - Chef de Guerre Bouftou
+149 - Boufton Noir
+150 - Noeul
+152 - La Fourbe
+153 - Boulanger Sombre
+154 - Kwoan
+155 - Bandit du clan des Roublards
+156 - Vampire Captif
+157 - Araknelle
+158 - Coquille Explosive
+159 - Milimulou
+160 - Dopeul Féca
+161 - Dopeul Osamodas
+162 - Dopeul Enutrof
+163 - Dopeul Sram
+164 - Dopeul Xélor
+165 - Dopeul Ecaflip
+166 - Dopeul Eniripsa
+167 - Dopeul Iop
+168 - Dopeul Crâ
+169 - Dopeul Sadida
+170 - DragOeuf de Saphir Immature
+171 - Dragodinde Amande Sauvage
+173 - Abraknyde Ancestral
+177 - Coffre Malveillant
+178 - Gobelin
+179 - Wabbit Squelette
+180 - Wa Wabbit
+181 - Wobot
+182 - Wabbit Gm
+194 - Scarafeuille Rouge
+198 - Scarafeuille Bleu
+200 - Dragodinde Rousse Sauvage
+207 - Citwouille
+208 - Tikokoko
+209 - Kokoko
+211 - Kanniboul Archer
+212 - Kanniboul Thierry
+213 - Kanniboul Jav
+214 - Kanniboul Sarbak
+215 - Trukikol
+216 - Gloutovore
+217 - Fourbasse
+218 - NodKoko
+220 - Tortue Rouge
+221 - Tortue Bleue
+222 - Tortue Verte
+223 - Tortue Jaune
+225 - Darkli Moon
+226 - Moon
+228 - Boomba
+229 - Nakunbra
+230 - Le Chouque
+231 - Canon Dorf
+232 - Meulou
+233 - Trooll
+235 - Kwak de Terre
+236 - Piou Violet
+237 - Sac Animé
+238 - Pelle animée
+239 - Dragonnet Rouge
+240 - Scarafeuille Vert
+241 - Scarafeuille Blanc
+242 - Flammèche Feu
+243 - Flammèche Eau
+244 - Flammèche Terre
+245 - Flammèche Air
+246 - Arakne
+248 - Brigandine
+249 - Oni
+250 - Aiguille
+252 - Coffre des Forgerons
+253 - Abraknyde Sombre
+254 - Abraknyde Vénérable
+255 - Arakne Agressive
+256 - Tronknyde
+257 - Chêne Mou
+258 - Branche Invocatrice
+259 - Arakne Majeure
+260 - Branche Soignante
+261 - Crocodaille
+262 - Chaferfu
+263 - Chef Crocodaille
+264 - Cadran de Xélor
+265 - Bwak de Feu
+266 - Bwak de Terre
+267 - Bwak d'Air
+268 - Bwak d'Eau
+269 - Kwakere de Flamme
+270 - Kwakere de Terre
+271 - Kwakere de Glace
+272 - Kwakere de Vent
+273 - Blop Coco
+274 - Blop Indigo
+275 - Blop Griotte
+276 - Blop Reinette
+277 - Biblop Indigo
+278 - Biblop Coco
+279 - Biblop Griotte
+280 - Biblop Reinette
+281 - Corbac
+282 - Arbre
+285 - Coffre Animé
+286 - Tarche
+287 - Kanigrou
+288 - Serpentin
+289 - Maître Corbac
+290 - Chafer Lancier
+291 - Chafer Archer
+292 - Chafer d'Élite
+293 - Craqueleur des Plaines
+294 - Souris Verte
+296 - Milicien
+297 - Sanglier des Plaines
+298 - Scorbute
+299 - Croc Gland
+300 - Kolérat
+301 - Ouginak
+314 - Torche
+343 - Cavalier Porkass
+344 - Berger Porkass
+363 - Coeur Du Territoire Des Dopeuls
+364 - Coeur Du Territoire Des Dopeuls
+365 - Corbac égaré
+366 - Sanglier agressif
+368 - Bouftou Chassé
+369 - Mak Gahan
+370 - Mak Gahan équipé
+371 - Maître Bolet
+372 - Guerrier
+373 - Ecureuil Terrifiant
+374 - Eratz le Revendicateur
+375 - Nomekop Le Crapoteur
+376 - Tavernier Tabasse
+377 - Edasse Le Trouble Fête
+378 - Fantôme Ardent
+379 - Fantôme Brave
+380 - Fantôme Arepo
+382 - Tofu Royal
+384 - Aboub
+385 - Amlub
+386 - Codem
+387 - Gink
+388 - Kirevam
+389 - Let Emoliug
+390 - Nebgib
+391 - Nipul
+392 - Osurc
+393 - Susej
+394 - Chevalier
+395 - Ecureuil Chenapan
+396 - Chafer Fantassin
+397 - Croc Gland Enragé
+398 - Dike Tarak
+399 - Krachan Porterr
+400 - Jiaye Djaul
+401 - Chevalier Norgard
+402 - Azra Lazarus
+403 - Colonel Lyeno
+405 - Puja Mustam
+406 - William Lenglad
+407 - Oto Mustam
+408 - Coquille Soignante
+411 - Petite Larve Dorée
+412 - Larve Saphir
+413 - Larve Rubis
+414 - Larve Émeraude
+415 - Chafer Archer de Brâkmar
+416 - Enora
+417 - Tomoya
+418 - Roturo
+419 - WonnoLirsin
+420 - SicraKira
+421 - Momu
+422 - Dopeul Dark Vlad
+423 - Kralamoure Géant
+424 - Tentacule Primaire
+426 - Petit Jan
+427 - Lady Meriane
+429 - Gelée Citron
+430 - Gelée Royale Citron
+432 - Arakne faible
+433 - Epée Dansante
+434 - Epée Volante
+435 - Petit Boufton Blanc
+436 - Lapin
+437 - Mili-Milimulou
+438 - Brigandin
+442 - Rat d'Égoutant
+446 - Aermyne 'Braco' Scalptaras
+447 - Chamane d'Égoutant
+448 - Bondu
+449 - Rat d'Hyoactif
+450 - Gardienne des Égouts
+453 - L'homme Ours
+454 - Le Ours
+455 - Dopeul Sacrieur
+456 - Larve Dorée
+457 - Shin Larve
+458 - Radlu Minite le Mineur Sombre
+459 - Padgref Demoël
+460 - Frakacia Leukocytine
+462 - Ogivol Scalarcin
+463 - Fouduglen L'écureuil
+464 - Brumen Tinctorias
+465 - Rat d'Égoutant Malade
+466 - Bandit Manchot
+467 - Rose Obscure
+468 - Louse Degraine
+469 - Ecureuil mesquin
+470 - Fuu Yie
+471 - Allisteria
+472 - Arakne perverse
+473 - Tofu Malade
+474 - Arakne Malade
+475 - Milirat d'Égoutant malade
+476 - Kaba
+477 - Diver Birel
+478 - Bworker
+479 - Mama Bwork
+480 - Sousouris
+481 - Qil Bil
+482 - Rose Artempeth
+483 - Craqueboule
+484 - Bwork Élémental de Feu
+485 - Bwork Élémental d'Eau
+486 - Bwork Élémental d'Air
+487 - Bwork Élémental de Terre
+488 - Cybwork
+489 - Piou Rouge
+490 - Piou Vert
+491 - Piou Bleu
+492 - Piou Rose
+493 - Piou Jaune
+494 - Poutch Ingball
+495 - La Ouassingue
+496 - Le Ouassingue
+498 - Gargrouille
+499 - Minotoboule de Nowel
+500 - Cadeau animé
+501 - Goriya
+502 - Timouss
+503 - Tofawu
+505 - Dopeul Maléfique
+506 - Disciple Ikwa
+514 - Maitre Pandawushu
+515 - Bulbiflore
+516 - Pandawasta
+517 - Pandit
+518 - Bulbuisson
+519 - Bulbig
+520 - Araknawa
+521 - Micromata
+522 - Cooleuvre
+523 - Kitsou Nakwa
+524 - Bambouto
+525 - Braconnier
+527 - Yokai Firefoux
+528 - Soryo Firefoux
+529 - Maho Firefoux
+530 - Kitsou Nere
+531 - Kitsou Nae
+532 - Kitsou Nufeu
+534 - Pandawa Ivre
+535 - Léopardo
+536 - Gèmpa
+537 - Pandore
+538 - Coeur De Feudala
+539 - Coeur De Terrdala
+540 - Coeur d'Aerdala
+541 - Coeur D'Akwadala
+542 - Coeur d'Aerdala
+543 - Coeur De Terrdala
+544 - Coeur D'Akwadala
+545 - Coeur De Feudala
+546 - Bambouto Sacré
+547 - Pandalette Ivre
+548 - Bulbambou
+549 - Pandule
+550 - Rok Gnorok
+551 - Garde
+552 - Musha L'Oni
+553 - Garde
+554 - Marzwel le Gobelin
+555 - Zatoïshwan
+556 - Cawotte
+557 - Disciple Pandawushu Air
+558 - Disciple Pandawushu Eau
+559 - Disciple Pandawushu Feu
+560 - Disciple Pandawushu Terre
+561 - Disciple Pandawushu
+562 - Kitsou Nae
+563 - Kitsou Nakwa
+564 - Kitsou Nere
+565 - Kitsou Nufeu
+566 - Pandikaze
+567 - Disciple Sankwa
+568 - Tanukouï San
+569 - Tanuki Chan
+570 - Idemas
+571 - Tanuki Chan
+572 - Tanuki Chan
+574 - Tanuki Chan
+577 - Tanuki Chan
+578 - Pandikaze Aérien
+579 - Pandikaze Vertige
+580 - Pandikwakaze
+581 - Pandulkaze
+582 - Touchparak
+583 - Fantôme Pandikaze
+584 - Fantôme Maho Firefoux
+585 - Fantôme Soryo Firefoux
+586 - Fantôme Léopardo
+587 - Fantôme Yokai Firefoux
+588 - Fantôme Tanukouï San
+589 - Fantôme Pandule
+590 - Fantôme Tanuki Chan
+594 - Fantôme Tanuki Chan
+595 - Fantôme Tanuki Chan
+596 - Fantôme Tanuki Chan
+597 - Fantôme Pandore
+598 - Fantôme Tanuki Chan
+599 - Zilla
+600 - Don Duss Ang
+601 - Don Dorgan
+603 - Cochon de Farle
+604 - Iop Mass Test
+605 - Péki Péki
+606 - Bouate de Pandore
+607 - Guerrier Pandikaze
+608 - Boîte Pandikaze
+609 - Pandamani
+611 - Bouate de Fantôme Pandore
+612 - Maître Pandore
+613 - Test recul
+616 - Fantôme Chacha
+631 - Fantôme Corbac
+632 - Fantôme Marcassin
+634 - Fantôme Nomoon
+649 - Coffre Sombre
+650 - Abrakne
+651 - Abrakne Sombre
+652 - Champa Vert
+653 - Champa Rouge
+654 - Champa Bleu
+655 - Champa Marron
+658 - Ecureuil chenapan (copie)
+659 - Fantôme Dragoune
+661 - Fantôme Croum
+662 - Fantôme Fotome
+663 - Fantôme Léopardo
+666 - Dragodinde Dorée Sauvage
+667 - Tueur d'invocations
+668 - Gamino
+669 - Craqueleur Légendaire
+670 - Koulosse
+671 - Bouftou des Cavernes
+672 - Boufcoul
+673 - Émeraude
+674 - Poupée Émeraude
+675 - Saphira
+676 - Poupée Affamée
+677 - Rubise
+678 - Totem Motivant
+679 - Totem Explosif
+680 - Totem Soignant
+681 - Diamantine
+682 - Poupée Mortelle
+684 - Epouvantail de Blé
+685 - Epouvantail d'Orge
+686 - Epouvantail d'Avoine
+687 - Epouvantail du Houblon
+688 - Epouvantail du Lin
+689 - Epouvantail du Seigle
+690 - Epouvantail du Riz
+691 - Epouvantail du Malt
+692 - Epouvantail de Chanvre
+693 - Craqueboule de Fer
+694 - Craqueboule de Cuivre
+695 - Craqueboule de Bronze
+696 - Craqueboule de Kobalte
+697 - Craqueboule de Manganèse
+698 - Craqueboule d'Etain
+699 - Craqueboule de Silicate
+700 - Craqueboule d'Argent
+701 - Craqueboule de Bauxite
+702 - Craqueboule d'Or
+703 - Craqueboule de Dolomite
+704 - Bulbilin
+705 - Bulbichanvre
+706 - Bulbitrèfle
+707 - Bulbimenthe
+708 - Bulborchidée
+709 - Bulbedelweiss
+710 - Bulpandouille
+711 - Frêne Ensorcelé
+712 - Châtaignier Ensorcelé
+713 - Noyer Ensorcelé
+714 - Chêne Ensorcelé
+715 - Bombu Ensorcelé
+716 - Oliviolet Ensorcelé
+717 - Erable Ensorcelé
+718 - If Ensorcelé
+719 - Bambou Ensorcelé
+720 - Kaliptus Ensorcelé
+721 - Merisier Ensorcelé
+722 - Ebène Ensorcelé
+723 - Bambou Sombre Ensorcelé
+724 - Orme Ensorcelé
+725 - Bambou Sacré Ensorcelé
+726 - Dévoreur de Goujons
+727 - Dévoreur de Truite
+728 - Dévoreur de Poisson Chaton
+729 - Dévoreur de Greu-Vette
+730 - Dévoreur de Crabe
+731 - Dévoreur de Poisson Pané
+732 - Dévoreur de Brochet
+733 - Dévoreur de Carpe
+734 - Dévoreur de Sardine
+735 - Dévoreur de Kralamoure
+736 - Dévoreur de Bar
+737 - Dévoreur de Raie
+738 - Dévoreur de Perche
+739 - Dévoreur de Requin
+744 - Koalak Sanguin
+745 - Warko Violet
+746 - Warko Marron
+747 - Dok Alako
+748 - Koalak Immature
+749 - Guerrier Koalak
+751 - Koalak Indigo
+752 - Koalak Coco
+753 - Koalak Griotte
+754 - Koalak Reinette
+755 - Mama Koalak
+756 - Koalak Farouche
+758 - Maître Koalak
+759 - Chevaucheur Koalak
+760 - Momie Koalak
+761 - Fossoyeur Koalak
+762 - Workette
+763 - Drakoalak
+765 - Fantôme Willy le Relou
+767 - Fantôme Bworky
+776 - Alka Traz
+777 - Guan Tanamault
+778 - Luki Loushiano
+779 - Edgg Komb
+780 - Skeunk
+782 - Charme Ensorcelé
+783 - Fauchalak
+784 - Piralak
+785 - Koalak Forestier
+786 - Pékeualak
+788 - Fantôme d'Aventurier Ardent
+789 - Fantôme d'Aventurier Arepo
+790 - Fantôme d'Aventurier Brave
+791 - Trooll Apprivoisé
+792 - Bworkette
+793 - Bouftou d'Halouine
+794 - Tofu d'Halouine
+795 - Scarafeuille Noir
+796 - Tofu Noir
+797 - Scarabosse Doré
+798 - Scarafeuille Immature
+799 - Tournesol Affamé
+800 - Batofu
+801 - Tofu Dégénéré
+802 - Bomberfu
+804 - Tofoune
+805 - Tofu Mutant
+806 - Tofukaz
+807 - Tofuzmo
+808 - Tofu Ventripotent
+813 - Fantôme Bworky
+815 - Fantôme El Scarador
+816 - Fantôme Bouloute
+817 - Fantôme Abra Kadabra
+818 - Corbac Apprivoisé
+819 - Buveur
+820 - Renarbo
+823 - Rono le Renarbo
+824 - Horace le Corbac Apprivoisé
+825 - Kapotie le Buveur
+826 - Kirboule l'Érodé
+827 - Minotot
+828 - Dégelée
+829 - Serpiplume
+830 - Scaratos
+831 - Mominotor
+832 - Déminoboule
+834 - Minoskito
+835 - Mandrine
+836 - Kraméléhon
+839 - Abominable Yiti des Neiges
+840 - Kanigrou Hivernal
+841 - Tofu Givré
+842 - Glutin Turbulent
+843 - Glutin Malfaisant
+844 - Boufmouth
+845 - Bonhomme de Neige
+846 - Dé Gelé
+847 - Tofu Hiberné
+848 - Dragoss Noir
+849 - Kipik
+851 - Glutin Hargneux
+853 - Dragoeuf Guerrier
+854 - Crocabulia
+855 - Dragueuse
+858 - Dragoss Noir Éveillé
+862 - Dragoeuf Volant
+864 - Sakai Firefoux
+867 - Bouboule de Neige
+868 - Tofu Enneigé
+869 - Craqueleur des Glaces
+870 - Ver Glacé
+871 - Ver Getur
+872 - Papa Nowel
+874 - Demi Papa Nowel
+876 - Bwork
+877 - Aqualikros l'Impitoyable
+878 - Dragoss Blanc Éveillé
+879 - Dragoss Doré Éveillé
+880 - Kol'nenfan
+881 - Koup'nenfan
+882 - Pet'nenfan
+884 - Dragoss de Saphir
+885 - Dragoss Blanc
+886 - Dragoss Doré
+887 - Cadob'Onux
+888 - Cadob'Omb
+889 - Cadob'Imbo
+890 - Bébé Cadob
+891 - Mini Nuit'
+892 - Terrakoubiak le Guerrier
+893 - Ignelicrobur le Guerrier
+894 - Aerohouctor le Guerrier
+895 - Aquabralak le Guerrier
+896 - Kitsou Nakwatus
+899 - Black Tiwabbitus
+901 - Kwakus
+902 - Ignerkocropos l'Affamé
+903 - Terraburkal le Perfide
+904 - Aerotrugobur le Malveillant
+905 - Dragoss de Saphir Éveillé
+906 - Cadob'
+907 - Minimini Nuit'
+917 - Araknotron
+919 - Abraknyde Malade
+920 - Pichon Orange
+921 - Pichon Bleu
+922 - Pichon Blanc
+923 - Pichon Vert
+924 - Pichon Kloune
+926 - Raul Mops
+927 - Étoile de la Mer d'Asse
+928 - Mob l'Éponge
+932 - Fantôme Apero
+934 - La Bloqueuse
+935 - Rat de Marais
+936 - Rat Batteur
+937 - Rat Klure
+938 - Rat Basher
+939 - Rat Noir
+940 - Rat Blanc
+941 - Rat Bajoie
+942 - Rat Croc
+943 - Sphincter Cell
+944 - Raphaela
+945 - Donatella
+946 - Michelangela
+947 - Leonardawa
+948 - Paindep
+949 - Gobatchef
+950 - Krazybwork
+951 - Bworkidais
+953 - Bworkcelhaine
+954 - Moumoule
+955 - Dopeul Féca
+957 - Dopeul Enutrof
+958 - Dopeul Sram
+959 - Dopeul Xélor
+960 - Dopeul Ecaflip
+961 - Dopeul Eniripsa
+962 - Dopeul Iop
+963 - Dopeul Crâ
+964 - Dopeul Sadida
+969 - Dopeul Pandawa
+970 - Petit Tofu
+971 - Petit Bouftou
+972 - Jeune Boufton Blanc
+973 - Jeune Boufton Noir
+974 - Moskito Peureux
+975 - Larve Bleue Immature
+976 - Larve Orange Immature
+977 - Larve Verte Immature
+978 - Champ Champ Vulnérable
+979 - Pissenlit Diabolique Apeuré
+980 - Rose Démoniaque Fragile
+981 - Petit Tournesol Sauvage
+982 - Arakne Immature
+983 - Jeune Sanglier
+984 - Petit Chef de Guerre Bouftou
+985 - Titi Gobelait
+986 - Bworkepik
+988 - Gobriel
+989 - Abraknyde Irascible
+990 - Araknotron Irascible
+991 - Abraknyde Sombre Irascible
+992 - Abrakne Sombre Irascible
+993 - Piou de Gobrose
+996 - Chafer Prépubère
+998 - Crabe Imprudent
+999 - Epouvantail d'Incarnam
+1001 - Milimilou
+1002 - Ecraz Néhofite
+1003 - Epouvantail d'entraînement
+1005 - Fantôme Bébé Pandawa
+1006 - Mulou Grankrok
+1011 - Maman Tofu obèse
+1012 - Tofu obèse Gavé
+1013 - Papa Tofu obèse
+1014 - Assassin Sram
+1015 - Wa Wabbit
+1016 - Disciple Pandawushu
+1018 - Bob Lenald
+1019 - Bitouf des Plaines
+1020 - Bitouf Aérien
+1022 - Corailleur
+1025 - Craqueleur Poli
+1026 - Craqueboule Poli
+1027 - Corailleur Magistral
+1029 - Floribonde
+1037 - Fantôme Ross
+1038 - Fantôme Bilby
+1039 - Prince d'Wa
+1041 - Bitouf Sombre
+1042 - Chef Bworkestre
+1043 - Poolay
+1044 - Kaskargo
+1045 - Kimbo
+1046 - Meupette
+1047 - Abrakleur Clair
+1048 - Sparo
+1049 - Barbroussa
+1050 - Le Flib
+1051 - Gourlo le Terrible
+1052 - Maître Zoth
+1053 - Gamine Zoth
+1054 - Guerrier Zoth
+1055 - Disciple Zoth
+1056 - Sergent Zoth
+1057 - Roissingue
+1058 - Tourbassingue
+1059 - Bourbassingue
+1060 - Crustorail Kouraçao
+1061 - Crustorail Malibout
+1062 - Crustorail Passaoh
+1063 - Crustorail Morito
+1064 - Palmifleur Kouraçao
+1065 - Palmifleur Malibout
+1066 - Palmifleur Passaoh
+1067 - Palmifleur Morito
+1068 - Mufafah
+1069 - Kido
+1070 - Kilibriss
+1071 - Silf le Rasboul Majeur
+1072 - Tynril Consterné
+1073 - Brouture
+1074 - Nerbe
+1075 - Fécorce
+1076 - Chiendent
+1077 - Abrakleur Sombre
+1078 - Coffre Maudit du Flib
+1080 - Tonneau Pirate
+1082 - Boomba Shika
+1084 - Rasboul Mineur
+1085 - Tynril Déconcerté
+1086 - Tynril Perfide
+1087 - Tynril Ahuri
+1088 - Disciple du Kimbo
+1090 - Tentacule Quaternaire
+1091 - Tentacule Tertiaire
+1092 - Tentacule Secondaire
+1093 - Chevalier Noir et Rose
+1094 - Gardien du Pont de la Mort
+1096 - Le Ouassingue Entourbé
+1097 - Prisme
+1108 - Chaferfu Lancier
+1111 - Prisme bontarien
+1112 - Prisme brâkmarien
+1113 - Disciple Pandawushu
+1117 - Voleur de Brâkmar
+1119 - Bandit des plaines
+1120 - Garde des marchands
+1121 - Lieutenant des bandits
+1122 - Xephirès
+1123 - Espionne d'élite
+1124 - Guerrier Bontarien
+1125 - Guerrier Brâkmarien
+1127 - Croc Gland repu
+1128 - Puissant milicien bontarien
+1129 - Nara
+1132 - Baweurk
+1133 - Milicien équipé
+1134 - Commandant bontarien Kad
+1135 - Archère équipée
+1136 - Guerrier du cimetière
+1137 - Assassin du cimetière
+1138 - Turorte
+1139 - Espion blessé
+1140 - Agent de Brâkmar
+1141 - Poursuivant brâkmarien
+1142 - Iop en cape brâkmarienne
+1143 - Poursuivant bontarien
+1144 - Sadida en cape bontarienne
+1145 - Oto Mustam
+1153 - Tromperelle
+1154 - Champaknyde
+1155 - Champodonte
+1156 - Champmane
+1157 - Champbis
+1158 - Champ à Gnons
+1159 - Ougah
+1160 - Commandant d'élite bontarien
+1169 - Oto Mustam
+1178 - Champa Explosif
+1179 - Sapik
+1180 - Pokipik
+1181 - Gloutoblop
+1182 - Blopignon
+1183 - Tronkoblop
+1184 - Blop Coco Royal
+1185 - Blop Griotte Royal
+1186 - Blop Indigo Royal
+1187 - Blop Reinette Royal
+1188 - Blop Multicolore Royal
+1189 - Marionnette du Dark Vlad
+1190 - Marionnette du Bouftou Royal
+1191 - Marionnette du Dragon Cochon
+1192 - Marionnette du Minotoror
+1193 - Marionnette du Mulou meulé
+1194 - Père Fwetar
+1196 - Demi père Fwetar
+1229 - Boomba saoulé
+1230 - Canon Dorf débutant
+1231 - Nakunbra esseulé
+1232 - Ballotin le Bouftou
+1233 - Renégat bontarien
+1234 - Lamineur Sombre
+1245 - La jeune fille de l'eau
+1247 - Leprechaun
+2270 - Piradain le Pingre
+2271 - Pékeutar le Tireur
+2272 - Pichakoté le Dégoutant
+2273 - Ratlbol l'Aigri
+2275 - Ratéhaifaim le Professeur
+2276 - Ribibi le Cher
+2277 - Rostensyl la Cuisinière
+2278 - Soryonara le Poli
+2279 - Sampi l'Eternel
+2280 - Scapé l'Epée
+2281 - Scarfayss le Balafré
+2282 - Scarouarze l'Epopée
+2283 - Scaramel le Fondant
+2285 - Scorpitène l'Enflammé
+2286 - Serpistol l'Illustre
+2287 - Serpistule le Purulent
+2289 - Susbewl l'Hypocrite
+2292 - Tikosto le Mousse
+2293 - Tiwalpé le Dévêtu
+2294 - Tiwoflan le Lâche
+2295 - Tortenssia la Fleurie
+2296 - Tortilleur le Coulé
+2297 - Tortorak le Cornu
+2298 - Torthur la Lutte
+2299 - Tronkoneuz la Tranchante
+2300 - Trooyé l'Oxydé
+2301 - Trukul le Lent
+2302 - Vampunor le Glacial
+2303 - YokaiKoral le Duel
+2304 - Wabbitud le Constant
+2305 - Watdogue le Bien Nommé
+2306 - Warkolad l'Etreinte
+2307 - Wara l'Amer
+2308 - Wokènrôl le Danseur
+2309 - Abrakroc l'édenté
+2310 - Arakule la Revancharde
+2311 - Arabord la Cruche
+2312 - Arachitik la Souffreteuse
+2313 - Bandapar l'Exclu
+2314 - Bandson le Tonitruant
+2315 - Boudalf le Blanc
+2316 - Boulgourvil le Lointain
+2317 - Boufdégou le Refoulant
+2318 - Boudur le Raide
+2319 - Chafemal le Bagarreur
+2320 - Chafmarcel le Fêtard
+2321 - Chafalfer l'Optimiste
+2322 - Chalan le Commerçant
+2323 - Chamchie le Difficile
+2324 - Bouflet le Puéril
+2325 - Chonstip la Passagère
+2326 - Craquetuss le Piquant
+2327 - Craraboss le Féérique
+2328 - Forboyar l'Enigmatique
+2329 - Kitsoupierre le Récipient
+2331 - Larvapstrè le Subjectif
+2332 - Larchimaide la Poussée
+2333 - Milipatte la Griffe
+2334 - Milipussien le Géant
+2335 - Minsinistre l'Elu
+2336 - Mosketère le Dévoué
+2337 - Muloufok l'Hilarant
+2338 - Pichdourse le Puissant
+2339 - Picht le Brioché
+2340 - Pichtoire l'Erudit
+2341 - Pioustone le Problème
+2342 - Pioulbrineur le Mercenaire
+2343 - Pioufe la Maquillée
+2344 - Pioulette la Coquine
+2345 - Pioukas la Plante
+2346 - Pichduitre le Totem
+2347 - Pioussokrim le Délétère
+2348 - Pissdane l'Insipide
+2349 - Preskapwal le Tendancieux
+2350 - Radoutable le Craint
+2351 - Rauligo le Sale
+2352 - Roz la Magicienne
+2353 - Sangria le Fruité
+2354 - Sourizoto le Collant
+2355 - Tofuldebeu l'Explosif
+2356 - Tofurapin le Pétri
+2357 - Tofumanchou l'Empereur
+2358 - Tour le Vice
+2359 - Maître Onom le Régulier
+2360 - Ecorfé la Vive
+2361 - Tourbiket le Virevoletant
+2363 - Bouliver le Géant
+2367 - Dragstore le Généraliste
+2368 - Dragtula l'Ancien
+2369 - Dragstik le Frustre
+2370 - Fansissla l'Âne
+2371 - Geloliaine l'Aérien
+2372 - Dragmoclaiss le Fataliste
+2373 - Champoul l'Illuminé
+2374 - Fanhopruno le Gourmet
+2376 - Gelaviv le Glaçon
+2377 - Dragstayr le Fonceur
+2378 - Cromikay le Néophyte
+2379 - Draglida la Disparue
+2381 - Abrinos le Clair
+2382 - Toutouf le Velu
+2383 - Poolopo la Traditionnelle
+2384 - Aboudbra le Porteur
+2385 - Abrakadnuzar
+2386 - Abraklette le Fondant
+2388 - Abrakanette l'Encapsulé
+2389 - Abrakildas le Vénérable
+2391 - Ameur la Laide
+2392 - Arakozette l'Intrépide
+2393 - Araknay la Galopante
+2396 - Bistou le Quêteur
+2397 - Porfavor le Quémandeur
+2398 - Bambono le Divin
+2399 - Bilvoezé le Bonimenteur
+2400 - Bi le Partageur
+2401 - Bistou le Rieur
+2402 - Tiwa'Missou le Gateux
+2403 - Wagnagnah le Sanglant
+2404 - Blorie L'assourdissante
+2405 - Blordur l'Infect
+2406 - Bloporte le Veule
+2407 - Blof l'Apathique
+2408 - Boombata le Garde
+2411 - Bulleur le Dormeur
+2412 - Bramin le Bicéphale
+2413 - Buldeflore le Pénétrant
+2414 - Bulgig le Danseur
+2415 - Bulsavon le Gonflé
+2416 - Bworkasse le Dégoutant
+2417 - Barchwork le Multicolore
+2418 - Bwormage le Respectueux
+2419 - Caboume l'Artilleur
+2420 - Cavordemal le Sorcier
+2421 - Chaffoin le Sournois
+2422 - Chafrit le Barbare
+2423 - Chamitant le Dillettante
+2424 - Champayt l'Odorant
+2425 - Chamflay le Ballonné
+2426 - Chamdblé le Cultivé
+2427 - Champayr le Disjoncté
+2428 - Crok le Beau
+2429 - Koamag'oel le Défiguré
+2430 - Chevaustine le Reconstruit
+2431 - Citassaté le Service
+2432 - Farlon l'Enfant
+2433 - Codenlgaz le Problème
+2434 - Cooligane le Névrosé
+2436 - Crakmitaine le Faucheur
+2437 - Corpat le Vampire
+2438 - Cramikaz le Suicidaire
+2439 - Crolnareff l'Exilé
+2440 - Crognan le Barbare
+2442 - Doktopuss le Maléfique
+2445 - Dragoeth le Penseur
+2446 - Dragma le Bouillant
+2447 - Dragtonien le Malvoyant
+2448 - Dragoo le Cramoisi
+2449 - Dragnostik le Sceptique
+2450 - Dragkouine la Déguisée
+2451 - Dragsta le Détendu
+2452 - Dragobert le Monarque
+2453 - Dragtopaile l'Excavateur
+2454 - Dragminster le Magicien
+2455 - Dragalgan l'Effervescent
+2456 - Dragtarus le Bellâtre
+2457 - Dragybuss le Sucré
+2458 - Draquetteur le Voleur
+2459 - Dragioli le Succulent
+2460 - Drageaufol la Joyeuse
+2461 - Dragonienne l'Econome
+2462 - Drakolage le Tentateur
+2464 - Dragdikal le Décisif
+2465 - Dragnoute l'Irascible
+2466 - Fanlabiz le Véloce
+2467 - Fandanleuil le Précis
+2468 - Fantrask le Rêveur
+2469 - Fanstatik l'Etonnant
+2470 - Fansiss la Brêle
+2471 - Fandouich l'Hautain
+2472 - Fanlmyl l'Acuité
+2473 - Fanhnatur le Simple
+2474 - Fanfancisco le Cosmopolite
+2475 - Fanjo le Pilote
+2476 - Fanjipann le Sucré
+2477 - Fanburn le Viril
+2482 - Fossamoel le Juteux
+2483 - Fantassein le Soldat
+2484 - Fourapin le Chaud
+2486 - Garsim le Mort
+2487 - Gelanal le Huileux
+2493 - Ginsenk le Stimulant
+2494 - Gobstiniais le Têtu
+2495 - Gloubibou le Gars
+2497 - Guerrite le Veilleur
+2498 - Grandilok le Clameur
+2502 - Kannibal le Lecteur
+2503 - Kanasukr le Mielleux
+2505 - Kannémik le Maigre
+2506 - Kannisterik le Forcené
+2507 - Kapota la Fraise
+2508 - Kiroyal le Sirupeux
+2509 - Koaskette la Chapelière
+2510 - Kitsoudbra le Malodorant
+2511 - Kitsoupopulère le Généreux
+2512 - Kitsoufre l'Explosif
+2513 - Koamaembair le Coulant
+2514 - Koalaboi le Calorifère
+2515 - Koasossyal le Psychopathe
+2516 - Koakofrui le Confit
+2517 - Koalastrof la Naturelle
+2518 - Koarmit la Batracienne
+2519 - Koalvissie le Chauve
+2520 - Kolforthe l'Indécollable
+2521 - Krapahut le Randonneur
+2522 - Kwoanneur le Frimeur
+2524 - Ouassébo l'Esthète
+2525 - Let le Rond
+2526 - Mahoku le Botté
+2527 - Léopolnor le Barde
+2528 - Mamakomou l'Âge
+2529 - Mandalo l'Aqueuse
+2531 - Maître Koantik le Théoricien
+2532 - Maître Amboat le Moqueur
+2533 - Minoskour le Sauveur
+2534 - Momikonos la Bandelette
+2538 - Nakuneuye le Borgne
+2539 - Nelvin le Boulet
+2540 - Nipulnislip l'Exhibitionniste
+2541 - NodKoku le Trahi
+2542 - Neufedur le Flottant
+2543 - Onihylis le Destructeur
+2544 - Abrakine le Sombre
+2545 - Barebourd le Comte
+2546 - Bitoven le Musicien
+2547 - Toufou le Benêt
+2548 - Bambouské le Camouflé
+2549 - Boostif l'Affamé
+2550 - Brouste l'Humiliant
+2551 - Champolyon le Polyglotte
+2552 - Chamoute le Duveteux
+2553 - Chamilero le Malchanceux
+2554 - Chiendanlémin l'Illusionniste
+2555 - Corboyard l'Enigmatique
+2556 - Craquetou le Fissuré
+2557 - Crustterus l'Organique
+2558 - Crustensyl le Pragmatique
+2559 - Cruskof le Rustre
+2560 - Crusmeyer le Pervers
+2561 - Crathdogue le Cruel
+2562 - Diskord le Belliqueux
+2563 - Fantoch le Pantin
+2564 - Fanlagoel le Comique
+2565 - Floanna la Blonde
+2566 - Gastroth la Contagieuse
+2567 - Faufoll la Joyeuse
+2568 - Germinol l'Indigent
+2569 - Guerumoth le Collant
+2570 - Kaskapointhe la Couverte
+2571 - Kido l'Âtre
+2572 - Kilimanj'haro le Grimpeur
+2573 - Koktèle le Secoué
+2574 - Larvonika l'Instrument
+2575 - Ouashouash l'Exubérant
+2577 - Meuroup le Prêtre
+2578 - Don Kizoth l'Obstiné
+2579 - Nerdeubeu le Flagellant
+2580 - Mufguedin le Suprême
+2581 - Palmbytch la Bronzée
+2582 - Palmito le Menteur
+2583 - Palmiche le Serein
+2584 - Palmiflette le Convivial
+2585 - Osuxion le Vampirique
+2587 - Seripoth l'Ennemi
+2588 - Sparoket le Lanceur
+2589 - Ougaould le Parasite
+2590 - Pandanlagl la Saoule
+2591 - Pandouille le Titubant
+2592 - Pandimaensh l'Animateur
+2593 - Pandimy le Contagieux
+2597 - Pandive le Végétarien
+2598 - Pangraive le Militant
+2600 - Champmé le Méchant
+2601 - Tromplamor le Survivant
+2602 - Chacha Angora
+2605 - Miniminotot
+2606 - Fantôme Crocodaille
+2607 - Dragoune Noire
+2608 - Dopeul Sacrieur
+2609 - Dopeul Osamodas
+2611 - Minotoror Irascible
+2612 - Dé Moniaque Gelé
+2614 - Roy le Merlin
+2615 - Scaratyn l'huitre
+2616 - Ouature la Mobile
+2617 - Sac Animé de Sumens
+2618 - Ondine
+2619 - La Fruitée
+2622 - Croc Gland de Nowel
+2627 - Lutin d'anniversaire
+2630 - Arakne Majeure
+2631 - Tavernier Bagrutte
+2632 - Sabine
+2633 - Chef des voleurs de Brâkmar
+2634 - Nana moche qui rit
+2635 - Sram moche
+2636 - Gardien du puits
+2637 - Pousse-cailloux
+2638 - Lame Vorpale
+2639 - Coffre Piégé
+2641 - Robot Fléau
+2642 - Croc Gland fraîchement dompté
+2643 - Gardien du convoi
+2644 - Chef du convoi
+2645 - Néforun
+2646 - Arlette Ba
+2647 - Lelievwe Pâle Pitane
+2649 - Grimpill
+2651 - Eniripsa de Brâkmar
+2661 - Espion en fuite
+2662 - Chasseuse d'âmes
+2663 - Chasseur d'âmes
+2664 - Bwork en fuite
+2668 - Espion Sombre
+2669 - Espionne Sombre
+2670 - Chef des renégats bontariens
+2672 - Fantôme Bouloute
+2673 - Jissey Pandamme
+2680 - Kreuvète la Bwork Ingénue
+2681 - Dikal
+2682 - Sac d'os
+2683 - Némik
+2684 - Nékros
+2685 - Kruorre le Chafer Haï
+2691 - Dopeul Pandawa
+2701 - Coffre ensorcelé du Magik Riktus
+2727 - Tonneau
+2749 - Tacticien de Bonta
+2750 - Arbre de vie
+2757 - Chaton de Grimpill
+2767 - Prespic
+2768 - La Solitaire
+2769 - Sanglier invoqué
+2770 - Chafer Os
+2771 - Abraknyde invoqué
+2772 - Jorbak
+2773 - Essence Maléfique de Goultard
+2774 - Essence Résiduelle de Goultard
+2781 - Lupus Minimus
+2782 - Fantôme Dragoune Dorée
+2783 - Pandawa éméché
+2784 - Phil Arthur
+2785 - Epouvantail d'Incarnam
+2786 - Vampire Dupyr
+2787 - Monstre pain
+2788 - Tofu Très Maléfique
+2789 - Craqueboule invoqué
+2790 - Pioussère
+2791 - Sousouris Agressive
+2793 - Krtek
+2794 - Boumbombe
+2795 - Krokille
+2796 - Mineur Sombre de Krtek
+2797 - Kignon
+2798 - Feu Follet
+2799 - Attila
+2802 - Manitou Zoth
+2803 - Esprit de l'Air Altruiste
+2804 - Esprit de l'Air Bagarreur
+2805 - Esprit de l'Eau Altruiste
+2806 - Esprit de l'Eau Bagarreur
+2807 - Esprit du Feu Altruiste
+2808 - Esprit du Feu Bagarreur
+2809 - Esprit de la Terre Altruiste
+2810 - Esprit de la Terre Bagarreur
+2811 - Esprit d'Air
+2812 - Esprit d'Eau
+2813 - Esprit de Feu
+2814 - Esprit de Terre
+2815 - Totem rouge
+2816 - Totem bleu
+2817 - Totem vert
+2818 - Totem jaune
+2819 - Minotoboule de Nowel
+2821 - Coffre de Dédé
+2822 - Kordis
+2823 - Tofu Spectral
+2824 - Sanglier Spectral
+2825 - Ze Rorc
+2826 - Gargule
+2827 - YeCh'Ti
+2828 - Esprit de Cabotine
+2829 - Esprit de Kiki
+2830 - Esprit d'Azra
+2831 - Esprit d'Elvie
+2832 - Esprit de Riri
+2833 - Esprit de Fifi
+2834 - Esprit de Lulu
+2835 - Esprit de Popi
+2836 - Mulou de garde
+2839 - Bulbeneige
+2841 - Dévoreur de Poisskaille
+2842 - Tremble Ensorcelé
+2843 - Epouvantail de Frostiz
+2844 - Craqueboule d'Obsidienne
+2845 - Sanglacier
+2846 - Fricochère
+2847 - Kaniglou
+2848 - Mansot Royal
+2849 - Timansot
+2850 - Boufmouth
+2851 - Boufmouth de guerre
+2852 - Boufmouth légendaire
+2853 - Bouftonmouth
+2854 - Royalmouth
+2855 - Shamansot
+2856 - Mansobèse
+2857 - Mamansot
+2858 - Fu Mansot
+2859 - Ecumouth
+2860 - Smilomouth
+2861 - Apériglours
+2862 - Boulglours
+2863 - Gloursaya
+2864 - Glourséleste
+2865 - Crapeur
+2866 - Atomystique
+2867 - Mofette
+2868 - Fumrirolle
+2869 - Solfataré
+2874 - Fancrôme
+2875 - Fantomalamère
+2876 - Vigie pirate
+2877 - Ben le Ripate
+2878 - Harpirate
+2880 - Fantômat
+2881 - Fantimonier
+2882 - Méga Craqueleur des plaines
+2883 - Blérauve
+2884 - Blérom
+2885 - Wolvero
+2886 - Croleur
+2887 - Cromignons
+2888 - Yokaï Givrefoux
+2889 - Maho Givrefoux
+2890 - Soryo Givrefoux
+2891 - Yomi Givrefoux
+2892 - Rat Bougri
+2893 - Crabe Hijacob
+2894 - Rat Bougri délavé
+2895 - Dramanite
+2896 - Fistulor
+2897 - Fongeur
+2898 - Abrazif
+2899 - Motte
+2900 - Mérulette
+2901 - Bouflouth
+2902 - Monsieur Pingouin
+2903 - Katigrou
+2904 - Fantômayte
+2905 - Vengeuse Masquée
+2906 - YeCh'Ti
+2908 - Dremoan
+2909 - Flasho
+2910 - Viti Glourson
+2911 - La Bête
+2913 - Chachachovage
+2914 - Gélikan
+2917 - Lafairé Danlsak
+2918 - Esprit rebelle
+2919 - Fantôme de pirate
+2920 - Esprirate
+2921 - Esprit de boulet
+2922 - Cromignons
+2923 - Mefisto
+2924 - Obsidiantre
+2925 - Bulbeau
+2926 - Bulbeaugoss
+2928 - Kanimodo
+2929 - Frigostien Saoul
+2930 - Brigand Frigostien
+2932 - Gobosteur
+2933 - Sapeur
+2934 - Ouilleur
+2935 - Marôdeur
+2936 - Perkü
+2937 - Courtilieur
+2938 - Gros Med
+2940 - Smilomouth invoqué
+2941 - Gobus
+2942 - Grolloum
+2947 - Scroutch
+2948 - Odrome
+2949 - Biboulga
+2950 - Pitraille
+2951 - Pougnette
+2954 - Coffre Vorace
+2955 - Hamrack
+2956 - Reine Rate
+2957 - Rat Daim
+2958 - Air Ouaivz
+2959 - Vilain Petit Porkass
+2960 - Kanniboul Ebil
+2961 - Poupée Aycetroy
+2963 - Diogène
+2965 - Fleuro
+2966 - Blérice
+2967 - Tengu Givrefoux
+2968 - Korriandre
+2969 - Sporakne
+2970 - Fuji Givrefoux
+2971 - Germe de Dremoan
+2975 - Boostache
+2976 - Ashi-magari
+2977 - Atomystique instable
+2978 - Pougnette enragée
+2979 - Ondine démoniaque
+2980 - Résidu de lave
+2981 - Glace fondue
+2982 - Kami Givrefoux
+2983 - La Créature
+2984 - Belin
+2985 - Maho Tsétougivré
+2986 - Kolosso
+2987 - Glourmand
+2988 - Glouragan
+2989 - Meliglours
+2990 - Foune
+2991 - Toto
+2992 - Professeur Xa
+2993 - Boufmouth dressé
+2995 - Kwakwa
+3095 - Station Mirh
+3096 - Corbac Terrien
+3097 - Kolérat de Laboratoire
+3098 - Ouginak Déchaîné
+3099 - Scorbute Renforcé
+3100 - Nelween
+3101 - Crocodaille Horloger
+3102 - Agent de sécurité asphyxié
+3106 - Cadeau animé
+3107 - Peluche Tofu
+3108 - Peluche Bouftou
+3109 - Peluche Wabbit
+3111 - Dopeul Roublard
+3112 - Explobombe
+3113 - Tornabombe
+3114 - Bombe à Eau
+3115 - Glourdorak
+3117 - Dragodinde de Nowel
+3118 - Dragodinde de Nowel Sauvage
+3119 - Dragodinde de Nowel Fougueuse
+3120 - Roublabot
+3131 - Dopeul Roublard
+3132 - Dopeul Zobal
+3133 - Petit Cadeau animé
+3136 - Dopeul Zobal
+3137 - Gorgouille
+3138 - Zamawa
+3140 - Créature d'Otomaï
+3141 - Goultard
+3142 - Grozilla
+3143 - Grasmera
+3144 - Krokille Juvénile Crue
+3145 - Krokille Juvénile Insipide
+3146 - Krokille Juvénile Boueuse
+3147 - Krokille Juvénile Incandescente
+3148 - Krokille Juvénile Humide
+3149 - Krokille Juvénile Sèche
+3150 - Krokille Novice Insipide
+3151 - Krokille Novice Boueuse
+3152 - Krokille Novice Incandescente
+3153 - Krokille Novice Humide
+3154 - Krokille Novice Sèche
+3155 - Krokille Mature Insipide
+3156 - Krokille Mature Boueuse
+3157 - Krokille Mature Incandescente
+3158 - Krokille Mature Humide
+3159 - Krokille Mature Sèche
+3160 - Krokille Vénérable Insipide
+3161 - Krokille Vénérable Boueuse
+3162 - Krokille Vénérable Incandescente
+3163 - Krokille Vénérable Humide
+3164 - Krokille Vénérable Sèche
+3165 - Krokille Novice Crue
+3166 - Krokille Mature Crue
+3167 - Krokille Vénérable Crue
+3168 - Krokille de Mer
+3169 - Roublard Akiri
+3170 - Capitaine Hébreuze
+3171 - Roublard Ticho
+3172 - Sousouris Touriste
+3173 - Rubilax
+3174 - « L'Épée »
+3178 - Krokette la Croustillante
+3179 - Krokillage la Marine
+3180 - Krokcinelle la Tâchetée
+3181 - Krokikrisp la Céréalière
+3182 - Krokis l'Esquissée
+3183 - Krokenjambe la Tombeuse
+3184 - Kroktail la Désaltérante
+3185 - Krokotte la Minutée
+3186 - Krokée l'Entamée
+3187 - Krokblanche l'Immaculée
+3188 - Krokrodaille la Mordante
+3189 - Kroknemboure la Mousseuse
+3190 - Krokine l'Allumeuse
+3191 - Krokue la Trompée
+3192 - Krokpit la Pilotée
+3193 - Krokage la Vorace
+3194 - Krokillagée la Sage
+3195 - Krokuite la Calcinée
+3196 - Krokobure la Maudite
+3197 - Krokrane la Distordue
+3200 - Loofi
+3201 - Delminss
+3203 - Saykou Aychwesh
+3204 - Pote
+3205 - Chamane d'Égoutant malade
+3208 - Daïgoro
+3209 - Bûche
+3210 - Sousouris Géante
+3215 - Redolphe
+3216 - Cafard Fadet
+3217 - Oogie Betty
+3218 - Glugubrr
+3219 - Cafard Fadet immature
+3220 - Cadob'Oum
+3221 - G.O. Vans
+3222 - Mel Chiow
+3223 - Balt Azaw
+3224 - Gas Pawd
+3225 - Cadob'Stacle
+3226 - Gros Troud
+3227 - Greg Emilioner
+3228 - Spik Izzy
+3229 - Znarfak Fak
+3230 - Chef Gludotek
+3231 - Glupperkut
+3232 - Bulbig Brozeur
+3233 - Envoyé du roi Allister
+3234 - Fuji Givrefoux Nourricière
+3235 - Boostache Prépubère
+3237 - Disciple Gokwa
+3238 - Chafer Rōnin
+3239 - Chafer Draugr
+3240 - Chafer Primitif
+3244 - Hyperscampe
+3247 - Espwit Wabbit Affamé
+3270 - Pioussin Bleu
+3271 - Pioussin Jaune
+3272 - Pioussin Rose
+3273 - Pioussin Rouge
+3274 - Pioussin Vert
+3275 - Pioussin Violet
+3277 - Mal de Kwoan
+3278 - Dame au Chapeau Rose
+3279 - Nitrô
+3280 - Roublard Kebuz
+3281 - Bwak de Vent
+3282 - Bwak de Glace
+3283 - Bwak de Flamme
+3284 - Bwak de Terre
+3285 - Grand Bleu
+3286 - Dopeul Steamer
+3287 - Harponneuse
+3288 - Gardienne
+3289 - Tactirelle
+3293 - Grozilla Fatigué
+3294 - Grozilla Épuisé
+3295 - Grozilla Somnambule
+3296 - Grasmera Fatigué
+3297 - Grasmera Épuisé
+3298 - Grasmera Somnambule
+3299 - Vilain Petit Tofu
+3300 - Tofutoflamme
+3301 - Tofubine
+3302 - Tofu Dodu
+3303 - Dopeul Steamer
+3304 - Porsalu
+3306 - Halouine
+3307 - Dévhorreur
+3308 - Cauchemarakne
+3309 - Champêtrouille
+3310 - Lanverne
+3311 - Chauffe-Soutrille
+3313 - Marcassin Fantômatique
+3314 - El Scarador Fantômatique
+3315 - Croum Fantômatique
+3316 - Corbac Fantômatique
+3317 - Kwakere de Flamme Protecteur
+3318 - Kwakere de Terre Protecteur
+3319 - Kwakere de Glace Protecteur
+3320 - Kwakere de Vent Protecteur
+3321 - Mort-Brigand
+3322 - Archer Verruqueux
+3323 - Archer Masqué
+3324 - Archer Osseux
+3325 - Concurrente Déloyale
+3326 - Coureur Sanguinaire
+3327 - Mauvais Joueur
+3328 - Lapino du Dopeul
+3329 - Sac Animé du Dopeul
+3330 - Craqueleur du Dopeul
+3331 - Sanglier du Dopeul
+3332 - Bouftou du Dopeul
+3333 - Tofu du Dopeul
+3334 - Bwork Mage du Dopeul
+3335 - Dragonnet Rouge du Dopeul
+3336 - Pandawasta du Dopeul
+3337 - La Folle du Dopeul
+3338 - La Bloqueuse du Dopeul
+3339 - La Gonflable du Dopeul
+3340 - La Surpuissante du Dopeul
+3341 - La Sacrifiée du Dopeul
+3342 - Cadran de Xélor du Dopeul
+3343 - Craquebille
+3344 - Arbre Collant
+3345 - Ratmane d'Égoutant
+3346 - Rat Goûtant
+3347 - Rat Masseur
+3348 - Rat Colleur
+3349 - Rat Pine
+3350 - Rat Fraîchi
+3351 - Rat Caille
+3352 - Rat Botteur
+3353 - Boulanger de Dek
+3354 - Kwak de Pwâk
+3355 - Gilou Aychwesh
+3356 - Gralahad
+3357 - Shushu Baka
+3358 - Larve Verte Solitaire
+3359 - Larve Bleue Solitaire
+3360 - Monstre Brioche de Nowel
+3361 - Gaztronom
+3362 - Bomberfu de Nowel
+3363 - Xélor Louche
+3364 - Xélor Suspect
+3365 - Xélor Interlope
+3366 - Blop Indigo invoqué
+3367 - Blop Coco invoqué
+3368 - Blop Griotte invoqué
+3369 - Blop Reinette invoqué
+3370 - Craqueleur de Glace
+3371 - Smilomouth dressé
+3372 - Dolores Kimo
+3373 - Glourdorak
+3374 - Gobelin Gourmand
+3375 - Gobelin Gastronome
+3376 - Gobelin Glouton
+3377 - Gwan Kwic
+3379 - Harrogant
+3380 - Grodruche
+3381 - Peunch
+3382 - Empaillé
+3383 - Cuirboule
+3384 - Klime
+3385 - Ventrublion
+3386 - Stalak
+3387 - Karkanik
+3389 - Verglasseur
+3390 - Frimar
+3391 - Missiz Frizz
+3392 - Nessil
+3393 - Krakal
+3394 - Dodox
+3395 - Termystique
+3396 - Drosérâle
+3397 - Nileza
+3398 - Gobus instable
+3399 - Œuf de la Mort
+3400 - Docteur Eggob
+3401 - Mekamouth
+3402 - Culbutœuf
+3403 - Chevalier de Glace
+3404 - Kanimate
+3405 - Brikoglours
+3406 - Mansordide
+3407 - Mécanofoux
+3408 - Mérulor
+3409 - Sylargh
+3410 - Granduk
+3411 - Strigide
+3412 - Cycloïde
+3413 - Psikopompe
+3414 - Sinistrofu
+3415 - Nocturlabe
+3416 - Comte Harebourg
+3417 - Tueur Tromatique
+3418 - Gardien du Destin
+3419 - S.L.O.P.
+3420 - Tueur Tromatique Frigorifié
+3421 - Epouvantail de Frostiz Transgénisé
+3422 - Djaulien Perdu
+3423 - Biofiente
+3424 - Esprit Dérangé
+3425 - Ravisseur Kanimate
+3426 - Ravisseur Mécanofoux
+3427 - Ravisseur Mérulor
+3428 - Messager Grippé
+3429 - Larve Bleue insatiable
+3430 - Larve Verte insatiable
+3431 - Larve Orange insatiable
+3432 - Frimaraudeur
+3433 - Kasper Erra
+3434 - Habitant de Frigost
+3435 - Ouvrière du Comte
+3436 - S. Bill Sberg
+3437 - Stalak errant
+3438 - Krakal fantômatique
+3439 - Créature de gaz
+3440 - Emma Sculai
+3441 - Cycloïde déréglé
+3442 - Granduk déréglé
+3443 - Nocturlabe déréglé
+3444 - Sinistrofu déréglé
+3445 - Emma Sculai
+3446 - Ombre
+3447 - Ombre Portée
+3448 - Pillard Porkass
+3449 - Maraudeur Porkass
+3450 - Éclaireur Porkass
+3451 - Prisme d'alliance
+3454 - La Cinglée
+3457 - La Condamnée
+3458 - Cawotte Woyale
+3459 - Wobot Tamponneur
+3460 - Wa Wobot
+3461 - Black Wo Wabbit
+3462 - Wobot Kiafin
+3463 - Blanc Pa Wabbit
+3464 - Wabbit Vampire
+3465 - Cawotman
+3466 - Wabbit Fluo
+3467 - Wabbit Céphale
+3468 - Wabbit Garou
+3469 - Black Wabbit Squelette
+3470 - Pwince Ipauté
+3471 - Pwince Sanwiwe
+3472 - Pwince Uwgé
+3473 - Wabbit Squelette agressif
+3474 - Tiwobot
+3475 - Cawotte GM
+3488 - Ecureuil Querelleur
+3489 - Comploteur Brâkmarien
+3490 - Agitatrice Brâkmarienne
+3491 - Trublion Brâkmarien
+3492 - Comploteur Bontarien
+3493 - Agitatrice Bontarienne
+3494 - Trublion Bontarien
+3495 - Méchant Garçon
+3496 - Petite Frappe
+3497 - Vile Gredine
+3499 - Bouftou Fragile
+3500 - Jeune Boufton Noir
+3501 - Jeune Boufton Blanc
+3502 - Petit Chef de Guerre Bouftou
+3503 - Pioussin Bleu
+3504 - Pioussin Rose
+3505 - Pioussin Jaune
+3506 - Pioussin Violet
+3507 - Petit Tofu
+3508 - Jeune Tofu Noir
+3509 - Tofu ventru
+3510 - Jeune Tofoune
+3511 - Jeune Sanglier
+3512 - Jeune Laie
+3513 - Petit Sanglier Sylvestre
+3514 - Sanglier des Plaines Affaibli
+3515 - Arakne Immature
+3516 - Arakne Luminescente
+3517 - Petite Arakne
+3518 - Arakne Velue
+3523 - Bouftou Sombre
+3524 - Bouftou Céleste
+3533 - Arakne Sombre
+3534 - Arakne Céleste
+3535 - Sanglier Sombre
+3536 - Sanglier Céleste
+3537 - Tofu Sombre
+3538 - Tofu Céleste
+3539 - Piou Sombre
+3540 - Piou Céleste
+3542 - Tofinelle
+3543 - Milimilou
+3544 - Milicien Agressif
+3545 - Dignitaire Bontarien
+3546 - Guerrier Agressif
+3547 - Dignitaire Brâkmarien

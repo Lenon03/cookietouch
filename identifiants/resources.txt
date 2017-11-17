@@ -1,0 +1,76 @@
+Bûcheron
+
+1 - Frêne
+8 - Chêne
+28 - If
+29 - Ebène
+30 - Orme
+31 - Erable
+32 - Charme
+33 - Châtaignier
+34 - Noyer
+35 - Merisier
+2 - Scie
+98 - Bombu
+101 - Oliviolet
+108 - Bambou
+109 - Bambou sombre
+121 - Kaliptus
+133 - Tremble
+
+Mineur
+
+17 - Fer
+53 - Pierre Cuivrée
+55 - Bronze
+37 - Pierre de Kobalte
+24 - Argent
+25 - Or
+26 - Pierre de Bauxite
+27 - Moule
+41 - Meule
+52 - Etain
+54 - Manganèse
+113 - Dolomite
+114 - Silicate
+135 - Obsidienne
+
+Paysan
+
+38 - Blé
+39 - Houblon
+50 - Concasseur
+42 - Lin
+44 - Seigle
+43 - Orge
+46 - Chanvre
+45 - Avoine
+47 - Malt
+50 - Concasseur
+111 - Riz
+134 - Frostiz
+
+Alchimiste
+
+42 - Lin
+46 - Chanvre
+67 - Trèfle à 5 feuilles
+66 - Menthe Sauvage
+68 - Orchidée Freyesque
+61 - Edelweiss
+112 - Pandouille
+131 - Perce-neige
+
+Pêcheur
+
+75 - Petits poissons (rivière)
+74 - Poissons (rivière)
+76 - Gros poissons (rivière)
+79 - Poissons géants (rivière)
+71 - Petits poissons (mer)
+77 - Poissons (mer)
+78 - Gros poissons (mer)
+81 - Poissons géants (mer)
+96 - Plan de Travail
+100 - Pichon
+132 - Poisson de Frigost

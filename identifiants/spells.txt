@@ -1,0 +1,359 @@
+1 - Féca
+
+1 - Armure Incandescente
+2 - Aveuglement
+3 - Attaque Naturelle
+4 - Renvoi de Sort
+5 - Trêve
+6 - Armure Terrestre
+7 - Bouclier Féca
+8 - Retour du Bâton
+9 - Attaque Nuageuse
+10 - Glyphe Enflammé
+11 - Téléportation
+12 - Glyphe d'Aveuglement
+13 - Glyphe de Répulsion
+14 - Armure Venteuse
+15 - Glyphe d'immobilisation
+16 - Fraction
+17 - Glyphe Agressif
+18 - Armure Aqueuse
+19 - Bulle
+20 - Immunité
+1901 - Invocation de Dopeul Féca
+
+2 - Osamodas
+
+21 - Griffe Spectrale
+22 - Déplacement Félin
+23 - Cri de l'Ours
+24 - Corbeau
+25 - Soin Animal
+26 - Bénédiction Animale
+27 - Piqûre Motivante
+28 - Crapaud
+29 - Crocs du Mulou
+30 - Fouet
+31 - Invocation de Dragonnet Rouge
+32 - Résistance Naturelle
+33 - Griffe Cinglante
+34 - Invocation de Tofu
+35 - Invocation de Bouftou
+36 - Frappe du Craqueleur
+37 - Invocation de Prespic
+38 - Invocation de Sanglier
+39 - Invocation de Bwork Mage
+40 - Invocation de Craqueleur
+1902 - Invocation de Dopeul Osamodas
+
+3 - Enutrof
+
+41 - Sac Animé
+42 - Chance
+43 - Lancer de Pelle
+44 - Roulage de Pelle
+45 - Clé Réductrice
+46 - Désinvocation
+47 - Boîte de Pandore
+48 - Remblai
+49 - Pelle Fantomatique
+50 - Maladresse
+51 - Lancer de Pièces
+52 - Cupidité
+53 - Force de l'Age
+54 - Maladresse de Masse
+55 - Accélération
+56 - Pelle du Jugement
+57 - Pelle Animée
+58 - Pelle Massacrante
+59 - Corruption
+60 - Coffre Animé
+1903 - Invocation de Dopeul Enutrof
+
+4 - Sram
+
+61 - Sournoiserie
+62 - Concentration de Chakra
+63 - Coup Sournois
+64 - Repérage
+65 - Piège Sournois
+66 - Poison insidieux
+67 - Peur
+68 - Fourvoiement
+69 - Piège d'Immobilisation
+70 - Arnaque
+71 - Piège Empoisonné
+72 - Invisibilité
+73 - Piège répulsif
+74 - Double
+75 - Pulsion de Chakra
+76 - Attaque Mortelle
+77 - Piège de Silence
+78 - Invisibilité d'Autrui
+79 - Piège de Masse
+80 - Piège Mortel
+1904 - Invocation de Dopeul Sram
+
+5 - Xélor
+
+81 - Ralentissement
+82 - Rembobinage
+83 - Aiguille
+84 - Gelure
+85 - Flou
+86 - Aiguille Chercheuse
+87 - Démotivation
+88 - Téléportation
+89 - Dévouement
+90 - Fuite
+91 - Frappe de Xélor
+92 - Rayon Obscur
+93 - Flétrissement
+94 - Contre
+95 - Horloge
+96 - Poussière Temporelle
+97 - Cadran de Xélor
+98 - Vol du Temps
+99 - Momification
+100 - Sablier de Xélor
+1905 - Invocation de Dopeul Xélor
+
+6 - Ecaflip
+
+101 - Roulette
+102 - Pile ou Face
+103 - Chance d'Ecaflip
+104 - Trèfle
+105 - Bond du Félin
+106 - Roue de la Fortune
+107 - Topkaj
+108 - Esprit Félin
+109 - Bluff
+110 - Griffe Joueuse
+111 - Contrecoup
+112 - Griffe de Ceangal
+113 - Perception
+114 - Rekop
+115 - Odorat
+116 - Langue Râpeuse
+117 - Griffe Invocatrice
+118 - Réflexes
+119 - Tout ou Rien
+120 - Destin d'Ecaflip
+1906 - Invocation de Dopeul Ecaflip
+
+7 - Eniripsa
+
+121 - Mot Curatif
+122 - Mot Blessant
+123 - Mot Drainant
+124 - Mot Soignant
+125 - Mot Interdit
+126 - Mot Stimulant
+127 - Mot de Prévention
+128 - Mot de Frayeur
+129 - Mot d'Amitié
+130 - Mot Revitalisant
+131 - Mot de Régénération
+132 - Mot d'Epine
+133 - Mot de Jouvence
+134 - Mot Vampirique
+135 - Mot de Sacrifice
+136 - Mot d'Immobilisation
+137 - Mot d'Envol
+138 - Mot de Silence
+139 - Mot d'Altruisme
+140 - Mot de Reconstitution
+1907 - Invocation de Dopeul Eniripsa
+
+8 - Iop
+
+141 - Pression
+142 - Bond
+143 - Intimidation
+144 - Duel
+145 - Epée Divine
+146 - Epée du destin
+147 - Poutch
+148 - Friction
+149 - Précipitation
+150 - Couper
+151 - Souffle
+152 - Epée du Jugement
+153 - Puissance
+154 - Epée Destructrice
+155 - Vitalité
+156 - Tempête de Puissance
+157 - Epée Céleste
+158 - Concentration
+159 - Colère de Iop
+160 - Epée de Iop
+1908 - Invocation de Dopeul Iop
+
+9 - Crâ
+
+161 - Flèche Magique
+162 - Tir Critique
+163 - Flèche Glacée
+164 - Flèche Empoisonnée
+165 - Flèche Enflammée
+166 - Tir Puissant
+167 - Flèche d'Expiation
+168 - Oeil de Taupe
+169 - Flèche de Recul
+170 - Flèche d'Immobilisation
+171 - Flèche Punitive
+172 - Tir Eloigné
+173 - Flèche Harcelante
+174 - Flèche Cinglante
+175 - Flèche Destructrice
+176 - Flèche Persécutrice
+177 - Flèche Ralentissante
+178 - Flèche Absorbante
+179 - Flèche Explosive
+180 - Maîtrise de l'Arc
+1909 - Invocation de Dopeul Crâ
+
+10 - Sadida
+
+181 - Tremblement
+182 - La Folle
+183 - Ronce
+184 - Feu de Brousse
+185 - Herbe Folle
+186 - Arbre
+187 - La Surpuissante
+188 - Ronce Insolente
+189 - La Sacrifiée
+190 - La Gonflable
+191 - Ronces Multiples
+192 - Ronce Apaisante
+193 - La Bloqueuse
+194 - Ronces Agressives
+195 - Larme
+196 - Vent Empoisonné
+197 - Puissance Sylvestre
+198 - Sacrifice Poupesque
+199 - Connaissance des Poupées
+200 - Poison Paralysant
+1910 - Invocation de Dopeul Sadida
+
+11 - Sacrieur
+
+431 - Châtiment Forcé
+432 - Pied du Sacrieur
+433 - Châtiment Osé
+434 - Attirance
+435 - Transfert de Vie
+436 - Assaut
+437 - Châtiment Agile
+438 - Transposition
+439 - Dissolution
+440 - Sacrifice
+441 - Châtiment Vitalesque
+442 - Absorption
+443 - Châtiment Spirituel
+444 - Dérobade
+445 - Coopération
+446 - Punition
+447 - Furie
+448 - Epée volante
+449 - Détour
+450 - Folie sanguinaire
+1911 - Invocation de Dopeul Sacrieur
+
+12 - Pandawa
+
+686 - Picole
+687 - Poing Enflammé
+688 - Schnaps
+689 - Epouvante
+690 - Souffle Alcoolisé
+691 - Vulnérabilité
+692 - Gueule de Bois
+693 - Karcham
+694 - Vertige
+695 - Stabilisation
+696 - Chamrak
+697 - Ethylo
+698 - Souillure
+699 - Lait de Bambou
+700 - Vague à Lame
+701 - Colère de Zatoïshwan
+702 - Flasque Explosive
+703 - Pandatak
+704 - Pandanlku
+705 - Lien Spiritueux
+1912 - Invocation de Dopeul Pandawa
+
+13 - Roublard
+
+2763 - Roublardise
+2778 - Détonateur
+2794 - Extraction
+2795 - Botte
+2796 - Tornabombe
+2797 - Bombe à Eau
+2801 - Aimantation
+2802 - Dagues Boomerang
+2803 - Entourloupe
+2804 - Espingole
+2805 - Poudre
+2806 - Pulsar
+2807 - Resquille
+2808 - Explobombe
+2809 - Rémission
+2810 - Dernier Souffle
+2811 - Rebours
+2812 - Surcharge
+2813 - Tromblon
+2815 - Kaboom
+2817 - Invocation de Dopeul Roublard
+
+14 - Zobal
+
+2872 - Masque de Classe
+2879 - Masque du Pleutre
+2880 - Masque du Psychopathe
+2881 - Martelo
+2882 - Rétention
+2883 - Appeau
+2885 - Distance
+2886 - Apathie
+2887 - Furia
+2888 - Cabriole
+2889 - Boliche
+2890 - Plastron
+2891 - Tortoruga
+2892 - Transe
+2893 - Reuche
+2894 - Débandade
+2895 - Fougue
+2896 - Appui
+2897 - Mascarade
+2898 - Invocation de Dopeul Zobal
+2899 - Picada
+
+15 - Steamer
+
+3202 - Scaphandre
+3203 - Marée
+3204 - Ressac
+3205 - Courant
+3206 - Flibuste
+3207 - Selpâtre
+3208 - Ecume
+3209 - Vapor
+3210 - Ancrage
+3211 - Foène
+3212 - Harponneuse
+3213 - Gardienne
+3214 - Tactirelle
+3215 - Évolution
+3216 - Cuirasse
+3217 - Armure de Sel
+3218 - Embuscade
+3219 - Secourisme
+3220 - Longue Vue
+3221 - Aspiration
+3278 - Invocation de Dopeul Steamer

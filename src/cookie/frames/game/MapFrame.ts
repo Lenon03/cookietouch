@@ -55,6 +55,15 @@ export default class MapFrame {
 
   private async HandleMapComplementaryInformationsDataMessage(account: Account, message: any) {
     await account.game.map.UpdateMapComplementaryInformationsDataMessage(account, message);
+    // account.game.bid.StartedSelling.on(() => {
+    //   account.game.bid.sellItem(287, 10, 1799);
+    // });
+    // account.game.bid.startSelling();
+    // account.game.bid.StartedBuying.on(() => {
+    //   // account.game.bid.buyItem(287, 1);
+    //   account.logger.logDofus("", `${account.game.bid.getItemPrice(287, 10)} KAMAS`);
+    // });
+    // account.game.bid.startBuying();
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {

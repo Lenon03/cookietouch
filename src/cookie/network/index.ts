@@ -59,6 +59,10 @@ export default class Network implements IClearable {
   }
 
   public close() {
+    if (!this.connected) {
+      return;
+    }
+
     if (this.socket) {
       this.socket.destroy();
     }
@@ -81,6 +85,10 @@ export default class Network implements IClearable {
 
   public async send(call: string, data?: any): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (!this.connected) {
+        reject();
+      }
+
       let msg;
       let msgName;
 

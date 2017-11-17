@@ -24,10 +24,10 @@ export default class ServerSelectionFrame {
 
   private async HandleServersListMessage(account: Account, message: any) {
     const server = account.config.characterCreation.create ?
-      message.servers.find((s: any) => s.name === account.config.characterCreation.server)
+      message.servers.find((s: any) => s._name === account.config.characterCreation.server)
       : account.config.characterCreation.server === "-" ?
         message.servers.find((s: any) => s.charactersCount > 0)
-        : message.servers.find((s: any) => s.name === account.data.server);
+        : message.servers.find((s: any) => s._name === account.data.server);
 
     if (server === undefined || server.charactersCount === 0 && !account.config.characterCreation.create) {
       account.logger.logError("", "Impossible de selectionner ce serveur");
@@ -36,7 +36,7 @@ export default class ServerSelectionFrame {
     }
 
     if (!server.isSelectable || server.status !== ServerStatusEnum.ONLINE) {
-      account.logger.logError("", `${server.name} ${ServerStatusEnum[server.status]}`);
+      account.logger.logError("", `${server._name} ${ServerStatusEnum[server.status]}`);
       account.stop();
       return;
     }
@@ -44,7 +44,7 @@ export default class ServerSelectionFrame {
     account.network.sendMessage("ServerSelectionMessage", {
       serverId: server.id,
     });
-    account.logger.logDebug("", `Selection du serveur ${server.name}`);
+    account.logger.logDebug("", `Selection du serveur ${server._name}`);
   }
 
   private async HandleserverDisconnecting(account: Account, message: any) {

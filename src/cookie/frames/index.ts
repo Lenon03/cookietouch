@@ -5,8 +5,10 @@ import CharacterSelectionFrame from "./connection/CharacterSelectionFrame";
 import IdentificationFrame from "./connection/IdentificationFrame";
 import ServerSelectionFrame from "./connection/ServerSelectionFrame";
 import AchievementsFrame from "./game/AchievementsFrames";
+import BidFrame from "./game/BidFrame";
 import CharacterFrame from "./game/CharacterFrame";
 import ChatFrame from "./game/ChatFrame";
+import ExchangeFrame from "./game/ExchangeFrame";
 import InventoryFrame from "./game/InventoryFrame";
 import MapFrame from "./game/MapFrame";
 
@@ -22,21 +24,21 @@ export default class Frames {
   private character: CharacterFrame;
   private inventory: InventoryFrame;
   private achievements: AchievementsFrame;
-
-  private account: Account;
+  private bid: BidFrame;
+  private exchange: ExchangeFrame;
 
   constructor(account: Account) {
-    this.account = account;
-
-    this.achievements = new AchievementsFrame(this.account);
-    this.chat = new ChatFrame(this.account);
-    this.queue = new QueueFrame(this.account);
-    this.security = new SecurityFrame(this.account);
-    this.characterSelection = new CharacterSelectionFrame(this.account);
-    this.identification = new IdentificationFrame(this.account);
-    this.serverSelection = new ServerSelectionFrame(this.account);
-    this.character = new CharacterFrame(this.account);
-    this.map = new MapFrame(this.account);
-    this.inventory = new InventoryFrame(this.account);
+    this.achievements = new AchievementsFrame(account);
+    this.bid = new BidFrame(account);
+    this.chat = new ChatFrame(account);
+    this.queue = new QueueFrame(account);
+    this.security = new SecurityFrame(account);
+    this.characterSelection = new CharacterSelectionFrame(account);
+    this.identification = new IdentificationFrame(account);
+    this.serverSelection = new ServerSelectionFrame(account);
+    this.character = new CharacterFrame(account);
+    this.map = new MapFrame(account);
+    this.inventory = new InventoryFrame(account);
+    this.exchange = new ExchangeFrame(account);
   }
 }

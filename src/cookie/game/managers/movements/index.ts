@@ -5,6 +5,7 @@ import IClearable from "@/IClearable";
 import Account from "@account";
 import Map from "@protocol/data/map";
 import Cell from "@protocol/data/map/Cell";
+import GraphicalElement from "@protocol/data/map/GraphicalElement";
 import DTConstants from "@protocol/DTConstants";
 import LiteEvent from "@utils/LiteEvent";
 import axios from "axios";
@@ -36,6 +37,15 @@ export default class MovementsManager implements IClearable {
             data.bottomNeighbourId, data.leftNeighbourId, data.rightNeighbourId);
           for (const cell of data.cells) {
             map.cells.push(new Cell(cell.l, cell.f, cell.c, cell.s, cell.z));
+          }
+          for (const key in data.midgroundLayer) {
+            if (data.midgroundLayer.hasOwnProperty(key)) {
+              const values = data.midgroundLayer[key];
+              for (let i = 0; i < values.length; i++) {
+                values[i] = Object.assign({id: parseInt(key, 10)}, values[i]);
+              }
+              map.midgroundLayer.add(parseInt(key, 10), values);
+            }
           }
           this.map = map;
         })

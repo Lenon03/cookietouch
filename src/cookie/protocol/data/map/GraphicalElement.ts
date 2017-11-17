@@ -3,4 +3,7 @@ export default class GraphicalElement {
   public x: number;
   public y: number;
   public id: number;
+  public hue: number[];
+  public cw: number;
+  public ch: number;
 }

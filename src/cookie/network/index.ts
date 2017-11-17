@@ -97,7 +97,6 @@ export default class Network implements IClearable {
   private setCurrentConnection() {
     this.socket.on("open", () => {
       this.account.logger.logDebug("Primus", "Connection opened");
-
       this.account.logger.logDebug("Primus", "MIGRATING: " + this.migrating);
 
       if (this.migrating === false) {

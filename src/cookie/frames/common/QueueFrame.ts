@@ -15,12 +15,12 @@ export default class QueueFrame {
   }
 
   private async HandleQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDebug("GameQueue",
+    this.account.logger.logDofus("GameQueue",
       `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 
   private async HandleLoginQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDebug("LoginQueue",
+    this.account.logger.logDofus("LoginQueue",
       `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 }

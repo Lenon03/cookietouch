@@ -218,20 +218,67 @@ export default class Map implements IClearable {
       }
     }
 
-    // TODO: Doors, Zaap, Zaapi, Locked Storage
+    const keys = this.data.midgroundLayer.keys();
+    for (let i = 0; i < this.data.midgroundLayer.count(); i++) {
+      const key = keys[i];
+      const value = this.data.midgroundLayer.getValue(key);
+
+      for (const graph of value) {
+        // Check for teleportable cells
+        if (graph.g === 21000) {
+          this.teleportableCells.push(key);
+        } else { // Check for other usable interactives (like doors)
+          const interactive = this.getInteractiveElement(graph.id);
+
+          if (interactive === null) {
+            continue;
+          }
+
+          // Check if this element is a phenix
+          // (a phenix doesn't have skills that's why we check here)
+          if (graph.g === 7521) {
+            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, key));
+          }
+
+          if (!interactive.usable) {
+            continue;
+          }
+
+          // Zaap
+          if (graph.g === 15363 || graph.g === 38003) {
+            this.zaap = new ElementInCellEntry(interactive, key);
+          } else if (graph.g === 15004) {
+            // zaapi
+            this.zaapi = new ElementInCellEntry(interactive, key);
+          } else if (graph.g === 12367) {
+            // locked storage
+            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, key));
+          } else if (Map.doorTypeIds.includes(interactive.elementTypeId) &&
+            Map.doorSkillIds.includes(interactive.enabledSkills[0].id)) {
+            this._doors.add(graph.id, new ElementInCellEntry(interactive, key));
+          }
+        }
+      }
+    }
 
     if (!sameMap || this._joinedFight) {
       this._joinedFight = false;
+      this.account.logger.logDebug("", "Triggering MapChanged");
       this.onMapChanged.trigger();
     } else {
-      // Same map
+      this.account.logger.logWarning("", "Same map.");
     }
   }
 
   public async UpdateGameRolePlayShowActorMessage(account: Account, message: any) {
     if (message.informations._type === "GameRolePlayCharacterInformations") {
       const pe = new PlayerEntry(message.informations);
-      this._players.add(pe.id, pe); // TODO: See why there is an error when adding.
+      if (this._players.containsKey(pe.id)) {
+        this._players.remove(pe.id);
+        this._players.add(pe.id, pe);
+      } else {
+        this._players.add(pe.id, pe);
+      }
       this.onPlayerJoined.trigger(pe);
     } else if (message.informations._type === "GameRolePlayGroupMonsterInformations") {
       const mge = new MonstersGroupEntry(message.informations);

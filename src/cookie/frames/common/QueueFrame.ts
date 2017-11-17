@@ -15,10 +15,12 @@ export default class QueueFrame {
   }
 
   private async HandleQueueStatusMessage(account: Account, data: any) {
-    console.log(`[Queue] Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
+    this.account.logger.logDebug("GameQueue",
+      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 
   private async HandleLoginQueueStatusMessage(account: Account, data: any) {
-    console.log(`[LoginQueue] Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
+    this.account.logger.logDebug("LoginQueue",
+      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
   }
 }

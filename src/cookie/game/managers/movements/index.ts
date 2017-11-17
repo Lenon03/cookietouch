@@ -30,7 +30,6 @@ export default class MovementsManager implements IClearable {
   public updateMap(mapId: number): Promise<Map> {
     return new Promise((resolve, reject) => {
       axios.get(DTConstants.config.assetsUrl + "/maps/" + mapId + ".json")
-
         .then((response) => {
           const data = response.data;
           const map = new Map(data.id, data.topNeighbourId,
@@ -47,12 +46,13 @@ export default class MovementsManager implements IClearable {
 
   public moveToCell(cellId: number, stopNextToTarget: boolean = false): MovementRequestResults {
     if (cellId < 0 || cellId > 560) {
-      console.log("[MovementsManager] Invalid CellId.");
+      this.account.logger.logDebug("MovementsManager", "Invalid CellId.");
       return MovementRequestResults.FAILED;
     }
 
     if (this.account.isBusy || this.currentPath !== null) {
-      console.log("[MovementsManager] IsBusy: " + this.account.isBusy + " , PathNotNull: " + this.currentPath !== null);
+      this.account.logger.logDebug("MovementsManager",
+      `IsBusy: ${this.account.isBusy}, PathNotNull: ${this.currentPath !== null}`);
       return MovementRequestResults.FAILED;
     }
 
@@ -62,26 +62,25 @@ export default class MovementsManager implements IClearable {
 
     const path = PathFinder.getPath(this.account.game.map.playedCharacter.cellId, cellId,
       this.account.game.map.occupiedCells, true, stopNextToTarget);
-    console.log(PathFinder.logPath(path));
 
     if (path.length === 0) {
-      console.log("[MovementsManager] Empty Path.");
+      this.account.logger.logDebug("MovementsManager", "Empty Path.");
       return MovementRequestResults.FAILED;
     }
 
     if (!stopNextToTarget && path[path.length - 1] !== cellId) {
-      console.log("[MovementsManager] Path Blocked.");
+      this.account.logger.logDebug("MovementsManager", "Path Blocked.");
       return MovementRequestResults.PATH_BLOCKED;
     }
 
     if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.map.playedCharacter.cellId) {
-      console.log("[MovementsManager] Already there.");
+      this.account.logger.logDebug("MovementsManager", "Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
 
     if (stopNextToTarget && path.length === 2
       && path[0] === this.account.game.map.playedCharacter.cellId && path[1] === cellId) {
-      console.log("[MovementsManager] Already there.");
+      this.account.logger.logDebug("MovementsManager", "Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
 
@@ -206,7 +205,7 @@ export default class MovementsManager implements IClearable {
   private moveToChangeMap(cellId: number): boolean {
     switch (this.moveToCell(cellId)) {
       case MovementRequestResults.MOVED:
-        console.log(`${this.account.game.map.id} Moving to change map`);
+        this.account.logger.logDebug("", `${this.account.game.map.id} Moving to change map`);
         return true;
       case MovementRequestResults.ALREADY_THERE:
         this.account.network.sendMessage("ChangeMapMessage", {
@@ -215,7 +214,7 @@ export default class MovementsManager implements IClearable {
         this.neighbourMapId = 0;
         return false;
       default:
-        console.log(`Path to ${cellId} failed or is blocked.`);
+        this.account.logger.logDebug("", `Path to ${cellId} failed or is blocked.`);
         this.neighbourMapId = 0;
         return false;
     }

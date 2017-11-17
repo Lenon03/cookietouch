@@ -115,7 +115,7 @@ export default class Inventory {
           position: pos,
           quantity: 1,
         });
-        console.log("Vous avez équipé " + obj.name);
+        this.account.logger.logDebug("", "Vous avez équipé " + obj.name);
         return true;
       }
     }
@@ -126,7 +126,7 @@ export default class Inventory {
       position: possiblePositions[0],
       quantity: 1,
     });
-    console.log("Vous avez équipé " + obj.name);
+    this.account.logger.logDebug("", "Vous avez équipé " + obj.name);
     return true;
   }
 
@@ -144,7 +144,7 @@ export default class Inventory {
       position: CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED,
       quantity: 1,
     });
-    console.log("Vous avez déquipé " + obj.name);
+    this.account.logger.logDebug("", "Vous avez déquipé " + obj.name);
     return true;
   }
 
@@ -165,7 +165,7 @@ export default class Inventory {
         quantity: qty,
       });
     }
-    console.log("Vous avez utilisé " + qty + " " + obj.name);
+    this.account.logger.logDebug("", "Vous avez utilisé " + qty + " " + obj.name);
   }
 
   public dropObject(obj: ObjectEntry, qty = 1) {
@@ -179,7 +179,7 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    console.log("Vous avez jeter " + qty + " " + obj.name);
+    this.account.logger.logDebug("", "Vous avez jeter " + qty + " " + obj.name);
   }
 
   public deleteObject(obj: ObjectEntry, qty = 1) {
@@ -193,7 +193,7 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    console.log("Vous avez supprimer " + qty + " " + obj.name);
+    this.account.logger.logDebug("", "Vous avez supprimer " + qty + " " + obj.name);
   }
 
   public resetMaxWeight() {

@@ -143,7 +143,7 @@ export default class PathFinder {
           selectionIndex = c;
         }
       }
-      console.log("[pathfinding] Pushed cell : ", selection);
+      console.log("[pathfinding] Pushed cell : " + selection);
       selections.push(selection);
       candidates.splice(selectionIndex, 1);
 

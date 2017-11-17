@@ -5894,7 +5894,7 @@ function formatArgs() {
 }
 
 /**
- * Invokes `console.log()` when available.
+ * Invokes `this.account.logger.logDebug("",)` when available.
  * No-op when `console.log` is not a "function".
  *
  * @api public

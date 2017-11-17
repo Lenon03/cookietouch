@@ -164,7 +164,7 @@ export default class Map implements IClearable {
   }
 
   public async UpdateMapComplementaryInformationsDataMessage(account: Account, message: any) {
-    console.log("Get MCIDM for map " + message.mapId);
+    this.account.logger.logDebug("", "Get MCIDM for map " + message.mapId);
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
     this.data = await account.game.managers.movements.updateMap(message.mapId);
@@ -178,7 +178,7 @@ export default class Map implements IClearable {
     this.posY = mp.object.posY;
 
     const stop = performance.now();
-    console.log(`Got map infos ${this.currentPosition} in ${stop - start} ms`);
+    this.account.logger.logDebug("", `Got map infos ${this.currentPosition} in ${stop - start} ms`);
 
     this._players = new Dictionary<number, PlayerEntry>();
     this._npcs = new Dictionary<number, NpcEntry>();

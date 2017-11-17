@@ -24,11 +24,12 @@ export default class SecurityFrame {
 
   private async HandleTextInformationMessage(account: Account, data: any) {
     if (data.msgId === 245) {
-      console.log("Vous avez atteint la limite de combat journalière.");
+      this.account.logger.logDebug("", "Vous avez atteint la limite de combat journalière.");
     }
   }
 
   private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
-    console.log(`Vous êtes kick encore pour ${data.days} jours, ${data.hours}, et ${data.minutes} minutes.`);
+    this.account.logger
+      .logDebug("", `Vous êtes kick encore pour ${data.days} jours, ${data.hours}, et ${data.minutes} minutes.`);
   }
 }

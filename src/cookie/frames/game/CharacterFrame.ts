@@ -51,7 +51,7 @@ export default class CharacterFrame {
 
   private async HandleCharacterExperienceGainMessage(account: Account, message: any) {
     account.game.character.stats.UpdateCharacterExperienceGainMessage(message);
-    console.log(`Vous avez gagné ${message.experienceCharacter} xp.`);
+    this.account.logger.logDebug("", `Vous avez gagné ${message.experienceCharacter} xp.`);
   }
 
   private async HandleCharacterStatsListMessage(account: Account, message: any) {
@@ -60,7 +60,7 @@ export default class CharacterFrame {
 
   private async HandleCharacterLevelUpMessage(account: Account, message: any) {
     account.game.character.UpdateCharacterLevelUpMessage(message);
-    console.log("Level Up!");
+    this.account.logger.logDebug("", "Level Up!");
   }
 
   private async HandleUpdateLifePointsMessage(account: Account, message: any) {
@@ -83,7 +83,7 @@ export default class CharacterFrame {
     account.game.character.UpdateLifePointsRegenEndMessage(message);
 
     if (message.lifePointsGained > 0) {
-      console.log(`Vous avez regagné ${message.lifePointsGained} points de vie`);
+      this.account.logger.logDebug("", `Vous avez regagné ${message.lifePointsGained} points de vie`);
     }
 
     account.game.character.stats.UpdateLifePointsRegenEndMessage(message);

@@ -20,7 +20,7 @@ export default class IdentificationFrame {
     account.framesData.key = data.key;
     account.framesData.salt = data.salt;
 
-    console.log("Connecté au serveur d'authentification");
+    this.account.logger.logDebug("", "Connecté au serveur d'authentification");
     account.network.send("checkAssetsVersion", {
       assetsVersion: DTConstants.assetsVersion,
       staticDataVersion: DTConstants.staticDataVersion,

@@ -7,7 +7,6 @@ export default class HaapiConnection {
   public token: string;
 
   public processHaapi(username: string, password: string): Promise<any> {
-    console.log(DTConstants.appVersion);
     return new Promise(async (resolve, reject) => {
       this.haapi = await this.createApiKey(username, password);
       this.token = await this.getToken();

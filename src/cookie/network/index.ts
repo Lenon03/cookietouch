@@ -35,7 +35,7 @@ export default class Network implements IClearable {
   public connect(sessionId: string, url: string) {
     this.sessionId = sessionId;
     const currentUrl = this.makeSticky(url, this.sessionId);
-    console.log("Connecting to login server (" + currentUrl + ") ...");
+    this.account.logger.logDebug("Primus", "Connecting to login server (" + currentUrl + ") ...");
     this.socket = this.createSocket(currentUrl);
     this.setCurrentConnection();
     this.socket.open();
@@ -52,7 +52,7 @@ export default class Network implements IClearable {
     this.send("disconnecting", "SWITCHING_TO_GAME");
     this.socket.destroy();
     const currentUrl = this.makeSticky(url, this.sessionId);
-    console.log("Connecting to game server (" + currentUrl + ") ...");
+    this.account.logger.logDebug("Primus", "Connecting to game server (" + currentUrl + ") ...");
     this.socket = this.createSocket(currentUrl);
     this.setCurrentConnection();
     this.socket.open();
@@ -79,7 +79,7 @@ export default class Network implements IClearable {
         }
       }
 
-      console.log("Sent: ", msg);
+      console.log("Sent", msg);
       this.onMessageReceived.trigger({ type: msgName, data});
       this.account.dispatcher.emit(msgName, this.account, data);
       this.socket.write(msg);
@@ -96,9 +96,9 @@ export default class Network implements IClearable {
 
   private setCurrentConnection() {
     this.socket.on("open", () => {
-      console.log("Connection opened");
+      this.account.logger.logDebug("Primus", "Connection opened");
 
-      console.log("MIGRATING: ", this.migrating);
+      this.account.logger.logDebug("Primus", "MIGRATING: " + this.migrating);
 
       if (this.migrating === false) {
         this.send("connecting", {
@@ -121,7 +121,7 @@ export default class Network implements IClearable {
     });
 
     this.socket.on("data", (data: any) => {
-      console.log("Received: ", data);
+      console.log("Received", data);
       this.onMessageReceived.trigger({ type: data._messageType, data});
       this.account.dispatcher.emit(data._messageType, this.account, data);
     });
@@ -131,52 +131,52 @@ export default class Network implements IClearable {
     });
 
     this.socket.on("reconnect", (opts: any) => {
-      console.log("Reconnection attempt started");
+      this.account.logger.logDebug("Primus", "Reconnection attempt started");
     });
 
     this.socket.on("reconnect scheduled", (opts: any) => {
-      console.log("Reconnecting in %d ms", opts.scheduled);
-      console.log("This is attempt %d out of %d", opts.attempt, opts.retries);
+      this.account.logger.logDebug("Primus", `Reconnecting in ${opts.scheduled} ms`);
+      this.account.logger.logDebug("Primus", `This is attempt ${opts.attempt} out of ${opts.retries}`);
     });
 
     this.socket.on("reconnected", (opts: any) => {
-      console.log("It took %d ms to reconnect", opts.duration);
+      this.account.logger.logDebug("Primus", `It took ${opts.duration} ms to reconnect`);
     });
 
     this.socket.on("reconnect timeout", (err: any, opts: any) => {
-      console.log("Timeout expired: %s", err.message);
+      this.account.logger.logDebug("Primus", `Timeout expired: ${err.message}`);
     });
 
     this.socket.on("reconnect failed", (err: any, opts: any) => {
-      console.log("The reconnection failed: %s", err.message);
+      this.account.logger.logDebug("Primus", `The reconnection failed: ${err.message}`);
     });
 
     this.socket.on("timeout", () => {
-      console.log("Connection timeout");
+      this.account.logger.logDebug("Primus", "Connection timeout");
     });
 
     this.socket.on("online", () => {
-      console.log("Connection goes online");
+      this.account.logger.logDebug("Primus", "Connection goes online");
     });
 
     this.socket.on("readyStateChange", (state: any) => {
-      console.log("Connection readyStateChange: ", state);
+      this.account.logger.logDebug("Primus", `Connection readyStateChange: ${state}`);
     });
 
     this.socket.on("offline", () => {
-      console.log("Connection goes offline");
+      this.account.logger.logDebug("Primus", "Connection goes offline");
     });
 
     this.socket.on("end", () => {
-      console.log("Connection ended");
+      this.account.logger.logDebug("Primus", "Connection ended");
     });
 
     this.socket.on("close", () => {
-      console.log("Connection closed");
+      this.account.logger.logDebug("Primus", "Connection closed");
     });
 
     this.socket.on("destroy", () => {
-      console.log("Connection destroyed");
+      this.account.logger.logDebug("Primus", "Connection destroyed");
       this.onDisconnected.trigger();
     });
   }

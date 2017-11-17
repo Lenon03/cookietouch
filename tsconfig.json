@@ -12,7 +12,9 @@
       "@/*": ["cookie/*"],
       "@account": ["cookie/Account.ts"],
       "@protocol/*": ["cookie/protocol/*"],
-      "@utils/*": ["cookie/utils/*"]
+      "@utils/*": ["cookie/utils/*"],
+      "@logger": ["cookie/core/logger"],
+      "@logger/*": ["cookie/core/logger/*"]
     }
   },
   "include": [

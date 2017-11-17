@@ -30,7 +30,7 @@ export default class ServerSelectionFrame {
       }
     }
 
-    console.log("Aucuns serveurs n'a pu être selectionné.");
+    this.account.logger.logDebug("", "Aucuns serveurs n'a pu être selectionné.");
     account.network.close();
   }
 

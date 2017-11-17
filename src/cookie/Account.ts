@@ -1,3 +1,4 @@
+import Logger from "@logger";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
 import AccountData from "./AccountData";
@@ -17,6 +18,7 @@ export default class Account {
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
   public framesData: FramesData;
+  public logger: Logger;
 
   public get StateChanged() { return this.onStateChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }
@@ -31,6 +33,7 @@ export default class Account {
   private _state: AccountStates;
 
   constructor(username: string, password: string, lang: string = "fr") {
+    this.logger = new Logger();
     this.data = new AccountData(username, password, lang);
     this.framesData = new FramesData();
     this.state = AccountStates.DISCONNECTED;
@@ -60,7 +63,7 @@ export default class Account {
     this.game.clear();
     this.haapi.processHaapi(this.data.username, this.data.password)
       .then(() => {
-        console.log("Haapi : ", this.haapi);
+        console.log("Haapi", this.haapi);
         this.state = AccountStates.CONNECTING;
         this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
       });

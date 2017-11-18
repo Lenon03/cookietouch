@@ -9,6 +9,7 @@ import GraphicalElement from "@protocol/data/map/GraphicalElement";
 import DTConstants from "@protocol/DTConstants";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
+import { sleep } from "@utils/Time";
 import axios from "axios";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
@@ -166,7 +167,7 @@ export default class MovementsManager implements IClearable {
     return this.moveToChangeMap(cellId);
   }
 
-  public UpdateGameMapMovementMessage(account: Account, data: any) {
+  public async UpdateGameMapMovementMessage(account: Account, data: any) {
     if (data.actorId === account.game.character.id
       && data.keyMovements[0] === this.currentPath[0]
       && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
@@ -175,25 +176,26 @@ export default class MovementsManager implements IClearable {
       account.state = AccountStates.MOVING;
 
       const duration = PathDuration.calculate(this.currentPath);
-      setTimeout(() => {
-        account.network.sendMessage("GameMapMovementConfirmMessage");
 
-        account.state = AccountStates.NONE;
+      await sleep(duration);
 
-        if (this.neighbourMapId === 0) {
-          this.OnMovementFinished(true);
-        } else {
-          this.currentPath = null;
+      account.network.sendMessage("GameMapMovementConfirmMessage");
 
-          if (this.neighbourMapId !== 0) {
-            account.network.sendMessage("ChangeMapMessage", {
-              mapId: this.neighbourMapId,
-            });
+      account.state = AccountStates.NONE;
 
-            this.neighbourMapId = 0;
-          }
+      if (this.neighbourMapId === 0) {
+        this.OnMovementFinished(true);
+      } else {
+        this.currentPath = null;
+
+        if (this.neighbourMapId !== 0) {
+          account.network.sendMessage("ChangeMapMessage", {
+            mapId: this.neighbourMapId,
+          });
+
+          this.neighbourMapId = 0;
         }
-      }, duration);
+      }
     }
   }
 

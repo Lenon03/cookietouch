@@ -1,5 +1,6 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
+import { GatherResults } from "@game/managers/gathers";
 
 export default class MapFrame {
 
@@ -57,13 +58,17 @@ export default class MapFrame {
     //   account.game.bid.sellItem(287, 10, 1799);
     // });
     // account.game.bid.startSelling();
-    // account.game.bid.StartedBuying.on(() => {
+    // account.game.bid.StartedBuying.on(async () => {
     //   // account.game.bid.buyItem(287, 1);
-    //   account.logger.logDofus("", `${account.game.bid.getItemPrice(287, 10)} KAMAS`);
+    //   const res = await account.game.bid.getItemPrice(287, 10);
+    //   account.logger.logDofus("", `${res} KAMAS`);
     // });
     // account.game.bid.startBuying();
-    const res = account.game.managers.gathers.canGather(1);
-    console.log("Gather", res);
+    account.game.managers.gathers.GatherStarted.on(() => console.log("GATHER STARTED"));
+    account.game.managers.gathers.GatherFinished.on((result) => console.log("GATHER FINISHED: " + GatherResults[result]));
+    const res2 = account.game.managers.gathers.gather(1);
+    console.log("Gathered", res2);
+    console.log("ACCOUNT", account);
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {

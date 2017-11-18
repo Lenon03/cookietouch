@@ -49,26 +49,24 @@ export default class Bid implements IClearable {
     return true;
   }
 
-  public getItemPrice(gid: number, lot: number): number {
-    if (this.account.state !== AccountStates.BUYING) {
-      return 0;
-    }
+  public getItemPrice(gid: number, lot: number): Promise<number> {
+    return new Promise(async (resolve, reject) => {
+      if (this.account.state !== AccountStates.BUYING) {
+        reject(0);
+        return;
+      }
 
-    let cheapestItem: BidExchangerObjectInfo = null;
-    this.getCheapestItem(gid, lot)
-    .then((data) => {
-      cheapestItem = data;
-    })
-    .catch((error) => {
-      return 0;
+      const cheapestItem = await this.getCheapestItem(gid, lot);
+
+      // In case the item wasn't found
+      if (cheapestItem === null) {
+        reject(0);
+        return;
+      }
+
+      resolve(cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2]);
+      return;
     });
-
-    // In case the item wasn't found
-    if (cheapestItem === null) {
-      return 0;
-    }
-
-    return cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2];
   }
 
   public getItemPrices(gid: number): Promise<number[]> {

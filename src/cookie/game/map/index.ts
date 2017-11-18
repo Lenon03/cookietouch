@@ -2,7 +2,11 @@ import Account from "@account";
 import DataManager from "@protocol/data";
 import DataClasses from "@protocol/data/classes";
 import MapData from "@protocol/data/map";
-import HouseInformations from "@protocol/network/types/HouseInformations";
+import GameRolePlayCharacterInformations from "@protocol/network/types/GameRolePlayCharacterInformations";
+import GameRolePlayGroupMonsterInformations from "@protocol/network/types/GameRolePlayGroupMonsterInformations";
+import GameRolePlayNpcInformations from "@protocol/network/types/GameRolePlayNpcInformations";
+import InteractiveElement from "@protocol/network/types/InteractiveElement";
+import StatedElement from "@protocol/network/types/StatedElement";
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
@@ -194,41 +198,74 @@ export default class Map implements IClearable {
     this.blacklistedMonsters = [];
     this.zaap = null;
 
+    // Entities
     for (const actor of message.actors) {
+      console.log("ACTOR", actor);
+      // if (actor as GameRolePlayCharacterInformations) {
+      //   if (actor.contextualId === account.game.character.id) {
+      //     console.log("playedCharacter", actor);
+      //     this.playedCharacter = new PlayerEntry(actor);
+      //   } else {
+      //     console.log("_players", actor);
+      //     this._players.add(actor.contextualId, new PlayerEntry(actor));
+      //   }
+      // } else if (actor as GameRolePlayNpcInformations) {
+      //   console.log("_npcs", actor);
+      //   this._npcs.add(actor.contextualId, new NpcEntry(actor));
+      // } else if (actor as GameRolePlayGroupMonsterInformations) {
+      //   console.log("_monstersGroups", actor);
+      //   this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
+      // }
       if (actor._type === "GameRolePlayCharacterInformations") {
         if (actor.contextualId === account.game.character.id) {
+          console.log("playedCharacter", actor);
           this.playedCharacter = new PlayerEntry(actor);
         } else {
+          console.log("_players", actor);
           this._players.add(actor.contextualId, new PlayerEntry(actor));
         }
       } else if (actor._type === "GameRolePlayNpcInformations") {
+        console.log("_npcs", actor);
         this._npcs.add(actor.contextualId, new NpcEntry(actor));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
+        console.log("_monstersGroups", actor);
         this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
       }
     }
 
+    // Interactives
+    // for (const interactive of message.interactiveElements) {
+    //   if (interactive as InteractiveElement) {
+    //     console.log("_interactives", interactive);
+    //     this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
+    //   }
+    // }
+    // for (const stated of message.statedElements) {
+    //   if (stated as StatedElement) {
+    //     console.log("_statedElements", stated);
+    //     this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
+    //   }
+    // }
     for (const interactive of message.interactiveElements) {
-      if (interactive._type === "InteractiveElement") {
+      if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
+        console.log("_interactives", interactive);
         this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
       }
     }
-
     for (const stated of message.statedElements) {
       if (stated._type === "StatedElement") {
+        console.log("_statedElements", stated);
         this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
       }
     }
 
-    const keys = this.data.midgroundLayer.keys();
-    for (let i = 0; i < this.data.midgroundLayer.count(); i++) {
-      const key = keys[i];
-      const value = this.data.midgroundLayer.getValue(key);
+    // Doors
+    for (const kvp of this.data.midgroundLayer) {
 
-      for (const graph of value) {
+      for (const graph of kvp.value) {
         // Check for teleportable cells
         if (graph.g === 21000) {
-          this.teleportableCells.push(key);
+          this.teleportableCells.push(kvp.key);
         } else { // Check for other usable interactives (like doors)
           const interactive = this.getInteractiveElement(graph.id);
 
@@ -239,7 +276,7 @@ export default class Map implements IClearable {
           // Check if this element is a phenix
           // (a phenix doesn't have skills that's why we check here)
           if (graph.g === 7521) {
-            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, key));
+            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           }
 
           if (!interactive.usable) {
@@ -248,16 +285,16 @@ export default class Map implements IClearable {
 
           // Zaap
           if (graph.g === 15363 || graph.g === 38003) {
-            this.zaap = new ElementInCellEntry(interactive, key);
+            this.zaap = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 15004) {
             // zaapi
-            this.zaapi = new ElementInCellEntry(interactive, key);
+            this.zaapi = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 12367) {
             // locked storage
-            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, key));
+            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           } else if (Map.doorTypeIds.includes(interactive.elementTypeId) &&
             Map.doorSkillIds.includes(interactive.enabledSkills[0].id)) {
-            this._doors.add(graph.id, new ElementInCellEntry(interactive, key));
+            this._doors.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           }
         }
       }

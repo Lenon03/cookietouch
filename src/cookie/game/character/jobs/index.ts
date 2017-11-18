@@ -32,7 +32,7 @@ export default class Job {
     this._jobsInitialized = false;
     this.jobs = new Array<JobEntry>();
 
-    const jobsData = await DataManager.get(Jobs, ...message.jobsDescription.map((f: any) => f.id));
+    const jobsData = await DataManager.get(Jobs, ...message.jobsDescription.map((f: any) => f.jobId));
 
     for (const job of message.jobsDescription) {
       const jobEntry = new JobEntry(job, jobsData.find((f) => f.id === job.jobId).object);
@@ -58,7 +58,7 @@ export default class Job {
   }
 
   public async UpdateJobExperienceUpdateMessage(message: any) {
-    this.jobs.find((j) => j.id === message.experienceUpdate.jobId).UpdateJobExperience(message.experienceUpdate);
+    this.jobs.find((j) => j.id === message.experiencesUpdate.jobId).UpdateJobExperience(message.experiencesUpdate);
     this.onJobsUpdated.trigger();
   }
 }

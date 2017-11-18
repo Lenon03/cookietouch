@@ -64,13 +64,15 @@ export default class Account {
   }
 
   public start() {
+    if (this.state !== AccountStates.DISCONNECTED) {
+      return;
+    }
     this.framesData.clear();
     this.network.clear();
     this.game.clear();
     this.extensions.clear();
     this.haapi.processHaapi(this.data.username, this.data.password)
       .then(() => {
-        console.log("Haapi", this.haapi);
         this.state = AccountStates.CONNECTING;
         this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
       });
@@ -93,8 +95,9 @@ export default class Account {
   }
 
   get isInDialog() {
-    return this.state === AccountStates.STORAGE || AccountStates.TALKING
-      || AccountStates.EXCHANGE || AccountStates.BUYING || AccountStates.SELLING;
+    return this.state === AccountStates.STORAGE || this.state === AccountStates.TALKING
+      || this.state === AccountStates.EXCHANGE || this.state === AccountStates.BUYING
+      || this.state === AccountStates.SELLING;
   }
 
   public leaveDialog() {

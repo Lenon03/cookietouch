@@ -33,8 +33,8 @@ export default class GathersManager implements IClearable {
   constructor(account: Account, movements: MovementsManager, map: MapGame) {
     this.account = account;
     this.blacklistedElements = [];
-    movements.MovementFinished.on((success) => this.onMovementFinished.bind(this));
-    map.MapChanged.on(() => this.mapChanged.bind(this));
+    movements.MovementFinished.on((success) => this.onMovementFinished(success));
+    map.MapChanged.on(() => this.mapChanged());
     this.account.dispatcher.register("InteractiveUsedMessage",
       this.HandleInteractiveUsedMessage, this);
     this.account.dispatcher.register("InteractiveUseEndedMessage",
@@ -70,10 +70,10 @@ export default class GathersManager implements IClearable {
       if (this.moveToElement(kvp)) {
         return true;
       }
-
-      this.account.logger.logWarning("GathersManager", "Pas de ressources à récolter ici.");
-      return false;
     }
+
+    this.account.logger.logWarning("GathersManager", "Pas de ressources à récolter ici.");
+    return false;
   }
 
   private getUsableElements(...resourcesIds: number[]): Dictionary<number, InteractiveElementEntry> {
@@ -179,7 +179,6 @@ export default class GathersManager implements IClearable {
     if (this.elementToGather === null) {
       return;
     }
-
     if (success) {
       this.movementFinished = true;
       this.tryUsingElementToGather();

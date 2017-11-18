@@ -21,14 +21,14 @@ export default class Game implements IClearable {
   public npcs: Npcs;
 
   constructor(account: Account) {
-    this.managers = new Managers(account);
+    this.server = new Server(account);
     this.character = new Character(account);
     this.map = new Map(account);
+    this.managers = new Managers(account, this.map);
     this.chat = new Chat(account);
-    this.server = new Server(account);
-    this.bid = new Bid(account);
-    this.exchange = new Exchange(account);
     this.npcs = new Npcs(account);
+    this.exchange = new Exchange(account);
+    this.bid = new Bid(account);
   }
 
   public clear() {

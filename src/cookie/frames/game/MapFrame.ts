@@ -49,8 +49,6 @@ export default class MapFrame {
     await account.network.sendMessage("MapInformationsRequestMessage", {
       mapId: message.mapId,
     });
-
-    account.game.managers.movements.updateMap(message.mapId);
   }
 
   private async HandleMapComplementaryInformationsDataMessage(account: Account, message: any) {

@@ -2,6 +2,7 @@ import PathFinder from "@/core/PathFinder";
 import PathDuration from "@/core/PathFinder/PathDuration";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
+import MapGame from "@game/map";
 import Map from "@protocol/data/map";
 import Cell from "@protocol/data/map/Cell";
 import GraphicalElement from "@protocol/data/map/GraphicalElement";
@@ -23,9 +24,12 @@ export default class MovementsManager implements IClearable {
   private currentPath: number[] = null;
   private neighbourMapId: number = 0;
 
-  constructor(account: Account) {
+  constructor(account: Account, map: MapGame) {
     this.account = account;
     PathFinder.Init();
+    map.MapChanged.on(() => {
+      this.updateMap(map.id);
+    });
   }
 
   public updateMap(mapId: number): Promise<Map> {

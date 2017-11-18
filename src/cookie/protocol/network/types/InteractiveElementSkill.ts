@@ -9,4 +9,8 @@ export default class InteractiveElementSkill {
   public _levelMin: number;
   public _parentJobId: number;
   /* tslint:enable */
+  constructor(skillId = 0, skillInstanceUid = 0) {
+    this.skillId = skillId;
+    this.skillInstanceUid = skillInstanceUid;
+  }
 }

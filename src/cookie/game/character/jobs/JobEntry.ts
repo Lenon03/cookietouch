@@ -49,7 +49,7 @@ export default class JobEntry {
 
   public async UpdateJobExperience(jobExp: JobExperience) {
     this.level = jobExp.jobLevel;
-    this.experience = jobExp.jobXp;
+    this.experience = jobExp.jobXP;
     this.experienceLevelFloor = jobExp.jobXpLevelFloor;
     this.experienceNextLevelFloor = jobExp.jobXpNextLevelFloor;
   }

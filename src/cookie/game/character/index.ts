@@ -259,7 +259,108 @@ export default class Character {
 
   // TODO: skinurl
   public getSkinUrl(mode: string, orientation: number, width: number, height: number, zoom: number): string {
-    return "We have to do this method ^^";
+    let text = "http://staticns.ankama.com/dofus/renderer/look/7";
+    text += "b3";
+    let num = 0;
+    const array = `${this.look.bonesId}`.split("");
+    const array2 = array;
+    for (const c of array2) {
+      const num2 = num;
+      num = num2 + 1;
+      text += `${c}`;
+      const flag = num >= array.length;
+      if (flag) {
+        text += "7";
+      } else {
+        text += "3";
+      }
+    }
+    let num3 = 0;
+    let num4 = 0;
+    for (const current of this.look.skins) {
+      let num2 = num3;
+      num3 = num2 + 1;
+      text += "c3";
+      const array3 = `${current}`.split("");
+      const array4 = array3;
+      for (const c2 of array4) {
+        num2 = num4;
+        num4 = num2 + 1;
+        text += `${c2}`;
+        const flag2 = num4 >= array3.length && num3 < this.look.skins.length;
+        if (flag2) {
+          text += "2";
+          num4 = 0;
+        } else {
+          const flag3 = num4 < array3.length && num3 <= this.look.skins.length;
+          if (flag3) {
+            text += "3";
+          }
+        }
+      }
+      const flag4 = num3 >= this.look.skins.length;
+      if (flag4) {
+        text += "7";
+      }
+    }
+    let num5 = 0;
+    for (const current2 of this.look.indexedColors) {
+      let num2 = num5;
+      num5 = num2 + 1;
+      text = text.concat("c3", `${num5}`, "3d3");
+      num4 = 0;
+      const array5 = `${current2}`.split("");
+      const array6 = array5;
+      for (const c3 of array6) {
+        num2 = num4;
+        num4 = num2 + 1;
+        text += `${c3}`;
+        const flag5 = num4 >= array5.length && num5 < this.look.indexedColors.length;
+        if (flag5) {
+          text += "2";
+          num4 = 0;
+        } else {
+          const flag6 = num4 < array5.length && num5 <= this.look.indexedColors.length;
+          if (flag6) {
+            text += "3";
+          }
+        }
+      }
+      const flag7 = num5 >= this.look.indexedColors.length;
+      if (flag7) {
+        text += "7";
+      }
+    }
+    let num6 = 0;
+    for (const current3 of this.look.scales) {
+      let num2 = num6;
+      num6 = num2 + 1;
+      text += "c3";
+      num4 = 0;
+      const array7 = `${current3}`.split("");
+      const array8 = array7;
+      for (const c4 of array8) {
+        num2 = num4;
+        num4 = num2 + 1;
+        text += `${c4}`;
+        const flag8 = num4 >= array7.length && num6 < this.look.scales.length;
+        if (flag8) {
+          text += "2";
+          num4 = 0;
+        } else {
+          const flag9 = num4 < array7.length && num6 <= this.look.scales.length;
+          if (flag9) {
+            text += "3";
+          }
+        }
+      }
+      const flag10 = num6 >= this.look.scales.length;
+      if (flag10) {
+        text += "7";
+      }
+    }
+    text = text.concat("d/", mode, "/", `${orientation}`, "/", `${width}`, "_", `${height}`, "-", `${zoom}`, ".png");
+    return text;
   }
 
   public clear() {
@@ -320,7 +421,7 @@ export default class Character {
       spell.UpdateSpellUpgradeSuccessMessage(message);
     } else {
       this.spells.push(new SpellEntry(message.spellId, message.spellLevel));
-       // TODO: Check if the new added spellEntry contains good data.
+      // TODO: Check if the new added spellEntry contains good data.
       console.log("SpellEntryAddedOnUpgrade => ", this.spells);
     }
     this.onSpellsUpdated.trigger();

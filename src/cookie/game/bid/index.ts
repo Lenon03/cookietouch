@@ -26,7 +26,7 @@ export default class Bid implements IClearable {
   private readonly onBidLeft = new LiteEvent<void>();
 
   constructor(account: Account) {
-    // this.clear();
+    this.clear();
     this.account = account;
   }
 
@@ -250,23 +250,25 @@ export default class Bid implements IClearable {
 
   private getCheapestItem(gid: number, lot: number): Promise<BidExchangerObjectInfo> {
     return new Promise(async (resolve, reject) => {
+      console.log("OKOKOKOKOKOKOKOK");
       if (this.account.state !== AccountStates.BUYING) {
         reject(null);
         return;
       }
-
+      console.log("OKOKOKOKOKOKOKOK 2");
       const resp = await this.initializeGetItemPrice(gid);
       if (!resp) {
         reject(null);
         return;
       }
-
+      console.log("OKOKOKOKOKOKOKOK 3");
       const list = await this._itemDescription.promise;
+      console.log(list);
       if (this._itemDescription === null || list === null || list.length === 0) {
         reject(null);
         return;
       }
-
+      console.log("OKOKOKOKOKOKOKOK 4");
       const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
       console.log(list);
       console.log(list.sort((elem) => elem.prices[index])[0]);

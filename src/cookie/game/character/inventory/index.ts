@@ -10,7 +10,7 @@ import ObjectEntry from "./ObjectEntry";
 export default class Inventory {
   public kamas: number;
   public weight: number;
-  public maxWeight: number;
+  public weightMax: number;
 
   private account: Account;
   private _objects = new Dictionary<number, ObjectEntry>();
@@ -37,7 +37,7 @@ export default class Inventory {
   }
 
   get weightPercent() {
-    return this.maxWeight === 0 ? 0 : (this.weight / this.maxWeight) * 100;
+    return this.weightMax === 0 ? 0 : (this.weight / this.weightMax) * 100;
   }
 
   get hasFishingRod() {
@@ -203,9 +203,9 @@ export default class Inventory {
       const strength = this.account.game.character.stats.strength.total;
       const boost = this.account.game.character.inventory.equipments.map(
         (e) => e.weightBoost).reduce((prev, next) => prev + next);
-      this.maxWeight = 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
+      this.weightMax = 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
     } catch (e) {
-      this.maxWeight = this._fallbackMaxWeight;
+      this.weightMax = this._fallbackMaxWeight;
     }
   }
 

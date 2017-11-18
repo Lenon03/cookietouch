@@ -62,6 +62,8 @@ export default class MapFrame {
     //   account.logger.logDofus("", `${account.game.bid.getItemPrice(287, 10)} KAMAS`);
     // });
     // account.game.bid.startBuying();
+    const res = account.game.managers.gathers.canGather(1);
+    console.log("Gather", res);
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {

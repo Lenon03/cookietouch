@@ -50,13 +50,11 @@ export default class PathDuration {
     return duration;
   }
 
-  public static init() {
-    this.animDurations.add(AnimDurationTypes.MOUNTED, new AnimDuration(135, 200, 120));
-    this.animDurations.add(AnimDurationTypes.PARABLE, new AnimDuration(400, 500, 450));
-    this.animDurations.add(AnimDurationTypes.RUNNING, new AnimDuration(170, 255, 150));
-    this.animDurations.add(AnimDurationTypes.WALKING, new AnimDuration(480, 510, 425));
-    this.animDurations.add(AnimDurationTypes.SLIDE, new AnimDuration(57, 85, 50));
-  }
-
-  private static animDurations = new Dictionary<AnimDurationTypes, AnimDuration>();
+  private static animDurations = new Dictionary<AnimDurationTypes, AnimDuration>([
+    { key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120)},
+    { key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450)},
+    { key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150)},
+    { key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425)},
+    { key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50)},
+  ]);
 }

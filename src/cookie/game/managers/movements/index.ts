@@ -1,5 +1,5 @@
-import PathFinder from "@/core/PathFinder";
-import PathDuration from "@/core/PathFinder/PathDuration";
+import PathFinder from "@/core/pathfinder";
+import PathDuration from "@/core/pathfinder/PathDuration";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import MapGame from "@game/map";

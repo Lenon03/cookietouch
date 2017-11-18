@@ -1,11 +1,11 @@
-import { isEmpty } from "@utils/String";
+import { isBlank } from "@utils/String";
 import * as moment from "moment";
 import { ChannelColors } from "./ChannelColors";
 import { LogType } from "./LogType";
 
 export default class Logger {
   public log(source: string, message: string, color: string | LogType | ChannelColors) {
-    if (isEmpty(source)) {
+    if (isBlank(source)) {
       console.log(`%c[${source}][${moment().format("LTS")}]${message}`,
       `color: ${color}; font-style: normal; font-size: 12px`);
     } else {

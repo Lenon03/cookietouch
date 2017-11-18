@@ -1,8 +1,20 @@
-export default class Dictionary<T extends number | string, U> {
+export default class Dictionary<T extends number | string, U> implements IterableIterator<{ key: T, value: U }> {
   private mKeys: T[] = [];
   private mValues: U[] = [];
+  private mIteratorIndex: number = 0;
 
   private undefinedKeyErrorMessage: string = "Key is either undefined, null or an empty string.";
+
+  constructor(init?: Array<{key: T, value: U}>) {
+    if (!init) {
+      return;
+    }
+    for (const item of init) {
+      (this as any)[item.key] = item.value;
+      this.mKeys.push(item.key);
+      this.mValues.push(item.value);
+    }
+  }
 
   public add(key: T, value: U): void {
 
@@ -10,7 +22,7 @@ export default class Dictionary<T extends number | string, U> {
       if (this.containsKey(mkey)) {
         throw new Error("An element with the same key already exists in the dictionary.");
       }
-
+      (this as any)[key] = value;
       this.mKeys.push(mkey);
       this.mValues.push(mvalue);
     };
@@ -28,6 +40,7 @@ export default class Dictionary<T extends number | string, U> {
       const index = this.mKeys.indexOf(mkey);
       this.mKeys.splice(index, 1);
       this.mValues.splice(index, 1);
+      delete (this as any)[key];
 
       return true;
     };
@@ -85,6 +98,26 @@ export default class Dictionary<T extends number | string, U> {
 
   public count(): number {
     return this.mValues.length;
+  }
+
+  public next(): IteratorResult<{ key: T, value: U }> {
+    if (this.mIteratorIndex >= this.count()) {
+      return {
+        done: true,
+        value: null,
+      };
+    } else {
+      const current = this.mIteratorIndex;
+      this.mIteratorIndex++;
+      return {
+        done: false,
+        value: { key: this.mKeys[current], value: this.mValues[current] },
+      };
+    }
+  }
+
+  public [Symbol.iterator](): IterableIterator<{ key: T, value: U }> {
+    return this;
   }
 
   private isEitherUndefinedNullOrStringEmpty(object: any): boolean {

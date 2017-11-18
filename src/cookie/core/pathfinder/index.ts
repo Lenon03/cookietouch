@@ -2,12 +2,10 @@ import Map from "@protocol/data/map";
 import Cell from "@protocol/data/map/Cell";
 import CellPath from "./CellPath";
 import CellPathData from "./CellPathData";
-import PathDuration from "./PathDuration";
 
 export default class PathFinder {
 
   public static Init() {
-    PathDuration.init();
     this.constructMapPoints();
 
     for (let i = 0; i < this.WIDTH; i += 1) {
@@ -17,6 +15,17 @@ export default class PathFinder {
       }
       this.grid[i] = row;
     }
+  }
+
+  public static getMapPoint(cellId: number) {
+    const row = cellId % 14 - ~~(cellId / 28);
+    const x = row + 19;
+    const y = row + ~~(cellId / 14);
+    return { x, y };
+  }
+
+  public static getCellId(x: number, y: number): number {
+    return this.mapPointToCellId[x + "_" + y];
   }
 
   public static fillPathGrid(map: Map) {
@@ -391,17 +400,6 @@ export default class PathFinder {
       const coord = this.getMapPoint(cellId);
       this.mapPointToCellId[coord.x + "_" + coord.y] = cellId;
     }
-  }
-
-  private static getMapPoint(cellId: number) {
-    const row = cellId % 14 - ~~(cellId / 28);
-    const x = row + 19;
-    const y = row + ~~(cellId / 14);
-    return { x, y };
-  }
-
-  private static getCellId(x: number, y: number) {
-    return this.mapPointToCellId[x + "_" + y];
   }
 
   private static updateCellPath(cell: Cell, cellPath: CellPathData) {

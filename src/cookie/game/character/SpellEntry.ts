@@ -16,18 +16,19 @@ export default class SpellEntry {
 
   constructor(s: SpellItem | number, spell: Spells | number) {
     if (typeof s === "number" && typeof spell === "number") {
-       DataManager.get(DataClasses.Spells, s).then((data) => {
-          const o = data[0].object;
-          this.id = o.id;
-          this.level = spell;
-          this.name = o.nameId;
-          this.setMinPlayerLevel(o);
-       });
-    } else if (s instanceof SpellItem && spell instanceof Spells) {
-    this.id = s.spellId;
-    this.level = s.spellLevel;
-    this.name = spell.nameId;
-    this.setMinPlayerLevel(spell);
+      DataManager.get(DataClasses.Spells, s).then((data) => {
+        const o = data[0].object;
+        this.id = o.id;
+        this.level = spell;
+        this.name = o.nameId;
+        this.setMinPlayerLevel(o);
+      });
+    } else if (typeof s === "object" /* SpellItem */
+      && typeof spell === "object" /* Spells */) {
+      this.id = s.spellId;
+      this.level = s.spellLevel;
+      this.name = spell.nameId;
+      this.setMinPlayerLevel(spell);
     }
   }
 

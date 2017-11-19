@@ -26,7 +26,7 @@ export default class Bid implements IClearable {
   private readonly onBidLeft = new LiteEvent<void>();
 
   constructor(account: Account) {
-    this.clear();
+    // this.clear();
     this.account = account;
   }
 
@@ -53,7 +53,6 @@ export default class Bid implements IClearable {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
         reject(0);
-        return;
       }
 
       const cheapestItem = await this.getCheapestItem(gid, lot);
@@ -61,11 +60,9 @@ export default class Bid implements IClearable {
       // In case the item wasn't found
       if (cheapestItem === null) {
         reject(0);
-        return;
       }
 
       resolve(cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2]);
-      return;
     });
   }
 
@@ -73,38 +70,28 @@ export default class Bid implements IClearable {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
         reject(null);
-        return;
       }
 
-      if (!this.initializeGetItemPrice(gid)) {
+      const resp = await this.initializeGetItemPrice(gid);
+      if (!resp) {
         reject(null);
-        return;
       }
 
       // Item not found in bid
       const res = await this._itemDescription.promise;
-      if (this._itemDescription === null || res.length === 0) {
+      if (res === null || res.length === 0) {
         resolve([0, 0, 0]);
       }
 
-      console.log(res);
-
-      // return [
-      //   Math.min(res),
-      // ];
+      // TODO: Check if this is right
+      resolve(res[0].prices);
     });
   }
-
-  // private minimumPrice(obj: BidExchangerObjectInfo[]) {
-  //   const tempHighSerie = (obj || []).map((x) => x.prices).reduce((p, n) => );
-  //   return Math.min(...tempHighSerie);
-  // }
 
   public buyItem(gid: number, lot: number): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
         reject(false);
-        return;
       }
 
       const cheapestItem = await this.getCheapestItem(gid, lot);
@@ -112,7 +99,6 @@ export default class Bid implements IClearable {
       // In case the item wasn't found
       if (cheapestItem === null) {
         reject(false);
-        return;
       }
 
       console.log(cheapestItem);
@@ -124,7 +110,6 @@ export default class Bid implements IClearable {
         this.account.logger.logWarning("",
           `Vous n'avez pas assez de kamas pour acheter ${lot} lots de l'objet ${gid}. Il vous faut ${price} kamas`);
         reject(false);
-        return;
       }
 
       await this.account.network.sendMessage("ExchangeBidHouseBuyMessage", {
@@ -250,28 +235,26 @@ export default class Bid implements IClearable {
 
   private getCheapestItem(gid: number, lot: number): Promise<BidExchangerObjectInfo> {
     return new Promise(async (resolve, reject) => {
-      console.log("OKOKOKOKOKOKOKOK");
       if (this.account.state !== AccountStates.BUYING) {
         reject(null);
         return;
       }
-      console.log("OKOKOKOKOKOKOKOK 2");
+
       const resp = await this.initializeGetItemPrice(gid);
       if (!resp) {
         reject(null);
         return;
       }
-      console.log("OKOKOKOKOKOKOKOK 3");
+
       const list = await this._itemDescription.promise;
-      console.log(list);
-      if (this._itemDescription === null || list === null || list.length === 0) {
+
+      if (list === null || list.length === 0) {
         reject(null);
         return;
       }
-      console.log("OKOKOKOKOKOKOKOK 4");
+
       const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
-      console.log(list);
-      console.log(list.sort((elem) => elem.prices[index])[0]);
+
       resolve(list.sort((elem) => elem.prices[index])[0]);
     });
   }
@@ -291,7 +274,7 @@ export default class Bid implements IClearable {
         this._itemDescription = Deferred<BidExchangerObjectInfo[]>();
         this.account.network.sendMessage("ExchangeBidHouseSearchMessage", {
           genId: gid,
-          type: item._type,
+          type: item.typeId,
         });
 
         await this._itemDescription.promise;

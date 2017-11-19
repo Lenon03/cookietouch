@@ -5,11 +5,11 @@ import { LogType } from "./LogType";
 
 export default class Logger {
   public log(source: string, message: string, color: string | LogType | ChannelColors) {
-    if (isBlank(source)) {
-      console.log(`%c[${source}][${moment().format("LTS")}]${message}`,
+    if (!isBlank(source)) {
+      console.log(`%c[${source}][${moment().format("LTS")}] ${message}`,
       `color: ${color}; font-style: normal; font-size: 12px`);
     } else {
-      console.log(`%c[${moment().format("LTS")}]${message}`, `color: ${color}; font-style: normal; font-size: 12px`);
+      console.log(`%c[${moment().format("LTS")}] ${message}`, `color: ${color}; font-style: normal; font-size: 12px`);
     }
   }
 

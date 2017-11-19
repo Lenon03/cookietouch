@@ -250,11 +250,11 @@ export default class Exchange {
       : this.objects.find((o) => o.uid === message.object.objectUID);
 
     if (message.remote) {
-      this.remoteCurrentWeight += removedObj.quantity * removedObj.realWeight;
+      this.remoteCurrentWeight -= removedObj.quantity * removedObj.realWeight;
       // Delete on the list?
       this.remoteObjects = this.remoteObjects.filter((o) => o.uid !== removedObj.uid);
     } else {
-      this.currentWeight += removedObj.quantity * removedObj.realWeight;
+      this.currentWeight -= removedObj.quantity * removedObj.realWeight;
       // Delete on the list?
       this.objects = this.objects.filter((o) => o.uid !== removedObj.uid);
     }

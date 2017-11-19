@@ -13,6 +13,7 @@ import InventoryFrame from "./game/InventoryFrame";
 import MapFrame from "./game/MapFrame";
 import NpcsFrame from "./game/NpcsFrame";
 import QuestsFrame from "./game/QuestsFrame";
+import StorageFrame from "./game/StorageFrame";
 
 export default class Frames {
 
@@ -30,6 +31,7 @@ export default class Frames {
   private exchange: ExchangeFrame;
   private npcs: NpcsFrame;
   private quests: QuestsFrame;
+  private storage: StorageFrame;
 
   constructor(account: Account) {
     this.achievements = new AchievementsFrame(account);
@@ -46,5 +48,6 @@ export default class Frames {
     this.exchange = new ExchangeFrame(account);
     this.npcs = new NpcsFrame(account);
     this.quests = new QuestsFrame(account);
+    this.storage = new StorageFrame(account);
   }
 }

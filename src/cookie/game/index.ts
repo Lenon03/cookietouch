@@ -3,11 +3,12 @@ import IClearable from "@utils/IClearable";
 import Bid from "./Bid";
 import Character from "./character";
 import Chat from "./chat";
-import Exchange from "./Exchange";
+import Exchange from "./exchange";
 import Managers from "./managers";
-import Map from "./Map";
-import Npcs from "./Npcs";
-import Server from "./Server";
+import Map from "./map";
+import Npcs from "./npcs";
+import Server from "./server";
+import Storage from "./storage";
 
 export default class Game implements IClearable {
 
@@ -19,6 +20,7 @@ export default class Game implements IClearable {
   public bid: Bid;
   public exchange: Exchange;
   public npcs: Npcs;
+  public storage: Storage;
 
   constructor(account: Account) {
     this.server = new Server(account);
@@ -29,6 +31,7 @@ export default class Game implements IClearable {
     this.npcs = new Npcs(account);
     this.exchange = new Exchange(account);
     this.bid = new Bid(account);
+    this.storage = new Storage(account);
   }
 
   public clear() {

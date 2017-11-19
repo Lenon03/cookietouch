@@ -232,9 +232,9 @@ export default class Inventory {
   }
 
   public async UpdateObjectsAddedMessage(message: any) {
-    const items = await DataManager.get(Items, ...message.objects.map((o: any) => o.objectGID));
+    const items = await DataManager.get(Items, ...message.object.map((o: any) => o.objectGID));
 
-    for (const obj of message.objects) {
+    for (const obj of message.object) {
       const e = items.find((f) => f.id === obj.objectGID).object;
       const entry = new ObjectEntry(obj, e ? e : null);
       this._objects.add(obj.objectUID, entry);
@@ -285,7 +285,7 @@ export default class Inventory {
   }
 
   public async UpdateObjectsQuantityMessage(message: any) {
-    for (const o of message.objectsUidAndQty) {
+    for (const o of message.objectsUIDAndQty) {
       const obj = this._objects.getValue(o.objectUID);
       if (obj !== null) {
         obj.UpdateQuantity(message.quantity);

@@ -1,6 +1,7 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { GatherResults } from "@game/managers/gathers";
+import { sleep } from "@utils/Time";
 
 export default class MapFrame {
 
@@ -54,21 +55,63 @@ export default class MapFrame {
 
   private async HandleMapComplementaryInformationsDataMessage(account: Account, message: any) {
     await account.game.map.UpdateMapComplementaryInformationsDataMessage(account, message);
+    await sleep(1000);
+    // account.game.npcs.QuestionReceived.on(() => {
+    //   account.game.npcs.reply(-1);
+    // });
+    // account.game.storage.StorageStarted.on(() => {
+    //   account.game.storage.getKamas(0);
+    //   account.game.storage.getAllItems();
+    //   account.leaveDialog();
+    // });
+    // const success = account.game.npcs.useNpc(-1, 1);
+    // console.log("Success?", success);
+
     // account.game.bid.StartedSelling.on(() => {
-    //   account.game.bid.sellItem(287, 10, 1799);
+    //   for (const o of account.game.bid.objectsInSale) {
+    //     account.logger.logInfo("", `${o.objectGID} ${o.objectPrice} ${o.quantity}`);
+    //   }
+    //   account.leaveDialog();
     // });
     // account.game.bid.startSelling();
+
     // account.game.bid.StartedBuying.on(async () => {
     //   // account.game.bid.buyItem(287, 1);
     //   const res = await account.game.bid.getItemPrices(287);
     //   account.logger.logDofus("", `${res} KAMAS`);
     // });
     // account.game.bid.startBuying();
+
     // account.game.managers.gathers.GatherStarted.on(() => console.log("GATHER STARTED"));
     // account.game.managers.gathers.GatherFinished.on((result) => console.log("GATHER FINISHED: " + GatherResults[result]));
     // const res = account.game.managers.gathers.gather(1);
     // console.log("CanGather", res);
     // console.log("ACCOUNT", account);
+    // const item = 287;
+
+    // const lot = 10;
+    // let price = 0;
+    // let uneSeuleFois = false;
+    // account.game.bid.StartedSelling.on(async () => {
+    //   const obj = account.game.character.inventory.getObjectByGid(item);
+    //   for (let i = 0; i < Math.ceil(obj.quantity / lot); i++) {
+    //     if (price !== 0) {
+    //       account.game.bid.sellItem(item, lot, price);
+    //     }
+    //   }
+    //   account.leaveDialog();
+    // });
+    // account.game.bid.StartedBuying.on(async () => {
+    //   price = await account.game.bid.getItemPrice(item, lot);
+    //   account.leaveDialog();
+    // });
+    // account.game.bid.BidLeft.on(() => {
+    //   if (uneSeuleFois === false) {
+    //     uneSeuleFois = true;
+    //     account.game.bid.startSelling();
+    //   }
+    // });
+    // account.game.bid.startBuying();
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {

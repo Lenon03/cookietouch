@@ -13,17 +13,18 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"],
-    plugins: [
-      new TsConfigPathsPlugin(),
-    ]
+    extensions: [
+      ".ts", ".tsx", ".js", ".json"
+    ],
+    plugins: [new TsConfigPathsPlugin()]
   },
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-
       {
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader"
+      }, {
         test: /\.tsx?$/,
         use: [
           {
@@ -36,17 +37,17 @@ module.exports = {
         ],
         enforce: 'pre',
         exclude: /node_modules/
-      },
-
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      }, {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "source-map-loader"
+      }
     ]
   },
 
   plugins: [
     new CheckerPlugin(),
     // new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
-    new webpack.ExternalsPlugin('commonjs', [
-      'electron'
-    ]),
+    new webpack.ExternalsPlugin('commonjs', ['electron'])
   ]
 };

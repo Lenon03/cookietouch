@@ -3,6 +3,7 @@ import Account from "@account";
 import DataManager from "@protocol/data";
 import DTConstants from "@protocol/DTConstants";
 import * as React from "react";
+import Game from "./Game";
 import Infos from "./Infos";
 
 export class App extends React.Component<{}, {}> {
@@ -20,6 +21,7 @@ export class App extends React.Component<{}, {}> {
   public render() {
     return (
       <div>
+        <Game />
         <h1>CookieTouch</h1>
         <button onClick={() => this.start()}>Start</button>
         <button onClick={() => this.stop()}>Stop</button>

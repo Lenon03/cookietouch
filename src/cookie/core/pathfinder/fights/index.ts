@@ -79,9 +79,6 @@ export default class FightsPathfinder {
       }
       const test = { apCost: 0, mpCost: 0 };
       this.getTackleCost(fight, tacklers, current.availableMp, current.availableAp, test);
-      if (test === undefined) {
-        continue;
-      }
 
       const availableMp = current.availableMp - test.mpCost - 1;
       const availableAp = current.availableAp - test.apCost;
@@ -106,10 +103,17 @@ export default class FightsPathfinder {
         if (!map.cells[neighbour.cellId].isWalkable(true)) {
           continue;
         }
-
-        zone.add(neighbour.cellId, new MoveNode(test.apCost, test.mpCost, cellId, reachable)); // TODO: No changeValueForKey
+        if (zone.containsKey(neighbour.cellId)) { // TODO: Check if it's right
+          zone.changeValueForKey(neighbour.cellId, new MoveNode(test.apCost, test.mpCost, cellId, reachable));
+        } else {
+          zone.add(neighbour.cellId, new MoveNode(test.apCost, test.mpCost, cellId, reachable));
+        }
         node = new PathNode(neighbour.cellId, availableAp, availableMp, tackleAp, tackleMp, distance);
-        closed.add(neighbour.cellId, node); // TODO: No changeValueForKey
+        if (closed.containsKey(neighbour.cellId)) { // TODO: Check if it's right
+          closed.changeValueForKey(neighbour.cellId, node);
+        } else {
+          closed.add(neighbour.cellId, node);
+        }
 
         if (current.distance < maxDistance) {
           opened.push(node);
@@ -129,6 +133,9 @@ export default class FightsPathfinder {
   private static getTackleCost(fight: FightGame, tacklers: FighterEntry[], mp: number, ap: number, test: { apCost: number, mpCost: number }) {
     mp = Math.max(0, mp);
     ap = Math.max(0, ap);
+
+    test.mpCost = 0;
+    test.apCost = 0;
 
     if (!this.canBeTackled(fight, fight.playedFighter) || tacklers.length === 0) {
       return;
@@ -173,7 +180,7 @@ export default class FightsPathfinder {
   private static getTackleRatio(actor: FighterEntry, tackler: FighterEntry): number {
     const evade = Math.max(0, actor.stats.tackleEvade);
     const block = Math.max(0, tackler.stats.tackleBlock);
-    return (evade + 2) / (block / 2) / 2;
+    return (evade + 2) / (block + 2) / 2;
   }
 
   private static canBeTackled(fight: FightGame, actor: FighterEntry): boolean {

@@ -1,13 +1,5 @@
-import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
-import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
-import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
-import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
-import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
-import Spell from "@/extensions/fights/configuration/Spell";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
-import { GatherResults } from "@game/managers/gathers";
-import { sleep } from "@utils/Time";
 
 export default class MapFrame {
 
@@ -61,34 +53,6 @@ export default class MapFrame {
 
   private async HandleMapComplementaryInformationsDataMessage(account: Account, message: any) {
     await account.game.map.UpdateMapComplementaryInformationsDataMessage(message);
-    await sleep(1000);
-    // Sorts
-    const divine = new Spell(145, "??", SpellTargets.SELF, 1, 2, 100, 100, SpellResistances.WIND, 100, 0, false, true, false, false);
-    const pression = new Spell(141, "??", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
-    const vita = new Spell(155, "??", SpellTargets.SELF, 3, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
-    const puissance = new Spell(153, "??", SpellTargets.SELF, 1, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
-
-    account.extensions.fights.config.spells.push(divine);
-    account.extensions.fights.config.spells.push(pression);
-    account.extensions.fights.config.spells.push(vita);
-    account.extensions.fights.config.spells.push(puissance);
-    // config
-    account.extensions.fights.config.startPlacement = FightStartPlacement.CLOSE_TO_ENEMIES;
-    account.extensions.fights.config.monsterToApproach = -1;
-    account.extensions.fights.config.spellToApproach = -1;
-    account.extensions.fights.config.blockSpectatorScenario = BlockSpectatorScenarios.NEVER;
-    account.extensions.fights.config.lockFight = false;
-    account.extensions.fights.config.tactic = FightTactics.AGGRESSIVE;
-    account.extensions.fights.config.maxCells = 4;
-    account.extensions.fights.config.approachWhenNoSpellCasted = true;
-    account.extensions.fights.config.baseApproachAllMonsters = true;
-    account.extensions.fights.config.regenStart = 60;
-    account.extensions.fights.config.regenEnd = 80;
-    //
-    const group = this.account.game.map.getMonstersGroup()[0];
-    if (group !== undefined) {
-      account.game.managers.movements.moveToCell(group.cellId);
-    }
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {

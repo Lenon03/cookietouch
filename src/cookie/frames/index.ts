@@ -9,6 +9,7 @@ import BidFrame from "./game/BidFrame";
 import CharacterFrame from "./game/CharacterFrame";
 import ChatFrame from "./game/ChatFrame";
 import ExchangeFrame from "./game/ExchangeFrame";
+import FightFrame from "./game/FightFrame";
 import InventoryFrame from "./game/InventoryFrame";
 import MapFrame from "./game/MapFrame";
 import NpcsFrame from "./game/NpcsFrame";
@@ -32,6 +33,7 @@ export default class Frames {
   private npcs: NpcsFrame;
   private quests: QuestsFrame;
   private storage: StorageFrame;
+  private fight: FightFrame;
 
   constructor(account: Account) {
     this.achievements = new AchievementsFrame(account);
@@ -49,5 +51,6 @@ export default class Frames {
     this.npcs = new NpcsFrame(account);
     this.quests = new QuestsFrame(account);
     this.storage = new StorageFrame(account);
+    this.fight = new FightFrame(account);
   }
 }

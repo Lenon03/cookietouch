@@ -1,3 +1,9 @@
+import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
+import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
+import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
+import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
+import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
+import Spell from "@/extensions/fights/configuration/Spell";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { GatherResults } from "@game/managers/gathers";
@@ -54,88 +60,59 @@ export default class MapFrame {
   }
 
   private async HandleMapComplementaryInformationsDataMessage(account: Account, message: any) {
-    await account.game.map.UpdateMapComplementaryInformationsDataMessage(account, message);
+    await account.game.map.UpdateMapComplementaryInformationsDataMessage(message);
     await sleep(1000);
-    // account.game.npcs.QuestionReceived.on(() => {
-    //   account.game.npcs.reply(-1);
-    // });
-    // account.game.storage.StorageStarted.on(() => {
-    //   account.game.storage.getKamas(0);
-    //   account.game.storage.getAllItems();
-    //   account.leaveDialog();
-    // });
-    // const success = account.game.npcs.useNpc(-1, 1);
-    // console.log("Success?", success);
+    // Sorts
+    const divine = new Spell(145, "??", SpellTargets.SELF, 1, 2, 100, 100, SpellResistances.WIND, 100, 0, false, true, false, false);
+    const pression = new Spell(141, "??", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
+    const vita = new Spell(155, "??", SpellTargets.SELF, 3, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
+    const puissance = new Spell(153, "??", SpellTargets.SELF, 1, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
 
-    // account.game.bid.StartedSelling.on(() => {
-    //   for (const o of account.game.bid.objectsInSale) {
-    //     account.logger.logInfo("", `${o.objectGID} ${o.objectPrice} ${o.quantity}`);
-    //   }
-    //   account.leaveDialog();
-    // });
-    // account.game.bid.startSelling();
-
-    // account.game.bid.StartedBuying.on(async () => {
-    //   // account.game.bid.buyItem(287, 1);
-    //   const res = await account.game.bid.getItemPrices(287);
-    //   account.logger.logDofus("", `${res} KAMAS`);
-    // });
-    // account.game.bid.startBuying();
-
-    // account.game.managers.gathers.GatherStarted.on(() => console.log("GATHER STARTED"));
-    // account.game.managers.gathers.GatherFinished.on((result) => console.log("GATHER FINISHED: " + GatherResults[result]));
-    // const res = account.game.managers.gathers.gather(1);
-    // console.log("CanGather", res);
-    // console.log("ACCOUNT", account);
-    // const item = 287;
-
-    // const lot = 10;
-    // let price = 0;
-    // let uneSeuleFois = false;
-    // account.game.bid.StartedSelling.on(async () => {
-    //   const obj = account.game.character.inventory.getObjectByGid(item);
-    //   for (let i = 0; i < Math.ceil(obj.quantity / lot); i++) {
-    //     if (price !== 0) {
-    //       account.game.bid.sellItem(item, lot, price);
-    //     }
-    //   }
-    //   account.leaveDialog();
-    // });
-    // account.game.bid.StartedBuying.on(async () => {
-    //   price = await account.game.bid.getItemPrice(item, lot);
-    //   account.leaveDialog();
-    // });
-    // account.game.bid.BidLeft.on(() => {
-    //   if (uneSeuleFois === false) {
-    //     uneSeuleFois = true;
-    //     account.game.bid.startSelling();
-    //   }
-    // });
-    // account.game.bid.startBuying();
+    account.extensions.fights.config.spells.push(divine);
+    account.extensions.fights.config.spells.push(pression);
+    account.extensions.fights.config.spells.push(vita);
+    account.extensions.fights.config.spells.push(puissance);
+    // config
+    account.extensions.fights.config.startPlacement = FightStartPlacement.CLOSE_TO_ENEMIES;
+    account.extensions.fights.config.monsterToApproach = -1;
+    account.extensions.fights.config.spellToApproach = -1;
+    account.extensions.fights.config.blockSpectatorScenario = BlockSpectatorScenarios.NEVER;
+    account.extensions.fights.config.lockFight = false;
+    account.extensions.fights.config.tactic = FightTactics.AGGRESSIVE;
+    account.extensions.fights.config.maxCells = 4;
+    account.extensions.fights.config.approachWhenNoSpellCasted = true;
+    account.extensions.fights.config.baseApproachAllMonsters = true;
+    account.extensions.fights.config.regenStart = 60;
+    account.extensions.fights.config.regenEnd = 80;
+    //
+    const group = this.account.game.map.getMonstersGroup()[0];
+    if (group !== undefined) {
+      account.game.managers.movements.moveToCell(group.cellId);
+    }
   }
 
   private async HandleMapComplementaryInformationsDataInHouseMessage(account: Account, message: any) {
-    await account.game.map.UpdateMapComplementaryInformationsDataMessage(account, message);
+    await account.game.map.UpdateMapComplementaryInformationsDataMessage(message);
   }
 
   private async HandleMapComplementaryInformationsWithCoordsMessage(account: Account, message: any) {
-    await account.game.map.UpdateMapComplementaryInformationsDataMessage(account, message);
+    await account.game.map.UpdateMapComplementaryInformationsDataMessage(message);
   }
 
   private async HandleStatedMapUpdateMessage(account: Account, message: any) {
-    await account.game.map.UpdateStatedMapUpdateMessage(account, message);
+    await account.game.map.UpdateStatedMapUpdateMessage(message);
   }
 
   private async HandleInteractiveMapUpdateMessage(account: Account, message: any) {
-    await account.game.map.UpdateInteractiveMapUpdateMessage(account, message);
+    await account.game.map.UpdateInteractiveMapUpdateMessage(message);
   }
 
   private async HandleStatedElementUpdatedMessage(account: Account, message: any) {
-    await account.game.map.UpdateStatedElementUpdatedMessage(account, message);
+    await account.game.map.UpdateStatedElementUpdatedMessage(message);
   }
 
   private async HandleInteractiveElementUpdatedMessage(account: Account, message: any) {
-    await account.game.map.UpdateInteractiveElementUpdatedMessage(account, message);
+    await account.game.map.UpdateInteractiveElementUpdatedMessage(message);
   }
 
   private async HandleGameMapMovementMessage(account: Account, message: any) {
@@ -143,7 +120,7 @@ export default class MapFrame {
       return;
     }
 
-    await account.game.map.UpdateGameMapMovementMessage(account, message);
+    await account.game.map.UpdateGameMapMovementMessage(message);
     await account.game.managers.movements.UpdateGameMapMovementMessage(account, message);
   }
 
@@ -157,7 +134,7 @@ export default class MapFrame {
   }
 
   private async HandleGameContextRemoveElementMessage(account: Account, message: any) {
-    await account.game.map.UpdateGameContextRemoveElementMessage(account, message);
+    await account.game.map.UpdateGameContextRemoveElementMessage(message);
   }
 
   private async HandleTeleportOnSameMapMessage(account: Account, message: any) {
@@ -169,10 +146,10 @@ export default class MapFrame {
   }
 
   private async HandleGameContextRemoveMultipleElementMessage(account: Account, message: any) {
-    await account.game.map.UpdateGameContextRemoveMultipleElementMessage(account, message);
+    await account.game.map.UpdateGameContextRemoveMultipleElementMessage(message);
   }
 
   private async HandleGameRolePlayShowActorMessage(account: Account, message: any) {
-    await account.game.map.UpdateGameRolePlayShowActorMessage(account, message);
+    await account.game.map.UpdateGameRolePlayShowActorMessage(message);
   }
 }

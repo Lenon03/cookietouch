@@ -2,10 +2,12 @@ import Map from "@protocol/data/map";
 import Cell from "@protocol/data/map/Cell";
 import CellPath from "./CellPath";
 import CellPathData from "./CellPathData";
+import MapPoint from "./MapPoint";
 
 export default class PathFinder {
 
   public static Init() {
+    MapPoint.Init();
     this.constructMapPoints();
 
     for (let i = 0; i < this.WIDTH; i += 1) {

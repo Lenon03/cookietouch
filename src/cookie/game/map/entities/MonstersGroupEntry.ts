@@ -12,7 +12,11 @@ export default class MonstersGroupEntry extends MovableEntity {
   }
 
   get totalLevel() {
-    return this.leader.level + this.followers.map((f) => f.level).reduce((prev, next) => prev + next);
+    if (this.followers.length > 0) {
+      return this.leader.level + this.followers.map((f) => f.level).reduce((prev, next) => prev + next);
+    } else {
+      return this.leader.level;
+    }
   }
 
   constructor(infos: GameRolePlayGroupMonsterInformations) {

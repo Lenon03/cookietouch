@@ -101,7 +101,7 @@ export default class DownloadAssets extends Task {
     });
   }
 
-  public do(): Promise<{success: boolean, hasDownloaded: boolean}> {
+  public do(): Promise<{ success: boolean, hasDownloaded: boolean }> {
     return new Promise(async (resolve, reject) => {
       this.inform("Downloading new assets...", 60);
       await this.dlManifestAssets();
@@ -109,7 +109,7 @@ export default class DownloadAssets extends Task {
       if (this.hasDownloaded) {
         fs.writeFileSync(this.path + "/versions.json", JSON.stringify(this.versions));
       }
-      resolve({success: true, hasDownloaded: true});
+      resolve({ success: true, hasDownloaded: true });
     });
   }
 }

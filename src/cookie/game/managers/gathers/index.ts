@@ -1,4 +1,5 @@
 import PathFinder from "@/core/pathfinder";
+import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
@@ -97,7 +98,7 @@ export default class GathersManager implements IClearable {
       }
 
       const statedElement = this.account.game.map.getStatedElement(interactive.id);
-      const elem = PathFinder.getMapPoint(statedElement.cellId);
+      const elem = MapPoint.fromCellId(statedElement.cellId);
 
       const path = PathFinder.getPath(this.account.game.map.playedCharacter.cellId,
         statedElement.cellId, this.account.game.map.occupiedCells, true, true);
@@ -110,9 +111,9 @@ export default class GathersManager implements IClearable {
       // Check the distance between where we will be and the element we're interested in
       // If we have a fishing rod, we need to compare if with the rod's range,
       // otherwise we'll compare it to 1
-      const lastCell = PathFinder.getMapPoint(path[path.length - 1]);
-      const distToCell = Math.abs(lastCell.x - elem.x) - Math.abs(lastCell.y - elem.y);
-      const distTo = Math.round(Math.sqrt(Math.pow(elem.x - lastCell.x, 2) + Math.pow(elem.y - lastCell.y, 2)));
+      const lastCell = MapPoint.fromCellId(path[path.length - 1]);
+      const distToCell = lastCell.distanceToCell(elem);
+      const distTo = lastCell.distanceTo(elem);
       if (hasFishingRod && distToCell <= weaponRange || !hasFishingRod && distTo === 1) {
         usableElements.add(statedElement.cellId, interactive);
       }

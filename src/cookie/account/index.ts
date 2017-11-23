@@ -1,3 +1,4 @@
+import Group from "@/groups/Group";
 import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
@@ -23,6 +24,15 @@ export default class Account {
   public logger: Logger;
   public config: AccountConfiguration;
   public extensions: Extensions;
+  public group: Group = null;
+
+  get hasGroup(): boolean {
+    return this.group !== null;
+  }
+
+  get isGroupChief(): boolean {
+    return !this.hasGroup; // || this.group.chief === this;
+  }
 
   public get StateChanged() { return this.onStateChanged.expose(); }
   public get Disconnected() { return this.onDisconnected.expose(); }

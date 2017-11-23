@@ -15,7 +15,7 @@
  *       - instead of returning a line, provide a callback funtion to call everytime we add a new cell
  *         So that we can stop algorithm when line being blocked
  */
-export function getLine(x: number, y: number, targetX: number, targetY: number) {
+export default function getLine(x: number, y: number, targetX: number, targetY: number) {
   const line = [];
 
   x += 0.5;

@@ -1,4 +1,5 @@
 import PathFinder from "@/core/pathfinder";
+import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -102,6 +103,28 @@ export default class MovementsManager implements IClearable {
     this.currentPath = path;
     this.sendMoveMessage();
     return MovementRequestResults.MOVED;
+  }
+
+  public async moveToCellInFight(node: { key: number, value: MoveNode } = null) {
+    if (this.account.state !== AccountStates.FIGHTING) {
+      return;
+    }
+
+    if (node === null || node.value.path.reachable.length === 0) {
+      return;
+    }
+
+    if (node.key === this.account.game.fight.playedFighter.cellId) {
+      return;
+    }
+
+    // Insert the current cellId
+    node.value.path.reachable.unshift(this.account.game.fight.playedFighter.cellId);
+
+    await this.account.network.sendMessage("GameMapMovementRequestMessage", {
+      keyMovements: node.value.path.reachable, // TODO: compress path here too....
+      mapId: this.account.game.map.id,
+    });
   }
 
   public canChangeMap(cellId: number, direction: MapChangeDirections): boolean {

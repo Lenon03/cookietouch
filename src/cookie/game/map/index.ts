@@ -169,11 +169,11 @@ export default class Map implements IClearable {
     return this._players.getValue(id);
   }
 
-  public async UpdateMapComplementaryInformationsDataMessage(account: Account, message: any) {
+  public async UpdateMapComplementaryInformationsDataMessage(message: any) {
     this.account.logger.logDebug("", "Get MCIDM for map " + message.mapId);
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
-    this.data = await account.game.managers.movements.updateMap(message.mapId);
+    this.data = await this.account.game.managers.movements.updateMap(message.mapId);
     const mp = (await DataManager.get(DataClasses.MapPositions, this.id))[0];
     const subArea = (await DataManager.get(DataClasses.SubAreas, message.subAreaId))[0];
     const area = (await DataManager.get(DataClasses.Areas, subArea.object.areaId))[0];
@@ -217,7 +217,7 @@ export default class Map implements IClearable {
       //   this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
       // }
       if (actor._type === "GameRolePlayCharacterInformations") {
-        if (actor.contextualId === account.game.character.id) {
+        if (actor.contextualId === this.account.game.character.id) {
           console.log("playedCharacter", actor);
           this.playedCharacter = new PlayerEntry(actor);
         } else {
@@ -309,7 +309,7 @@ export default class Map implements IClearable {
     }
   }
 
-  public async UpdateGameRolePlayShowActorMessage(account: Account, message: any) {
+  public async UpdateGameRolePlayShowActorMessage(message: any) {
     if (message.informations._type === "GameRolePlayCharacterInformations") {
       const pe = new PlayerEntry(message.informations);
       if (this._players.containsKey(pe.id)) {
@@ -326,17 +326,17 @@ export default class Map implements IClearable {
     }
   }
 
-  public async UpdateGameContextRemoveElementMessage(account: Account, message: any) {
+  public async UpdateGameContextRemoveElementMessage(message: any) {
     this.removeEntity(message.id);
   }
 
-  public async UpdateGameContextRemoveMultipleElementMessage(account: Account, message: any) {
+  public async UpdateGameContextRemoveMultipleElementMessage(message: any) {
     for (const e of message.Id) {
       this.removeEntity(e);
     }
   }
 
-  public async UpdateGameMapMovementMessage(account: Account, message: any) {
+  public async UpdateGameMapMovementMessage(message: any) {
     const player = this.getPlayer(message.actorId);
     if (player !== null) {
       player.UpdateGameMapMovementMessage(message);
@@ -356,7 +356,7 @@ export default class Map implements IClearable {
     }
   }
 
-  public async UpdateInteractiveElementUpdatedMessage(account: Account, message: any) {
+  public async UpdateInteractiveElementUpdatedMessage(message: any) {
     if (this._interactives.remove(message.interactiveElement.elementId)) {
       this._interactives.add(message.interactiveElement.elementId,
         new InteractiveElementEntry(message.interactiveElement));
@@ -365,7 +365,7 @@ export default class Map implements IClearable {
     this.onInteractivesUpdated.trigger();
   }
 
-  public async UpdateInteractiveMapUpdateMessage(account: Account, message: any) {
+  public async UpdateInteractiveMapUpdateMessage(message: any) {
     this._interactives = new Dictionary<number, InteractiveElementEntry>();
 
     for (const inter of message.interactiveElements) {
@@ -375,7 +375,7 @@ export default class Map implements IClearable {
     this.onInteractivesUpdated.trigger();
   }
 
-  public async UpdateStatedElementUpdatedMessage(account: Account, message: any) {
+  public async UpdateStatedElementUpdatedMessage(message: any) {
     if (this._statedElements.remove(message.statedElement.elementId)) {
       this._statedElements.add(message.statedElement.elementId, new StatedElementEntry(message.statedElement));
     }
@@ -383,7 +383,7 @@ export default class Map implements IClearable {
     this.onInteractivesUpdated.trigger();
   }
 
-  public async UpdateStatedMapUpdateMessage(account: Account, message: any) {
+  public async UpdateStatedMapUpdateMessage(message: any) {
     this._statedElements = new Dictionary<number, StatedElementEntry>();
 
     for (const stated of message.statedElements) {
@@ -393,7 +393,7 @@ export default class Map implements IClearable {
     this.onInteractivesUpdated.trigger();
   }
 
-  public async UpdateGameFightJoinMessage(account: Account, message: any) {
+  public async UpdateGameFightJoinMessage(message: any) {
     this._joinedFight = true;
   }
 

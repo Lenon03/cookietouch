@@ -4,6 +4,7 @@ import Bid from "./Bid";
 import Character from "./character";
 import Chat from "./chat";
 import Exchange from "./exchange";
+import Fight from "./fight";
 import Managers from "./managers";
 import Map from "./map";
 import Npcs from "./npcs";
@@ -21,23 +22,26 @@ export default class Game implements IClearable {
   public exchange: Exchange;
   public npcs: Npcs;
   public storage: Storage;
+  public fight: Fight;
 
   constructor(account: Account) {
     this.server = new Server(account);
     this.character = new Character(account);
     this.map = new Map(account);
+    this.fight = new Fight(account);
     this.managers = new Managers(account, this.map);
     this.chat = new Chat(account);
     this.npcs = new Npcs(account);
+    this.storage = new Storage(account);
     this.exchange = new Exchange(account);
     this.bid = new Bid(account);
-    this.storage = new Storage(account);
   }
 
   public clear() {
     this.character.clear();
-    this.managers.clear();
     this.map.clear();
+    this.fight.clear();
+    this.managers.clear();
     this.bid.clear();
   }
 }

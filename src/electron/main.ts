@@ -17,11 +17,11 @@ let mainWindow: BrowserWindow;
 const createWindow = () => {
   win = new BrowserWindow({
     frame: false,
-    width: 500,
     height: 350,
-    transparent: true,
-    resizable: false,
     movable: false,
+    resizable: false,
+    transparent: true,
+    width: 500,
   });
   win.loadURL(url.format({
     pathname: path.join(app.getAppPath(), "/static/load.html"),

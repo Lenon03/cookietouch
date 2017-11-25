@@ -2,6 +2,7 @@ import Account from "@account";
 import DataManager from "@protocol/data";
 import DataClasses from "@protocol/data/classes";
 import MapData from "@protocol/data/map";
+import MapsManager from "@protocol/data/map/MapsManager";
 import GameRolePlayCharacterInformations from "@protocol/network/types/GameRolePlayCharacterInformations";
 import GameRolePlayGroupMonsterInformations from "@protocol/network/types/GameRolePlayGroupMonsterInformations";
 import GameRolePlayNpcInformations from "@protocol/network/types/GameRolePlayNpcInformations";
@@ -173,7 +174,7 @@ export default class Map implements IClearable {
     this.account.logger.logDebug("", "Get MCIDM for map " + message.mapId);
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
-    this.data = await this.account.game.managers.movements.updateMap(message.mapId);
+    this.data = await MapsManager.getMap(message.mapId);
     const mp = (await DataManager.get(DataClasses.MapPositions, this.id))[0];
     const subArea = (await DataManager.get(DataClasses.SubAreas, message.subAreaId))[0];
     const area = (await DataManager.get(DataClasses.Areas, subArea.object.areaId))[0];
@@ -200,7 +201,7 @@ export default class Map implements IClearable {
 
     // Entities
     for (const actor of message.actors) {
-      console.log("ACTOR", actor);
+      // console.log("ACTOR", actor);
       // if (actor as GameRolePlayCharacterInformations) {
       //   if (actor.contextualId === account.game.character.id) {
       //     console.log("playedCharacter", actor);
@@ -218,17 +219,17 @@ export default class Map implements IClearable {
       // }
       if (actor._type === "GameRolePlayCharacterInformations") {
         if (actor.contextualId === this.account.game.character.id) {
-          console.log("playedCharacter", actor);
+          // console.log("playedCharacter", actor);
           this.playedCharacter = new PlayerEntry(actor);
         } else {
-          console.log("_players", actor);
+          // console.log("_players", actor);
           this._players.add(actor.contextualId, new PlayerEntry(actor));
         }
-      } else if (actor._type === "GameRolePlayNpcInformations") {
-        console.log("_npcs", actor);
+      } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
+        // console.log("_npcs", actor);
         this._npcs.add(actor.contextualId, new NpcEntry(actor));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
-        console.log("_monstersGroups", actor);
+        // console.log("_monstersGroups", actor);
         this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
       }
     }
@@ -248,13 +249,13 @@ export default class Map implements IClearable {
     // }
     for (const interactive of message.interactiveElements) {
       if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
-        console.log("_interactives", interactive);
+        // console.log("_interactives", interactive);
         this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
       }
     }
     for (const stated of message.statedElements) {
       if (stated._type === "StatedElement") {
-        console.log("_statedElements", stated);
+        // console.log("_statedElements", stated);
         this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
       }
     }

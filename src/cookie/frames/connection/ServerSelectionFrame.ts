@@ -1,6 +1,7 @@
 import { NetworkPhases } from "@/network/NetworkPhases";
 import Account from "@account";
 import { ServerStatusEnum } from "@protocol/enums/ServerStatusEnum";
+import ServersListMessage from "@protocol/network/messages/ServersListMessage";
 
 export default class ServerSelectionFrame {
 
@@ -22,12 +23,12 @@ export default class ServerSelectionFrame {
       this.HandleAuthenticationTicketRefusedMessage, this);
   }
 
-  private async HandleServersListMessage(account: Account, message: any) {
+  private async HandleServersListMessage(account: Account, message: ServersListMessage) {
     const server = account.config.characterCreation.create ?
-      message.servers.find((s: any) => s._name === account.config.characterCreation.server)
+      message.servers.find((s) => s._name === account.config.characterCreation.server)
       : account.config.characterCreation.server === "-" ?
-        message.servers.find((s: any) => s.charactersCount > 0)
-        : message.servers.find((s: any) => s._name === account.data.server);
+        message.servers.find((s) => s.charactersCount > 0)
+        : message.servers.find((s) => s._name === account.data.server);
 
     if (server === undefined || server.charactersCount === 0 && !account.config.characterCreation.create) {
       account.logger.logError("", "Impossible de selectionner ce serveur");

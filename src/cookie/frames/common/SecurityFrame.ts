@@ -11,6 +11,7 @@ export default class SecurityFrame {
 
   private register() {
     this.account.dispatcher.register("SequenceNumberRequestMessage", this.HandleSequenceNumberRequestMessage, this);
+    this.account.dispatcher.register("BasicLatencyStatsRequestMessage", this.HandleBasicLatencyStatsRequestMessage, this);
     this.account.dispatcher.register("TextInformationMessage", this.HandleTextInformationMessage, this);
     this.account.dispatcher.register("AccountLoggingKickedMessage", this.HandleAccountLoggingKickedMessage, this);
   }
@@ -19,6 +20,14 @@ export default class SecurityFrame {
     account.framesData.sequence++;
     account.network.sendMessage("SequenceNumberMessage", {
       number: account.framesData.sequence,
+    });
+  }
+
+  private async HandleBasicLatencyStatsRequestMessage(account: Account, data: any) {
+    await account.network.sendMessage("BasicLatencyStatsMessage", {
+      latency: 262,
+      max: 50,
+      sampleCount: 12,
     });
   }
 

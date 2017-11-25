@@ -226,7 +226,7 @@ export default class Inventory {
 
   public async UpdateObjectAddedMessage(message: any) {
     const obj = new ObjectEntry(message.object);
-    this._objects.add(message.objectUID, obj);
+    this._objects.add(message.object.objectUID, obj);
     this.onObjectGained.trigger(obj.gid);
     this.onInventoryUpdated.trigger(true);
   }

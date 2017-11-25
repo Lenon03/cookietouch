@@ -14,6 +14,7 @@ import SequenceEndMessage from "@protocol/network/messages/SequenceEndMessage";
 import IClearable from "@utils/IClearable";
 import { sleep } from "@utils/Time";
 import { List } from "linqts";
+import TutorialHelper from "../characterCreator/TutorialHelper";
 import { BlockSpectatorScenarios } from "./configuration/enums/BlockSpectatorScenarios";
 import { FightStartPlacement } from "./configuration/enums/FightStartPlacement";
 import { FightTactics } from "./configuration/enums/FightTactics";
@@ -27,10 +28,9 @@ export default class FightsExtension implements IClearable {
   public config: FightsConfiguration;
 
   get spells() {
-    // return this.account.extensions.characterCreation.isDoingTutorial
-    //   ? TutorialHelper.baseSpells[this.account.game.character.breed]
-    //   : this.config.spells;
-    return this.config.spells;
+    return this.account.extensions.characterCreation.isDoingTutorial
+      ? TutorialHelper.baseSpells.getValue(this.account.game.character.breed)
+      : new List(this.config.spells);
   }
 
   private account: Account;
@@ -58,10 +58,10 @@ export default class FightsExtension implements IClearable {
 
   public async UpdateGameActionFightNoSpellCastMessage(message: GameActionFightNoSpellCastMessage) {
     try {
-      if (this.spellIndex >= this.spells.length) {
+      if (this.spellIndex >= this.spells.Count()) {
         await this.endTurn();
       } else {
-        await this.processNextSpell(this.spells[this.spellIndex]);
+        await this.processNextSpell(this.spells.ElementAt(this.spellIndex));
       }
     } catch (e) {
       //
@@ -165,10 +165,10 @@ export default class FightsExtension implements IClearable {
 
   private fightJoined() {
     this.turnId = 0;
-    for (const s of this.spells) {
+    this.spells.ForEach((s) => {
       s.lastTurn = 0;
       s.remainingRelaunchs = s.relaunchs;
-    }
+    });
   }
 
   private async turnStarted() {
@@ -180,7 +180,7 @@ export default class FightsExtension implements IClearable {
 
     // For example mules that just need to move (or not) and pass turn
     // Also end turn if there are no visible monsters
-    if (this.spells.length === 0 || !(this.account.game.fight.enemies.length > 0)) {
+    if (this.spells.Count() === 0 || !(this.account.game.fight.enemies.length > 0)) {
       await this.endTurn();
       return;
     }
@@ -235,16 +235,16 @@ export default class FightsExtension implements IClearable {
   }
 
   private async processSpells() {
-    if (this.account.isFighting === false || this.spells.length === 0) {
+    if (this.account.isFighting === false || this.spells.Count() === 0) {
       return;
     }
     // If we finished all the spells
-    if (this.spellIndex >= this.spells.length) {
+    if (this.spellIndex >= this.spells.Count()) {
       await this.endTurn();
       return;
     }
     // Otherwise handle the current spell
-    const currentSpell = this.spells[this.spellIndex];
+    const currentSpell = this.spells.ElementAt(this.spellIndex);
     // If we have no more relaunchs, go to the next spellLevel
     if (currentSpell.remainingRelaunchs === 0) {
       await this.processNextSpell(currentSpell, true);

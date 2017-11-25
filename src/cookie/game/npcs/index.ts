@@ -47,13 +47,11 @@ export default class Npcs {
     if (this.account.isBusy) {
       return false;
     }
-
     // In case the actionIndex is negative
     actionIndex--;
     if (actionIndex < 0) {
       return false;
     }
-
     let npc: NpcEntry = null;
     const npcs = this.account.game.map.npcs;
 
@@ -65,7 +63,6 @@ export default class Npcs {
       if (npcs.length <= index) {
         return false;
       }
-
       npc = npcs[index];
     } else {
       npc = npcs.find((n) => n.npcId === npcId);
@@ -75,12 +72,10 @@ export default class Npcs {
     if (npc === null || npc === undefined) {
       return false;
     }
-
     // Check if the npc has the action that we want
     if (npc.data.actions.length <= actionIndex) {
       return false;
     }
-
     this.account.network.sendMessage("NpcGenericActionRequestMessage", {
       npcActionId: npc.data.actions[actionIndex],
       npcId: npc.id,

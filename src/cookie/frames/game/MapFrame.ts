@@ -84,8 +84,9 @@ export default class MapFrame {
       return;
     }
 
-    await account.game.map.UpdateGameMapMovementMessage(message);
-    await account.game.managers.movements.UpdateGameMapMovementMessage(account, message);
+    account.game.map.UpdateGameMapMovementMessage(message);
+    account.game.managers.movements.UpdateGameMapMovementMessage(account, message);
+    account.extensions.characterCreation.UpdateGameMapMovementMessage(message);
   }
 
   private async HandleGameMapNoMovementMessage(account: Account, message: any) {

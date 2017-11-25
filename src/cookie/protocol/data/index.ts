@@ -10,7 +10,7 @@ export interface IDataResponse<T> {
 
 export default class DataManager {
 
-  public static Init(lang = "fr") {
+  public static async Init(lang = "fr") {
     this.lang = lang;
   }
 

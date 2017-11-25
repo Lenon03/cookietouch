@@ -1,4 +1,4 @@
-import PathFinder from "@/core/pathfinder";
+import Pathfinder from "@/core/pathfinder";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import Account from "@account";
@@ -10,53 +10,27 @@ import GraphicalElement from "@protocol/data/map/GraphicalElement";
 import DTConstants from "@protocol/DTConstants";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
+import { getRandomInt } from "@utils/Random";
 import { sleep } from "@utils/Time";
 import axios from "axios";
+import { Enumerable, List } from "linqts";
 import { MapChangeDirections } from "./MapChangeDirections";
 import { MovementRequestResults } from "./MovementRequestResults";
 
 export default class MovementsManager implements IClearable {
-
-  public map: Map;
-
   public get MovementFinished() { return this.onMovementFinished.expose(); }
   private readonly onMovementFinished = new LiteEvent<boolean>();
 
   private account: Account;
   private currentPath: number[] = null;
   private neighbourMapId: number = 0;
+  private pathfinder: Pathfinder;
 
   constructor(account: Account, map: MapGame) {
     this.account = account;
-    PathFinder.Init();
+    this.pathfinder = new Pathfinder();
     map.MapChanged.on(() => {
-      this.updateMap(map.id);
-    });
-  }
-
-  public updateMap(mapId: number): Promise<Map> {
-    return new Promise((resolve, reject) => {
-      axios.get(DTConstants.config.assetsUrl + "/maps/" + mapId + ".json")
-        .then((response) => {
-          const data = response.data;
-          const map = new Map(data.id, data.topNeighbourId,
-            data.bottomNeighbourId, data.leftNeighbourId, data.rightNeighbourId);
-          for (const cell of data.cells) {
-            map.cells.push(new Cell(cell.l, cell.f, cell.c, cell.s, cell.z));
-          }
-          for (const key in data.midgroundLayer) {
-            if (data.midgroundLayer.hasOwnProperty(key)) {
-              const values = data.midgroundLayer[key];
-              for (let i = 0; i < values.length; i++) {
-                values[i] = Object.assign({id: parseInt(key, 10)}, values[i]);
-              }
-              map.midgroundLayer.add(parseInt(key, 10), values);
-            }
-          }
-          this.map = map;
-        })
-        .then(() => PathFinder.fillPathGrid(this.map))
-        .then(() => resolve(this.map));
+      this.pathfinder.setMap(this.account.game.map.data);
     });
   }
 
@@ -76,7 +50,7 @@ export default class MovementsManager implements IClearable {
       return MovementRequestResults.ALREADY_THERE;
     }
 
-    const path = PathFinder.getPath(this.account.game.map.playedCharacter.cellId, cellId,
+    const path = this.pathfinder.getPath(this.account.game.map.playedCharacter.cellId, cellId,
       this.account.game.map.occupiedCells, true, stopNextToTarget);
 
     if (path.length === 0) {
@@ -84,16 +58,17 @@ export default class MovementsManager implements IClearable {
       return MovementRequestResults.FAILED;
     }
 
+    // stopNextToTarget=false case, the path is not complete
     if (!stopNextToTarget && path[path.length - 1] !== cellId) {
       this.account.logger.logDebug("MovementsManager", "Path Blocked.");
       return MovementRequestResults.PATH_BLOCKED;
     }
-
+    // stopNextToTarget=true case, in case we can't move anywhere near the target cell
     if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.map.playedCharacter.cellId) {
       this.account.logger.logDebug("MovementsManager", "Already there.");
       return MovementRequestResults.ALREADY_THERE;
     }
-
+    // stopNextToTarget=true case, the character is already next to the target
     if (stopNextToTarget && path.length === 2
       && path[0] === this.account.game.map.playedCharacter.cellId && path[1] === cellId) {
       this.account.logger.logDebug("MovementsManager", "Already there.");
@@ -122,7 +97,8 @@ export default class MovementsManager implements IClearable {
     node.value.path.reachable.unshift(this.account.game.fight.playedFighter.cellId);
 
     await this.account.network.sendMessage("GameMapMovementRequestMessage", {
-      keyMovements: node.value.path.reachable, // TODO: compress path here too....
+      keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
+      // keyMovements: node.value.path.reachable, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
     });
   }
@@ -130,28 +106,29 @@ export default class MovementsManager implements IClearable {
   public canChangeMap(cellId: number, direction: MapChangeDirections): boolean {
     switch (direction) {
       case MapChangeDirections.Left:
-        return (this.map.cells[cellId].c & direction) > 0 && cellId % 14 === 0;
+        return (this.account.game.map.data.cells[cellId].c & direction) > 0 && cellId % 14 === 0;
       case MapChangeDirections.Right:
-        return (this.map.cells[cellId].c & direction) > 0 && cellId % 14 === 13;
+        return (this.account.game.map.data.cells[cellId].c & direction) > 0 && cellId % 14 === 13;
       case MapChangeDirections.Top:
-        return (this.map.cells[cellId].c & direction) > 0 && cellId < 28;
+        return (this.account.game.map.data.cells[cellId].c & direction) > 0 && cellId < 28;
       case MapChangeDirections.Bottom:
-        return (this.map.cells[cellId].c & direction) > 0 && cellId > 531;
+        return (this.account.game.map.data.cells[cellId].c & direction) > 0 && cellId > 531;
     }
   }
 
   public changeMap(direction: MapChangeDirections): boolean {
     if (this.account.isBusy || this.neighbourMapId !== 0) {
+      this.account.logger.logWarning("MovementsManager", "Is busy or already changing map.");
       return false;
     }
 
     let changeMapCells = this.getChangeMapCells(direction);
 
     while (changeMapCells.length > 0) {
-      const cellId = changeMapCells[Math.floor(Math.random() * changeMapCells.length)];
+      const cellId = changeMapCells[getRandomInt(0, changeMapCells.length)];
 
       // Ignore the cell if a group of monsters is on it
-      if (this.account.game.map.monstersGroups.find((m) => m.cellId === cellId)) {
+      if (this.account.game.map.monstersGroups.find((m) => m.cellId === cellId) !== undefined) {
         continue;
       }
 
@@ -183,11 +160,7 @@ export default class MovementsManager implements IClearable {
 
     this.neighbourMapId = this.getNeighbourMapId(direction);
 
-    if (this.neighbourMapId === 0) {
-      return false;
-    }
-
-    return this.moveToChangeMap(cellId);
+    return this.neighbourMapId !== 0 && this.moveToChangeMap(cellId);
   }
 
   public async UpdateGameMapMovementMessage(account: Account, data: any) {
@@ -212,7 +185,7 @@ export default class MovementsManager implements IClearable {
         this.currentPath = null;
 
         if (this.neighbourMapId !== 0) {
-          account.network.sendMessage("ChangeMapMessage", {
+          await account.network.sendMessage("ChangeMapMessage", {
             mapId: this.neighbourMapId,
           });
 
@@ -251,7 +224,7 @@ export default class MovementsManager implements IClearable {
           mapId: this.neighbourMapId,
         });
         this.neighbourMapId = 0;
-        return false;
+        return true;
       default:
         this.account.logger.logDebug("", `Path to ${cellId} failed or is blocked.`);
         this.neighbourMapId = 0;
@@ -260,24 +233,19 @@ export default class MovementsManager implements IClearable {
   }
 
   private getChangeMapCells(direction: MapChangeDirections): number[] {
-    let cells: number[] = [];
-    for (let i = 0; i < 560; i++) {
-      cells.push(i);
-    }
-    cells = cells.filter((c) => this.canChangeMap(c, direction));
-    return cells;
+    return Enumerable.Range(0, 560).Where((c) => this.canChangeMap(c, direction)).ToArray();
   }
 
   private getNeighbourMapId(direction: MapChangeDirections) {
     switch (direction) {
       case MapChangeDirections.Bottom:
-        return this.map.bottomNeighbourId;
+        return this.account.game.map.data.bottomNeighbourId;
       case MapChangeDirections.Top:
-        return this.map.topNeighbourId;
+        return this.account.game.map.data.topNeighbourId;
       case MapChangeDirections.Left:
-        return this.map.leftNeighbourId;
+        return this.account.game.map.data.leftNeighbourId;
       case MapChangeDirections.Right:
-        return this.map.rightNeighbourId;
+        return this.account.game.map.data.rightNeighbourId;
       default:
         return 0;
     }
@@ -285,10 +253,11 @@ export default class MovementsManager implements IClearable {
 
   private sendMoveMessage() {
     this.account.network.sendMessage("GameMapMovementRequestMessage", {
-      // keyMovements: PathFinder.compressPath(this.currentPath),
-      keyMovements: this.currentPath, // NOTE: Check if we don't have to really compress the path
+      keyMovements: this.pathfinder.compressPath(this.currentPath),
+      // keyMovements: this.currentPath, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
     });
+    this.account.logger.logDebug("MovementsManager", `Path: ${new List(this.currentPath).Aggregate((c, n) => `${c},${n}`)}`);
   }
 
   private OnMovementFinished(success: boolean) {

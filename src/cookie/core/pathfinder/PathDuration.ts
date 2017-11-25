@@ -1,6 +1,6 @@
 import Dictionary from "@utils/Dictionary";
 import AnimDuration from "./AnimDuration";
-import Pathfinder from "./index";
+import MapPoint from "./MapPoint";
 
 enum AnimDurationTypes { MOUNTED, PARABLE, RUNNING, WALKING, SLIDE }
 
@@ -29,7 +29,7 @@ export default class PathDuration {
     let prevY = -1;
 
     for (let i = 0; i < path.length; i++) {
-      const coord = Pathfinder.getMapPoint(path[i]);
+      const coord = MapPoint.fromCellId(path[i]);
 
       if (i !== 0) {
         if (coord.y === prevY) {

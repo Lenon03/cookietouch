@@ -80,7 +80,7 @@ export default class FightFrame {
   private async HandleGameMapMovementMessage(account: Account, message: GameMapMovementMessage) {
     if (account.state === AccountStates.FIGHTING) {
       account.game.fight.UpdateGameMapMovementMessage(message);
-      // account.extensions.characterCreation.UpdateGameMapMovementMessage(message);
+      account.extensions.characterCreation.UpdateGameMapMovementMessage(message);
     }
   }
 
@@ -130,7 +130,7 @@ export default class FightFrame {
 
   private async HandleGameActionFightSpellCastMessage(account: Account, message: GameActionFightSpellCastMessage) {
     account.game.fight.UpdateGameActionFightSpellCastMessage(message);
-    // account.extensions.characterCreation.UpdateGameActionFightSpellCastMessage(message);
+    account.extensions.characterCreation.UpdateGameActionFightSpellCastMessage(message);
   }
 
   private async HandleGameFightEndMessage(account: Account, message: GameFightEndMessage) {
@@ -200,7 +200,7 @@ export default class FightFrame {
 
   private async HandleGameEntitiesDispositionMessage(account: Account, message: GameEntitiesDispositionMessage) {
     account.game.fight.UpdateGameEntitiesDispositionMessage(message);
-    // await account.extensions.characterCreation.UpdateGameEntitiesDispositionMessage(message);
+    await account.extensions.characterCreation.UpdateGameEntitiesDispositionMessage(message);
   }
 
   private async HandleGameFightOptionStateUpdateMessage(account: Account, message: GameFightOptionStateUpdateMessage) {
@@ -226,7 +226,7 @@ export default class FightFrame {
   }
 
   private async HandleGameFightStartingMessage(account: Account, message: GameFightStartingMessage) {
-    // account.extensions.characterCreation.UpdateGameFightStartingMessage(message);
+    account.extensions.characterCreation.UpdateGameFightStartingMessage(message);
   }
 
   private async HandleGameFightJoinMessage(account: Account, message: GameFightJoinMessage) {

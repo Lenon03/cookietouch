@@ -17,18 +17,18 @@ export default class QuestsFrame {
   }
 
   private async HandleQuestStartedMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateQuestStartedMessage(message);
+    account.extensions.characterCreation.UpdateQuestStartedMessage(message);
   }
 
   private async HandleQuestStepInfoMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateQuestStepInfoMessage(message);
+    account.extensions.characterCreation.UpdateQuestStepInfoMessage(message);
   }
 
   private async HandleQuestStepValidatedMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateQuestStepValidatedMessage(message);
+    account.extensions.characterCreation.UpdateQuestStepValidatedMessage(message);
   }
 
   private async HandleQuestValidatedMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateQuestValidatedMessage(message);
+    account.extensions.characterCreation.UpdateQuestValidatedMessage(message);
   }
 }

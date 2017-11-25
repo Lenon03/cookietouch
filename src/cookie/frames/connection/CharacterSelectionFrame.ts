@@ -1,4 +1,5 @@
 import Account from "@account";
+import CharactersListMessage from "@protocol/network/messages/CharactersListMessage";
 import { randomString } from "@utils/Random";
 import { isBlank } from "@utils/String";
 
@@ -25,17 +26,17 @@ export default class CharacterSelectionFrame {
       this.HandleGameContextCreateMessage, this);
   }
 
-  private async HandleCharactersListMessage(account: Account, message: any) {
+  private async HandleCharactersListMessage(account: Account, message: CharactersListMessage) {
     account.game.server.UpdateCharactersListMessage(message);
 
     if (account.config.characterCreation.create) {
-      // await account.extensions.characterCreation.UpdateCharactersListMessage(message);
+      await account.extensions.characterCreation.UpdateCharactersListMessage(message);
       return;
     }
 
     if (message.characters.length > 0) {
       const char = isBlank(account.data.character) ?
-        message.characters[0] : message.characters.find((c: any) => c.name === account.data.character);
+        message.characters[0] : message.characters.find((c) => c.name === account.data.character);
 
       if (char === undefined) {
         account.logger.logError("CharacterSelectionFrame", `Character ${account.data.character} don't found!`);
@@ -51,11 +52,11 @@ export default class CharacterSelectionFrame {
   }
 
   private async HandleCharacterNameSuggestionSuccessMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateCharacterNameSuggestionSuccessMessage(message);
+    account.extensions.characterCreation.UpdateCharacterNameSuggestionSuccessMessage(message);
   }
 
   private async HandleCharacterCreationResultMessage(account: Account, message: any) {
-    // account.extensions.characterCreation.UpdateCharacterNameSuggestionSuccessMessage(message);
+    account.extensions.characterCreation.UpdateCharacterCreationResultMessage(message);
   }
 
   private async HandleCharacterSelectedSuccessMessage(account: Account, message: any) {

@@ -44,6 +44,7 @@ import GameFightMonsterInformations from "@protocol/network/types/GameFightMonst
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
+import { List } from "linqts";
 import FighterEntry from "./fighters/FighterEntry";
 import FightMonsterEntry from "./fighters/FightMonsterEntry";
 import FightPlayerEntry from "./fighters/FightPlayerEntry";
@@ -56,8 +57,8 @@ export default class Fight implements IClearable {
   public playedFighter: FightPlayerEntry = null;
   public isOurTurn: boolean;
   public roundNumber: number;
-  public positionsForChallengers: number[];
-  public positionsForDefenders: number[];
+  public positionsForChallengers = new List<number>();
+  public positionsForDefenders = new List<number>();
   public fightId: number;
 
   get allies() {
@@ -185,8 +186,8 @@ export default class Fight implements IClearable {
     this.isOurTurn = false;
     this.roundNumber = 0;
     this.fightId = 0;
-    this.positionsForChallengers = [];
-    this.positionsForDefenders = [];
+    this.positionsForChallengers = new List<number>();
+    this.positionsForDefenders = new List<number>();
   }
 
   public async toggleOption(option: FightOptionsEnum) {
@@ -443,15 +444,15 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateGameFightPlacementPossiblePositionsMessage(message: GameFightPlacementPossiblePositionsMessage) {
-    this.positionsForChallengers = message.positionsForChallengers;
-    this.positionsForDefenders = message.positionsForDefenders;
+    this.positionsForChallengers = new List(message.positionsForChallengers);
+    this.positionsForDefenders = new List(message.positionsForDefenders);
     this.onPossiblePositionsReceived.trigger();
   }
 
   public async UpdateGameFightStartMessage(message: GameFightStartMessage) {
     this.isFightStarted = true;
-    this.positionsForChallengers = [];
-    this.positionsForDefenders = [];
+    this.positionsForChallengers = new List<number>();
+    this.positionsForDefenders = new List<number>();
     this.onFightStarted.trigger();
   }
 

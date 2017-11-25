@@ -26,7 +26,6 @@ export default class Bid implements IClearable {
   private readonly onBidLeft = new LiteEvent<void>();
 
   constructor(account: Account) {
-    // this.clear();
     this.account = account;
   }
 
@@ -249,13 +248,12 @@ export default class Bid implements IClearable {
       const list = await this._itemDescription.promise;
 
       if (list === null || list.length === 0) {
-        reject(null);
-        return;
+        return reject(null);
       }
 
       const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
 
-      resolve(list.sort((elem) => elem.prices[index])[0]);
+      return resolve(list.sort((elem) => elem.prices[index])[0]);
     });
   }
 
@@ -264,8 +262,7 @@ export default class Bid implements IClearable {
       const itemRes = await DataManager.get(Items, gid);
 
       if (itemRes.length === 0) {
-        reject(false);
-        return;
+        return reject(false);
       }
 
       const item = itemRes[0].object;
@@ -281,7 +278,7 @@ export default class Bid implements IClearable {
         this._lastSearchedGID = gid;
       }
 
-      resolve(true);
+      return resolve(true);
     });
   }
 }

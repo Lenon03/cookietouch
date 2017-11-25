@@ -1,4 +1,4 @@
-import PathFinder from "@/core/pathfinder";
+import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -22,6 +22,7 @@ export default class GathersManager implements IClearable {
   private blacklistedElements: number[];
   private elementToGather: InteractiveElementEntry;
   private movementFinished: boolean;
+  private pathfinder: Pathfinder;
   private sentUse: boolean;
   private stolen: boolean;
   private timeoutTimer: NodeJS.Timer;
@@ -34,8 +35,9 @@ export default class GathersManager implements IClearable {
   constructor(account: Account, movements: MovementsManager, map: MapGame) {
     this.account = account;
     this.blacklistedElements = [];
-    movements.MovementFinished.on((success) => this.onMovementFinished(success));
-    map.MapChanged.on(() => this.mapChanged());
+    this.pathfinder = new Pathfinder();
+    movements.MovementFinished.on(this.onMovementFinished.bind(this));
+    map.MapChanged.on(this.mapChanged.bind(this));
     this.account.dispatcher.register("InteractiveUsedMessage",
       this.HandleInteractiveUsedMessage, this);
     this.account.dispatcher.register("InteractiveUseEndedMessage",
@@ -100,7 +102,7 @@ export default class GathersManager implements IClearable {
       const statedElement = this.account.game.map.getStatedElement(interactive.id);
       const elem = MapPoint.fromCellId(statedElement.cellId);
 
-      const path = PathFinder.getPath(this.account.game.map.playedCharacter.cellId,
+      const path = this.pathfinder.getPath(this.account.game.map.playedCharacter.cellId,
         statedElement.cellId, this.account.game.map.occupiedCells, true, true);
 
       // If the path if invalid.
@@ -165,6 +167,7 @@ export default class GathersManager implements IClearable {
   }
 
   private mapChanged() {
+    this.pathfinder.setMap(this.account.game.map.data);
     this.blacklistedElements = [];
   }
 

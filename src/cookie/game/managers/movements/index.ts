@@ -97,8 +97,8 @@ export default class MovementsManager implements IClearable {
     node.value.path.reachable.unshift(this.account.game.fight.playedFighter.cellId);
 
     await this.account.network.sendMessage("GameMapMovementRequestMessage", {
-      keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
-      // keyMovements: node.value.path.reachable, // TODO: Or the compressed one?
+      // keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
+      keyMovements: node.value.path.reachable, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
     });
   }
@@ -253,8 +253,8 @@ export default class MovementsManager implements IClearable {
 
   private sendMoveMessage() {
     this.account.network.sendMessage("GameMapMovementRequestMessage", {
-      keyMovements: this.pathfinder.compressPath(this.currentPath),
-      // keyMovements: this.currentPath, // TODO: Or the compressed one?
+      // keyMovements: this.pathfinder.compressPath(this.currentPath),
+      keyMovements: this.currentPath, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
     });
     this.account.logger.logDebug("MovementsManager", `Path: ${new List(this.currentPath).Aggregate((c, n) => `${c},${n}`)}`);

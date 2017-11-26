@@ -18,8 +18,11 @@ export default class Pathfinder {
   }
 
   public setMap(map: Map) {
+    // TODO: add whether a map uses the old system onto the map data
+    // when it is generated on the server side
+    // oldMovementSystem = map.usesOldMovementSystem;
     this.firstCellZone = map.cells[0].z || 0;
-    this.oldMovementSystem = true; // TODO: add whether a map uses the old system onto the map data
+    this.oldMovementSystem = true;
     for (let i = 0; i < this.WIDTH; i++) {
       for (let j = 0; j < this.HEIGHT; j++) {
         this.grid[i][j] = new CellData(i, j);
@@ -69,8 +72,10 @@ export default class Pathfinder {
     const dj = dstPos.y + 1;
     let cellPos: MapPoint = null;
     for (const cellId of occupiedCells) {
-      cellPos = MapPoint.fromCellId(cellId);
-      this.grid[cellPos.x + 1][cellPos.y + 1].weight += this.OCCUPIED_CELL_WEIGHT;
+      if (cellId !== target) { // TODO: check this..
+        cellPos = MapPoint.fromCellId(cellId);
+        this.grid[cellPos.x + 1][cellPos.y + 1].weight += this.OCCUPIED_CELL_WEIGHT;
+      }
     }
     let candidates = new Array<CellPath>();
     const selections = new Array<CellPath>();
@@ -98,21 +103,23 @@ export default class Pathfinder {
       selections.push(selection);
       candidates.splice(selectionIndex, 1);
       if (selection.d === 0 || (stopNextToTarget && selection.d < 1.5)) {
-        if (reachingPath !== null && !(selection.w < reachingPath.w)) {
-          continue;
-        }
-        reachingPath = selection;
-        closestPath = selection;
-        const trimmedCandidates = new Array<CellPath>();
-        for (c = 0; c < candidates.length; c++) {
-          candidate = candidates[c];
-          if (candidate.w + candidate.d < reachingPath.w) {
-            trimmedCandidates.push(candidate);
-          } else {
-            this.grid[candidate.i][candidate.j].candidateRef = null;
+        // Selected path reached destination
+        if (reachingPath === null || selection.w < reachingPath.w) {
+          reachingPath = selection;
+          closestPath = selection;
+
+          // Clearing candidates dominated by current solution to speed up the algorithm
+          const trimmedCandidates: CellPath[] = [];
+          for (c = 0; c < candidates.length; c += 1) {
+            candidate = candidates[c];
+            if (candidate.w + candidate.d < reachingPath.w) {
+              trimmedCandidates.push(candidate);
+            } else {
+              this.grid[candidate.i][candidate.j].candidateRef = null;
+            }
           }
+          candidates = trimmedCandidates;
         }
-        candidates = trimmedCandidates;
       } else {
         if (selection.d < closestPath.d) {
           closestPath = selection;
@@ -124,7 +131,6 @@ export default class Pathfinder {
       this.grid[candidate.i][candidate.j].candidateRef = null;
     }
     for (const t of selections) {
-      // selection = t;
       this.grid[t.i][t.j].candidateRef = null;
     }
     for (const cellId of occupiedCells) {
@@ -177,10 +183,7 @@ export default class Pathfinder {
   }
 
   public normalizePath(path: number[]): number[] {
-    if (this.checkPath(path)) {
-      return path;
-    }
-    return this.expandPath(path);
+    return this.checkPath(path) ? path : this.expandPath(path);
   }
 
   public getAccessibleCells(i: number, j: number): MapPoint[] {
@@ -266,27 +269,16 @@ export default class Pathfinder {
   }
 
   private updateCellPath2(cell: Cell, cellPath: CellData) {
-    // if ((cell !== null) && (cell.l & 1)) {
-    //   cellPath.floor = cell.f || 0;
-    //   cellPath.zone = cell.z || 0;
-    //   cellPath.speed = 1 + (cell.s || 0) / 10;
-    //   if (cellPath.zone !== this.firstCellZone) {
-    //     this.oldMovementSystem = false;
-    //   }
-    // } else {
-    //   cellPath.floor = -1;
-    //   cellPath.zone = -1;
-    // }
-    if (cell === null || !cell.isWalkable(false)) {
-      cellPath.floor = -1;
-      cellPath.zone = -1;
-    } else {
+    if ((cell !== null) && cell.isWalkable(false)) {
       cellPath.floor = cell.f || 0;
       cellPath.zone = cell.z || 0;
       cellPath.speed = 1 + (cell.s || 0) / 10;
       if (cellPath.zone !== this.firstCellZone) {
         this.oldMovementSystem = false;
       }
+    } else {
+      cellPath.floor = -1;
+      cellPath.zone = -1;
     }
   }
 
@@ -362,7 +354,7 @@ export default class Pathfinder {
         this.addCandidate(c02, weightDiagonal, di, dj, candidates, path);
       }
       if (this.canMoveDiagonnalyTo(c, c22, c21, c12)) {
-        this.addCandidate(c02, weightDiagonal, di, dj, candidates, path);
+        this.addCandidate(c22, weightDiagonal, di, dj, candidates, path);
       }
     }
   }

@@ -213,16 +213,11 @@ export default class FightsExtension implements IClearable {
     if (this.account.game.fight.playedFighter.movementPoints > 0 && this.account.game.fight.enemies.length > 0) {
       // If no spell casted, approach event if the tactic is fugitive
       // Also if distance to the nearest enemy is >= maxCells
-      // const nearest = this.config.tactic === FightTactics.AGGRESSIVE ||
-      //   (this.config.approachWhenNoSpellCasted ||
-      //   this.account.extensions.characterCreation.isDoingTutorial) && !this.spellCasted ||
-      //   MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
-      //   .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
-      //   this.config.maxCells;
       const nearest = this.config.tactic === FightTactics.AGGRESSIVE ||
-        this.config.approachWhenNoSpellCasted && !this.spellCasted ||
+        (this.config.approachWhenNoSpellCasted ||
+        this.account.extensions.characterCreation.isDoingTutorial) && !this.spellCasted ||
         MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
-          .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
+        .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
         this.config.maxCells;
       const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE || this.config.baseApproachAllMonsters);
       if (node !== null) {
@@ -294,8 +289,7 @@ export default class FightsExtension implements IClearable {
   private tryApproachingForSpell(possiblePlacements: number[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (this.config.spellToApproach === -1) {
-        resolve(false);
-        return;
+        return resolve(false);
       }
       const spellResp = await DataManager.get(Spells, this.config.spellToApproach);
       const spell = spellResp[0].object;
@@ -304,8 +298,7 @@ export default class FightsExtension implements IClearable {
 
       // Check if we can cast the spell from our current position
       if (this.utility.spellIsHittingAnyEnemy(this.account.game.fight.playedFighter.cellId, spellLevel)) {
-        resolve(true);
-        return;
+        return resolve(true);
       }
       // Otherwise check for the other cells
       for (const t of possiblePlacements) {
@@ -315,24 +308,21 @@ export default class FightsExtension implements IClearable {
         }
         if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
           await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId: t });
-          resolve(true);
-          return;
+          return resolve(true);
         }
       }
-      resolve(false);
+      return resolve(false);
     });
   }
 
   private tryApproachingMonster(possiblePlacements: number[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (this.config.monsterToApproach === -1) {
-        resolve(false);
-        return;
+        return resolve(false);
       }
       const monster = this.account.game.fight.monsters.find((m) => m.creatureGenericId === this.config.monsterToApproach);
       if (monster === undefined) {
-        resolve(false);
-        return;
+        return resolve(false);
       }
       // The monster to approach is in the fight !
       let cellId = -1;
@@ -351,8 +341,7 @@ export default class FightsExtension implements IClearable {
         await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId });
       }
 
-      resolve(true);
-      return;
+      return resolve(true);
     });
   }
 }

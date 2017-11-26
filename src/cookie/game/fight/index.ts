@@ -267,7 +267,7 @@ export default class Fight implements IClearable {
     let distance = -1;
     let ally: FighterEntry = null;
 
-    for (const allyEntry of filter === null ? this.enemies : this.enemies.filter(filter)) {
+    for (const allyEntry of filter === null ? this.allies : this.allies.filter(filter)) {
       if (!allyEntry.alive) {
         continue;
       }

@@ -38,55 +38,46 @@ export default class SpellsManager {
         this.targetCellId = -1;
         this.enemiesTouched = 0;
 
-        resolve(SpellCastingResults.CASTED);
-        return;
+        return resolve(SpellCastingResults.CASTED);
       }
       // Check for the distance
       if (!this.isDistanceGood(spell)) {
-        resolve(SpellCastingResults.NOT_CASTED);
-        return;
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
       // In case its a spell we need to cast at a specific hp percentage
       if (this.account.game.fight.playedFighter.lifePercent > spell.characterHp) {
-        resolve(SpellCastingResults.NOT_CASTED);
-        return;
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
       // Simple spell
       if (spell.target === SpellTargets.EMPTY_CELL) {
-        resolve(await this.castSpellOnEmptyCell(spell));
-        return;
+        return resolve(await this.castSpellOnEmptyCell(spell));
       }
       if (!spell.handToHand && !spell.aoe) {
-        resolve(await this.castSimpleSpell(spell));
-        return;
+        return resolve(await this.castSimpleSpell(spell));
       }
       // HandToHand spell and we're h2h with someone
       if (spell.handToHand && !spell.aoe && this.account.game.fight.isHandToHandWithAnEnemy()) {
-        resolve(await this.castSimpleSpell(spell));
-        return;
+        return resolve(await this.castSimpleSpell(spell));
       }
       // HandToHand spell and we're not h2h with someone
       if (spell.handToHand && !spell.aoe && !this.account.game.fight.isHandToHandWithAnEnemy()) {
-        resolve(await this.moveToCastSimpleSpell(spell, this.getNearestTarget(spell)));
-        return;
+        return resolve(await this.moveToCastSimpleSpell(spell, this.getNearestTarget(spell)));
       }
       // AOE spell (even hand to hand)
       if (spell.aoe) {
-        resolve(await this.castAoeSpell(spell));
-        return;
+        return resolve(await this.castAoeSpell(spell));
       }
-      resolve(SpellCastingResults.NOT_CASTED);
-      return;
+      return resolve(SpellCastingResults.NOT_CASTED);
     });
   }
 
   private castAoeSpell(spell: Spell): Promise<SpellCastingResults> {
     return new Promise(async (resolve, reject) => {
       if (spell.target === SpellTargets.ALLY || spell.target === SpellTargets.EMPTY_CELL) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
       if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
 
       const spellEntry = this.account.game.character.getSpell(spell.spellId);
@@ -154,12 +145,12 @@ export default class SpellsManager {
       }
 
       if (cellId === -1) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
       if (node === null) {
         this.account.logger.logDebug("SpellsManager", `${spell.spellName} lancé en ${cellId} pour toucher ${touchedEnemies} ennemis.`);
         await this.account.game.fight.launchSpell(spell.spellId, cellId);
-        resolve(SpellCastingResults.CASTED);
+        return resolve(SpellCastingResults.CASTED);
       } else {
         // We need to move
         this.account.logger.logDebug("SpellsManager", `Il faut bouger en ${fromCellId} pour lancé ${spell.spellName}`);
@@ -169,7 +160,7 @@ export default class SpellsManager {
         this.enemiesTouched = touchedEnemies;
 
         await this.account.game.managers.movements.moveToCellInFight(node);
-        resolve(SpellCastingResults.MOVED);
+        return resolve(SpellCastingResults.MOVED);
       }
     });
   }
@@ -220,7 +211,7 @@ export default class SpellsManager {
   private castSimpleSpell(spell: Spell): Promise<SpellCastingResults> {
     return new Promise(async (resolve, reject) => {
       if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
 
       const target = this.getNearestTarget(spell);
@@ -230,17 +221,17 @@ export default class SpellsManager {
         if (sir === SpellInabilityReasons.NONE) {
           this.account.logger.logDebug("SpellsManager", `Sort ${spell.spellName} lancé sur ${(target as any).name} en ${target.cellId}`); // TODO: fix name
           await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
-          resolve(SpellCastingResults.CASTED);
+          return resolve(SpellCastingResults.CASTED);
         }
 
         if (sir === SpellInabilityReasons.NOT_IN_RANGE) {
-          resolve(await this.moveToCastSimpleSpell(spell, target));
+          return resolve(await this.moveToCastSimpleSpell(spell, target));
         }
       } else if (spell.target === SpellTargets.EMPTY_CELL) {
         // A spell on empty cell is special case
-        resolve(await this.castSpellOnEmptyCell(spell));
+        return resolve(await this.castSpellOnEmptyCell(spell));
       }
-      resolve(SpellCastingResults.NOT_CASTED);
+      return resolve(SpellCastingResults.NOT_CASTED);
     });
   }
 
@@ -278,20 +269,20 @@ export default class SpellsManager {
       if (node !== null) {
         this.account.logger.logDebug("SpellsManager", `On se déplace en cellule ${node.key} pour lancé le sort ${spell.spellName}.`);
         await this.account.game.managers.movements.moveToCellInFight(node);
-        resolve(SpellCastingResults.MOVED);
+        return resolve(SpellCastingResults.MOVED);
       }
-      resolve(SpellCastingResults.NOT_CASTED);
+      return resolve(SpellCastingResults.NOT_CASTED);
     });
   }
 
   private castSpellOnEmptyCell(spell: Spell): Promise<SpellCastingResults> {
     return new Promise(async (resolve, reject) => {
       if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
       // In case we need to cast the spell on an empty case next to the character but all of them are taken
       if (spell.target === SpellTargets.EMPTY_CELL && this.account.game.fight.getHandToHandEnemies().length === 4) {
-        resolve(SpellCastingResults.NOT_CASTED);
+        return resolve(SpellCastingResults.NOT_CASTED);
       }
 
       const spellEntry = this.account.game.character.getSpell(spell.spellId);
@@ -309,10 +300,10 @@ export default class SpellsManager {
           }
           this.account.logger.logDebug("SpellsManager", `Sort ${spell.spellName} lancé en cellule ${t}`);
           await this.account.game.fight.launchSpell(spell.spellId, t);
-          resolve(SpellCastingResults.CASTED);
+          return resolve(SpellCastingResults.CASTED);
         }
       }
-      resolve(await this.moveToCastSpellOnEmptyCell(spell, spellLevel));
+      return resolve(await this.moveToCastSpellOnEmptyCell(spell, spellLevel));
     });
   }
 
@@ -347,9 +338,9 @@ export default class SpellsManager {
       }
       if (node !== null) {
         await this.account.game.managers.movements.moveToCellInFight(node);
-        resolve(SpellCastingResults.MOVED);
+        return resolve(SpellCastingResults.MOVED);
       }
-      resolve(SpellCastingResults.NOT_CASTED);
+      return resolve(SpellCastingResults.NOT_CASTED);
     });
   }
 

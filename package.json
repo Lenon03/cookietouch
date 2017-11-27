@@ -1,6 +1,6 @@
 {
   "name": "cookietouch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DofusTouch Bot with Electron React/TypeScript",
   "main": "compiled/electron/main.js",
   "scripts": {
@@ -14,7 +14,9 @@
   },
   "build": {
     "appId": "me.devchris.cookietouch",
-    "asar": true,
+    "mac": {
+      "category": "your.app.category.type"
+    },
     "dmg": {
       "contents": [
         {

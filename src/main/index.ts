@@ -13,7 +13,9 @@ function isWindowsOrmacOS() {
 
 function createMainWindow() {
   // Construct new BrowserWindow
-  const window = new BrowserWindow();
+  const window = new BrowserWindow({
+    backgroundColor: "#2e2c29",
+  });
 
   // Set url for `win`
     // points to `webpack-dev-server` in development
@@ -28,7 +30,7 @@ function createMainWindow() {
 
   window.loadURL(url);
 
-  const page = mainWindow.webContents;
+  const page = window.webContents;
 
   page.once("did-frame-finish-load", () => {
     const checkOS = isWindowsOrmacOS();

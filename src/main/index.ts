@@ -1,10 +1,15 @@
 import { app, BrowserWindow } from "electron";
+import { appUpdater } from "./Updater";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Global reference to mainWindow
 // Necessary to prevent win from being garbage collected
 let mainWindow: BrowserWindow;
+
+function isWindowsOrmacOS() {
+  return process.platform === "darwin" || process.platform === "win32";
+}
 
 function createMainWindow() {
   // Construct new BrowserWindow
@@ -22,6 +27,15 @@ function createMainWindow() {
   }
 
   window.loadURL(url);
+
+  const page = mainWindow.webContents;
+
+  page.once("did-frame-finish-load", () => {
+    const checkOS = isWindowsOrmacOS();
+    if (checkOS && !isDevelopment) {
+      // Initate auto-updates on macOs and windows
+      appUpdater();
+    }});
 
   window.on("closed", () => {
     mainWindow = null;

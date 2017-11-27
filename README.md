@@ -24,17 +24,3 @@ npm run lint
 ```sh
 npm run lint:fix
 ```
-
-## Package Mac
-```sh
-npm run pack:mac
-```
-
-## Package Windows
-```sh
-npm run pack:win
-```
-## Package Linux
-```sh
-npm run pack:linux
-```

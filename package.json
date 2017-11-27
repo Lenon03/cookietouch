@@ -2,17 +2,43 @@
   "name": "cookietouch",
   "version": "1.0.0",
   "description": "DofusTouch Bot with Electron React/TypeScript",
-  "main": "build/electron/main.js",
+  "main": "compiled/electron/main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "npm run build:electron && npm run build:renderer",
-    "build:electron": "tsc",
-    "build:renderer": "webpack",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null",
+    "dev": "electron-webpack dev",
     "lint": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts'",
     "lint:fix": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' --fix",
-    "pack:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=dist",
-    "pack:win": "electron-packager . %npm_package_name% --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"%npm_package_name%\"",
-    "pack:linux": "electron-packager . $npm_package_name --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/256x256.png --prune=true --out=dist"
+    "postinstall": "install-app-deps"
+  },
+  "build": {
+    "appId": "me.devchris.cookietouch",
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
   },
   "repository": {
     "type": "git",
@@ -34,10 +60,12 @@
   "devDependencies": {
     "awesome-typescript-loader": "^3.4.0",
     "electron": "^1.8.1",
-    "electron-packager": "^9.1.0",
-    "source-map-loader": "^0.2.3",
+    "electron-builder": "^19.46.4",
+    "electron-webpack": "^1.11.0",
+    "electron-webpack-ts": "^1.2.0",
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
+    "typescript": "^2.6.1",
     "webpack": "^3.8.1"
   },
   "dependencies": {
@@ -48,6 +76,6 @@
     "moment": "^2.19.2",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "typescript": "^2.6.1"
+    "source-map-support": "^0.5.0"
   }
 }

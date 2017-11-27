@@ -51,53 +51,53 @@ export default class Bid implements IClearable {
   public getItemPrice(gid: number, lot: number): Promise<number> {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
-        reject(0);
+        return reject(0);
       }
 
       const cheapestItem = await this.getCheapestItem(gid, lot);
 
       // In case the item wasn't found
       if (cheapestItem === null) {
-        reject(0);
+        return reject(0);
       }
 
-      resolve(cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2]);
+      return resolve(cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2]);
     });
   }
 
   public getItemPrices(gid: number): Promise<number[]> {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
-        reject(null);
+        return reject(null);
       }
 
       const resp = await this.initializeGetItemPrice(gid);
       if (!resp) {
-        reject(null);
+        return reject(null);
       }
 
       // Item not found in bid
       const res = await this._itemDescription.promise;
       if (res === null || res.length === 0) {
-        resolve([0, 0, 0]);
+        return resolve([0, 0, 0]);
       }
 
       // TODO: Check if this is right
-      resolve(res[0].prices);
+      return resolve(res[0].prices);
     });
   }
 
   public buyItem(gid: number, lot: number): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
-        reject(false);
+        return reject(false);
       }
 
       const cheapestItem = await this.getCheapestItem(gid, lot);
 
       // In case the item wasn't found
       if (cheapestItem === null) {
-        reject(false);
+        return reject(false);
       }
 
       console.log(cheapestItem);
@@ -108,7 +108,7 @@ export default class Bid implements IClearable {
       if (price > this.account.game.character.inventory.kamas) {
         this.account.logger.logWarning("",
           `Vous n'avez pas assez de kamas pour acheter ${lot} lots de l'objet ${gid}. Il vous faut ${price} kamas`);
-        reject(false);
+        return reject(false);
       }
 
       await this.account.network.sendMessage("ExchangeBidHouseBuyMessage", {
@@ -117,7 +117,7 @@ export default class Bid implements IClearable {
         uid: cheapestItem.objectUID,
       });
 
-      resolve(true);
+      return resolve(true);
     });
   }
 
@@ -235,14 +235,12 @@ export default class Bid implements IClearable {
   private getCheapestItem(gid: number, lot: number): Promise<BidExchangerObjectInfo> {
     return new Promise(async (resolve, reject) => {
       if (this.account.state !== AccountStates.BUYING) {
-        reject(null);
-        return;
+        return reject(null);
       }
 
       const resp = await this.initializeGetItemPrice(gid);
       if (!resp) {
-        reject(null);
-        return;
+        return reject(null);
       }
 
       const list = await this._itemDescription.promise;
@@ -253,7 +251,7 @@ export default class Bid implements IClearable {
 
       const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
 
-      return resolve(list.sort((elem) => elem.prices[index])[0]);
+      return resolve(list.sort((elem, elem2) => elem.prices[index] > elem2.prices[index] ? 1 : -1)[0]);
     });
   }
 

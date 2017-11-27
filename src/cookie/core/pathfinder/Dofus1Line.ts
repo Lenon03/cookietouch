@@ -53,7 +53,7 @@ export default class Dofus1Line {
           const beforeY = Math.ceil(y * 100 + padY * 50) / 100;
           const afterY = Math.floor(y * 100 + padY * 150) / 100;
           const diffBeforeCenterY = Math.floor(Math.abs(Math.floor(beforeY) * 100 - beforeY * 100)) / 100;
-          const diffCenterAfterCenterY = Math.ceil(Math.abs(Math.ceil(afterY) * 100 - afterY * 100)) / 100;
+          const diffCenterAfterY = Math.ceil(Math.abs(Math.ceil(afterY) * 100 - afterY * 100)) / 100;
 
           cellX = Math.floor(xPadX);
 
@@ -78,6 +78,12 @@ export default class Dofus1Line {
             lastX = cellX;
             lastY = cellY;
           } else if (Math.floor(diffBeforeCenterY * 100) <= errorSup) {
+            if (this.isCellObstructed(cellX, Math.floor(beforeY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+              return true;
+            }
+            lastX = cellX;
+            lastY = Math.floor(beforeY);
+          } else if (Math.floor(diffCenterAfterY * 100) >= errorInf) {
             if (this.isCellObstructed(cellX, Math.floor(beforeY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
               return true;
             }
@@ -170,6 +176,10 @@ export default class Dofus1Line {
                                   targetCellId: number, lastX: number, lastY: number, diagonal: boolean): boolean {
     const mp = MapPoint.fromCoords(x, y);
 
+    if (mp === null) {
+      return true;
+    }
+
     if (map.cells[mp.cellId].isObstacle() || mp.cellId !== targetCellId && occupiedCells.includes(mp.cellId)) {
       return true;
     }
@@ -177,11 +187,17 @@ export default class Dofus1Line {
     if (diagonal) {
       const lmp = MapPoint.fromCoords(lastX, lastY);
 
+      if (lmp === null) {
+        return true;
+      }
+
       return !(mp.x === lmp.x + 1 && mp.y === lmp.y + 1 ||
         mp.x === lmp.x + 1 && mp.y === lmp.y - 1 ||
         mp.x === lmp.x - 1 && mp.y === lmp.y + 1 ||
         mp.x === lmp.x - 1 && mp.y === lmp.y - 1
       );
     }
+
+    return true;
   }
 }

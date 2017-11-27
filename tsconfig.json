@@ -1,12 +1,11 @@
 {
+  "extends": "./node_modules/electron-webpack/tsconfig-base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
     "removeComments": true,
-    "sourceMap": true,
     "jsx": "react",
+    "strict": false,
+    "noUnusedLocals": false,
     "noImplicitAny": true,
-    "outDir": "./build",
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],
@@ -18,12 +17,5 @@
       "@logger": ["cookie/core/logger"],
       "@logger/*": ["cookie/core/logger/*"]
     }
-  },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

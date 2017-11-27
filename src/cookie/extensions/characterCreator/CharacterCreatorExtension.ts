@@ -16,7 +16,7 @@ import QuestStepInfoMessage from "@protocol/network/messages/QuestStepInfoMessag
 import QuestStepValidatedMessage from "@protocol/network/messages/QuestStepValidatedMessage";
 import QuestValidatedMessage from "@protocol/network/messages/QuestValidatedMessage";
 import QuestActiveDetailedInformations from "@protocol/network/types/QuestActiveDetailedInformations";
-import { Deferred, IDeferred } from "@utils/Deferred";
+import { Deferred } from "@utils/Deferred";
 import IClearable from "@utils/IClearable";
 import { getRandomInt } from "@utils/Random";
 import { sleep } from "@utils/Time";
@@ -231,6 +231,7 @@ export default class CharacterCreatorExtension implements IClearable {
         this.account.network.sendMessage("GameFightPlacementPositionRequestmessage", {
           cellId: cells[getRandomInt(0, cells.length)],
         });
+        break;
       // Step 11: Equip second items
       case 11:
         this.currentItemIndex = 0;

@@ -219,7 +219,8 @@ export default class SpellsManager {
         const sir = this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, this.account.game.fight.playedFighter.cellId, target.cellId);
 
         if (sir === SpellInabilityReasons.NONE) {
-          this.account.logger.logDebug("SpellsManager", `Sort ${spell.spellName} lancé sur ${(target as any).name} en ${target.cellId}`); // TODO: fix name
+          this.account.logger.logDebug(
+            "SpellsManager", `Sort ${spell.spellName} lancé sur ${(target as any).name} en ${target.cellId}`); // TODO: fix name
           await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
           return resolve(SpellCastingResults.CASTED);
         }

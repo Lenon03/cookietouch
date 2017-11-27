@@ -367,6 +367,8 @@ export default class Fight implements IClearable {
         if (tmp2 !== undefined && tmp2.length > 0) {
           return SpellInabilityReasons.FORBIDDEN_STATE;
         }
+
+        return SpellInabilityReasons.NONE; // TODO: needed?
       });
     });
 
@@ -382,6 +384,7 @@ export default class Fight implements IClearable {
 
     DataManager.get(Spells, spellId).then((response) => {
       const spell = response[0].object;
+
       DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
         const spellLevel = response2[0].object;
 
@@ -403,6 +406,8 @@ export default class Fight implements IClearable {
         if (!this.getSpellRange(characterCellId, spellLevel).includes(targetCellId)) {
           return SpellInabilityReasons.NOT_IN_RANGE;
         }
+
+        return SpellInabilityReasons.NONE; // TODO: needed?
       });
     });
 

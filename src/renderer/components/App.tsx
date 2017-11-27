@@ -67,7 +67,8 @@ export class App extends React.Component<{}, {}> {
     // const spell3 = new Spell(153, "Puissance", SpellTargets.SELF, 1, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
     // const spell1 = new Spell(686, "Picole", SpellTargets.SELF, 3, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
     // const spell2 = new Spell(687, "Point Enflammé", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.FIRE, 100, 0, false, false, false, false);
-    // const spell3 = new Spell(692, "Gueule de bois", SpellTargets.ENEMY, 2, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
+    // const spell3 = new Spell(
+    // 692, "Gueule de bois", SpellTargets.ENEMY, 2, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
     const spell1 = new Spell(34, "Invo Tofu", SpellTargets.EMPTY_CELL, 5, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
     const spell2 = new Spell(32, "Resis naturelle", SpellTargets.ALLY, 1, 1, 100, 100, SpellResistances.NEUTRAL, 100, 0, false, false, false, false);
     const spell3 = new Spell(21, "Griffe spectrale", SpellTargets.ENEMY, 1, 3, 100, 100, SpellResistances.FIRE, 100, 0, false, false, false, false);

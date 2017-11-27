@@ -219,7 +219,8 @@ export default class FightsExtension implements IClearable {
         MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
         .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
         this.config.maxCells;
-      const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE || this.config.baseApproachAllMonsters);
+      const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE
+        || this.config.baseApproachAllMonsters);
       if (node !== null) {
         this._endTurn = true;
         await this.account.game.managers.movements.moveToCellInFight(node);

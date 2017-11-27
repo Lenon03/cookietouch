@@ -31,7 +31,8 @@ export default class FightsUtility {
     // Include our current cell
     totalDistances = basedOnAllMonsters
       ? this.getTotalDistancesFromEnemies(this.account.game.fight.playedFighter.cellId)
-      : MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId).distanceToCell(MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId));
+      : MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)
+        .distanceToCell(MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId));
 
     for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId)) {

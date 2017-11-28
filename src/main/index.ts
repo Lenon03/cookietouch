@@ -13,9 +13,7 @@ function isWindowsOrmacOS() {
 
 function createMainWindow() {
   // Construct new BrowserWindow
-  const window = new BrowserWindow({
-    backgroundColor: "#2e2c29",
-  });
+  const window = new BrowserWindow();
 
   // Set url for `win`
     // points to `webpack-dev-server` in development
@@ -30,9 +28,7 @@ function createMainWindow() {
 
   window.loadURL(url);
 
-  const page = window.webContents;
-
-  page.once("did-frame-finish-load", () => {
+  window.webContents.once("did-frame-finish-load", () => {
     const checkOS = isWindowsOrmacOS();
     if (checkOS && !isDevelopment) {
       // Initate auto-updates on macOs and windows

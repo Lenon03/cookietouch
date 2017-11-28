@@ -39,16 +39,23 @@ export class App extends React.Component<{}, {}> {
   public render() {
     return (
       <div>
-        <h1>CookieTouch</h1>
-        <button onClick={() => this.start()}>Start</button>
-        <button onClick={() => this.stop()}>Stop</button>
+        <button className="btn btn-default" onClick={() => this.start()}>Start</button>
+        <button className="btn btn-default" onClick={() => this.stop()}>Stop</button>
         <hr />
-        <button onClick={() => this.attack()}>Attack</button>
+        <button className="btn btn-default" onClick={() => this.attack()}>Attack</button>
         <hr />
-        <button onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
-        <button onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
-        <button onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
-        <button onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
         <hr />
         <Infos account={this.account} />
       </div>

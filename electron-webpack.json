@@ -1,4 +1,5 @@
 {
+  "title": true,
   "renderer": {
     "webpackConfig": "webpack.renderer.additions.js"
   }

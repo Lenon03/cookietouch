@@ -39,10 +39,10 @@ export class App extends React.Component<{}, {}> {
   public render() {
     return (
       <div>
-        <button className="btn btn-default" onClick={() => this.start()}>Start</button>
-        <button className="btn btn-default" onClick={() => this.stop()}>Stop</button>
+        <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
+        <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
         <hr />
-        <button className="btn btn-default" onClick={() => this.attack()}>Attack</button>
+        <button className="btn btn-primary" onClick={() => this.attack()}>Attack</button>
         <hr />
         <button
           className="btn btn-primary"

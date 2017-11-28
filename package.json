@@ -2,45 +2,16 @@
   "name": "cookietouch",
   "version": "0.0.2",
   "description": "DofusTouch Bot with Electron React/TypeScript",
-  "main": "compiled/electron/main.js",
+  "main": "src/main/index.ts",
   "scripts": {
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null",
+    "dist:dir": "yarn dist -- --dir",
     "dev": "electron-webpack dev",
     "lint": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts'",
     "lint:fix": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' --fix",
-    "rebuild-deps": "electron-builder install-app-deps"
-  },
-  "build": {
-    "appId": "me.devchris.cookietouch",
-    "mac": {
-      "category": "your.app.category.type"
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 110,
-          "y": 150
-        },
-        {
-          "x": 240,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
-    },
-    "win": {
-      "target": "NSIS",
-      "icon": "build/icon.ico"
-    }
+    "postinstall": "electron-builder install-app-deps",
+    "publish": "yarn compile && electron-builder -p always"
   },
   "repository": {
     "type": "git",
@@ -83,6 +54,8 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bootstrap": "4.0.0-beta.2",
+    "electron-log": "^2.2.11",
+    "electron-updater": "^2.16.1",
     "jquery": "^3.2.1",
     "linqts": "^1.10.0",
     "moment": "^2.19.2",

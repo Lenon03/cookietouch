@@ -1,5 +1,9 @@
 import { app, BrowserWindow } from "electron";
-import { appUpdater } from "./Updater";
+// import { appUpdater } from "./Updater";
+import log from "electron-log";
+import { autoUpdater } from "electron-updater";
+log.transports.file.level = "info";
+autoUpdater.logger = log;
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -7,17 +11,17 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // Necessary to prevent win from being garbage collected
 let mainWindow: BrowserWindow;
 
-function isWindowsOrmacOS() {
-  return process.platform === "darwin" || process.platform === "win32";
-}
+// function isWindowsOrmacOS() {
+//   return process.platform === "darwin" || process.platform === "win32";
+// }
 
 function createMainWindow() {
   // Construct new BrowserWindow
   const window = new BrowserWindow();
 
   // Set url for `win`
-    // points to `webpack-dev-server` in development
-    // points to `index.html` in production
+  // points to `webpack-dev-server` in development
+  // points to `index.html` in production
   const url = isDevelopment
     ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`
     : `file://${__dirname}/index.html`;
@@ -29,11 +33,16 @@ function createMainWindow() {
   window.loadURL(url);
 
   window.webContents.once("did-frame-finish-load", () => {
-    const checkOS = isWindowsOrmacOS();
-    if (checkOS && !isDevelopment) {
-      // Initate auto-updates on macOs and windows
-      appUpdater();
-    }});
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  // window.webContents.once("did-frame-finish-load", () => {
+  //   const checkOS = isWindowsOrmacOS();
+  //   if (checkOS/* && !isDevelopment*/) {
+  //     // Initate auto-updates on macOs and windows
+  //     appUpdater();
+  //   }
+  // });
 
   window.on("closed", () => {
     mainWindow = null;

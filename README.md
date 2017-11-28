@@ -5,22 +5,22 @@
 
 ###### DofusTouch Bot with Electron React/TypeScript.
 
-## Build
+You need **Yarn** in order to use this bot properly.
 ```sh
-npm run build
+npm install -g yarn
 ```
 
-## Start
+## Dev
 ```sh
-npm start
+yarn dev
 ```
 
 ## Lint
 ```sh
-npm run lint
+yarn lint
 ```
 
 ## Lint Fix
 ```sh
-npm run lint:fix
+yarn lint:fix
 ```

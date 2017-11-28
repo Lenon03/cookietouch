@@ -11,7 +11,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts'",
     "lint:fix": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' --fix",
     "postinstall": "electron-builder install-app-deps",
-    "publish": "yarn compile && electron-builder -p always"
+    "release": "yarn compile && build"
   },
   "repository": {
     "type": "git",

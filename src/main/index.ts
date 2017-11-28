@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from "electron";
-// import { appUpdater } from "./Updater";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
 log.transports.file.level = "info";
@@ -10,10 +9,6 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // Global reference to mainWindow
 // Necessary to prevent win from being garbage collected
 let mainWindow: BrowserWindow;
-
-// function isWindowsOrmacOS() {
-//   return process.platform === "darwin" || process.platform === "win32";
-// }
 
 function createMainWindow() {
   // Construct new BrowserWindow
@@ -35,14 +30,6 @@ function createMainWindow() {
   window.webContents.once("did-frame-finish-load", () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
-
-  // window.webContents.once("did-frame-finish-load", () => {
-  //   const checkOS = isWindowsOrmacOS();
-  //   if (checkOS/* && !isDevelopment*/) {
-  //     // Initate auto-updates on macOs and windows
-  //     appUpdater();
-  //   }
-  // });
 
   window.on("closed", () => {
     mainWindow = null;

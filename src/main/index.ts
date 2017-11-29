@@ -138,11 +138,11 @@ app.on("activate", () => {
 // -------------------------------------------------------------------
 // Create main BrowserWindow when electron is ready
 app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
   // Create the Menu
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();
-  autoUpdater.checkForUpdatesAndNotify();
 });
 
 // -------------------------------------------------------------------

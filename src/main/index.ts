@@ -27,9 +27,11 @@ function createMainWindow() {
 
   window.loadURL(url);
 
-  window.webContents.once("did-frame-finish-load", () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  autoUpdater.checkForUpdatesAndNotify();
+
+  // window.webContents.once("did-frame-finish-load", () => {
+  //
+  // });
 
   window.on("closed", () => {
     mainWindow = null;

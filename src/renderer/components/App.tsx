@@ -42,19 +42,19 @@ export class App extends React.Component<{}, {}> {
         <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
         <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
         <hr />
-        <button className="btn btn-primary" onClick={() => this.attack()}>Attack</button>
+        <button className="btn btn-success" onClick={() => this.attack()}>Attack</button>
         <hr />
         <button
-          className="btn btn-primary"
+          className="btn btn-secondary"
           onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
         <button
-          className="btn btn-primary"
+          className="btn btn-secondary"
           onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
         <button
-          className="btn btn-primary"
+          className="btn btn-secondary"
           onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
         <button
-          className="btn btn-primary"
+          className="btn btn-secondary"
           onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
         <hr />
         <Infos account={this.account} />

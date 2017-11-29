@@ -25,11 +25,5 @@
   "win": {
     "target": "NSIS",
     "icon": "build/icon.ico"
-  },
-  "publish": [{
-    "provider": "github",
-    "owner": "yovanoc",
-    "repo": "cookietouch",
-    "private": true
-  }]
+  }
 }

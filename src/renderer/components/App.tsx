@@ -42,7 +42,7 @@ export class App extends React.Component<{}, {}> {
         <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
         <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
         <hr />
-        <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
+        <button className="btn btn-warning" onClick={() => this.attack()}>Attack</button>
         <hr />
         <button
           className="btn btn-secondary"

@@ -1,10 +1,5 @@
 import { app, BrowserWindow, Menu } from "electron";
-import log from "electron-log";
-import { autoUpdater } from "electron-updater";
-
-autoUpdater.logger = log;
-(autoUpdater.logger as any).transports.file.level = "info";
-log.info("App starting...");
+import { appUpdater } from "./Updater";
 
 const template: any[] = [];
 if (process.platform === "darwin") {
@@ -25,32 +20,6 @@ if (process.platform === "darwin") {
     ],
   });
 }
-
-function logg(text: string) {
-  log.info(text);
-}
-
-autoUpdater.on("checking-for-update", () => {
-  logg("Checking for update...");
-});
-autoUpdater.on("update-available", (info) => {
-  logg("Update available.");
-});
-autoUpdater.on("update-not-available", (info) => {
-  logg("Update not available.");
-});
-autoUpdater.on("error", (err) => {
-  logg("Error in auto-updater. " + err);
-});
-autoUpdater.on("download-progress", (progressObj) => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + " - Downloaded " + progressObj.percent + "%";
-  log_message = log_message + " (" + progressObj.transferred + "/" + progressObj.total + ")";
-  logg(log_message);
-});
-autoUpdater.on("update-downloaded", (info) => {
-  logg("Update downloaded");
-});
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -94,11 +63,8 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
+  appUpdater();
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();
-});
-
-app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
 });

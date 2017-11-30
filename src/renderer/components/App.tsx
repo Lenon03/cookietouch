@@ -96,7 +96,7 @@ export class App extends React.Component<{}, {}> {
     this.account.extensions.fights.config.baseApproachAllMonsters = true;
     this.account.extensions.fights.config.regenStart = 60;
     this.account.extensions.fights.config.regenEnd = 80;
-    //
+
     const group = this.account.game.map.getMonstersGroup()[0];
     if (group !== undefined) {
       this.account.game.managers.movements.moveToCell(group.cellId);

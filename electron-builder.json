@@ -27,6 +27,7 @@
     "icon": "build/icon.ico"
   },
   "nsis": {
-    "createDesktopShortcut": true
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
   }
 }

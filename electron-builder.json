@@ -24,6 +24,7 @@
   },
   "win": {
     "target": "NSIS",
+    "createDesktopShortcut": true,
     "icon": "build/icon.ico"
   }
 }

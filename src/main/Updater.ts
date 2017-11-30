@@ -20,13 +20,13 @@ export function appUpdater() {
   // Ask the user if update is available
   autoUpdater.on("update-downloaded", (info) => {
     let message = app.getName() +
-      " " + info.releaseName + " (" + info.releaseDate + ") is now available. It will be installed the next time you restart the application.";
+      " " + info.releaseName + " is now available. It will be installed the next time you restart the application.";
     if (info.releaseNotes) {
-      const splitNotes = info.releaseNotes.split(/[^\r]\n/);
-      message += "\n\nRelease notes:\n";
-      splitNotes.forEach((notes: any) => {
-        message += notes + "\n\n";
-      });
+      // const splitNotes = info.releaseNotes.split(/[^\r]\n/);
+      message += "\n\nRelease notes:\n" + info.releaseNotes;
+      // splitNotes.forEach((notes: any) => {
+      //   message += notes + "\n\n";
+      // });
     }
     // Ask user to update the app
     dialog.showMessageBox({

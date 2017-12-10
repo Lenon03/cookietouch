@@ -146,14 +146,14 @@ export default class FightsExtension implements IClearable {
       return;
     }
 
-    // if (this.account.hasGroup && this.account.isGroupChief) {
-    //   if (!this.account.group.isGroupMember(message.informations.contextualId)) {
-    //     await sleep(800);
-    //     await this.account.network.sendMessage("GameContextKickMessage", { targetId: message.informations.contextualId });
-    //     // If this person took a member's place, send a group signal so that the member joins again
-    //     this.account.group.signalMembersToJoinFight();
-    //   }
-    // }
+    if (this.account.hasGroup && this.account.isGroupChief) {
+      if (!this.account.group.isGroupMember(message.informations.contextualId)) {
+        await sleep(800);
+        await this.account.network.sendMessage("GameContextKickMessage", { targetId: message.informations.contextualId });
+        // If this person took a member's place, send a group signal so that the member joins again
+        this.account.group.signalMembersToJoinFight();
+      }
+    }
   }
 
   private setEvents() {

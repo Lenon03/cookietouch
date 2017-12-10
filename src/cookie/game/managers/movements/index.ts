@@ -114,6 +114,7 @@ export default class MovementsManager implements IClearable {
       case MapChangeDirections.Bottom:
         return (this.account.game.map.data.cells[cellId].c & direction) > 0 && cellId > 531;
     }
+    return false;
   }
 
   public changeMap(direction: MapChangeDirections): boolean {

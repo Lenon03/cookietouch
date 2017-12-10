@@ -1,0 +1,3 @@
+function maCustom() {
+  account.XXXXXXX
+}

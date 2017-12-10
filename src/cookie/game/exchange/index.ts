@@ -119,48 +119,50 @@ export default class Exchange {
     return true;
   }
 
-  public putAllItems(): boolean {
-    if (this.account.state !== AccountStates.EXCHANGE) {
-      return false;
-    }
-
-    this.account.logger.logDebug("", "On commence à ajouter tous les objets dans l'échange...");
-
-    for (const obj of this.account.game.character.inventory.equipments) {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-        continue;
+  public putAllItems(): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      if (this.account.state !== AccountStates.EXCHANGE) {
+        return resolve(false);
       }
-      this.account.network.sendMessage("ExchangeObjectMoveMessage", {
-        objectUID: obj.uid,
-        quantity: obj.quantity,
-      });
-      sleep(600);
-    }
 
-    for (const obj of this.account.game.character.inventory.consumables) {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-        continue;
+      this.account.logger.logDebug("", "On commence à ajouter tous les objets dans l'échange...");
+
+      for (const obj of this.account.game.character.inventory.equipments) {
+        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+          continue;
+        }
+        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+          objectUID: obj.uid,
+          quantity: obj.quantity,
+        });
+        await sleep(600);
       }
-      this.account.network.sendMessage("ExchangeObjectMoveMessage", {
-        objectUID: obj.uid,
-        quantity: obj.quantity,
-      });
-      sleep(600);
-    }
 
-    for (const obj of this.account.game.character.inventory.resources) {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-        continue;
+      for (const obj of this.account.game.character.inventory.consumables) {
+        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+          continue;
+        }
+        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+          objectUID: obj.uid,
+          quantity: obj.quantity,
+        });
+        await sleep(600);
       }
-      this.account.network.sendMessage("ExchangeObjectMoveMessage", {
-        objectUID: obj.uid,
-        quantity: obj.quantity,
-      });
-      sleep(600);
-    }
 
-    this.account.logger.logDebug("", "Tous les objets ont été ajouté à l'échange...");
-    return true;
+      for (const obj of this.account.game.character.inventory.resources) {
+        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+          continue;
+        }
+        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+          objectUID: obj.uid,
+          quantity: obj.quantity,
+        });
+        await sleep(600);
+      }
+
+      this.account.logger.logDebug("", "Tous les objets ont été ajouté à l'échange...");
+      return resolve(true);
+    });
   }
 
   public putKamas(quantity: number) {

@@ -1,7 +1,7 @@
 import BasicAllianceInformations from "./BasicAllianceInformations";
 import BasicGuildInformations from "./BasicGuildInformations";
 import CharacterMinimalGuildInformations from "./CharacterMinimalGuildInformations";
-import Entitylook from "./Entitylook";
+import Entitylook from "./EntityLook";
 
 export default class CharacterMinimalAllianceInformations extends CharacterMinimalGuildInformations {
 

@@ -1,6 +1,6 @@
 import Account from "@account";
 import IClearable from "@utils/IClearable";
-import Bid from "./Bid";
+import Bid from "./bid";
 import Character from "./character";
 import Chat from "./chat";
 import Exchange from "./exchange";

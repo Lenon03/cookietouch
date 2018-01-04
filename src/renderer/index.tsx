@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { App } from "./components/App";
-import { jQuery, popper } from "./js/app";
+import "./js/app";
+import "bootstrap"; // tslint:disable-line
 import "./styles/index.scss";
 
 ReactDOM.render(

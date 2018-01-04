@@ -26,7 +26,7 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 let mainWindow: BrowserWindow;
 
 function createMainWindow() {
-  const window = new BrowserWindow({show: false});
+  const window = new BrowserWindow({ show: false });
   window.maximize();
   window.show();
 
@@ -63,7 +63,9 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
-  appUpdater();
+  if (!isDevelopment) {
+    appUpdater();
+  }
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();

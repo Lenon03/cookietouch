@@ -43,7 +43,7 @@ export default class Account {
   private readonly onStateChanged = new LiteEvent<void>();
   private readonly onDisconnected = new LiteEvent<void>();
   private readonly onRecaptchaReceived = new LiteEvent<Account>();
-  private readonly onRecaptchaResolved = new LiteEvent<{account: Account, success: boolean}>();
+  private readonly onRecaptchaResolved = new LiteEvent<{ account: Account, success: boolean }>();
 
   private frames: Frames;
   private _state: AccountStates;

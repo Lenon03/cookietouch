@@ -1,8 +1,4 @@
-import "bootstrap";
-import jQuery from "jquery";
-import popper from "popper.js";
-
-export {
-  jQuery,
-  popper,
-};
+import * as jquery from "jquery";
+import * as Popper from "popper.js";
+(window as any).$ = jquery;
+(window as any).Popper = Popper;

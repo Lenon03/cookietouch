@@ -59,6 +59,7 @@
     "electron-updater": "^2.17.3",
     "jquery": "^3.2.1",
     "linqts": "^1.10.0",
+    "lodash": "^4.17.4",
     "moment": "^2.19.2",
     "popper.js": "^1.13.0",
     "react": "^16.1.1",

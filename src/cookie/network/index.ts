@@ -1,10 +1,8 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DTConstants from "@protocol/DTConstants";
-import Dispatcher from "@utils/Dispatcher";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import axios from "axios";
 import { NetworkPhases } from "./NetworkPhases";
 const Primus = require("./primus"); // tslint:disable-line
 

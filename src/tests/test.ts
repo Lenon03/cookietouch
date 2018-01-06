@@ -16,13 +16,19 @@ const resetEvent = new ResetEvent();
 
 let x = 0;
 
-resetEvent.wait(() => {
+const t1 = resetEvent.wait(() => {
   x += 1;
+  console.log(`t1: ${t1.elapsed()}`);
 });
 
-resetEvent.wait(() => {
-  console.log(`In wait ${x}`); // 2
-});
+console.log(`out t1: ${t1.elapsed()}`);
+
+setTimeout(() => {
+  resetEvent.wait(() => {
+    console.log(`In wait ${x}`);
+    console.log(`t2: ${t1.elapsed()}`);
+  });
+}, 1000);
 
 x++;
 

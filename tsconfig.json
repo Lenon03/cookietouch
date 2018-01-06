@@ -6,7 +6,7 @@
     "jsx": "react",
     "strict": false,
     "noUnusedLocals": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],

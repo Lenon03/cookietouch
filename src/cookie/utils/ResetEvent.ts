@@ -2,12 +2,6 @@ import { extend, isFunction } from "lodash";
 
 let tokenId = 0;
 
-function set() {
-  if (this.resetEvent) {
-    this.resetEvent.set(this);
-  }
-}
-
 export interface IOptions {
   autoResetCount: number;
   maxQueueSize: number;
@@ -16,7 +10,7 @@ export interface IOptions {
 
 export interface IToken {
   callback: () => any;
-  elapsed: number;
+  elapsed: () => number;
   id: number;
   isCanceled: boolean;
   resetEvent: () => any;
@@ -39,19 +33,11 @@ export default class ResetEvent {
   };
 
   /**
-   * Do not use this function, it is for unit tests only
-   * @private
-   */
-  private static __reset() {
-    tokenId = 0;
-  }
-
-  /**
    * Checks if this reset event is signaled. A signaled reset event executes all callbacks immediately.
    */
   public isSignaled: boolean;
 
-  private queue: any[];
+  private queue: IToken[];
   private options: IOptions;
   private callbacksCount: number;
 
@@ -81,7 +67,7 @@ export default class ResetEvent {
       start: new Date(),
       timeoutId: null as NodeJS.Timer,
     } as IToken;
-    token.elapsed = new Date().getTime() - token.start.getTime();
+    token.elapsed = () => new Date().getTime() - token.start.getTime();
     return token;
   }
 

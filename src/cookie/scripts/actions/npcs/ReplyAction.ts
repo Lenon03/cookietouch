@@ -10,7 +10,7 @@ export default class ReplyAction extends ScriptAction {
     this.replyId = replyId;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (!account.game.npcs.reply(this.replyId)) {
         account.scripts.stopScript("reasonstopscript");

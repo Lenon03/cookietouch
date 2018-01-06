@@ -9,12 +9,13 @@ import { Deferred, IDeferred } from "@utils/Deferred";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
 import { sleep } from "@utils/Time";
+import { List } from "linqts";
 
 export default class Bid implements IClearable {
   public maxItemPerAccount: number;
-  public objectsInSale: ObjectItemToSellInBid[];
+  public objectsInSale: List<ObjectItemToSellInBid>;
 
-  private _itemDescription = Deferred<BidExchangerObjectInfo[]>();
+  private _itemDescription = Deferred<List<BidExchangerObjectInfo>>();
   private _lastSearchedGID: number;
   private account: Account;
 
@@ -78,12 +79,19 @@ export default class Bid implements IClearable {
 
       // Item not found in bid
       const res = await this._itemDescription.promise;
-      if (res === null || res.length === 0) {
+      if (res === null || res.Count() === 0) {
         return resolve([0, 0, 0]);
       }
 
-      // TODO: Check if this is right
-      return resolve(res[0].prices);
+      // TODO: Check if return after is right
+
+      const prices = res.ToArray().map((o) => o.prices);
+
+      return resolve([
+        Math.min(...prices[0]),
+        Math.min(...prices[1]),
+        Math.min(...prices[2]),
+      ]);
     });
   }
 
@@ -160,7 +168,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    const itemInSale = this.objectsInSale.find((o) => o.objectUID === uid);
+    const itemInSale = this.objectsInSale.FirstOrDefault((o) => o.objectUID === uid);
 
     if (itemInSale === null) {
       return false;
@@ -180,7 +188,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    const itemInSale = this.objectsInSale.find((o) => o.objectUID === uid);
+    const itemInSale = this.objectsInSale.FirstOrDefault((o) => o.objectUID === uid);
 
     if (itemInSale === null) {
       return false;
@@ -245,13 +253,15 @@ export default class Bid implements IClearable {
 
       const list = await this._itemDescription.promise;
 
-      if (list === null || list.length === 0) {
+      if (list === null || list.Count() === 0) {
         return reject(null);
       }
 
       const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
 
-      return resolve(list.sort((elem, elem2) => elem.prices[index] > elem2.prices[index] ? 1 : -1)[0]);
+      const tmp = list.OrderBy((o) => o.prices[index]);
+
+      return resolve(tmp.First());
     });
   }
 
@@ -266,7 +276,7 @@ export default class Bid implements IClearable {
       const item = itemRes[0].object;
 
       if (this._lastSearchedGID !== gid || this._itemDescription === null) {
-        this._itemDescription = Deferred<BidExchangerObjectInfo[]>();
+        this._itemDescription = Deferred<List<BidExchangerObjectInfo>>();
         this.account.network.sendMessage("ExchangeBidHouseSearchMessage", {
           genId: gid,
           type: item.typeId,

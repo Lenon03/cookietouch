@@ -12,7 +12,7 @@ export default class StorageGetItemAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.storage.getItem(this.gid, this.quantity)) {
         await sleep(1000);

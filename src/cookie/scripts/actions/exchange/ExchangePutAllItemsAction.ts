@@ -4,7 +4,7 @@ import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ExchangePutAllItemsAction extends ScriptAction {
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const res = await account.game.exchange.putAllItems();
       if (res) {

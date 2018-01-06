@@ -33,7 +33,7 @@ export default class Grouping {
   }
 
   private async groupMissingMember(missingMember: Account) {
-    let tcs = Deferred<boolean>();
+    let tcs = null;
     const mapChanged = async () => {
       await sleep(1500);
       tcs.resolve(true);

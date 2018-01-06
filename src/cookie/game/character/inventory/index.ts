@@ -4,6 +4,7 @@ import Items from "@protocol/data/classes/Items";
 import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
 import Dictionary from "@utils/Dictionary";
 import LiteEvent from "@utils/LiteEvent";
+import { List } from "linqts";
 import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
 import ObjectEntry from "./ObjectEntry";
 
@@ -17,23 +18,23 @@ export default class Inventory {
   private _fallbackMaxWeight: number;
 
   get objects() {
-    return this._objects.values();
+    return new List(this._objects.values());
   }
 
   get equipments() {
-    return this.objects.filter((o) => o.type === ObjectTypes.EQUIPMENT);
+    return this.objects.Where((o) => o.type === ObjectTypes.EQUIPMENT);
   }
 
   get consumables() {
-    return this.objects.filter((o) => o.type === ObjectTypes.CONSUMABLE);
+    return this.objects.Where((o) => o.type === ObjectTypes.CONSUMABLE);
   }
 
   get resources() {
-    return this.objects.filter((o) => o.type === ObjectTypes.RESOURCES);
+    return this.objects.Where((o) => o.type === ObjectTypes.RESOURCES);
   }
 
   get questObjects() {
-    return this.objects.filter((o) => o.type === ObjectTypes.QUEST_OBJECT);
+    return this.objects.Where((o) => o.type === ObjectTypes.QUEST_OBJECT);
   }
 
   get weightPercent() {
@@ -41,7 +42,7 @@ export default class Inventory {
   }
 
   get hasFishingRod() {
-    return this.objects.find(
+    return this.objects.FirstOrDefault(
       (o) => o.position === CharacterInventoryPositionEnum.ACCESSORY_POSITION_WEAPON && o.isFishingRod) !== undefined;
   }
 
@@ -66,31 +67,19 @@ export default class Inventory {
   }
 
   public getObjectByUid(uid: number) {
-    const tmp = this.objects.find((o) => o.uid === uid);
-    if (tmp === undefined) {
-      return null;
-    }
-    return tmp;
+    return this.objects.FirstOrDefault((o) => o.uid === uid);
   }
 
   public getObjectByGid(gid: number) {
-    const tmp = this.objects.find((o) => o.gid === gid);
-    if (tmp === undefined) {
-      return null;
-    }
-    return tmp;
+    return this.objects.FirstOrDefault((o) => o.gid === gid);
   }
 
   public getObjectsByGid(gid: number) {
-    return this.objects.filter((o) => o.gid === gid);
+    return this.objects.Where((o) => o.gid === gid);
   }
 
   public getObjectInPosition(pos: CharacterInventoryPositionEnum) {
-    const tmp = this.objects.find((o) => o.position === pos);
-    if (tmp === undefined) {
-      return null;
-    }
-    return tmp;
+    return this.objects.FirstOrDefault((o) => o.position === pos);
   }
 
   public equipObject(obj: ObjectEntry): boolean {
@@ -198,11 +187,10 @@ export default class Inventory {
 
   public resetMaxWeight() {
     try {
-      const job = this.account.game.character.jobs.jobs.map((j) => j.level).reduce((prev, next) => prev + next);
-      const jobCount = this.account.game.character.jobs.jobs.filter((j) => j.level === 100).length;
+      const job = this.account.game.character.jobs.jobs.Sum((j) => j.level);
+      const jobCount = this.account.game.character.jobs.jobs.Count((j) => j.level === 100);
       const strength = this.account.game.character.stats.strength.total;
-      const boost = this.account.game.character.inventory.equipments.map(
-        (e) => e.weightBoost).reduce((prev, next) => prev + next);
+      const boost = this.account.game.character.inventory.equipments.Sum((e) => e.weightBoost);
       this.weightMax = 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
     } catch (e) {
       this.weightMax = this._fallbackMaxWeight;

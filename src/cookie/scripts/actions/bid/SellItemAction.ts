@@ -14,7 +14,7 @@ export default class SellItemAction extends ScriptAction {
     this.price = price;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const res = await account.game.bid.sellItem(this.gid, this.lot, this.price);
       if (res) {

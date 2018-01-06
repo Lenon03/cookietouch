@@ -12,7 +12,7 @@ export default class UseTeleportableAction extends ScriptAction {
     this.destinationMapId = destinationMapId;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if ((this.type !== TeleportablesEnum.ZAAP || account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
           (this.type !== TeleportablesEnum.ZAAPI || account.game.managers.teleportables.useZaap(this.destinationMapId))) {

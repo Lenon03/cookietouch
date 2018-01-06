@@ -47,6 +47,19 @@ export default class CharacterStats {
     this.agility = message.stats.agility;
   }
 
+  public get lifePercent(): number {
+    return this.maxLifePoints === 0 ? 0 : this.lifePoints / this.maxLifePoints * 100;
+  }
+
+  public get energyPercent(): number {
+    return this.maxEnergyPoints === 0 ? 0 : this.energyPoints / this.maxEnergyPoints * 100;
+  }
+
+  public get experiencePercent(): number {
+    return this.experienceNextLevelFloor === 0 ? 0 :
+      (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
+  }
+
   public UpdateCharacterExperienceGainMessage(message: any) {
     this.experience += message.experienceCharacter;
   }

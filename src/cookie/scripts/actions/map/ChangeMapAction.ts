@@ -2,10 +2,38 @@ import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
+import { getRandomInt } from "@utils/Random";
+import { capitalize } from "@utils/String";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ChangeMapAction extends ScriptAction {
+
+  public static tryParse(text: string): ChangeMapAction {
+    const parts = text.split("|");
+    const randomPart = parts[getRandomInt(0, parts.length - 1)];
+    // Specific direction
+    let m = text.match(ChangeMapAction.REGEX_SPECIFIC);
+    if (m) {
+      return new ChangeMapAction(MapChangeDirections[capitalize(m[1])], parseInt(m[2], 10));
+    }
+    // Simple directions
+    m = text.match(ChangeMapAction.REGEX_DIRECTIONS);
+    if (m) {
+      return new ChangeMapAction(MapChangeDirections[capitalize(m[0])], -1);
+    }
+    // Change map from cells
+    m = text.match(ChangeMapAction.REGEX_CELLID);
+    if (m) {
+      return new ChangeMapAction(MapChangeDirections.NONE, parseInt(m[0], 10));
+    }
+    return null;
+  }
+
+  private static REGEX_SPECIFIC = /(top|haut|right|droite|bottom|bas|left|gauche)\((\d{1,3})\)/;
+  private static REGEX_DIRECTIONS = /(top|haut|right|droite|bottom|bas|left|gauche)/;
+  private static REGEX_CELLID = /(\d{1,3})/;
+
   public direction: MapChangeDirections;
   public cellId: number;
 
@@ -23,7 +51,7 @@ export default class ChangeMapAction extends ScriptAction {
     this.cellId = cellId;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (this.isSpecificDirection) {
         if (!account.game.managers.movements.changeMapWithCellId(this.direction, this.cellId)) {

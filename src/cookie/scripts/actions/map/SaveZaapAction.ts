@@ -3,14 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class SaveZaapAction extends ScriptAction {
-  public cellId: number;
-
-  constructor(cellId: number) {
-    super();
-    this.cellId = cellId;
-  }
-
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise((resolve, reject) => {
       if (account.game.managers.teleportables.saveZaap()) {
         return ScriptAction.processingResult;

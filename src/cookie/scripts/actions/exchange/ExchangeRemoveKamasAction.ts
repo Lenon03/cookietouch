@@ -10,7 +10,7 @@ export default class ExchangeRemoveKamasAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.exchange.removeKamas(this.quantity)) {
         await sleep(2000);

@@ -10,7 +10,7 @@ export default class SetRatioAction extends ScriptAction {
     this.ratio = ratio;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.character.mount.hasMount) {
         account.game.character.mount.setRatio(this.ratio);

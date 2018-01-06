@@ -22,7 +22,7 @@ export default class FightAction extends ScriptAction {
     this.mandatoryMonsters = mandatoryMonsters;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const availableGroups = account.game.map.getMonstersGroup(this.minMonsters, this.maxMonsters, this.minMonstersLevel,
         this.maxMonstersLevel, this.forbiddenMonsters, this.mandatoryMonsters);

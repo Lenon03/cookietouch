@@ -5,6 +5,7 @@ import DTConstants from "@protocol/DTConstants";
 import JobDescription from "@protocol/network/types/JobDescription";
 import JobExperience from "@protocol/network/types/JobExperience";
 import SkillActionDescriptionCollect from "@protocol/network/types/SkillActionDescriptionCollect";
+import { List } from "linqts";
 import CollectSkillEntry from "./skills/CollectSkillEntry";
 
 export default class JobEntry {
@@ -15,7 +16,7 @@ export default class JobEntry {
   public experience: number;
   public experienceLevelFloor: number;
   public experienceNextLevelFloor: number;
-  public collectSkills: CollectSkillEntry[];
+  public collectSkills: List<CollectSkillEntry>;
 
   get experiencePercent() {
     return this.experience === 0 ? 0 :
@@ -30,7 +31,7 @@ export default class JobEntry {
     this.id = job.jobId;
     this.name = jobData.nameId;
     this.iconId = jobData.iconId;
-    this.collectSkills = new Array<CollectSkillEntry>();
+    this.collectSkills = new List<CollectSkillEntry>();
 
     if (job.skills.length > 0) {
       const skillId = job.skills.map((s) => s.skillId);
@@ -40,7 +41,7 @@ export default class JobEntry {
         for (const skill of job.skills) {
           if (skill instanceof SkillActionDescriptionCollect) {
             const c = new CollectSkillEntry(skill, skillsResp.find((s) => s.id === skill.skillId).object);
-            this.collectSkills.push(c);
+            this.collectSkills.Add(c);
           }
         }
       });

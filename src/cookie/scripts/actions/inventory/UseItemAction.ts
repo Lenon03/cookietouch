@@ -12,7 +12,7 @@ export default class UseItemAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const obj = account.game.character.inventory.getObjectByGid(this.gid);
 

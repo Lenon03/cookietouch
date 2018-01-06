@@ -3,7 +3,7 @@ import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class StartBuyingAction extends ScriptAction {
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.bid.startBuying()) {
         return ScriptAction.processingResult;

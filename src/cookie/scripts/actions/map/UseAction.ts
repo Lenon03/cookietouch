@@ -11,7 +11,7 @@ export default class UseAction extends ScriptAction {
     this.skillInstanceUid = skillInstanceUid;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.managers.interactives.useInteractiveByCellId(this.elementCellId, this.skillInstanceUid)) {
         return ScriptAction.processingResult;

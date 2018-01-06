@@ -12,7 +12,7 @@ export default class ExchangeRemoveItemAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.exchange.removeItem(this.gid, this.quantity)) {
         await sleep(2000);

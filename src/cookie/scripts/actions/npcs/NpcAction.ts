@@ -12,7 +12,7 @@ export default class NpcAction extends ScriptAction {
     this.actionIndex = actionIndex;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (!account.game.npcs.useNpc(this.npcId, this.actionIndex)) {
         account.scripts.stopScript("reasonstopscript");

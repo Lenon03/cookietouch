@@ -11,7 +11,7 @@ export default class UseLockedStorageAction extends ScriptAction {
     this.lockCode = lockCode;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.managers.interactives.useLockedStorage(this.elementCellId, this.lockCode)) {
         return ScriptAction.processingResult;

@@ -12,7 +12,7 @@ export default class BuyItemAction extends ScriptAction {
     this.lot = lot;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const res = await account.game.bid.buyItem(this.gid, this.lot);
       if (res) {

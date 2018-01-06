@@ -23,5 +23,9 @@ export default abstract class ScriptAction {
     });
   }
 
-  protected abstract process(account: Account): Promise<ScriptActionResults>;
+  public get name(): string {
+    return this.constructor.toString().match(/\w+/g)[1];
+  }
+
+  public abstract process(account: Account): Promise<ScriptActionResults>;
 }

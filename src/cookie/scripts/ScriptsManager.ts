@@ -4,7 +4,7 @@ import { List } from "linqts";
 import API from "./api";
 import { IFlag } from "./flags/IFlag";
 import { FunctionTypes } from "./FunctionTypes";
-import ActionsManager from "./managers/ActionsManager";
+import ActionsManager, { IActionsManagerEventData } from "./managers/ActionsManager";
 import JsonScriptManager from "./managers/JsonScriptManager";
 
 export default class ScriptsManager {
@@ -54,10 +54,14 @@ export default class ScriptsManager {
     this.entryFlags = new List<IFlag>();
     this.api = new API(account);
 
-    // this.account.game.fight.FightJoined.on(this.onFightJoined.bind(this));
-    // this.account.game.fight.FightEnded.on(this.onFightEnded.bind(this));
-    // this.actionsManager.ActionsFinished.on(this.onActionsFinished.bind(this));
-    // this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
+    this.account.game.fight.FightJoined.on(this.onFightJoined.bind(this));
+    this.account.game.fight.FightEnded.on(this.onFightEnded.bind(this));
+    this.actionsManager.ActionsFinished.on(this.onActionsFinished.bind(this));
+    this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
+  }
+
+  public async applyCheckings() {
+    // TODO: :)
   }
 
   public startScript() {
@@ -65,6 +69,22 @@ export default class ScriptsManager {
   }
 
   public stopScript(reason: string = "") {
+    // TODO: :)
+  }
+
+  private onFightJoined() {
+    // TODO: :)
+  }
+
+  private onFightEnded() {
+    // TODO: :)
+  }
+
+  private onActionsFinished(data: IActionsManagerEventData) {
+    // TODO: :)
+  }
+
+  private onCustomHandled(data: IActionsManagerEventData) {
     // TODO: :)
   }
 }

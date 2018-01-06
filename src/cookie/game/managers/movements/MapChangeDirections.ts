@@ -4,4 +4,8 @@ export enum MapChangeDirections {
   Right = 131,
   Top = 224,
   Bottom = 14,
+  Gauche = 56,
+  Droite = 131,
+  Haut = 224,
+  Bas = 14,
 }

@@ -10,7 +10,7 @@ export default class WaitMapChangeAction extends ScriptAction {
     this.delay = delay;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       account.logger.logDebug("WaitMapChangeAction", "waiting...");
       let mapChanged = false;

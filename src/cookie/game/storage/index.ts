@@ -5,9 +5,10 @@ import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
 import { DialogTypeEnum } from "@protocol/enums/DialogTypeEnum";
 import LiteEvent from "@utils/LiteEvent";
+import { List } from "linqts";
 
 export default class Storage {
-  public objects: ObjectEntry[];
+  public objects: List<ObjectEntry>;
   public kamas: number;
 
   public get StorageStarted() { return this.onStorageStarted.expose(); }
@@ -24,7 +25,7 @@ export default class Storage {
 
   constructor(account: Account) {
     this.account = account;
-    this.objects = new Array<ObjectEntry>();
+    this.objects = new List<ObjectEntry>();
   }
 
   public putItem(gid: number, quantity: number): boolean {
@@ -51,8 +52,8 @@ export default class Storage {
     if (this.account.state !== AccountStates.STORAGE || quantity < 0) {
       return false;
     }
-    const item = this.objects.find((o) => o.gid === gid);
-    if (item === undefined) {
+    const item = this.objects.FirstOrDefault((o) => o.gid === gid);
+    if (!item) {
       return false;
     }
 
@@ -148,13 +149,13 @@ export default class Storage {
 
   public async UpdateStorageInventoryContentMessage(message: any) {
     this.kamas = message.kamas;
-    this.objects = [];
+    this.objects = new List<ObjectEntry>();
 
     const objects = await DataManager.get(Items, ...message.objects.map((o: any) => o.objectGID));
 
     for (const obj of message.objects) {
       const oe = objects.find((f) => f.id === obj.objectGID).object;
-      this.objects.push(new ObjectEntry(obj, oe));
+      this.objects.Add(new ObjectEntry(obj, oe));
     }
 
     this.onStorageStarted.trigger();
@@ -166,12 +167,12 @@ export default class Storage {
   }
 
   public async UpdateStorageObjectUpdateMessage(message: any) {
-    const obj = this.objects.find((o) => o.uid === message.object.objectUID);
+    const obj = this.objects.FirstOrDefault((o) => o.uid === message.object.objectUID);
 
     // Needs to be added
     if (obj === undefined) {
       const data = await DataManager.get(Items, message.object.objectGID);
-      this.objects.push(new ObjectEntry(message.object, data[0].object));
+      this.objects.Add(new ObjectEntry(message.object, data[0].object));
     } else {
       // Needs to be updated
       obj.UpdateObjectItem(message.object);
@@ -180,18 +181,18 @@ export default class Storage {
   }
 
   public async UpdateStorageObjectRemoveMessage(message: any) {
-    this.objects = this.objects.filter((o) => o.uid !== message.objectUID);
+    this.objects = this.objects.RemoveAll((o) => o.uid === message.objectUID);
     this.onStorageUpdated.trigger();
   }
 
   public async UpdateStorageObjectsUpdateMessage(message: any) {
     for (const item of message.objectList) {
-      const obj = this.objects.find((o) => o.uid === item.objectUID);
+      const obj = this.objects.FirstOrDefault((o) => o.uid === item.objectUID);
 
       // Need to be added
       if (obj === undefined) {
         const data = await DataManager.get(Items, item.objectGID);
-        this.objects.push(new ObjectEntry(item, data[0].object));
+        this.objects.Add(new ObjectEntry(item, data[0].object));
       } else {
         // Needs to be updated
         obj.UpdateObjectItem(item);
@@ -202,7 +203,7 @@ export default class Storage {
 
   public async UpdateStorageObjectsRemoveMessage(message: any) {
     for (const item of message.objectUIDList) {
-      this.objects = this.objects.filter((o) => o.uid !== item);
+      this.objects = this.objects.RemoveAll((o) => o.uid === item);
     }
     this.onStorageUpdated.trigger();
   }
@@ -211,7 +212,7 @@ export default class Storage {
     if (message.dialogType === DialogTypeEnum.DIALOG_EXCHANGE &&
       this.account.state === AccountStates.STORAGE) {
       this.account.state = AccountStates.NONE;
-      this.objects = [];
+      this.objects = new List<ObjectEntry>();
       this.kamas = 0;
       this.onStorageLeft.trigger();
     }

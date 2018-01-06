@@ -10,7 +10,7 @@ export default class StoragePutKamasAction extends ScriptAction {
     this.amount = amount;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.storage.putKamas(this.amount)) {
         await sleep(1000);

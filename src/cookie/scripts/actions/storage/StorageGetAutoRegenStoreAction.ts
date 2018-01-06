@@ -12,13 +12,13 @@ export default class StorageGetAutoRegenStoreAction extends ScriptAction {
     this.store = store;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       let store = this.store;
       for (let i = 0; i < this.items.length && store > 0; i++) {
         // We'll have to get the items manually instead of using Storage.GetItem()
-        const obj = account.game.storage.objects.find((o) => o.gid === this.items[i]);
-        if (obj === undefined) {
+        const obj = account.game.storage.objects.FirstOrDefault((o) => o.gid === this.items[i]);
+        if (!obj) {
           continue;
         }
         // Get the quantity we can actually take

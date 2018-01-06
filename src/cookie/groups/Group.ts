@@ -2,14 +2,16 @@ import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
 import Dictionary from "@utils/Dictionary";
-import { Mutex } from "@utils/Semaphore";
+import ResetEvent, { IToken } from "@utils/ResetEvent";
 import { sleep } from "@utils/Time";
 import { List } from "linqts";
+import FightAction from "../scripts/actions/fight/FightAction";
+import ScriptAction from "../scripts/actions/ScriptAction";
 import Grouping from "./Grouping";
 
 export interface IAccountGroup {
   account: Account;
-  event: Mutex;
+  event: ResetEvent;
 }
 
 export default class Group {
@@ -37,7 +39,7 @@ export default class Group {
 
     member.group = this;
     this.members.Add(member);
-    this._membersAccountsFinished.push({account: member, event: new Mutex()});
+    this._membersAccountsFinished.push({ account: member, event: new ResetEvent(false) });
     member.scripts.actionsManager.ActionsFinished.on(this.memberActionsFinished.bind(this));
     member.RecaptchaResolved.on(this.accountRecaptchaResolved.bind(this));
   }
@@ -56,11 +58,11 @@ export default class Group {
     });
   }
 
-  public membersCleaningAndClearing() {
+  public membersCleaningAndClearing() {
     this.members.ForEach((t: Account) => {
       t.game.managers.gathers.cancelGather();
       t.game.managers.interactives.cancelUse();
-      // t.scripts.actionsManager.clearEverything();
+      t.scripts.actionsManager.clearEverything();
     });
   }
 
@@ -85,10 +87,10 @@ export default class Group {
   }
 
   public async applyCheckings() {
-    // await this.chief.scripts.applyCheckings();
+    await this.chief.scripts.applyCheckings();
 
     const task = async (m: Account) => {
-      // await m.scripts.applyCheckings();
+      await m.scripts.applyCheckings();
     };
 
     const test = this.members.ToArray().map((m) => task(m));
@@ -128,33 +130,67 @@ export default class Group {
     });
   }
 
-  // public enqueueActionToMembers(action: ScriptAction, startDequeuingAction: boolean = false) {
-  //   //
-  // }
-  //
-  // public waitForAllActionsFinished() {
-  //   // TODO: ....
-  // }
+  public enqueueActionToMembers(action: ScriptAction, startDequeueingAction: boolean = false) {
+    // Avoid enqueueing a fight action to group members, since they will be joining the chief
+    if (action instanceof FightAction) {
+      // We will also set the reset events so that the chief continues the script after the fight
+      // Since the members don't get this action, ActionsFinished never gets fired
+      this.members.ForEach((m) => {
+        const test = this._membersAccountsFinished.find((e) => e.account === m);
+        if (test !== undefined) {
+          test.event.set();
+        }
+      });
+      return;
+    }
+
+    this.members.ForEach((t) => {
+      t.scripts.actionsManager.enqueueAction(action, startDequeueingAction);
+    });
+
+    // Reset all ResetEvents of the members if this action will start dequeueing actions
+    if (!startDequeueingAction) { return; }
+    this.members.ForEach((m) => {
+      const test = this._membersAccountsFinished.find((e) => e.account === m);
+      if (test !== undefined) {
+        test.event.reset();
+      }
+    });
+  }
+
+  public waitForAllActionsFinished() {
+    const events = this._membersAccountsFinished.map((m) => m.event);
+    const tasks: IToken[] = [];
+
+    for (const e of events) {
+      tasks.push(e.wait(async () => {/**/}));
+    }
+
+    Promise.all(tasks.map((t) => t.callback)); // TODO: Check this
+  }
 
   private chiefFightIdReceived() {
     this.signalMembersToJoinFight();
   }
 
-  private memberActionsFinished(data: {account: Account, mapChanged: boolean}) {
+  private memberActionsFinished(data: { account: Account, mapChanged: boolean }) {
     data.account.logger.logDebug("Group", "I finished my actions.");
     const test = this._membersAccountsFinished.find((e) => e.account === data.account);
     if (test !== undefined) {
-      const release = test.event.acquire();
+      test.event.set();
     }
   }
 
-  private async accountRecaptchaResolved(data: {account: Account, success: boolean}) {
+  private async accountRecaptchaResolved(data: { account: Account, success: boolean }) {
     if (!data.success) {
       return;
     }
+    // Check if this was the last member that got the captcha
+    // If yes, we need to re-start the script
     if (this.isAnyoneBusy) {
       return;
     }
+
     await sleep(2000);
     this.chief.scripts.startScript();
   }

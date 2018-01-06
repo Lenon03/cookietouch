@@ -10,7 +10,7 @@ export default class StartExchangeAction extends ScriptAction {
     this.playerId = playerId;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       if (account.game.exchange.startExchange(this.playerId)) {
         return ScriptAction.processingResult;

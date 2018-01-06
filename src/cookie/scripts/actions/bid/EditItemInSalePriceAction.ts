@@ -12,7 +12,7 @@ export default class EditItemInSalePriceAction extends ScriptAction {
     this.newPrice = newPrice;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const res = await account.game.bid.editItemInSalePrice(this.uid, this.newPrice);
       if (res) {

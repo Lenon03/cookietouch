@@ -10,7 +10,7 @@ export default class EquipItemAction extends ScriptAction {
     this.gid = gid;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       const obj = account.game.character.inventory.getObjectByGid(this.gid);
 

@@ -10,7 +10,7 @@ export default class GatherAction extends ScriptAction {
     this.elements = elements;
   }
 
-  protected process(account: Account): Promise<ScriptActionResults> {
+  public process(account: Account): Promise<ScriptActionResults> {
     return new Promise(async (resolve, reject) => {
       // In case there is no elements to gather in this map, just pass
       if (!account.game.managers.gathers.canGather(...this.elements)) {

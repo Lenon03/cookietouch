@@ -60,6 +60,13 @@ export default class ScriptsManager {
     this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
   }
 
+  public fromFile(filePath: string) {
+    if (this.enabled) {
+      this.account.logger.logError("Script", "Can't start multiple script a the same time");
+      return;
+    }
+  }
+
   public async applyCheckings() {
     // TODO: :)
   }

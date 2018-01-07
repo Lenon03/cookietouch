@@ -65,7 +65,7 @@ export default class GathersManager implements IClearable {
 
   public gather(...resourcesIds: number[]): boolean {
     if (this.account.isBusy || this.elementToGather !== null) {
-      this.account.logger.logWarning("GathersManager", "Personnage occupé ou déjà en train de recolter");
+      this.account.logger.logWarning("GathersManager", `Is busy (${this.account.isBusy}) or is already gathering.`);
       return false;
     }
 
@@ -195,7 +195,6 @@ export default class GathersManager implements IClearable {
     if (this.elementToGather === null || this.elementToGather.id !== message.elemId) {
       return;
     }
-    global.clearInterval(this.timeoutTimer);
     // Check if the element has been STOLEN
     if (message.entityId !== this.account.game.character.id) {
       // If our movement is already done
@@ -205,12 +204,14 @@ export default class GathersManager implements IClearable {
         this.stolen = true;
       }
     } else {
+      global.clearInterval(this.timeoutTimer);
       this.account.state = AccountStates.GATHERING;
       this.onGatherStarted.trigger();
     }
   }
 
   private async HandleInteractiveUseEndedMessage(account: Account, message: any) {
+    global.clearInterval(this.timeoutTimer);
     this.account.state = AccountStates.NONE;
     this.isGatherFinished(GatherResults.GATHERED);
   }

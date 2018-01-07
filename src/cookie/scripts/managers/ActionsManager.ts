@@ -71,7 +71,7 @@ export default class ActionsManager {
     if (!this.account.scripts.running || this.currentCoroutine !== null) {
       return;
     }
-    // this.currentCoroutine = this.account.scripts.scriptManager.script.createCoroutine(customFunction);
+    this.currentCoroutine = this.account.scripts.scriptManager.script.createCoroutine(customFunction);
     this.processCoroutine();
   }
 

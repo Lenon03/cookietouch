@@ -72,22 +72,16 @@ export default class ChangeMapAction extends ScriptAction {
         }
       }
       let mapChanged = false;
-      let movementFailed = false;
-      const account_mapChanged = () => {
+      const accountMapChanged = () => {
         mapChanged = true;
       };
-      const account_movementFinished = (success: boolean) => {
-        movementFailed = !success;
-      };
-      account.game.map.MapChanged.on(account_mapChanged);
-      account.game.managers.movements.MovementFinished.on(account_movementFinished);
-      for (let i = 0; i < 20 && !mapChanged && !movementFailed && account.state !== AccountStates.FIGHTING && account.scripts.running; i++) {
+      account.game.map.MapChanged.on(accountMapChanged);
+      for (let i = 0; i < 20 && !mapChanged && account.state !== AccountStates.FIGHTING && account.scripts.running; i++) {
         await sleep(1000);
       }
-      account.game.map.MapChanged.off(account_mapChanged);
-      account.game.managers.movements.MovementFinished.off(account_movementFinished);
-      // If the movement fails or if the character gets into an unwanted fight, we need to stop re-trying
-      if (movementFailed || account.state === AccountStates.FIGHTING) {
+      account.game.map.MapChanged.off(accountMapChanged);
+      // If the character gets into an unwanted fight, we need to stop re-trying
+      if (account.state === AccountStates.FIGHTING) {
         return resolve(ScriptActionResults.FAILED);
       }
       // If the script stops or gets paused during this, we don't need to re-process

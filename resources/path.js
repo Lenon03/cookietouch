@@ -1,8 +1,8 @@
 function maCustom() {
-  account.XXXXXXX
+  console.log(`J'ai ${API.character.kamas()} kamas.`);
 }
 
-const infos = {
+const config = {
   "MAX_PODS": 90,
   "GATHERS": [31, 38]
 };

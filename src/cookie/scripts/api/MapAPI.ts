@@ -132,19 +132,19 @@ export default class MapAPI {
     return this.account.game.map.isOnMap(coords);
   }
 
-  public currentPos(): string {
+  public get currentPos(): string {
     return this.account.game.map.currentPosition;
   }
 
-  public currentMapId(): string {
-    return this.account.game.map.id.toString();
+  public get currentMapId(): number {
+    return this.account.game.map.id;
   }
 
-  public area(): string {
+  public get area(): string {
     return this.account.game.map.area;
   }
 
-  public subArea(): string {
+  public get subArea(): string {
     return this.account.game.map.subArea;
   }
 }

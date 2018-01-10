@@ -26,7 +26,7 @@ export default class JobsAPI {
     return job ? job.collectSkills.Select((f) => f.interactiveId).ToArray() : [];
   }
 
-  public getAllCollectSkills() {
+  public get allCollectSkills() {
     return this.account.game.character.jobs.collectSkillsIds.ToArray();
   }
 }

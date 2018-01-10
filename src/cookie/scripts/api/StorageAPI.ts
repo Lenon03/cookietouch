@@ -21,7 +21,7 @@ export default class StorageAPI {
     return this.account.game.storage.objects.Where((o) => o.gid === gid).Sum((o) => o.quantity);
   }
 
-  public kamas(): number {
+  public get kamas(): number {
     return this.account.game.storage.kamas;
   }
 

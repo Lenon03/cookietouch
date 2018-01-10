@@ -8,55 +8,55 @@ export default class CharacterAPI {
     this.account = account;
   }
 
-  public isAlive(): boolean {
+  public get isAlive(): boolean {
     return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
   }
 
-  public isTombstone(): boolean {
+  public get isTombstone(): boolean {
     return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE;
   }
 
-  public isPhantom(): boolean {
+  public get isPhantom(): boolean {
     return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM;
   }
 
-  public name(): string {
+  public get name(): string {
     return this.account.game.character.name;
   }
 
-  public level(): number {
+  public get level(): number {
     return this.account.game.character.level;
   }
 
-  public sex(): boolean {
+  public get sex(): boolean {
     return this.account.game.character.sex;
   }
 
-  public lifePoints(): number {
+  public get lifePoints(): number {
     return this.account.game.character.stats.lifePoints;
   }
 
-  public maxLifePoints(): number {
+  public get maxLifePoints(): number {
     return this.account.game.character.stats.maxLifePoints;
   }
 
-  public lifePointsP(): number {
+  public get lifePointsP(): number {
     return this.account.game.character.stats.lifePercent;
   }
 
-  public experience(): number {
+  public get experience(): number {
     return this.account.game.character.stats.experiencePercent;
   }
 
-  public energyPoints(): number {
+  public get energyPoints(): number {
     return this.account.game.character.stats.energyPoints;
   }
 
-  public maxEnergyPoints(): number {
+  public get maxEnergyPoints(): number {
     return this.account.game.character.stats.maxEnergyPoints;
   }
 
-  public energyPointsP(): number {
+  public get energyPointsP(): number {
     return this.account.game.character.stats.energyPercent;
   }
 
@@ -68,7 +68,7 @@ export default class CharacterAPI {
     this.account.game.character.sit();
   }
 
-  public freeSoul(): boolean {
+  public get freeSoul(): boolean {
     return this.account.game.character.freeSoul;
   }
 }

@@ -9,15 +9,15 @@ export default class MountAPI {
     this.account = account;
   }
 
-  public hasMount(): boolean {
+  public get hasMount(): boolean {
     return this.account.game.character.mount.hasMount;
   }
 
-  public isRiding(): boolean {
+  public get isRiding(): boolean {
     return this.account.game.character.mount.isRiding;
   }
 
-  public currentRatio(): number {
+  public get currentRatio(): number {
     return this.account.game.character.mount.currentRatio;
   }
 

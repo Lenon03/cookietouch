@@ -13,15 +13,15 @@ export default class InventoryAPI {
     this.account = account;
   }
 
-  public pods(): number {
+  public get pods(): number {
     return this.account.game.character.inventory.weight;
   }
 
-  public podsMax(): number {
+  public get podsMax(): number {
     return this.account.game.character.inventory.weightMax;
   }
 
-  public podsP(): number {
+  public get podsP(): number {
     return this.account.game.character.inventory.weightPercent;
   }
 

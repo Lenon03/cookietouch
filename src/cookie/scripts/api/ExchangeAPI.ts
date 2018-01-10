@@ -14,11 +14,11 @@ export default class ExchangeAPI {
     this.account = account;
   }
 
-  public weightP(): number {
+  public get weightP(): number {
     return this.account.game.exchange.weightPercent;
   }
 
-  public targetWeightP(): number {
+  public get targetWeightP(): number {
     return this.account.game.exchange.remoteWeightPercent;
   }
 

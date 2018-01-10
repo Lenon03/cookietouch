@@ -61,7 +61,6 @@ export default class JsonScriptManager {
     const content = fs.readFileSync(filePath);
     beforeDoFile();
     this.script += content.toString();
-    console.log(this.script);
   }
 
   public getFunctionEntries(func: FunctionTypes): IFunc {

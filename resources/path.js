@@ -1,38 +1,27 @@
 function maCustom() {
-  console.log(`J'ai ${API.character.kamas()} kamas.`);
+  console.log(`J'ai ${API.character.kamas} kamas.`);
 }
 
 const config = {
-  "MAX_PODS": 90,
-  "GATHERS": [31, 38]
+  MAX_PODS: 90
 };
 
 const move = [
   {
-    map: 8765242,
-    gather: true,
-    fight: true,
-    direction: "top"
-  }, {
-    map: "-2,0",
-    direction: "top|bottom"
-  }, {
-    map: "-2,0",
+    map: "3,1",
     custom: maCustom,
     direction: "right"
-  }
-];
-
-const bank = [
-  {
-    map: 8765242,
+  }, {
+    map: "4,1",
+    custom: maCustom,
     direction: "bottom"
-  }
-];
-
-const phenix = [
-  {
-    map: 8765242,
-    direction: "bottom"
+  }, {
+    map: "4,2",
+    custom: maCustom,
+    direction: "left"
+  }, {
+    map: "3,2",
+    custom: maCustom,
+    direction: "top"
   }
 ];

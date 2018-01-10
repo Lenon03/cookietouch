@@ -12,6 +12,7 @@ import SpellToBoostEntry from "@account/SpellToBoostEntry";
 import { BoostableStats } from "@game/character/BoostableStats";
 import DataManager from "@protocol/data";
 import DTConstants from "@protocol/DTConstants";
+import * as path from "path";
 import * as React from "react";
 import Infos from "./Infos";
 
@@ -54,7 +55,12 @@ export class App extends React.Component<{}, {}> {
     this.account.extensions.fights.config.baseApproachAllMonsters = true;
     this.account.extensions.fights.config.regenStart = 60;
     this.account.extensions.fights.config.regenEnd = 80;
+  }
 
+  public componentDidMount() {
+    this.account.scripts.ScriptLoaded.on((scriptName: string) => {
+      this.account.scripts.startScript();
+    });
   }
 
   public render() {
@@ -63,7 +69,7 @@ export class App extends React.Component<{}, {}> {
         <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
         <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
         <hr />
-        <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
+        <button className="btn btn-warning" onClick={() => this.launchScript()}>Launch Script</button>
         <hr />
         <button
           className="btn btn-secondary"
@@ -88,11 +94,8 @@ export class App extends React.Component<{}, {}> {
     this.account.logger.logDebug("", `Movement Result: ${res}`);
   }
 
-  private attack() {
-    const group = this.account.game.map.monstersGroups[0];
-    if (group) {
-      this.account.game.managers.movements.moveToCell(group.cellId);
-    }
+  private launchScript() {
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/path.js"));
   }
 
   private start() {

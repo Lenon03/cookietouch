@@ -1,3 +1,5 @@
+import { AccountStates } from "@/account/AccountStates";
+import { sleep } from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import DataClasses from "@protocol/data/classes";
@@ -95,6 +97,19 @@ export default class Map implements IClearable {
     this.subArea = null;
     this.posX = 0;
     this.posY = 0;
+  }
+
+  public async waitMapChange(maxDelayInSeconds: number): Promise<boolean> {
+    let mapChanged = false;
+    const accountMapChanged = () => {
+      mapChanged = true;
+    };
+    this.account.game.map.onMapChanged.on(accountMapChanged);
+    for (let i = 0; i < maxDelayInSeconds && !mapChanged && this.account.state !== AccountStates.FIGHTING && this.account.scripts.running; i++) {
+      await sleep(1000);
+    }
+    this.account.game.map.onMapChanged.off(accountMapChanged);
+    return mapChanged;
   }
 
   public isCellTeleportable(cellId: number): boolean {

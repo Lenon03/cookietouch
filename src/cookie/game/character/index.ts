@@ -259,8 +259,8 @@ export default class Character {
 
   // TODO: skinurl
   public getSkinUrl(mode: string, orientation: number, width: number, height: number, zoom: number): string {
-    // let text = "http://staticns.ankama.com/dofus/renderer/look/7";
-    let text = "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
+    let text = "http://staticns.ankama.com/dofus/renderer/look/7";
+    // let text = "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
     text += "b3";
     let num = 0;
     const array = `${this.look.bonesId}`.split("");
@@ -366,6 +366,7 @@ export default class Character {
 
   public clear() {
     this.isSelected = false;
+    this.mount.clear();
   }
 
   public async UpdateCharacterSelectedSuccessMessage(message: any) {

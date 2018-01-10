@@ -60,7 +60,7 @@ export default class CharacterAPI {
     return this.account.game.character.stats.energyPercent;
   }
 
-  public kamas(): number {
+  public get kamas(): number {
     return this.account.game.character.inventory.kamas;
   }
 

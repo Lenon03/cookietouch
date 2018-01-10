@@ -201,8 +201,19 @@ export default class MovementsManager implements IClearable {
       return;
     }
 
+    if (!this.account.scripts.running) {
+      this.clear();
+      return;
+    }
+
     setTimeout(() => {
+      // In case one of these happen while we were waiting
       if (this.currentPath === null) {
+        return;
+      }
+
+      if (!this.account.scripts.running) {
+        this.clear();
         return;
       }
 

@@ -18,6 +18,7 @@ export default class AccountConfiguration {
   public spellsToBoost: SpellToBoostEntry[];
   public authorizedTradesFrom: number[];
   public characterCreation: CharacterCreation;
+  public autoMount: boolean;
 
   constructor() {
     this.showGeneralMessages = true;
@@ -31,9 +32,10 @@ export default class AccountConfiguration {
     this.acceptAchievements = true;
     this.statToBoost = BoostableStats.NONE;
     this.ignoreNonAuthorizedTrades = false;
-    this.disconnectUponFightsLimit = true;
+    this.disconnectUponFightsLimit = false;
     this.spellsToBoost = new Array<SpellToBoostEntry>();
     this.authorizedTradesFrom = [];
     this.characterCreation = new CharacterCreation();
+    this.autoMount = true;
   }
 }

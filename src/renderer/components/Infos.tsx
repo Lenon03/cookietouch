@@ -45,7 +45,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
         this.setState({
           itemUrl,
           jobUrl,
-          skinUrl: this.props.account.game.character.getSkinUrl("full", 1, 100, 200, 1),
+          skinUrl: this.props.account.game.character.skinUrl,
           spellUrl,
         });
       } else if (this.props.account.state === AccountStates.DISCONNECTED) {
@@ -59,15 +59,18 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       this.setState({ status: this.props.account.state });
     });
     this.props.account.game.map.MapChanged.on((data) =>
-      this.setState({position: this.props.account.game.map.labelPosition}));
+      this.setState({
+        position: `${this.props.account.game.map.labelPosition} (${this.props.account.game.map.id})`,
+      }),
+    );
   }
 
   public render() {
+    // <img src="https://s.ankama.com/www/static.ankama.com/dofus/ng/img/logo_dofus.jpg" />
     return (
       <div>
         <div>Position: {this.state.position}</div>
         <div>Status: {AccountStates[this.state.status]}</div>
-        <img src="https://s.ankama.com/www/static.ankama.com/dofus/ng/img/logo_dofus.jpg" />
         <img src={this.state.skinUrl} />
         <img src={this.state.itemUrl} />
         <img src={this.state.spellUrl} />

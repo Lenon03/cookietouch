@@ -1,11 +1,11 @@
+import ExchangePutAllItemsAction from "@/scripts/actions/exchange/ExchangePutAllItemsAction";
+import ExchangePutItemAction from "@/scripts/actions/exchange/ExchangePutItemAction";
+import ExchangePutKamasAction from "@/scripts/actions/exchange/ExchangePutKamasAction";
+import ExchangeRemoveItemAction from "@/scripts/actions/exchange/ExchangeRemoveItemAction";
+import ExchangeRemoveKamasAction from "@/scripts/actions/exchange/ExchangeRemoveKamasAction";
+import SendReadyAction from "@/scripts/actions/exchange/SendReadyAction";
+import StartExchangeAction from "@/scripts/actions/exchange/StartExchangeAction";
 import Account from "@account";
-import ExchangePutAllItemsAction from "../actions/exchange/ExchangePutAllItemsAction";
-import ExchangePutItemAction from "../actions/exchange/ExchangePutItemAction";
-import ExchangePutKamasAction from "../actions/exchange/ExchangePutKamasAction";
-import ExchangeRemoveItemAction from "../actions/exchange/ExchangeRemoveItemAction";
-import ExchangeRemoveKamasAction from "../actions/exchange/ExchangeRemoveKamasAction";
-import SendReadyAction from "../actions/exchange/SendReadyAction";
-import StartExchangeAction from "../actions/exchange/StartExchangeAction";
 
 export default class ExchangeAPI {
   private account: Account;

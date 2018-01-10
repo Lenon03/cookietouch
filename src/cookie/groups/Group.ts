@@ -71,8 +71,7 @@ export default class Group {
   }
 
   get isAnyoneFullWeight() {
-    // const maxPods = this.chief.scripts.scriptManager.getGlobalOr("MAX_PODS", 90);
-    const maxPods = 90;
+    const maxPods = this.chief.scripts.scriptManager.config.MAX_PODS ? this.chief.scripts.scriptManager.config.MAX_PODS : 90;
     if (this.chief.game.character.inventory.weightPercent >= maxPods) {
       return true;
     }

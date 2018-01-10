@@ -1,6 +1,7 @@
 import Account from "@account";
+import IClearable from "@utils/IClearable";
 
-export default class Mount {
+export default class Mount implements IClearable {
   public hasMount: boolean;
   public isRiding: boolean;
   public currentRatio: number;
@@ -27,6 +28,11 @@ export default class Mount {
     this.account.network.sendMessage("MountSetXpRatioRequestMessage", {
       xpRatio: ratio,
     });
+  }
+
+  public clear() {
+    this.hasMount = false;
+    this.isRiding = false;
   }
 
   public UpdateMountSetMessage(message: any) {

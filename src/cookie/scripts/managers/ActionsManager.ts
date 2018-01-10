@@ -40,7 +40,7 @@ export default class ActionsManager {
   private account: Account;
   private actionsQueue: ScriptAction[];
   private currentAction: ScriptAction;
-  private currentCoroutine: any = null;
+  private currentCoroutine: () => void;
   private fightsCounter: number;
   private gathersCounter: number;
   private mapChanged: boolean;
@@ -67,11 +67,11 @@ export default class ActionsManager {
     this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished.bind(this));
   }
 
-  public handleCustom(customFunction: any) {
-    if (!this.account.scripts.running || this.currentCoroutine !== null) {
+  public handleCustom(customFunction: () => void) {
+    if (!this.account.scripts.running || this.currentCoroutine) {
       return;
     }
-    this.currentCoroutine = this.account.scripts.scriptManager.script.createCoroutine(customFunction);
+    this.currentCoroutine = customFunction; // TODO: Check if it's right
     this.processCoroutine();
   }
 
@@ -129,11 +129,8 @@ export default class ActionsManager {
     try {
       const name = this.currentAction ? this.currentAction.name : "Unknown";
       this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name})`);
-      const result = this.currentCoroutine.resume(); // TODO: Handle coroutines!!!!
-      // Check if the custom function ended
-      // if (result.type === DataType.Void) {
-      //   this.onCustomHandled();
-      // }
+      this.currentCoroutine();
+      this.customHandled();
     } catch (error) {
       this.account.scripts.stopScript(error);
     }
@@ -266,8 +263,11 @@ export default class ActionsManager {
       this.fightsCounter++;
       this.fightsOnThisMap++;
       // Log the counter only if the script says so
-      // TODO: ...
-      // if (this.account.scripts.scriptManager.getGlobalOr())
+      const display = this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT ?
+        this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT : false;
+      if (display) {
+        this.account.logger.logInfo("Scripts", `Fight #${this.fightsCounter}`);
+      }
     }
   }
 
@@ -294,8 +294,11 @@ export default class ActionsManager {
     if (this.currentAction instanceof GatherAction) {
       this.gathersCounter++;
       // Log the counter only if the script says so
-      // TODO: ...
-      // if (this.account.scripts.scriptManager.getGlobalOr())
+      const displayGatherCount = this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT ?
+        this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT : false;
+      if (displayGatherCount) {
+        this.account.logger.logInfo("Scripts", `Gather #${this.gathersCounter}`);
+      }
     }
   }
 

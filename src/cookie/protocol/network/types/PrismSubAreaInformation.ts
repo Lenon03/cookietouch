@@ -1,4 +1,6 @@
-export default class PrismSubAreaInformation {
+import Type from "./Type";
+
+export default class PrismSubAreaInformation extends Type {
 
   public worldX: number;
   public worldY: number;
@@ -9,6 +11,7 @@ export default class PrismSubAreaInformation {
   public isFightable: boolean;
 
   constructor(worldX = 0, worldY = 0, mapId = 0, subAreaId = 0, alignment = 0, isInFight = false, isFightable = false) {
+    super();
     this.worldX = worldX;
     this.worldY = worldY;
     this.mapId = mapId;

@@ -1,4 +1,6 @@
-export default class HouseInformationsForSell {
+import Type from "./Type";
+
+export default class HouseInformationsForSell extends Type {
   public skillListIds: number[];
   public modelId: number;
   public ownerName: string;
@@ -13,7 +15,7 @@ export default class HouseInformationsForSell {
   constructor(modelId = 0, ownerName = "", ownerConnected = false, worldX = 0,
               worldY = 0, subAreaId = 0, nbRoom = 0, nbChest = 0, isLocked = false,
               price = 0, skillListIds: number[] = null) {
-
+    super();
     this.skillListIds = skillListIds;
     this.modelId = modelId;
     this.ownerName = ownerName;
@@ -25,6 +27,5 @@ export default class HouseInformationsForSell {
     this.nbChest = nbChest;
     this.isLocked = isLocked;
     this.price = price;
-
   }
 }

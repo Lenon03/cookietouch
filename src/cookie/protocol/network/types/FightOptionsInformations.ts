@@ -1,4 +1,6 @@
-export default class FightOptionsInformations {
+import Type from "./Type";
+
+export default class FightOptionsInformations extends Type {
 
   public issecret: boolean;
   public isrestrictedtopartyonly: boolean;
@@ -6,6 +8,7 @@ export default class FightOptionsInformations {
   public isaskingforhelp: boolean;
 
   constructor(issecret = false, isrestrictedtopartyonly = false, isclosed = false, isaskingforhelp = false) {
+    super();
     this.issecret = issecret;
     this.isrestrictedtopartyonly = isrestrictedtopartyonly;
     this.isclosed = isclosed;

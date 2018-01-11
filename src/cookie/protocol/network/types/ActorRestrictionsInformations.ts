@@ -1,4 +1,6 @@
-export default class ActorRestrictionsInformations {
+import Type from "./Type";
+
+export default class ActorRestrictionsInformations extends Type {
   public cantBeAggressed: boolean;
   public cantBeChallenged: boolean;
   public cantTrade: boolean;
@@ -28,6 +30,7 @@ export default class ActorRestrictionsInformations {
               cantChat = false, cantBeMerchant = false, cantUseObject = false,
               cantUseTaxCollector = false, cantUseInteractive = false, cantSpeakToNpc = false,
               cantChangeZone = false, cantAttackMonster = false, cantWalk8Directions = false) {
+    super();
     this.cantBeAggressed = cantBeAggressed;
     this.cantBeChallenged = cantBeChallenged;
     this.cantTrade = cantTrade;

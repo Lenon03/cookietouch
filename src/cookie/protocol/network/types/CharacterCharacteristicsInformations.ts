@@ -1,8 +1,9 @@
 import ActorExtendedAlignmentInformations from "./ActorExtendedAlignmentInformations";
 import CharacterBaseCharacteristic from "./CharacterBaseCharacteristic";
 import CharacterSpellModification from "./CharacterSpellModification";
+import Type from "./Type";
 
-export default class CharacterCharacteristicsInformations {
+export default class CharacterCharacteristicsInformations extends Type {
 
   public spellModifications: CharacterSpellModification[];
   public experience: number;
@@ -124,6 +125,7 @@ export default class CharacterCharacteristicsInformations {
               pvpAirRlementReduction: CharacterBaseCharacteristic,
               pvpFireElementReduction: CharacterBaseCharacteristic,
               probationTime = 0, spellModifications: CharacterSpellModification[]) {
+    super();
     this.spellModifications = spellModifications;
     this.experience = experience;
     this.experienceLevelFloor = experienceLevelFloor;

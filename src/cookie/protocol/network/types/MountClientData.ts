@@ -1,5 +1,7 @@
 import ObjectEffectInteger from "./ObjectEffectInteger";
-export default class MountClientData {
+import Type from "./Type";
+
+export default class MountClientData extends Type {
   public ancestor: number[];
   public behaviors: number[];
   public effectList: ObjectEffectInteger[];
@@ -42,7 +44,7 @@ export default class MountClientData {
               boostLimiter = 0, boostMax = 0, reproductionCount = 0,
               reproductionCountMax = 0, ancestor: number[] = null, behaviors: number[] = null,
               effectList: ObjectEffectInteger[] = null) {
-
+    super();
     this.ancestor = ancestor;
     this.behaviors = behaviors;
     this.effectList = effectList;
@@ -75,6 +77,5 @@ export default class MountClientData {
     this.boostMax = boostMax;
     this.reproductionCount = reproductionCount;
     this.reproductionCountMax = reproductionCountMax;
-
   }
 }

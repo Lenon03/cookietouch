@@ -1,6 +1,8 @@
 import FightOptionsInformations from "./FightOptionsInformations";
 import FightTeamLightInformations from "./FightTeamLightInformations";
-export default class FightExternalInformations {
+import Type from "./Type";
+
+export default class FightExternalInformations extends Type {
 
   public fightteams: FightTeamLightInformations[];
   public fightteamsoptions: FightOptionsInformations[];
@@ -11,6 +13,7 @@ export default class FightExternalInformations {
 
   constructor(fightid = 0, fighttype = 0, fightstart = 0, fightspectatorlocked = false,
               fightteams: FightTeamLightInformations[], fightteamsoptions: FightOptionsInformations[]) {
+    super();
     this.fightteams = fightteams;
     this.fightteamsoptions = fightteamsoptions;
     this.fightid = fightid;

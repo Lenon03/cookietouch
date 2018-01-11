@@ -10,6 +10,5 @@ export default class GuildFactSheetInformations extends GuildInformations {
     this.leaderId = leaderId;
     this.guildLevel = guildLevel;
     this.nbMembers = nbMembers;
-
   }
 }

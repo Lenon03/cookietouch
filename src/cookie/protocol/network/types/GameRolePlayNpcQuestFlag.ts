@@ -1,4 +1,6 @@
-export default class GameRolePlayNpcWithQuestInformations {
+import Type from "./Type";
+
+export default class GameRolePlayNpcWithQuestInformations extends Type {
     public contextualId: number;
     public disposition: any[];
     public look: any[];
@@ -6,4 +8,8 @@ export default class GameRolePlayNpcWithQuestInformations {
     public questFlag: any[];
     public sex: boolean;
     public specialArtworkId: number;
+
+    constructor() {
+      super();
+    }
 }

@@ -1,3 +1,7 @@
-export default class Item {
-  //
+import Type from "./Type";
+
+export default class Item extends Type {
+  constructor() {
+    super();
+  }
 }

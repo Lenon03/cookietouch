@@ -1,4 +1,6 @@
-export default class InteractiveElementSkill {
+import Type from "./Type";
+
+export default class InteractiveElementSkill extends Type {
   public skillId: number;
   public skillInstanceUid: number;
   public _cursor: number;
@@ -7,6 +9,7 @@ export default class InteractiveElementSkill {
   public _levelMin: number;
   public _parentJobId: number;
   constructor(skillId = 0, skillInstanceUid = 0) {
+    super();
     this.skillId = skillId;
     this.skillInstanceUid = skillInstanceUid;
   }

@@ -1,7 +1,9 @@
 import EntityLook from "./EntityLook";
 import PartyCompanionBaseInformations from "./PartyCompanionBaseInformations";
 import PlayerStatus from "./PlayerStatus";
-export default class PartyGuestInformations {
+import Type from "./Type";
+
+export default class PartyGuestInformations extends Type {
   public companions: PartyCompanionBaseInformations[];
   public guestId: number;
   public hostId: number;
@@ -13,7 +15,7 @@ export default class PartyGuestInformations {
   constructor(guestId = 0, hostId = 0, name = "", guestLook: EntityLook = null,
               breed = 0, sex = false, status: PlayerStatus = null,
               companions: PartyCompanionBaseInformations[] = null) {
-
+    super();
     this.companions = companions;
     this.guestId = guestId;
     this.hostId = hostId;
@@ -22,6 +24,5 @@ export default class PartyGuestInformations {
     this.breed = breed;
     this.sex = sex;
     this.status = status;
-
   }
 }

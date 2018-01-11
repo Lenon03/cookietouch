@@ -1,6 +1,7 @@
 import SubEntity from "./SubEntity";
+import Type from "./Type";
 
-export default class EntityLook {
+export default class EntityLook extends Type {
   public skins: number[];
   public indexedColors: number[];
   public scales: number[];
@@ -9,6 +10,7 @@ export default class EntityLook {
 
   constructor(bonesId = 0, skins: number[] = null, indexedColors: number[] = null,
               scales: number[] = null, subEntities: SubEntity[] = null) {
+    super();
     this.bonesId = bonesId;
     this.skins = skins;
     this.indexedColors = indexedColors;

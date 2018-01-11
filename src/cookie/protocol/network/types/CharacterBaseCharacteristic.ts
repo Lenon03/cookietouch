@@ -1,4 +1,6 @@
-export default class CharacterBaseCharacteristic {
+import Type from "./Type";
+
+export default class CharacterBaseCharacteristic extends Type {
 
   public base: number;
   public objectsAndMountBonus: number;
@@ -10,6 +12,7 @@ export default class CharacterBaseCharacteristic {
   }
 
   constructor(base = 0, objectsAndMountBonus = 0, alignGiftBonus = 0, contextModif = 0) {
+    super();
     this.base = base;
     this.objectsAndMountBonus = objectsAndMountBonus;
     this.alignGiftBonus = alignGiftBonus;

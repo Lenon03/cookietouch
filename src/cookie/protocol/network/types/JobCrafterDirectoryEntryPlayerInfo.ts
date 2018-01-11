@@ -1,6 +1,7 @@
 import PlayerStatus from "./PlayerStatus";
+import Type from "./Type";
 
-export default class JobCrafterDirectoryEntryPlayerInfo {
+export default class JobCrafterDirectoryEntryPlayerInfo extends Type {
 
   public playerId: number;
   public playerName: string;
@@ -17,6 +18,7 @@ export default class JobCrafterDirectoryEntryPlayerInfo {
   constructor(playerId = 0, playerName = "", alignmentSide = 0, breed = 0,
               sex = false, isInWorkShop = false, worldX = 0, worldY = 0, mapId = 0,
               subAreaId = 0, status: PlayerStatus) {
+    super();
     this.playerId = playerId;
     this.playerName = playerName;
     this.alignmentSide = alignmentSide;

@@ -1,7 +1,8 @@
 import FightOptionsInformations from "./FightOptionsInformations";
 import FightTeamInformations from "./FightTeamInformations";
+import Type from "./Type";
 
-export default class FightCommonInformations {
+export default class FightCommonInformations extends Type {
 
   public fightteams: FightTeamInformations[];
   public fightteamspositions: number;
@@ -11,6 +12,7 @@ export default class FightCommonInformations {
 
   constructor(fightid = 0, fighttype = 0, fightteams: FightTeamInformations[],
               fightteamspositions = 0, fightteamsoptions: FightOptionsInformations[]) {
+    super();
     this.fightid = fightid;
     this.fightteams = fightteams;
     this.fightteamspositions = fightteamspositions;

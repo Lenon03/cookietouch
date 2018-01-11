@@ -25,6 +25,7 @@ export default class MovementsManager implements IClearable {
   private currentPath: number[] = null;
   private neighbourMapId: number = 0;
   private pathfinder: Pathfinder;
+  private retries: number = 0;
 
   constructor(account: Account, map: MapGame) {
     this.account = account;
@@ -77,6 +78,7 @@ export default class MovementsManager implements IClearable {
 
     this.currentPath = path;
     this.sendMoveMessage();
+    this.retries = 0;
     return MovementRequestResults.MOVED;
   }
 
@@ -119,7 +121,7 @@ export default class MovementsManager implements IClearable {
 
   public changeMap(direction: MapChangeDirections): boolean {
     if (this.account.isBusy || this.neighbourMapId !== 0) {
-      this.account.logger.logWarning("MovementsManager", "Is busy or already changing map.");
+      this.account.logger.logWarning("MovementsManager", `Is busy (${AccountStates[this.account.state]}) or already changing map.`);
       return false;
     }
 
@@ -135,7 +137,7 @@ export default class MovementsManager implements IClearable {
 
       this.neighbourMapId = this.getNeighbourMapId(direction);
 
-      if (this.neighbourMapId === 0) {
+      if (this.neighbourMapId <= 0) {
         return false;
       }
 
@@ -161,11 +163,16 @@ export default class MovementsManager implements IClearable {
 
     this.neighbourMapId = this.getNeighbourMapId(direction);
 
-    return this.neighbourMapId !== 0 && this.moveToChangeMap(cellId);
+    if (this.neighbourMapId <= 0) {
+      this.account.logger.logWarning("MovementsManager", "Invalid Neighbour MapId.");
+      return false;
+    }
+
+    return this.moveToChangeMap(cellId);
   }
 
   public async UpdateGameMapMovementMessage(account: Account, data: any) {
-    if (data.actorId === account.game.character.id
+    if (this.currentPath && data.actorId === account.game.character.id
       && data.keyMovements[0] === this.currentPath[0]
       && this.currentPath.includes(data.keyMovements[data.keyMovements.length - 1])) {
       // TODO: Not sure if it is the best way to handle character's state,
@@ -196,7 +203,7 @@ export default class MovementsManager implements IClearable {
     }
   }
 
-  public UpdateGameMapNoMovementMessage(account: Account, data: any) {
+  public async UpdateGameMapNoMovementMessage(account: Account, data: any) {
     if (this.currentPath === null) {
       return;
     }
@@ -206,24 +213,35 @@ export default class MovementsManager implements IClearable {
       return;
     }
 
-    setTimeout(() => {
-      // In case one of these happen while we were waiting
-      if (this.currentPath === null) {
-        return;
-      }
+    this.retries++;
+    if (this.retries > 3) {
+      this.account.logger.logError("MovementsManager", "Maximum moving retries.");
+      return;
+    }
 
-      if (!this.account.scripts.running) {
-        this.clear();
-        return;
-      }
+    await sleep(5000);
 
-      this.sendMoveMessage();
-    }, 5000);
+    // In case one of these happen while we were waiting
+    if (this.currentPath === null) {
+      return;
+    }
+
+    if (!this.account.scripts.running) {
+      this.clear();
+      return;
+    }
+
+    this.sendMoveMessage();
+  }
+
+  public cancel() {
+    return this.clear();
   }
 
   public clear() {
     this.currentPath = null;
     this.neighbourMapId = 0;
+    this.retries = 0;
   }
 
   private moveToChangeMap(cellId: number): boolean {

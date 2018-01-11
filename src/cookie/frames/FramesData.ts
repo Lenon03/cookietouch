@@ -7,6 +7,7 @@ export default class FramesData implements IClearable {
   public salt: string;
   public ticket: string;
   public initialized: boolean;
+  public serverToAutoConnectTo: number;
 
   constructor() {
     this.clear();
@@ -19,5 +20,6 @@ export default class FramesData implements IClearable {
     this.salt = null;
     this.ticket = null;
     this.initialized = false;
+    this.serverToAutoConnectTo = 0;
   }
 }

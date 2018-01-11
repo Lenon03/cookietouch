@@ -191,7 +191,11 @@ export default class Inventory {
       const jobCount = this.account.game.character.jobs.jobs.Count((j) => j.level === 100);
       const strength = this.account.game.character.stats.strength.total;
       const boost = this.account.game.character.inventory.equipments.Sum((e) => e.weightBoost);
-      this.weightMax = 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
+      if (!job || !jobCount || !strength || !boost) {
+        this.weightMax = this._fallbackMaxWeight;
+      } else {
+        this.weightMax = 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
+      }
     } catch (e) {
       this.weightMax = this._fallbackMaxWeight;
     }

@@ -1,0 +1,140 @@
+import Account from "@/account";
+import FloodConfiguration from "@/extensions/flood/FloodConfiguration";
+import PlayerEntry from "@/game/map/entities/PlayerEntry";
+import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
+import { getRandomInt } from "@/utils/Random";
+import TimerWrapper from "@/utils/TimerWrapper";
+
+export default class FloodExtension {
+
+  public config: FloodConfiguration;
+  public running: boolean = false;
+
+  private account: Account;
+  private smileys = [":p", ":D", ":)", ":]", ":')", ":'D", ":3", "^^", ":'p", "x)", ";)"];
+  private seekChannelTimer: TimerWrapper;
+  private salesChannelTimer: TimerWrapper;
+  private generalChannelTimer: TimerWrapper;
+
+  constructor(account: Account) {
+    this.account = account;
+
+    this.config = new FloodConfiguration(account);
+
+    this.seekChannelTimer = new TimerWrapper(this.SeekChannel_Callback, this, Infinity, Infinity);
+    this.salesChannelTimer = new TimerWrapper(this.SalesChannel_Callback, this, Infinity, Infinity);
+    this.generalChannelTimer = new TimerWrapper(this.GeneralChannel_Callback, this, Infinity, Infinity);
+
+    this.account.game.map.PlayerJoined.on(this.Map_PlayerJoined.bind(this));
+    this.account.game.map.PlayerLeft.on(this.Map_PlayerLeft.bind(this));
+  }
+
+  public start() {
+    if (this.running) {
+      return;
+    }
+    this.seekChannelTimer.change(0, this.config.seekChannelInterval * 1000);
+    this.salesChannelTimer.change(0, this.config.salesChannelInterval * 1000);
+    this.generalChannelTimer.change(0, this.config.generalChannelInterval * 1000);
+    this.running = true;
+  }
+
+  public stop() {
+    if (!this.running) {
+      return;
+    }
+    this.seekChannelTimer.stop();
+    this.salesChannelTimer.stop();
+    this.generalChannelTimer.stop();
+    this.running = false;
+  }
+
+  private async SeekChannel_Callback() {
+    if (!this.running) {
+      return;
+    }
+    const seekChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SEEK);
+    if (seekChannelSentences.Count() > 0) {
+      const sentence = seekChannelSentences.ElementAt(getRandomInt(0, seekChannelSentences.Count() - 1));
+      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+    }
+  }
+
+  private async SalesChannel_Callback() {
+    if (!this.running) {
+      return;
+    }
+    const salesChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SALES);
+    if (salesChannelSentences.Count() > 0) {
+      const sentence = salesChannelSentences.ElementAt(getRandomInt(0, salesChannelSentences.Count() - 1));
+      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+    }
+  }
+
+  private async GeneralChannel_Callback() {
+    if (!this.running) {
+      return;
+    }
+    const generalChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_GLOBAL);
+    if (generalChannelSentences.Count() > 0) {
+      const sentence = generalChannelSentences.ElementAt(getRandomInt(0, generalChannelSentences.Count() - 1));
+      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+    }
+  }
+
+  private async Map_PlayerJoined(player: PlayerEntry) {
+    if (!this.running) {
+      return;
+    }
+    const privateChannelSentences = this.getPrivateSentences(true, false);
+    if (privateChannelSentences.Count() > 0) {
+      const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
+      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+    }
+  }
+
+  private async Map_PlayerLeft(player: PlayerEntry) {
+    if (!this.running) {
+      return;
+    }
+    const privateChannelSentences = this.getPrivateSentences(false, true);
+    if (privateChannelSentences.Count() > 0) {
+      const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
+      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+    }
+  }
+
+  private setAttributes(content: string, player: PlayerEntry = null): string {
+    content = content.replace("%nbr%", this.getRandomNumber());
+    content = content.replace("%smiley%", this.getRandomSmiley());
+    if (player) {
+      content = content.replace("%name%", player.name);
+      content = content.replace("%level%", player.level.toString());
+    }
+    return content;
+  }
+
+  private getRandomNumber(): string {
+    return `${getRandomInt(0, 10)}${getRandomInt(0, 10)}${getRandomInt(0, 10)}`;
+  }
+
+  private getRandomSmiley(): string {
+    return this.smileys[getRandomInt(0, this.smileys.length - 1)];
+  }
+
+  private getSentences(channel: ChatActivableChannelsEnum) {
+    return this.config.sentences.Where((s) => s.channel === channel);
+  }
+
+  private getPrivateSentences(onPlayerJoined: boolean, onPlayerLeft: boolean) {
+    return this.config.sentences.Where((s) => {
+      if (onPlayerJoined && !s.onPlayerJoined) {
+        return false;
+      }
+      if (onPlayerLeft && !s.onPlayerLeft) {
+        return false;
+      }
+      return true;
+    });
+  }
+}

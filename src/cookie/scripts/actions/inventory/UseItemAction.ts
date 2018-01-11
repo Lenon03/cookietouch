@@ -18,7 +18,7 @@ export default class UseItemAction extends ScriptAction {
 
       if (obj !== null) {
         account.game.character.inventory.useObject(obj, this.quantity);
-        await sleep(500);
+        // await sleep(500);
       }
       return resolve(ScriptActionResults.DONE);
     });

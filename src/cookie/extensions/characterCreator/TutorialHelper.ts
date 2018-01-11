@@ -13,7 +13,7 @@ export default class TutorialHelper {
   public static mapIdThirdBeforeFight = 81004544;
   public static mapIdThirdAfterFight = 81004546;
   public static firstEquipItem = 10785;
-  public static secondEquipItems = [10784, 10794, 10797, 10798, 10799, 10800];
+  public static secondEquipItems = [10784, 10794, 10797, 10799, 10800];
 
   public static baseSpells = new Dictionary<BreedEnum, List<Spell>>([
     { key: BreedEnum.Feca, value: new List<Spell>([

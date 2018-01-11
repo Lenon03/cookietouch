@@ -103,9 +103,8 @@ export default class FightFrame {
   }
 
   private async HandleSequenceEndMessage(account: Account, message: SequenceEndMessage) {
-    // TODO: We'll maybe have to delay this one
     if (account.game.character.id === message.authorId) {
-      await sleep(400); // Maybe wait more
+      await sleep(200 * account.extensions.fights.config.fightSpeed);
       await account.network.sendMessage("GameActionAcknowledgementMessage", {
         actionId: message.actionId,
         valid: true,
@@ -115,8 +114,7 @@ export default class FightFrame {
   }
 
   private async HandleGameFightTurnReadyRequestMessage(account: Account, message: GameFightTurnReadyRequestMessage) {
-    // TODO: If this doesn't work, wait more if its not our character
-    await sleep(message.id === account.game.character.id ? 200 : 800);
+    await sleep(message.id === account.game.character.id ? 200 : 400 * account.extensions.fights.config.fightSpeed);
     await account.network.sendMessage("GameFightTurnReadyMessage", { isReady: true });
   }
 
@@ -165,8 +163,10 @@ export default class FightFrame {
   private async HandleGameActionFightLifePointsLostMessage(account: Account, message: GameActionFightLifePointsLostMessage) {
     account.game.fight.UpdateGameActionFightLifePointsLostMessage(message);
     const fighter = account.game.fight.getFighter(message.targetId);
-    const tmp = fighter.lifePoints === 0 ? " (mort)." : ".";
-    account.logger.logInfo((fighter as any).name, `- ${message.loss} HP${tmp}`); // TODO: fix name
+    if (fighter) {
+      const tmp = fighter.lifePoints === 0 ? " (mort)." : ".";
+      account.logger.logInfo((fighter as any).name, `- ${message.loss} HP${tmp}`); // TODO: fix name
+    }
   }
 
   private async HandleGameActionFightSummonMessage(account: Account, message: GameActionFightSummonMessage) {

@@ -469,7 +469,7 @@ export default class Fight implements IClearable {
 
   public async UpdateGameFightShowFighterMessage(message: GameFightShowFighterMessage) {
     if (message.informations.contextualId === this.account.game.character.id) {
-      this.playedFighter = new FightPlayerEntry(message.informations as GameFightCharacterInformations, message.informations);
+      this.playedFighter = new FightPlayerEntry(message.informations);
     } else {
       this.addFighter(message.informations);
     }
@@ -513,12 +513,12 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateFighterStatsListMessage(message: FighterStatsListMessage) {
+    this.playedFighter.UpdateCharacterCharacteristicsInformations(message.stats);
     if (this.playedFighter !== null) {
-      this.playedFighter.UpdateCharacterCharacteristicsInformations(message.stats);
       this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
       this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-      this.onFightersStatsUpdated.trigger();
     }
+    this.onFightersStatsUpdated.trigger();
   }
 
   public async UpdateGameActionFightPointsVariationMessage(message: GameActionFightPointsVariationMessage) {
@@ -654,6 +654,7 @@ export default class Fight implements IClearable {
 
   public async UpdateGameActionFightDispellableEffectMessage(message: GameActionFightDispellableEffectMessage) {
     if (message.effect instanceof FightTemporaryBoostStateEffect) {
+     if (this.playedFighter) {
       if (message.effect.targetId === this.playedFighter.contextualId) {
         if (this._effectsDurations.containsKey(message.effect.stateId)) {
           this._effectsDurations.remove(message.effect.stateId);
@@ -661,9 +662,12 @@ export default class Fight implements IClearable {
           this._effectsDurations.add(message.effect.stateId, message.effect.turnDuration);
         }
       }
+     }
     } else if (message.effect instanceof FightTemporaryBoostEffect) {
-      if (message.effect.targetId === this.playedFighter.contextualId) {
-        this.playedFighter.Update(message.actionId, message.effect);
+      if (this.playedFighter) {
+        if (message.effect.targetId === this.playedFighter.contextualId) {
+          this.playedFighter.Update(message.actionId, message.effect);
+        }
       }
     }
   }
@@ -734,8 +738,8 @@ export default class Fight implements IClearable {
 
   private addFighter(infos: GameFightFighterInformations) {
     // TODO: Check this method ...
-    if ((infos as any)._type === "GameFightCharacterInformations") {
-      this._fighters.add(infos.contextualId, new FightPlayerEntry(infos as GameFightCharacterInformations, infos));
+    if ((infos as any)._type === "GameFightCharacterInformations" || (infos as any)._type === "GameFightMutantInformations") {
+      this._fighters.add(infos.contextualId, new FightPlayerEntry(infos));
     } else if ((infos as any)._type === "GameFightMonsterInformations") {
       this._fighters.add(infos.contextualId, new FightMonsterEntry(infos as GameFightMonsterInformations, infos));
     }

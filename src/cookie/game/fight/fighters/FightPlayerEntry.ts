@@ -6,9 +6,14 @@ export default class FightPlayerEntry extends FighterEntry {
   public name: string;
   public level: number;
 
-  constructor(infos1: GameFightCharacterInformations, infos2: GameFightFighterInformations) {
-    super(infos2);
-    this.name = infos1.name;
-    this.level = infos1.level;
+  constructor(infos: GameFightFighterInformations) {
+    super(infos);
+    if ((infos as any)._type === "GameFightCharacterInformations") {
+      this.name = (infos as any).name;
+      this.level = (infos as any).level;
+    } else if ((infos as any)._type === "GameFightMutantInformations") {
+      this.name = (infos as any).name;
+      this.level = 0; // TODO: Get the monster level
+    }
   }
 }

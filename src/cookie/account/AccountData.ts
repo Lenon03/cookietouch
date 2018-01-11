@@ -10,9 +10,13 @@ export default class AccountData {
   public login: number;
   public nickname: string;
   public secretQuestion: string;
-  public subscriptionEndDate: number;
+  public subscriptionEndDate: Date;
   public wasAlreadyConnected: boolean;
   public lang: string;
+
+  get isSubscriber(): boolean {
+    return new Date() < this.subscriptionEndDate;
+  }
 
   constructor(username: string, password: string, lang = "fr", server = "", character = "", nickname = "") {
     this.username = username;

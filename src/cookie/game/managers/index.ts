@@ -24,4 +24,11 @@ export default class Managers implements IClearable {
     this.interactives.clear();
     this.gathers.clear();
   }
+
+  public cancel() {
+    this.movements.cancel();
+    this.interactives.cancelUse();
+    this.gathers.cancelGather();
+    this.teleportables.cancel();
+  }
 }

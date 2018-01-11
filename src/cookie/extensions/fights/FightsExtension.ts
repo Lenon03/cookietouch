@@ -96,7 +96,7 @@ export default class FightsExtension implements IClearable {
   }
 
   public async UpdateGameFightPlacementPossiblePositionsMessage(message: GameFightPlacementPossiblePositionsMessage) {
-    // TODO: fight a better way...
+    // TODO: Find a better way...
     // Wait a little to make sure all the enemies are in the fight
     await sleep(1000);
     // Check if we should lock the fight

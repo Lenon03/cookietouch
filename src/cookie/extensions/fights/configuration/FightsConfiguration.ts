@@ -1,3 +1,4 @@
+import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
 import { BlockSpectatorScenarios } from "./enums/BlockSpectatorScenarios";
 import { FightStartPlacement } from "./enums/FightStartPlacement";
 import { FightTactics } from "./enums/FightTactics";
@@ -17,6 +18,7 @@ export default class FightsConfiguration {
   public spellToApproach: number;
   public tactic: FightTactics;
   public spells: Spell[];
+  public fightSpeed: FightSpeeds;
 
   constructor() {
     this.startPlacement = FightStartPlacement.FAR_FROM_ENEMIES;
@@ -31,5 +33,6 @@ export default class FightsConfiguration {
     this.regenStart = 0;
     this.regenEnd = 100;
     this.spells = [];
+    this.fightSpeed = FightSpeeds.NORMAL;
   }
 }

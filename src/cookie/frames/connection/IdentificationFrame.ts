@@ -1,6 +1,9 @@
 import { NetworkPhases } from "@/network/NetworkPhases";
+import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
+import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
 import Account from "@account";
 import DTConstants from "@protocol/DTConstants";
+import * as moment from "moment";
 
 export default class IdentificationFrame {
 
@@ -16,6 +19,7 @@ export default class IdentificationFrame {
     this.account.dispatcher.register("assetsVersionChecked", this.HandleassetsVersionChecked, this);
     this.account.dispatcher.register("ConnectionFailedMessage", this.HandleConnectionFailedMessage, this);
     this.account.dispatcher.register("IdentificationSuccessMessage", this.HandleIdentificationSuccessMessage, this);
+    this.account.dispatcher.register("IdentificationFailedBannedMessage", this.HandleIdentificationFailedBannedMessage, this);
   }
 
   private async HandleHelloConnectMessage(account: Account, message: any) {
@@ -40,7 +44,7 @@ export default class IdentificationFrame {
   }
 
   private async HandleConnectionFailedMessage(account: Account, message: any) {
-    account.logger.logError("", message.reason);
+    account.logger.logError("IdentificationFrame", message.reason);
   }
 
   private async HandleIdentificationSuccessMessage(account: Account, message: any) {
@@ -51,9 +55,13 @@ export default class IdentificationFrame {
     account.data.login = message.login;
     account.data.nickname = message.nickname;
     account.data.secretQuestion = message.secretQuestion;
-    account.data.subscriptionEndDate = message.subscriptionEndDate;
+    account.data.subscriptionEndDate = message.subscriptionEndDate === 0 ? null :
+      moment().add(Math.floor((message.subscriptionEndDate - Date.now()) / 1000 / 60 / 60 / 24), "days").toDate();
     account.data.wasAlreadyConnected = message.wasAlreadyConnected;
+  }
 
-    console.log("Account", account);
+  private async HandleIdentificationFailedBannedMessage(account: Account, message: IdentificationFailedBannedMessage) {
+    const date = new Date(message.banEndDate);
+    account.logger.logError("IdentificationFrame", `${IdentificationFailureReasonEnum[message.reason]} [${date.toDateString()}]`);
   }
 }

@@ -1,15 +1,14 @@
 const config = {
   AUTO_DELETE: [2473,2474,2475,2476,2477,2478,385,310,367,16503,16504,16505],
-  GATHER: [],
   MIN_MONSTERS: 2,
   MAX_MONSTERS: 3
 };
 
 const move = [
-  { map: "153092354", door: 409 },
-		{ map: "152043527", direction: "right" },
-		{ map: "153092354", door: 409 },
-		{ map: "152043527", direction: "right" },
+  { map: 153092354, door: 409 },
+		{ map: 152043527, direction: "right" },
+		{ map: 153092354, door: 409 },
+		{ map: 152043527, direction: "right" },
 		{ map: "-3,-6", fight: true, direction: "right" },
 		{ map: "-2,-6", fight: true, direction: "right" },
 		{ map: "-3,-5", fight: true, direction: "top" },

@@ -56,39 +56,22 @@ export default class ChangeMapAction extends ScriptAction {
       if (this.isSpecificDirection) {
         if (!account.game.managers.movements.changeMapWithCellId(this.direction, this.cellId)) {
           account.scripts.stopScript("reasonstopscript");
-          return resolve(ScriptActionResults.FAILED);
+          return ScriptAction.failedResult;
         }
       } else if (this.isSimpleDirection) {
         if (!account.game.managers.movements.changeMap(this.direction)) {
           account.scripts.stopScript("reasonstopscript");
-          return resolve(ScriptActionResults.FAILED);
+          return ScriptAction.failedResult;
         }
       } else {
         // Move to a cell that will change the map
         const result = account.game.managers.movements.moveToCell(this.cellId);
         if (result !== MovementRequestResults.MOVED) {
           account.scripts.stopScript("reasonstopscript");
-          return resolve(ScriptActionResults.FAILED);
+          return ScriptAction.failedResult;
         }
       }
-      let mapChanged = false;
-      const accountMapChanged = () => {
-        mapChanged = true;
-      };
-      account.game.map.MapChanged.on(accountMapChanged);
-      for (let i = 0; i < 20 && !mapChanged && account.state !== AccountStates.FIGHTING && account.scripts.running; i++) {
-        await sleep(1000);
-      }
-      account.game.map.MapChanged.off(accountMapChanged);
-      // If the character gets into an unwanted fight, we need to stop re-trying
-      if (account.state === AccountStates.FIGHTING) {
-        return resolve(ScriptActionResults.FAILED);
-      }
-      // If the script stops or gets paused during this, we don't need to re-process
-      if (mapChanged || !account.scripts.running) {
-        return resolve(ScriptActionResults.PROCESSING);
-      }
-      return await this.process(account);
+      return ScriptAction.processingResult;
     });
   }
 }

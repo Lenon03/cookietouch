@@ -1,4 +1,5 @@
 import { BoostableStats } from "@game/character/BoostableStats";
+import { Enumerable, List } from "linqts";
 import CharacterCreation from "./CharacterCreation";
 import SpellToBoostEntry from "./SpellToBoostEntry";
 
@@ -19,6 +20,8 @@ export default class AccountConfiguration {
   public authorizedTradesFrom: number[];
   public characterCreation: CharacterCreation;
   public autoMount: boolean;
+  public planificationActivated: boolean;
+  public planification: List<boolean>;
 
   constructor() {
     this.showGeneralMessages = true;
@@ -37,5 +40,7 @@ export default class AccountConfiguration {
     this.authorizedTradesFrom = [];
     this.characterCreation = new CharacterCreation();
     this.autoMount = true;
+    this.planificationActivated = false;
+    this.planification = Enumerable.Repeat(true, 24);
   }
 }

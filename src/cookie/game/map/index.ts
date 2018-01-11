@@ -62,12 +62,14 @@ export default class Map implements IClearable {
 
   // Events
   public get MapChanged() { return this.onMapChanged.expose(); }
+  public get MapLoaded() { return this.onMapLoaded.expose(); }
   public get PlayerJoined() { return this.onPlayerJoined.expose(); }
   public get PlayerLeft() { return this.onPlayerLeft.expose(); }
   public get EntitiesUpdated() { return this.onEntitiesUpdated.expose(); }
   public get InteractivesUpdated() { return this.onInteractivesUpdated.expose(); }
   public get PlayedCharacterMoving() { return this.onPlayedCharacterMoving.expose(); }
   private readonly onMapChanged = new LiteEvent<void>();
+  private readonly onMapLoaded = new LiteEvent<void>();
   private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
   private readonly onPlayerLeft = new LiteEvent<PlayerEntry>();
   private readonly onEntitiesUpdated = new LiteEvent<void>();
@@ -85,18 +87,20 @@ export default class Map implements IClearable {
   private _phenixs = new Dictionary<number, ElementInCellEntry>();
   private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
   private _joinedFight: boolean;
+  private _firstTime: boolean= true;
 
   constructor(account: Account) {
     this.account = account;
   }
 
   public clear() {
-    this._joinedFight = false;
+    // this._joinedFight = false;
     this.data = null;
     this.area = null;
     this.subArea = null;
     this.posX = 0;
     this.posY = 0;
+    this._firstTime = true;
   }
 
   public async waitMapChange(maxDelayInSeconds: number): Promise<boolean> {
@@ -216,22 +220,6 @@ export default class Map implements IClearable {
 
     // Entities
     for (const actor of message.actors) {
-      // console.log("ACTOR", actor);
-      // if (actor as GameRolePlayCharacterInformations) {
-      //   if (actor.contextualId === account.game.character.id) {
-      //     console.log("playedCharacter", actor);
-      //     this.playedCharacter = new PlayerEntry(actor);
-      //   } else {
-      //     console.log("_players", actor);
-      //     this._players.add(actor.contextualId, new PlayerEntry(actor));
-      //   }
-      // } else if (actor as GameRolePlayNpcInformations) {
-      //   console.log("_npcs", actor);
-      //   this._npcs.add(actor.contextualId, new NpcEntry(actor));
-      // } else if (actor as GameRolePlayGroupMonsterInformations) {
-      //   console.log("_monstersGroups", actor);
-      //   this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
-      // }
       if (actor._type === "GameRolePlayCharacterInformations") {
         if (actor.contextualId === this.account.game.character.id) {
           // console.log("playedCharacter", actor);
@@ -240,6 +228,12 @@ export default class Map implements IClearable {
           // console.log("_players", actor);
           this._players.add(actor.contextualId, new PlayerEntry(actor));
         }
+      } else if (actor._type === "GameRolePlayMutantInformations") {
+          if (actor.ContextualId === this.account.game.character.id) {
+            this.playedCharacter = new PlayerEntry(actor);
+          } else {
+            this._players.add(actor.contextualId, new PlayerEntry(actor));
+          }
       } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
         // console.log("_npcs", actor);
         this._npcs.add(actor.contextualId, new NpcEntry(actor));
@@ -249,19 +243,6 @@ export default class Map implements IClearable {
       }
     }
 
-    // Interactives
-    // for (const interactive of message.interactiveElements) {
-    //   if (interactive as InteractiveElement) {
-    //     console.log("_interactives", interactive);
-    //     this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
-    //   }
-    // }
-    // for (const stated of message.statedElements) {
-    //   if (stated as StatedElement) {
-    //     console.log("_statedElements", stated);
-    //     this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
-    //   }
-    // }
     for (const interactive of message.interactiveElements) {
       if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
         // console.log("_interactives", interactive);
@@ -316,10 +297,16 @@ export default class Map implements IClearable {
       }
     }
 
+    // Only trigger the event when we actually changed the map
+    // IDK why DT has this, but there is a possibility that we get a second MCIDM for the same map
     if (!sameMap || this._joinedFight) {
       this._joinedFight = false;
       this.account.logger.logDebug("", "Triggering MapChanged");
       this.onMapChanged.trigger();
+      if (this._firstTime) {
+        this._firstTime = false;
+        this.onMapLoaded.trigger();
+      }
     } else {
       this.account.logger.logWarning("", "Same map.");
     }
@@ -335,6 +322,11 @@ export default class Map implements IClearable {
         this._players.add(pe.id, pe);
       }
       this.onPlayerJoined.trigger(pe);
+    } else if (message.informations._type === "GameRolePlayMutantInformations") {
+      const pe = new PlayerEntry(message.informations);
+      this._players.add(pe.id, pe);
+      this.onPlayerJoined.trigger(pe);
+      this.onEntitiesUpdated.trigger();
     } else if (message.informations._type === "GameRolePlayGroupMonsterInformations") {
       const mge = new MonstersGroupEntry(message.informations);
       this._monstersGroups.add(message.informations.contextualId, mge);

@@ -1,3 +1,4 @@
+import TimerWrapper from "@/utils/TimerWrapper";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { GatherResults } from "@game/managers/gathers";
@@ -31,6 +32,7 @@ export interface IActionsManagerEventData {
 
 export default class ActionsManager {
   public fightsOnThisMap: number;
+  public monstersGroupToAttack: number = 0;
 
   public get ActionsFinished() { return this.onActionsFinished.expose(); }
   public get CustomHandled() { return this.onCustomHandled.expose(); }
@@ -44,10 +46,12 @@ export default class ActionsManager {
   private fightsCounter: number;
   private gathersCounter: number;
   private mapChanged: boolean;
+  private timeoutTimer: TimerWrapper;
 
   constructor(account: Account) {
     this.account = account;
     this.actionsQueue = [];
+    this.timeoutTimer = new TimerWrapper(this.timeoutTimerCallback, this, 60000, 60000);
 
     this.account.game.map.MapChanged.on(this.map_mapChanged.bind(this));
     this.account.game.managers.movements.MovementFinished.on(this.movements_movementFinished.bind(this));
@@ -93,6 +97,7 @@ export default class ActionsManager {
     this.clearActions();
     this.currentAction = null;
     this.currentCoroutine = null;
+    this.timeoutTimer.stop();
     // TODO: Ask the users if they want to leave the main counters
     this.fightsCounter = 0;
     this.gathersCounter = 0;
@@ -103,9 +108,13 @@ export default class ActionsManager {
     if (this.account && this.account.scripts.running === false) {
       return;
     }
+    if (this.timeoutTimer.enabled) {
+      this.timeoutTimer.stop();
+    }
     if (delay > 0) {
       await sleep(delay);
     }
+    this.account.logger.logDebug("Scripts", `Waited ${delay}ms`);
     // If the queue still have actions
     if (this.actionsQueue.length > 0) {
       const action = this.actionsQueue.shift();
@@ -128,8 +137,9 @@ export default class ActionsManager {
     }
     try {
       const name = this.currentAction ? this.currentAction.name : "Unknown";
-      this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name})`);
-      this.currentCoroutine();
+      const result = this.currentCoroutine();
+      this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name}, result: ${result})`);
+      // this.account.logger.logDebug("Scripts", `Ending coroutine`);
       this.customHandled();
     } catch (error) {
       this.account.scripts.stopScript(error);
@@ -141,7 +151,7 @@ export default class ActionsManager {
       return;
     }
     const type = this.currentAction.name;
-
+    this.account.logger.logDebug("ActionsManager", `Current action: ${type}.`);
     const res = await this.currentAction.process(this.account);
     switch (res) {
       case ScriptActionResults.DONE:
@@ -152,6 +162,7 @@ export default class ActionsManager {
         this.account.logger.logDebug("ActionsManager", `${type} FAILED.`);
         break;
       case ScriptActionResults.PROCESSING:
+        this.timeoutTimer.start();
         break;
     }
   }
@@ -216,17 +227,22 @@ export default class ActionsManager {
     if (!this.account.scripts.running) {
       return;
     }
-    if (this.currentAction instanceof FightAction) {
+    if (this.currentAction instanceof FightAction && this.monstersGroupToAttack !== 0) {
       if (success) {
+        this.account.network.sendMessage("GameRolePlayAttackMonsterRequestMessage", {
+          monsterGroupId: this.monstersGroupToAttack,
+        });
         // Check if the bot got into a fight or not
         for (let delay = 0; delay < 10000 && this.account.state !== AccountStates.FIGHTING; delay += 500) {
           await sleep(500);
         }
         // If not, the group either moved or got stolen from us
-        if (this.account.state === AccountStates.FIGHTING) {
-          return;
+        if (this.account.state !== AccountStates.FIGHTING) {
+          this.account.logger.logWarning("Scripts", "Error when launching a fight, the group may have moved or was stolen.");
+          this.dequeueActions(0);
         }
-        this.dequeueActions(0);
+
+        this.monstersGroupToAttack = 0;
       } else {
         this.account.scripts.stopScript();
       }
@@ -260,6 +276,8 @@ export default class ActionsManager {
       return;
     }
     if (this.currentAction instanceof FightAction) {
+      this.timeoutTimer.stop();
+
       this.fightsCounter++;
       this.fightsOnThisMap++;
       // Log the counter only if the script says so
@@ -400,5 +418,15 @@ export default class ActionsManager {
         this.account.scripts.stopScript(`Can't use ${(this.currentAction as UseTeleportableAction).type}`);
       }
     }
+  }
+
+  private timeoutTimerCallback() {
+    // Running and not Enabled because during fights, the script is paused
+    if (!this.account.scripts.running) {
+      return;
+    }
+    this.account.logger.logWarning("Scripts", "Timed out.");
+    this.account.scripts.stopScript();
+    this.account.scripts.startScript();
   }
 }

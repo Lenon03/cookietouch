@@ -1,7 +1,3 @@
-function maCustom() {
-  console.log(`J'ai ${API.character.kamas} kamas.`);
-}
-
 const config = {
   MAX_PODS: 90
 };
@@ -9,19 +5,22 @@ const config = {
 const move = [
   {
     map: "3,1",
-    custom: maCustom,
-    direction: "right"
+    direction: "right",
+    fight: true,
+    custom: () => {
+      console.log(API);
+    }
   }, {
     map: "4,1",
-    custom: maCustom,
-    direction: "bottom"
+    direction: "bottom",
+    fight: true,
   }, {
     map: "4,2",
-    custom: maCustom,
-    direction: "left"
+    direction: "left",
+    fight: true,
   }, {
     map: "3,2",
-    custom: maCustom,
-    direction: "top"
+    direction: "top",
+    fight: true,
   }
 ];

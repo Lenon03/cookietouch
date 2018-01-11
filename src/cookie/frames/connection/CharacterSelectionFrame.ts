@@ -64,7 +64,7 @@ export default class CharacterSelectionFrame {
 
     account.network.sendMessage("kpiStartSession", {
       accountSessionId: account.data.login,
-      isSubscriber: account.data.subscriptionEndDate !== 0,
+      isSubscriber: account.data.isSubscriber,
     });
     account.network.send("moneyGoultinesAmountRequest");
     account.network.sendMessage("QuestListRequestMessage");

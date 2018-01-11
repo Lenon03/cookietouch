@@ -42,6 +42,7 @@ export default class CharacterCreatorExtension implements IClearable {
     this.account.game.npcs.QuestionReceived.on(this.onQuestionReceived.bind(this));
     this.account.game.character.inventory.ObjectEquipped.on(this.onObjectEquipped.bind(this));
     this.account.game.map.MapChanged.on(this.onMapChanged.bind(this));
+    this.account.game.managers.movements.MovementFinished.on(this.onMovementFinished.bind(this));
   }
 
   public clear() {
@@ -304,15 +305,35 @@ export default class CharacterCreatorExtension implements IClearable {
     } else if (this.currentStepNumber === 14 && this.account.game.map.id === TutorialHelper.mapIdThirdAfterFight) {
       this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 14`);
       await sleep(1200);
-      // Equip hat item
+      // Buy the shield
+      await this.account.network.sendMessage("QuestObjectiveValidationMessage", {
+        objectiveId: 8078,
+        questId: 1461,
+      });
+      await sleep(1200);
+      // Equip hat and shield
       this.account.game.character.inventory.equipObject(this.account.game.character.inventory.getObjectByGid(10801));
+      this.account.game.character.inventory.equipObject(this.account.game.character.inventory.getObjectByGid(10798));
       await sleep(400);
+      // Then talk to the npc
       this.account.game.npcs.useNpc(-1, 1);
     }
     // Step 12: start fight
     if (this.currentStepNumber === 12 && this.account.game.map.id === TutorialHelper.mapIdThirdBeforeFight) {
       this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 12`);
       this.account.game.managers.movements.moveToCell(this.account.game.map.monstersGroups[0].cellId);
+    }
+  }
+
+  private onMovementFinished(success: boolean) {
+    if (!success) {
+      return;
+    }
+    const mg = this.account.game.map.monstersGroups[0];
+    if (mg && mg.cellId === this.account.game.map.playedCharacter.cellId) {
+      this.account.network.sendMessage("GameRolePlayAttackMonsterRequestMessage", {
+        monsterGroupId: mg.id,
+      });
     }
   }
 }

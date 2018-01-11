@@ -141,6 +141,11 @@ export default class ScriptsManager {
     }
     // Check if the character got to MAX_PODS
     await this.checkForMaxPods();
+    if (!this.running) {
+      return;
+    }
+    // Check for auto mount
+    await this.checkForMount();
   }
 
   public startScript() {
@@ -179,8 +184,7 @@ export default class ScriptsManager {
     this.entryFlags = new List<IFlag>();
     this.entryFlagsIndex = 0;
 
-    this.account.game.managers.gathers.cancelGather();
-    this.account.game.managers.interactives.cancelUse();
+    this.account.game.managers.cancel();
     this.actionsManager.clearEverything();
 
     // If the account is a group chief, do the same for members
@@ -191,7 +195,7 @@ export default class ScriptsManager {
     if (reason === "") {
       this.account.logger.logInfo("Script", "Script stopped.");
     } else {
-      this.account.logger.logError("Script", `Script stopped. (reason: ${reason})`);
+      this.account.logger.logError("Script", `Script stopped. (${reason})`);
     }
 
     this.onScriptStopped.trigger(reason);
@@ -500,12 +504,26 @@ export default class ScriptsManager {
     }
   }
 
+  private async checkForMount() {
+    if (!this.account.config.autoMount || !this.account.game.character.mount.hasMount || this.account.game.character.mount.isRiding) {
+      return;
+    }
+    this.account.game.character.mount.toggleRiding();
+    this.account.logger.logInfo("Scripts", "You're now on your mount :)");
+    await sleep(1000);
+  }
+
   private async checkForMaxPods() {
     // We'll only change the function type if the current one is MOVE
     // This will prevent us from overwriting an ongoing PHENIX session
     if (this.gotToMaxPods && this.currentFunctionType === FunctionTypes.MOVE) {
       // Check if there is an AUTO_DELETE option
       await this.checkForAutoDelete();
+      // To fix this bug https://pastebin.com/HWYjTjuE
+      // We will check if the script is running (since a fight pauses the script)
+      if (!this.running) {
+        return;
+      }
       // If the character is still full
       if (this.gotToMaxPods) {
         this.account.logger.logInfo("Scripts", "MAX_PODS reached, switching to bank function.");
@@ -746,11 +764,14 @@ export default class ScriptsManager {
       this.account.group.waitForAllActionsFinished();
       this.account.logger.logDebug("Groups", "All the actions of the members are done.");
     }
+    // Check for special cases (full pods, phenix)
+    if (this.checkForSpecialCases()) {
+      return;
+    }
     // If a map changed occured, re-process the script
     if (data.success) {
       this.processScript();
-    } else if (!this.checkForSpecialCases()) {
-      // Otherwise, check for special cases (full pods, phenix)
+    } else {
       this.processEntryFlags();
     }
   }
@@ -760,11 +781,14 @@ export default class ScriptsManager {
     if (this.account.hasGroup && !this.account.isGroupChief) {
       return;
     }
-    // In the custom function made the character change the map, re-process the script
+    // Check for special cases (full pods, phenix)
+    if (this.checkForSpecialCases()) {
+      return;
+    }
+    // If a map changed occured, re-process the script
     if (data.success) {
       this.processScript();
-    } else if (!this.checkForSpecialCases()) {
-      // Otherwise, just move to the next flag
+    } else {
       this.processEntryFlags();
     }
   }

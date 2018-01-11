@@ -10,6 +10,7 @@ import Spell from "@/extensions/fights/configuration/Spell";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
+import { BreedEnum } from "@/protocol/enums/BreedEnum";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
 import Account from "@account";
 import SpellToBoostEntry from "@account/SpellToBoostEntry";
@@ -34,21 +35,21 @@ export class App extends React.Component<{}, {}> {
     .then(() => BreedsUtility.Init());
     this.account = new Account("cookieproject1", "azerty123456", lang);
     this.account.data.server = "Herdegrize";
-    this.account.data.character = "Brucef-Aka";
-    // this.account.config.characterCreation.create = true;
-    // this.account.config.characterCreation.server = "Herdegrize";
-    // this.account.config.spellsToBoost.push(new SpellToBoostEntry(687, "Point Enflammé", 5));
-    // this.account.config.statToBoost = BoostableStats.INTELLIGENCE;
+    this.account.data.character = "Enoc";
+    this.account.config.spellsToBoost.push(new SpellToBoostEntry(141, "Pression", 5));
+    this.account.config.statToBoost = BoostableStats.STRENGTH;
 
-    const spell1 = new Spell(686, "Picole", SpellTargets.SELF, 3, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
-    const spell2 = new Spell(687, "Point Enflammé", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.FIRE, 100, 0, false, false, false, false);
-    const spell3 = new Spell(692, "Gueule de bois", SpellTargets.ENEMY, 2, 1, 100, 100, SpellResistances.EARTH, 100, 0, false, false, false, false);
+    this.account.config.characterCreation.create = false;
+    this.account.config.characterCreation.server = "Herdegrize";
+    this.account.config.characterCreation.breed = BreedEnum.Iop;
+
+    const spell1 = new Spell(141, "Pression", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
+    const spell2 = new Spell(145, "Epée Divine", SpellTargets.SELF, 1, 2, 100, 100, SpellResistances.WIND, 100, 100, false, false, false, false);
+    const spell3 = new Spell(143, "Intimidation", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.NEUTRAL, 100, 100, false, false, false, false);
 
     this.account.extensions.fights.config.spells = [];
-    this.account.extensions.fights.config.spells.push(spell1);
-    this.account.extensions.fights.config.spells.push(spell2);
-    this.account.extensions.fights.config.spells.push(spell3);
-    // config
+    this.account.extensions.fights.config.spells.push(spell1, spell2, spell3);
+
     this.account.extensions.fights.config.fightSpeed = FightSpeeds.SUICIDAL;
     this.account.extensions.fights.config.startPlacement = FightStartPlacement.CLOSE_TO_ENEMIES;
     this.account.extensions.fights.config.monsterToApproach = -1;
@@ -59,8 +60,8 @@ export class App extends React.Component<{}, {}> {
     this.account.extensions.fights.config.maxCells = 4;
     this.account.extensions.fights.config.approachWhenNoSpellCasted = true;
     this.account.extensions.fights.config.baseApproachAllMonsters = true;
-    this.account.extensions.fights.config.regenStart = 60;
-    this.account.extensions.fights.config.regenEnd = 80;
+    this.account.extensions.fights.config.regenStart = 80;
+    this.account.extensions.fights.config.regenEnd = 100;
   }
 
   public componentDidMount() {
@@ -77,7 +78,7 @@ export class App extends React.Component<{}, {}> {
         <hr />
         <button className="btn btn-warning" onClick={() => this.launchScript()}>Launch Script</button>
         <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
-        <button className="btn btn-infos" onClick={() => this.flood()}>Flood</button>
+        <button className="btn btn-info" onClick={() => this.flood()}>Flood</button>
         <hr />
         <button
           className="btn btn-secondary"
@@ -104,7 +105,7 @@ export class App extends React.Component<{}, {}> {
   }
 
   private launchScript() {
-    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/path.js"));
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_piou_vente.js"));
   }
 
   private flood() {

@@ -462,7 +462,7 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateTextInformationMessage(message: TextInformationMessage) {
-    if (message.msgType === 36) {
+    if (message.msgId === 36) {
       this.onSpectatorJoined.trigger();
     }
   }

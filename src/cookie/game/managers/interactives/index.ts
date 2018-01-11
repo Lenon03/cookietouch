@@ -70,12 +70,12 @@ export default class InteractivesManager implements IClearable {
 
   public useInteractive(interactiveId: number, skillInstanceUid = -1): boolean {
     const interactive = this._account.game.map.getInteractiveElement(interactiveId);
-    if (interactive === null || !interactive.usable) {
+    if (!interactive || !interactive.usable) {
       return false;
     }
 
     const statedElem = this._account.game.map.getStatedElement(interactiveId);
-    if (statedElem === null || statedElem.state !== 0) {
+    if (!statedElem || statedElem.state !== 0) {
       return false;
     }
 

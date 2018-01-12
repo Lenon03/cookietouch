@@ -39,6 +39,8 @@ export class App extends React.Component<{}, {}> {
     this.account.config.spellsToBoost.push(new SpellToBoostEntry(141, "Pression", 5));
     this.account.config.statToBoost = BoostableStats.STRENGTH;
 
+    this.account.config.enableSpeedHack = true;
+
     this.account.config.characterCreation.create = false;
     this.account.config.characterCreation.server = "Herdegrize";
     this.account.config.characterCreation.breed = BreedEnum.Iop;
@@ -105,7 +107,7 @@ export class App extends React.Component<{}, {}> {
   }
 
   private launchScript() {
-    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_piou_vente.js"));
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_speedhack.js"));
   }
 
   private flood() {

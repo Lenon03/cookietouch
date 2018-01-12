@@ -22,6 +22,7 @@ export default class AccountConfiguration {
   public autoMount: boolean;
   public planificationActivated: boolean;
   public planification: List<boolean>;
+  public enableSpeedHack: boolean;
 
   constructor() {
     this.showGeneralMessages = true;
@@ -42,5 +43,6 @@ export default class AccountConfiguration {
     this.autoMount = true;
     this.planificationActivated = false;
     this.planification = Enumerable.Repeat(true, 24);
+    this.enableSpeedHack = false;
   }
 }

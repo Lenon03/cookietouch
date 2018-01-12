@@ -2,6 +2,7 @@ import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import axios from "axios";
 import * as React from "react";
+import Image from "./Image";
 
 interface IInfosProps {
   account: Account;
@@ -70,11 +71,12 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       <div>
         <div>Position: {this.state.position}</div>
         <div>Status: {AccountStates[this.state.status]}</div>
-        <img src="https://s.ankama.com/www/static.ankama.com/dofus/ng/img/logo_dofus.jpg" />
-        <img src={this.state.skinUrl} />
-        <img src={this.state.itemUrl} />
-        <img src={this.state.spellUrl} />
-        <img src={this.state.jobUrl} />
+        <Image src="http://staticns.ankama.com/dofus/ng/img/logo_dofus.jpg" />
+        <Image src="https://s.ankama.com/www/static.ankama.com/dofus/ng/img/logo_dofus.jpg" />
+        <Image src={this.state.skinUrl} />
+        <Image src={this.state.itemUrl} />
+        <Image src={this.state.spellUrl} />
+        <Image src={this.state.jobUrl} />
       </div>
     );
   }

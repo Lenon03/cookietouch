@@ -698,13 +698,8 @@ export default class Fight implements IClearable {
       this._totalSpellLaunches.changeValueForKey(spell.id, this._totalSpellLaunches.getValue(spell.id) + 1);
 
       if (this._totalSpellLaunchesInCells.containsKey(spell.id)) {
-        if (this._totalSpellLaunchesInCells.getValue(spell.id).containsKey(message.destinationCellId)) {
-          // NOTE: Check if its right ...
-          if (this._totalSpellLaunchesInCells.getValue(spell.id).containsKey(message.destinationCellId)) {
-            this._totalSpellLaunchesInCells.getValue(spell.id).changeValueForKey(message.destinationCellId, 0);
-          } else {
-            this._totalSpellLaunchesInCells.getValue(spell.id).add(message.destinationCellId, 0);
-          }
+        if (!this._totalSpellLaunchesInCells.getValue(spell.id).containsKey(message.destinationCellId)) {
+          this._totalSpellLaunchesInCells.getValue(spell.id).add(message.destinationCellId, 0);
         }
         const value = this._totalSpellLaunchesInCells.getValue(spell.id);
         value.changeValueForKey(message.destinationCellId, value.getValue(message.destinationCellId) + 1);

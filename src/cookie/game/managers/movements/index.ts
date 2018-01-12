@@ -180,7 +180,6 @@ export default class MovementsManager implements IClearable {
       account.state = AccountStates.MOVING;
 
       const duration = PathDuration.calculate(this.currentPath);
-
       await sleep(duration);
 
       account.network.sendMessage("GameMapMovementConfirmMessage");

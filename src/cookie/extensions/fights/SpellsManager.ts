@@ -27,48 +27,46 @@ export default class SpellsManager {
     this.targetCellId = -1;
   }
 
-  public manageSpell(spell: Spell): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      // Check if we have an AOE spell we need to cast
-      if (this.spellIdToCast !== -1 && this.spellIdToCast === spell.spellId) {
-        this.account.logger.logDebug("SpellsManager", `${spell.spellName} lancé en ${this.targetCellId} (${this.enemiesTouched} ennemies touchés)`);
-        await this.account.game.fight.launchSpell(spell.spellId, this.targetCellId);
+  public async manageSpell(spell: Spell): Promise<SpellCastingResults> {
+    // Check if we have an AOE spell we need to cast
+    if (this.spellIdToCast !== -1 && this.spellIdToCast === spell.spellId) {
+      this.account.logger.logDebug("SpellsManager", `${spell.spellName} lancé en ${this.targetCellId} (${this.enemiesTouched} ennemies touchés)`);
+      await this.account.game.fight.launchSpell(spell.spellId, this.targetCellId);
 
-        this.spellIdToCast = -1;
-        this.targetCellId = -1;
-        this.enemiesTouched = 0;
+      this.spellIdToCast = -1;
+      this.targetCellId = -1;
+      this.enemiesTouched = 0;
 
-        return resolve(SpellCastingResults.CASTED);
-      }
-      // Check for the distance
-      if (!this.isDistanceGood(spell)) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
-      // In case its a spell we need to cast at a specific hp percentage
-      if (this.account.game.fight.playedFighter.lifePercent > spell.characterHp) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
-      // Simple spell
-      if (spell.target === SpellTargets.EMPTY_CELL) {
-        return resolve(await this.castSpellOnEmptyCell(spell));
-      }
-      if (!spell.handToHand && !spell.aoe) {
-        return resolve(await this.castSimpleSpell(spell));
-      }
-      // HandToHand spell and we're h2h with someone
-      if (spell.handToHand && !spell.aoe && this.account.game.fight.isHandToHandWithAnEnemy()) {
-        return resolve(await this.castSimpleSpell(spell));
-      }
-      // HandToHand spell and we're not h2h with someone
-      if (spell.handToHand && !spell.aoe && !this.account.game.fight.isHandToHandWithAnEnemy()) {
-        return resolve(await this.moveToCastSimpleSpell(spell, this.getNearestTarget(spell)));
-      }
-      // AOE spell (even hand to hand)
-      if (spell.aoe) {
-        return resolve(await this.castAoeSpell(spell));
-      }
-      return resolve(SpellCastingResults.NOT_CASTED);
-    });
+      return SpellCastingResults.CASTED;
+    }
+    // Check for the distance
+    if (!this.isDistanceGood(spell)) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+    // In case its a spell we need to cast at a specific hp percentage
+    if (this.account.game.fight.playedFighter.lifePercent > spell.characterHp) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+    // Simple spell
+    if (spell.target === SpellTargets.EMPTY_CELL) {
+      return await this.castSpellOnEmptyCell(spell);
+    }
+    if (!spell.handToHand && !spell.aoe) {
+      return await this.castSimpleSpell(spell);
+    }
+    // HandToHand spell and we're h2h with someone
+    if (spell.handToHand && !spell.aoe && this.account.game.fight.isHandToHandWithAnEnemy()) {
+      return await this.castSimpleSpell(spell);
+    }
+    // HandToHand spell and we're not h2h with someone
+    if (spell.handToHand && !spell.aoe && !this.account.game.fight.isHandToHandWithAnEnemy()) {
+      return await this.moveToCastSimpleSpell(spell, this.getNearestTarget(spell));
+    }
+    // AOE spell (even hand to hand)
+    if (spell.aoe) {
+      return await this.castAoeSpell(spell);
+    }
+    return SpellCastingResults.NOT_CASTED;
   }
 
   private castAoeSpell(spell: Spell): Promise<SpellCastingResults> {

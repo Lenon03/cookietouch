@@ -287,62 +287,58 @@ export default class FightsExtension implements IClearable {
     await this.account.network.sendMessage("GameFightTurnFinishMessage");
   }
 
-  private tryApproachingForSpell(possiblePlacements: number[]): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      if (this.config.spellToApproach === -1) {
-        return resolve(false);
-      }
-      const spellResp = await DataManager.get(Spells, this.config.spellToApproach);
-      const spell = spellResp[0].object;
-      const spellLevelResp = await DataManager.get(SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
-      const spellLevel = spellLevelResp[0].object;
+  private async tryApproachingForSpell(possiblePlacements: number[]): Promise<boolean> {
+    if (this.config.spellToApproach === -1) {
+      return false;
+    }
+    const spellResp = await DataManager.get(Spells, this.config.spellToApproach);
+    const spell = spellResp[0].object;
+    const spellLevelResp = await DataManager.get(SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
+    const spellLevel = spellLevelResp[0].object;
 
-      // Check if we can cast the spell from our current position
-      if (this.utility.spellIsHittingAnyEnemy(this.account.game.fight.playedFighter.cellId, spellLevel)) {
-        return resolve(true);
+    // Check if we can cast the spell from our current position
+    if (this.utility.spellIsHittingAnyEnemy(this.account.game.fight.playedFighter.cellId, spellLevel)) {
+      return true;
+    }
+    // Otherwise check for the other cells
+    for (const t of possiblePlacements) {
+      // Avoid re-checking ou current position
+      if (t === this.account.game.fight.playedFighter.cellId) {
+        continue;
       }
-      // Otherwise check for the other cells
-      for (const t of possiblePlacements) {
-        // Avoid re-checking ou current position
-        if (t === this.account.game.fight.playedFighter.cellId) {
-          continue;
-        }
-        if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
-          await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId: t });
-          return resolve(true);
-        }
+      if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
+        await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId: t });
+        return true;
       }
-      return resolve(false);
-    });
+    }
+    return false;
   }
 
-  private tryApproachingMonster(possiblePlacements: number[]): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      if (this.config.monsterToApproach === -1) {
-        return resolve(false);
-      }
-      const monster = this.account.game.fight.monsters.find((m) => m.creatureGenericId === this.config.monsterToApproach);
-      if (monster === undefined) {
-        return resolve(false);
-      }
-      // The monster to approach is in the fight !
-      let cellId = -1;
-      let distance = -1;
+  private async tryApproachingMonster(possiblePlacements: number[]): Promise<boolean> {
+    if (this.config.monsterToApproach === -1) {
+      return false;
+    }
+    const monster = this.account.game.fight.monsters.find((m) => m.creatureGenericId === this.config.monsterToApproach);
+    if (monster === undefined) {
+      return false;
+    }
+    // The monster to approach is in the fight !
+    let cellId = -1;
+    let distance = -1;
 
-      for (const cell of possiblePlacements) {
-        const tempDistance = MapPoint.fromCellId(monster.cellId).distanceToCell(MapPoint.fromCellId(cell));
-        if (cellId === -1 || tempDistance < distance) {
-          cellId = cell;
-          distance = tempDistance;
-        }
+    for (const cell of possiblePlacements) {
+      const tempDistance = MapPoint.fromCellId(monster.cellId).distanceToCell(MapPoint.fromCellId(cell));
+      if (cellId === -1 || tempDistance < distance) {
+        cellId = cell;
+        distance = tempDistance;
       }
+    }
 
-      // If we're not already close
-      if (cellId !== this.account.game.fight.playedFighter.cellId) {
-        await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId });
-      }
+    // If we're not already close
+    if (cellId !== this.account.game.fight.playedFighter.cellId) {
+      await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId });
+    }
 
-      return resolve(true);
-    });
+    return true;
   }
 }

@@ -6,10 +6,9 @@ import { Anticaptcha } from "./Anticaptcha";
 const mutex = new Mutex();
 
 export default class RecaptchaHandler {
-  public static getResponse(sitekey: string): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      const release = await mutex.acquire();
-      if (!isEmpty(GlobalConfiguration.anticaptchaKey)) {
+  public static async getResponse(sitekey: string): Promise<string> {
+    const release = await mutex.acquire();
+    if (!isEmpty(GlobalConfiguration.anticaptchaKey)) {
         const ac = new Anticaptcha(GlobalConfiguration.anticaptchaKey);
         try {
           const balance = await ac.getBalance();
@@ -23,18 +22,17 @@ export default class RecaptchaHandler {
             });
             // logger.verbose(`SOLUTION`, solution);
             release();
-            return resolve(solution.solution.gRecaptchaResponse);
+            return solution.solution.gRecaptchaResponse;
           } else {
             // logger.error("AntiCaptcha - Contact DevChris#4592 on Discord :)");
             // return process.exit();
           }
         } catch (error) {
           release();
-          return reject(error);
+          return error;
         }
       }
-      release();
-      return resolve(null);
-    });
+    release();
+    return null;
   }
 }

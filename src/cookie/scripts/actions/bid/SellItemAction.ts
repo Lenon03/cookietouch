@@ -14,13 +14,11 @@ export default class SellItemAction extends ScriptAction {
     this.price = price;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      const res = await account.game.bid.sellItem(this.gid, this.lot, this.price);
-      if (res) {
-        await sleep(1500);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    const res = await account.game.bid.sellItem(this.gid, this.lot, this.price);
+    if (res) {
+      await sleep(1500);
+    }
+    return ScriptActionResults.DONE;
   }
 }

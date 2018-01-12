@@ -10,13 +10,11 @@ export default class ReplyAction extends ScriptAction {
     this.replyId = replyId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (!account.game.npcs.reply(this.replyId)) {
-        account.scripts.stopScript("reasonstopscript");
-        return ScriptAction.failedResult;
-      }
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (!account.game.npcs.reply(this.replyId)) {
+      account.scripts.stopScript(`Error while sending a reply (id: ${this.replyId})`);
+      return ScriptAction.failedResult();
+    }
+    return ScriptAction.processingResult();
   }
 }

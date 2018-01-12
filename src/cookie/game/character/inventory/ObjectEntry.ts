@@ -55,14 +55,16 @@ export default class ObjectEntry {
 
           // Check if this item gives hp back (BOOST_HP 110)
           for (const e of o.effects) {
-            if (!(e instanceof ObjectEffectInteger)) {
+            if (!(e._type === "ObjectEffectInteger")) {
               continue;
             }
 
+            const newE = e as ObjectEffectInteger;
+
             if (e.actionId === 110) {
-              this.regenValue = e.value;
+              this.regenValue = newE.value;
             } else if (e.actionId === 158) {
-              this.weightBoost = e.value;
+              this.weightBoost = newE.value;
             }
           }
         });
@@ -86,14 +88,15 @@ export default class ObjectEntry {
 
       // Check if this item gives hp back (BOOST_HP 110)
       for (const e of o.effects) {
-        if (!(e instanceof ObjectEffectInteger)) {
+        if (!(e._type ===  "ObjectEffectInteger")) {
           continue;
         }
+        const newE = e as ObjectEffectInteger;
 
         if (e.actionId === 110) {
-          this.regenValue = e.value;
+          this.regenValue = newE.value;
         } else if (e.actionId === 158) {
-          this.weightBoost = e.value;
+          this.weightBoost = newE.value;
         }
       }
     });

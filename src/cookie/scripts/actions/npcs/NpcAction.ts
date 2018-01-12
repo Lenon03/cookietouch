@@ -12,13 +12,11 @@ export default class NpcAction extends ScriptAction {
     this.actionIndex = actionIndex;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (!account.game.npcs.useNpc(this.npcId, this.actionIndex)) {
-        account.scripts.stopScript("reasonstopscript");
-        return ScriptAction.failedResult;
-      }
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (!account.game.npcs.useNpc(this.npcId, this.actionIndex)) {
+      account.scripts.stopScript(`Error during a conversation with an NPC (npcId: ${this.npcId}, actionIndex: ${this.actionIndex})`);
+      return ScriptAction.failedResult();
+    }
+    return ScriptAction.processingResult();
   }
 }

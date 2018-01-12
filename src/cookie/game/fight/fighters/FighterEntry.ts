@@ -31,11 +31,13 @@ export default class FighterEntry {
   }
 
   // get name(): string {
-  //   if (this as FightMonsterEntry) {
+  //   // TODO: Check if its right
+  //   if (this instanceof FightMonsterEntry) {
   //     return this.name;
   //   } else if (this instanceof FightPlayerEntry) {
   //     return this.name;
   //   }
+  //   return "";
   // }
 
   constructor(infos: GameFightFighterInformations) {

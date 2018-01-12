@@ -11,13 +11,11 @@ export default class UseByIdAction extends ScriptAction {
     this.skillInstanceUid = skillInstanceUid;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.managers.interactives.useInteractive(this.elementId, this.skillInstanceUid)) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.managers.interactives.useInteractive(this.elementId, this.skillInstanceUid)) {
+      return ScriptAction.processingResult();
+    }
+    account.scripts.stopScript(`Error while using an interactive (id: ${this.elementId})`);
+    return ScriptAction.failedResult();
   }
 }

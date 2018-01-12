@@ -12,14 +12,12 @@ export default class UseTeleportableAction extends ScriptAction {
     this.destinationMapId = destinationMapId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if ((this.type !== TeleportablesEnum.ZAAP || account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
-          (this.type !== TeleportablesEnum.ZAAPI || account.game.managers.teleportables.useZaap(this.destinationMapId))) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if ((this.type !== TeleportablesEnum.ZAAP || account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
+      (this.type !== TeleportablesEnum.ZAAPI || account.game.managers.teleportables.useZaap(this.destinationMapId))) {
+      return ScriptAction.processingResult();
+    }
+    account.scripts.stopScript(`Error while using a ${TeleportablesEnum[this.type]}`);
+    return ScriptAction.failedResult();
   }
 }

@@ -49,84 +49,76 @@ export default class Bid implements IClearable {
     return true;
   }
 
-  public getItemPrice(gid: number, lot: number): Promise<number> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.state !== AccountStates.BUYING) {
-        return reject(0);
-      }
+  public async getItemPrice(gid: number, lot: number): Promise<number> {
+    if (this.account.state !== AccountStates.BUYING) {
+      return 0;
+    }
 
-      const cheapestItem = await this.getCheapestItem(gid, lot);
+    const cheapestItem = await this.getCheapestItem(gid, lot);
 
-      // In case the item wasn't found
-      if (cheapestItem === null) {
-        return reject(0);
-      }
+    // In case the item wasn't found
+    if (cheapestItem === null) {
+      return 0;
+    }
 
-      return resolve(cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2]);
-    });
+    return cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2];
   }
 
-  public getItemPrices(gid: number): Promise<number[]> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.state !== AccountStates.BUYING) {
-        return reject(null);
-      }
+  public async getItemPrices(gid: number): Promise<number[]> {
+    if (this.account.state !== AccountStates.BUYING) {
+      return null;
+    }
 
-      const resp = await this.initializeGetItemPrice(gid);
-      if (!resp) {
-        return reject(null);
-      }
+    const resp = await this.initializeGetItemPrice(gid);
+    if (!resp) {
+      return null;
+    }
 
-      // Item not found in bid
-      const res = await this._itemDescription.promise;
-      if (res === null || res.Count() === 0) {
-        return resolve([0, 0, 0]);
-      }
+    // Item not found in bid
+    const res = await this._itemDescription.promise;
+    if (res === null || res.Count() === 0) {
+      return [0, 0, 0];
+    }
 
-      // TODO: Check if return after is right
+    const prices = res.ToArray().map((o) => o.prices);
 
-      const prices = res.ToArray().map((o) => o.prices);
-
-      return resolve([
-        Math.min(...prices[0]),
-        Math.min(...prices[1]),
-        Math.min(...prices[2]),
-      ]);
-    });
+    return [
+      Math.min(...prices[0]),
+      Math.min(...prices[1]),
+      Math.min(...prices[2]),
+    ];
   }
 
-  public buyItem(gid: number, lot: number): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.state !== AccountStates.BUYING) {
-        return reject(false);
-      }
+  public async buyItem(gid: number, lot: number): Promise<boolean> {
+    if (this.account.state !== AccountStates.BUYING) {
+      return false;
+    }
 
-      const cheapestItem = await this.getCheapestItem(gid, lot);
+    const cheapestItem = await this.getCheapestItem(gid, lot);
 
-      // In case the item wasn't found
-      if (cheapestItem === null) {
-        return reject(false);
-      }
+    // In case the item wasn't found
+    if (cheapestItem === null) {
+      return false;
+    }
 
-      console.log(cheapestItem);
+    console.log(cheapestItem);
 
-      const price = await cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2];
+    const price = await cheapestItem.prices[lot === 1 ? 0 : lot === 10 ? 1 : 2];
 
-      // Not enough kamas
-      if (price > this.account.game.character.inventory.kamas) {
-        this.account.logger.logWarning("",
-          `Vous n'avez pas assez de kamas pour acheter ${lot} lots de l'objet ${gid}. Il vous faut ${price} kamas`);
-        return reject(false);
-      }
+    // Not enough kamas
+    if (price > this.account.game.character.inventory.kamas) {
+      this.account.logger.logWarning("",
+        `Vous n'avez pas assez de kamas pour acheter ${lot} lots de l'objet ${gid}. Il vous faut ${price} kamas`);
+      return false;
+    }
 
-      await this.account.network.sendMessageFree("ExchangeBidHouseBuyMessage", {
-        price,
-        qty: lot,
-        uid: cheapestItem.objectUID,
-      });
-
-      return resolve(true);
+    await this.account.network.sendMessageFree("ExchangeBidHouseBuyMessage", {
+      price,
+      qty: lot,
+      uid: cheapestItem.objectUID,
     });
+
+    return true;
   }
 
   public startSelling(): boolean {
@@ -240,53 +232,47 @@ export default class Bid implements IClearable {
     this.onBidLeft.trigger();
   }
 
-  private getCheapestItem(gid: number, lot: number): Promise<BidExchangerObjectInfo> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.state !== AccountStates.BUYING) {
-        return reject(null);
-      }
+  private async getCheapestItem(gid: number, lot: number): Promise<BidExchangerObjectInfo> {
+    if (this.account.state !== AccountStates.BUYING) {
+      return null;
+    }
 
-      const resp = await this.initializeGetItemPrice(gid);
-      if (!resp) {
-        return reject(null);
-      }
+    const resp = await this.initializeGetItemPrice(gid);
+    if (!resp) {
+      return null;
+    }
 
-      const list = await this._itemDescription.promise;
+    const list = await this._itemDescription.promise;
 
-      if (list === null || list.Count() === 0) {
-        return reject(null);
-      }
+    if (list === null || list.Count() === 0) {
+      return null;
+    }
 
-      const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
+    const index = lot === 1 ? 0 : lot === 10 ? 1 : 2;
 
-      const tmp = list.OrderBy((o) => o.prices[index]);
-
-      return resolve(tmp.First());
-    });
+    return list.OrderBy((o) => o.prices[index]).First();
   }
 
-  private initializeGetItemPrice(gid: number): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      const itemRes = await DataManager.get(Items, gid);
+  private async initializeGetItemPrice(gid: number): Promise<boolean> {
+    const itemRes = await DataManager.get(Items, gid);
 
-      if (itemRes.length === 0) {
-        return reject(false);
-      }
+    if (itemRes.length === 0) {
+      return false;
+    }
 
-      const item = itemRes[0].object;
+    const item = itemRes[0].object;
 
-      if (this._lastSearchedGID !== gid || this._itemDescription === null) {
-        this._itemDescription = Deferred<List<BidExchangerObjectInfo>>();
-        this.account.network.sendMessageFree("ExchangeBidHouseSearchMessage", {
-          genId: gid,
-          type: item.typeId,
-        });
+    if (this._lastSearchedGID !== gid || this._itemDescription === null) {
+      this._itemDescription = Deferred<List<BidExchangerObjectInfo>>();
+      this.account.network.sendMessageFree("ExchangeBidHouseSearchMessage", {
+        genId: gid,
+        type: item.typeId,
+      });
 
-        await this._itemDescription.promise;
-        this._lastSearchedGID = gid;
-      }
+      await this._itemDescription.promise;
+      this._lastSearchedGID = gid;
+    }
 
-      return resolve(true);
-    });
+    return true;
   }
 }

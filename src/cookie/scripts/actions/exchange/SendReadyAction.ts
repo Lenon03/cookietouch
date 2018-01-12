@@ -4,10 +4,8 @@ import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class SendReadyAction extends ScriptAction {
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      account.game.exchange.sendReady();
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    account.game.exchange.sendReady();
+    return ScriptAction.processingResult();
   }
 }

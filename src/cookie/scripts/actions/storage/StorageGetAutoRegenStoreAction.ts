@@ -12,27 +12,25 @@ export default class StorageGetAutoRegenStoreAction extends ScriptAction {
     this.store = store;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      let store = this.store;
-      for (let i = 0; i < this.items.length && store > 0; i++) {
-        // We'll have to get the items manually instead of using Storage.GetItem()
-        const obj = account.game.storage.objects.FirstOrDefault((o) => o.gid === this.items[i]);
-        if (!obj) {
-          continue;
-        }
-        // Get the quantity we can actually take
-        const validQty = Math.min(store, obj.quantity);
-        if (!account.game.storage.getItem(this.items[i], validQty)) {
-          continue;
-        }
-        store -= validQty;
-        await sleep(800);
+  public async process(account: Account): Promise<ScriptActionResults> {
+    let store = this.store;
+    for (let i = 0; i < this.items.length && store > 0; i++) {
+      // We'll have to get the items manually instead of using Storage.GetItem()
+      const obj = account.game.storage.objects.FirstOrDefault((o) => o.gid === this.items[i]);
+      if (!obj) {
+        continue;
       }
-      if (store > 0) {
-        account.logger.logWarning("StorageGetAutoRegenStoreAction", "...");
+      // Get the quantity we can actually take
+      const validQty = Math.min(store, obj.quantity);
+      if (!account.game.storage.getItem(this.items[i], validQty)) {
+        continue;
       }
-      return resolve(ScriptActionResults.DONE);
-    });
+      store -= validQty;
+      await sleep(800);
+    }
+    if (store > 0) {
+      account.logger.logWarning("Scripts", "Warning, you don't have anymore required items for AUTO_REGEN");
+    }
+    return ScriptActionResults.DONE;
   }
 }

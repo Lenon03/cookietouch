@@ -10,17 +10,15 @@ export default class GatherAction extends ScriptAction {
     this.elements = elements;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      // In case there is no elements to gather in this map, just pass
-      if (!account.game.managers.gathers.canGather(...this.elements)) {
-        return ScriptAction.doneResult;
-      }
-      if (account.game.managers.gathers.gather(...this.elements)) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    // In case there is no elements to gather in this map, just pass
+    if (!account.game.managers.gathers.canGather(...this.elements)) {
+      return ScriptAction.doneResult();
+    }
+    if (account.game.managers.gathers.gather(...this.elements)) {
+      return ScriptAction.processingResult();
+    }
+    account.scripts.stopScript("Error during gather");
+    return ScriptAction.failedResult();
   }
 }

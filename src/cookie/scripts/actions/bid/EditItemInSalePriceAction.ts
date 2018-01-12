@@ -12,13 +12,11 @@ export default class EditItemInSalePriceAction extends ScriptAction {
     this.newPrice = newPrice;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      const res = await account.game.bid.editItemInSalePrice(this.uid, this.newPrice);
-      if (res) {
-        await sleep(3000);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    const res = await account.game.bid.editItemInSalePrice(this.uid, this.newPrice);
+    if (res) {
+      await sleep(3000);
+    }
+    return ScriptActionResults.DONE;
   }
 }

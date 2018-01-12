@@ -10,14 +10,12 @@ export default class EquipItemAction extends ScriptAction {
     this.gid = gid;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      const obj = account.game.character.inventory.getObjectByGid(this.gid);
+  public async process(account: Account): Promise<ScriptActionResults> {
+    const obj = account.game.character.inventory.getObjectByGid(this.gid);
 
-      if (obj !== null && account.game.character.inventory.equipObject(obj)) {
-        await sleep(500);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+    if (obj !== null && account.game.character.inventory.equipObject(obj)) {
+      await sleep(500);
+    }
+    return ScriptActionResults.DONE;
   }
 }

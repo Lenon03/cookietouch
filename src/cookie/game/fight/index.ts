@@ -45,7 +45,7 @@ import GameFightMonsterInformations from "@protocol/network/types/GameFightMonst
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { List } from "linqts";
+import {  List } from "linqts";
 import FighterEntry from "./fighters/FighterEntry";
 import FightMonsterEntry from "./fighters/FightMonsterEntry";
 import FightPlayerEntry from "./fighters/FightPlayerEntry";
@@ -480,7 +480,7 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateGameFightUpdateTeamMessage(message: GameFightUpdateTeamMessage) {
-    if (this.account.state === AccountStates.FIGHTING && message.team.leaderId === this.account.game.character.id && this.fightId === 0) {
+    if (this.account.state === AccountStates.FIGHTING && message.team.leaderId === this.account.game.character.id && this.fightId === 0)  {
       this.fightId = message.fightId;
       this.onFightIDReceived.trigger();
     }
@@ -655,20 +655,22 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateGameActionFightDispellableEffectMessage(message: GameActionFightDispellableEffectMessage) {
-    if (message.effect instanceof FightTemporaryBoostStateEffect) {
-     if (this.playedFighter) {
-      if (message.effect.targetId === this.playedFighter.contextualId) {
-        if (this._effectsDurations.containsKey(message.effect.stateId)) {
-          this._effectsDurations.remove(message.effect.stateId);
-          this.account.logger.logWarning("", `Added state ${message.effect.stateId} for ${message.effect.turnDuration} turns`);
-          this._effectsDurations.add(message.effect.stateId, message.effect.turnDuration);
+    if (message.effect._type === "FightTemporaryBoostStateEffect") {
+      const effect = message.effect as FightTemporaryBoostStateEffect;
+      if (this.playedFighter) {
+        if (effect.targetId === this.playedFighter.contextualId) {
+          if (this._effectsDurations.containsKey(effect.stateId)) {
+            this._effectsDurations.remove(effect.stateId);
+            this.account.logger.logWarning("", `Added state ${effect.stateId} for ${effect.turnDuration} turns`);
+            this._effectsDurations.add(effect.stateId, effect.turnDuration);
+          }
         }
       }
-     }
-    } else if (message.effect instanceof FightTemporaryBoostEffect) {
+    } else if (message.effect._type === "FightTemporaryBoostEffect") {
+      const effect = message.effect as FightTemporaryBoostEffect;
       if (this.playedFighter) {
-        if (message.effect.targetId === this.playedFighter.contextualId) {
-          this.playedFighter.Update(message.actionId, message.effect);
+        if (effect.targetId === this.playedFighter.contextualId) {
+          this.playedFighter.Update(message.actionId, effect);
         }
       }
     }

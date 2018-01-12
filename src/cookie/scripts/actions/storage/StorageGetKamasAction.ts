@@ -10,12 +10,10 @@ export default class StorageGetKamasAction extends ScriptAction {
     this.amount = amount;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.storage.getKamas(this.amount)) {
-        await sleep(1000);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.storage.getKamas(this.amount)) {
+      await sleep(1000);
+    }
+    return ScriptActionResults.DONE;
   }
 }

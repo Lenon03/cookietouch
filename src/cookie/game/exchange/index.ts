@@ -94,7 +94,7 @@ export default class Exchange {
       quantity,
     });
 
-    this.account.logger.logInfo("", `Vous avez ajouté ${quantity} ${obj.name} à l'échange.`);
+    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} ${obj.name} à l'échange.`);
     return true;
   }
 
@@ -115,54 +115,52 @@ export default class Exchange {
       quantity: quantity * -1,
     });
 
-    this.account.logger.logInfo("", `Vous avez retiré ${quantity} ${obj.name} de l'échange.`);
+    this.account.logger.logInfo("Exchange", `Vous avez retiré ${quantity} ${obj.name} de l'échange.`);
     return true;
   }
 
-  public putAllItems(): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.state !== AccountStates.EXCHANGE) {
-        return resolve(false);
+  public async putAllItems(): Promise<boolean> {
+    if (this.account.state !== AccountStates.EXCHANGE) {
+      return false;
+    }
+
+    this.account.logger.logDebug("Exchange", "On commence à ajouter tous les objets dans l'échange...");
+
+    this.account.game.character.inventory.equipments.ForEach(async (obj) => {
+      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+        return;
       }
-
-      this.account.logger.logDebug("", "On commence à ajouter tous les objets dans l'échange...");
-
-      this.account.game.character.inventory.equipments.ForEach(async (obj) => {
-        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-          return;
-        }
-        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
-          objectUID: obj.uid,
-          quantity: obj.quantity,
-        });
-        await sleep(600);
+      this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
+        objectUID: obj.uid,
+        quantity: obj.quantity,
       });
-
-      this.account.game.character.inventory.consumables.ForEach(async (obj) => {
-        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-          return;
-        }
-        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
-          objectUID: obj.uid,
-          quantity: obj.quantity,
-        });
-        await sleep(600);
-      });
-
-      this.account.game.character.inventory.resources.ForEach(async (obj) => {
-        if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
-          return;
-        }
-        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
-          objectUID: obj.uid,
-          quantity: obj.quantity,
-        });
-        await sleep(600);
-      });
-
-      this.account.logger.logDebug("", "Tous les objets ont été ajouté à l'échange...");
-      return resolve(true);
+      await sleep(600);
     });
+
+    this.account.game.character.inventory.consumables.ForEach(async (obj) => {
+      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+        return;
+      }
+      this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
+        objectUID: obj.uid,
+        quantity: obj.quantity,
+      });
+      await sleep(600);
+    });
+
+    this.account.game.character.inventory.resources.ForEach(async (obj) => {
+      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+        return;
+      }
+      this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
+        objectUID: obj.uid,
+        quantity: obj.quantity,
+      });
+      await sleep(600);
+    });
+
+    this.account.logger.logDebug("Exchange", "Tous les objets ont été ajouté à l'échange...");
+    return true;
   }
 
   public putKamas(quantity: number) {
@@ -174,7 +172,7 @@ export default class Exchange {
       : (quantity > this.account.game.character.inventory.kamas ?
         this.account.game.character.inventory.kamas : quantity);
 
-    this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas à l'échange.`);
+    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} kamas à l'échange.`);
     this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
     return true;
   }
@@ -186,7 +184,7 @@ export default class Exchange {
 
     quantity = quantity <= 0 ? this.kamas : (quantity > this.kamas ? this.kamas : quantity);
 
-    this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas à l'échange.`);
+    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} kamas à l'échange.`);
     this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: this.kamas - quantity });
     return true;
   }

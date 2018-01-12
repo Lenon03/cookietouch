@@ -11,13 +11,11 @@ export default class UseLockedHouseAction extends ScriptAction {
     this.lockCode = lockCode;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.managers.interactives.useLockedDoor(this.doorCellId, this.lockCode)) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.managers.interactives.useLockedDoor(this.doorCellId, this.lockCode)) {
+      return ScriptAction.processingResult();
+    }
+    account.scripts.stopScript("Error while using a locked door.");
+    return ScriptAction.failedResult();
   }
 }

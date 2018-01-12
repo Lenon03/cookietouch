@@ -10,13 +10,11 @@ export default class RemoveItemInSaleAction extends ScriptAction {
     this.uid = uid;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      const res = await account.game.bid.removeItemInSale(this.uid);
-      if (res) {
-        await sleep(1500);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    const res = await account.game.bid.removeItemInSale(this.uid);
+    if (res) {
+      await sleep(1500);
+    }
+    return ScriptActionResults.DONE;
   }
 }

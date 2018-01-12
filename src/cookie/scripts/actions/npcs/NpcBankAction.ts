@@ -12,13 +12,11 @@ export default class NpcBankAction extends ScriptAction {
     this.replyId = replyId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (!account.game.npcs.useNpc(this.npcId, 1)) {
-        account.scripts.stopScript("reasonstopscript");
-        return ScriptAction.failedResult;
-      }
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (!account.game.npcs.useNpc(this.npcId, 1)) {
+      account.scripts.stopScript("Error during a conversation with a bank NPC");
+      return ScriptAction.failedResult();
+    }
+    return ScriptAction.processingResult();
   }
 }

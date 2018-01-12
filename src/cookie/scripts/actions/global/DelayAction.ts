@@ -10,10 +10,8 @@ export default class DelayAction extends ScriptAction {
     this.ms = ms;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      await sleep(this.ms);
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    await sleep(this.ms);
+    return ScriptActionResults.DONE;
   }
 }

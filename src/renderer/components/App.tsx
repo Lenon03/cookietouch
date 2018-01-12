@@ -45,8 +45,10 @@ export class App extends React.Component<{}, {}> {
     this.account.config.characterCreation.server = "Herdegrize";
     this.account.config.characterCreation.breed = BreedEnum.Iop;
 
-    const spell1 = new Spell(141, "Pression", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
-    const spell2 = new Spell(143, "Intimidation", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.NEUTRAL, 100, 100, false, false, false, false);
+    const spell1 = new Spell(155, "Vitalité", SpellTargets.SELF, 2, 1, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
+    const spell2 = new Spell(158, "Concentration", SpellTargets.ENEMY, 1, 3, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
+    const spell3 = new Spell(141, "Pression", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
+    const spell4 = new Spell(143, "Intimidation", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.NEUTRAL, 100, 100, false, false, false, false);
 
     this.account.extensions.fights.config.spells = [];
     this.account.extensions.fights.config.spells.push(spell1, spell2);
@@ -106,7 +108,7 @@ export class App extends React.Component<{}, {}> {
   }
 
   private launchScript() {
-    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_piou_vente.js"));
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/scripts/[Combat][Incarnam] Cimetière.js"));
   }
 
   private flood() {

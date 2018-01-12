@@ -51,27 +51,28 @@ export default class ChangeMapAction extends ScriptAction {
     this.cellId = cellId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (this.isSpecificDirection) {
-        if (!account.game.managers.movements.changeMapWithCellId(this.direction, this.cellId)) {
-          account.scripts.stopScript("reasonstopscript");
-          return ScriptAction.failedResult;
-        }
-      } else if (this.isSimpleDirection) {
-        if (!account.game.managers.movements.changeMap(this.direction)) {
-          account.scripts.stopScript("reasonstopscript");
-          return ScriptAction.failedResult;
-        }
-      } else {
-        // Move to a cell that will change the map
-        const result = account.game.managers.movements.moveToCell(this.cellId);
-        if (result !== MovementRequestResults.MOVED) {
-          account.scripts.stopScript("reasonstopscript");
-          return ScriptAction.failedResult;
-        }
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (this.isSpecificDirection) {
+      if (!account.game.managers.movements.changeMapWithCellId(this.direction, this.cellId)) {
+        account.scripts.stopScript(`Impossible to change map (direction: ${MapChangeDirections[this.direction]}, cell: ${this.cellId})`);
+        return ScriptAction.failedResult();
       }
-      return ScriptAction.processingResult;
-    });
+      account.logger.logDebug("Scripts", `Changing map (direction: ${MapChangeDirections[this.direction]}, cell: ${this.cellId})`);
+    } else if (this.isSimpleDirection) {
+      if (!account.game.managers.movements.changeMap(this.direction)) {
+        account.scripts.stopScript(`Impossible to change map (direction: ${MapChangeDirections[this.direction]})`);
+        return ScriptAction.failedResult();
+      }
+      account.logger.logDebug("Scripts", `Changing map (direction: ${MapChangeDirections[this.direction]})`);
+    } else {
+      // Move to a cell that will change the map
+      const result = account.game.managers.movements.moveToCell(this.cellId);
+      if (result !== MovementRequestResults.MOVED) {
+        account.scripts.stopScript(`Moving to cell ${this.cellId} failed (result: ${MovementRequestResults[result]})`);
+        return ScriptAction.failedResult();
+      }
+      account.logger.logDebug("Scripts", `Moving to cell ${this.cellId}.`);
+    }
+    return ScriptAction.processingResult();
   }
 }

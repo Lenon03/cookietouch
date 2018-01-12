@@ -10,12 +10,10 @@ export default class ExchangePutKamasAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.exchange.putKamas(this.quantity)) {
-        await sleep(2000);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.exchange.putKamas(this.quantity)) {
+      await sleep(2000);
+    }
+    return ScriptActionResults.DONE;
   }
 }

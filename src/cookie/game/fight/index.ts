@@ -2,6 +2,7 @@ import Pathfinder from "@/core/pathfinder";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
+import GameActionFightCastRequestMessage from "@/protocol/network/messages/GameActionFightCastRequestMessage";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -212,7 +213,8 @@ export default class Fight implements IClearable {
     //     targetId: cellId,
     //   });
     // } else {
-    await this.account.network.sendMessage("GameActionFightCastRequestMessage", { spellId, cellId });
+    // await this.account.network.sendMessage("GameActionFightCastRequestMessage", { spellId, cellId });
+    await this.account.network.sendMessage2(new GameActionFightCastRequestMessage(spellId, cellId));
     // }
   }
 
@@ -737,10 +739,9 @@ export default class Fight implements IClearable {
   }
 
   private addFighter(infos: GameFightFighterInformations) {
-    // TODO: Check this method ...
-    if ((infos as any)._type === "GameFightCharacterInformations" || (infos as any)._type === "GameFightMutantInformations") {
+    if (infos._type === "GameFightCharacterInformations" || infos._type === "GameFightMutantInformations") {
       this._fighters.add(infos.contextualId, new FightPlayerEntry(infos));
-    } else if ((infos as any)._type === "GameFightMonsterInformations") {
+    } else if (infos._type === "GameFightMonsterInformations") {
       this._fighters.add(infos.contextualId, new FightMonsterEntry(infos as GameFightMonsterInformations, infos));
     }
   }

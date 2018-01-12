@@ -1,3 +1,4 @@
+import Message from "@/protocol/network/messages/Message";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DTConstants from "@protocol/DTConstants";
@@ -81,44 +82,44 @@ export default class Network implements IClearable {
     this.socket.open();
   }
 
-  public async send(call: string, data?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!this.connected) {
-        reject();
-      }
+  public async send(call: string, data?: any) {
+    if (!this.connected) {
+      return;
+    }
 
-      let msg;
-      let msgName;
+    let msg;
+    let msgName;
 
-      if (call === "sendMessage") {
-        msgName = data.type;
-        if (data.data) {
-          msg = { call, data };
-        } else {
-          msg = { call, data: { type: data.type } };
-        }
+    if (call === "sendMessage") {
+      msgName = data.type;
+      if (data.data) {
+        msg = { call, data };
       } else {
-        msgName = call;
-        if (data) {
-          msg = { call, data };
-        } else {
-          msg = { call };
-        }
+        msg = { call, data: { type: data.type } };
       }
+    } else {
+      msgName = call;
+      if (data) {
+        msg = { call, data };
+      } else {
+        msg = { call };
+      }
+    }
 
-      console.log("Sent", msg);
-      this.onMessageReceived.trigger({ type: msgName, data});
-      this.account.dispatcher.emit(msgName, this.account, data);
-      this.socket.write(msg);
-      resolve();
-    });
+    console.log("Sent", msg);
+    this.onMessageReceived.trigger({ type: msgName, data});
+    this.account.dispatcher.emit(msgName, this.account, data);
+    this.socket.write(msg);
   }
 
-  public async sendMessage(messageName: string, data?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.send("sendMessage", { type: messageName, data });
-      resolve();
-    });
+  public async sendMessage(messageName: string, data?: any) {
+    await this.send("sendMessage", { type: messageName, data });
+  }
+
+  public async sendMessage2(message: Message) {
+    const str = JSON.stringify(message);
+    const data = JSON.parse(str);
+    await this.send("sendMessage", { type: message.constructor.name, data });
   }
 
   private setCurrentConnection() {

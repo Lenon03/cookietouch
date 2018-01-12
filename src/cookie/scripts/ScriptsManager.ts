@@ -455,7 +455,7 @@ export default class ScriptsManager {
         if (this.account.state !== AccountStates.REGENERATING) {
           this.account.game.character.sit();
         }
-        this.account.logger.logInfo("ScriptsManager", `You have ${hpToRegen}HP to get back. Estimated time: ${estimatedTime}`);
+        this.account.logger.logInfo("ScriptsManager", `You have ${hpToRegen}HP to get back. Estimated time: ${estimatedTime} seconds.`);
         // Then just wait it before continuing
         for (let i = 0; i < estimatedTime &&
           this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenEnd && this.running; i++) {

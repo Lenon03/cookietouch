@@ -87,7 +87,7 @@ export default class Map implements IClearable {
   private _phenixs = new Dictionary<number, ElementInCellEntry>();
   private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
   private _joinedFight: boolean;
-  private _firstTime: boolean= true;
+  private _firstTime: boolean = true;
 
   constructor(account: Account) {
     this.account = account;

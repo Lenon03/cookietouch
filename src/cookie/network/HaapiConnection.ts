@@ -26,11 +26,11 @@ export default class HaapiConnection {
   private getToken(): Promise<string> {
     return new Promise((resolve, reject) => {
       const config = {
-        params: {
-          game: DTConstants.config.haapi.id,
-        },
         headers: {
           apikey: this.haapi.key,
+        },
+        params: {
+          game: DTConstants.config.haapi.id,
         },
       };
       axios.get(`${DTConstants.config.haapi.url}/Account/CreateToken`, config)

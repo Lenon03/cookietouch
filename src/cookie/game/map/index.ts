@@ -146,7 +146,11 @@ export default class Map implements IClearable {
         continue;
       }
 
-      if (monstersGroup.monstersCount < minMonsters || monstersGroup.totalLevel > maxLevel) {
+      if (monstersGroup.monstersCount < minMonsters || monstersGroup.monstersCount > maxMonsters) {
+        continue;
+      }
+
+      if (monstersGroup.totalLevel < minLevel || monstersGroup.totalLevel > maxLevel) {
         continue;
       }
 
@@ -160,6 +164,7 @@ export default class Map implements IClearable {
         }
       }
 
+      // Only check for mandatory monsters if the group passed the forbidden monsters test
       if (mandatoryMonsters !== null && valid) {
         for (const m of mandatoryMonsters) {
           if (!monstersGroup.containsMonster(m)) {
@@ -169,6 +174,7 @@ export default class Map implements IClearable {
         }
       }
 
+      // If the group is still valid, then it's the one!
       if (valid) {
         monstersGroups.push(monstersGroup);
       }

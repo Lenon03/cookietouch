@@ -1,18 +1,14 @@
+import { IMessage } from "@/core/logger";
 import Account from "@account";
 import * as React from "react";
 
 interface IConsoleProps {
   account: Account;
+  max?: number;
 }
 
 interface IConsoleStates {
-  messages: IMessages[];
-}
-
-export interface IMessages {
-  message: string;
-  time: Date;
-  sent: boolean;
+  messages: IMessage[];
 }
 
 export default class Console extends React.Component<IConsoleProps, IConsoleStates> {
@@ -24,10 +20,23 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
     };
   }
 
+  public componentWillMount() {
+    this.props.account.logger.OnLog.on((message) => {
+      const newMessages = this.state.messages;
+      newMessages.push(message);
+      if (newMessages.length > (this.props.max ? this.props.max : 200)) {
+        newMessages.shift();
+      }
+      this.setState((prevState, props) => ({
+        messages: newMessages,
+      }));
+    });
+  }
+
   public render() {
     return (
       <div>
-        <textarea className="form-control" rows={3}></textarea>
+        <textarea rows={10} readOnly className="form-control" value={this.state.messages.map((m) => `${m.content}\n`)} />
       </div>
     );
   }

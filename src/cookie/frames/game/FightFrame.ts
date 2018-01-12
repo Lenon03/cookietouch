@@ -105,7 +105,7 @@ export default class FightFrame {
   private async HandleSequenceEndMessage(account: Account, message: SequenceEndMessage) {
     if (account.game.character.id === message.authorId) {
       await sleep(200 * account.extensions.fights.config.fightSpeed);
-      await account.network.sendMessage("GameActionAcknowledgementMessage", {
+      await account.network.sendMessageFree("GameActionAcknowledgementMessage", {
         actionId: message.actionId,
         valid: true,
       });
@@ -115,7 +115,7 @@ export default class FightFrame {
 
   private async HandleGameFightTurnReadyRequestMessage(account: Account, message: GameFightTurnReadyRequestMessage) {
     await sleep(message.id === account.game.character.id ? 200 : 400 * account.extensions.fights.config.fightSpeed);
-    await account.network.sendMessage("GameFightTurnReadyMessage", { isReady: true });
+    await account.network.sendMessageFree("GameFightTurnReadyMessage", { isReady: true });
   }
 
   private async HandleGameFightShowFighterRandomStaticPoseMessage(account: Account, message: GameFightShowFighterRandomStaticPoseMessage) {
@@ -191,7 +191,7 @@ export default class FightFrame {
 
   private async HandleFighterStatsListMessage(account: Account, message: FighterStatsListMessage) {
     account.game.fight.UpdateFighterStatsListMessage(message);
-    await account.network.sendMessage("GameActionAcknowledgementMessage", { valid: true, actionId: 0 });
+    await account.network.sendMessageFree("GameActionAcknowledgementMessage", { valid: true, actionId: 0 });
   }
 
   private async HandleGameFightSynchronizeMessage(account: Account, message: GameFightSynchronizeMessage) {

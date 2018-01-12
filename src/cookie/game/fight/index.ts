@@ -197,7 +197,7 @@ export default class Fight implements IClearable {
     }
 
     if (!this.options.includes(option)) {
-      await this.account.network.sendMessage("GameFightOptionToggleMessage", { option });
+      await this.account.network.sendMessageFree("GameFightOptionToggleMessage", { option });
     }
   }
 
@@ -208,13 +208,13 @@ export default class Fight implements IClearable {
 
     // TODO: Check why DT always sends CastRequest
     // if (this.getFighterInCell(cellId) !== null) {
-    //   await this.account.network.sendMessage("GameActionFightCastOnTargetRequestMessage", {
+    //   await this.account.network.sendMessageFree("GameActionFightCastOnTargetRequestMessage", {
     //     spellId,
     //     targetId: cellId,
     //   });
     // } else {
-    // await this.account.network.sendMessage("GameActionFightCastRequestMessage", { spellId, cellId });
-    await this.account.network.sendMessage2(new GameActionFightCastRequestMessage(spellId, cellId));
+    // await this.account.network.sendMessageFree("GameActionFightCastRequestMessage", { spellId, cellId });
+    await this.account.network.sendMessage(new GameActionFightCastRequestMessage(spellId, cellId));
     // }
   }
 

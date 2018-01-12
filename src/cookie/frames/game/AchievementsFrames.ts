@@ -31,7 +31,7 @@ export default class AchievementsFrame {
       return;
     }
 
-    account.network.sendMessage("AchievementRewardRequestMessage", {
+    account.network.sendMessageFree("AchievementRewardRequestMessage", {
       achievementId: message.id,
     });
   }
@@ -42,7 +42,7 @@ export default class AchievementsFrame {
     }
 
     for (const achiv of message.rewardableAchievements) {
-      account.network.sendMessage("AchievementRewardRequestMessage", {
+      account.network.sendMessageFree("AchievementRewardRequestMessage", {
         achievementId: achiv.id,
       });
     }

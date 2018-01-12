@@ -56,7 +56,7 @@ export default class Exchange {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangePlayerRequestMessage", {
+    this.account.network.sendMessageFree("ExchangePlayerRequestMessage", {
       exchangeType: ExchangeTypeEnum.PLAYER_TRADE,
       target: id,
     });
@@ -69,7 +69,7 @@ export default class Exchange {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeReadyMessage", {
+    this.account.network.sendMessageFree("ExchangeReadyMessage", {
       ready: true,
       step: this.step,
     });
@@ -89,7 +89,7 @@ export default class Exchange {
 
     quantity = quantity <= 0 ? obj.quantity : (quantity > obj.quantity ? obj.quantity : quantity);
 
-    this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: obj.uid,
       quantity,
     });
@@ -110,7 +110,7 @@ export default class Exchange {
 
     quantity = quantity <= 0 ? obj.quantity : (quantity > obj.quantity ? obj.quantity : quantity);
 
-    this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: obj.uid,
       quantity: quantity * -1,
     });
@@ -131,7 +131,7 @@ export default class Exchange {
         if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
           return;
         }
-        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
           objectUID: obj.uid,
           quantity: obj.quantity,
         });
@@ -142,7 +142,7 @@ export default class Exchange {
         if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
           return;
         }
-        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
           objectUID: obj.uid,
           quantity: obj.quantity,
         });
@@ -153,7 +153,7 @@ export default class Exchange {
         if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
           return;
         }
-        this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+        this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
           objectUID: obj.uid,
           quantity: obj.quantity,
         });
@@ -175,7 +175,7 @@ export default class Exchange {
         this.account.game.character.inventory.kamas : quantity);
 
     this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas à l'échange.`);
-    this.account.network.sendMessage("ExchangeObjectMoveKamaMessage", { quantity });
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
     return true;
   }
 
@@ -187,7 +187,7 @@ export default class Exchange {
     quantity = quantity <= 0 ? this.kamas : (quantity > this.kamas ? this.kamas : quantity);
 
     this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas à l'échange.`);
-    this.account.network.sendMessage("ExchangeObjectMoveKamaMessage", { quantity: this.kamas - quantity });
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: this.kamas - quantity });
     return true;
   }
 

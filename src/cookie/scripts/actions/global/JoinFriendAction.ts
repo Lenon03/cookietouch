@@ -15,7 +15,7 @@ export default class JoinFriendAction extends ScriptAction {
       if (account.isBusy) {
         return ScriptAction.failedResult;
       }
-      account.network.sendMessage("FriendJoinRequestMessage", { name: this.name });
+      account.network.sendMessageFree("FriendJoinRequestMessage", { name: this.name });
       return ScriptAction.doneResult;
     });
   }

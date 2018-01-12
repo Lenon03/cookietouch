@@ -105,7 +105,7 @@ export default class TeleportablesManager {
       return;
     }
 
-    await this._account.network.sendMessage("TeleportableRequestMessage", {
+    await this._account.network.sendMessageFree("TeleportableRequestMessage", {
       mapId: this._destinationMapId,
       teleporterType: this._teleportable,
     });
@@ -123,7 +123,7 @@ export default class TeleportablesManager {
       return;
     }
 
-    await this._account.network.sendMessage("TeleportableRequestMessage", {
+    await this._account.network.sendMessageFree("TeleportableRequestMessage", {
       mapId: this._destinationMapId,
       teleporterType: this._teleportable,
     });

@@ -17,7 +17,7 @@ export default class Mount implements IClearable {
       return;
     }
 
-    this.account.network.sendMessage("MountToggleRidingMessage");
+    this.account.network.sendMessageFree("MountToggleRidingMessage");
   }
 
   public setRatio(ratio: number) {
@@ -25,7 +25,7 @@ export default class Mount implements IClearable {
       return;
     }
 
-    this.account.network.sendMessage("MountSetXpRatioRequestMessage", {
+    this.account.network.sendMessageFree("MountSetXpRatioRequestMessage", {
       xpRatio: ratio,
     });
   }

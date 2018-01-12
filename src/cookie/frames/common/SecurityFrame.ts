@@ -25,13 +25,13 @@ export default class SecurityFrame {
 
   private async HandleSequenceNumberRequestMessage(account: Account, data: any) {
     account.framesData.sequence++;
-    account.network.sendMessage("SequenceNumberMessage", {
+    account.network.sendMessageFree("SequenceNumberMessage", {
       number: account.framesData.sequence,
     });
   }
 
   private async HandleBasicLatencyStatsRequestMessage(account: Account, data: any) {
-    await account.network.sendMessage("BasicLatencyStatsMessage", {
+    await account.network.sendMessageFree("BasicLatencyStatsMessage", {
       latency: 262,
       max: 50,
       sampleCount: 12,

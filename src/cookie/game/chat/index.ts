@@ -8,19 +8,19 @@ export default class Chat {
     this.account = account;
   }
 
-  public async sendMessage(message: string,
-                           channel: ChatActivableChannelsEnum = ChatActivableChannelsEnum.CHANNEL_GLOBAL) {
+  public async sendMessageFree(message: string,
+                               channel: ChatActivableChannelsEnum = ChatActivableChannelsEnum.CHANNEL_GLOBAL) {
     if (message.length > 0) {
-      await this.account.network.sendMessage("ChatClientMultiMessage", {
+      await this.account.network.sendMessageFree("ChatClientMultiMessage", {
         channel,
         content: message,
       });
     }
   }
 
-  public async sendMessageTo(message: string, receiver: string) {
+  public async sendMessageFreeTo(message: string, receiver: string) {
     if (message.length > 0 && receiver.length > 0) {
-      await this.account.network.sendMessage("ChatClientPrivateMessage", {
+      await this.account.network.sendMessageFree("ChatClientPrivateMessage", {
         content: message,
         receiver,
       });

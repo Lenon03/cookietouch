@@ -41,7 +41,7 @@ export default class CharacterSelectionFrame {
       if (char === undefined) {
         account.logger.logError("CharacterSelectionFrame", `Character ${account.data.character} don't found!`);
       } else {
-        await account.network.sendMessage("CharacterSelectionMessage", {
+        await account.network.sendMessageFree("CharacterSelectionMessage", {
           id: char.id,
         });
         account.logger.logDebug("CharacterSelectionFrame", `Character ${char.name}(${char.level}) selected!`);
@@ -62,30 +62,30 @@ export default class CharacterSelectionFrame {
   private async HandleCharacterSelectedSuccessMessage(account: Account, message: any) {
     account.game.character.UpdateCharacterSelectedSuccessMessage(message);
 
-    account.network.sendMessage("kpiStartSession", {
+    account.network.sendMessageFree("kpiStartSession", {
       accountSessionId: account.data.login,
       isSubscriber: account.data.isSubscriber,
     });
     account.network.send("moneyGoultinesAmountRequest");
-    account.network.sendMessage("QuestListRequestMessage");
-    account.network.sendMessage("FriendsGetListMessage");
-    account.network.sendMessage("IgnoredGetListMessage");
-    account.network.sendMessage("SpouseGetInformationsMessage");
+    account.network.sendMessageFree("QuestListRequestMessage");
+    account.network.sendMessageFree("FriendsGetListMessage");
+    account.network.sendMessageFree("IgnoredGetListMessage");
+    account.network.sendMessageFree("SpouseGetInformationsMessage");
     account.network.send("bakSoftToHardCurrentRateRequest");
     account.network.send("bakHardToSoftCurrentRateRequest");
     account.network.send("restoreMysteryBox");
-    account.network.sendMessage("ClientKeyMessage", { key: randomString(21) });
-    account.network.sendMessage("GameContextCreateRequestMessage");
+    account.network.sendMessageFree("ClientKeyMessage", { key: randomString(21) });
+    account.network.sendMessageFree("GameContextCreateRequestMessage");
   }
 
   private async HandleGameContextCreateMessage(account: Account, message: any) {
     if (!account.framesData.initialized && message.context === 1) {
-      await account.network.sendMessage("ObjectAveragePricesGetMessage");
+      await account.network.sendMessageFree("ObjectAveragePricesGetMessage");
       account.framesData.initialized = true;
     }
   }
 
   private async HandleCharacterSelectedForceMessage(account: Account, message: any) {
-    await account.network.sendMessage("CharacterSelectedForceReadyMessage");
+    await account.network.sendMessageFree("CharacterSelectedForceReadyMessage");
   }
 }

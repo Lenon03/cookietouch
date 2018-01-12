@@ -98,7 +98,7 @@ export default class MovementsManager implements IClearable {
     // Insert the current cellId
     node.value.path.reachable.unshift(this.account.game.fight.playedFighter.cellId);
 
-    await this.account.network.sendMessage("GameMapMovementRequestMessage", {
+    await this.account.network.sendMessageFree("GameMapMovementRequestMessage", {
       // keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
       keyMovements: node.value.path.reachable, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
@@ -182,7 +182,7 @@ export default class MovementsManager implements IClearable {
       const duration = PathDuration.calculate(this.currentPath);
       await sleep(duration);
 
-      account.network.sendMessage("GameMapMovementConfirmMessage");
+      account.network.sendMessageFree("GameMapMovementConfirmMessage");
 
       account.state = AccountStates.NONE;
 
@@ -192,7 +192,7 @@ export default class MovementsManager implements IClearable {
         this.currentPath = null;
 
         if (this.neighbourMapId !== 0) {
-          await account.network.sendMessage("ChangeMapMessage", {
+          await account.network.sendMessageFree("ChangeMapMessage", {
             mapId: this.neighbourMapId,
           });
 
@@ -249,7 +249,7 @@ export default class MovementsManager implements IClearable {
         this.account.logger.logDebug("", `${this.account.game.map.id} Moving to change map`);
         return true;
       case MovementRequestResults.ALREADY_THERE:
-        this.account.network.sendMessage("ChangeMapMessage", {
+        this.account.network.sendMessageFree("ChangeMapMessage", {
           mapId: this.neighbourMapId,
         });
         this.neighbourMapId = 0;
@@ -281,7 +281,7 @@ export default class MovementsManager implements IClearable {
   }
 
   private sendMoveMessage() {
-    this.account.network.sendMessage("GameMapMovementRequestMessage", {
+    this.account.network.sendMessageFree("GameMapMovementRequestMessage", {
       // keyMovements: this.pathfinder.compressPath(this.currentPath),
       keyMovements: this.currentPath, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,

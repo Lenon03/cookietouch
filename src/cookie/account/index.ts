@@ -126,7 +126,7 @@ export default class Account {
 
   public leaveDialog() {
     if (this.isInDialog) {
-      this.network.sendMessage("LeaveDialogRequestMessage");
+      this.network.sendMessageFree("LeaveDialogRequestMessage");
     }
   }
 

@@ -46,7 +46,7 @@ export default class MapFrame {
       account.state = AccountStates.NONE;
     }
 
-    await account.network.sendMessage("MapInformationsRequestMessage", {
+    await account.network.sendMessageFree("MapInformationsRequestMessage", {
       mapId: message.mapId,
     });
   }

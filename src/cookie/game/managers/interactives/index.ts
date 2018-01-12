@@ -165,7 +165,7 @@ export default class InteractivesManager implements IClearable {
       this._skillInstanceUid = this._interactiveToUse.enabledSkills[index].instanceUid;
     }
 
-    this._account.network.sendMessage("InteractiveUseRequestMessage", {
+    this._account.network.sendMessageFree("InteractiveUseRequestMessage", {
       elemId: this._interactiveToUse.id,
       skillInstanceUid: this._skillInstanceUid,
     });
@@ -202,7 +202,7 @@ export default class InteractivesManager implements IClearable {
       return;
     }
 
-    await account.network.sendMessage("LockableUseCodeMessage", {
+    await account.network.sendMessageFree("LockableUseCodeMessage", {
       code: this._lockCode.padEnd(8, "_"),
     });
   }

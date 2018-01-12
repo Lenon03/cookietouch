@@ -126,7 +126,7 @@ export class App extends React.Component<{}, {}> {
     const group = this.account.game.map.getMonstersGroup()[0];
     const movementResult = this.account.game.managers.movements.moveToCell(group.cellId);
     if (movementResult === MovementRequestResults.ALREADY_THERE || movementResult === MovementRequestResults.MOVED) {
-      this.account.network.sendMessage("GameRolePlayAttackMonsterRequestMessage", {
+      this.account.network.sendMessageFree("GameRolePlayAttackMonsterRequestMessage", {
         monsterGroupId: group.id,
       });
     }

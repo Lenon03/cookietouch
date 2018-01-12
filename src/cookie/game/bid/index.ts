@@ -41,7 +41,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    this.account.network.sendMessage("NpcGenericActionRequestMessage", {
+    this.account.network.sendMessageFree("NpcGenericActionRequestMessage", {
       npcActionId: 6,
       npcId: 0,
       npcMapId: this.account.game.map.id,
@@ -119,7 +119,7 @@ export default class Bid implements IClearable {
         return reject(false);
       }
 
-      await this.account.network.sendMessage("ExchangeBidHouseBuyMessage", {
+      await this.account.network.sendMessageFree("ExchangeBidHouseBuyMessage", {
         price,
         qty: lot,
         uid: cheapestItem.objectUID,
@@ -134,7 +134,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    this.account.network.sendMessage("NpcGenericActionRequestMessage", {
+    this.account.network.sendMessageFree("NpcGenericActionRequestMessage", {
       npcActionId: 5,
       npcId: 0,
       npcMapId: this.account.game.map.id,
@@ -153,7 +153,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectMovePricedMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMovePricedMessage", {
       objectUID: item.uid,
       price,
       quantity: lot,
@@ -174,7 +174,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: itemInSale.objectUID,
       price: itemInSale.objectPrice,
       quantity: itemInSale.quantity * -1,
@@ -277,7 +277,7 @@ export default class Bid implements IClearable {
 
       if (this._lastSearchedGID !== gid || this._itemDescription === null) {
         this._itemDescription = Deferred<List<BidExchangerObjectInfo>>();
-        this.account.network.sendMessage("ExchangeBidHouseSearchMessage", {
+        this.account.network.sendMessageFree("ExchangeBidHouseSearchMessage", {
           genId: gid,
           type: item.typeId,
         });

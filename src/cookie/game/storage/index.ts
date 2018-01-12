@@ -39,7 +39,7 @@ export default class Storage {
 
     quantity = quantity === 0 ? item.quantity : (quantity > item.quantity ? item.quantity : quantity);
 
-    this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: item.uid,
       quantity,
     });
@@ -59,7 +59,7 @@ export default class Storage {
 
     quantity = quantity === 0 ? item.quantity : (quantity > item.quantity ? item.quantity : quantity);
 
-    this.account.network.sendMessage("ExchangeObjectMoveMessage", {
+    this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: item.uid,
       quantity: quantity * -1,
     });
@@ -78,7 +78,7 @@ export default class Storage {
 
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
-      this.account.network.sendMessage("ExchangeObjectMoveKamaMessage", { quantity });
+      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
       this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas dans le coffre.`);
       return true;
     }
@@ -95,7 +95,7 @@ export default class Storage {
 
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
-      this.account.network.sendMessage("ExchangeObjectMoveKamaMessage", { quantity: quantity * -1 });
+      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: quantity * -1 });
       this.account.logger.logInfo("", `Vous avez retiré ${quantity} kamas du coffre.`);
       return true;
     }
@@ -108,7 +108,7 @@ export default class Storage {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectTransfertAllFromInvMessage");
+    this.account.network.sendMessageFree("ExchangeObjectTransfertAllFromInvMessage");
     this.account.logger.logInfo("", `Vous avez ajouté tous les objets de votre inventaire dans le coffre.`);
     return true;
   }
@@ -118,7 +118,7 @@ export default class Storage {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectTransfertAllToInvMessage");
+    this.account.network.sendMessageFree("ExchangeObjectTransfertAllToInvMessage");
     this.account.logger.logInfo("", `Vous avez recupéré tous les objets de votre coffre dans votre inventaire`);
     return true;
   }
@@ -128,7 +128,7 @@ export default class Storage {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectTransfertExistingFromInvMessage");
+    this.account.network.sendMessageFree("ExchangeObjectTransfertExistingFromInvMessage");
     this.account.logger.logInfo("", `Tous les objets déjà présent dans votre coffre y ont été ajoutés.`);
     return true;
   }
@@ -138,7 +138,7 @@ export default class Storage {
       return false;
     }
 
-    this.account.network.sendMessage("ExchangeObjectTransfertExistingToInvMessage");
+    this.account.network.sendMessageFree("ExchangeObjectTransfertExistingToInvMessage");
     this.account.logger.logInfo("", `Tous les objets déjà présent dans votre inventaire ont été récupéré du coffre.`);
     return true;
   }

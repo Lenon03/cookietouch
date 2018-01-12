@@ -67,7 +67,7 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessage("EmotePlayRequestMessage", { emoteId: 1 });
+    this.account.network.sendMessageFree("EmotePlayRequestMessage", { emoteId: 1 });
   }
 
   public getSpell(id: number): SpellEntry {
@@ -103,7 +103,7 @@ export default class Character {
 
     pts = (pts === 0 ? possiblePts : pts > possiblePts ? possiblePts : pts) * neededPts;
 
-    this.account.network.sendMessage("StatsUpgradeRequestMessage", {
+    this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
       statId: stat,
     });
@@ -165,7 +165,7 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("StatsUpgradeRequestMessage", {
+    this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
       statId: stat,
     });
@@ -187,7 +187,7 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeMessage", {
       spellId: spell.id,
       spellLevel: spell.level + 1,
     });
@@ -236,7 +236,7 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeMessage", {
       spellId,
       spellLevel: level,
     });
@@ -250,7 +250,7 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessage("PlayerStatusUpdateRequestMessage", {
+    this.account.network.sendMessageFree("PlayerStatusUpdateRequestMessage", {
       status: {
         statusId: status,
       },

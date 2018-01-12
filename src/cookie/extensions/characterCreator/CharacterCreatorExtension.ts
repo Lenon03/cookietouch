@@ -62,7 +62,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (this.created) {
       // Set the create to false so that we don't create a character each time we connect
       this.account.config.characterCreation.create = false;
-      this.account.network.sendMessage("CharacterFirstSelectionMessage", {
+      this.account.network.sendMessageFree("CharacterFirstSelectionMessage", {
         doTutorial: true,
         id: message.characters[0].id,
       });
@@ -85,13 +85,13 @@ export default class CharacterCreatorExtension implements IClearable {
     // If the user wanter a random name, use DT's random name generator
     if (name === "") {
       this.name = Deferred<string>();
-      this.account.network.sendMessage("CharacterNameSuggestionRequestMessage");
+      this.account.network.sendMessageFree("CharacterNameSuggestionRequestMessage");
       name = await this.name.promise;
       this.account.logger.logInfo("CharacterCreator", `Nom de personnage généré: ${name}`);
     }
     await sleep(1000);
     // Send the character creation request message, take in consideration random stuff to generate
-    this.account.network.sendMessage("CharacterCreationRequestMessage", {
+    this.account.network.sendMessageFree("CharacterCreationRequestMessage", {
       breed,
       colors,
       cosmeticId: BreedsUtility.getCosmeticId(breed, sex, headOrder),
@@ -123,7 +123,7 @@ export default class CharacterCreatorExtension implements IClearable {
       return;
     }
     this.inTutorial = true;
-    this.account.network.sendMessage("QuestStepInfoRequestMessage", {
+    this.account.network.sendMessageFree("QuestStepInfoRequestMessage", {
       questId: TutorialHelper.questTutorialId,
     });
   }
@@ -146,7 +146,7 @@ export default class CharacterCreatorExtension implements IClearable {
       return;
     }
 
-    this.account.network.sendMessage("QuestStepInfoRequestMessage", {
+    this.account.network.sendMessageFree("QuestStepInfoRequestMessage", {
       questId: TutorialHelper.questTutorialId,
     });
   }
@@ -177,7 +177,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (this.currentStepNumber === 6) {
       this.validateCurrentStep();
       await sleep(1000);
-      this.account.network.sendMessage("GameFightReadyMessage", { isReady: true });
+      this.account.network.sendMessageFree("GameFightReadyMessage", { isReady: true });
     }
   }
 
@@ -229,7 +229,7 @@ export default class CharacterCreatorExtension implements IClearable {
       // Step 6: Change fight placement
       case 6:
         const cells = this.account.game.fight.positionsForChallengers.Except(new List([this.account.game.fight.playedFighter.cellId])).ToArray();
-        this.account.network.sendMessage("GameFightPlacementPositionRequestmessage", {
+        this.account.network.sendMessageFree("GameFightPlacementPositionRequestmessage", {
           cellId: cells[getRandomInt(0, cells.length)],
         });
         break;
@@ -254,7 +254,7 @@ export default class CharacterCreatorExtension implements IClearable {
       return;
     }
     for (const t of this.currentStep.objectives) {
-      this.account.network.sendMessage("QuestObjectiveValidationMessage", {
+      this.account.network.sendMessageFree("QuestObjectiveValidationMessage", {
         objectiveId: t.objectiveId,
         questId: this.currentStep.questId,
       });
@@ -306,7 +306,7 @@ export default class CharacterCreatorExtension implements IClearable {
       this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 14`);
       await sleep(1200);
       // Buy the shield
-      await this.account.network.sendMessage("QuestObjectiveValidationMessage", {
+      await this.account.network.sendMessageFree("QuestObjectiveValidationMessage", {
         objectiveId: 8078,
         questId: 1461,
       });
@@ -331,7 +331,7 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     const mg = this.account.game.map.monstersGroups[0];
     if (mg && mg.cellId === this.account.game.map.playedCharacter.cellId) {
-      this.account.network.sendMessage("GameRolePlayAttackMonsterRequestMessage", {
+      this.account.network.sendMessageFree("GameRolePlayAttackMonsterRequestMessage", {
         monsterGroupId: mg.id,
       });
     }

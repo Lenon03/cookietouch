@@ -121,7 +121,7 @@ export default class Group {
     }
     this.members.ForEach((t) => {
       if (t.state !== AccountStates.FIGHTING) {
-        t.network.sendMessage("GameFightJoinRequestMessage", {
+        t.network.sendMessageFree("GameFightJoinRequestMessage", {
           fighterId: this.chief.game.character.id,
           figthId: this.chief.game.fight.fightId,
         });

@@ -229,7 +229,7 @@ export default class ActionsManager {
     }
     if (this.currentAction instanceof FightAction && this.monstersGroupToAttack !== 0) {
       if (success) {
-        this.account.network.sendMessage("GameRolePlayAttackMonsterRequestMessage", {
+        this.account.network.sendMessageFree("GameRolePlayAttackMonsterRequestMessage", {
           monsterGroupId: this.monstersGroupToAttack,
         });
         // Check if the bot got into a fight or not

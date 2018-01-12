@@ -51,7 +51,7 @@ export default class ServerSelectionFrame {
     } else {
       // ONLINE
       account.logger.logDebug("ServerSelection", `Selection du serveur ${server._name}`);
-      await account.network.sendMessage("ServerSelectionMessage", {
+      await account.network.sendMessageFree("ServerSelectionMessage", {
         serverId: server.id,
       });
     }
@@ -62,7 +62,7 @@ export default class ServerSelectionFrame {
       && message.server.status === ServerStatusEnum.ONLINE) {
       await sleep(2000);
       account.logger.logDebug("ServerSelection", `${message.server._name} is now online. Let's go!`);
-      await account.network.sendMessage("ServerSelectionMessage", {
+      await account.network.sendMessageFree("ServerSelectionMessage", {
         serverId: message.server.id,
       });
     }
@@ -93,7 +93,7 @@ export default class ServerSelectionFrame {
   }
 
   private async HandleHelloGameMessage(account: Account, message: any) {
-    account.network.sendMessage("AuthenticationTicketMessage", {
+    account.network.sendMessageFree("AuthenticationTicketMessage", {
       lang: account.data.lang,
       ticket: account.framesData.ticket,
     });
@@ -102,7 +102,7 @@ export default class ServerSelectionFrame {
 
   private async HandleAuthenticationTicketAcceptedMessage(account: Account, message: any) {
     // TODO: Send this maybe at the TrustStatusMessage
-    account.network.sendMessage("CharactersListRequestMessage");
+    account.network.sendMessageFree("CharactersListRequestMessage");
   }
 
   private async HandleAuthenticationTicketRefusedMessage(account: Account, message: any) {

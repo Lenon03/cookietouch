@@ -378,7 +378,7 @@ export default class ScriptsManager {
     // Check first if the character is a tombstone to free it
     if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
       this.account.logger.logInfo("ScriptManager", "Your character is a tombstone, let's free it.");
-      await this.account.network.sendMessage("GameRolePlayFreeSoulRequestMessage");
+      await this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
     }
     // Wait for a map change since after a free soul, we get teleported
     await this.account.game.map.waitMapChange(10);

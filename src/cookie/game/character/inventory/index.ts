@@ -99,7 +99,7 @@ export default class Inventory {
 
     for (const pos of possiblePositions) {
       if (this.getObjectInPosition(pos) === null) {
-        this.account.network.sendMessage("ObjectSetPositionMessage", {
+        this.account.network.sendMessageFree("ObjectSetPositionMessage", {
           objectUID: obj.uid,
           position: pos,
           quantity: 1,
@@ -110,7 +110,7 @@ export default class Inventory {
     }
 
     // If we didn't find an empty place, just equip it in the first possible position
-    this.account.network.sendMessage("ObjectSetPositionMessage", {
+    this.account.network.sendMessageFree("ObjectSetPositionMessage", {
       objectUID: obj.uid,
       position: possiblePositions[0],
       quantity: 1,
@@ -128,7 +128,7 @@ export default class Inventory {
       return false;
     }
 
-    this.account.network.sendMessage("ObjectSetPositionMessage", {
+    this.account.network.sendMessageFree("ObjectSetPositionMessage", {
       objectUID: obj.uid,
       position: CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED,
       quantity: 1,
@@ -143,13 +143,13 @@ export default class Inventory {
     }
 
     if (qty === 1) {
-      this.account.network.sendMessage("ObjectUseMessage", {
+      this.account.network.sendMessageFree("ObjectUseMessage", {
         objectUID: obj.uid,
       });
     } else {
       qty = qty <= 0 ? obj.quantity : qty > obj.quantity ? obj.quantity : qty;
 
-      this.account.network.sendMessage("ObjectUseMultipleMessage", {
+      this.account.network.sendMessageFree("ObjectUseMultipleMessage", {
         objectUID: obj.uid,
         quantity: qty,
       });
@@ -164,7 +164,7 @@ export default class Inventory {
 
     qty = qty <= 0 ? obj.quantity : qty > obj.quantity ? obj.quantity : qty;
 
-    this.account.network.sendMessage("ObjectDropMessage", {
+    this.account.network.sendMessageFree("ObjectDropMessage", {
       objectUID: obj.uid,
       quantity: qty,
     });
@@ -178,7 +178,7 @@ export default class Inventory {
 
     qty = qty <= 0 ? obj.quantity : qty > obj.quantity ? obj.quantity : qty;
 
-    this.account.network.sendMessage("ObjectDeleteMessage", {
+    this.account.network.sendMessageFree("ObjectDeleteMessage", {
       objectUID: obj.uid,
       quantity: qty,
     });

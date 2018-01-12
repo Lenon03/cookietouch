@@ -36,7 +36,7 @@ export default class Npcs {
     }
 
     if (this.possibleReplies.includes(replyId)) {
-      this.account.network.sendMessage("NpcDialogReplyMessage", { replyId });
+      this.account.network.sendMessageFree("NpcDialogReplyMessage", { replyId });
       return true;
     }
 
@@ -76,7 +76,7 @@ export default class Npcs {
     if (npc.data.actions.length <= actionIndex) {
       return false;
     }
-    this.account.network.sendMessage("NpcGenericActionRequestMessage", {
+    this.account.network.sendMessageFree("NpcGenericActionRequestMessage", {
       npcActionId: npc.data.actions[actionIndex],
       npcId: npc.id,
       npcMapId: this.account.game.map.id,

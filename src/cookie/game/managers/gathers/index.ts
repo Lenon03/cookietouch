@@ -146,7 +146,7 @@ export default class GathersManager implements IClearable {
       this.account.logger.logInfo("", "Ressource volé.");
       this.isGatherFinished(GatherResults.STOLEN);
     } else {
-      this.account.network.sendMessage("InteractiveUseRequestMessage", {
+      this.account.network.sendMessageFree("InteractiveUseRequestMessage", {
         elemId: this.elementToGather.id,
         skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid,
       });

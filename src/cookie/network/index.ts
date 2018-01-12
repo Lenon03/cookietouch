@@ -90,7 +90,7 @@ export default class Network implements IClearable {
     let msg;
     let msgName;
 
-    if (call === "sendMessage") {
+    if (call === "sendMessageFree") {
       msgName = data.type;
       if (data.data) {
         msg = { call, data };
@@ -112,14 +112,14 @@ export default class Network implements IClearable {
     this.socket.write(msg);
   }
 
-  public async sendMessage(messageName: string, data?: any) {
+  public async sendMessageFree(messageName: string, data?: any) {
     await this.send("sendMessage", { type: messageName, data });
   }
 
-  public async sendMessage2(message: Message) {
+  public async sendMessage(message: Message) {
     const str = JSON.stringify(message);
     const data = JSON.parse(str);
-    await this.send("sendMessage", { type: message.constructor.name, data });
+    await this.sendMessageFree(message.constructor.name, data);
   }
 
   private setCurrentConnection() {

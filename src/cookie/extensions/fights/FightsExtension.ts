@@ -123,7 +123,7 @@ export default class FightsExtension implements IClearable {
             this.config.startPlacement === FightStartPlacement.CLOSE_TO_ENEMIES, possiblePositions.ToArray());
           // If we're not already close
           if (cellId !== this.account.game.fight.playedFighter.cellId) {
-            await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId });
+            await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId });
           }
         }
       }
@@ -137,7 +137,7 @@ export default class FightsExtension implements IClearable {
       }
     }
     await sleep(300);
-    this.account.network.sendMessage("GameFightReadyMessage", { isReady: true });
+    this.account.network.sendMessageFree("GameFightReadyMessage", { isReady: true });
   }
 
   public async UpdateGameFightShowFighterMessage(message: GameFightShowFighterMessage) {
@@ -149,7 +149,7 @@ export default class FightsExtension implements IClearable {
     if (this.account.hasGroup && this.account.isGroupChief) {
       if (!this.account.group.isGroupMember(message.informations.contextualId)) {
         await sleep(800);
-        await this.account.network.sendMessage("GameContextKickMessage", { targetId: message.informations.contextualId });
+        await this.account.network.sendMessageFree("GameContextKickMessage", { targetId: message.informations.contextualId });
         // If this person took a member's place, send a group signal so that the member joins again
         this.account.group.signalMembersToJoinFight();
       }
@@ -284,7 +284,7 @@ export default class FightsExtension implements IClearable {
 
   private async finishTurn(delay: number) {
     await sleep(delay);
-    await this.account.network.sendMessage("GameFightTurnFinishMessage");
+    await this.account.network.sendMessageFree("GameFightTurnFinishMessage");
   }
 
   private async tryApproachingForSpell(possiblePlacements: number[]): Promise<boolean> {
@@ -307,7 +307,7 @@ export default class FightsExtension implements IClearable {
         continue;
       }
       if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
-        await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId: t });
+        await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId: t });
         return true;
       }
     }
@@ -336,7 +336,7 @@ export default class FightsExtension implements IClearable {
 
     // If we're not already close
     if (cellId !== this.account.game.fight.playedFighter.cellId) {
-      await this.account.network.sendMessage("GameFightPlacementPositionRequestMessage", { cellId });
+      await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId });
     }
 
     return true;

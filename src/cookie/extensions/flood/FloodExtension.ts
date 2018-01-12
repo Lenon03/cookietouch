@@ -56,7 +56,7 @@ export default class FloodExtension {
     const seekChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SEEK);
     if (seekChannelSentences.Count() > 0) {
       const sentence = seekChannelSentences.ElementAt(getRandomInt(0, seekChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      await this.account.game.chat.sendMessageFree(this.setAttributes(sentence.content), sentence.channel);
     }
   }
 
@@ -67,7 +67,7 @@ export default class FloodExtension {
     const salesChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SALES);
     if (salesChannelSentences.Count() > 0) {
       const sentence = salesChannelSentences.ElementAt(getRandomInt(0, salesChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      await this.account.game.chat.sendMessageFree(this.setAttributes(sentence.content), sentence.channel);
     }
   }
 
@@ -78,7 +78,7 @@ export default class FloodExtension {
     const generalChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_GLOBAL);
     if (generalChannelSentences.Count() > 0) {
       const sentence = generalChannelSentences.ElementAt(getRandomInt(0, generalChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      await this.account.game.chat.sendMessageFree(this.setAttributes(sentence.content), sentence.channel);
     }
   }
 
@@ -89,7 +89,7 @@ export default class FloodExtension {
     const privateChannelSentences = this.getPrivateSentences(true, false);
     if (privateChannelSentences.Count() > 0) {
       const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+      await this.account.game.chat.sendMessageFreeTo(this.setAttributes(sentence.content, player), player.name);
     }
   }
 
@@ -100,7 +100,7 @@ export default class FloodExtension {
     const privateChannelSentences = this.getPrivateSentences(false, true);
     if (privateChannelSentences.Count() > 0) {
       const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+      await this.account.game.chat.sendMessageFreeTo(this.setAttributes(sentence.content, player), player.name);
     }
   }
 

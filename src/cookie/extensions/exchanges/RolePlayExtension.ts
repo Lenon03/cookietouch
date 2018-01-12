@@ -22,18 +22,18 @@ export default class RolePlayExtension {
         const player = this.account.game.map.getPlayer(from);
 
         if (player !== null) {
-          this.account.network.sendMessage("IgnoredAddRequestMessage", { name: player.name, session: true });
-          this.account.network.sendMessage("LeaveDialogRequestMessage");
+          this.account.network.sendMessageFree("IgnoredAddRequestMessage", { name: player.name, session: true });
+          this.account.network.sendMessageFree("LeaveDialogRequestMessage");
           this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
           return;
         }
       } else {
         // If the IgnoreNonAuthorizedTrades option is disabled or the player wasn't found on the map (somehow)
-        this.account.network.sendMessage("LeaveDialogRequestMessage");
+        this.account.network.sendMessageFree("LeaveDialogRequestMessage");
       }
     } else {
       // Otherwise accept it
-      this.account.network.sendMessage("ExchangeAcceptMessage");
+      this.account.network.sendMessageFree("ExchangeAcceptMessage");
     }
   }
 
@@ -50,12 +50,12 @@ export default class RolePlayExtension {
 
     const player = account.game.map.getPlayer(message.sourceId);
     if (player !== null) {
-      await account.network.sendMessage("GameRolePlayPlayerFightFriendlyAnswerMessage", {
+      await account.network.sendMessageFree("GameRolePlayPlayerFightFriendlyAnswerMessage", {
         accept: false,
         fightId: message.fightId,
       });
-      account.network.sendMessage("IgnoredAddRequestMessage", { name: player.name, session: true });
-      account.network.sendMessage("LeaveDialogRequestMessage");
+      account.network.sendMessageFree("IgnoredAddRequestMessage", { name: player.name, session: true });
+      account.network.sendMessageFree("LeaveDialogRequestMessage");
       this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
     }
   }

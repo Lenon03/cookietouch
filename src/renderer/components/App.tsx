@@ -46,17 +46,16 @@ export class App extends React.Component<{}, {}> {
     this.account.config.characterCreation.breed = BreedEnum.Iop;
 
     const spell1 = new Spell(141, "Pression", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
-    const spell2 = new Spell(145, "Epée Divine", SpellTargets.SELF, 1, 2, 100, 100, SpellResistances.WIND, 100, 100, false, false, false, false);
-    const spell3 = new Spell(143, "Intimidation", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.NEUTRAL, 100, 100, false, false, false, false);
+    const spell2 = new Spell(143, "Intimidation", SpellTargets.ENEMY, 1, 2, 100, 100, SpellResistances.NEUTRAL, 100, 100, false, false, false, false);
 
     this.account.extensions.fights.config.spells = [];
-    this.account.extensions.fights.config.spells.push(spell1, spell2, spell3);
+    this.account.extensions.fights.config.spells.push(spell1, spell2);
 
     this.account.extensions.fights.config.fightSpeed = FightSpeeds.SUICIDAL;
     this.account.extensions.fights.config.startPlacement = FightStartPlacement.CLOSE_TO_ENEMIES;
     this.account.extensions.fights.config.monsterToApproach = -1;
     this.account.extensions.fights.config.spellToApproach = -1;
-    this.account.extensions.fights.config.blockSpectatorScenario = BlockSpectatorScenarios.WHEN_SOMEONE_JOINS;
+    this.account.extensions.fights.config.blockSpectatorScenario = BlockSpectatorScenarios.NEVER;
     this.account.extensions.fights.config.lockFight = false;
     this.account.extensions.fights.config.tactic = FightTactics.AGGRESSIVE;
     this.account.extensions.fights.config.maxCells = 4;
@@ -107,7 +106,7 @@ export class App extends React.Component<{}, {}> {
   }
 
   private launchScript() {
-    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_speedhack.js"));
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/astrub_piou_vente.js"));
   }
 
   private flood() {
@@ -117,7 +116,7 @@ export class App extends React.Component<{}, {}> {
     this.account.extensions.flood.config.sentences.AddRange([
       new FloodSentence("Salut %name% tu es level %level% ?", null, true, false),
       new FloodSentence("Bonjour à tous les amis! %smiley%", ChatActivableChannelsEnum.CHANNEL_SEEK, false, false),
-      new FloodSentence("%nbr%, fascinant non?", ChatActivableChannelsEnum.CHANNEL_SALES, false, false),
+      new FloodSentence("Le nombre %nbr% est fascinant non?", ChatActivableChannelsEnum.CHANNEL_SALES, false, false),
     ]);
     this.account.extensions.flood.start();
   }

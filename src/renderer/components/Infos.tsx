@@ -71,7 +71,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       <div>
         <div>Position: {this.state.position}</div>
         <div>Status: {AccountStates[this.state.status]}</div>
-        <img src="http://staticns.ankama.com/dofus/ng/img/logo_dofus.jpg" />
+        {/* <img src="http://staticns.ankama.com/dofus/ng/img/logo_dofus.jpg" /> */}
         <img src="https://s.ankama.com/www/static.ankama.com/dofus/ng/img/logo_dofus.jpg" />
         <img src={this.state.skinUrl} />
         <img src={this.state.itemUrl} />

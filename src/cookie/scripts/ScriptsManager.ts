@@ -333,14 +333,15 @@ export default class ScriptsManager {
           }
           break;
       }
-      // Otherwise just move to the next flag
-      this.entryFlagsIndex++;
-      // If we processed all the flags
-      if (this.entryFlagsIndex === this.entryFlags.Count()) {
-        this.stopScript("Nothing to do anymore.");
-      } else {
-        this.processCurrentEntryFlag();
-      }
+    }
+
+    // Otherwise just move to the next flag
+    this.entryFlagsIndex++;
+    // If we processed all the flags
+    if (this.entryFlagsIndex === this.entryFlags.Count()) {
+      this.stopScript("Nothing to do anymore.");
+    } else {
+      this.processCurrentEntryFlag();
     }
   }
 

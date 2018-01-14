@@ -17,6 +17,5 @@ export default class IdentificationMessage extends Message {
     this.useCertificate = useCertificate;
     this.useLoginToken = useLoginToken;
     this.sessionOptionalSalt = sessionOptionalSalt;
-
   }
 }

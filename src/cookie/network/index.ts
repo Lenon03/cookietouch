@@ -90,7 +90,7 @@ export default class Network implements IClearable {
     let msg;
     let msgName;
 
-    if (call === "sendMessageFree") {
+    if (call === "sendMessage") {
       msgName = data.type;
       if (data.data) {
         msg = { call, data };
@@ -107,7 +107,7 @@ export default class Network implements IClearable {
     }
 
     console.log("Sent", msg);
-    this.onMessageReceived.trigger({ type: msgName, data});
+    this.onMessageSent.trigger({ type: msgName, data});
     this.account.dispatcher.emit(msgName, this.account, data);
     this.socket.write(msg);
   }

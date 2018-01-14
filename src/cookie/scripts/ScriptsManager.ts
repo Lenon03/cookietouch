@@ -103,7 +103,7 @@ export default class ScriptsManager {
       this.account.logger.logError("Script", "Script doesn't exist or it is not the correct format file.");
       return;
     }
-    this.scriptManager.loadFromFile(filePath, this.beforeDoFile.bind(this));
+    this.scriptManager.loadFromFile(filePath, this.account.data.username, this.beforeDoFile.bind(this));
     this.currentScriptName = path.basename(filePath);
     this.account.logger.logInfo("Script", `Script ${path.basename(filePath, ".js")} loaded.`);
     this.onScriptLoaded.trigger(this.currentScriptName);
@@ -794,7 +794,28 @@ export default class ScriptsManager {
     }
   }
 
-  private beforeDoFile() {
-    (global as any).API = this.api;
+  private async beforeDoFile() {
+
+    (global as any).API = new Array();
+    (global as any).API[this.account.data.username] = this.api;
+
+    // this.scriptManager.setGlobal("printMessage", (msg: string) => {
+    //   this.account.logger.logMessage("Scripts", msg);
+    // });
+
+    // this.scriptManager.setGlobal("character", JSON.stringify(this.api.character));
+    // this.scriptManager.setGlobal("inventory", this.api.inventory);
+
+    // this.scriptManager.setGlobal("TEST", 23);
+
+    // console.log("testing", this.scriptManager.getGlobalOr("config", 20));
+
+    // const generatorFunction = (function*() { yield undefined; }).constructor;
+
+    // if (fight instanceof generatorFunction) {
+    //   console.log("Ok it's a generator function");
+    // } else {
+    //   console.log("Nope!");
+    // }
   }
 }

@@ -6,6 +6,5 @@ export default class GameMapMovementMessage extends Message {
     super();
     this.keyMovements = keyMovements;
     this.actorId = actorId;
-
   }
 }

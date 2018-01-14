@@ -42,6 +42,7 @@ export default class ActionsManager {
   private account: Account;
   private actionsQueue: ScriptAction[];
   private currentAction: ScriptAction;
+  // private currentCoroutine: IterableIterator<Promise<void>>;
   private currentCoroutine: () => void;
   private fightsCounter: number;
   private gathersCounter: number;
@@ -75,7 +76,8 @@ export default class ActionsManager {
     if (!this.account.scripts.running || this.currentCoroutine) {
       return;
     }
-    this.currentCoroutine = customFunction; // TODO: Check if it's right
+    // this.currentCoroutine = this.createCoroutine(customFunction);
+    this.currentCoroutine = customFunction;
     this.processCoroutine();
   }
 
@@ -131,20 +133,29 @@ export default class ActionsManager {
     }
   }
 
-  private processCoroutine() {
+  private async processCoroutine() {
     if (!this.account.scripts.running) {
       return;
     }
     try {
       const name = this.currentAction ? this.currentAction.name : "Unknown";
-      const result = this.currentCoroutine();
+      const result = await this.currentCoroutine();
       this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name}, result: ${result})`);
-      // this.account.logger.logDebug("Scripts", `Ending coroutine`);
-      this.customHandled();
+      if (!result) {
+        this.account.logger.logDebug("Scripts", `Ending coroutine`);
+        this.customHandled();
+      }
     } catch (error) {
       this.account.scripts.stopScript(error);
     }
   }
+
+  // private createCoroutine(custom: () => void): IterableIterator<any> {
+  //   function* co(func: () => void) {
+  //     return func();
+  //   }
+  //   return co(custom);
+  // }
 
   private async processCurrentAction() {
     if (!this.account.scripts.running) {
@@ -327,7 +338,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof NpcBankAction) {
       const nba = this.currentAction as NpcBankAction;
       if (!this.account.game.npcs.reply(nba.replyId)) {
-        this.account.scripts.stopScript("repy npc failed");
+        this.account.scripts.stopScript("Reply npc failed");
       }
     } else if (this.currentAction instanceof NpcAction || this.currentAction instanceof ReplyAction) {
       this.dequeueActions(400);

@@ -1,6 +1,7 @@
 import Account from "@/account";
 import { FunctionTypes } from "@/scripts/FunctionTypes";
 import * as fs from "fs";
+import * as path from "path";
 
 export interface IBankItem {
   id: number;
@@ -51,16 +52,18 @@ export interface IFunc {
 export default class JsonScriptManager {
 
   public script: string = "";
-
   public get config(): IConfig {
     return eval(`${this.script};config`);
   }
 
-  public loadFromFile(filePath: string, beforeDoFile: () => void) {
+  public loadFromFile(filePath: string, username: string, beforeDoFile: () => void) {
     this.script = "";
     const content = fs.readFileSync(filePath);
     beforeDoFile();
-    this.script += content.toString();
+    this.script += fs.readFileSync(path.join(__dirname, "./utils.js")) + content.toString();
+    const regexAPI = /API/g;
+    this.script = this.script.replace(regexAPI, `API["${username}"]`);
+    console.log(this.script);
   }
 
   public getFunctionEntries(func: FunctionTypes): IFunc {
@@ -74,6 +77,19 @@ export default class JsonScriptManager {
       default:
         return null;
     }
+  }
+
+  public setGlobal(key: string, value: any) {
+    this.script = `const ${key} = ${value.toString()};\n${this.script}`;
+  }
+
+  public getGlobalOr<T>(what: string, or: T): T {
+    const get = this.getGlobal(what) as T;
+    return get ? get : or;
+  }
+
+  public getGlobal(what: string) {
+    return eval(`${this.script};${what}`);
   }
 
   private getFunc(name: string): IFunc {

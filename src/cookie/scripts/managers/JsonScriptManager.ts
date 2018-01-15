@@ -44,7 +44,7 @@ export interface IMap {
   npcBank: boolean;
   phenix: number;
   door: number;
-  custom: () => void;
+  custom: GeneratorFunction;
 }
 export interface IFunc {
   maps: IMap[];

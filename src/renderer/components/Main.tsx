@@ -118,7 +118,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
   }
 
   private launchScript() {
-    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/scripts/test.js"));
+    this.account.scripts.fromFile(path.join(__dirname, "../../../resources/scripts/[Déplacement][Incarnam] Go Astrub!.js"));
   }
 
   private flood() {

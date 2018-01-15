@@ -27,8 +27,8 @@ const jobs = {
 }
 // Fight
 const canFight = API.fight.canFight
-function* fight() {
-  if (API.fight.fight()) {
+function* fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel) {
+  if (API.fight.fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel)) {
     yield;
   }
 }
@@ -273,7 +273,9 @@ const bid = {
       yield;
     }
   },
-  getItemPrice: API.bid.getItemPrice,
+  getItemPrice: async function() {
+    return await API.bid.getItemPrice
+  },
   buyItem: function* (gid, lot) {
     if (API.bid.buyItem(gid, lot)) {
       yield;
@@ -291,8 +293,8 @@ const bid = {
       yield;
     }
   },
-  itemItemInSalePrice: function* (uid, newPrice) {
-    if (API.bid.itemItemInSalePrice(uid, newPrice)) {
+  editItemInSalePrice: function* (uid, newPrice) {
+    if (API.bid.editItemInSalePrice(uid, newPrice)) {
       yield;
     }
   },

@@ -2,9 +2,9 @@ import { IFlag, IFlagType } from "./IFlag";
 
 export default class CustomFlag implements IFlag {
   public type = IFlagType.CustomFlag;
-  public func: () => void;
+  public func: GeneratorFunction;
 
-  constructor(func: () => void) {
+  constructor(func: GeneratorFunction) {
     this.func = func;
   }
 }

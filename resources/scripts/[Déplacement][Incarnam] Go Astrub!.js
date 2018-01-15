@@ -11,9 +11,12 @@ const move = [
   { map: 80219140, direction: "right" },
   { map: 80219652, direction: "right" },
   { map: 80220164, direction: "right" },
-  { map: 80220676, custom: () => {
-    API.npc.npc(-1, 1)
-    API.npc.reply(-1)
-    API.npc.reply(-1)
+  { map: 80220676, custom: function* () {
+    yield* npc.npc(-1, 1)
+    if (isInDialog()) {
+      printMessage("Je parle au mec pour descendre à Astrub.")
+      yield* npc.reply(-1)
+      yield* npc.reply(-1)
+    }
   }}
 ]

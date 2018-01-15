@@ -42,8 +42,7 @@ export default class ActionsManager {
   private account: Account;
   private actionsQueue: ScriptAction[];
   private currentAction: ScriptAction;
-  // private currentCoroutine: IterableIterator<Promise<void>>;
-  private currentCoroutine: () => void;
+  private currentCoroutine: Generator;
   private fightsCounter: number;
   private gathersCounter: number;
   private mapChanged: boolean;
@@ -72,12 +71,11 @@ export default class ActionsManager {
     this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished.bind(this));
   }
 
-  public handleCustom(customFunction: () => void) {
+  public handleCustom(customFunction: GeneratorFunction) {
     if (!this.account.scripts.running || this.currentCoroutine) {
       return;
     }
-    // this.currentCoroutine = this.createCoroutine(customFunction);
-    this.currentCoroutine = customFunction;
+    this.currentCoroutine = customFunction();
     this.processCoroutine();
   }
 
@@ -139,9 +137,9 @@ export default class ActionsManager {
     }
     try {
       const name = this.currentAction ? this.currentAction.name : "Unknown";
-      const result = await this.currentCoroutine();
-      this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name}, result: ${result})`);
-      if (!result) {
+      const result = this.currentCoroutine.next();
+      this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name}, result: ${result.done})`);
+      if (result.done) {
         this.account.logger.logDebug("Scripts", `Ending coroutine`);
         this.customHandled();
       }
@@ -149,13 +147,6 @@ export default class ActionsManager {
       this.account.scripts.stopScript(error);
     }
   }
-
-  // private createCoroutine(custom: () => void): IterableIterator<any> {
-  //   function* co(func: () => void) {
-  //     return func();
-  //   }
-  //   return co(custom);
-  // }
 
   private async processCurrentAction() {
     if (!this.account.scripts.running) {

@@ -4,10 +4,9 @@ const config = {
 
 const move = [
   {
-    map: "-3,1",
-    custom: () => {
-      console.log(API.character.kamas);
-      fight();
+    map: "8,3",
+    custom: function* () {
+      printMessage(`J'ai ${inventory.pods} pods !!!`)
     }
   }
 ]

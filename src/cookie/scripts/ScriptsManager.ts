@@ -795,27 +795,42 @@ export default class ScriptsManager {
   }
 
   private async beforeDoFile() {
-
-    (global as any).API = new Array();
     (global as any).API[this.account.data.username] = this.api;
 
-    // this.scriptManager.setGlobal("printMessage", (msg: string) => {
-    //   this.account.logger.logMessage("Scripts", msg);
-    // });
+    (global as any).API[this.account.data.username].isFighting = this.account.isFighting;
+    (global as any).API[this.account.data.username].isGathering = this.account.isGathering;
+    (global as any).API[this.account.data.username].isInDialog = this.account.isInDialog;
 
-    // this.scriptManager.setGlobal("character", JSON.stringify(this.api.character));
-    // this.scriptManager.setGlobal("inventory", this.api.inventory);
+    (global as any).API[this.account.data.username].printMessage = (message: string) => {
+      this.account.logger.logMessage("Scripts", message);
+    };
 
-    // this.scriptManager.setGlobal("TEST", 23);
+    (global as any).API[this.account.data.username].printDebug = (message: string) => {
+      this.account.logger.logDebug("Scripts", message);
+    };
 
-    // console.log("testing", this.scriptManager.getGlobalOr("config", 20));
+    (global as any).API[this.account.data.username].printSuccess = (message: string) => {
+      this.account.logger.logInfo("Scripts", message);
+    };
 
-    // const generatorFunction = (function*() { yield undefined; }).constructor;
+    (global as any).API[this.account.data.username].printError = (message: string) => {
+      this.account.logger.logError("Scripts", message);
+    };
 
-    // if (fight instanceof generatorFunction) {
-    //   console.log("Ok it's a generator function");
-    // } else {
-    //   console.log("Nope!");
-    // }
+    (global as any).API[this.account.data.username].stopScript = () => {
+      this.stopScript();
+    };
+
+    (global as any).API[this.account.data.username].delayFunc = (delay: number) => {
+      this.actionsManager.enqueueAction(new DelayAction(delay), true);
+    };
+
+    (global as any).API[this.account.data.username].leaveDialogFunc = (): boolean => {
+      if (this.account.isInDialog) {
+        this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
+        return true;
+      }
+      return false;
+    };
   }
 }

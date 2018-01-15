@@ -52,18 +52,20 @@ export interface IFunc {
 export default class JsonScriptManager {
 
   public script: string = "";
+  private username: string;
+
   public get config(): IConfig {
     return eval(`${this.script};config`);
   }
 
   public loadFromFile(filePath: string, username: string, beforeDoFile: () => void) {
     this.script = "";
+    this.username = username;
     const content = fs.readFileSync(filePath);
+    this.regexYield();
     beforeDoFile();
     this.script += fs.readFileSync(path.join(__dirname, "./utils.js")) + content.toString();
-    const regexAPI = /API/g;
-    this.script = this.script.replace(regexAPI, `API["${username}"]`);
-    console.log(this.script);
+    this.regexAll();
   }
 
   public getFunctionEntries(func: FunctionTypes): IFunc {
@@ -79,22 +81,21 @@ export default class JsonScriptManager {
     }
   }
 
-  public setGlobal(key: string, value: any) {
-    this.script = `const ${key} = ${value.toString()};\n${this.script}`;
-  }
-
-  public getGlobalOr<T>(what: string, or: T): T {
-    const get = this.getGlobal(what) as T;
-    return get ? get : or;
-  }
-
-  public getGlobal(what: string) {
-    return eval(`${this.script};${what}`);
-  }
-
   private getFunc(name: string): IFunc {
     return {
       maps: eval(`${this.script};${name}`),
     };
+  }
+
+  private regexYield() {
+    // const regex = /execute/g;
+    // this.script = this.script.replace(regex, "yield*");
+  }
+
+  private regexAll() {
+    // API
+    const regexAPI = /API/g;
+    this.script = this.script.replace(regexAPI, `API["${this.username}"]`);
+    // console.log(this.script);
   }
 }

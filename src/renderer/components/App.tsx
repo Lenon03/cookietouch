@@ -9,6 +9,7 @@ export class App extends React.Component<{}, {}> {
 
   constructor(props: {}) {
     super(props);
+    (global as any).API = new Array();
     const lang = "fr";
     DTConstants.Init()
     .then(() => MapPoint.Init())

@@ -50,6 +50,7 @@ export default class CharacterFrame {
   }
 
   private async HandleCharacterExperienceGainMessage(account: Account, message: any) {
+    account.statistics.UpdateCharacterExperienceGainMessage(message);
     account.game.character.stats.UpdateCharacterExperienceGainMessage(message);
     this.account.logger.logDebug("", `Vous avez gagné ${message.experienceCharacter} xp.`);
   }
@@ -59,6 +60,7 @@ export default class CharacterFrame {
   }
 
   private async HandleCharacterLevelUpMessage(account: Account, message: any) {
+    account.statistics.UpdateCharacterLevelUpMessage(message);
     account.game.character.UpdateCharacterLevelUpMessage(message);
     this.account.logger.logDebug("", "Level Up!");
   }

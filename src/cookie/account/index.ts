@@ -1,5 +1,6 @@
 import Group from "@/groups/Group";
 import ScriptsManager from "@/scripts/ScriptsManager";
+import StatisticsManager from "@/statistics/StatisticsManager";
 import { randomString } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Logger from "@logger";
@@ -34,6 +35,7 @@ export default class Account {
   public scripts: ScriptsManager;
   public group: Group = null;
   public planificationTimer: TimerWrapper;
+  public statistics: StatisticsManager;
 
   get hasGroup(): boolean {
     return this.group !== null;
@@ -70,6 +72,7 @@ export default class Account {
     this.scripts = new ScriptsManager(this);
     this.frames = new Frames(this);
     this.extensions = new Extensions(this);
+    this.statistics = new StatisticsManager(this);
     this.planificationTimer = new TimerWrapper(this.plannificationCallback, this, 30000, 30000);
 
     this.network.Disconnected.on(this.onNetworkDisconnected.bind(this));

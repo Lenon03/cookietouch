@@ -1,3 +1,4 @@
+import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNumericalValueMessage";
 import Account from "@account";
 
 export default class InventoryFrame {
@@ -9,28 +10,18 @@ export default class InventoryFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("KamasUpdateMessage",
-      this.HandleKamasUpdateMessage, this);
-    this.account.dispatcher.register("InventoryWeightMessage",
-      this.HandleInventoryWeightMessage, this);
-    this.account.dispatcher.register("ObjectsQuantityMessage",
-      this.HandleObjectsQuantityMessage, this);
-    this.account.dispatcher.register("ObjectQuantityMessage",
-      this.HandleObjectQuantityMessage, this);
-    this.account.dispatcher.register("ObjectMovementMessage",
-      this.HandleObjectMovementMessage, this);
-    this.account.dispatcher.register("ObjectModifiedMessage",
-      this.HandleObjectModifiedMessage, this);
-    this.account.dispatcher.register("ObjectsDeletedMessage",
-      this.HandleObjectsDeletedMessage, this);
-    this.account.dispatcher.register("ObjectDeletedMessage",
-      this.HandleObjectDeletedMessage, this);
-    this.account.dispatcher.register("ObjectsAddedMessage",
-      this.HandleObjectsAddedMessage, this);
-    this.account.dispatcher.register("ObjectAddedMessage",
-      this.HandleObjectAddedMessage, this);
-    this.account.dispatcher.register("InventoryContentMessage",
-      this.HandleInventoryContentMessage, this);
+    this.account.dispatcher.register("KamasUpdateMessage", this.HandleKamasUpdateMessage, this);
+    this.account.dispatcher.register("InventoryWeightMessage", this.HandleInventoryWeightMessage, this);
+    this.account.dispatcher.register("ObjectsQuantityMessage", this.HandleObjectsQuantityMessage, this);
+    this.account.dispatcher.register("ObjectQuantityMessage", this.HandleObjectQuantityMessage, this);
+    this.account.dispatcher.register("ObjectMovementMessage", this.HandleObjectMovementMessage, this);
+    this.account.dispatcher.register("ObjectModifiedMessage", this.HandleObjectModifiedMessage, this);
+    this.account.dispatcher.register("ObjectsDeletedMessage", this.HandleObjectsDeletedMessage, this);
+    this.account.dispatcher.register("ObjectDeletedMessage", this.HandleObjectDeletedMessage, this);
+    this.account.dispatcher.register("ObjectsAddedMessage", this.HandleObjectsAddedMessage, this);
+    this.account.dispatcher.register("ObjectAddedMessage", this.HandleObjectAddedMessage, this);
+    this.account.dispatcher.register("InventoryContentMessage", this.HandleInventoryContentMessage, this);
+    this.account.dispatcher.register("DisplayNumericalValueMessage", this.HandleDisplayNumericalValueMessage, this);
   }
 
   private async HandleKamasUpdateMessage(account: Account, message: any) {
@@ -75,5 +66,9 @@ export default class InventoryFrame {
 
   private async HandleInventoryContentMessage(account: Account, message: any) {
     account.game.character.inventory.UpdateInventoryContentMessage(message);
+  }
+
+  private async HandleDisplayNumericalValueMessage(account: Account, message: DisplayNumericalValueMessage) {
+    account.statistics.UpdateDisplayNumericalValueMessage(message);
   }
 }

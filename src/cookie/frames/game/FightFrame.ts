@@ -136,6 +136,7 @@ export default class FightFrame {
     const elapsed = moment.duration(message.duration);
     account.logger.logInfo("", `Combat terminé: ${elapsed.minutes()}m:${elapsed.seconds()}s`);
     account.game.fight.UpdateGameFightEndMessage(message);
+    account.statistics.UpdateGameFightEndMessage(message);
   }
 
   private async HandleGameActionFightDispellableEffectMessage(account: Account, message: GameActionFightDispellableEffectMessage) {

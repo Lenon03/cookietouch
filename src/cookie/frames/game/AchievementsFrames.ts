@@ -21,6 +21,7 @@ export default class AchievementsFrame {
   }
 
   private async HandleAchievementRewardSuccessMessage(account: Account, message: any) {
+    account.statistics.UpdateAchievementRewardSuccessMessage(message);
     const achievementResp = await DataManager.get(Achievements, message.achievementId);
     const a = achievementResp[0].object;
     account.logger.logInfo("", `Succés ${a.nameId} dévérouillé! Vous avez gagné ${a.points} points.`);

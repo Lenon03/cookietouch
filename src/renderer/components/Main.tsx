@@ -34,7 +34,6 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   constructor(props: IMainProps) {
     super(props);
-
     this.account = new Account("cookieproject1", "azerty123456", "fr");
     this.account.data.server = "Herdegrize";
     this.account.data.character = "Enoc";

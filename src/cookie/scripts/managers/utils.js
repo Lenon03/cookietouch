@@ -273,8 +273,8 @@ const bid = {
       yield;
     }
   },
-  getItemPrice: async function() {
-    return await API.bid.getItemPrice
+  getItemPrice: async function(gid, lot) {
+    return await API.bid.getItemPrice(gid, lot)
   },
   buyItem: function* (gid, lot) {
     if (API.bid.buyItem(gid, lot)) {

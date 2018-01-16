@@ -54,7 +54,6 @@ export default class Inventory {
   private readonly onObjectEquipped = new LiteEvent<number>();
 
   constructor(account: Account) {
-    InventoryHelper.Init();
     this.account = account;
   }
 

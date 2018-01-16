@@ -797,9 +797,9 @@ export default class ScriptsManager {
   private async beforeDoFile() {
     (global as any).API[this.account.data.username] = this.api;
 
-    (global as any).API[this.account.data.username].isFighting = this.account.isFighting;
-    (global as any).API[this.account.data.username].isGathering = this.account.isGathering;
-    (global as any).API[this.account.data.username].isInDialog = this.account.isInDialog;
+    (global as any).API[this.account.data.username].isFighting = () => this.account.isFighting;
+    (global as any).API[this.account.data.username].isGathering = () => this.account.isInDialog;
+    (global as any).API[this.account.data.username].isInDialog = () => this.account.isInDialog;
 
     (global as any).API[this.account.data.username].printMessage = (message: string) => {
       this.account.logger.logMessage("Scripts", message);

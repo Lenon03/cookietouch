@@ -19,6 +19,7 @@ export default class Grouping {
 
   constructor(group: Group) {
     this._group = group;
+    this._missingMembers = new List();
   }
 
   public async groupMembers() {

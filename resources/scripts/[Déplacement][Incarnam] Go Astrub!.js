@@ -12,10 +12,8 @@ const move = [
   { map: 80219652, direction: "right" },
   { map: 80220164, direction: "right" },
   { map: 80220676, custom: function* () {
-    printSuccess("Super ça marche!")
     yield* npc.npc(-1, 1)
-    printSuccess("After NPC! -> dialog? " + isInDialog)
-    if (isInDialog) {
+    if (isInDialog()) {
       printMessage("Je parle au mec pour descendre à Astrub.")
       yield* npc.reply(-1)
       yield* npc.reply(-1)

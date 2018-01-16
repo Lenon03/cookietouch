@@ -117,8 +117,7 @@ export default class ActionsManager {
     this.account.logger.logDebug("Scripts", `Waited ${delay}ms`);
     // If the queue still have actions
     if (this.actionsQueue.length > 0) {
-      const action = this.actionsQueue.shift();
-      this.currentAction = action;
+      this.currentAction = this.actionsQueue.shift();
       await this.processCurrentAction();
     } else {
       // If there is a coroutine currently being handled, process it
@@ -131,7 +130,7 @@ export default class ActionsManager {
     }
   }
 
-  private async processCoroutine() {
+  private processCoroutine() {
     if (!this.account.scripts.running) {
       return;
     }

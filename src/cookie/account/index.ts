@@ -1,5 +1,6 @@
 import Group from "@/groups/Group";
 import ScriptsManager from "@/scripts/ScriptsManager";
+import { randomString } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
@@ -98,7 +99,8 @@ export default class Account {
     this.state = AccountStates.CONNECTING;
     this.haapi.processHaapi(this.data.username, this.data.password)
       .then(() => {
-        this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
+        this.network.connect(randomString(16), DTConstants.config.dataUrl);
+        // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
       });
   }
 
@@ -197,11 +199,11 @@ export default class Account {
     // If the bot is connected and the hour is red
     if (this.network.connected && this.config.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
       this.logger.logInfo("Planification", "Automatic disconnection.");
-      await this.stop();
+      this.stop();
     } else if (this.state === AccountStates.DISCONNECTED && this.config.planification[hour]) {
       // If the bot is disconnected and the hour is green
       this.logger.logInfo("Planification", "Automatic reconnection.");
-      await this.start();
+      this.start();
     }
   }
 

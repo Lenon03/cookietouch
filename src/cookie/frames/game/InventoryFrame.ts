@@ -69,6 +69,6 @@ export default class InventoryFrame {
   }
 
   private async HandleDisplayNumericalValueMessage(account: Account, message: DisplayNumericalValueMessage) {
-    account.statistics.UpdateDisplayNumericalValueMessage(message);
+    await account.statistics.UpdateDisplayNumericalValueMessage(message);
   }
 }

@@ -23,11 +23,8 @@ export default class StatisticsManager {
   public fightsWon: number;
   public gathersCount: number;
   public kamasGained: number;
-  // -> General
   public levelsGained: number;
-  // -> Fights
   public totalFightsTime: number;
-  // -> Gathers
   public totalGathersTime: number;
 
   private lastObjectGained: number;
@@ -57,7 +54,7 @@ export default class StatisticsManager {
     this.account.game.character.inventory.ObjectGained.on(() => this.objectGained.bind(this));
   }
 
-  public UpdateGameFightEndMessage(message: GameFightEndMessage) {
+  public async UpdateGameFightEndMessage(message: GameFightEndMessage) {
     this.fightsCount++;
     this.totalFightsTime += message.duration;
     this.averageFightTime += ((message.duration - this.averageFightTime) / this.fightsCount);
@@ -75,7 +72,7 @@ export default class StatisticsManager {
           }
           // Objects obtained
           for (let i = 0; i < result.rewards.objects.length; i += 2) {
-            this.addOrUpdate(this.objectsObtainedInFights, result.rewards.objects[i], result.rewards.objects[i + 1]);
+            await this.addOrUpdate(this.objectsObtainedInFights, result.rewards.objects[i], result.rewards.objects[i + 1]);
           }
         }
       }
@@ -99,9 +96,9 @@ export default class StatisticsManager {
     this.achievementsFinished++;
   }
 
-  public UpdateDisplayNumericalValueMessage(message: DisplayNumericalValueMessage) {
+  public async UpdateDisplayNumericalValueMessage(message: DisplayNumericalValueMessage) {
     if (message.entityId === this.account.game.character.id && this.lastObjectGained !== 0) {
-      this.addOrUpdate(this.objectsObtainedInGathers, this.lastObjectGained, message.value);
+      await this.addOrUpdate(this.objectsObtainedInGathers, this.lastObjectGained, message.value);
       this.lastObjectGained = 0;
       // Set object's percentages
       const totalQty = this.objectsObtainedInGathers.Sum((o) => o.quantity);

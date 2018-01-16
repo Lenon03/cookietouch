@@ -65,9 +65,12 @@ export default class FightsPathfinder {
       const tacklers = new Array<FighterEntry>();
       let i = 0;
       while (i < neighbours.length) {
-        const tackler = fight.fighters.find((f) => f.cellId === neighbours[i].cellId);
-
-        if (neighbours[i] !== undefined && tackler === undefined) {
+        let tackler;
+        const neigh = neighbours[i];
+        if (neigh) {
+          tackler = fight.fighters.find((f) => f.cellId === neigh.cellId);
+        }
+        if (neigh !== undefined && tackler === undefined) {
           i++;
           continue;
         }

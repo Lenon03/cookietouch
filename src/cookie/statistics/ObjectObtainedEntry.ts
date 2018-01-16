@@ -9,6 +9,6 @@ export default class ObjectObtainedEntry {
     this.gid = gid;
     this.name = name;
     this.quantity = qty;
-    this.percentage = 0;
+    this.percentage = -1;
   }
 }

@@ -65,8 +65,7 @@ export default class Pathfinder {
       if (bestFit !== null) {
         return [source, MapPoint.fromCoords(bestFit.i - 1, bestFit.j - 1).cellId]; // TODO: Or - 1 ??
       }
-      console.error(`[Pathfinder] Player stuck in ${si}/${sj}`);
-      return [source];
+      throw new Error(`[Pathfinder] Player stuck in ${si}/${sj}`);
     }
     const di = dstPos.x + 1;
     const dj = dstPos.y + 1;

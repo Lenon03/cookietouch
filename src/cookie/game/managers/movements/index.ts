@@ -179,8 +179,10 @@ export default class MovementsManager implements IClearable {
       // and to handle map changements.
       account.state = AccountStates.MOVING;
 
-      const duration = PathDuration.calculate(this.currentPath);
-      await sleep(duration);
+      if (!account.config.enableSpeedHack) {
+        const duration = PathDuration.calculate(this.currentPath);
+        await sleep(duration);
+      }
 
       account.network.sendMessageFree("GameMapMovementConfirmMessage");
 

@@ -167,9 +167,8 @@ const npc = {
     }
   },
   reply: function* (replyId) {
-    if (API.npc.reply(replyId)) {
-      yield;
-    }
+    API.npc.reply(replyId);
+    yield;
   }
 }
 // Mount

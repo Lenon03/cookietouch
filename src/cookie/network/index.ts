@@ -224,7 +224,7 @@ export default class Network implements IClearable {
     return new Primus(url, {
       manual: true,
       reconnect: {
-        max: Infinity,
+        max: 5000,
         min: 500,
         retries: 10,
       },

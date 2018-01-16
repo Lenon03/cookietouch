@@ -134,6 +134,9 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   private attack() {
     const group = this.account.game.map.getMonstersGroup()[0];
+    if (!group) {
+      return;
+    }
     const movementResult = this.account.game.managers.movements.moveToCell(group.cellId);
     if (movementResult === MovementRequestResults.ALREADY_THERE || movementResult === MovementRequestResults.MOVED) {
       this.account.network.sendMessageFree("GameRolePlayAttackMonsterRequestMessage", {

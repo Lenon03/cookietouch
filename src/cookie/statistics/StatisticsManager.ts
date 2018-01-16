@@ -58,9 +58,9 @@ export default class StatisticsManager {
   }
 
   public UpdateGameFightEndMessage(message: GameFightEndMessage) {
-    this.totalFightsTime += message.duration;
-    this.averageFightTime = (this.averageFightTime + message.duration) / 2;
     this.fightsCount++;
+    this.totalFightsTime += message.duration;
+    this.averageFightTime += ((message.duration - this.averageFightTime) / this.fightsCount);
 
     for (const t of message.results) {
       if (t._type === "FightResultPlayerListEntry") {
@@ -118,9 +118,10 @@ export default class StatisticsManager {
   private gatherFinished(result: GatherResults) {
     if (result === GatherResults.GATHERED) {
       this.gathersCount++;
-      const MS_PER_SEC = 1e6;
+      const MS_PER_SEC = 1e3;
+      const MS_PER_NS = 1e-6;
       const diff = process.hrtime(this.gatherStartTime);
-      this.totalGathersTime += diff[0] * MS_PER_SEC + diff[1];
+      this.totalGathersTime += diff[0] * MS_PER_SEC + diff[1] * MS_PER_NS;
     }
   }
 

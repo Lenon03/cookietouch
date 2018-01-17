@@ -55,32 +55,32 @@ export default class CharacterCreatorExtension implements IClearable {
   }
 
   public async UpdateCharactersListMessage(message: CharactersListMessage) {
-    if (!this.account.config.characterCreation.create) {
+    if (!this.account.accountConfig.characterCreation.create) {
       return;
     }
     // If the character has been successfully created
     if (this.created) {
       // Set the create to false so that we don't create a character each time we connect
-      this.account.config.characterCreation.create = false;
+      this.account.accountConfig.characterCreation.create = false;
       this.account.network.sendMessageFree("CharacterFirstSelectionMessage", {
         doTutorial: true,
         id: message.characters[0].id,
       });
       return;
     }
-    let name = this.account.config.characterCreation.name;
+    let name = this.account.accountConfig.characterCreation.name;
     let max = 0;
     BreedsUtility.breeds.ForEach((b) => b.id > max ? max = b.id : b); // TODO: check this...
-    const breed = this.account.config.characterCreation.breed === -1
+    const breed = this.account.accountConfig.characterCreation.breed === -1
       ? getRandomInt(1, max + 1)
-      : this.account.config.characterCreation.breed;
-    const sex = (this.account.config.characterCreation.sex === -1
-      ? getRandomInt(0, 2) : this.account.config.characterCreation.sex) === 1;
-    const headOrder = this.account.config.characterCreation.head === -1
-      ? getRandomInt(0, 8) : this.account.config.characterCreation.head;
+      : this.account.accountConfig.characterCreation.breed;
+    const sex = (this.account.accountConfig.characterCreation.sex === -1
+      ? getRandomInt(0, 2) : this.account.accountConfig.characterCreation.sex) === 1;
+    const headOrder = this.account.accountConfig.characterCreation.head === -1
+      ? getRandomInt(0, 8) : this.account.accountConfig.characterCreation.head;
     const breedClass = await DataManager.get(Breeds, breed);
-    const colors = this.account.config.characterCreation.colors.length === 5
-      ? this.account.config.characterCreation.colors.length
+    const colors = this.account.accountConfig.characterCreation.colors.length === 5
+      ? this.account.accountConfig.characterCreation.colors.length
       : (sex ? breedClass[0].object.femaleColors : breedClass[0].object.maleColors);
     // If the user wanter a random name, use DT's random name generator
     if (name === "") {
@@ -116,7 +116,7 @@ export default class CharacterCreatorExtension implements IClearable {
   }
 
   public async UpdateQuestStartedMessage(message: QuestStartedMessage) {
-    if (!this.account.config.characterCreation.completeTutorial) {
+    if (!this.account.accountConfig.characterCreation.completeTutorial) {
       return;
     }
     if (message.questId !== TutorialHelper.questTutorialId || !this.created) {
@@ -194,7 +194,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (!this.isDoingTutorial || message.questId !== TutorialHelper.questTutorialId) {
       return;
     }
-    this.account.config.characterCreation.completeTutorial = false;
+    this.account.accountConfig.characterCreation.completeTutorial = false;
     this.inTutorial = false;
     this.currentStep = null;
   }

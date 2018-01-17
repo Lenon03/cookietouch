@@ -29,17 +29,17 @@ export default class CharacterSelectionFrame {
   private async HandleCharactersListMessage(account: Account, message: CharactersListMessage) {
     account.game.server.UpdateCharactersListMessage(message);
 
-    if (account.config.characterCreation.create) {
+    if (account.accountConfig.characterCreation.create) {
       await account.extensions.characterCreation.UpdateCharactersListMessage(message);
       return;
     }
 
     if (message.characters.length > 0) {
-      const char = isBlank(account.data.character) ?
-        message.characters[0] : message.characters.find((c) => c.name === account.data.character);
+      const char = isBlank(account.accountConfig.character) ?
+        message.characters[0] : message.characters.find((c) => c.name === account.accountConfig.character);
 
       if (char === undefined) {
-        account.logger.logError("CharacterSelectionFrame", `Character ${account.data.character} don't found!`);
+        account.logger.logError("CharacterSelectionFrame", `Character ${account.accountConfig.character} don't found!`);
       } else {
         await account.network.sendMessageFree("CharacterSelectionMessage", {
           id: char.id,

@@ -27,13 +27,13 @@ export default class ServerSelectionFrame {
   }
 
   private async HandleServersListMessage(account: Account, message: ServersListMessage) {
-    const server = account.config.characterCreation.create ?
-      message.servers.find((s) => s._name === account.config.characterCreation.server)
-      : account.config.characterCreation.server === "-" ?
+    const server = account.accountConfig.characterCreation.create ?
+      message.servers.find((s) => s._name === account.accountConfig.characterCreation.server)
+      : account.accountConfig.characterCreation.server === "-" ?
         message.servers.find((s) => s.charactersCount > 0)
-        : message.servers.find((s) => s._name === account.data.server);
+        : message.servers.find((s) => s._name === account.accountConfig.server);
 
-    if (server === undefined || server.charactersCount === 0 && !account.config.characterCreation.create) {
+    if (server === undefined || server.charactersCount === 0 && !account.accountConfig.characterCreation.create) {
       account.logger.logError("", "Impossible de selectionner ce serveur");
       account.stop();
       return;
@@ -94,7 +94,7 @@ export default class ServerSelectionFrame {
 
   private async HandleHelloGameMessage(account: Account, message: any) {
     account.network.sendMessageFree("AuthenticationTicketMessage", {
-      lang: account.data.lang,
+      lang: "fr",
       ticket: account.framesData.ticket,
     });
     account.network.phase = NetworkPhases.GAME;

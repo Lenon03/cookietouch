@@ -132,7 +132,7 @@ export default class Network implements IClearable {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: this.account.data.lang,
+          language: "fr",
           server: "login",
         });
       } else {
@@ -140,7 +140,7 @@ export default class Network implements IClearable {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: this.account.data.lang,
+          language: "fr",
           server: this.server,
         });
       }

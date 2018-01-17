@@ -103,7 +103,7 @@ export default class ScriptsManager {
       this.account.logger.logError("Script", "Script doesn't exist or it is not the correct format file.");
       return;
     }
-    this.scriptManager.loadFromFile(filePath, this.account.data.username, this.beforeDoFile.bind(this));
+    this.scriptManager.loadFromFile(filePath, this.account.accountConfig.username, this.beforeDoFile.bind(this));
     this.currentScriptName = path.basename(filePath);
     this.account.logger.logInfo("Script", `Script ${path.basename(filePath, ".js")} loaded.`);
     this.onScriptLoaded.trigger(this.currentScriptName);
@@ -795,37 +795,37 @@ export default class ScriptsManager {
   }
 
   private async beforeDoFile() {
-    (global as any).API[this.account.data.username] = this.api;
+    (global as any).API[this.account.accountConfig.username] = this.api;
 
-    (global as any).API[this.account.data.username].isFighting = () => this.account.isFighting;
-    (global as any).API[this.account.data.username].isGathering = () => this.account.isInDialog;
-    (global as any).API[this.account.data.username].isInDialog = () => this.account.isInDialog;
+    (global as any).API[this.account.accountConfig.username].isFighting = () => this.account.isFighting;
+    (global as any).API[this.account.accountConfig.username].isGathering = () => this.account.isInDialog;
+    (global as any).API[this.account.accountConfig.username].isInDialog = () => this.account.isInDialog;
 
-    (global as any).API[this.account.data.username].printMessage = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printMessage = (message: string) => {
       this.account.logger.logMessage("Scripts", message);
     };
 
-    (global as any).API[this.account.data.username].printDebug = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printDebug = (message: string) => {
       this.account.logger.logDebug("Scripts", message);
     };
 
-    (global as any).API[this.account.data.username].printSuccess = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printSuccess = (message: string) => {
       this.account.logger.logInfo("Scripts", message);
     };
 
-    (global as any).API[this.account.data.username].printError = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printError = (message: string) => {
       this.account.logger.logError("Scripts", message);
     };
 
-    (global as any).API[this.account.data.username].stopScript = () => {
+    (global as any).API[this.account.accountConfig.username].stopScript = () => {
       this.stopScript();
     };
 
-    (global as any).API[this.account.data.username].delayFunc = (delay: number) => {
+    (global as any).API[this.account.accountConfig.username].delayFunc = (delay: number) => {
       this.actionsManager.enqueueAction(new DelayAction(delay), true);
     };
 
-    (global as any).API[this.account.data.username].leaveDialogFunc = (): boolean => {
+    (global as any).API[this.account.accountConfig.username].leaveDialogFunc = (): boolean => {
       if (this.account.isInDialog) {
         this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
         return true;

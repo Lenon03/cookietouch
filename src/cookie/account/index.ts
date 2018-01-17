@@ -1,3 +1,5 @@
+import AccountData from "@/account/AccountData";
+import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import Group from "@/groups/Group";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
@@ -17,20 +19,20 @@ import Game from "../game";
 import Network from "../network";
 import HaapiConnection from "../network/HaapiConnection";
 import { NetworkPhases } from "../network/NetworkPhases";
-import AccountConfiguration from "./AccountConfiguration";
-import AccountData from "./AccountData";
 import { AccountStates } from "./AccountStates";
+import Configuration from "./configurations/Configuration";
 
 export default class Account {
 
-  public data: AccountData;
+  public accountConfig: AccountConfiguration;
   public game: Game;
+  public data: AccountData;
   public network: Network;
   public haapi: HaapiConnection;
   public dispatcher: Dispatcher;
   public framesData: FramesData;
   public logger: Logger;
-  public config: AccountConfiguration;
+  public config: Configuration;
   public extensions: Extensions;
   public scripts: ScriptsManager;
   public group: Group = null;
@@ -59,10 +61,11 @@ export default class Account {
   private _wasScriptRunning = false;
   private _wasScriptEnabled = false;
 
-  constructor(username: string, password: string, lang: string = "fr") {
+  constructor(config: AccountConfiguration) {
     this.logger = new Logger();
-    this.data = new AccountData(username, password, lang);
-    this.config = new AccountConfiguration();
+    this.data = new AccountData();
+    this.accountConfig = config;
+    this.config = new Configuration(this);
     this.framesData = new FramesData();
     this.state = AccountStates.DISCONNECTED;
     this.dispatcher = new Dispatcher();
@@ -100,7 +103,7 @@ export default class Account {
     this.game.clear();
     this.extensions.clear();
     this.state = AccountStates.CONNECTING;
-    this.haapi.processHaapi(this.data.username, this.data.password)
+    this.haapi.processHaapi(this.accountConfig.username, this.accountConfig.password)
       .then(() => {
         this.network.connect(randomString(16), DTConstants.config.dataUrl);
         // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
@@ -195,15 +198,15 @@ export default class Account {
   }
 
   private async plannificationCallback() {
-    if (!this.config.planificationActivated) {
+    if (!this.accountConfig.planificationActivated) {
       return;
     }
     const hour = moment().hour();
     // If the bot is connected and the hour is red
-    if (this.network.connected && this.config.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
+    if (this.network.connected && this.accountConfig.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
       this.logger.logInfo("Planification", "Automatic disconnection.");
       this.stop();
-    } else if (this.state === AccountStates.DISCONNECTED && this.config.planification[hour]) {
+    } else if (this.state === AccountStates.DISCONNECTED && this.accountConfig.planification[hour]) {
       // If the bot is disconnected and the hour is green
       this.logger.logInfo("Planification", "Automatic reconnection.");
       this.start();
@@ -221,7 +224,7 @@ export default class Account {
   }
 
   private async onMapLoaded() {
-    if (!this.config.planificationActivated || !this._wasScriptEnabled) {
+    if (!this.accountConfig.planificationActivated || !this._wasScriptEnabled) {
       return;
     }
     await sleep(1500);

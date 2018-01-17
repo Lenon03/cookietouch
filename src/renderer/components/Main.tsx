@@ -1,3 +1,4 @@
+import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
 import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
 import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
@@ -11,7 +12,7 @@ import { MovementRequestResults } from "@/game/managers/movements/MovementReques
 import { BreedEnum } from "@/protocol/enums/BreedEnum";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
 import Account from "@account";
-import SpellToBoostEntry from "@account/SpellToBoostEntry";
+import SpellToBoostEntry from "@account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@game/character/BoostableStats";
 import * as path from "path";
 import * as React from "react";
@@ -34,17 +35,16 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   constructor(props: IMainProps) {
     super(props);
-    this.account = new Account("cookieproject1", "azerty123456", "fr");
-    this.account.data.server = "Herdegrize";
-    this.account.data.character = "Enoc";
+    const accountConfig = new AccountConfiguration("cookieproject1", "azerty123456", "Herdegrize", "Enoc");
+    this.account = new Account(accountConfig);
     this.account.config.spellsToBoost.push(new SpellToBoostEntry(141, "Pression", 5));
     this.account.config.statToBoost = BoostableStats.STRENGTH;
 
     this.account.config.enableSpeedHack = true;
 
-    this.account.config.characterCreation.create = false;
-    this.account.config.characterCreation.server = "Herdegrize";
-    this.account.config.characterCreation.breed = BreedEnum.Iop;
+    this.account.accountConfig.characterCreation.create = false;
+    this.account.accountConfig.characterCreation.server = "Herdegrize";
+    this.account.accountConfig.characterCreation.breed = BreedEnum.Iop;
 
     const spell1 = new Spell(155, "Vitalité", SpellTargets.SELF, 2, 1, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
     const spell2 = new Spell(158, "Concentration", SpellTargets.ENEMY, 1, 3, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);

@@ -1,9 +1,11 @@
+import Account from "@/account";
 import { BoostableStats } from "@game/character/BoostableStats";
-import { Enumerable, List } from "linqts";
-import CharacterCreation from "./CharacterCreation";
+import * as path from "path";
 import SpellToBoostEntry from "./SpellToBoostEntry";
 
-export default class AccountConfiguration {
+export default class Configuration {
+  public readonly configurationsPath = "parameters";
+
   public showGeneralMessages: boolean;
   public showPartyMessages: boolean;
   public showGuildMessages: boolean;
@@ -17,14 +19,15 @@ export default class AccountConfiguration {
   public ignoreNonAuthorizedTrades: boolean;
   public disconnectUponFightsLimit: boolean;
   public spellsToBoost: SpellToBoostEntry[];
-  public authorizedTradesFrom: number[];
-  public characterCreation: CharacterCreation;
   public autoMount: boolean;
-  public planificationActivated: boolean;
-  public planification: List<boolean>;
+  public authorizedTradesFrom: number[];
   public enableSpeedHack: boolean;
 
-  constructor() {
+  private account: Account;
+
+  constructor(account: Account) {
+    this.account = account;
+
     this.showGeneralMessages = true;
     this.showPartyMessages = true;
     this.showGuildMessages = true;
@@ -38,11 +41,16 @@ export default class AccountConfiguration {
     this.ignoreNonAuthorizedTrades = false;
     this.disconnectUponFightsLimit = false;
     this.spellsToBoost = new Array<SpellToBoostEntry>();
-    this.authorizedTradesFrom = [];
-    this.characterCreation = new CharacterCreation();
     this.autoMount = true;
-    this.planificationActivated = false;
-    this.planification = Enumerable.Repeat(true, 24);
+    this.authorizedTradesFrom = [];
     this.enableSpeedHack = false;
+  }
+
+  public load() {
+    // TODO: ...
+  }
+
+  public save() {
+    // TODO: ...
   }
 }

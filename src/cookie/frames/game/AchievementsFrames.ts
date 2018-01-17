@@ -13,12 +13,9 @@ export default class AchievementsFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("AchievementRewardSuccessMessage",
-    this.HandleAchievementRewardSuccessMessage, this);
-    this.account.dispatcher.register("AchievementFinishedMessage",
-    this.HandleAchievementFinishedMessage, this);
-    this.account.dispatcher.register("AchievementListMessage",
-    this.HandleAchievementListMessage, this);
+    this.account.dispatcher.register("AchievementRewardSuccessMessage", this.HandleAchievementRewardSuccessMessage, this);
+    this.account.dispatcher.register("AchievementFinishedMessage", this.HandleAchievementFinishedMessage, this);
+    this.account.dispatcher.register("AchievementListMessage", this.HandleAchievementListMessage, this);
   }
 
   private async HandleAchievementRewardSuccessMessage(account: Account, message: any) {

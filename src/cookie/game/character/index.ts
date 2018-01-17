@@ -381,6 +381,16 @@ export default class Character {
     this.breedData = breedResponse[0].object;
     this.status = PlayerStatusEnum.AVAILABLE;
     this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
+
+    this.account.config.setConfigFilePath();
+    this.account.config.load();
+    this.account.extensions.fights.config.setConfigFilePath();
+    this.account.extensions.fights.config.load();
+    this.account.extensions.bid.config.setConfigFilePath();
+    this.account.extensions.bid.config.load();
+    this.account.extensions.flood.config.setConfigFilePath();
+    this.account.extensions.flood.config.load();
+
     this.isSelected = true;
     this.onCharacterSelected.trigger();
   }

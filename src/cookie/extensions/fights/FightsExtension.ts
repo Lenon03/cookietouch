@@ -47,7 +47,7 @@ export default class FightsExtension implements IClearable {
 
     this.spellsManager = new SpellsManager(account);
     this.utility = new FightsUtility(account);
-    this.config = new FightsConfiguration();
+    this.config = new FightsConfiguration(account);
 
     this.setEvents();
   }

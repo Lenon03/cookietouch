@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import BreedsUtility from "@/core/BreedsUtility";
 import Account from "@account";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
@@ -62,6 +63,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (this.created) {
       // Set the create to false so that we don't create a character each time we connect
       this.account.accountConfig.characterCreation.create = false;
+      GlobalConfiguration.save();
       this.account.network.sendMessageFree("CharacterFirstSelectionMessage", {
         doTutorial: true,
         id: message.characters[0].id,

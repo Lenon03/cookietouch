@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@utils/String";
 import * as moment from "moment";
@@ -16,6 +17,9 @@ export default class Logger {
   private readonly onLog = new LiteEvent<IMessage>();
 
   public log(source: string, message: string, color: string | LogType | ChannelColors) {
+    if (color === LogType.DEBUG && !GlobalConfiguration.showDebugMessages) {
+      return;
+    }
     if (!isBlank(source)) {
       this.onLog.trigger({
         color,

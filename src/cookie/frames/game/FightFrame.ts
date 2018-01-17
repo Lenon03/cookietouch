@@ -1,4 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
@@ -135,7 +136,7 @@ export default class FightFrame {
   private async HandleGameFightEndMessage(account: Account, message: GameFightEndMessage) {
     moment.locale(GlobalConfiguration.lang);
     const elapsed = moment.duration(message.duration);
-    account.logger.logInfo("", `Combat terminé: ${elapsed.minutes()}m:${elapsed.seconds()}s`);
+    account.logger.logInfo("FightFrame", LanguageManager.trans("fightEnded", elapsed.minutes(), elapsed.seconds()));
     account.game.fight.UpdateGameFightEndMessage(message);
     await account.statistics.UpdateGameFightEndMessage(message);
   }

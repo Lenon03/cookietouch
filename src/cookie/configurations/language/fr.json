@@ -1,5 +1,6 @@
 {
   "achievementReward": "Succés ? dévérouillé! Vous avez gagné ? points.",
   "experienceGain": "Vous avez gagné ? xp.",
-  "levelUp": "Level Up!"
+  "levelUp": "Niveau gagné!",
+  "fightEnded": "Combat terminé: ?m:?s"
 }

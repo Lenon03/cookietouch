@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
 import MapPoint from "@/core/pathfinder/MapPoint";
@@ -17,6 +18,7 @@ export class App extends React.Component<{}, {}> {
     .then(() => MapPoint.Init())
     .then(() => BreedsUtility.Init())
     .then(() => InventoryHelper.Init());
+    // .then(() => GlobalConfiguration.load());
   }
 
   public render() {

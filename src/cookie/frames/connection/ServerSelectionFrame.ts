@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
 import { sleep } from "@/utils/Time";
@@ -94,7 +95,7 @@ export default class ServerSelectionFrame {
 
   private async HandleHelloGameMessage(account: Account, message: any) {
     account.network.sendMessageFree("AuthenticationTicketMessage", {
-      lang: "fr",
+      lang: GlobalConfiguration.lang,
       ticket: account.framesData.ticket,
     });
     account.network.phase = NetworkPhases.GAME;

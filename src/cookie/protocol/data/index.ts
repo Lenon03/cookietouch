@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import Dictionary from "@/utils/Dictionary";
 import axios from "axios";
 import DTConstants from "../DTConstants";
@@ -11,14 +12,10 @@ export interface IDataResponse<T> {
 
 export default class DataManager {
 
-  public static async Init(lang = "fr") {
-    this.lang = lang;
-  }
-
   public static async get<T extends Data>(type: { new(): T }, ...ids: number[]): Promise<Array<IDataResponse<T>>> {
     const myArray: Array<IDataResponse<T>> = [];
     const params = {
-      lang: this.lang,
+      lang: GlobalConfiguration.lang,
       v: DTConstants.assetsVersion,
     };
     const response = await axios.post(`${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`, {
@@ -33,6 +30,4 @@ export default class DataManager {
     }
     return myArray;
   }
-
-  private static lang: string;
 }

@@ -53,7 +53,7 @@ export default class IdentificationFrame {
     account.data.communityId = message.communityId;
     account.data.hasRights = message.hasRights;
     account.data.login = message.login;
-    account.accountConfig.nickname = message.nickname;
+    account.data.nickname = message.nickname;
     account.data.secretQuestion = message.secretQuestion;
     account.data.subscriptionEndDate = message.subscriptionEndDate === 0 ? null :
       moment().add(Math.floor((message.subscriptionEndDate - Date.now()) / 1000 / 60 / 60 / 24), "days").toDate();

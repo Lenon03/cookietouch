@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import InventoryHelper from "@/game/character/inventory/InventoryHelper";
@@ -11,10 +12,9 @@ export class App extends React.Component<{}, {}> {
   constructor(props: {}) {
     super(props);
     (global as any).API = new Array();
-    const lang = "fr";
     DTConstants.Init()
+    .then(() => LanguageManager.Init())
     .then(() => MapPoint.Init())
-    .then(() => DataManager.Init(lang))
     .then(() => BreedsUtility.Init())
     .then(() => InventoryHelper.Init());
   }

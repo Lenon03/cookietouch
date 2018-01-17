@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import Message from "@/protocol/network/messages/Message";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -132,7 +133,7 @@ export default class Network implements IClearable {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: "fr",
+          language: GlobalConfiguration.lang,
           server: "login",
         });
       } else {
@@ -140,7 +141,7 @@ export default class Network implements IClearable {
           appVersion: DTConstants.appVersion,
           buildVersion: DTConstants.buildVersion,
           client: "android",
-          language: "fr",
+          language: GlobalConfiguration.lang,
           server: this.server,
         });
       }

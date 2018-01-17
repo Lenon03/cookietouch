@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Achievements from "@protocol/data/classes/Achievements";
@@ -24,7 +25,7 @@ export default class AchievementsFrame {
     account.statistics.UpdateAchievementRewardSuccessMessage(message);
     const achievementResp = await DataManager.get(Achievements, message.achievementId);
     const a = achievementResp[0].object;
-    account.logger.logInfo("", `Succés ${a.nameId} dévérouillé! Vous avez gagné ${a.points} points.`);
+    account.logger.logInfo("AchievementsFrame", LanguageManager.trans("achievementReward", a.nameId, a.points));
   }
 
   private async HandleAchievementFinishedMessage(account: Account, message: any) {

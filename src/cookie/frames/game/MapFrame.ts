@@ -11,34 +11,20 @@ export default class MapFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("CurrentMapMessage",
-      this.HandleCurrentMapMessage, this);
-    this.account.dispatcher.register("MapComplementaryInformationsDataMessage",
-      this.HandleMapComplementaryInformationsDataMessage, this);
-    this.account.dispatcher.register("MapComplementaryInformationsDataInHouseMessage",
-      this.HandleMapComplementaryInformationsDataInHouseMessage, this);
-    this.account.dispatcher.register("MapComplementaryInformationsWithCoordsMessage",
-      this.HandleMapComplementaryInformationsWithCoordsMessage, this);
-    this.account.dispatcher.register("StatedMapUpdateMessage",
-      this.HandleStatedMapUpdateMessage, this);
-    this.account.dispatcher.register("InteractiveMapUpdateMessage",
-      this.HandleInteractiveMapUpdateMessage, this);
-    this.account.dispatcher.register("StatedElementUpdatedMessage",
-      this.HandleStatedElementUpdatedMessage, this);
-    this.account.dispatcher.register("InteractiveElementUpdatedMessage",
-      this.HandleInteractiveElementUpdatedMessage, this);
-    this.account.dispatcher.register("GameMapMovementMessage",
-      this.HandleGameMapMovementMessage, this);
-    this.account.dispatcher.register("GameMapNoMovementMessage",
-      this.HandleGameMapNoMovementMessage, this);
-    this.account.dispatcher.register("GameContextRemoveElementMessage",
-      this.HandleGameContextRemoveElementMessage, this);
-    this.account.dispatcher.register("TeleportOnSameMapMessage",
-      this.HandleTeleportOnSameMapMessage, this);
-    this.account.dispatcher.register("GameContextRemoveMultipleElementMessage",
-      this.HandleGameContextRemoveMultipleElementMessage, this);
-    this.account.dispatcher.register("GameRolePlayShowActorMessage",
-      this.HandleGameRolePlayShowActorMessage, this);
+    this.account.dispatcher.register("CurrentMapMessage", this.HandleCurrentMapMessage, this);
+    this.account.dispatcher.register("MapComplementaryInformationsDataMessage", this.HandleMapComplementaryInformationsDataMessage, this);
+    this.account.dispatcher.register("MapComplementaryInformationsDataInHouseMessage", this.HandleMapComplementaryInformationsDataInHouseMessage, this);
+    this.account.dispatcher.register("MapComplementaryInformationsWithCoordsMessage", this.HandleMapComplementaryInformationsWithCoordsMessage, this);
+    this.account.dispatcher.register("StatedMapUpdateMessage", this.HandleStatedMapUpdateMessage, this);
+    this.account.dispatcher.register("InteractiveMapUpdateMessage", this.HandleInteractiveMapUpdateMessage, this);
+    this.account.dispatcher.register("StatedElementUpdatedMessage", this.HandleStatedElementUpdatedMessage, this);
+    this.account.dispatcher.register("InteractiveElementUpdatedMessage", this.HandleInteractiveElementUpdatedMessage, this);
+    this.account.dispatcher.register("GameMapMovementMessage", this.HandleGameMapMovementMessage, this);
+    this.account.dispatcher.register("GameMapNoMovementMessage", this.HandleGameMapNoMovementMessage, this);
+    this.account.dispatcher.register("GameContextRemoveElementMessage", this.HandleGameContextRemoveElementMessage, this);
+    this.account.dispatcher.register("TeleportOnSameMapMessage", this.HandleTeleportOnSameMapMessage, this);
+    this.account.dispatcher.register("GameContextRemoveMultipleElementMessage", this.HandleGameContextRemoveMultipleElementMessage, this);
+    this.account.dispatcher.register("GameRolePlayShowActorMessage", this.HandleGameRolePlayShowActorMessage, this);
   }
 
   private async HandleCurrentMapMessage(account: Account, message: any) {

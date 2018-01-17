@@ -1,3 +1,4 @@
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
@@ -132,7 +133,7 @@ export default class FightFrame {
   }
 
   private async HandleGameFightEndMessage(account: Account, message: GameFightEndMessage) {
-    moment.locale(account.data.lang);
+    moment.locale(GlobalConfiguration.lang);
     const elapsed = moment.duration(message.duration);
     account.logger.logInfo("", `Combat terminé: ${elapsed.minutes()}m:${elapsed.seconds()}s`);
     account.game.fight.UpdateGameFightEndMessage(message);

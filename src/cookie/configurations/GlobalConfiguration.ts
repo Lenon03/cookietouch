@@ -87,7 +87,7 @@ export default class GlobalConfiguration {
 
   private static configPath = path.join(remote.app.getPath("userData"), "config.cookie");
   private static _anticaptchaKey: string = "";
-  private static _lang: Languages = Languages.ENGLISH;
+  private static _lang: Languages = Languages.FRENCH;
   private static _accounts = new List<AccountConfiguration>();
   private static _showDebugMessages = true;
 }

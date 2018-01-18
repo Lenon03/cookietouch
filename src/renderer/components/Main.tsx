@@ -16,10 +16,10 @@ import SpellToBoostEntry from "@account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@game/character/BoostableStats";
 import * as path from "path";
 import * as React from "react";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Console from "./Console";
 import Infos from "./Infos";
 import LeftMenu from "./LeftMenu";
-import Tabs from "./Tabs";
 
 interface IMainProps {
   //
@@ -35,16 +35,16 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   constructor(props: IMainProps) {
     super(props);
+
     const accountConfig = new AccountConfiguration("cookieproject1", "azerty123456", "Herdegrize", "Enoc");
+    accountConfig.characterCreation.create = false;
+    accountConfig.characterCreation.server = "Herdegrize";
+    accountConfig.characterCreation.breed = BreedEnum.Iop;
+
     this.account = new Account(accountConfig);
     this.account.config.spellsToBoost.push(new SpellToBoostEntry(141, "Pression", 5));
     this.account.config.statToBoost = BoostableStats.STRENGTH;
-
     this.account.config.enableSpeedHack = true;
-
-    this.account.accountConfig.characterCreation.create = false;
-    this.account.accountConfig.characterCreation.server = "Herdegrize";
-    this.account.accountConfig.characterCreation.breed = BreedEnum.Iop;
 
     const spell1 = new Spell(155, "Vitalité", SpellTargets.SELF, 2, 1, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
     const spell2 = new Spell(158, "Concentration", SpellTargets.ENEMY, 1, 3, 100, 100, SpellResistances.EARTH, 100, 100, false, false, false, false);
@@ -82,29 +82,44 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <LeftMenu />
           </div>
           <div className="col">
-            <Tabs />
-            <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
-            <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
-            <hr />
-            <button className="btn btn-warning" onClick={() => this.launchScript()}>Launch Script</button>
-            <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
-            <button className="btn btn-info" onClick={() => this.flood()}>Flood</button>
-            <hr />
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
-            <hr />
-            <Infos account={this.account} />
-            <Console account={this.account} />
+            <Tabs>
+              <TabList className="nav nav-tabs">
+                <Tab className="nav-item">
+                  <a className="nav-link active" href="#">Console</a>
+                </Tab>
+                <Tab className="nav-item">
+                  <a className="nav-link" href="#">Test</a>
+                </Tab>
+              </TabList>
+
+              <TabPanel>
+                <h2>Console</h2>
+              </TabPanel>
+              <TabPanel>
+                <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
+                <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
+                <hr />
+                <button className="btn btn-warning" onClick={() => this.launchScript()}>Launch Script</button>
+                <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
+                <button className="btn btn-info" onClick={() => this.flood()}>Flood</button>
+                <hr />
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
+                <hr />
+                <Infos account={this.account} />
+                <Console account={this.account} />
+              </TabPanel>
+            </Tabs>
           </div>
         </div>
       </div>

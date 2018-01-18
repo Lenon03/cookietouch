@@ -13,12 +13,13 @@ export class App extends React.Component<{}, {}> {
   constructor(props: {}) {
     super(props);
     (global as any).API = new Array();
-    DTConstants.Init()
-    .then(() => LanguageManager.Init())
-    .then(() => MapPoint.Init())
-    .then(() => BreedsUtility.Init())
-    .then(() => InventoryHelper.Init());
-    // .then(() => GlobalConfiguration.load());
+    GlobalConfiguration.load();
+    DTConstants.Init().then(async () => {
+      await BreedsUtility.Init();
+      LanguageManager.Init();
+      MapPoint.Init();
+      InventoryHelper.Init();
+    });
   }
 
   public render() {

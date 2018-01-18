@@ -25,26 +25,19 @@ export default class DTConstants {
     });
   }
 
-  public static getAssetsVersions(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      axios.get(`${DTConstants.MAIN_URL}/assetsVersions.json`)
-        .then((response) => resolve(response.data));
-    });
+  public static async getAssetsVersions(): Promise<any> {
+    const response = await axios.get(`${DTConstants.MAIN_URL}/assetsVersions.json`);
+    return response.data;
   }
-  public static getAppVersion(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      axios.get("https://itunes.apple.com/lookup?id=1041406978")
-        .then((response) => resolve(response.data.results[0].version));
-    });
+  public static async getAppVersion(): Promise<string> {
+    const response = await axios.get("https://itunes.apple.com/lookup?id=1041406978");
+    return response.data.results[0].version;
   }
 
-  public static getBuildVersion(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      axios.get(`${DTConstants.MAIN_URL}/build/script.js`).then((response) => {
-        const regex = /.*buildVersion=("|')([0-9]*\.[0-9]*\.[0-9]*)("|')/g;
-        const m = regex.exec(response.data.substring(1, 10000));
-        resolve(m[2]);
-      });
-    });
+  public static async getBuildVersion(): Promise<string> {
+    const response = await axios.get(`${DTConstants.MAIN_URL}/build/script.js`);
+    const regex = /.*buildVersion=("|')([0-9]*\.[0-9]*\.[0-9]*)("|')/g;
+    const m = regex.exec(response.data.substring(1, 10000));
+    return m[2];
   }
 }

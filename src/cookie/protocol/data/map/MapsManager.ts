@@ -8,6 +8,7 @@ import Cell from "./Cell";
 import Map from "./index";
 
 export default class MapsManager {
+
   public static async getMap(mapId: number): Promise<Map> {
     const filePath = this.getFilePath(mapId);
     if (fs.existsSync(filePath)) {

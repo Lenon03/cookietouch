@@ -1,6 +1,6 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
-import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class UseAction extends ScriptAction {
   public elementCellId: number;

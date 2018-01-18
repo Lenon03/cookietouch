@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -24,7 +25,6 @@ import NpcAction from "../actions/npcs/NpcAction";
 import NpcBankAction from "../actions/npcs/NpcBankAction";
 import ReplyAction from "../actions/npcs/ReplyAction";
 import ScriptAction, { ScriptActionResults } from "../actions/ScriptAction";
-import LanguageManager from "@/configurations/language/LanguageManager";
 
 export interface IActionsManagerEventData {
   account: Account;

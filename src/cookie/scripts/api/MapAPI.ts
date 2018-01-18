@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { TeleportablesEnum } from "@game/managers/teleportables";
 import JoinFriendAction from "../actions/global/JoinFriendAction";
@@ -10,7 +11,6 @@ import UseLockedHouseAction from "../actions/map/UseLockedHouseAction";
 import UseLockedStorageAction from "../actions/map/UseLockedStorageAction";
 import UseTeleportableAction from "../actions/map/UseTeleportableAction";
 import WaitMapChangeAction from "../actions/map/WaitMapChangeAction";
-import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class MapAPI {
   private account: Account;

@@ -1,4 +1,5 @@
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import FightAction from "@/scripts/actions/fight/FightAction";
@@ -35,7 +36,6 @@ import { IFlag, IFlagType } from "./flags/IFlag";
 import { FunctionTypes } from "./FunctionTypes";
 import ActionsManager, { IActionsManagerEventData } from "./managers/ActionsManager";
 import JsonScriptManager, { IMap } from "./managers/JsonScriptManager";
-import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;

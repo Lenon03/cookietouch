@@ -1,7 +1,7 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
-import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class StorageGetAutoRegenStoreAction extends ScriptAction {
   public items: number[];

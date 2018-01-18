@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 
 export default class QueueFrame {
@@ -15,12 +16,10 @@ export default class QueueFrame {
   }
 
   private async HandleQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus("GameQueue",
-      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
+    this.account.logger.logDofus("GameQueue", LanguageManager.trans("queueMessage", data.position, data.total));
   }
 
   private async HandleLoginQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus("LoginQueue",
-      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
+    this.account.logger.logDofus("LoginQueue", LanguageManager.trans("queueMessage", data.position, data.total));
   }
 }

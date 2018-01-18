@@ -1,4 +1,5 @@
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import BidConfiguration from "@/extensions/bid/BidConfiguration";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import ExchangeBidHouseItemAddOkMessage from "@/protocol/network/messages/ExchangeBidHouseItemAddOkMessage";
@@ -48,7 +49,7 @@ export default class BidExtension implements IClearable {
       return;
     }
     if (this.config.objectsToSell.Count() === 0) {
-      this.account.logger.logError("Bid Extension", "No objects to sell");
+      this.account.logger.logError(LanguageManager.trans("bidExtension"), LanguageManager.trans("noObjectsToSell"));
       return;
     }
     this.enabled = true;
@@ -77,7 +78,7 @@ export default class BidExtension implements IClearable {
     if (!this.running) {
       return;
     }
-    this.account.logger.logDebug("Bid Extension", "Obtaining the necessary prices from the bid.");
+    this.account.logger.logDebug(LanguageManager.trans("bidExtension"), LanguageManager.trans("obtainBidPrices"));
     this.account.game.bid.startBuying();
   }
 
@@ -104,7 +105,7 @@ export default class BidExtension implements IClearable {
       await sleep(800);
     });
     // Close the bidbuyer
-    this.account.logger.logInfo("Bid Extension", "Necessary prices obtained.");
+    this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("pricesObtained"));
     this.account.leaveDialog();
     await sleep(600);
     // Open bidseller
@@ -127,7 +128,7 @@ export default class BidExtension implements IClearable {
     if (!this.running) {
       return;
     }
-    this.account.logger.logInfo("Bid Extension", "Sales session begun.");
+    this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("salesBegin"));
     // For every ObjectToSell that we have
     const objects = this.config.objectsToSell.ToArray();
     for (const objToSell of objects) {
@@ -161,7 +162,7 @@ export default class BidExtension implements IClearable {
       // Check if we need to modify our objects in sale
       if (!ours && objsInSale.Count() > 0) {
         for (const o of objsInSale.ToArray()) {
-          this.account.logger.logDebug("Bid Extension", `Changing the price of ${objToSell.lot} ${objToSell.name} (new price: ${newPrice})`);
+          this.account.logger.logDebug(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidUpdatePrice", objToSell.lot, objToSell.name, newPrice));
           if (this.account.game.bid.editItemInSalePrice(o.objectUID, newPrice)) {
             await sleep(800);
           }
@@ -175,11 +176,11 @@ export default class BidExtension implements IClearable {
         for (let j = 0; j < (objToSell.quantity - objsInSale.Count()); j++) {
           // Check if we don't have the needed quantity in our inventory
           if (qty < objToSell.lot) {
-            this.account.logger.logWarning("Bid Extension", `Attention you don't have enough quantity left for ${objToSell.lot} ${objToSell.name}.`);
+            this.account.logger.logWarning(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidNoQuantity", objToSell.lot, objToSell.name));
             break;
           }
           // If we do, try and sell!
-          this.account.logger.logDebug("Bid Extension", `Sold ${objToSell.lot} ${objToSell.name} (price: ${newPrice}).`);
+          this.account.logger.logDebug(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidSellItem", objToSell.lot, objToSell.name, newPrice));
           if (this.account.game.bid.sellItem(objToSell.gid, objToSell.lot, newPrice)) {
             qty -= objToSell.lot;
             await sleep(800);
@@ -187,7 +188,7 @@ export default class BidExtension implements IClearable {
         }
       }
     }
-    this.account.logger.logInfo("Bid Extension", "Sales session ended.");
+    this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("salesEnded"));
     this.account.leaveDialog();
     await sleep(800);
     // Check if we need to start a script
@@ -197,7 +198,7 @@ export default class BidExtension implements IClearable {
         // We'll just assume that if we got to this line, the script will 100% start
         this.account.scripts.startScript();
       } catch (error) {
-        this.account.logger.logError("ScriptsManager", "Error in Bid Extension: " + error);
+        this.account.logger.logError(LanguageManager.trans("scriptsManager"), LanguageManager.trans("bidError", error));
       }
     } else {
       // Or just start waiting
@@ -207,13 +208,12 @@ export default class BidExtension implements IClearable {
 
   private isPriceInvalid(objToSell: ObjectToSellEntry, priceInBid: number, newPrice: number) {
     if (newPrice === 0) {
-      this.account.logger.logWarning("Bid Extension",
-        `The price of ${objToSell.lot} ${objToSell.name} is 1 kamas in bid. It cannot be lowered anymore`);
+      this.account.logger.logWarning(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidLowered", objToSell.lot, objToSell.name));
       return true;
     }
     if (newPrice < objToSell.minPrice) {
-      this.account.logger.logWarning("Bid Extension",
-        `The price of ${objToSell.lot} ${objToSell.name} exceeded the minimum price (price in bid: ${priceInBid}, minimum price: ${objToSell.minPrice}).`);
+      this.account.logger.logWarning(LanguageManager.trans("bidExtension"),
+        LanguageManager.trans("bidExceeded", objToSell.lot, objToSell.name, priceInBid, objToSell.minPrice));
       return false;
     }
     return false;
@@ -225,7 +225,7 @@ export default class BidExtension implements IClearable {
 
   private setTimerInterval() {
     this.waiting = true;
-    this.account.logger.logInfo("Bid Extension", `Next session is in ${this.config.interval} minutes.`);
+    this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidNextSession", this.config.interval));
     this.timer.change(this.config.interval * 60000, this.config.interval * 60000);
   }
 

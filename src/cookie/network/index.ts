@@ -1,4 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Message from "@/protocol/network/messages/Message";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -52,7 +53,7 @@ export default class Network implements IClearable {
     }
     this.sessionId = sessionId;
     const currentUrl = this.makeSticky(url, this.sessionId);
-    this.account.logger.logDebug("Primus", "Connecting to login server (" + currentUrl + ") ...");
+    this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("connectToLogin", currentUrl));
     this.socket = this.createSocket(currentUrl);
     this.setCurrentConnection();
     this.socket.open();
@@ -77,7 +78,7 @@ export default class Network implements IClearable {
     this.send("disconnecting", "SWITCHING_TO_GAME");
     this.socket.destroy();
     const currentUrl = this.makeSticky(url, this.sessionId);
-    this.account.logger.logDebug("Primus", "Connecting to game server (" + currentUrl + ") ...");
+    this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("connectToGame", currentUrl));
     this.socket = this.createSocket(currentUrl);
     this.setCurrentConnection();
     this.socket.open();
@@ -126,7 +127,7 @@ export default class Network implements IClearable {
   private setCurrentConnection() {
     this.socket.on("open", () => {
       this.connected = true;
-      this.account.logger.logDebug("Primus", "Connection opened");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("connectionOpened"));
 
       if (this.phase === NetworkPhases.NONE) {
         this.send("connecting", {
@@ -153,53 +154,53 @@ export default class Network implements IClearable {
       this.account.dispatcher.emit(data._messageType, this.account, data);
     });
 
-    this.socket.on("error", (err: any) => {
-      console.error("Something horrible has happened", err.stack);
+    this.socket.on("error", (err: Error) => {
+      this.account.logger.logError(LanguageManager.trans("primus"), LanguageManager.trans("primusError", err.message));
     });
 
     this.socket.on("reconnect", (opts: any) => {
-      this.account.logger.logDebug("Primus", "Reconnection attempt started");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusReconnect"));
     });
 
     this.socket.on("reconnect scheduled", (opts: any) => {
-      this.account.logger.logDebug("Primus", `Reconnecting in ${opts.scheduled} ms`);
-      this.account.logger.logDebug("Primus", `This is attempt ${opts.attempt} out of ${opts.retries}`);
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusReconnecting", opts.scheduled));
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusReconnectAttempt", opts.attempt, opts.retries));
     });
 
     this.socket.on("reconnected", (opts: any) => {
-      this.account.logger.logDebug("Primus", `It took ${opts.duration} ms to reconnect`);
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusReconnected", opts.duration));
     });
 
-    this.socket.on("reconnect timeout", (err: any, opts: any) => {
-      this.account.logger.logDebug("Primus", `Timeout expired: ${err.message}`);
+    this.socket.on("reconnect timeout", (err: Error, opts: any) => {
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusTimeoutExpired", err.message));
     });
 
-    this.socket.on("reconnect failed", (err: any, opts: any) => {
-      this.account.logger.logDebug("Primus", `The reconnection failed: ${err.message}`);
+    this.socket.on("reconnect failed", (err: Error, opts: any) => {
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusReconnectFailed", err.message));
     });
 
     this.socket.on("timeout", () => {
-      this.account.logger.logDebug("Primus", "Connection timeout");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusTimeout"));
     });
 
     this.socket.on("online", () => {
-      this.account.logger.logDebug("Primus", "Connection goes online");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusOnline"));
     });
 
     this.socket.on("readyStateChange", (state: any) => {
-      this.account.logger.logDebug("Primus", `Connection readyStateChange: ${state}`);
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusState", state));
     });
 
     this.socket.on("offline", () => {
-      this.account.logger.logDebug("Primus", "Connection goes offline");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusOffline"));
     });
 
     this.socket.on("end", () => {
-      this.account.logger.logDebug("Primus", "Connection ended");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusEnded"));
     });
 
     this.socket.on("close", () => {
-      this.account.logger.logDebug("Primus", "Connection closed");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusClosed"));
 
       this.connected = false;
       this.onDisconnected.trigger();
@@ -212,7 +213,7 @@ export default class Network implements IClearable {
     });
 
     this.socket.on("destroy", () => {
-      this.account.logger.logDebug("Primus", "Connection destroyed");
+      this.account.logger.logDebug(LanguageManager.trans("primus"), LanguageManager.trans("primusDestroyed"));
     });
   }
 

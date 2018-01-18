@@ -1,4 +1,5 @@
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { sleep } from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
@@ -196,7 +197,7 @@ export default class Map implements IClearable {
   }
 
   public async UpdateMapComplementaryInformationsDataMessage(message: any) {
-    this.account.logger.logDebug("", "Get MCIDM for map " + message.mapId);
+    this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("getMCIDM", message.mapId));
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
     this.data = await MapsManager.getMap(message.mapId);
@@ -210,7 +211,7 @@ export default class Map implements IClearable {
     this.posY = mp.object.posY;
 
     const stop = performance.now();
-    this.account.logger.logDebug("", `Got map infos ${this.currentPosition} in ${stop - start} ms`);
+    this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("gotMapInfos", this.currentPosition, stop - start));
 
     this._players = new Dictionary<number, PlayerEntry>();
     this._npcs = new Dictionary<number, NpcEntry>();
@@ -228,10 +229,8 @@ export default class Map implements IClearable {
     for (const actor of message.actors) {
       if (actor._type === "GameRolePlayCharacterInformations") {
         if (actor.contextualId === this.account.game.character.id) {
-          // console.log("playedCharacter", actor);
           this.playedCharacter = new PlayerEntry(actor);
         } else {
-          // console.log("_players", actor);
           this._players.add(actor.contextualId, new PlayerEntry(actor));
         }
       } else if (actor._type === "GameRolePlayMutantInformations") {
@@ -241,23 +240,19 @@ export default class Map implements IClearable {
             this._players.add(actor.contextualId, new PlayerEntry(actor));
           }
       } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
-        // console.log("_npcs", actor);
         this._npcs.add(actor.contextualId, new NpcEntry(actor));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
-        // console.log("_monstersGroups", actor);
         this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
       }
     }
 
     for (const interactive of message.interactiveElements) {
       if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
-        // console.log("_interactives", interactive);
         this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
       }
     }
     for (const stated of message.statedElements) {
       if (stated._type === "StatedElement") {
-        // console.log("_statedElements", stated);
         this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
       }
     }
@@ -307,14 +302,14 @@ export default class Map implements IClearable {
     // IDK why DT has this, but there is a possibility that we get a second MCIDM for the same map
     if (!sameMap || this._joinedFight) {
       this._joinedFight = false;
-      this.account.logger.logDebug("", "Triggering MapChanged");
+      this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("triggerMapChanged"));
       this.onMapChanged.trigger();
       if (this._firstTime) {
         this._firstTime = false;
         this.onMapLoaded.trigger();
       }
     } else {
-      this.account.logger.logWarning("", "Same map.");
+      this.account.logger.logWarning(LanguageManager.trans("map"), LanguageManager.trans("sameMap"));
     }
   }
 

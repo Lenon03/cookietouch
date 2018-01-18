@@ -1,5 +1,6 @@
 import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class UseAction extends ScriptAction {
   public elementCellId: number;
@@ -15,7 +16,7 @@ export default class UseAction extends ScriptAction {
     if (account.game.managers.interactives.useInteractiveByCellId(this.elementCellId, this.skillInstanceUid)) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript(`Error while using an interactive (cell: ${this.elementCellId})`);
+    account.scripts.stopScript(LanguageManager.trans("errorInteractiveCell", this.elementCellId));
     return ScriptAction.failedResult();
   }
 }

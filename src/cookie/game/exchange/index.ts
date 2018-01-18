@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
@@ -94,7 +95,7 @@ export default class Exchange {
       quantity,
     });
 
-    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} ${obj.name} à l'échange.`);
+    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeAdded", quantity, obj.name));
     return true;
   }
 
@@ -115,7 +116,7 @@ export default class Exchange {
       quantity: quantity * -1,
     });
 
-    this.account.logger.logInfo("Exchange", `Vous avez retiré ${quantity} ${obj.name} de l'échange.`);
+    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeRemoved", quantity, obj.name));
     return true;
   }
 
@@ -124,7 +125,7 @@ export default class Exchange {
       return false;
     }
 
-    this.account.logger.logDebug("Exchange", "On commence à ajouter tous les objets dans l'échange...");
+    this.account.logger.logDebug(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeBeginAddAll"));
 
     this.account.game.character.inventory.equipments.ForEach(async (obj) => {
       if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
@@ -159,7 +160,7 @@ export default class Exchange {
       await sleep(600);
     });
 
-    this.account.logger.logDebug("Exchange", "Tous les objets ont été ajouté à l'échange...");
+    this.account.logger.logDebug(LanguageManager.trans("exchange"), LanguageManager.trans("echangeAllAdded"));
     return true;
   }
 
@@ -172,7 +173,7 @@ export default class Exchange {
       : (quantity > this.account.game.character.inventory.kamas ?
         this.account.game.character.inventory.kamas : quantity);
 
-    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} kamas à l'échange.`);
+    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeAddedKamas", quantity));
     this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
     return true;
   }
@@ -184,7 +185,7 @@ export default class Exchange {
 
     quantity = quantity <= 0 ? this.kamas : (quantity > this.kamas ? this.kamas : quantity);
 
-    this.account.logger.logInfo("Exchange", `Vous avez ajouté ${quantity} kamas à l'échange.`);
+    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeRemovedKamas", quantity));
     this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: this.kamas - quantity });
     return true;
   }

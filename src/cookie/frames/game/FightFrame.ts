@@ -136,7 +136,7 @@ export default class FightFrame {
   private async HandleGameFightEndMessage(account: Account, message: GameFightEndMessage) {
     moment.locale(GlobalConfiguration.lang);
     const elapsed = moment.duration(message.duration);
-    account.logger.logInfo("FightFrame", LanguageManager.trans("fightEnded", elapsed.minutes(), elapsed.seconds()));
+    account.logger.logInfo(LanguageManager.trans("fightFrame"), LanguageManager.trans("fightEnded", elapsed.minutes(), elapsed.seconds()));
     account.game.fight.UpdateGameFightEndMessage(message);
     await account.statistics.UpdateGameFightEndMessage(message);
   }
@@ -160,7 +160,8 @@ export default class FightFrame {
   private async HandleGameActionFightLifePointsGainMessage(account: Account, message: GameActionFightLifePointsGainMessage) {
     account.game.fight.UpdateGameActionFightLifePointsGainMessage(message);
     const fighter = account.game.fight.getFighter(message.targetId);
-    account.logger.logInfo((fighter as any).name, `+ ${message.delta} HP.`); // TODO: fix name
+    account.logger.logInfo(LanguageManager.trans("fightFrame"),
+      LanguageManager.trans("hpGained", (fighter as any).name, message.delta)); // TODO: fix name
   }
 
   private async HandleGameActionFightLifePointsLostMessage(account: Account, message: GameActionFightLifePointsLostMessage) {
@@ -168,7 +169,8 @@ export default class FightFrame {
     const fighter = account.game.fight.getFighter(message.targetId);
     if (fighter) {
       const tmp = fighter.lifePoints === 0 ? " (mort)." : ".";
-      account.logger.logInfo((fighter as any).name, `- ${message.loss} HP${tmp}`); // TODO: fix name
+      account.logger.logInfo(LanguageManager.trans("fightFrame"),
+        LanguageManager.trans("hpLoss", (fighter as any).name, message.loss, tmp)); // TODO: fix name
     }
   }
 
@@ -224,7 +226,7 @@ export default class FightFrame {
   }
 
   private async HandleGameFightStartMessage(account: Account, message: GameFightStartMessage) {
-    account.logger.logInfo("", "Le combat commence!");
+    account.logger.logInfo(LanguageManager.trans("fightFrame"), LanguageManager.trans("fightBegin"));
     account.game.fight.UpdateGameFightStartMessage(message);
   }
 

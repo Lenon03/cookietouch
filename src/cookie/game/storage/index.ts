@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
@@ -44,7 +45,7 @@ export default class Storage {
       quantity,
     });
 
-    this.account.logger.logInfo("", `Vous avez ajouté ${quantity} ${item.name} dans le coffre.`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageAdded", quantity, item.name));
     return true;
   }
 
@@ -64,7 +65,7 @@ export default class Storage {
       quantity: quantity * -1,
     });
 
-    this.account.logger.logInfo("", `Vous avez retiré ${quantity} ${item.name} du coffre.`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageRemoved", quantity, item.name));
     return true;
   }
 
@@ -79,7 +80,7 @@ export default class Storage {
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
       this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
-      this.account.logger.logInfo("", `Vous avez ajouté ${quantity} kamas dans le coffre.`);
+      this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageKamasAdded", quantity));
       return true;
     }
 
@@ -96,7 +97,7 @@ export default class Storage {
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
       this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: quantity * -1 });
-      this.account.logger.logInfo("", `Vous avez retiré ${quantity} kamas du coffre.`);
+      this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageKamasRemoved", quantity));
       return true;
     }
 
@@ -109,7 +110,7 @@ export default class Storage {
     }
 
     this.account.network.sendMessageFree("ExchangeObjectTransfertAllFromInvMessage");
-    this.account.logger.logInfo("", `Vous avez ajouté tous les objets de votre inventaire dans le coffre.`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageAllAdded"));
     return true;
   }
 
@@ -119,7 +120,7 @@ export default class Storage {
     }
 
     this.account.network.sendMessageFree("ExchangeObjectTransfertAllToInvMessage");
-    this.account.logger.logInfo("", `Vous avez recupéré tous les objets de votre coffre dans votre inventaire`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageAllRemoved"));
     return true;
   }
 
@@ -129,7 +130,7 @@ export default class Storage {
     }
 
     this.account.network.sendMessageFree("ExchangeObjectTransfertExistingFromInvMessage");
-    this.account.logger.logInfo("", `Tous les objets déjà présent dans votre coffre y ont été ajoutés.`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageAddExistings"));
     return true;
   }
 
@@ -139,7 +140,7 @@ export default class Storage {
     }
 
     this.account.network.sendMessageFree("ExchangeObjectTransfertExistingToInvMessage");
-    this.account.logger.logInfo("", `Tous les objets déjà présent dans votre inventaire ont été récupéré du coffre.`);
+    this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageRemoveExistings"));
     return true;
   }
 

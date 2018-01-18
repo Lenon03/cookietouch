@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
@@ -18,7 +19,7 @@ export default class GatherAction extends ScriptAction {
     if (account.game.managers.gathers.gather(...this.elements)) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript("Error during gather");
+    account.scripts.stopScript(LanguageManager.trans("gatherError"));
     return ScriptAction.failedResult();
   }
 }

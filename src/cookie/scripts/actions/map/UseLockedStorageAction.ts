@@ -1,5 +1,6 @@
 import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class UseLockedStorageAction extends ScriptAction {
   public elementCellId: number;
@@ -15,7 +16,7 @@ export default class UseLockedStorageAction extends ScriptAction {
     if (account.game.managers.interactives.useLockedStorage(this.elementCellId, this.lockCode)) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript("Error while using a locked storage.");
+    account.scripts.stopScript(LanguageManager.trans("errorLockedStorage"));
     return ScriptAction.failedResult();
   }
 }

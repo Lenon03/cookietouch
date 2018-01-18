@@ -1,6 +1,7 @@
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class NpcBankAction extends ScriptAction {
   public npcId: number;
@@ -14,7 +15,7 @@ export default class NpcBankAction extends ScriptAction {
 
   public async process(account: Account): Promise<ScriptActionResults> {
     if (!account.game.npcs.useNpc(this.npcId, 1)) {
-      account.scripts.stopScript("Error during a conversation with a bank NPC");
+      account.scripts.stopScript(LanguageManager.trans("errorBankNpc"));
       return ScriptAction.failedResult();
     }
     return ScriptAction.processingResult();

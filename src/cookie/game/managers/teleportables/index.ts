@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import MapGame from "@game/map";
 import LiteEvent from "@utils/LiteEvent";
@@ -26,12 +27,12 @@ export default class TeleportablesManager {
 
   public saveZaap(): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("characterBusy"));
       return false;
     }
 
     if (this._account.game.map.zaap === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaap sur cette map.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
       return false;
     }
 
@@ -43,12 +44,12 @@ export default class TeleportablesManager {
 
   public useZaap(desinationMapId: number): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("characterBusy"));
       return false;
     }
 
     if (this._account.game.map.zaap === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaap sur cette map.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
       return false;
     }
 
@@ -64,12 +65,12 @@ export default class TeleportablesManager {
 
   public useZaapi(desinationMapId: number): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("characterBusy"));
       return false;
     }
 
     if (this._account.game.map.zaapi === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaapi sur cette map.");
+      this._account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaapi"));
       return false;
     }
 

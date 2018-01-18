@@ -1,5 +1,6 @@
 import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class UseLockedHouseAction extends ScriptAction {
   public doorCellId: number;
@@ -15,7 +16,7 @@ export default class UseLockedHouseAction extends ScriptAction {
     if (account.game.managers.interactives.useLockedDoor(this.doorCellId, this.lockCode)) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript("Error while using a locked door.");
+    account.scripts.stopScript(LanguageManager.trans("errorLockedDoor"));
     return ScriptAction.failedResult();
   }
 }

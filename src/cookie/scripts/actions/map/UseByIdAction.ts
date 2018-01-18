@@ -1,5 +1,6 @@
 import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class UseByIdAction extends ScriptAction {
   public elementId: number;
@@ -15,7 +16,7 @@ export default class UseByIdAction extends ScriptAction {
     if (account.game.managers.interactives.useInteractive(this.elementId, this.skillInstanceUid)) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript(`Error while using an interactive (id: ${this.elementId})`);
+    account.scripts.stopScript(LanguageManager.trans("errorInteractive", this.elementId));
     return ScriptAction.failedResult();
   }
 }

@@ -1,5 +1,6 @@
 import AccountData from "@/account/AccountData";
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Group from "@/groups/Group";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
@@ -204,11 +205,11 @@ export default class Account {
     const hour = moment().hour();
     // If the bot is connected and the hour is red
     if (this.network.connected && this.accountConfig.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
-      this.logger.logInfo("Planification", "Automatic disconnection.");
+      this.logger.logInfo("Planification", LanguageManager.trans("autoConnect"));
       this.stop();
     } else if (this.state === AccountStates.DISCONNECTED && this.accountConfig.planification[hour]) {
       // If the bot is disconnected and the hour is green
-      this.logger.logInfo("Planification", "Automatic reconnection.");
+      this.logger.logInfo("Planification", LanguageManager.trans("autoDisconnect"));
       this.start();
     }
   }
@@ -228,7 +229,7 @@ export default class Account {
       return;
     }
     await sleep(1500);
-    this.logger.logInfo("Planification", "Restarting the script.");
+    this.logger.logInfo("Planification", LanguageManager.trans("restartingScript"));
     this.scripts.startScript();
   }
 }

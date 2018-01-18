@@ -1,6 +1,7 @@
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class WaitMapChangeAction extends ScriptAction {
   public delay: number;
@@ -11,7 +12,7 @@ export default class WaitMapChangeAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    account.logger.logDebug("WaitMapChangeAction", "waiting...");
+    account.logger.logDebug(LanguageManager.trans("waitMapChangeAction"), LanguageManager.trans("waiting"));
     let mapChanged = false;
     const map_mapChanged = () => {
       mapChanged = true;
@@ -24,9 +25,9 @@ export default class WaitMapChangeAction extends ScriptAction {
     }
     account.game.map.MapChanged.off(map_mapChanged);
     if (!mapChanged && delay === this.delay) {
-      account.logger.logWarning("", "WaitMapChange timed out.");
+      account.logger.logWarning(LanguageManager.trans("waitMapChangeAction"), LanguageManager.trans("waitMapChangeTimeout"));
     }
-    account.logger.logDebug("WaitMapChangeAction", "waited");
+    account.logger.logDebug(LanguageManager.trans("waitMapChangeAction"), LanguageManager.trans("waited"));
     return ScriptActionResults.DONE;
   }
 }

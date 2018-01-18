@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
 import DataManager from "@protocol/data";
@@ -188,7 +189,7 @@ export default class FightsExtension implements IClearable {
   }
 
   private turnEnded() {
-    this.account.logger.logInfo("FightsExtension", "Tour terminé.");
+    this.account.logger.logInfo(LanguageManager.trans("fightsExtension"), LanguageManager.trans("turnEnded"));
   }
 
   private async spectatorJoined() {

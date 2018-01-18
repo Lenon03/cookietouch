@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import CharactersListMessage from "@protocol/network/messages/CharactersListMessage";
 import { randomString } from "@utils/Random";
@@ -39,15 +40,15 @@ export default class CharacterSelectionFrame {
         message.characters[0] : message.characters.find((c) => c.name === account.accountConfig.character);
 
       if (char === undefined) {
-        account.logger.logError("CharacterSelectionFrame", `Character ${account.accountConfig.character} don't found!`);
+        account.logger.logError(LanguageManager.trans("characterSelectionFrame"), `Character ${account.accountConfig.character} don't found!`);
       } else {
         await account.network.sendMessageFree("CharacterSelectionMessage", {
           id: char.id,
         });
-        account.logger.logDebug("CharacterSelectionFrame", `Character ${char.name}(${char.level}) selected!`);
+        account.logger.logDebug(LanguageManager.trans("characterSelectionFrame"), LanguageManager.trans("characterSelected", char.name, char.level));
       }
     } else {
-      account.logger.logError("CharacterSelectionFrame", `No characters found on this account!`);
+      account.logger.logError(LanguageManager.trans("characterSelectionFrame"), LanguageManager.trans("noCharactersFound"));
     }
   }
 

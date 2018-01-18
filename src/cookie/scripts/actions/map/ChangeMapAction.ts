@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
@@ -54,24 +55,25 @@ export default class ChangeMapAction extends ScriptAction {
   public async process(account: Account): Promise<ScriptActionResults> {
     if (this.isSpecificDirection) {
       if (!account.game.managers.movements.changeMapWithCellId(this.direction, this.cellId)) {
-        account.scripts.stopScript(`Impossible to change map (direction: ${MapChangeDirections[this.direction]}, cell: ${this.cellId})`);
+        account.scripts.stopScript(LanguageManager.trans("changeMapSpecificFailed", MapChangeDirections[this.direction], this.cellId));
         return ScriptAction.failedResult();
       }
-      account.logger.logDebug("Scripts", `Changing map (direction: ${MapChangeDirections[this.direction]}, cell: ${this.cellId})`);
+      account.logger.logDebug(LanguageManager.trans("scripts"),
+        LanguageManager.trans("changeMapSpecific", MapChangeDirections[this.direction], this.cellId));
     } else if (this.isSimpleDirection) {
       if (!account.game.managers.movements.changeMap(this.direction)) {
-        account.scripts.stopScript(`Impossible to change map (direction: ${MapChangeDirections[this.direction]})`);
+        account.scripts.stopScript(LanguageManager.trans("changeMapDirectionFailed", MapChangeDirections[this.direction]));
         return ScriptAction.failedResult();
       }
-      account.logger.logDebug("Scripts", `Changing map (direction: ${MapChangeDirections[this.direction]})`);
+      account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("changeMapDirection", MapChangeDirections[this.direction]));
     } else {
       // Move to a cell that will change the map
       const result = account.game.managers.movements.moveToCell(this.cellId);
       if (result !== MovementRequestResults.MOVED) {
-        account.scripts.stopScript(`Moving to cell ${this.cellId} failed (result: ${MovementRequestResults[result]})`);
+        account.scripts.stopScript(LanguageManager.trans("changeMapCellFailed", this.cellId, MovementRequestResults[result]));
         return ScriptAction.failedResult();
       }
-      account.logger.logDebug("Scripts", `Moving to cell ${this.cellId}.`);
+      account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("changeMapCell", this.cellId));
     }
     return ScriptAction.processingResult();
   }

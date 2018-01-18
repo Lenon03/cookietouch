@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
@@ -27,7 +28,7 @@ export default class IdentificationFrame {
     account.framesData.key = message.key;
     account.framesData.salt = message.salt;
 
-    this.account.logger.logDebug("", "Connecté au serveur d'authentification");
+    this.account.logger.logDebug(LanguageManager.trans("identificationFrame"), LanguageManager.trans("connectedAuth"));
     account.network.send("checkAssetsVersion", {
       assetsVersion: DTConstants.assetsVersion,
       staticDataVersion: DTConstants.staticDataVersion,
@@ -44,7 +45,7 @@ export default class IdentificationFrame {
   }
 
   private async HandleConnectionFailedMessage(account: Account, message: any) {
-    account.logger.logError("IdentificationFrame", message.reason);
+    account.logger.logError(LanguageManager.trans("identificationFrame"), message.reason);
   }
 
   private async HandleIdentificationSuccessMessage(account: Account, message: any) {
@@ -62,6 +63,6 @@ export default class IdentificationFrame {
 
   private async HandleIdentificationFailedBannedMessage(account: Account, message: IdentificationFailedBannedMessage) {
     const date = new Date(message.banEndDate);
-    account.logger.logError("IdentificationFrame", `${IdentificationFailureReasonEnum[message.reason]} [${date.toDateString()}]`);
+    account.logger.logError(LanguageManager.trans("identificationFrame"), `${IdentificationFailureReasonEnum[message.reason]} [${date.toDateString()}]`);
   }
 }

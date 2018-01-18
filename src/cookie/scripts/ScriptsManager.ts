@@ -35,6 +35,7 @@ import { IFlag, IFlagType } from "./flags/IFlag";
 import { FunctionTypes } from "./FunctionTypes";
 import ActionsManager, { IActionsManagerEventData } from "./managers/ActionsManager";
 import JsonScriptManager, { IMap } from "./managers/JsonScriptManager";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;
@@ -96,16 +97,16 @@ export default class ScriptsManager {
 
   public fromFile(filePath: string) {
     if (this.enabled) {
-      this.account.logger.logError("Script", "Can't start multiple script a the same time");
+      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("cantStartMultipleScript"));
       return;
     }
     if (!fs.existsSync(filePath) || path.extname(filePath) !== ".js") {
-      this.account.logger.logError("Script", "Script doesn't exist or it is not the correct format file.");
+      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("scriptErrorFormat"));
       return;
     }
     this.scriptManager.loadFromFile(filePath, this.account.accountConfig.username, this.beforeDoFile.bind(this));
     this.currentScriptName = path.basename(filePath);
-    this.account.logger.logInfo("Script", `Script ${path.basename(filePath, ".js")} loaded.`);
+    this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptLoaded", path.basename(filePath, ".js")));
     this.onScriptLoaded.trigger(this.currentScriptName);
   }
 
@@ -158,13 +159,13 @@ export default class ScriptsManager {
     // If this account is a group chief, do some checkings
     if (this.account.hasGroup && this.account.isGroupChief) {
       if (this.account.group.isAnyoneBusy) {
-        this.account.logger.logError("Script", "You can't launch the script. At least one member is busy.");
+        this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("errorLaunchScriptBusy"));
         return;
       }
     }
 
     this.enabled = true;
-    this.account.logger.logInfo("Script", "Script started.");
+    this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptStarted"));
     this.onScriptStarted.trigger();
     this.currentFunctionType = FunctionTypes.MOVE;
     this.processScript();
@@ -193,9 +194,9 @@ export default class ScriptsManager {
     }
 
     if (reason === "") {
-      this.account.logger.logInfo("Script", "Script stopped.");
+      this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptStopped"));
     } else {
-      this.account.logger.logError("Script", `Script stopped. (${reason})`);
+      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("scriptStoppedReason", reason));
     }
 
     this.onScriptStopped.trigger(reason);
@@ -210,7 +211,7 @@ export default class ScriptsManager {
       if (this.account.hasGroup && this.account.isGroupChief) {
         await this.account.group.regroupMembersIfNeeded();
         if (this.account.group.isAnyoneBusy) {
-          this.stopScript("Someone is busy...");
+          this.stopScript(LanguageManager.trans("someoneBusy"));
           return;
         }
       }
@@ -233,7 +234,7 @@ export default class ScriptsManager {
 
       // In case the script doesn't have a function we need
       if (!entries) {
-        this.stopScript(`Your script doesn't include the ${FunctionTypes[this.currentFunctionType]} part.`);
+        this.stopScript(LanguageManager.trans("scriptDoesntInclude", FunctionTypes[this.currentFunctionType]));
         return;
       }
 
@@ -252,9 +253,9 @@ export default class ScriptsManager {
       }
 
       // In case no entry was found in this map
-      this.stopScript("No entry found in the script for the map " + this.account.game.map.currentPosition + " (" + this.account.game.map.id + ")");
+      this.stopScript(LanguageManager.trans("mapNoEntry", this.account.game.map.currentPosition, this.account.game.map.id));
     } catch (error) {
-      this.account.logger.logError("Script", error);
+      this.account.logger.logError(LanguageManager.trans("script"), error);
       this.stopScript();
     }
   }
@@ -298,7 +299,7 @@ export default class ScriptsManager {
 
     // Check if there is at least one valid flag
     if (this.entryFlags.Count() === 0) {
-      this.stopScript("Nothing to do on this map.");
+      this.stopScript(LanguageManager.trans("mapNothingToDo"));
     }
   }
 
@@ -339,7 +340,7 @@ export default class ScriptsManager {
     this.entryFlagsIndex++;
     // If we processed all the flags
     if (this.entryFlagsIndex === this.entryFlags.Count()) {
-      this.stopScript("Nothing to do anymore.");
+      this.stopScript(LanguageManager.trans("nothingToDo"));
     } else {
       this.processCurrentEntryFlag();
     }
@@ -378,7 +379,7 @@ export default class ScriptsManager {
   private async checkForDeath() {
     // Check first if the character is a tombstone to free it
     if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
-      this.account.logger.logInfo("ScriptManager", "Your character is a tombstone, let's free it.");
+      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterTombstone"));
       await this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
     }
     // Wait for a map change since after a free soul, we get teleported
@@ -386,7 +387,7 @@ export default class ScriptsManager {
     await sleep(1000);
     // Check if the character is a phantom (in case the user reconnects as a phantom and not a tombstone)
     if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM) {
-      this.account.logger.logInfo("ScriptManager", "Your character is a phantom, let's check your phenix config.");
+      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterPhantom"));
       this.currentFunctionType = FunctionTypes.PHENIX;
     }
   }
@@ -456,7 +457,7 @@ export default class ScriptsManager {
         if (this.account.state !== AccountStates.REGENERATING) {
           this.account.game.character.sit();
         }
-        this.account.logger.logInfo("ScriptsManager", `You have ${hpToRegen}HP to get back. Estimated time: ${estimatedTime} seconds.`);
+        this.account.logger.logInfo(LanguageManager.trans("scriptsManager"), LanguageManager.trans("hpToGetBack", hpToRegen, estimatedTime));
         // Then just wait it before continuing
         for (let i = 0; i < estimatedTime &&
           this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenEnd && this.running; i++) {
@@ -467,7 +468,7 @@ export default class ScriptsManager {
           if (this.account.state === AccountStates.REGENERATING) {
             this.account.game.character.sit();
           }
-          this.account.logger.logInfo("ScriptsManager", "Regeneration ended.");
+          this.account.logger.logInfo(LanguageManager.trans("scriptsManager"), LanguageManager.trans("regenEnded"));
         }
       }
     }
@@ -483,7 +484,7 @@ export default class ScriptsManager {
         this.account.game.character.inventory.useObject(b);
         await sleep(800);
       });
-      this.account.logger.logInfo("Scripts", `${bags.Count()} bag(s) open.`);
+      this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("bagsOpen", bags.Count()));
     }
   }
 
@@ -510,7 +511,7 @@ export default class ScriptsManager {
       return;
     }
     this.account.game.character.mount.toggleRiding();
-    this.account.logger.logInfo("Scripts", "You're now on your mount :)");
+    this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("nowOnMount"));
     await sleep(1000);
   }
 
@@ -527,7 +528,7 @@ export default class ScriptsManager {
       }
       // If the character is still full
       if (this.gotToMaxPods) {
-        this.account.logger.logInfo("Scripts", "MAX_PODS reached, switching to bank function.");
+        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("maxPodsReached"));
         this.currentFunctionType = FunctionTypes.BANK;
       }
     }
@@ -537,7 +538,7 @@ export default class ScriptsManager {
     const autoDeleteElements = this.scriptManager.config.AUTO_DELETE;
     // If the script has an AUTO_DELETE configuration
     if (autoDeleteElements) {
-      this.account.logger.logDebug("Scripts", "AUTO_DELETE session started.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("autoDeleteStarted"));
       for (const gid of autoDeleteElements) {
         // Remove all the objects and not only the first one, because sometimes objects are simplette to 1-s
         this.account.game.character.inventory.getObjectsByGid(gid).ForEach(async (obj) => {
@@ -545,7 +546,7 @@ export default class ScriptsManager {
           await sleep(800);
         });
       }
-      this.account.logger.logDebug("Scripts", "AUTO_DELETE session ended.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("autoDeleteEnded"));
     }
   }
 
@@ -556,7 +557,7 @@ export default class ScriptsManager {
       (this.account.hasGroup && this.account.isGroupChief
         ? this.account.group.isEveryoneAliveAndKicking
         : this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)) {
-      this.account.logger.logDebug("Scripts", "The character isn't a phantom anymore, switching to move function.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("characterNoMorePhantom"));
       this.currentFunctionType = FunctionTypes.MOVE;
       this.processScript();
       return true;
@@ -565,7 +566,7 @@ export default class ScriptsManager {
     // Group special case: only reset the current function when everyone is not full pods anymore
     if (this.currentFunctionType === FunctionTypes.BANK && (this.account.hasGroup && this.account.isGroupChief
       ? !this.account.group.isAnyoneFullWeight : !this.gotToMaxPods)) {
-      this.account.logger.logDebug("Scripts", "The character isn't full weight anymore, switching to move function.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("characterNoMoreFullWeight"));
       this.currentFunctionType = FunctionTypes.MOVE;
       this.processScript();
       return true;
@@ -586,7 +587,7 @@ export default class ScriptsManager {
     } else {
       // Otherwise move to next flag
       // We'll avoid the checks because we know we can't gather anymore
-      this.account.logger.logDebug("Scripts", "No resource.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("noResource"));
       this.processEntryFlags(true);
     }
   }
@@ -609,7 +610,7 @@ export default class ScriptsManager {
     }
     // In case the character has no jobs or something
     if (resourcesIds.Count() === 0) {
-      this.stopScript("List of resources to gather is empty (check ELEMENTS_TO_GATHER or your jobs)");
+      this.stopScript(LanguageManager.trans("gathersListEmpty"));
       return null;
     }
     return new GatherAction(resourcesIds.ToArray());
@@ -620,7 +621,7 @@ export default class ScriptsManager {
     // If we got the max fights per map, reprocess entry flags
     const maxFightsPerMap = this.scriptManager.config.MAX_FIGHTS_PER_MAP ? this.scriptManager.config.MAX_FIGHTS_PER_MAP : -1;
     if (maxFightsPerMap !== -1 && this.actionsManager.fightsOnThisMap >= maxFightsPerMap) {
-      this.account.logger.logDebug("Scripts", `The maximum number of fight (${maxFightsPerMap}) has been reached in this map.`);
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("maxFightsPerMap", maxFightsPerMap));
       this.processEntryFlags(true);
       return;
     }
@@ -631,7 +632,7 @@ export default class ScriptsManager {
     } else {
       // Otherwise move to the next flag
       // We'll avoid the checks because we know we can't fight anymore
-      this.account.logger.logDebug("Scripts", "No group of monsters.");
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("noMonstersGroup"));
       this.processEntryFlags(true);
     }
   }
@@ -709,7 +710,7 @@ export default class ScriptsManager {
     const phenix = this.account.game.map.phenixs.find((ph) => ph.cellId === flag.cellId);
     // If the phenix wasn't found
     if (!phenix) {
-      this.stopScript(`There is no phenix on cell ${flag.cellId}`);
+      this.stopScript(LanguageManager.trans("noPhenixOnCell", flag.cellId));
       return;
     }
     this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
@@ -719,7 +720,7 @@ export default class ScriptsManager {
   private handleDoorFlag(flag: DoorFlag) {
     const door = this.account.game.map.doors.find((d) => d.cellId === flag.cellId);
     if (!door) {
-      this.stopScript(`There is no door on cell ${flag.cellId}`);
+      this.stopScript(LanguageManager.trans("noDoorOnCell", flag.cellId));
       return;
     }
     this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
@@ -731,7 +732,7 @@ export default class ScriptsManager {
     if (action) {
       this.actionsManager.enqueueAction(action, true);
     } else {
-      this.stopScript("cell/direction invalid in direction");
+      this.stopScript(LanguageManager.trans("invalidDirection"));
     }
   }
 
@@ -742,7 +743,7 @@ export default class ScriptsManager {
     this.paused = true;
     this.account.game.managers.gathers.cancelGather();
     this.account.game.managers.interactives.cancelUse();
-    this.account.logger.logDebug("Scripts", "Paused");
+    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("paused"));
   }
 
   private onFightEnded() {
@@ -750,7 +751,7 @@ export default class ScriptsManager {
       return;
     }
     this.paused = false;
-    this.account.logger.logDebug("Scripts", "Unpaused");
+    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("unpaused"));
   }
 
   private onActionsFinished(data: IActionsManagerEventData) {
@@ -761,9 +762,9 @@ export default class ScriptsManager {
         return;
       }
       // Otherwise wait for all the actionsFinished events from the members
-      this.account.logger.logDebug("Groups", "Waiting the ActionsFinished for members");
+      this.account.logger.logDebug(LanguageManager.trans("groups"), LanguageManager.trans("waitingAllMembers"));
       this.account.group.waitForAllActionsFinished();
-      this.account.logger.logDebug("Groups", "All the actions of the members are done.");
+      this.account.logger.logDebug(LanguageManager.trans("groups"), LanguageManager.trans("allMembersDone"));
     }
     // Check for special cases (full pods, phenix)
     if (this.checkForSpecialCases()) {
@@ -802,19 +803,19 @@ export default class ScriptsManager {
     (global as any).API[this.account.accountConfig.username].isInDialog = () => this.account.isInDialog;
 
     (global as any).API[this.account.accountConfig.username].printMessage = (message: string) => {
-      this.account.logger.logMessage("Scripts", message);
+      this.account.logger.logMessage(LanguageManager.trans("scripts"), message);
     };
 
     (global as any).API[this.account.accountConfig.username].printDebug = (message: string) => {
-      this.account.logger.logDebug("Scripts", message);
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), message);
     };
 
     (global as any).API[this.account.accountConfig.username].printSuccess = (message: string) => {
-      this.account.logger.logInfo("Scripts", message);
+      this.account.logger.logInfo(LanguageManager.trans("scripts"), message);
     };
 
     (global as any).API[this.account.accountConfig.username].printError = (message: string) => {
-      this.account.logger.logError("Scripts", message);
+      this.account.logger.logError(LanguageManager.trans("scripts"), message);
     };
 
     (global as any).API[this.account.accountConfig.username].stopScript = () => {

@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import FightsPathfinder from "@/core/pathfinder/fights";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
@@ -30,7 +31,8 @@ export default class SpellsManager {
   public async manageSpell(spell: Spell): Promise<SpellCastingResults> {
     // Check if we have an AOE spell we need to cast
     if (this.spellIdToCast !== -1 && this.spellIdToCast === spell.spellId) {
-      this.account.logger.logDebug("SpellsManager", `${spell.spellName} lancé en ${this.targetCellId} (${this.enemiesTouched} ennemies touchés)`);
+      this.account.logger.logDebug(LanguageManager.trans(LanguageManager.trans("spellsManager")),
+        LanguageManager.trans("spellLaunchTouched", spell.spellName, this.targetCellId, this.enemiesTouched));
       await this.account.game.fight.launchSpell(spell.spellId, this.targetCellId);
 
       this.spellIdToCast = -1;
@@ -146,12 +148,13 @@ export default class SpellsManager {
         return resolve(SpellCastingResults.NOT_CASTED);
       }
       if (node === null) {
-        this.account.logger.logDebug("SpellsManager", `${spell.spellName} lancé en ${cellId} pour toucher ${touchedEnemies} ennemis.`);
+        this.account.logger.logDebug(LanguageManager.trans("spellsManager"),
+          LanguageManager.trans("spellLaunchedAOE", spell.spellName, cellId, touchedEnemies));
         await this.account.game.fight.launchSpell(spell.spellId, cellId);
         return resolve(SpellCastingResults.CASTED);
       } else {
         // We need to move
-        this.account.logger.logDebug("SpellsManager", `Il faut bouger en ${fromCellId} pour lancé ${spell.spellName}`);
+        this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("needToMoveToCast", fromCellId, spell.spellName));
         // Set the spell to cast
         this.spellIdToCast = spell.spellId;
         this.targetCellId = cellId;
@@ -218,7 +221,8 @@ export default class SpellsManager {
 
         if (sir === SpellInabilityReasons.NONE) {
           this.account.logger.logDebug(
-            "SpellsManager", `Sort ${spell.spellName} lancé sur ${(target as any).name} en ${target.cellId}`); // TODO: fix name
+            LanguageManager.trans("spellsManager"),
+              LanguageManager.trans("spellCasted", spell.spellName, (target as any).name, target.cellId)); // TODO: fix name
           await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
           return resolve(SpellCastingResults.CASTED);
         }
@@ -266,7 +270,7 @@ export default class SpellsManager {
       }
 
       if (node !== null) {
-        this.account.logger.logDebug("SpellsManager", `On se déplace en cellule ${node.key} pour lancé le sort ${spell.spellName}.`);
+        this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("moveToCast", node.key, spell.spellName));
         await this.account.game.managers.movements.moveToCellInFight(node);
         return resolve(SpellCastingResults.MOVED);
       }
@@ -297,7 +301,7 @@ export default class SpellsManager {
           if (spell.handToHand && MapPoint.fromCellId(t).distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) !== 1) {
             continue;
           }
-          this.account.logger.logDebug("SpellsManager", `Sort ${spell.spellName} lancé en cellule ${t}`);
+          this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("spellCastedCell", spell.spellName, t));
           await this.account.game.fight.launchSpell(spell.spellId, t);
           return resolve(SpellCastingResults.CASTED);
         }

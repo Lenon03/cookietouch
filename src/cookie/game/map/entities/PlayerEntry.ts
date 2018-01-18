@@ -9,13 +9,13 @@ export default class PlayerEntry extends MovableEntity {
 
   constructor(infos: GameRolePlayCharacterInformations | GameRolePlayMutantInformations) {
     super();
-    if ((infos as any)._type === "GameRolePlayCharacterInformations") {
+    if (infos._type === "GameRolePlayCharacterInformations") {
       infos = infos as GameRolePlayCharacterInformations;
       this.id = infos.contextualId;
       this.name = infos.name;
       this.cellId = infos.disposition.cellId;
       this.level = infos.alignmentInfos.characterPower - this.id;
-    } else if ((infos as any)._type === "GameRolePlayMutantInformations") {
+    } else if (infos._type === "GameRolePlayMutantInformations") {
       infos = infos as GameRolePlayMutantInformations;
       this.id = infos.contextualId;
       this.name = infos.name;

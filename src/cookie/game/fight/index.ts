@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
@@ -661,7 +662,8 @@ export default class Fight implements IClearable {
         if (effect.targetId === this.playedFighter.contextualId) {
           if (this._effectsDurations.containsKey(effect.stateId)) {
             this._effectsDurations.remove(effect.stateId);
-            this.account.logger.logWarning("", `Added state ${effect.stateId} for ${effect.turnDuration} turns`);
+            this.account.logger.logWarning(LanguageManager.trans("fight"),
+              LanguageManager.trans("fightAddedState", effect.stateId, effect.turnDuration));
             this._effectsDurations.add(effect.stateId, effect.turnDuration);
           }
         }

@@ -1,6 +1,7 @@
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class NpcAction extends ScriptAction {
   public npcId: number;
@@ -14,7 +15,7 @@ export default class NpcAction extends ScriptAction {
 
   public async process(account: Account): Promise<ScriptActionResults> {
     if (!account.game.npcs.useNpc(this.npcId, this.actionIndex)) {
-      account.scripts.stopScript(`Error during a conversation with an NPC (npcId: ${this.npcId}, actionIndex: ${this.actionIndex})`);
+      account.scripts.stopScript(LanguageManager.trans("errorNpc", this.npcId, this.actionIndex));
       return ScriptAction.failedResult();
     }
     return ScriptAction.processingResult();

@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import GameRolePlayPlayerFightFriendlyRequestedMessage from "@protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
 import { sleep } from "@utils/Time";
@@ -24,7 +25,7 @@ export default class RolePlayExtension {
         if (player !== null) {
           this.account.network.sendMessageFree("IgnoredAddRequestMessage", { name: player.name, session: true });
           this.account.network.sendMessageFree("LeaveDialogRequestMessage");
-          this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
+          this.account.logger.logInfo(LanguageManager.trans("rolePlayExtension"), LanguageManager.trans("playerIgnored", player.name));
           return;
         }
       } else {
@@ -56,7 +57,7 @@ export default class RolePlayExtension {
       });
       account.network.sendMessageFree("IgnoredAddRequestMessage", { name: player.name, session: true });
       account.network.sendMessageFree("LeaveDialogRequestMessage");
-      this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
+      this.account.logger.logInfo(LanguageManager.trans("rolePlayExtension"), LanguageManager.trans("playerIgnored", player.name));
     }
   }
 }

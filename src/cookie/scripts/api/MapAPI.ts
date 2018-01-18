@@ -10,6 +10,7 @@ import UseLockedHouseAction from "../actions/map/UseLockedHouseAction";
 import UseLockedStorageAction from "../actions/map/UseLockedStorageAction";
 import UseTeleportableAction from "../actions/map/UseTeleportableAction";
 import WaitMapChangeAction from "../actions/map/WaitMapChangeAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class MapAPI {
   private account: Account;
@@ -24,7 +25,7 @@ export default class MapAPI {
     }
     const action = ChangeMapAction.tryParse(where);
     if (!action) {
-      this.account.logger.logWarning("API", `Can't parse changeMap. (${where})`);
+      this.account.logger.logWarning(LanguageManager.trans("api"), LanguageManager.trans("cantParseMap", where));
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(action, true);
@@ -91,7 +92,7 @@ export default class MapAPI {
 
   public saveZaap(): boolean {
     if (!this.account.game.map.zaap) {
-      this.account.logger.logWarning("TeleportablesManager", "There is no zaap on this map.");
+      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(new SaveZaapAction(), true);
@@ -100,7 +101,7 @@ export default class MapAPI {
 
   public useZaap(destinationMapId: number): boolean {
     if (!this.account.game.map.zaap) {
-      this.account.logger.logWarning("TeleportablesManager", "There is no zaap on this map.");
+      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(new UseTeleportableAction(TeleportablesEnum.ZAAP, destinationMapId), true);
@@ -109,7 +110,7 @@ export default class MapAPI {
 
   public useZaapi(destinationMapId: number): boolean {
     if (!this.account.game.map.zaapi) {
-      this.account.logger.logWarning("TeleportablesManager", "There is no zaapi on this map.");
+      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaapi"));
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(new UseTeleportableAction(TeleportablesEnum.ZAAPI, destinationMapId), true);

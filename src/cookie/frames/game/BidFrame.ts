@@ -10,16 +10,12 @@ export default class BidFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("ExchangeStartedBidBuyerMessage",
-      this.HandleExchangeStartedBidBuyerMessage, this);
+    this.account.dispatcher.register("ExchangeStartedBidBuyerMessage", this.HandleExchangeStartedBidBuyerMessage, this);
     this.account.dispatcher.register("ExchangeTypesItemsExchangerDescriptionForUserMessage",
       this.HandleExchangeTypesItemsExchangerDescriptionForUserMessage, this);
-    this.account.dispatcher.register("ExchangeStartedBidSellerMessage",
-      this.HandleExchangeStartedBidSellerMessage, this);
-    this.account.dispatcher.register("ExchangeErrorMessage",
-      this.HandleExchangeErrorMessage, this);
-    this.account.dispatcher.register("ExchangeLeaveMessage",
-      this.HandleExchangeLeaveMessage, this);
+    this.account.dispatcher.register("ExchangeStartedBidSellerMessage", this.HandleExchangeStartedBidSellerMessage, this);
+    this.account.dispatcher.register("ExchangeErrorMessage", this.HandleExchangeErrorMessage, this);
+    this.account.dispatcher.register("ExchangeLeaveMessage", this.HandleExchangeLeaveMessage, this);
   }
 
   private async HandleExchangeStartedBidBuyerMessage(account: Account, message: any) {

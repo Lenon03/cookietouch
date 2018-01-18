@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
@@ -103,7 +104,7 @@ export default class Inventory {
           position: pos,
           quantity: 1,
         });
-        this.account.logger.logDebug("Inventory", "Vous avez équipé " + obj.name);
+        this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectEquipped", obj.name));
         return true;
       }
     }
@@ -114,7 +115,7 @@ export default class Inventory {
       position: possiblePositions[0],
       quantity: 1,
     });
-    this.account.logger.logDebug("Inventory", "Vous avez équipé " + obj.name);
+    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectEquipped", obj.name));
     return true;
   }
 
@@ -132,7 +133,7 @@ export default class Inventory {
       position: CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED,
       quantity: 1,
     });
-    this.account.logger.logDebug("Inventory", "Vous avez déquipé " + obj.name);
+    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectUnEquipped", obj.name));
     return true;
   }
 
@@ -153,7 +154,7 @@ export default class Inventory {
         quantity: qty,
       });
     }
-    this.account.logger.logDebug("", "Vous avez utilisé " + qty + " " + obj.name);
+    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectUsed", qty, obj.name));
   }
 
   public dropObject(obj: ObjectEntry, qty = 1) {
@@ -167,7 +168,7 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    this.account.logger.logDebug("Inventory", "Vous avez jeter " + qty + " " + obj.name);
+    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectDropped", qty, obj.name));
   }
 
   public deleteObject(obj: ObjectEntry, qty = 1) {
@@ -181,7 +182,7 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    this.account.logger.logDebug("Inventory", "Vous avez supprimer " + qty + " " + obj.name);
+    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectDeleted", qty, obj.name));
   }
 
   public resetMaxWeight() {

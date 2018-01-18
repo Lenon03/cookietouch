@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
 import Account from "@account";
 
 export default class CharacterFrame {
@@ -36,7 +37,7 @@ export default class CharacterFrame {
   private async HandleCharacterExperienceGainMessage(account: Account, message: any) {
     account.statistics.UpdateCharacterExperienceGainMessage(message);
     account.game.character.stats.UpdateCharacterExperienceGainMessage(message);
-    this.account.logger.logDebug("CharacterFrame", LanguageManager.trans("experienceGain", message.experienceCharacter));
+    this.account.logger.logDebug(LanguageManager.trans("characterFrame"), LanguageManager.trans("experienceGain", message.experienceCharacter));
   }
 
   private async HandleCharacterStatsListMessage(account: Account, message: any) {
@@ -46,7 +47,7 @@ export default class CharacterFrame {
   private async HandleCharacterLevelUpMessage(account: Account, message: any) {
     account.statistics.UpdateCharacterLevelUpMessage(message);
     account.game.character.UpdateCharacterLevelUpMessage(message);
-    this.account.logger.logDebug("CharacterFrame", LanguageManager.trans("levelUp"));
+    this.account.logger.logDebug(LanguageManager.trans("characterFrame"), LanguageManager.trans("levelUp"));
   }
 
   private async HandleUpdateLifePointsMessage(account: Account, message: any) {
@@ -65,11 +66,11 @@ export default class CharacterFrame {
     account.game.character.UpdateLifePointsRegenBeginMessage(message);
   }
 
-  private async HandleLifePointsRegenEndMessage(account: Account, message: any) {
+  private async HandleLifePointsRegenEndMessage(account: Account, message: LifePointsRegenEndMessage) {
     account.game.character.UpdateLifePointsRegenEndMessage(message);
 
     if (message.lifePointsGained > 0) {
-      this.account.logger.logDebug("", `Vous avez regagné ${message.lifePointsGained} points de vie`);
+      this.account.logger.logDebug(LanguageManager.trans("characterFrame"), LanguageManager.trans("lifePointsGained", message.lifePointsGained));
     }
 
     account.game.character.stats.UpdateLifePointsRegenEndMessage(message);

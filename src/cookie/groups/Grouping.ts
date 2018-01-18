@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
 import { Deferred } from "@utils/Deferred";
@@ -70,7 +71,7 @@ export default class Grouping {
     if (dir === MapChangeDirections.NONE) {
       return;
     }
-    missingMember.logger.logDebug("Grouping", `${MapChangeDirections[dir]}`);
+    missingMember.logger.logDebug(LanguageManager.trans("grouping"), `${MapChangeDirections[dir]}`);
     missingMember.game.managers.movements.changeMap(dir);
   }
 }

@@ -24,6 +24,7 @@ import NpcAction from "../actions/npcs/NpcAction";
 import NpcBankAction from "../actions/npcs/NpcBankAction";
 import ReplyAction from "../actions/npcs/ReplyAction";
 import ScriptAction, { ScriptActionResults } from "../actions/ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -114,7 +115,7 @@ export default class ActionsManager {
     if (delay > 0) {
       await sleep(delay);
     }
-    this.account.logger.logDebug("Scripts", `Waited ${delay}ms`);
+    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("waitedMs", delay));
     // If the queue still have actions
     if (this.actionsQueue.length > 0) {
       this.currentAction = this.actionsQueue.shift();
@@ -135,11 +136,11 @@ export default class ActionsManager {
       return;
     }
     try {
-      const name = this.currentAction ? this.currentAction.name : "Unknown";
+      const name = this.currentAction ? this.currentAction.name : LanguageManager.trans("unknown");
       const result = this.currentCoroutine.next();
-      this.account.logger.logDebug("Scripts", `Processing coroutine: (last action: ${name}, result: ${result.done})`);
+      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("processingCoroutine", name, result.done));
       if (result.done) {
-        this.account.logger.logDebug("Scripts", `Ending coroutine`);
+        this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("endingCoroutine"));
         this.customHandled();
       }
     } catch (error) {
@@ -152,15 +153,15 @@ export default class ActionsManager {
       return;
     }
     const type = this.currentAction.name;
-    this.account.logger.logDebug("ActionsManager", `Current action: ${type}.`);
+    this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("currentAction", type));
     const res = await this.currentAction.process(this.account);
     switch (res) {
       case ScriptActionResults.DONE:
-        this.account.logger.logDebug("ActionsManager", `${type} DONE.`);
+        this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("actionDone", type));
         this.dequeueActions(100);
         break;
       case ScriptActionResults.FAILED:
-        this.account.logger.logDebug("ActionsManager", `${type} FAILED.`);
+        this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("actionFailed", type));
         break;
       case ScriptActionResults.PROCESSING:
         this.timeoutTimer.start();
@@ -239,7 +240,7 @@ export default class ActionsManager {
         }
         // If not, the group either moved or got stolen from us
         if (this.account.state !== AccountStates.FIGHTING) {
-          this.account.logger.logWarning("Scripts", "Error when launching a fight, the group may have moved or was stolen.");
+          this.account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("errorLaunchFight"));
           this.dequeueActions(0);
         }
 
@@ -285,7 +286,7 @@ export default class ActionsManager {
       const display = this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT ?
         this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT : false;
       if (display) {
-        this.account.logger.logInfo("Scripts", `Fight #${this.fightsCounter}`);
+        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("fightNumber", this.fightsCounter));
       }
     }
   }
@@ -297,7 +298,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof GatherAction) {
       switch (result) {
         case GatherResults.FAILED:
-          this.account.scripts.stopScript("Gather failed");
+          this.account.scripts.stopScript(LanguageManager.trans("gatherFailed"));
           break;
         default: // GATHERED, STOLEN, BLACKLISTED, or TIMED_OUT
           this.dequeueActions(1000);
@@ -316,7 +317,7 @@ export default class ActionsManager {
       const displayGatherCount = this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT ?
         this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT : false;
       if (displayGatherCount) {
-        this.account.logger.logInfo("Scripts", `Gather #${this.gathersCounter}`);
+        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("gatherNumber", this.gathersCounter));
       }
     }
   }
@@ -328,7 +329,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof NpcBankAction) {
       const nba = this.currentAction as NpcBankAction;
       if (!this.account.game.npcs.reply(nba.replyId)) {
-        this.account.scripts.stopScript("Reply npc failed");
+        this.account.scripts.stopScript(LanguageManager.trans("replyNpcFailed"));
       }
     } else if (this.currentAction instanceof NpcAction || this.currentAction instanceof ReplyAction) {
       this.dequeueActions(400);
@@ -416,7 +417,7 @@ export default class ActionsManager {
       if (success) {
         this.dequeueActions(1500);
       } else {
-        this.account.scripts.stopScript(`Can't use ${(this.currentAction as UseTeleportableAction).type}`);
+        this.account.scripts.stopScript(LanguageManager.trans("cantUseTeleportable", (this.currentAction as UseTeleportableAction).type));
       }
     }
   }
@@ -426,7 +427,7 @@ export default class ActionsManager {
     if (!this.account.scripts.running) {
       return;
     }
-    this.account.logger.logWarning("Scripts", "Timed out.");
+    this.account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("timedOut"));
     this.account.scripts.stopScript();
     this.account.scripts.startScript();
   }

@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
@@ -37,13 +38,13 @@ export default class MovementsManager implements IClearable {
 
   public moveToCell(cellId: number, stopNextToTarget: boolean = false): MovementRequestResults {
     if (cellId < 0 || cellId > 560) {
-      this.account.logger.logDebug("MovementsManager", "Invalid CellId.");
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("invalidCellId"));
       return MovementRequestResults.FAILED;
     }
 
     if (this.account.isBusy || this.currentPath !== null) {
-      this.account.logger.logDebug("MovementsManager",
-      `IsBusy: ${this.account.isBusy}, PathNotNull: ${this.currentPath !== null}`);
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"),
+        LanguageManager.trans("movementBusy", this.account.isBusy, this.currentPath !== null));
       return MovementRequestResults.FAILED;
     }
 
@@ -55,24 +56,24 @@ export default class MovementsManager implements IClearable {
       this.account.game.map.occupiedCells, true, stopNextToTarget);
 
     if (path.length === 0) {
-      this.account.logger.logDebug("MovementsManager", "Empty Path.");
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("emptyPath"));
       return MovementRequestResults.FAILED;
     }
 
     // stopNextToTarget=false case, the path is not complete
     if (!stopNextToTarget && path[path.length - 1] !== cellId) {
-      this.account.logger.logDebug("MovementsManager", "Path Blocked.");
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("pathBlocked"));
       return MovementRequestResults.PATH_BLOCKED;
     }
     // stopNextToTarget=true case, in case we can't move anywhere near the target cell
     if (stopNextToTarget && path.length === 1 && path[0] === this.account.game.map.playedCharacter.cellId) {
-      this.account.logger.logDebug("MovementsManager", "Already there.");
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("alreadyThere"));
       return MovementRequestResults.ALREADY_THERE;
     }
     // stopNextToTarget=true case, the character is already next to the target
     if (stopNextToTarget && path.length === 2
       && path[0] === this.account.game.map.playedCharacter.cellId && path[1] === cellId) {
-      this.account.logger.logDebug("MovementsManager", "Already there.");
+      this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("alreadyThere"));
       return MovementRequestResults.ALREADY_THERE;
     }
 
@@ -121,7 +122,8 @@ export default class MovementsManager implements IClearable {
 
   public changeMap(direction: MapChangeDirections): boolean {
     if (this.account.isBusy || this.neighbourMapId !== 0) {
-      this.account.logger.logWarning("MovementsManager", `Is busy (${AccountStates[this.account.state]}) or already changing map.`);
+      this.account.logger.logWarning(LanguageManager.trans("movementsManager"),
+        LanguageManager.trans("movementIsBusy", AccountStates[this.account.state]));
       return false;
     }
 
@@ -164,7 +166,7 @@ export default class MovementsManager implements IClearable {
     this.neighbourMapId = this.getNeighbourMapId(direction);
 
     if (this.neighbourMapId <= 0) {
-      this.account.logger.logWarning("MovementsManager", "Invalid Neighbour MapId.");
+      this.account.logger.logWarning(LanguageManager.trans("movementsManager"), LanguageManager.trans("invalidNeighbour"));
       return false;
     }
 
@@ -216,7 +218,7 @@ export default class MovementsManager implements IClearable {
 
     this.retries++;
     if (this.retries > 3) {
-      this.account.logger.logError("MovementsManager", "Maximum moving retries.");
+      this.account.logger.logError(LanguageManager.trans("movementsManager"), LanguageManager.trans("maxMovingRetries"));
       return;
     }
 
@@ -248,7 +250,8 @@ export default class MovementsManager implements IClearable {
   private moveToChangeMap(cellId: number): boolean {
     switch (this.moveToCell(cellId)) {
       case MovementRequestResults.MOVED:
-        this.account.logger.logDebug("", `${this.account.game.map.id} Moving to change map`);
+        this.account.logger.logDebug(LanguageManager.trans("movementsManager"),
+          LanguageManager.trans("moveToChangeMap", this.account.game.map.id));
         return true;
       case MovementRequestResults.ALREADY_THERE:
         this.account.network.sendMessageFree("ChangeMapMessage", {
@@ -257,7 +260,7 @@ export default class MovementsManager implements IClearable {
         this.neighbourMapId = 0;
         return true;
       default:
-        this.account.logger.logDebug("", `Path to ${cellId} failed or is blocked.`);
+        this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("pathToCellBlocked", cellId));
         this.neighbourMapId = 0;
         return false;
     }
@@ -288,7 +291,8 @@ export default class MovementsManager implements IClearable {
       keyMovements: this.currentPath, // TODO: Or the compressed one?
       mapId: this.account.game.map.id,
     });
-    this.account.logger.logDebug("MovementsManager", `Path: ${new List(this.currentPath).Aggregate((c, n) => `${c},${n}`)}`);
+    const pathString = new List(this.currentPath).Aggregate((c, n) => `${c},${n}`, "");
+    this.account.logger.logDebug(LanguageManager.trans("movementsManager"), LanguageManager.trans("showPath", pathString));
   }
 
   private OnMovementFinished(success: boolean) {

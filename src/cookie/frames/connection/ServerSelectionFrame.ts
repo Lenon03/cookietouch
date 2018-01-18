@@ -1,4 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
 import { sleep } from "@/utils/Time";
@@ -35,23 +36,23 @@ export default class ServerSelectionFrame {
         : message.servers.find((s) => s._name === account.accountConfig.server);
 
     if (server === undefined || server.charactersCount === 0 && !account.accountConfig.characterCreation.create) {
-      account.logger.logError("", "Impossible de selectionner ce serveur");
+      account.logger.logError(LanguageManager.trans("serverSelection"), LanguageManager.trans("cantSelectServer"));
       account.stop();
       return;
     }
 
     if (server.status !== ServerStatusEnum.ONLINE && server.status !== ServerStatusEnum.SAVING && !server.isSelectable) {
-      account.logger.logError("", `${server._name} ${ServerStatusEnum[server.status]}`);
+      account.logger.logError(LanguageManager.trans("serverSelection"), `${server._name} ${ServerStatusEnum[server.status]}`);
       account.stop();
       return;
     }
 
     if (server.status === ServerStatusEnum.SAVING) {
       account.framesData.serverToAutoConnectTo = server.id;
-      account.logger.logInfo("ServerSelection", `The server ${server._name} is in backup, the bot will select it once it is available.`);
+      account.logger.logInfo(LanguageManager.trans("serverSelection"), LanguageManager.trans("serverBackup", server._name));
     } else {
       // ONLINE
-      account.logger.logDebug("ServerSelection", `Selection du serveur ${server._name}`);
+      account.logger.logDebug(LanguageManager.trans("serverSelection"), LanguageManager.trans("serverSelected", server._name));
       await account.network.sendMessageFree("ServerSelectionMessage", {
         serverId: server.id,
       });
@@ -62,7 +63,7 @@ export default class ServerSelectionFrame {
     if (account.framesData.serverToAutoConnectTo !== 0 && message.server.id === account.framesData.serverToAutoConnectTo
       && message.server.status === ServerStatusEnum.ONLINE) {
       await sleep(2000);
-      account.logger.logDebug("ServerSelection", `${message.server._name} is now online. Let's go!`);
+      account.logger.logDebug(LanguageManager.trans("serverSelection"), LanguageManager.trans("serverOnline", message.server._name));
       await account.network.sendMessageFree("ServerSelectionMessage", {
         serverId: message.server.id,
       });

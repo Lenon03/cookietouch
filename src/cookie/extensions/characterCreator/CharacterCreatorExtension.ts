@@ -1,4 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
 import Account from "@account";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
@@ -89,7 +90,7 @@ export default class CharacterCreatorExtension implements IClearable {
       this.name = Deferred<string>();
       this.account.network.sendMessageFree("CharacterNameSuggestionRequestMessage");
       name = await this.name.promise;
-      this.account.logger.logInfo("CharacterCreator", `Nom de personnage généré: ${name}`);
+      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("characterCreator")), LanguageManager.trans("nameGenerate", name));
     }
     await sleep(1000);
     // Send the character creation request message, take in consideration random stuff to generate
@@ -113,7 +114,8 @@ export default class CharacterCreatorExtension implements IClearable {
       await sleep(1000);
       this.UpdateCharactersListMessage(new CharactersListMessage(false, null));
     } else {
-      this.account.logger.logError("CharacterCreator", `Creation Error: ${CharacterCreationResultEnum[message.result]}`);
+      this.account.logger.logError(LanguageManager.trans("characterCreator"),
+        LanguageManager.trans("creationError", CharacterCreationResultEnum[message.result]));
     }
   }
 
@@ -301,11 +303,11 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     // Step 10: Talk and reply to npc
     if (this.currentStepNumber === 10 && this.account.game.map.id === TutorialHelper.mapIdSecondAfterFight) {
-      this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 10`);
+      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 10`);
       await sleep(1600);
       console.log("used?", this.account.game.npcs.useNpc(-1, 1));
     } else if (this.currentStepNumber === 14 && this.account.game.map.id === TutorialHelper.mapIdThirdAfterFight) {
-      this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 14`);
+      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 14`);
       await sleep(1200);
       // Buy the shield
       await this.account.network.sendMessageFree("QuestObjectiveValidationMessage", {
@@ -322,7 +324,7 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     // Step 12: start fight
     if (this.currentStepNumber === 12 && this.account.game.map.id === TutorialHelper.mapIdThirdBeforeFight) {
-      this.account.logger.logError("CharacterCreator", `(${this.currentStepNumber}) ... Step 12`);
+      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 12`);
       this.account.game.managers.movements.moveToCell(this.account.game.map.monstersGroups[0].cellId);
     }
   }

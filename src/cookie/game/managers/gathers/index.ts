@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
@@ -35,12 +36,9 @@ export default class GathersManager implements IClearable {
     this.pathfinder = new Pathfinder();
     movements.MovementFinished.on(this.onMovementFinished.bind(this));
     map.MapChanged.on(this.mapChanged.bind(this));
-    this.account.dispatcher.register("InteractiveUsedMessage",
-      this.HandleInteractiveUsedMessage, this);
-    this.account.dispatcher.register("InteractiveUseEndedMessage",
-      this.HandleInteractiveUseEndedMessage, this);
-    this.account.dispatcher.register("InteractiveUseErrorMessage",
-      this.HandleInteractiveUseErrorMessage, this);
+    this.account.dispatcher.register("InteractiveUsedMessage", this.HandleInteractiveUsedMessage, this);
+    this.account.dispatcher.register("InteractiveUseEndedMessage", this.HandleInteractiveUseEndedMessage, this);
+    this.account.dispatcher.register("InteractiveUseErrorMessage", this.HandleInteractiveUseErrorMessage, this);
   }
 
   public clear() {
@@ -59,7 +57,7 @@ export default class GathersManager implements IClearable {
 
   public gather(...resourcesIds: number[]): boolean {
     if (this.account.isBusy || this.elementToGather !== null) {
-      this.account.logger.logWarning("GathersManager", `Is busy (${AccountStates[this.account.state]}) or is already gathering.`);
+      this.account.logger.logWarning(LanguageManager.trans("gathersManager"), LanguageManager.trans("gatherBusy", AccountStates[this.account.state]));
       return false;
     }
 
@@ -69,7 +67,7 @@ export default class GathersManager implements IClearable {
       }
     }
 
-    this.account.logger.logWarning("GathersManager", "Pas de ressources à récolter ici.");
+    this.account.logger.logWarning(LanguageManager.trans("gathersManager"), LanguageManager.trans("noGather"));
     return false;
   }
 
@@ -143,7 +141,7 @@ export default class GathersManager implements IClearable {
 
   private tryUsingElementToGather() {
     if (this.stolen) {
-      this.account.logger.logInfo("", "Ressource volé.");
+      this.account.logger.logInfo(LanguageManager.trans("gathersManager"), LanguageManager.trans("stolenResource"));
       this.isGatherFinished(GatherResults.STOLEN);
     } else {
       this.account.network.sendMessageFree("InteractiveUseRequestMessage", {

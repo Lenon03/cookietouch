@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -107,8 +108,7 @@ export default class Bid implements IClearable {
 
     // Not enough kamas
     if (price > this.account.game.character.inventory.kamas) {
-      this.account.logger.logWarning("",
-        `Vous n'avez pas assez de kamas pour acheter ${lot} lots de l'objet ${gid}. Il vous faut ${price} kamas`);
+      this.account.logger.logWarning(LanguageManager.trans("bid"), LanguageManager.trans("bidNoKamas", lot, gid, price));
       return false;
     }
 
@@ -151,7 +151,7 @@ export default class Bid implements IClearable {
       quantity: lot,
     });
 
-    this.account.logger.logInfo("", `Vous avez mis en vente ${lot} ${item.name} pour ${price} kamas.`);
+    this.account.logger.logInfo(LanguageManager.trans("bid"), LanguageManager.trans("bidSale", lot, item.name, price));
     return true;
   }
 

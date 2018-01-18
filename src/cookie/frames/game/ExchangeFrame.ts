@@ -10,22 +10,14 @@ export default class ExchangeFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("ExchangeRequestedTradeMessage",
-      this.HandleExchangeRequestedTradeMessage, this);
-    this.account.dispatcher.register("ExchangeStartedWithPodsMessage",
-      this.HandleExchangeStartedWithPodsMessage, this);
-    this.account.dispatcher.register("ExchangeObjectAddedMessage",
-      this.HandleExchangeObjectAddedMessage, this);
-    this.account.dispatcher.register("ExchangeObjectModifiedMessage",
-      this.HandleExchangeObjectModifiedMessage, this);
-    this.account.dispatcher.register("ExchangeObjectRemovedMessage",
-      this.HandleExchangeObjectRemovedMessage, this);
-    this.account.dispatcher.register("ExchangeKamaModifiedMessage",
-      this.HandleExchangeKamaModifiedMessage, this);
-    this.account.dispatcher.register("ExchangeIsReadyMessage",
-      this.HandleExchangeIsReadyMessage, this);
-    this.account.dispatcher.register("ExchangeLeaveMessage",
-      this.HandleExchangeLeaveMessage, this);
+    this.account.dispatcher.register("ExchangeRequestedTradeMessage", this.HandleExchangeRequestedTradeMessage, this);
+    this.account.dispatcher.register("ExchangeStartedWithPodsMessage", this.HandleExchangeStartedWithPodsMessage, this);
+    this.account.dispatcher.register("ExchangeObjectAddedMessage", this.HandleExchangeObjectAddedMessage, this);
+    this.account.dispatcher.register("ExchangeObjectModifiedMessage", this.HandleExchangeObjectModifiedMessage, this);
+    this.account.dispatcher.register("ExchangeObjectRemovedMessage", this.HandleExchangeObjectRemovedMessage, this);
+    this.account.dispatcher.register("ExchangeKamaModifiedMessage", this.HandleExchangeKamaModifiedMessage, this);
+    this.account.dispatcher.register("ExchangeIsReadyMessage", this.HandleExchangeIsReadyMessage, this);
+    this.account.dispatcher.register("ExchangeLeaveMessage", this.HandleExchangeLeaveMessage, this);
   }
 
   private async HandleExchangeRequestedTradeMessage(account: Account, message: any) {

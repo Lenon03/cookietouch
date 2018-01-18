@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -108,7 +109,7 @@ export default class Character {
       statId: stat,
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${pts} points en ${BoostableStats[stat]}`);
+    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostStat", pts, BoostableStats[stat]));
     return true;
   }
 
@@ -170,7 +171,7 @@ export default class Character {
       statId: stat,
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${pts} points en ${BoostableStats[stat]}`);
+    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostStat", pts, BoostableStats[stat]));
     return true;
   }
 
@@ -192,7 +193,7 @@ export default class Character {
       spellLevel: spell.level + 1,
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${spell.name} au level ${spell.level + 1}`);
+    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostSpell", spell.name, spell.level + 1));
     return true;
   }
 
@@ -241,7 +242,7 @@ export default class Character {
       spellLevel: level,
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${spell.name} au level ${level}`);
+    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostSpell", spell.name, level));
     return true;
   }
 

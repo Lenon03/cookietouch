@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
@@ -173,7 +174,7 @@ export default class Group {
   }
 
   private memberActionsFinished(data: { account: Account, mapChanged: boolean }) {
-    data.account.logger.logDebug("Group", "I finished my actions.");
+    data.account.logger.logDebug(LanguageManager.trans("group"), LanguageManager.trans("finishedActions"));
     const test = this._membersAccountsFinished.find((e) => e.account === data.account);
     if (test !== undefined) {
       test.event.set();

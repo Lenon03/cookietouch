@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 
 export default class SecurityFrame {
@@ -19,7 +20,7 @@ export default class SecurityFrame {
 
   private async HandleRecaptchaRequestMessage(account: Account, data: any) {
     account.framesData.captchasCounter++;
-    account.logger.logWarning("Recaptcha", "Receive Recaptcha!");
+    account.logger.logWarning(LanguageManager.trans("recaptcha"), LanguageManager.trans("recaptchaReceived"));
     await account.handleRecaptcha(data.enrichData.sitekey);
   }
 
@@ -40,7 +41,7 @@ export default class SecurityFrame {
 
   private async HandleTextInformationMessage(account: Account, data: any) {
     if (data.msgId === 245) {
-      this.account.logger.logDebug("", "Vous avez atteint la limite de combat journalière.");
+      this.account.logger.logDebug(LanguageManager.trans("securityFrame"), LanguageManager.trans("dailyFightsLimit"));
       if (this.account.config.disconnectUponFightsLimit) {
         this.account.stop();
       }
@@ -49,6 +50,6 @@ export default class SecurityFrame {
 
   private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
     this.account.logger
-      .logDebug("", `Vous êtes kick encore pour ${data.days} jours, ${data.hours}, et ${data.minutes} minutes.`);
+      .logDebug(LanguageManager.trans("securityFrame"), LanguageManager.trans("kickedTime", data.days, data.hours, data.minutes));
   }
 }

@@ -1,6 +1,7 @@
 import Account from "@account";
 import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class StorageGetAutoRegenStoreAction extends ScriptAction {
   public items: number[];
@@ -29,7 +30,7 @@ export default class StorageGetAutoRegenStoreAction extends ScriptAction {
       await sleep(800);
     }
     if (store > 0) {
-      account.logger.logWarning("Scripts", "Warning, you don't have anymore required items for AUTO_REGEN");
+      account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("errorAutoRegen"));
     }
     return ScriptActionResults.DONE;
   }

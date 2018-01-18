@@ -20,7 +20,10 @@ export default class LanguageManager {
   public static trans(key: string, ...params: any[]): string {
     const lang = GlobalConfiguration.lang;
     let value = this.langs.getValue(lang)[key] as string;
-    if (!value) { return ""; }
+    if (!value) {
+      value = this.langs.getValue(Languages.ENGLISH)[key] as string;
+      return value ? value : "";
+    }
     if (params.length === 0) {
       return value;
     } else {

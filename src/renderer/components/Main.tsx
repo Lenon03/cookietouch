@@ -17,6 +17,7 @@ import { BoostableStats } from "@game/character/BoostableStats";
 import * as path from "path";
 import * as React from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { Button } from "reactstrap";
 import Console from "./Console";
 import Infos from "./Infos";
 import LeftMenu from "./LeftMenu";
@@ -96,25 +97,25 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                 <h2>Console</h2>
               </TabPanel>
               <TabPanel>
-                <button className="btn btn-primary" onClick={() => this.start()}>Start</button>
-                <button className="btn btn-primary" onClick={() => this.stop()}>Stop</button>
+                <Button color="primary" onClick={() => this.start()}>Start</Button>
+                <Button color="primary" onClick={() => this.stop()}>Stop</Button>
                 <hr />
-                <button className="btn btn-warning" onClick={() => this.launchScript()}>Launch Script</button>
-                <button className="btn btn-danger" onClick={() => this.attack()}>Attack</button>
-                <button className="btn btn-info" onClick={() => this.flood()}>Flood</button>
+                <Button color="warning" onClick={() => this.launchScript()}>Launch Script</Button>
+                <Button color="danger" onClick={() => this.attack()}>Attack</Button>
+                <Button color="info" onClick={() => this.flood()}>Flood</Button>
                 <hr />
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</button>
+                <Button
+                  color="secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</Button>
+                <Button
+                  color="secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</Button>
+                <Button
+                  color="secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</Button>
+                <Button
+                  color="secondary"
+                  onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</Button>
                 <hr />
                 <Infos account={this.account} />
                 <Console account={this.account} />

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ListGroup, ListGroupItem } from "reactstrap";
 
 interface ILeftMenuProps {
   //
@@ -16,19 +17,17 @@ export default class LeftMenu extends React.Component<ILeftMenuProps, ILeftMenuS
 
   public render() {
     return (
-      <div>
-        <ul className="list-group">
-          <li className="list-group-item">Account 1</li>
-          <li className="list-group-item list-group-item-primary">Account 1</li>
-          <li className="list-group-item list-group-item-secondary">Account 1</li>
-          <li className="list-group-item list-group-item-success">Account 1</li>
-          <li className="list-group-item list-group-item-danger">Account 1</li>
-          <li className="list-group-item list-group-item-warning">Account 1</li>
-          <li className="list-group-item list-group-item-info">Account 1</li>
-          <li className="list-group-item list-group-item-light">Account 1</li>
-          <li className="list-group-item list-group-item-dark">Account 1</li>
-        </ul>
-      </div>
+      <ListGroup>
+        <ListGroupItem active>Account 1</ListGroupItem>
+        <ListGroupItem color="primary">Account 2</ListGroupItem>
+        <ListGroupItem color="secondary">Account 3</ListGroupItem>
+        <ListGroupItem color="success">Account 4</ListGroupItem>
+        <ListGroupItem color="danger">Account 5</ListGroupItem>
+        <ListGroupItem color="warning">Account 6</ListGroupItem>
+        <ListGroupItem color="info">Account 7</ListGroupItem>
+        <ListGroupItem color="light">Account 8</ListGroupItem>
+        <ListGroupItem color="dark">Account 9</ListGroupItem>
+      </ListGroup>
     );
   }
 }

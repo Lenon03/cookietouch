@@ -16,7 +16,7 @@
     ],
     "indent": [true, "spaces", 2],
     "max-line-length": [true, 160],
-    "max-classes-per-file": 2,
+    "max-classes-per-file": [true, 2],
     "no-empty-interface": false,
     "quotemark": [true, "double", "avoid-escape"]
   },

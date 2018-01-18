@@ -14,28 +14,35 @@ import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannel
 import Account from "@account";
 import SpellToBoostEntry from "@account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@game/character/BoostableStats";
+import classnames from "classnames";
 import * as path from "path";
 import * as React from "react";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { Button } from "reactstrap";
+import { Button, Col, Container, ListGroup, ListGroupItem, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
 import Console from "./Console";
 import Infos from "./Infos";
-import LeftMenu from "./LeftMenu";
 
 interface IMainProps {
   //
 }
 
 interface IMainStates {
-  //
+  activeAccount: string;
+  activeTab: string;
 }
 
 export default class Main extends React.Component<IMainProps, IMainStates> {
 
   public account: Account;
 
+  private accounts = ["account1", "account2", "account3"];
+
   constructor(props: IMainProps) {
     super(props);
+
+    this.state = {
+      activeAccount: "0",
+      activeTab: "0",
+    };
 
     const accountConfig = new AccountConfiguration("cookieproject1", "azerty123456", "Herdegrize", "Enoc");
     accountConfig.characterCreation.create = false;
@@ -77,27 +84,62 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   public render() {
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-4">
-            <LeftMenu />
-          </div>
-          <div className="col">
-            <Tabs>
-              <TabList className="nav nav-tabs">
-                <Tab className="nav-item">
-                  <a className="nav-link active" href="#">Console</a>
-                </Tab>
-                <Tab className="nav-item">
-                  <a className="nav-link" href="#">Test</a>
-                </Tab>
-              </TabList>
-
-              <TabPanel>
-                <h2>Console</h2>
-              </TabPanel>
-              <TabPanel>
-                <Button color="primary" onClick={() => this.start()}>Start</Button>
+      <Container fluid={true}>
+        <Row>
+          <Col xs="2">
+            <ListGroup>
+              {this.accounts.map((item, index) => (
+                <ListGroupItem
+                  key={index}
+                  color="success"
+                  className={classnames({ active: this.state.activeAccount === `${index}` })}
+                  onClick={() => { this.toggleAccount(`${index}`); }}
+                >
+                  {item}
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+            <TabContent activeTab={this.state.activeAccount}>
+            {this.accounts.map((item, index) => (
+               <TabPane key={index} tabId={index}>
+                <Row>
+                  <Col sm="12">
+                    <h4>{item}</h4>
+                  </Col>
+                </Row>
+              </TabPane>
+             ))}
+            </TabContent>
+          </Col>
+          <Col>
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === "0" })}
+                  onClick={() => { this.toggle("0"); }}
+                >
+                  Console
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === "1" })}
+                  onClick={() => { this.toggle("1"); }}
+                >
+                  TEST
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent activeTab={this.state.activeTab}>
+              <TabPane tabId="0">
+                <Row>
+                  <Col sm="12">
+                    <h4>Console</h4>
+                  </Col>
+                </Row>
+              </TabPane>
+              <TabPane tabId="1">
+              <Button color="primary" onClick={() => this.start()}>Start</Button>
                 <Button color="primary" onClick={() => this.stop()}>Stop</Button>
                 <hr />
                 <Button color="warning" onClick={() => this.launchScript()}>Launch Script</Button>
@@ -119,12 +161,28 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                 <hr />
                 <Infos account={this.account} />
                 <Console account={this.account} />
-              </TabPanel>
-            </Tabs>
-          </div>
-        </div>
-      </div>
+              </TabPane>
+            </TabContent>
+          </Col>
+        </Row>
+      </Container>
     );
+  }
+
+  private toggle(tab: string) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  }
+
+  private toggleAccount(tab: string) {
+    if (this.state.activeAccount !== tab) {
+      this.setState({
+        activeAccount: tab,
+      });
+    }
   }
 
   private changeMap(dir: MapChangeDirections) {

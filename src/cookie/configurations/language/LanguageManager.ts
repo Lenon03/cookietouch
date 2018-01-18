@@ -6,17 +6,17 @@ import * as path from "path";
 
 export default class LanguageManager {
   public static Init() {
-    const enTxt = fs.readFileSync(path.join(__dirname, "./en.json"));
+    const enTxt = fs.readFileSync(path.join(__dirname, "./files/en.json"));
     const en = JSON.parse(enTxt.toString());
-    const frTxt = fs.readFileSync(path.join(__dirname, "./fr.json"));
+    const frTxt = fs.readFileSync(path.join(__dirname, "./files/fr.json"));
     const fr = JSON.parse(frTxt.toString());
-    const deTxt = fs.readFileSync(path.join(__dirname, "./de.json"));
+    const deTxt = fs.readFileSync(path.join(__dirname, "./files/de.json"));
     const de = JSON.parse(deTxt.toString());
-    const esTxt = fs.readFileSync(path.join(__dirname, "./es.json"));
+    const esTxt = fs.readFileSync(path.join(__dirname, "./files/es.json"));
     const es = JSON.parse(esTxt.toString());
-    const itTxt = fs.readFileSync(path.join(__dirname, "./it.json"));
+    const itTxt = fs.readFileSync(path.join(__dirname, "./files/it.json"));
     const it = JSON.parse(itTxt.toString());
-    const ptTxt = fs.readFileSync(path.join(__dirname, "./pt.json"));
+    const ptTxt = fs.readFileSync(path.join(__dirname, "./files/pt.json"));
     const pt = JSON.parse(ptTxt.toString());
 
     this.langs = new Dictionary([
@@ -34,7 +34,7 @@ export default class LanguageManager {
     let value = this.langs.getValue(lang)[key] as string;
     if (!value) {
       value = this.langs.getValue(Languages.ENGLISH)[key] as string;
-      if (!value) { return ""; }
+      if (!value) { return "<empty>"; }
     }
     if (params.length === 0) {
       return value;

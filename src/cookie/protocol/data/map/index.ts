@@ -3,6 +3,7 @@ import Cell from "./Cell";
 import GraphicalElement from "./GraphicalElement";
 
 export default class Map {
+
   public id: number;
   public topNeighbourId: number;
   public bottomNeighbourId: number;

@@ -62,8 +62,7 @@ export default class GlobalConfiguration {
   }
 
   public static load() {
-    const result = fs.existsSync(this.configPath);
-    if (!result) {
+    if (!fs.existsSync(this.configPath)) {
       return;
     }
     const data = fs.readFileSync(this.configPath);

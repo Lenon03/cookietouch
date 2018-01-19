@@ -9,6 +9,7 @@ import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNum
 import GameFightEndMessage from "@/protocol/network/messages/GameFightEndMessage";
 import FightResultPlayerListEntry from "@/protocol/network/types/FightResultPlayerListEntry";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
+import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
 export default class StatisticsManager {
@@ -31,6 +32,9 @@ export default class StatisticsManager {
   private gatherStartTime: [number, number];
 
   private account: Account;
+
+  public get StatisticsUpdated() { return this.onStatisticsUpdated.expose(); }
+  private readonly onStatisticsUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
@@ -82,18 +86,22 @@ export default class StatisticsManager {
     this.objectsObtainedInFights.ForEach((obj) => {
       obj.percentage = obj.quantity / totalQty * 100;
     });
+    this.onStatisticsUpdated.trigger();
   }
 
   public UpdateCharacterExperienceGainMessage(message: CharacterExperienceGainMessage) {
     this.experienceGained += message.experienceCharacter;
+    this.onStatisticsUpdated.trigger();
   }
 
   public UpdateCharacterLevelUpMessage(message: CharacterLevelUpMessage) {
     this.levelsGained += message.newLevel - this.account.game.character.level;
+    this.onStatisticsUpdated.trigger();
   }
 
   public UpdateAchievementRewardSuccessMessage(message: AchievementRewardSuccessMessage) {
     this.achievementsFinished++;
+    this.onStatisticsUpdated.trigger();
   }
 
   public async UpdateDisplayNumericalValueMessage(message: DisplayNumericalValueMessage) {
@@ -106,6 +114,7 @@ export default class StatisticsManager {
         obj.percentage = obj.quantity / totalQty * 100;
       });
     }
+    this.onStatisticsUpdated.trigger();
   }
 
   private gatherStarted() {
@@ -120,6 +129,7 @@ export default class StatisticsManager {
       const diff = process.hrtime(this.gatherStartTime);
       this.totalGathersTime += diff[0] * MS_PER_SEC + diff[1] * MS_PER_NS;
     }
+    this.onStatisticsUpdated.trigger();
   }
 
   private objectGained(obj: number) {

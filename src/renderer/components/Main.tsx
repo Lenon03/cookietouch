@@ -7,11 +7,22 @@ import Account from "@account";
 import classnames from "classnames";
 import { List } from "linqts";
 import * as React from "react";
-import { Button, Col, Collapse, Container, DropdownItem, DropdownMenu,
-          DropdownToggle, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand,
-          NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown } from "reactstrap";
+import {
+  Button, Col, Collapse, Container, DropdownItem, DropdownMenu,
+  DropdownToggle, ListGroup, ListGroupItem, Modal, ModalBody,
+  ModalFooter, ModalHeader, Nav, Navbar, NavbarBrand,
+  NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
+} from "reactstrap";
+import Infos from "./Infos";
+import Bid from "./tabs/Bid";
+import Character from "./tabs/Character";
+import Configuration from "./tabs/Configuration";
 import Console from "./tabs/Console";
-import Infos from "./tabs/Infos";
+import Fights from "./tabs/Fights";
+import Inventory from "./tabs/Inventory";
+import Jobs from "./tabs/Jobs";
+import Map from "./tabs/Map";
+import Statistics from "./tabs/Statistics";
 
 interface IMainProps {
   //
@@ -23,6 +34,8 @@ interface IMainStates {
   selectedAccount: Account;
   entities: List<IEntity>;
   isOpen: boolean;
+  modal: boolean;
+  modalItem: string;
 }
 
 export default class Main extends React.Component<IMainProps, IMainStates> {
@@ -35,6 +48,8 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
       activeTab: "0",
       entities: new List(),
       isOpen: false,
+      modal: false,
+      modalItem: "0",
       selectedAccount: null,
     };
   }
@@ -61,16 +76,51 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                   this.removeSelectedAccount();
                 }}>Disconnect One</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink href="#" onClick={() => {
+                  this.toggleModal();
+                }}>Accounts Manager</NavLink>
+              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
+        <Modal isOpen={this.state.modal} size="lg" toggle={() => this.toggleModal()}>
+          <ModalHeader toggle={() => this.toggleModal()}>Accounts Manager</ModalHeader>
+          <ModalBody>
+            <Row>
+              <Col md="3">
+                <ListGroup>
+                  <ListGroupItem
+                    color="primary"
+                    className={classnames({ active: this.state.modalItem === "0" })}
+                  >
+                    <NavLink onClick={() => { this.toggleModalItem("0"); }}>
+                      Connect Accounts
+                    </NavLink>
+                  </ListGroupItem>
+                </ListGroup>
+              </Col>
+              <Col>
+                <TabContent activeTab={this.state.modalItem}>
+                  <TabPane tabId="0">
+                    Connect accounts
+                  </TabPane>
+                </TabContent>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.toggleModal()}>Do Something</Button>
+            <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
         <Row>
           <Col xs="3">
             <ListGroup>
               {this.state.entities.ToArray().map((item, index) => (
                 <ListGroupItem
                   key={index}
-                  color="secondary"
+                  color="primary"
                   className={classnames({ active: this.state.activeAccount === `${index}` })}
                 >
                   <NavLink onClick={() => { this.toggleAccount(`${index}`); }}>
@@ -84,8 +134,9 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <TabContent activeTab={this.state.activeAccount}>
               {this.state.entities.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
-                  <h4>{(item as Account).accountConfig.username}</h4>
-                  <Nav tabs>
+                  <Infos account={this.state.selectedAccount} />
+                  <br />
+                  <Nav pills>
                     <NavItem>
                       <NavLink
                         className={classnames({ active: this.state.activeTab === "0" })}
@@ -99,7 +150,63 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "1" })}
                         onClick={() => { this.toggle("1"); }}
                       >
-                        Infos
+                        Character
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "2" })}
+                        onClick={() => { this.toggle("2"); }}
+                      >
+                        Jobs
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "3" })}
+                        onClick={() => { this.toggle("3"); }}
+                      >
+                        Inventory
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "4" })}
+                        onClick={() => { this.toggle("4"); }}
+                      >
+                        Map
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "5" })}
+                        onClick={() => { this.toggle("5"); }}
+                      >
+                        Combat
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "6" })}
+                        onClick={() => { this.toggle("6"); }}
+                      >
+                        HDV
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "7" })}
+                        onClick={() => { this.toggle("7"); }}
+                      >
+                        Stats
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "8" })}
+                        onClick={() => { this.toggle("8"); }}
+                      >
+                        Configuration
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -108,7 +215,28 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       <Console account={this.state.selectedAccount} />
                     </TabPane>
                     <TabPane tabId="1">
-                      <Infos account={this.state.selectedAccount} />
+                      <Character account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="2">
+                      <Jobs account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="3">
+                      <Inventory account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="4">
+                      <Map account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="5">
+                      <Fights account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="6">
+                      <Bid account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="7">
+                      <Statistics account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="8">
+                      <Configuration account={this.state.selectedAccount} />
                     </TabPane>
                   </TabContent>
                 </TabPane>
@@ -245,6 +373,20 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
     this.setState({
       isOpen: !this.state.isOpen,
     });
+  }
+
+  private toggleModal() {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
+
+  private toggleModalItem(tab: string) {
+    if (this.state.modalItem !== tab) {
+      this.setState({
+        modalItem: tab,
+      });
+    }
   }
 
   private toggleAccount(tab: string) {

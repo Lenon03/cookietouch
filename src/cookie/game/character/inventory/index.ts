@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
@@ -201,11 +202,11 @@ export default class Inventory {
     }
   }
 
-  public async UpdateInventoryContentMessage(message: any) {
+  public async UpdateInventoryContentMessage(message: InventoryContentMessage) {
     this._objects = new Dictionary<number, ObjectEntry>();
     this.kamas = message.kamas;
 
-    const items = await DataManager.get(Items, ...message.objects.map((o: any) => o.objectGID));
+    const items = await DataManager.get(Items, ...message.objects.map((o) => o.objectGID));
 
     for (const obj of message.objects) {
       const e = items.find((f) => f.id === obj.objectGID).object;

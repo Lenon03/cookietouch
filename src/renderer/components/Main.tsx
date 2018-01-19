@@ -7,7 +7,9 @@ import Account from "@account";
 import classnames from "classnames";
 import { List } from "linqts";
 import * as React from "react";
-import { Button, Col, Container, ListGroup, ListGroupItem, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
+import { Button, Col, Collapse, Container, DropdownItem, DropdownMenu,
+          DropdownToggle, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand,
+          NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown } from "reactstrap";
 import Console from "./tabs/Console";
 import Infos from "./tabs/Infos";
 
@@ -20,6 +22,7 @@ interface IMainStates {
   activeTab: string;
   selectedAccount: Account;
   entities: List<IEntity>;
+  isOpen: boolean;
 }
 
 export default class Main extends React.Component<IMainProps, IMainStates> {
@@ -31,19 +34,36 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
       activeAccount: "0",
       activeTab: "0",
       entities: new List(),
+      isOpen: false,
       selectedAccount: null,
     };
-  }
-
-  public componentDidMount() {
-    setTimeout(() => {
-      this.connectAccounts(new List(GlobalConfiguration.getAccountsList(this.state.entities)));
-    }, 2000);
   }
 
   public render() {
     return (
       <Container fluid={true}>
+        <Navbar dark expand="md">
+          <NavbarBrand href="#">CookieTouch</NavbarBrand>
+          <NavbarToggler onClick={() => this.toggleOpen()} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="#" onClick={() => {
+                  const list = GlobalConfiguration.getAccountsList(this.state.entities);
+                  if (list.length === 0) {
+                    return;
+                  }
+                  this.connectAccounts(new List([list[0]]));
+                }}>Connect One</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#" onClick={() => {
+                  this.removeSelectedAccount();
+                }}>Disconnect One</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
         <Row>
           <Col xs="3">
             <ListGroup>
@@ -65,9 +85,6 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               {this.state.entities.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
                   <h4>{(item as Account).accountConfig.username}</h4>
-                  <Button onClick={() => this.toggleConnect()}>
-                    {this.state.selectedAccount.network.connected ? "Disconnect" : "Connect" }
-                  </Button>
                   <Nav tabs>
                     <NavItem>
                       <NavLink
@@ -224,19 +241,18 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
     }
   }
 
+  private toggleOpen() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
   private toggleAccount(tab: string) {
     if (this.state.activeAccount !== tab) {
+      this.refreshSelectedAccount(parseInt(tab, 10));
       this.setState({
         activeAccount: tab,
       });
-    }
-  }
-
-  private toggleConnect() {
-    if (this.state.selectedAccount.network.connected) {
-      this.state.selectedAccount.stop();
-    } else {
-      this.state.selectedAccount.start();
     }
   }
 }

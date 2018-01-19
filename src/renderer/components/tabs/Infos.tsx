@@ -1,8 +1,6 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
-import axios from "axios";
 import * as React from "react";
-import Image from "./Image";
 
 interface IInfosProps {
   account: Account;
@@ -26,6 +24,9 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   public componentDidMount() {
+    if (!this.props.account) {
+      return;
+    }
     this.props.account.StateChanged.on(this.stateChanged.bind(this));
     this.props.account.game.map.MapChanged.on(this.mapChanged.bind(this));
   }

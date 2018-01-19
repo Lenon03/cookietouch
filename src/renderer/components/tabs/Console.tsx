@@ -21,6 +21,9 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   }
 
   public componentWillMount() {
+    if (!this.props.account) {
+      return;
+    }
     this.props.account.logger.OnLog.on((message) => {
       const newMessages = this.state.messages;
       newMessages.push(message);

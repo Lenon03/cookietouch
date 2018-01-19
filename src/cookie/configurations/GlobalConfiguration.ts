@@ -1,10 +1,14 @@
+import Account from "@/account";
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import { Languages } from "@/configurations/language/Languages";
+import Group from "@/groups/Group";
 import Crypto from "@/utils/Crypto";
+import IEntity from "@/utils/IEntity";
 import { remote } from "electron";
 import * as fs from "fs";
 import { List } from "linqts";
 import * as path from "path";
+import Main from "renderer/components/Main";
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;
@@ -39,6 +43,21 @@ export default class GlobalConfiguration {
 
   public static get showDebugMessages(): boolean {
     return this._showDebugMessages;
+  }
+
+  public static getAccountsList(entities: List<IEntity>): AccountConfiguration[] {
+    const list = new List(this._accounts.ToArray());
+    entities.ForEach((connected) => {
+      if (connected instanceof Account) {
+        list.Remove(connected.accountConfig);
+      } else if (connected instanceof Group) {
+        list.Remove(connected.chief.accountConfig);
+        connected.members.ForEach((member) => {
+          list.Remove(member.accountConfig);
+        });
+      }
+    });
+    return list.ToArray();
   }
 
   public static addAccountAndSave(username: string, password: string, server: string, character: string) {

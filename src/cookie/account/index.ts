@@ -4,6 +4,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Group from "@/groups/Group";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
+import IEntity from "@/utils/IEntity";
 import { randomString } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Logger from "@logger";
@@ -23,7 +24,7 @@ import { NetworkPhases } from "../network/NetworkPhases";
 import { AccountStates } from "./AccountStates";
 import Configuration from "./configurations/Configuration";
 
-export default class Account {
+export default class Account implements IEntity {
 
   public accountConfig: AccountConfiguration;
   public game: Game;

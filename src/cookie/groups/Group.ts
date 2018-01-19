@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import IEntity from "@/utils/IEntity";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
@@ -15,7 +16,7 @@ export interface IAccountGroup {
   event: ResetEvent;
 }
 
-export default class Group {
+export default class Group implements IEntity {
   public chief: Account;
   public members: List<Account>;
 

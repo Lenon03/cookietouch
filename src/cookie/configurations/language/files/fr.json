@@ -216,7 +216,7 @@
   "noDoorOnCell": "Il n'y a pas de porte sur la cellule ?",
   "invalidDirection": "cellule/direction invalide en direction",
   "paused": "En pause",
-  "unpaused": "Pause retiré",
+  "unpaused": "Pause retirée",
   "groups": "Groupes",
   "waitingAllMembers": "En attente des ActionsFinished pour les membres",
   "allMembersDone": "Toutes les actions des membres sont faites."

@@ -13,6 +13,7 @@ import {
   ModalFooter, ModalHeader, Nav, Navbar, NavbarBrand,
   NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
 } from "reactstrap";
+import ConfigurationG from "./Configuration";
 import Infos from "./Infos";
 import Bid from "./tabs/Bid";
 import Character from "./tabs/Character";
@@ -35,6 +36,7 @@ interface IMainStates {
   entities: List<IEntity>;
   isOpen: boolean;
   modal: boolean;
+  modalConfig: boolean;
   modalItem: string;
 }
 
@@ -49,6 +51,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
       entities: new List(),
       isOpen: false,
       modal: false,
+      modalConfig: false,
       modalItem: "0",
       selectedAccount: null,
     };
@@ -81,6 +84,11 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                   this.toggleModal();
                 }}>Accounts Manager</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink href="#" onClick={() => {
+                  this.toggleModalConfig();
+                }}>Configuration</NavLink>
+              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
@@ -112,6 +120,15 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
           <ModalFooter>
             <Button color="primary" onClick={() => this.toggleModal()}>Do Something</Button>
             <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.modalConfig} size="lg" toggle={() => this.toggleModalConfig()}>
+          <ModalHeader toggle={() => this.toggleModalConfig()}>Configuration</ModalHeader>
+          <ModalBody>
+            <ConfigurationG />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.toggleModalConfig()}>Close</Button>
           </ModalFooter>
         </Modal>
         <Row>
@@ -378,6 +395,12 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
   private toggleModal() {
     this.setState({
       modal: !this.state.modal,
+    });
+  }
+
+  private toggleModalConfig() {
+    this.setState({
+      modalConfig: !this.state.modalConfig,
     });
   }
 

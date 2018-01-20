@@ -207,7 +207,7 @@
   "autoDeleteStarted": "La session AUTO_DELETE a démarré.",
   "autoDeleteEnded": "La session AUTO_DELETE est terminée.",
   "characterNoMorePhantom": "Le personnage n'est plus un fantôme, passant à la fonction de déplacement.",
-  "characterNoMoreFullWeight": "Le personnage n'est plus plein, passage (ou retour) à la fonction de déplacement.",
+  "characterNoMoreFullWeight": "Le personnage n'est plus plein, passage à la fonction de déplacement.",
   "noResource": "Aucune ressource.",
   "gathersListEmpty": "La liste des ressources à rassembler est vide (vérifier ELEMENTS_TO_GATHER ou votre métier)",
   "maxFightsPerMap": "Le nombre maximum de combat (?) a été atteint sur cette carte.",

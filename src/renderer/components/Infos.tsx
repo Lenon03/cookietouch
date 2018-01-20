@@ -5,6 +5,7 @@ import { Button, Col, Container, Progress, Row } from "reactstrap";
 
 interface IInfosProps {
   account: Account;
+  removeSelectedAccount: () => void;
 }
 
 interface IInfosStates {
@@ -45,6 +46,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
     this.props.account.StateChanged.on(this.stateChanged.bind(this));
     this.props.account.game.map.MapChanged.on(this.mapChanged.bind(this));
     this.props.account.game.character.inventory.InventoryUpdated.on(this.inventoryUpdated.bind(this));
+    this.props.account.scripts.ScriptLoaded.on(this.scriptLoaded.bind(this));
   }
 
   public componentWillUnmount() {
@@ -52,19 +54,27 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
     this.props.account.StateChanged.off(this.stateChanged.bind(this));
     this.props.account.game.map.MapChanged.off(this.mapChanged.bind(this));
     this.props.account.game.character.inventory.InventoryUpdated.off(this.inventoryUpdated.bind(this));
+    this.props.account.scripts.ScriptLoaded.off(this.scriptLoaded.bind(this));
   }
 
   public render() {
     return (
       <Container>
-        <hr />
         <Row>
           <Col>
-            <Button color="primary" size="sm">Connect/Disconnect</Button>
-            <Button color="primary" size="sm">Remove</Button>
+            <Button color="primary" size="sm" onClick={() => {
+              if (this.props.account.network.connected) {
+                this.stop();
+              } else {
+                this.start();
+              }
+            }}>Connect/Disconnect</Button>
+            <Button color="primary" size="sm" onClick={() => {
+              this.props.removeSelectedAccount();
+            }}>Remove</Button>
             <Button color="primary" size="sm">Load</Button>
-            <Button color="primary" size="sm">Play</Button>
-            <Button color="primary" size="sm">Pause</Button>
+            <Button color="primary" size="sm" onClick={() => this.launchScript()}>Play</Button>
+            <Button color="primary" size="sm" onClick={() => this.pauseScript()}>Pause</Button>
           </Col>
         </Row>
         <hr />
@@ -103,6 +113,26 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
         <hr />
       </Container>
     );
+  }
+
+  private launchScript() {
+    // this.props.account.scripts.fromFile(path.join(__dirname, "../../../resources/scripts/[Déplacement][Incarnam] Go Astrub!.js"));
+  }
+
+  private pauseScript() {
+    this.props.account.scripts.stopScript("The user stopped the script.");
+  }
+
+  private scriptLoaded(scriptName: string) {
+    this.props.account.scripts.startScript();
+  }
+
+  private start() {
+    this.props.account.start();
+  }
+
+  private stop() {
+    this.props.account.stop();
   }
 
   private mapChanged() {

@@ -78,7 +78,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
               <Input type="select" id="boostableStat"
                 disabled={this.state.characterConnected ? "" : "disabled"}
                 value={this.state.statToBoost}
-                onChange={this.boostableStatChanged.bind(this)}>
+                onChange={(event) => this.boostableStatChanged(event)}>
                 <option value={BoostableStats.NONE}>{BoostableStats[BoostableStats.NONE]}</option>
                 <option value={BoostableStats.VITALITY}>{BoostableStats[BoostableStats.VITALITY]}</option>
                 <option value={BoostableStats.WISDOM}>{BoostableStats[BoostableStats.WISDOM]}</option>
@@ -93,7 +93,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <Input type="checkbox"
                   disabled={this.state.characterConnected ? "" : "disabled"}
                   checked={this.state.enableSpeedHack}
-                  onChange={this.speedhackChanged.bind(this)} />
+                  onChange={(event) => this.speedhackChanged(event)} />
                 SpeedHack
               </Label>
             </FormGroup>
@@ -102,7 +102,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <Input type="checkbox"
                   disabled={this.state.characterConnected ? "" : "disabled"}
                   checked={this.state.autoMount}
-                  onChange={this.autoMountChanged.bind(this)} />
+                  onChange={(event) => this.autoMountChanged(event)} />
                 Auto Mount
               </Label>
             </FormGroup>
@@ -111,7 +111,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <Input type="checkbox"
                   disabled={this.state.characterConnected ? "" : "disabled"}
                   checked={this.state.acceptAchievements}
-                  onChange={this.acceptAchievementsChanged.bind(this)} />
+                  onChange={(event) => this.acceptAchievementsChanged(event)} />
                 Accept Achievements
               </Label>
             </FormGroup>
@@ -132,38 +132,33 @@ export default class Configuration extends React.Component<IConfigurationProps, 
   }
 
   private boostableStatChanged(e) {
-    this.setState({ statToBoost: parseInt(e.target.value, 10) });
-    this.props.account.config.statToBoost = this.state.statToBoost;
+    const value = parseInt(e.target.value, 10);
+    this.setState({ statToBoost: value });
+    this.props.account.config.statToBoost = value;
     this.props.account.config.save();
   }
 
-  private speedhackChanged() {
-    this.setState((prevState) => {
-      return {
-        enableSpeedHack: !prevState.enableSpeedHack,
-      };
+  private speedhackChanged(e) {
+    this.setState({
+      enableSpeedHack: e.target.checked,
     });
-    this.props.account.config.enableSpeedHack = this.state.enableSpeedHack;
+    this.props.account.config.enableSpeedHack = e.target.checked;
     this.props.account.config.save();
   }
 
-  private autoMountChanged() {
-    this.setState((prevState) => {
-      return {
-        autoMount: !prevState.autoMount,
-      };
+  private autoMountChanged(e) {
+    this.setState({
+      autoMount: e.target.checked,
     });
-    this.props.account.config.autoMount = this.state.autoMount;
+    this.props.account.config.autoMount = e.target.checked;
     this.props.account.config.save();
   }
 
-  private acceptAchievementsChanged() {
-    this.setState((prevState) => {
-      return {
-        acceptAchievements: !prevState.acceptAchievements,
-      };
+  private acceptAchievementsChanged(e) {
+    this.setState({
+      acceptAchievements: e.target.checked,
     });
-    this.props.account.config.acceptAchievements = this.state.acceptAchievements;
+    this.props.account.config.acceptAchievements = e.target.checked;
     this.props.account.config.save();
   }
 }

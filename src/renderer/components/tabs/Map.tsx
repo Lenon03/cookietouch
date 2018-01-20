@@ -37,9 +37,6 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
       <Container>
         <Row>
           <Col>
-            <Button color="primary" onClick={() => this.start()}>Start</Button>
-            <Button color="primary" onClick={() => this.stop()}>Stop</Button>
-            <hr />
             <Button color="danger" onClick={() => this.attack()}>Attack</Button>
             <Button
               color="secondary"
@@ -75,14 +72,6 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
         monsterGroupId: group.id,
       });
     }
-  }
-
-  private start() {
-    this.props.account.start();
-  }
-
-  private stop() {
-    this.props.account.stop();
   }
 
   private entitiesUpdated() {

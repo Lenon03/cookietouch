@@ -9,7 +9,8 @@ import { List } from "linqts";
 import * as React from "react";
 import {
   Button, Col, Collapse, Container, DropdownItem, DropdownMenu,
-  DropdownToggle, ListGroup, ListGroupItem, Modal, ModalBody,
+  DropdownToggle, Form, FormGroup, Input, Label,
+  ListGroup, ListGroupItem, Modal, ModalBody,
   ModalFooter, ModalHeader, Nav, Navbar, NavbarBrand,
   NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
 } from "reactstrap";
@@ -20,6 +21,7 @@ import Character from "./tabs/Character";
 import Configuration from "./tabs/Configuration";
 import Console from "./tabs/Console";
 import Fights from "./tabs/Fights";
+import Flood from "./tabs/Flood";
 import Inventory from "./tabs/Inventory";
 import Jobs from "./tabs/Jobs";
 import Map from "./tabs/Map";
@@ -67,20 +69,6 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink href="#" onClick={() => {
-                  const list = GlobalConfiguration.getAccountsList(this.state.entities);
-                  if (list.length === 0) {
-                    return;
-                  }
-                  this.connectAccounts(new List([list[0]]));
-                }}>Connect One</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={() => {
-                  this.removeSelectedAccount();
-                }}>Disconnect One</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={() => {
                   this.toggleModal();
                 }}>Accounts Manager</NavLink>
               </NavItem>
@@ -111,7 +99,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     className={classnames({ active: this.state.modalItem === "1" })}
                   >
                     <NavLink onClick={() => { this.toggleModalItem("1"); }}>
-                      Add Accounts
+                      Add accounts
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
@@ -127,10 +115,44 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               <Col>
                 <TabContent activeTab={this.state.modalItem}>
                   <TabPane tabId="0">
-                    list of accounts to connect
+                    <ListGroup>
+                      {GlobalConfiguration.getAccountsList(this.state.entities).map((elem, index) => (
+                        <ListGroupItem onClick={(e) => {
+                          this.connectAccounts(new List([elem]));
+                        }} key={index}>
+                          {elem.username}
+                        </ListGroupItem>
+                      ))}
+                    </ListGroup>
                   </TabPane>
                   <TabPane tabId="1">
-                    form to add an account
+                    <Form onSubmit={(event) => {
+                      event.preventDefault();
+                      const username = (document.getElementById("username") as HTMLInputElement).value;
+                      const password = (document.getElementById("examplePassword") as HTMLInputElement).value;
+                      const server = (document.getElementById("server") as HTMLInputElement).value;
+                      const character = (document.getElementById("character") as HTMLInputElement).value;
+                      GlobalConfiguration.addAccountAndSave(username, password, server, character);
+                    }}>
+                      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="username" className="mr-sm-2">Nom de compte</Label>
+                        <Input type="text" name="text" id="username" />
+                      </FormGroup>
+                      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="examplePassword" className="mr-sm-2">Mot de passe</Label>
+                        <Input type="password" name="password" id="examplePassword" />
+                      </FormGroup>
+                      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="server" className="mr-sm-2">Serveur</Label>
+                        <Input type="text" name="text" id="server" />
+                      </FormGroup>
+                      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="character" className="mr-sm-2">Personnage</Label>
+                        <Input type="text" name="text" id="character" />
+                      </FormGroup>
+                      <br />
+                      <Button>Submit</Button>
+                    </Form>
                   </TabPane>
                   <TabPane tabId="2">
                     form to add characters to create
@@ -173,7 +195,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <TabContent activeTab={this.state.activeAccount}>
               {this.state.entities.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
-                  <Infos account={this.state.selectedAccount} />
+                  <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount} />
                   <br />
                   <Nav pills>
                     <NavItem>
@@ -229,7 +251,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "6" })}
                         onClick={() => { this.toggle("6"); }}
                       >
-                        HDV
+                        Flood
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -237,13 +259,21 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "7" })}
                         onClick={() => { this.toggle("7"); }}
                       >
-                        Stats
+                        HDV
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         className={classnames({ active: this.state.activeTab === "8" })}
                         onClick={() => { this.toggle("8"); }}
+                      >
+                        Stats
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({ active: this.state.activeTab === "9" })}
+                        onClick={() => { this.toggle("9"); }}
                       >
                         Configuration
                       </NavLink>
@@ -269,12 +299,15 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       <Fights account={this.state.selectedAccount} />
                     </TabPane>
                     <TabPane tabId="6">
-                      <Bid account={this.state.selectedAccount} />
+                      <Flood account={this.state.selectedAccount} />
                     </TabPane>
                     <TabPane tabId="7">
-                      <Statistics account={this.state.selectedAccount} />
+                      <Bid account={this.state.selectedAccount} />
                     </TabPane>
                     <TabPane tabId="8">
+                      <Statistics account={this.state.selectedAccount} />
+                    </TabPane>
+                    <TabPane tabId="9">
                       <Configuration account={this.state.selectedAccount} />
                     </TabPane>
                   </TabContent>

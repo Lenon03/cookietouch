@@ -33,7 +33,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
               <Label for="lang">Lang</Label>
               <Input type="select" id="lang"
                 value={this.state.lang}
-                onChange={this.langChanged.bind(this)}>
+                onChange={(event) => this.langChanged(event)}>
                 <option value={Languages.FRENCH}>{Languages.FRENCH}</option>
                 <option value={Languages.ENGLISH}>{Languages.ENGLISH}</option>
                 <option value={Languages.SPANISH}>{Languages.SPANISH}</option>
@@ -46,7 +46,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
               <Label check>
                 <Input type="checkbox"
                   checked={this.state.showDebugMessages}
-                  onChange={this.showDebugMessagesChanged.bind(this)} />
+                  onChange={(event) => this.showDebugMessagesChanged(event)} />
                 Show debug messages
               </Label>
             </FormGroup>
@@ -58,15 +58,13 @@ export default class Configuration extends React.Component<IConfigurationProps, 
 
   private langChanged(e) {
     this.setState({ lang: e.target.value });
-    GlobalConfiguration.lang = this.state.lang;
+    GlobalConfiguration.lang = e.target.value;
   }
 
-  private showDebugMessagesChanged() {
-    this.setState((prevState) => {
-      return {
-        showDebugMessages: !prevState.showDebugMessages,
-      };
+  private showDebugMessagesChanged(event) {
+    this.setState({
+      showDebugMessages: event.target.checked,
     });
-    GlobalConfiguration.showDebugMessages = this.state.showDebugMessages;
+    GlobalConfiguration.showDebugMessages = event.target.checked;
   }
 }

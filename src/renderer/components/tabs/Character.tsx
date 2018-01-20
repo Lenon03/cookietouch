@@ -1,7 +1,7 @@
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
 import * as React from "react";
-import { Col, Container, Row, Table } from "reactstrap";
+import { Button, Col, Container, Row, Table } from "reactstrap";
 
 interface IInventoryProps {
   account: Account;
@@ -47,6 +47,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <th>ID</th>
                   <th>Name</th>
                   <th>Level</th>
+                  <th>Monter</th>
                 </tr>
               </thead>
               <tbody>
@@ -56,6 +57,12 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                     <td>{s.id}</td>
                     <td>{s.name}</td>
                     <td>{s.level}</td>
+                    <td>
+                      <Button
+                        disabled={this.props.account.game.character.stats.spellsPoints > 0 ? false : true}
+                        color="primary"
+                        onClick={() => this.upSpell(s)}>Monter</Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -64,6 +71,14 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
         </Row>
       </Container>
     );
+  }
+
+  private upSpell(spell: SpellEntry) {
+    if (this.props.account.game.character.levelUpSpell(spell)) {
+      alert("true");
+    } else {
+      alert("false");
+    }
   }
 
   private spellsUpdated() {

@@ -96,7 +96,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
           <ModalHeader toggle={() => this.toggleModal()}>Accounts Manager</ModalHeader>
           <ModalBody>
             <Row>
-              <Col md="3">
+              <Col xs="3">
                 <ListGroup>
                   <ListGroupItem
                     color="primary"
@@ -106,12 +106,34 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       Connect Accounts
                     </NavLink>
                   </ListGroupItem>
+                  <ListGroupItem
+                    color="primary"
+                    className={classnames({ active: this.state.modalItem === "1" })}
+                  >
+                    <NavLink onClick={() => { this.toggleModalItem("1"); }}>
+                      Add Accounts
+                    </NavLink>
+                  </ListGroupItem>
+                  <ListGroupItem
+                    color="primary"
+                    className={classnames({ active: this.state.modalItem === "2" })}
+                  >
+                    <NavLink onClick={() => { this.toggleModalItem("2"); }}>
+                      Character Creator
+                    </NavLink>
+                  </ListGroupItem>
                 </ListGroup>
               </Col>
               <Col>
                 <TabContent activeTab={this.state.modalItem}>
                   <TabPane tabId="0">
-                    Connect accounts
+                    list of accounts to connect
+                  </TabPane>
+                  <TabPane tabId="1">
+                    form to add an account
+                  </TabPane>
+                  <TabPane tabId="2">
+                    form to add characters to create
                   </TabPane>
                 </TabContent>
               </Col>
@@ -132,7 +154,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
           </ModalFooter>
         </Modal>
         <Row>
-          <Col xs="3">
+          <Col xs="2">
             <ListGroup>
               {this.state.entities.ToArray().map((item, index) => (
                 <ListGroupItem

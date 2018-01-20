@@ -1,7 +1,7 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import * as React from "react";
-import { Col, Container, Progress, Row } from "reactstrap";
+import { Button, Col, Container, Progress, Row } from "reactstrap";
 
 interface IInfosProps {
   account: Account;
@@ -57,12 +57,22 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   public render() {
     return (
       <Container>
-        <hr/>
+        <hr />
+        <Row>
+          <Col>
+            <Button color="primary" size="sm">Connect/Disconnect</Button>
+            <Button color="primary" size="sm">Remove</Button>
+            <Button color="primary" size="sm">Load</Button>
+            <Button color="primary" size="sm">Play</Button>
+            <Button color="primary" size="sm">Pause</Button>
+          </Col>
+        </Row>
+        <hr />
         <Row>
           <Col>{this.state.position}</Col>
           <Col md="3">Status: {AccountStates[this.state.status]}</Col>
         </Row>
-        <hr/>
+        <hr />
         <Row>
           <Col>
             <Progress value={this.state.lifePoints} max={this.state.lifePointsMax}>
@@ -90,7 +100,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </Progress>
           </Col>
         </Row>
-        <hr/>
+        <hr />
       </Container>
     );
   }

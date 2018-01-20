@@ -35,7 +35,6 @@
     "webpack-sources": "1.0.1"
   },
   "devDependencies": {
-    "@types/jquery": "^3.2.16",
     "@types/node": "^9.3.0",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
@@ -57,9 +56,11 @@
     "bootstrap": "4.0.0-beta.3",
     "electron-log": "^2.2.11",
     "electron-updater": "^2.18.2",
+    "jquery": "^3.3.0",
     "linqts": "^1.10.0",
     "lodash": "^4.17.4",
     "moment": "^2.19.2",
+    "popper.js": "^1.12.9",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "reactstrap": "^5.0.0-alpha.4",

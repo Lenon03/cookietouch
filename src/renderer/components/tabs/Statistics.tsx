@@ -57,7 +57,7 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
     return (
       <Container>
         <Row>
-          <Col>
+          <Col xs="4">
             Achievements Finished: {this.state.achievementsFinished}
             <br />
             Average fight time: {this.state.averageFightTime}
@@ -80,6 +80,9 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
             <br />
             Total gathers time: {this.state.totalGathersTime}
           </Col>
+          <Col>
+            Future place pour objets gagnés en combats et récoltes
+          </Col>
         </Row>
       </Container>
     );
@@ -95,7 +98,7 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
       fightsWon: this.props.account.statistics.fightsWon,
       gathersCount: this.props.account.statistics.gathersCount,
       kamasGained: this.props.account.statistics.kamasGained,
-      levelsGained: this.props.account.statistics.kamasGained,
+      levelsGained: this.props.account.statistics.levelsGained,
       objectsObtainedInFights: this.props.account.statistics.objectsObtainedInFights.ToArray(),
       objectsObtainedInGathers: this.props.account.statistics.objectsObtainedInGathers.ToArray(),
       totalFightsTime: this.props.account.statistics.totalFightsTime,

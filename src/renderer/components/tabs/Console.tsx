@@ -39,7 +39,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   public render() {
     return (
       <div>
-        <textarea rows={10} readOnly className="form-control" value={this.state.messages.map((m) => `${m.content}\n`)} />
+        <textarea rows={10} readOnly className="form-control" value={this.state.messages.map((m) => `${m.content}\n`).join("")} />
       </div>
     );
   }

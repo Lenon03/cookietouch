@@ -14,6 +14,7 @@ import {
   ModalFooter, ModalHeader, Nav, Navbar, NavbarBrand,
   NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
 } from "reactstrap";
+import CookieMain from "renderer/CookieMain";
 import ConfigurationG from "./Configuration";
 import Infos from "./Infos";
 import Bid from "./tabs/Bid";
@@ -32,10 +33,11 @@ interface IMainProps {
 }
 
 interface IMainStates {
+  accountsList: AccountConfiguration[];
   activeAccount: string;
   activeTab: string;
   selectedAccount: Account;
-  entities: List<IEntity>;
+  connectedAccounts: List<IEntity>;
   isOpen: boolean;
   modal: boolean;
   modalConfig: boolean;
@@ -48,15 +50,26 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
     super(props);
 
     this.state = {
+      accountsList: GlobalConfiguration.accountsList,
       activeAccount: "0",
       activeTab: "0",
-      entities: new List(),
+      connectedAccounts: new List(),
       isOpen: false,
       modal: false,
       modalConfig: false,
       modalItem: "0",
       selectedAccount: null,
     };
+  }
+
+  public componentDidMount() {
+    CookieMain.EntitiesUpdated.on(this.entitiesUpdated.bind(this));
+    CookieMain.SelectedAccountChanged.on(this.selectedAccountChanged.bind(this));
+  }
+
+  public componentWillUnmount() {
+    CookieMain.EntitiesUpdated.off(this.entitiesUpdated.bind(this));
+    CookieMain.SelectedAccountChanged.off(this.selectedAccountChanged.bind(this));
   }
 
   public render() {
@@ -99,7 +112,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     className={classnames({ active: this.state.modalItem === "1" })}
                   >
                     <NavLink onClick={() => { this.toggleModalItem("1"); }}>
-                      Add accounts
+                      Add Accounts
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
@@ -116,11 +129,23 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                 <TabContent activeTab={this.state.modalItem}>
                   <TabPane tabId="0">
                     <ListGroup>
-                      {GlobalConfiguration.getAccountsList(this.state.entities).map((elem, index) => (
-                        <ListGroupItem onClick={(e) => {
-                          this.connectAccounts(new List([elem]));
-                        }} key={index}>
-                          {elem.username}
+                      {this.state.accountsList.map((elem, index) => (
+                        // TODO: see for groups...
+                        <ListGroupItem className="clearfix" key={index}>
+                          <NavLink className="float-left" onClick={(e) => {
+                            CookieMain.connectAccounts(new List([elem]));
+                            this.toggleModal();
+                          }}>
+                            {elem.username}
+                          </NavLink>
+                          <Button className="float-right" onClick={() => {
+                            GlobalConfiguration.removeAccount(elem);
+                            GlobalConfiguration.save();
+                            this.setState({
+                              accountsList: GlobalConfiguration.accountsList,
+                              connectedAccounts: CookieMain.connectedAccounts,
+                            });
+                          }} outline color="danger" size="sm">X</Button>
                         </ListGroupItem>
                       ))}
                     </ListGroup>
@@ -178,7 +203,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
         <Row>
           <Col xs="2">
             <ListGroup>
-              {this.state.entities.ToArray().map((item, index) => (
+              {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <ListGroupItem
                   key={index}
                   color="primary"
@@ -193,9 +218,9 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
           </Col>
           <Col>
             <TabContent activeTab={this.state.activeAccount}>
-              {this.state.entities.ToArray().map((item, index) => (
+              {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
-                  <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount} />
+                  <Infos account={this.state.selectedAccount} />
                   <br />
                   <Nav pills>
                     <NavItem>
@@ -320,117 +345,19 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
     );
   }
 
-  public get connectedAccounts(): List<Account> {
-    return this.state.entities.Select((e) => {
-      if (e instanceof Account) {
-        return e;
-      }
-      return (e as Group).chief;
-    });
-  }
-
-  public connectAccounts(accountConfigs: List<AccountConfiguration>) {
-    accountConfigs.ForEach((accountConfig) => {
-      const account = new Account(accountConfig);
-      this.state.entities.Add(account);
-      this.setState({
-        selectedAccount: account,
-      });
-      account.start();
-    });
-  }
-
-  public connectGroup(chief: AccountConfiguration, members: List<AccountConfiguration>) {
-    const group = new Group(new Account(chief));
-    members.ForEach((m) => group.addMember(new Account(m)));
-    this.state.entities.Add(group);
+  private entitiesUpdated() {
     this.setState({
-      selectedAccount: group.chief,
+      accountsList: GlobalConfiguration.accountsList,
+      connectedAccounts: CookieMain.connectedAccounts,
     });
-    group.connect();
   }
 
-  public async removeSelectedAccount() {
-    if (!this.state.selectedAccount) {
-      return;
-    }
-    let account = this.state.selectedAccount;
-    let index = -1;
-
-    // Remove the account from the list
-    for (let i = this.state.entities.Count() - 1; i >= 0; i--) {
-      const entity = this.state.entities.ElementAt(i);
-      if (entity instanceof Account && entity === account) {
-        index = i;
-        await this.disconnectAccount(account);
-        this.state.entities.RemoveAt(i);
-        break;
-      }
-      if (entity instanceof Group) {
-        // In case the user wants to remove the chief, remove the whole group
-        if (entity.chief === account) {
-          await this.removeGroup(entity, i);
-          return;
-        }
-        for (let j = entity.members.Count(); j >= 0; j--) {
-          if (entity.members.ElementAt(j) !== account) {
-            continue;
-          }
-          index = i;
-          await this.disconnectAccount(account);
-          entity.members.RemoveAt(j);
-          break;
-        }
-      }
-    }
-    // Set another account as a selectedAccount
-    this.refreshSelectedAccount(index);
-    // Dispose
-    account = null;
-  }
-
-  public async removeGroup(group: Group, index: number) {
-    // Disconnect the chief
-    await this.disconnectAccount(group.chief);
-    // Disconnect the members
-    for (let i = group.members.Count() - 1; i >= 0; i--) {
-      await this.disconnectAccount(group.members.ElementAt(i));
-    }
-    // Remove the group from entities
-    this.state.entities.RemoveAt(index);
-    // Set another account as a selectedAccount
-    this.refreshSelectedAccount(index);
-    // Dispose
-    group = null;
-  }
-
-  public async disconnectAccount(account: Account) {
-    if (account.network.connected) {
-      account.network.close();
-      await sleep(400);
-    }
-  }
-
-  private refreshSelectedAccount(index: number) {
-    // If there are no account left, set it to null
-    if (this.state.entities.Count() === 0 || index === -1) {
-      this.setState({
-        selectedAccount: null,
-      });
-    } else {
-      // Otherwise look for another one
-      index = index > this.state.entities.Count() - 1 ? this.state.entities.Count() - 1 : index;
-      const entity = this.state.entities.ElementAt(index);
-      if (entity instanceof Group) {
-        this.setState({
-          selectedAccount: entity.chief,
-        });
-      } else {
-        this.setState({
-          selectedAccount: entity as Account,
-        });
-      }
-    }
+  private selectedAccountChanged(account: Account) {
+    this.setState({
+      accountsList: GlobalConfiguration.accountsList,
+      connectedAccounts: CookieMain.connectedAccounts,
+      selectedAccount: account,
+    });
   }
 
   private toggle(tab: string) {
@@ -469,7 +396,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   private toggleAccount(tab: string) {
     if (this.state.activeAccount !== tab) {
-      this.refreshSelectedAccount(parseInt(tab, 10));
+      CookieMain.refreshSelectedAccount(parseInt(tab, 10));
       this.setState({
         activeAccount: tab,
       });

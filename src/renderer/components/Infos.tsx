@@ -1,11 +1,12 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
+import { remote } from "electron";
 import * as React from "react";
 import { Button, Col, Container, Progress, Row } from "reactstrap";
+import CookieMain from "renderer/CookieMain";
 
 interface IInfosProps {
   account: Account;
-  removeSelectedAccount: () => void;
 }
 
 interface IInfosStates {
@@ -17,6 +18,8 @@ interface IInfosStates {
   lifePoints: number;
   lifePointsMax: number;
   position: string;
+  scriptLoaded: boolean;
+  scriptName: string;
   status: AccountStates;
   weight: number;
   weightMax: number;
@@ -35,6 +38,8 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       lifePoints: 0,
       lifePointsMax: 0,
       position: "",
+      scriptLoaded: false,
+      scriptName: "",
       status: AccountStates.DISCONNECTED,
       weight: 0,
       weightMax: 0,
@@ -61,20 +66,41 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
     return (
       <Container>
         <Row>
-          <Col>
-            <Button color="primary" size="sm" onClick={() => {
+          <Col xs="2">
+            <Button color={this.props.account.network.connected ? "danger" : "success"} size="sm" onClick={() => {
               if (this.props.account.network.connected) {
                 this.stop();
               } else {
                 this.start();
               }
-            }}>Connect/Disconnect</Button>
-            <Button color="primary" size="sm" onClick={() => {
-              this.props.removeSelectedAccount();
-            }}>Remove</Button>
-            <Button color="primary" size="sm">Load</Button>
-            <Button color="primary" size="sm" onClick={() => this.launchScript()}>Play</Button>
-            <Button color="primary" size="sm" onClick={() => this.pauseScript()}>Pause</Button>
+            }}>{this.props.account.network.connected ? "Disconnect" : "Connect"}
+            </Button>
+          </Col>
+          <Col xs="8">
+            Script: {this.state.scriptName}
+            <Button color="info" size="sm" onClick={() => {
+              remote.dialog.showOpenDialog({ properties: ["openFile"] }, (filepaths) => {
+                const filepath = filepaths[0];
+                this.props.account.scripts.fromFile(filepath);
+              });
+            }}>
+              Load
+            </Button>
+            <Button
+              disabled={this.state.scriptLoaded ? false : true}
+              color="dark" size="sm" onClick={() => this.launchScript()}>Play</Button>
+            <Button
+              disabled={this.state.scriptLoaded ? false : true}
+              color="warning" size="sm" onClick={() => this.pauseScript()}>Pause</Button>
+          </Col>
+          <Col xs="2">
+            <Button
+              outline color="danger" size="sm" onClick={() => {
+                CookieMain.removeSelectedAccount();
+              }}
+            >
+              Remove
+            </Button>
           </Col>
         </Row>
         <hr />
@@ -85,22 +111,27 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
         <hr />
         <Row>
           <Col>
-            <Progress value={this.state.lifePoints} max={this.state.lifePointsMax}>
+            <Progress
+              color={this.props.account.game.character.stats.lifePercent > 80 ? "success"
+                      : this.props.account.game.character.stats.lifePercent < 20 ? "danger" : "info"}
+              value={this.state.lifePoints}
+              max={this.state.lifePointsMax}
+            >
               HP: {this.state.lifePoints} / {this.state.lifePointsMax}
             </Progress>
           </Col>
           <Col>
-            <Progress value={this.state.weight} max={this.state.weightMax}>
+            <Progress color="secondary" value={this.state.weight} max={this.state.weightMax}>
               Pods: {this.state.weight} / {this.state.weightMax}
             </Progress>
           </Col>
           <Col>
-            <Progress value={this.state.experience} max={this.state.experienceMax}>
+            <Progress color="info" value={this.state.experience} max={this.state.experienceMax}>
               XP: {this.state.experience} / {this.state.experienceMax}
             </Progress>
           </Col>
           <Col>
-            <Progress value={this.state.energyPoints} max={this.state.energyPointsMax}>
+            <Progress color="warning" value={this.state.energyPoints} max={this.state.energyPointsMax}>
               Energy: {this.state.energyPoints} / {this.state.energyPointsMax}
             </Progress>
           </Col>
@@ -116,7 +147,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   private launchScript() {
-    // this.props.account.scripts.fromFile(path.join(__dirname, "../../../resources/scripts/[Déplacement][Incarnam] Go Astrub!.js"));
+    this.props.account.scripts.startScript();
   }
 
   private pauseScript() {
@@ -124,7 +155,10 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   private scriptLoaded(scriptName: string) {
-    this.props.account.scripts.startScript();
+    this.setState({
+      scriptLoaded: true,
+      scriptName,
+    });
   }
 
   private start() {

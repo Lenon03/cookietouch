@@ -177,7 +177,7 @@
   "currentAction": "Current action: ?.",
   "actionDone": "? DONE.",
   "actionFailed": "? FAILED.",
-  "errorLaunchFight": "Error when launching a fight, the group may have moved ScriptManagerScriptManageror was stolen.",
+  "errorLaunchFight": "Error when launching a fight, the group may have moved or was stolen.",
   "fightNumber": "Fight #?",
   "gatherNumber": "Gather #?",
   "gatherFailed": "Gather failed",

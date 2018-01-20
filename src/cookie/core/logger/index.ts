@@ -6,6 +6,7 @@ import { ChannelColors } from "./ChannelColors";
 import { LogType } from "./LogType";
 
 export interface IMessage {
+  source?: string;
   content: string;
   color: string;
   time: Date;
@@ -23,14 +24,15 @@ export default class Logger {
     if (!isBlank(source)) {
       this.onLog.trigger({
         color,
-        content: `[${moment().format("LTS")}][${source}] ${message}`,
+        content: message,
+        source,
         time: new Date(),
       });
       console.log(`%c[${moment().format("LTS")}][${source}] ${message}`, `color: ${color}; font-style: normal; font-size: 12px`);
     } else {
       this.onLog.trigger({
         color,
-        content: `[${moment().format("LTS")}] ${message}`,
+        content: message,
         time: new Date(),
       });
       console.log(`%c[${moment().format("LTS")}] ${message}`, `color: ${color}; font-style: normal; font-size: 12px`);

@@ -1,5 +1,6 @@
 import { IMessage } from "@/core/logger";
 import Account from "@account";
+import * as moment from "moment";
 import * as React from "react";
 
 interface IConsoleProps {
@@ -39,7 +40,12 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   public render() {
     return (
       <div>
-        <textarea rows={10} readOnly className="form-control" value={this.state.messages.map((m) => `${m.content}\n`).join("")} />
+        <textarea rows={10} readOnly className="form-control" value={this.state.messages.map((m) => {
+          if (m.source) {
+            return `[${moment(m.time).format("LTS")}][${m.source}] ${m.content}\n`;
+          }
+          return `[${moment(m.time).format("LTS")}] ${m.content}\n`;
+        }).join("")} />
       </div>
     );
   }

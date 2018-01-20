@@ -9,6 +9,7 @@ import * as fs from "fs";
 import { List } from "linqts";
 import * as path from "path";
 import Main from "renderer/components/Main";
+import CookieMain from "renderer/CookieMain";
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;
@@ -45,9 +46,9 @@ export default class GlobalConfiguration {
     return this._showDebugMessages;
   }
 
-  public static getAccountsList(entities: List<IEntity>): AccountConfiguration[] {
+  public static get accountsList(): AccountConfiguration[] {
     const list = new List(this._accounts.ToArray());
-    entities.ForEach((connected) => {
+    CookieMain.entities.ForEach((connected) => {
       if (connected instanceof Account) {
         list.Remove(connected.accountConfig);
       } else if (connected instanceof Group) {

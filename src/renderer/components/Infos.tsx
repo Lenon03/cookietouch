@@ -7,6 +7,7 @@ import CookieMain from "renderer/CookieMain";
 
 interface IInfosProps {
   account: Account;
+  removeSelectedAccount: () => void;
 }
 
 interface IInfosStates {
@@ -96,7 +97,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
           <Col xs="2">
             <Button
               outline color="danger" size="sm" onClick={() => {
-                CookieMain.removeSelectedAccount();
+                this.props.removeSelectedAccount();
               }}
             >
               Remove

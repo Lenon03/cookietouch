@@ -53,23 +53,23 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
       accountsList: GlobalConfiguration.accountsList,
       activeAccount: "0",
       activeTab: "0",
-      connectedAccounts: new List(),
+      connectedAccounts: CookieMain.connectedAccounts,
       isOpen: false,
       modal: false,
       modalConfig: false,
       modalItem: "0",
-      selectedAccount: null,
+      selectedAccount: CookieMain.selectedAccount,
     };
   }
 
   public componentDidMount() {
-    CookieMain.EntitiesUpdated.on(this.entitiesUpdated.bind(this));
     CookieMain.SelectedAccountChanged.on(this.selectedAccountChanged.bind(this));
+    CookieMain.EntitiesUpdated.on(this.entitiesUpdated.bind(this));
   }
 
   public componentWillUnmount() {
-    CookieMain.EntitiesUpdated.off(this.entitiesUpdated.bind(this));
     CookieMain.SelectedAccountChanged.off(this.selectedAccountChanged.bind(this));
+    CookieMain.EntitiesUpdated.off(this.entitiesUpdated.bind(this));
   }
 
   public render() {
@@ -143,7 +143,6 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                             GlobalConfiguration.save();
                             this.setState({
                               accountsList: GlobalConfiguration.accountsList,
-                              connectedAccounts: CookieMain.connectedAccounts,
                             });
                           }} outline color="danger" size="sm">X</Button>
                         </ListGroupItem>
@@ -187,7 +186,6 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             </Row>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.toggleModal()}>Do Something</Button>
             <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
           </ModalFooter>
         </Modal>
@@ -220,7 +218,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <TabContent activeTab={this.state.activeAccount}>
               {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
-                  <Infos account={this.state.selectedAccount} />
+                  <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount} />
                   <br />
                   <Nav pills>
                     <NavItem>
@@ -345,18 +343,20 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
     );
   }
 
-  private entitiesUpdated() {
-    this.setState({
-      accountsList: GlobalConfiguration.accountsList,
-      connectedAccounts: CookieMain.connectedAccounts,
-    });
+  private removeSelectedAccount() {
+    CookieMain.removeSelectedAccount();
   }
 
   private selectedAccountChanged(account: Account) {
     this.setState({
+      selectedAccount: account,
+    });
+  }
+
+  private entitiesUpdated() {
+    this.setState({
       accountsList: GlobalConfiguration.accountsList,
       connectedAccounts: CookieMain.connectedAccounts,
-      selectedAccount: account,
     });
   }
 

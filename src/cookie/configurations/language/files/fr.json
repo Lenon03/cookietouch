@@ -199,7 +199,7 @@
   "nothingToDo": "Rien à faire.",
   "characterTombstone": "Ton personnage est une pierre tombale, libérons-le.",
   "characterPhantom": "Votre personnage est un fantôme, vérifiez votre configuration de phoenix.",
-  "hpToGetBack": "Vous avez ?PV pour revenir. Temps estimé: ? secondes.",
+  "hpToGetBack": "Vous avez ?PV à récupérer. Temps estimé: ? secondes.",
   "regenEnded": "Régénération terminée.",
   "bagsOpen": "? sac(s) ouvert(s).",
   "nowOnMount": "Vous êtes maintenant sur votre monture :)",

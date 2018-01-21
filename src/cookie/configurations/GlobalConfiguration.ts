@@ -47,18 +47,18 @@ export default class GlobalConfiguration {
   }
 
   public static get accountsList(): AccountConfiguration[] {
-    const list = new List(this._accounts.ToArray());
-    CookieMain.entities.ForEach((connected) => {
-      if (connected instanceof Account) {
-        list.Remove(connected.accountConfig);
-      } else if (connected instanceof Group) {
-        list.Remove(connected.chief.accountConfig);
-        connected.members.ForEach((member) => {
-          list.Remove(member.accountConfig);
+    let list = new List<AccountConfiguration>(JSON.parse(JSON.stringify(this._accounts.ToArray()))).ToArray();
+    CookieMain.entities.ForEach((e) => {
+      if (e instanceof Account) {
+        list = list.filter((elem) => elem.username !== e.accountConfig.username);
+      } else if (e instanceof Group) {
+        list = list.filter((elem) => elem.username !== e.chief.accountConfig.username);
+        e.members.ForEach((member) => {
+          list = list.filter((elem) => elem.username !== member.accountConfig.username);
         });
       }
     });
-    return list.ToArray();
+    return list;
   }
 
   public static addAccountAndSave(username: string, password: string, server: string, character: string) {

@@ -4,7 +4,7 @@ const config = {
 
 const move = [
   {
-    map: "8,3",
+    map: "6,-21",
     custom: function* () {
       printMessage(`J'ai ${inventory.pods} pods !!!`)
     }

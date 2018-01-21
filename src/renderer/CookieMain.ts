@@ -24,6 +24,7 @@ export default class CookieMain {
     accountConfigs.ForEach((accountConfig) => {
       const account = new Account(accountConfig);
       this.entities.Add(account);
+      this.onEntitiesUpdated.trigger();
       this.selectedAccount = account;
       this.onSelectedAccountChanged.trigger(this.selectedAccount);
       account.start();
@@ -34,6 +35,7 @@ export default class CookieMain {
     const group = new Group(new Account(chief));
     members.ForEach((m) => group.addMember(new Account(m)));
     this.entities.Add(group);
+    this.onEntitiesUpdated.trigger();
     this.selectedAccount = group.chief;
     this.onSelectedAccountChanged.trigger(this.selectedAccount);
     group.connect();
@@ -43,40 +45,37 @@ export default class CookieMain {
     if (!this.selectedAccount) {
       return;
     }
-    let account = this.selectedAccount;
+
     let index = -1;
 
     // Remove the account from the list
     for (let i = this.entities.Count() - 1; i >= 0; i--) {
       const entity = this.entities.ElementAt(i);
-      if (entity instanceof Account && entity === account) {
+      if (entity instanceof Account && entity === this.selectedAccount) {
         index = i;
-        await this.disconnectAccount(account);
+        await this.disconnectAccount(this.selectedAccount);
         this.entities.RemoveAt(i);
         break;
       }
       if (entity instanceof Group) {
         // In case the user wants to remove the chief, remove the whole group
-        if (entity.chief === account) {
+        if (entity.chief === this.selectedAccount) {
           await this.removeGroup(entity, i);
           return;
         }
         for (let j = entity.members.Count(); j >= 0; j--) {
-          if (entity.members.ElementAt(j) !== account) {
+          if (entity.members.ElementAt(j) !== this.selectedAccount) {
             continue;
           }
           index = i;
-          await this.disconnectAccount(account);
+          await this.disconnectAccount(this.selectedAccount);
           entity.members.RemoveAt(j);
           break;
         }
       }
     }
-
     // Set another account as a selectedAccount
     this.refreshSelectedAccount(index);
-    // Dispose
-    account = null;
   }
 
   public static async removeGroup(group: Group, index: number) {
@@ -115,8 +114,8 @@ export default class CookieMain {
         this.selectedAccount = entity as Account;
       }
     }
-    this.onSelectedAccountChanged.trigger(this.selectedAccount);
     this.onEntitiesUpdated.trigger();
+    this.onSelectedAccountChanged.trigger(this.selectedAccount);
   }
 
   public static get SelectedAccountChanged() { return this.onSelectedAccountChanged.expose(); }

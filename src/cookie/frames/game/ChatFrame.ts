@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import ChatServerWithObjectMessage from "@/protocol/network/messages/ChatServerWithObjectMessage";
 import Account from "@account";
 import { ChannelColors } from "@logger/ChannelColors";
 import { LogType } from "@logger/LogType";
@@ -31,9 +32,9 @@ export default class ChatFrame {
     account.logger.logError(LanguageManager.trans("chatFrame"), ObjectErrorEnum[message.reason]);
   }
 
-  private async HandleChatServerWithObjectMessage(account: Account, message: any) {
+  private async HandleChatServerWithObjectMessage(account: Account, message: ChatServerWithObjectMessage) {
     // TODO: message.objects = objects in message
-    this.HandleChatServerMessage(account, message);
+    await this.HandleChatServerMessage(account, message);
   }
 
   private async HandleChatErrorMessage(account: Account, message: any) {

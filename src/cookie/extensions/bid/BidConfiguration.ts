@@ -1,5 +1,6 @@
 import Account from "@/account";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
+import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
 import { remote } from "electron";
 import * as fs from "fs";
@@ -27,6 +28,9 @@ export default class BidConfiguration {
   private account: Account;
   private configFilePath = "";
 
+  public get Changed() { return this.onChanged.expose(); }
+  private readonly onChanged = new LiteEvent<void>();
+
   constructor(account: Account) {
     this.account = account;
     this.interval = 10;
@@ -50,6 +54,7 @@ export default class BidConfiguration {
     this.interval = json.interval;
     this.scriptPath = json.scriptPath;
     this.objectsToSell = new List(json.objectsToSell);
+    this.onChanged.trigger();
   }
 
   public save() {
@@ -59,5 +64,6 @@ export default class BidConfiguration {
       scriptPath: this.scriptPath,
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+    this.onChanged.trigger();
   }
 }

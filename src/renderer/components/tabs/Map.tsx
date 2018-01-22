@@ -37,17 +37,17 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
       <Container>
         <Row>
           <Col>
-            <Button color="danger" onClick={() => this.attack()}>Attack</Button>
-            <Button
+            <Button size="sm" color="danger" onClick={() => this.attack()}>Attack</Button>
+            <Button size="sm"
               color="secondary"
               onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</Button>
-            <Button
+            <Button size="sm"
               color="secondary"
               onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</Button>
-            <Button
+            <Button size="sm"
               color="secondary"
               onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</Button>
-            <Button
+            <Button size="sm"
               color="secondary"
               onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</Button>
           </Col>

@@ -46,7 +46,7 @@ export default class Jobs extends React.Component<IJobsProps, IJobsStates> {
               <tbody>
                 {this.state.jobs.map((j, index) => (
                   <tr key={index}>
-                    <td><img width="40" height="40" src={j.iconUrl} alt={j.name} /></td>
+                    <td><img width="25" height="25" src={j.iconUrl} alt={j.name} /></td>
                     <td>{j.id}</td>
                     <td>{j.name}</td>
                     <td>{j.level}</td>

@@ -68,7 +68,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       <Container>
         <Row>
           <Col xs="2">
-            <Button color={this.props.account.network.connected ? "danger" : "success"} size="sm" onClick={() => {
+            <Button size="sm" color={this.props.account.network.connected ? "danger" : "success"} onClick={() => {
               if (this.props.account.network.connected) {
                 this.stop();
               } else {
@@ -79,7 +79,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
           </Col>
           <Col xs="8">
             Script: {this.state.scriptName}
-            <Button color="info" size="sm" onClick={() => {
+            <Button size="sm" color="info" onClick={() => {
               remote.dialog.showOpenDialog({ properties: ["openFile"] }, (filepaths) => {
                 const filepath = filepaths[0];
                 this.props.account.scripts.fromFile(filepath);
@@ -87,16 +87,16 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             }}>
               Load
             </Button>
-            <Button
+            <Button size="sm"
               disabled={this.state.scriptLoaded ? false : true}
-              color="dark" size="sm" onClick={() => this.launchScript()}>Play</Button>
-            <Button
+              color="dark" onClick={() => this.launchScript()}>Play</Button>
+            <Button size="sm"
               disabled={this.state.scriptLoaded ? false : true}
-              color="warning" size="sm" onClick={() => this.pauseScript()}>Pause</Button>
+              color="warning" onClick={() => this.pauseScript()}>Pause</Button>
           </Col>
           <Col xs="2">
-            <Button
-              outline color="danger" size="sm" onClick={() => {
+            <Button size="sm"
+              outline color="danger" onClick={() => {
                 this.props.removeSelectedAccount();
               }}
             >

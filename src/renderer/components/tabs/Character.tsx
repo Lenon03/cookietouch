@@ -53,14 +53,14 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
               <tbody>
                 {this.state.spells.map((s, index) => (
                   <tr key={index}>
-                    <td><img width="40" height="40" src={s.iconUrl} alt={s.name} /></td>
+                    <td><img width="25" height="25" src={s.iconUrl} alt={s.name} /></td>
                     <td>{s.id}</td>
                     <td>{s.name}</td>
                     <td>{s.level}</td>
                     <td>
-                      <Button
+                      <Button size="sm"
                         disabled={this.props.account.game.character.stats.spellsPoints > 0 ? false : true}
-                        color="primary"
+                        color="dark"
                         onClick={() => this.upSpell(s)}>Monter</Button>
                     </td>
                   </tr>

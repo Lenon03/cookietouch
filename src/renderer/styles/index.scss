@@ -4,8 +4,13 @@
 body {
   background-color: #34495e;
   color: white;
+  font-size: 11px;
 }
 
 .modal {
   color: black;
+}
+
+input:not(input[type="checkbox"]) {
+  height: 25px;
 }

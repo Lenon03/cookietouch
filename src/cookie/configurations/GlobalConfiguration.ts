@@ -74,7 +74,9 @@ export default class GlobalConfiguration {
   }
 
   public static removeAccount(accountConfig: AccountConfiguration) {
-    this._accounts.Remove(accountConfig);
+    let accounts = this._accounts.ToArray();
+    accounts = accounts.filter((a) => a.username !== accountConfig.username);
+    this._accounts = new List(accounts);
   }
 
   public static getAccount(username: string): AccountConfiguration {

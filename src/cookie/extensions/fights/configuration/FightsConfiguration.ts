@@ -1,5 +1,6 @@
 import Account from "@/account";
 import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
+import LiteEvent from "@/utils/LiteEvent";
 import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
@@ -43,6 +44,9 @@ export default class FightsConfiguration {
   public spells: Spell[];
   public fightSpeed: FightSpeeds;
 
+  public get Changed() { return this.onChanged.expose(); }
+  private readonly onChanged = new LiteEvent<void>();
+
   private account: Account;
   private configFilePath = "";
 
@@ -50,6 +54,7 @@ export default class FightsConfiguration {
     this.account = account;
 
     this.startPlacement = FightStartPlacement.FAR_FROM_ENEMIES;
+    this.ignoreSummonedEnemies = true;
     this.monsterToApproach = -1;
     this.spellToApproach = -1;
     this.blockSpectatorScenario = BlockSpectatorScenarios.NEVER;
@@ -92,6 +97,7 @@ export default class FightsConfiguration {
     this.spells = json.spells;
     this.startPlacement = json.startPlacement;
     this.tactic = json.tactic;
+    this.onChanged.trigger();
   }
 
   public save() {
@@ -112,5 +118,6 @@ export default class FightsConfiguration {
       tactic: this.tactic,
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+    this.onChanged.trigger();
   }
 }

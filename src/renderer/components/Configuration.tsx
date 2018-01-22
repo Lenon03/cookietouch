@@ -31,7 +31,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
           <Col>
             <FormGroup>
               <Label for="lang">Lang</Label>
-              <Input type="select" id="lang"
+              <Input type="select" className="form-control-sm" id="lang"
                 value={this.state.lang}
                 onChange={(event) => this.langChanged(event)}>
                 <option value={Languages.FRENCH}>{Languages.FRENCH}</option>
@@ -41,6 +41,10 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <option value={Languages.DEUTSCH}>{Languages.DEUTSCH}</option>
                 <option value={Languages.PORTUGUESE}>{Languages.PORTUGUESE}</option>
               </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="anticaptcha">Clé Anticaptcha</Label>
+              <Input type="text" value={this.state.anticaptchaKey} onChange={(e) => this.anticaptchaChanged(e)} />
             </FormGroup>
             <FormGroup check>
               <Label check>
@@ -54,6 +58,13 @@ export default class Configuration extends React.Component<IConfigurationProps, 
         </Row>
       </Container>
     );
+  }
+
+  private anticaptchaChanged(e) {
+    this.setState({
+      anticaptchaKey: e.target.value,
+    });
+    GlobalConfiguration.anticaptchaKey = e.target.value;
   }
 
   private langChanged(e) {

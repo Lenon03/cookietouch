@@ -3,7 +3,7 @@ import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
 import {
-  Col, Container,
+  Button, Col, Container,
   Nav, NavItem, NavLink, Row, TabContent,
   Table, TabPane,
 } from "reactstrap";
@@ -80,6 +80,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             </NavItem>
           </Nav>
         </Row>
+        <hr/>
         <Row>
           <Col>
             <TabContent activeTab={this.state.activeTab}>
@@ -96,7 +97,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tbody>
                     {this.state.equipments.map((c, index) => (
                       <tr key={index}>
-                        <td><img width="40" height="40" src={c.iconUrl} alt={c.name} /></td>
+                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
@@ -118,7 +119,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tbody>
                     {this.state.consumables.map((c, index) => (
                       <tr key={index}>
-                        <td><img width="40" height="40" src={c.iconUrl} alt={c.name} /></td>
+                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
@@ -135,15 +136,24 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <th>GID</th>
                       <th>Name</th>
                       <th>Quantity</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.resources.map((c, index) => (
                       <tr key={index}>
-                        <td><img width="40" height="40" src={c.iconUrl} alt={c.name} /></td>
+                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
+                        <td>
+                          <Button size="sm" color="dark">
+                            Jeter
+                          </Button>
+                          <Button size="sm" color="danger">
+                            Supprimer
+                          </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -162,7 +172,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tbody>
                     {this.state.questObjects.map((c, index) => (
                       <tr key={index}>
-                        <td><img width="40" height="40" src={c.iconUrl} alt={c.name} /></td>
+                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>

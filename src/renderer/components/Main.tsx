@@ -100,7 +100,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               <Col xs="3">
                 <ListGroup>
                   <ListGroupItem
-                    color="primary"
+                    color="dark"
                     className={classnames({ active: this.state.modalItem === "0" })}
                   >
                     <NavLink onClick={() => { this.toggleModalItem("0"); }}>
@@ -108,7 +108,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
-                    color="primary"
+                    color="dark"
                     className={classnames({ active: this.state.modalItem === "1" })}
                   >
                     <NavLink onClick={() => { this.toggleModalItem("1"); }}>
@@ -116,7 +116,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
-                    color="primary"
+                    color="dark"
                     className={classnames({ active: this.state.modalItem === "2" })}
                   >
                     <NavLink onClick={() => { this.toggleModalItem("2"); }}>
@@ -138,13 +138,13 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                           }}>
                             {elem.username}
                           </NavLink>
-                          <Button className="float-right" onClick={() => {
+                          <Button size="sm" className="float-right" onClick={() => {
                             GlobalConfiguration.removeAccount(elem);
                             GlobalConfiguration.save();
                             this.setState({
                               accountsList: GlobalConfiguration.accountsList,
                             });
-                          }} outline color="danger" size="sm">X</Button>
+                          }} outline color="danger">X</Button>
                         </ListGroupItem>
                       ))}
                     </ListGroup>
@@ -157,6 +157,9 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       const server = (document.getElementById("server") as HTMLInputElement).value;
                       const character = (document.getElementById("character") as HTMLInputElement).value;
                       GlobalConfiguration.addAccountAndSave(username, password, server, character);
+                      this.setState({
+                        accountsList: GlobalConfiguration.accountsList,
+                      });
                     }}>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Label for="username" className="mr-sm-2">Nom de compte</Label>
@@ -175,7 +178,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         <Input type="text" name="text" id="character" />
                       </FormGroup>
                       <br />
-                      <Button>Submit</Button>
+                      <Button size="sm">Submit</Button>
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">
@@ -186,7 +189,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             </Row>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            <Button size="sm" color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.modalConfig} size="lg" toggle={() => this.toggleModalConfig()}>
@@ -195,7 +198,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <ConfigurationG />
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.toggleModalConfig()}>Close</Button>
+            <Button size="sm" color="dark" onClick={() => this.toggleModalConfig()}>Close</Button>
           </ModalFooter>
         </Modal>
         <Row>
@@ -204,7 +207,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <ListGroupItem
                   key={index}
-                  color="primary"
+                  color="dark"
                   className={classnames({ active: this.state.activeAccount === `${index}` })}
                 >
                   <NavLink onClick={() => { this.toggleAccount(`${index}`); }}>
@@ -219,8 +222,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
                   <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount} />
-                  <br />
-                  <Nav pills>
+                  <Nav pills justified>
                     <NavItem>
                       <NavLink
                         className={classnames({ active: this.state.activeTab === "0" })}
@@ -302,6 +304,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       </NavLink>
                     </NavItem>
                   </Nav>
+                  <hr/>
                   <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="0">
                       <Console account={this.state.selectedAccount} />

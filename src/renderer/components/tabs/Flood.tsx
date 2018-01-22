@@ -35,7 +35,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
       <Container>
         <Row>
           <Col>
-            <Button color="info" onClick={() => this.flood()}>Flood</Button>
+            <Button size="sm" color="info" onClick={() => this.flood()}>Flood</Button>
           </Col>
         </Row>
       </Container>

@@ -1,3 +1,4 @@
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
@@ -32,7 +33,7 @@ export default class Job {
     this._jobsInitialized = false;
     this.jobs = new List<JobEntry>();
 
-    const jobsData = await DataManager.get(Jobs, ...message.jobsDescription.map((f: any) => f.jobId));
+    const jobsData = await DataManager.get<Jobs>(DataTypes.Jobs, ...message.jobsDescription.map((f: any) => f.jobId));
 
     for (const job of message.jobsDescription) {
       const jobEntry = new JobEntry(job, jobsData.find((f) => f.id === job.jobId).object);

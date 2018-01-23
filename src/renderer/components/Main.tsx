@@ -178,7 +178,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         <Input type="text" name="text" id="character" />
                       </FormGroup>
                       <br />
-                      <Button size="sm">Submit</Button>
+                      <Button size="sm">Ajouter</Button>
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">

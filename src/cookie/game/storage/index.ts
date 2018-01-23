@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
@@ -152,7 +153,7 @@ export default class Storage {
     this.kamas = message.kamas;
     this.objects = new List<ObjectEntry>();
 
-    const objects = await DataManager.get(Items, ...message.objects.map((o: any) => o.objectGID));
+    const objects = await DataManager.get<Items>(DataTypes.Items, ...message.objects.map((o: any) => o.objectGID));
 
     for (const obj of message.objects) {
       const oe = objects.find((f) => f.id === obj.objectGID).object;
@@ -172,7 +173,7 @@ export default class Storage {
 
     // Needs to be added
     if (obj === undefined) {
-      const data = await DataManager.get(Items, message.object.objectGID);
+      const data = await DataManager.get<Items>(DataTypes.Items, message.object.objectGID);
       this.objects.Add(new ObjectEntry(message.object, data[0].object));
     } else {
       // Needs to be updated
@@ -192,7 +193,7 @@ export default class Storage {
 
       // Need to be added
       if (obj === undefined) {
-        const data = await DataManager.get(Items, item.objectGID);
+        const data = await DataManager.get<Items>(DataTypes.Items, item.objectGID);
         this.objects.Add(new ObjectEntry(item, data[0].object));
       } else {
         // Needs to be updated

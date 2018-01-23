@@ -1,3 +1,4 @@
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
 import DTConstants from "@protocol/DTConstants";
@@ -8,7 +9,7 @@ export default class BreedsUtility {
   public static breeds: List<Breeds>;
 
   public static async Init() {
-    const response = await DataManager.get(Breeds, ...Enumerable.Range(1, 15).ToArray());
+    const response = await DataManager.get<Breeds>(DataTypes.Breeds, ...Enumerable.Range(1, 15).ToArray());
     this.breeds = new List(response.map((r) => r.object));
   }
 

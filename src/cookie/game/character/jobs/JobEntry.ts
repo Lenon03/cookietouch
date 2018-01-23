@@ -1,3 +1,4 @@
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
 import Skills from "@protocol/data/classes/Skills";
@@ -35,7 +36,7 @@ export default class JobEntry {
 
     if (job.skills.length > 0) {
       const skillId = job.skills.map((s) => s.skillId);
-      DataManager.get(Skills, ...skillId).then((resp) => {
+      DataManager.get<Skills>(DataTypes.Skills, ...skillId).then((resp) => {
         const skillsResp = resp;
 
         for (const skill of job.skills) {

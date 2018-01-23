@@ -4,30 +4,16 @@ import Dictionary from "@/utils/Dictionary";
 import * as fs from "fs";
 import * as path from "path";
 
-export default class LanguageManager {
-  public static Init() {
-    const enTxt = fs.readFileSync(path.join(__dirname, "./files/en.json"));
-    const en = JSON.parse(enTxt.toString());
-    const frTxt = fs.readFileSync(path.join(__dirname, "./files/fr.json"));
-    const fr = JSON.parse(frTxt.toString());
-    const deTxt = fs.readFileSync(path.join(__dirname, "./files/de.json"));
-    const de = JSON.parse(deTxt.toString());
-    const esTxt = fs.readFileSync(path.join(__dirname, "./files/es.json"));
-    const es = JSON.parse(esTxt.toString());
-    const itTxt = fs.readFileSync(path.join(__dirname, "./files/it.json"));
-    const it = JSON.parse(itTxt.toString());
-    const ptTxt = fs.readFileSync(path.join(__dirname, "./files/pt.json"));
-    const pt = JSON.parse(ptTxt.toString());
+/* tslint:disable */
+const en = require("./langs/en.json");
+const fr = require("./langs/fr.json");
+const de = require("./langs/de.json");
+const es = require("./langs/es.json");
+const it = require("./langs/it.json");
+const pt = require("./langs/pt.json");
+/* tslint:enable */
 
-    this.langs = new Dictionary([
-      { key: Languages.FRENCH, value: fr },
-      { key: Languages.ENGLISH, value: en },
-      { key: Languages.DEUTSCH, value: de },
-      { key: Languages.ITALIAN, value: it },
-      { key: Languages.PORTUGUESE, value: pt },
-      { key: Languages.SPANISH, value: es },
-    ]);
-  }
+export default class LanguageManager {
 
   public static trans(key: string, ...params: any[]): string {
     const lang = GlobalConfiguration.lang;
@@ -46,5 +32,12 @@ export default class LanguageManager {
     }
   }
 
-  private static langs: Dictionary<Languages, any>;
+  private static langs: Dictionary<Languages, any> = new Dictionary([
+    { key: Languages.FRENCH, value: fr },
+    { key: Languages.ENGLISH, value: en },
+    { key: Languages.DEUTSCH, value: de },
+    { key: Languages.ITALIAN, value: it },
+    { key: Languages.PORTUGUESE, value: pt },
+    { key: Languages.SPANISH, value: es },
+  ]);
 }

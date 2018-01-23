@@ -28,9 +28,9 @@ let mainWindow: BrowserWindow;
 function createMainWindow() {
   const window = new BrowserWindow({
     show: false,
-    webPreferences: {
-      webSecurity: false,
-    },
+    // webPreferences: {
+    //   webSecurity: false,
+    // },
   });
   window.maximize();
   window.show();

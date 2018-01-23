@@ -1,5 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import MapPoint from "@/core/pathfinder/MapPoint";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
@@ -292,9 +293,10 @@ export default class FightsExtension implements IClearable {
     if (this.config.spellToApproach === -1) {
       return false;
     }
-    const spellResp = await DataManager.get(Spells, this.config.spellToApproach);
+    const spellResp = await DataManager.get<Spells>(DataTypes.Spells, this.config.spellToApproach);
     const spell = spellResp[0].object;
-    const spellLevelResp = await DataManager.get(SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
+    const spellLevelResp = await DataManager.get<SpellLevels>
+      (DataTypes.SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
     const spellLevel = spellLevelResp[0].object;
 
     // Check if we can cast the spell from our current position

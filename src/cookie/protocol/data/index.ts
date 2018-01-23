@@ -15,11 +15,11 @@ export interface IDataResponse<T> {
 
 export default class DataManager {
 
-  public static async get<T extends Data>(type: { new(): T }, ...ids: number[]): Promise<Array<IDataResponse<T>>> {
+  public static async get<T extends Data>(type: DataTypes, ...ids: number[]): Promise<Array<IDataResponse<T>>> {
     const myArray: Array<IDataResponse<T>> = [];
     const newIds = [];
     for (const id of ids) {
-      const filePath = this.getFilePath(type.name, id);
+      const filePath = this.getFilePath(DataTypes[type], id);
       if (fs.existsSync(filePath)) {
         const file = fs.readFileSync(filePath);
         myArray.push(JSON.parse(file.toString()));
@@ -35,13 +35,13 @@ export default class DataManager {
       v: DTConstants.assetsVersion,
     };
     const response = await axios.post(`${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`, {
-      class: type.name,
+      class: DataTypes[type],
       ids: newIds,
     });
     for (const item in response.data) {
       if (response.data.hasOwnProperty(item)) {
         const dataRes = { id: parseInt(item, 10), object: response.data[item] } as IDataResponse<T>;
-        fs.writeFileSync(this.getFilePath(type.name, dataRes.id), JSON.stringify(dataRes));
+        fs.writeFileSync(this.getFilePath(DataTypes[type], dataRes.id), JSON.stringify(dataRes));
       }
     }
     this.buildData(response.data, myArray);

@@ -2,6 +2,7 @@ import Account from "@/account";
 import { GatherResults } from "@/game/managers/gathers";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import AchievementRewardSuccessMessage from "@/protocol/network/messages/AchievementRewardSuccessMessage";
 import CharacterExperienceGainMessage from "@/protocol/network/messages/CharacterExperienceGainMessage";
 import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
@@ -139,7 +140,7 @@ export default class StatisticsManager {
   private async addOrUpdate(list: List<ObjectObtainedEntry>, gid: number, qty: number) {
     let elem = list.FirstOrDefault((o) => o.gid === gid);
     if (!elem) {
-      const itemResp = await DataManager.get(Items, gid);
+      const itemResp = await DataManager.get<Items>(DataTypes.Items, gid);
       elem = new ObjectObtainedEntry(gid, itemResp[0].object.nameId, 0);
       list.Add(elem);
     }

@@ -1,5 +1,6 @@
+import SpellLevels from "@/protocol/data/classes/SpellLevels";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
-import DataClasses from "@protocol/data/classes";
 import Spells from "@protocol/data/classes/Spells";
 import DTConstants from "@protocol/DTConstants";
 import SpellItem from "@protocol/network/types/SpellItem";
@@ -16,7 +17,7 @@ export default class SpellEntry {
 
   constructor(s: SpellItem | number, spell: Spells | number) {
     if (typeof s === "number" && typeof spell === "number") {
-      DataManager.get(DataClasses.Spells, s).then((data) => {
+      DataManager.get<Spells>(DataTypes.Spells, s).then((data) => {
         const o = data[0].object;
         this.id = o.id;
         this.level = spell;
@@ -37,7 +38,7 @@ export default class SpellEntry {
   }
 
   private async setMinPlayerLevel(spell: Spells) {
-    const spellLevel = await DataManager.get(DataClasses.SpellLevels, spell.spellLevels[this.level - 1]);
+    const spellLevel = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[this.level - 1]);
     this.minPlayerLevel = spellLevel[0].object.minPlayerLevel;
   }
 }

@@ -105,7 +105,7 @@ export default class ScriptsManager {
       return;
     }
     this.scriptManager.loadFromFile(filePath, this.account.accountConfig.username, this.beforeDoFile.bind(this));
-    this.currentScriptName = path.basename(filePath);
+    this.currentScriptName = path.basename(filePath, ".js");
     this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptLoaded", path.basename(filePath, ".js")));
     this.onScriptLoaded.trigger(this.currentScriptName);
   }

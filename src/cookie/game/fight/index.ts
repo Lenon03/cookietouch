@@ -3,6 +3,7 @@ import Pathfinder from "@/core/pathfinder";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import GameActionFightCastRequestMessage from "@/protocol/network/messages/GameActionFightCastRequestMessage";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
@@ -312,14 +313,14 @@ export default class Fight implements IClearable {
         return null;
       }
 
-      DataManager.get(Spells, spellId).then((response) => {
+      DataManager.get<Spells>(DataTypes.Spells, spellId).then((response) => {
         const spell = response[0].object;
 
         if (spell === null) {
           return null;
         }
 
-        DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
+        DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
           spellLevel = response2[0].object;
         });
       });
@@ -334,9 +335,9 @@ export default class Fight implements IClearable {
       return SpellInabilityReasons.UNKNOWN;
     }
 
-    DataManager.get(Spells, spellId).then((response) => {
+    DataManager.get<Spells>(DataTypes.Spells, spellId).then((response) => {
       const spell = response[0].object;
-      DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
+      DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
         const spellLevel = response2[0].object;
 
         if (this.playedFighter.actionPoints < spellLevel.apCost) {
@@ -385,10 +386,10 @@ export default class Fight implements IClearable {
       return SpellInabilityReasons.UNKNOWN;
     }
 
-    DataManager.get(Spells, spellId).then((response) => {
+    DataManager.get<Spells>(DataTypes.Spells, spellId).then((response) => {
       const spell = response[0].object;
 
-      DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
+      DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
         const spellLevel = response2[0].object;
 
         if (spellLevel.maxCastPerTarget > 0 && this._totalSpellLaunchesInCells.containsKey(spellId)
@@ -687,9 +688,9 @@ export default class Fight implements IClearable {
   public async UpdateGameActionFightSpellCastMessage(message: GameActionFightSpellCastMessage) {
     // TODO: Check next line
     if (this.playedFighter !== null && this.playedFighter.contextualId === message.sourceId) {
-      const spellResp = await DataManager.get(Spells, message.spellId);
+      const spellResp = await DataManager.get<Spells>(DataTypes.Spells, message.spellId);
       const spell = spellResp[0].object;
-      const spellLevelResp = await DataManager.get(SpellLevels, spell.spellLevels[message.spellLevel - 1]);
+      const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[message.spellLevel - 1]);
       const spellLevel = spellLevelResp[0].object;
 
       if (spellLevel.minCastInterval > 0 && !this._spellsIntervals.containsKey(spell.id)) {

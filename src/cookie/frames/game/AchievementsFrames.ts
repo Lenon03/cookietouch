@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Achievements from "@protocol/data/classes/Achievements";
@@ -20,7 +21,7 @@ export default class AchievementsFrame {
 
   private async HandleAchievementRewardSuccessMessage(account: Account, message: any) {
     account.statistics.UpdateAchievementRewardSuccessMessage(message);
-    const achievementResp = await DataManager.get(Achievements, message.achievementId);
+    const achievementResp = await DataManager.get<Achievements>(DataTypes.Achievements, message.achievementId);
     const a = achievementResp[0].object;
     account.logger.logInfo("AchievementsFrame", LanguageManager.trans("achievementReward", a.nameId, a.points));
   }

@@ -1,6 +1,7 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
 import DataManager from "@protocol/data";
@@ -81,7 +82,7 @@ export default class CharacterCreatorExtension implements IClearable {
       ? getRandomInt(0, 2) : this.account.accountConfig.characterCreation.sex) === 1;
     const headOrder = this.account.accountConfig.characterCreation.head === -1
       ? getRandomInt(0, 8) : this.account.accountConfig.characterCreation.head;
-    const breedClass = await DataManager.get(Breeds, breed);
+    const breedClass = await DataManager.get<Breeds>(DataTypes.Breeds, breed);
     const colors = this.account.accountConfig.characterCreation.colors.length === 5
       ? this.account.accountConfig.characterCreation.colors.length
       : (sex ? breedClass[0].object.femaleColors : breedClass[0].object.maleColors);

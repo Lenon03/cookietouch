@@ -1,8 +1,11 @@
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
+import { faKorvue } from "@fortawesome/fontawesome-free-brands";
+import { faBolt, faBriefcase, faHeart, faStar } from "@fortawesome/fontawesome-free-solid";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { remote } from "electron";
 import * as React from "react";
-import { Button, Col, Container, Progress, Row } from "reactstrap";
+import { Button, Col, Container, Progress, Row, UncontrolledTooltip } from "reactstrap";
 import CookieMain from "renderer/CookieMain";
 
 interface IInfosProps {
@@ -31,19 +34,19 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   constructor(props: IInfosProps) {
     super(props);
     this.state = {
-      energyPoints: 0,
-      energyPointsMax: 0,
-      experience: 0,
-      experienceMax: 0,
-      kamas: 0,
-      lifePoints: 0,
-      lifePointsMax: 0,
+      energyPoints: -1,
+      energyPointsMax: -1,
+      experience: -1,
+      experienceMax: -1,
+      kamas: -1,
+      lifePoints: -1,
+      lifePointsMax: -1,
       position: "",
       scriptLoaded: false,
       scriptName: "",
       status: AccountStates.DISCONNECTED,
-      weight: 0,
-      weightMax: 0,
+      weight: -1,
+      weightMax: -1,
     };
   }
 
@@ -79,7 +82,9 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
           </Col>
           <Col xs="8">
             Script: {this.state.scriptName}
-            <Button size="sm" color="info" onClick={() => {
+            <Button style={{
+              marginLeft: "15px",
+            }} size="sm" color="info" onClick={() => {
               remote.dialog.showOpenDialog({ properties: ["openFile"] }, (filepaths) => {
                 const filepath = filepaths[0];
                 this.props.account.scripts.fromFile(filepath);
@@ -112,33 +117,60 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
         <hr />
         <Row>
           <Col>
-            <Progress
+            <FontAwesomeIcon className="float-left" size="lg" icon={faHeart} />
+            <Progress style={{
+              marginLeft: "20px",
+            }} id="hpProgress"
               color={this.props.account.game.character.stats.lifePercent > 80 ? "success"
-                      : this.props.account.game.character.stats.lifePercent < 20 ? "danger" : "info"}
+                : this.props.account.game.character.stats.lifePercent < 20 ? "danger" : "info"}
               value={this.state.lifePoints}
               max={this.state.lifePointsMax}
             >
-              HP: {this.state.lifePoints} / {this.state.lifePointsMax}
+              {(this.state.lifePoints !== -1 ? this.state.lifePoints / this.state.lifePointsMax * 100 : 0).toFixed(2)}%
             </Progress>
+            <UncontrolledTooltip placement="top" target="hpProgress">
+              {this.state.lifePoints} / {this.state.lifePointsMax}
+            </UncontrolledTooltip>
           </Col>
           <Col>
-            <Progress color="secondary" value={this.state.weight} max={this.state.weightMax}>
-              Pods: {this.state.weight} / {this.state.weightMax}
+            <FontAwesomeIcon className="float-left" size="lg" icon={faBriefcase} />
+            <Progress style={{
+              marginLeft: "20px",
+            }} id="weightProgress" color="secondary" value={this.state.weight} max={this.state.weightMax}>
+              {(this.state.weight !== -1 ? this.state.weight / this.state.weightMax * 100 : 0).toFixed(2)}%
             </Progress>
+            <UncontrolledTooltip placement="top" target="weightProgress">
+              {this.state.weight} / {this.state.weightMax}
+            </UncontrolledTooltip>
           </Col>
           <Col>
-            <Progress color="info" value={this.state.experience} max={this.state.experienceMax}>
-              XP: {this.state.experience} / {this.state.experienceMax}
+            <FontAwesomeIcon className="float-left" size="lg" icon={faStar} />
+            <Progress style={{
+              marginLeft: "20px",
+            }} id="xpProgress" color="info" value={this.state.experience} max={this.state.experienceMax}>
+              {(this.state.experience !== -1 ? this.state.experience / this.state.experienceMax * 100 : 0).toFixed(2)}%
             </Progress>
+            <UncontrolledTooltip placement="top" target="xpProgress">
+              {this.state.experience} / {this.state.experienceMax}
+            </UncontrolledTooltip>
           </Col>
           <Col>
-            <Progress color="warning" value={this.state.energyPoints} max={this.state.energyPointsMax}>
-              Energy: {this.state.energyPoints} / {this.state.energyPointsMax}
+            <FontAwesomeIcon className="float-left" size="lg" icon={faBolt} />
+            <Progress style={{
+              marginLeft: "20px",
+            }} id="energyProgress" color="warning" value={this.state.energyPoints} max={this.state.energyPointsMax}>
+              {(this.state.energyPoints !== -1 ? this.state.energyPoints / this.state.energyPointsMax * 100 : 0).toFixed(2)}%
             </Progress>
+            <UncontrolledTooltip placement="top" target="energyProgress">
+              {this.state.energyPoints} / {this.state.energyPointsMax}
+            </UncontrolledTooltip>
           </Col>
           <Col>
-            <Progress value={100}>
-              {this.state.kamas} Kamas
+            <FontAwesomeIcon className="float-left" size="lg" icon={faKorvue} />
+            <Progress style={{
+              marginLeft: "20px",
+            }} value={100}>
+              {this.state.kamas}
             </Progress>
           </Col>
         </Row>

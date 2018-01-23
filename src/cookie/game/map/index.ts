@@ -1,5 +1,9 @@
 import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Areas from "@/protocol/data/classes/Areas";
+import MapPositions from "@/protocol/data/classes/MapPositions";
+import SubAreas from "@/protocol/data/classes/SubAreas";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { sleep } from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
@@ -201,9 +205,9 @@ export default class Map implements IClearable {
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
     this.data = await MapsManager.getMap(message.mapId);
-    const mp = (await DataManager.get(DataClasses.MapPositions, this.id))[0];
-    const subArea = (await DataManager.get(DataClasses.SubAreas, message.subAreaId))[0];
-    const area = (await DataManager.get(DataClasses.Areas, subArea.object.areaId))[0];
+    const mp = (await DataManager.get<MapPositions>(DataTypes.MapPositions, this.id))[0];
+    const subArea = (await DataManager.get<SubAreas>(DataTypes.SubAreas, message.subAreaId))[0];
+    const area = (await DataManager.get<Areas>(DataTypes.Areas, subArea.object.areaId))[0];
 
     this.subArea = subArea.object.nameId;
     this.area = area.object.nameId;

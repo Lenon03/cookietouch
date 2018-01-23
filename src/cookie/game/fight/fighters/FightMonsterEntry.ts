@@ -1,3 +1,4 @@
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Monsters from "@protocol/data/classes/Monsters";
 import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
@@ -17,7 +18,7 @@ export default class FightMonsterEntry extends FighterEntry {
 
     this.creatureGenericId = infos1.creatureGenericId;
 
-    DataManager.get(Monsters, this.creatureGenericId)
+    DataManager.get<Monsters>(DataTypes.Monsters, this.creatureGenericId)
     .then((resp) => {
       const m = resp[0].object;
       this.name = m.nameId;

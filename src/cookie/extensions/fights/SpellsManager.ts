@@ -2,6 +2,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import FightsPathfinder from "@/core/pathfinder/fights";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import FighterEntry from "@game/fight/fighters/FighterEntry";
 import { SpellInabilityReasons } from "@game/fight/SpellInabilityReasons";
@@ -81,9 +82,9 @@ export default class SpellsManager {
       }
 
       const spellEntry = this.account.game.character.getSpell(spell.spellId);
-      const spellDataResp = await DataManager.get(Spells, spell.spellId);
+      const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
       const spellData = spellDataResp[0].object;
-      const spellLevelResp = await DataManager.get(SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
+      const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
       const spellLevel = spellLevelResp[0].object;
 
       // Get all the possible ranges
@@ -289,9 +290,9 @@ export default class SpellsManager {
       }
 
       const spellEntry = this.account.game.character.getSpell(spell.spellId);
-      const spellDataResp = await DataManager.get(Spells, spell.spellId);
+      const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
       const spellData = spellDataResp[0].object;
-      const spellLevelResp = await DataManager.get(SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
+      const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
       const spellLevel = spellLevelResp[0].object;
 
       const range = this.account.game.fight.getSpellRange(this.account.game.fight.playedFighter.cellId, spellLevel);

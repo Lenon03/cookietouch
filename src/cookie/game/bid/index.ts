@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -254,7 +255,7 @@ export default class Bid implements IClearable {
   }
 
   private async initializeGetItemPrice(gid: number): Promise<boolean> {
-    const itemRes = await DataManager.get(Items, gid);
+    const itemRes = await DataManager.get<Items>(DataTypes.Items, gid);
 
     if (itemRes.length === 0) {
       return false;

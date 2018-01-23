@@ -1,5 +1,6 @@
 import Account from "@/account";
 import { FunctionTypes } from "@/scripts/FunctionTypes";
+import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -46,9 +47,13 @@ export interface IMap {
   door: number;
   custom: GeneratorFunction;
 }
+
 export interface IFunc {
   maps: IMap[];
 }
+
+declare var __static: string;
+
 export default class JsonScriptManager {
 
   public script: string = "";
@@ -64,7 +69,7 @@ export default class JsonScriptManager {
     const content = fs.readFileSync(filePath);
     this.regexYield();
     beforeDoFile();
-    this.script += fs.readFileSync(path.join(__dirname, "./utils.js")) + content.toString();
+    this.script += fs.readFileSync(path.join(__static, "./ScriptsHelpers.js")) + content.toString();
     this.regexAll();
   }
 
@@ -96,6 +101,5 @@ export default class JsonScriptManager {
     // API
     const regexAPI = /API/g;
     this.script = this.script.replace(regexAPI, `API["${this.username}"]`);
-    // console.log(this.script);
   }
 }

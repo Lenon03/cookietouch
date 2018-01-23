@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -378,7 +379,7 @@ export default class Character {
     this.sex = message.infos.sex;
     this.look = message.infos.entityLook;
     this.skinUrl = this.getSkinUrl("full", 1, 128, 256, 0);
-    const breedResponse = await DataManager.get(Breeds, message.infos.breed);
+    const breedResponse = await DataManager.get<Breeds>(DataTypes.Breeds, message.infos.breed);
     this.breedData = breedResponse[0].object;
     this.status = PlayerStatusEnum.AVAILABLE;
     this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
@@ -419,7 +420,7 @@ export default class Character {
     this.spells = new Array<SpellEntry>();
 
     const ids = message.spells.map((s: any) => s.spellId);
-    const spells = await DataManager.get(Spells, ...ids);
+    const spells = await DataManager.get<Spells>(DataTypes.Spells, ...ids);
 
     for (const sp of message.spells) {
       const spell = spells.find((f) => f.id === sp.spellId);

@@ -1,3 +1,4 @@
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
 import ItemTypes from "@protocol/data/classes/ItemTypes";
@@ -36,10 +37,10 @@ export default class ObjectEntry {
     this.position = o.position;
 
     if (item === null) {
-      DataManager.get(Items, this.gid).then((data) => {
+      DataManager.get<Items>(DataTypes.Items, this.gid).then((data) => {
         item = data[0].object;
 
-        DataManager.get(ItemTypes, item.typeId).then((data2) => {
+        DataManager.get<ItemTypes>(DataTypes.ItemTypes, item.typeId).then((data2) => {
           const type = data2[0].object;
 
           this.name = item.nameId;
@@ -72,7 +73,7 @@ export default class ObjectEntry {
       return;
     }
 
-    DataManager.get(ItemTypes, item.typeId).then((data) => {
+    DataManager.get<ItemTypes>(DataTypes.ItemTypes, item.typeId).then((data) => {
       const type = data[0].object;
 
       this.name = item.nameId;

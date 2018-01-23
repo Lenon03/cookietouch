@@ -80,7 +80,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             </NavItem>
           </Nav>
         </Row>
-        <hr/>
+        <hr />
         <Row>
           <Col>
             <TabContent activeTab={this.state.activeTab}>
@@ -107,7 +107,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                 </Table>
               </TabPane>
               <TabPane tabId="1">
-              <Table striped bordered size="sm" responsive>
+                <Table striped bordered size="sm" responsive>
                   <thead>
                     <tr>
                       <th></th>
@@ -129,7 +129,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                 </Table>
               </TabPane>
               <TabPane tabId="2">
-              <Table striped bordered size="sm" responsive>
+                <Table striped bordered size="sm" responsive>
                   <thead>
                     <tr>
                       <th></th>
@@ -160,7 +160,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                 </Table>
               </TabPane>
               <TabPane tabId="3">
-              <Table striped bordered size="sm" responsive>
+                <Table striped bordered size="sm" responsive>
                   <thead>
                     <tr>
                       <th></th>

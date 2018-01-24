@@ -1,9 +1,10 @@
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
 import {
-  Button, Col, Container,
+  Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader,
   Nav, NavItem, NavLink, Row, TabContent,
   Table, TabPane,
 } from "reactstrap";
@@ -18,6 +19,7 @@ interface IInventoryStates {
   equipments: ObjectEntry[];
   questObjects: ObjectEntry[];
   resources: ObjectEntry[];
+  modal: boolean;
 }
 
 export default class Inventory extends React.Component<IInventoryProps, IInventoryStates> {
@@ -28,6 +30,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
       activeTab: "0",
       consumables: [],
       equipments: [],
+      modal: false,
       questObjects: [],
       resources: [],
     };
@@ -92,6 +95,8 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <th>GID</th>
                       <th>Name</th>
                       <th>Quantity</th>
+                      <th>Position</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,6 +106,18 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
+                        <td>{CharacterInventoryPositionEnum[c.position]}</td>
+                        <td>
+                          <Button size="sm" color="dark" onClick={() => this.equipUnEquipItem(c)}>
+                            {c.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED ? "Déséquiper" : "Equiper"}
+                          </Button>
+                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
+                            Jeter
+                          </Button>
+                          <Button size="sm" color="danger">
+                            Supprimer
+                          </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -184,8 +201,34 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             </TabContent>
           </Col>
         </Row>
+        <Modal isOpen={this.state.modal} toggle={() => this.toggleModal()}>
+          <ModalHeader toggle={() => this.toggleModal()}>Modal title</ModalHeader>
+          <ModalBody>
+            elit esse cillum dolore e id est laborum.
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.toggleModal()}>Do Something</Button>{" "}
+            <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
       </Container>
     );
+  }
+
+  private equipUnEquipItem(obj: ObjectEntry) {
+    if (obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+      this.props.account.game.character.inventory.unEquipObject(obj);
+    } else {
+      this.props.account.game.character.inventory.equipObject(obj);
+    }
+  }
+
+  private dropItem(obj: ObjectEntry) {
+    this.toggleModal();
+  }
+
+  private toggleModal() {
+    this.setState({ modal: !this.state.modal });
   }
 
   private toggle(tab: string) {

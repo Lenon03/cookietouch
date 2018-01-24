@@ -4,10 +4,12 @@ import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
 import {
-  Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader,
+  Button, Col, Container, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader,
   Nav, NavItem, NavLink, Row, TabContent,
   Table, TabPane,
 } from "reactstrap";
+
+enum DeleteDropUseChoice { Delete, Drop, Use }
 
 interface IInventoryProps {
   account: Account;
@@ -15,9 +17,12 @@ interface IInventoryProps {
 
 interface IInventoryStates {
   activeTab: string;
+  deleteDropUseChoice: DeleteDropUseChoice;
   consumables: ObjectEntry[];
   equipments: ObjectEntry[];
+  quantity: number;
   questObjects: ObjectEntry[];
+  object: ObjectEntry;
   resources: ObjectEntry[];
   modal: boolean;
 }
@@ -29,8 +34,11 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
     this.state = {
       activeTab: "0",
       consumables: [],
+      deleteDropUseChoice: DeleteDropUseChoice.Delete,
       equipments: [],
       modal: false,
+      object: null,
+      quantity: -1,
       questObjects: [],
       resources: [],
     };
@@ -114,7 +122,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                           <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
                             Jeter
                           </Button>
-                          <Button size="sm" color="danger">
+                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
                             Supprimer
                           </Button>
                         </td>
@@ -131,6 +139,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <th>GID</th>
                       <th>Name</th>
                       <th>Quantity</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -140,6 +149,17 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                         <td>{c.gid}</td>
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
+                        <td>
+                          <Button size="sm" color="dark" onClick={() => this.useObject(c)}>
+                            Use
+                          </Button>
+                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
+                            Jeter
+                          </Button>
+                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
+                            Supprimer
+                          </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -164,12 +184,12 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                         <td>{c.name}</td>
                         <td>{c.quantity}</td>
                         <td>
-                          <Button size="sm" color="dark">
+                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
                             Jeter
-                          </Button>
-                          <Button size="sm" color="danger">
+                      </Button>
+                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
                             Supprimer
-                          </Button>
+                      </Button>
                         </td>
                       </tr>
                     ))}
@@ -202,13 +222,33 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
           </Col>
         </Row>
         <Modal isOpen={this.state.modal} toggle={() => this.toggleModal()}>
-          <ModalHeader toggle={() => this.toggleModal()}>Modal title</ModalHeader>
+          <ModalHeader toggle={() => this.toggleModal()}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]} ?</ModalHeader>
           <ModalBody>
-            elit esse cillum dolore e id est laborum.
+            <FormGroup>
+              <Label for="qty">Combien voulez vous {DeleteDropUseChoice[this.state.deleteDropUseChoice]} ?</Label>
+              <Input
+                id="qty"
+                type="number" className="form-control-sm" value={this.state.quantity}
+                onChange={(event) => {
+                  const value = parseInt(event.target.value, 10);
+                  if (!value) { return; }
+                  this.setState({ quantity: value });
+                }} />
+            </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.toggleModal()}>Do Something</Button>{" "}
-            <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            <Button color="success" onClick={() => {
+              if (this.state.deleteDropUseChoice === DeleteDropUseChoice.Delete) {
+                this.props.account.game.character.inventory.deleteObject(this.state.object, this.state.quantity);
+              } else if (this.state.deleteDropUseChoice === DeleteDropUseChoice.Drop) {
+                this.props.account.game.character.inventory.dropObject(this.state.object, this.state.quantity);
+              } else if (this.state.deleteDropUseChoice === DeleteDropUseChoice.Use) {
+                this.props.account.game.character.inventory.useObject(this.state.object, this.state.quantity);
+              }
+              this.setState({ quantity: -1, object: null });
+              this.toggleModal();
+            }}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]}</Button>
+            <Button color="danger" onClick={() => this.toggleModal()}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </Container>
@@ -224,6 +264,26 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
   }
 
   private dropItem(obj: ObjectEntry) {
+    this.setState({
+      deleteDropUseChoice: DeleteDropUseChoice.Drop,
+      object: obj,
+    });
+    this.toggleModal();
+  }
+
+  private deleteItem(obj: ObjectEntry) {
+    this.setState({
+      deleteDropUseChoice: DeleteDropUseChoice.Delete,
+      object: obj,
+    });
+    this.toggleModal();
+  }
+
+  private useObject(obj: ObjectEntry) {
+    this.setState({
+      deleteDropUseChoice: DeleteDropUseChoice.Use,
+      object: obj,
+    });
     this.toggleModal();
   }
 

@@ -24,7 +24,6 @@ import Console from "./tabs/Console";
 import Fights from "./tabs/Fights";
 import Flood from "./tabs/Flood";
 import Inventory from "./tabs/Inventory";
-import Jobs from "./tabs/Jobs";
 import Map from "./tabs/Map";
 import Statistics from "./tabs/Statistics";
 
@@ -244,7 +243,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "2" })}
                         onClick={() => { this.toggle("2"); }}
                       >
-                        Jobs
+                        Inventory
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -252,7 +251,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "3" })}
                         onClick={() => { this.toggle("3"); }}
                       >
-                        Inventory
+                        Map
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -260,7 +259,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "4" })}
                         onClick={() => { this.toggle("4"); }}
                       >
-                        Map
+                        Combat
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -268,7 +267,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "5" })}
                         onClick={() => { this.toggle("5"); }}
                       >
-                        Combat
+                        Flood
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -276,7 +275,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "6" })}
                         onClick={() => { this.toggle("6"); }}
                       >
-                        Flood
+                        HDV
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -284,21 +283,13 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                         className={classnames({ active: this.state.activeTab === "7" })}
                         onClick={() => { this.toggle("7"); }}
                       >
-                        HDV
+                        Stats
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         className={classnames({ active: this.state.activeTab === "8" })}
                         onClick={() => { this.toggle("8"); }}
-                      >
-                        Stats
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({ active: this.state.activeTab === "9" })}
-                        onClick={() => { this.toggle("9"); }}
                       >
                         Configuration
                       </NavLink>
@@ -313,27 +304,24 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       <Character account={this.state.selectedAccount} />
                     </TabPane>
                     <TabPane tabId="2">
-                      <Jobs account={this.state.selectedAccount} />
-                    </TabPane>
-                    <TabPane tabId="3">
                       <Inventory account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="4">
+                    <TabPane tabId="3">
                       <Map account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="5">
+                    <TabPane tabId="4">
                       <Fights account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="6">
+                    <TabPane tabId="5">
                       <Flood account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="7">
+                    <TabPane tabId="6">
                       <Bid account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="8">
+                    <TabPane tabId="7">
                       <Statistics account={this.state.selectedAccount} />
                     </TabPane>
-                    <TabPane tabId="9">
+                    <TabPane tabId="8">
                       <Configuration account={this.state.selectedAccount} />
                     </TabPane>
                   </TabContent>

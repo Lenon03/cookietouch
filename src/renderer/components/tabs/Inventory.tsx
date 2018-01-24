@@ -62,7 +62,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                 Consumables
               </NavLink>
             </NavItem>
-            <NavItem color="warning">
+            <NavItem>
               <NavLink
                 className={classnames({ active: this.state.activeTab === "2" })}
                 onClick={() => { this.toggle("2"); }}

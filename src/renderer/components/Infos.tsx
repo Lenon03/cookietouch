@@ -18,6 +18,7 @@ interface IInfosStates {
   energyPointsMax: number;
   experience: number;
   experienceMax: number;
+  experiencePercent: number;
   kamas: number;
   lifePoints: number;
   lifePointsMax: number;
@@ -38,6 +39,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       energyPointsMax: -1,
       experience: -1,
       experienceMax: -1,
+      experiencePercent: -1,
       kamas: -1,
       lifePoints: -1,
       lifePointsMax: -1,
@@ -147,8 +149,8 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             <FontAwesomeIcon className="float-left" size="lg" icon={faStar} />
             <Progress style={{
               marginLeft: "20px",
-            }} id="xpProgress" color="info" value={this.state.experience} max={this.state.experienceMax}>
-              {(this.state.experience !== -1 ? this.state.experience / this.state.experienceMax * 100 : 0).toFixed(2)}%
+            }} id="xpProgress" color="info" value={this.state.experiencePercent}>
+              {(this.state.experiencePercent !== -1 ? this.state.experiencePercent : 0).toFixed(2)}%
             </Progress>
             <UncontrolledTooltip placement="top" target="xpProgress">
               {this.state.experience} / {this.state.experienceMax}
@@ -218,6 +220,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
       energyPointsMax: this.props.account.game.character.stats.maxEnergyPoints,
       experience: this.props.account.game.character.stats.experience,
       experienceMax: this.props.account.game.character.stats.experienceNextLevelFloor,
+      experiencePercent: this.props.account.game.character.stats.experiencePercent,
       lifePoints: this.props.account.game.character.stats.lifePoints,
       lifePointsMax: this.props.account.game.character.stats.maxLifePoints,
     });

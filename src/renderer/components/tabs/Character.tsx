@@ -1,95 +1,82 @@
-import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
+import classnames from "classnames";
 import * as React from "react";
-import { Button, Col, Container, Row, Table } from "reactstrap";
+import { Button, Col, Container, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
+import Jobs from "./Jobs";
+import Spells from "./Spells";
+import Stats from "./Stats";
 
-interface IInventoryProps {
+interface ICharacterProps {
   account: Account;
 }
 
-interface IInventoryStates {
-  skinUrl: string;
-  spells: SpellEntry[];
+interface ICharacterStates {
+  activeTab: string;
 }
 
-export default class Inventory extends React.Component<IInventoryProps, IInventoryStates> {
+export default class Character extends React.Component<ICharacterProps, ICharacterStates> {
 
-  constructor(props: IInventoryProps) {
+  constructor(props: ICharacterProps) {
     super(props);
     this.state = {
-      skinUrl: "",
-      spells: [],
+      activeTab: "0",
     };
-  }
-
-  public componentDidMount() {
-    this.props.account.game.character.SpellsUpdated.on(this.spellsUpdated.bind(this));
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected.bind(this));
-  }
-
-  public componentWillUnmount() {
-    this.props.account.game.character.SpellsUpdated.off(this.spellsUpdated.bind(this));
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected.bind(this));
   }
 
   public render() {
     return (
       <Container>
         <Row>
-          <Col md="3">
-            <img src={this.state.skinUrl} />
-          </Col>
+          <Nav pills>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === "0" })}
+                onClick={() => { this.toggle("0"); }}
+              >
+                Stats
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === "1" })}
+                onClick={() => { this.toggle("1"); }}
+              >
+                Spells
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === "2" })}
+                onClick={() => { this.toggle("2"); }}
+              >
+                Jobs
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Row>
+        <hr />
+        <Row>
           <Col>
-            <Table striped bordered size="sm" responsive>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Level</th>
-                  <th>Monter</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.spells.map((s, index) => (
-                  <tr key={index}>
-                    <td><img width="25" height="25" src={s.iconUrl} alt={s.name} /></td>
-                    <td>{s.id}</td>
-                    <td>{s.name}</td>
-                    <td>{s.level}</td>
-                    <td>
-                      <Button size="sm"
-                        disabled={this.props.account.game.character.stats.spellsPoints > 0 ? false : true}
-                        color="dark"
-                        onClick={() => this.upSpell(s)}>Monter</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            <TabContent activeTab={this.state.activeTab}>
+              <TabPane tabId="0">
+                <Stats account={this.props.account} />
+              </TabPane>
+              <TabPane tabId="1">
+                <Spells account={this.props.account} />
+              </TabPane>
+              <TabPane tabId="2">
+                <Jobs account={this.props.account} />
+              </TabPane>
+            </TabContent>
           </Col>
         </Row>
       </Container>
     );
   }
 
-  private upSpell(spell: SpellEntry) {
-    if (this.props.account.game.character.levelUpSpell(spell)) {
-      alert("true");
-    } else {
-      alert("false");
+  private toggle(tab: string) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab });
     }
-  }
-
-  private spellsUpdated() {
-    this.setState({
-      spells: this.props.account.game.character.spells,
-    });
-  }
-
-  private characterSelected() {
-    this.setState({
-      skinUrl: this.props.account.game.character.skinUrl,
-    });
   }
 }

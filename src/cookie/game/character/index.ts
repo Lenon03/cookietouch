@@ -1,5 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { DataTypes } from "@/protocol/data/DataTypes";
+import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -14,7 +15,6 @@ import CharacterStats from "./CharacterStats";
 import Inventory from "./inventory";
 import Jobs from "./jobs";
 import Mount from "./mount";
-import { PlayerStatusEnum } from "./PlayerStatusEnum";
 import SpellEntry from "./SpellEntry";
 
 export default class Character {
@@ -381,7 +381,7 @@ export default class Character {
     this.skinUrl = this.getSkinUrl("full", 1, 128, 256, 0);
     const breedResponse = await DataManager.get<Breeds>(DataTypes.Breeds, message.infos.breed);
     this.breedData = breedResponse[0].object;
-    this.status = PlayerStatusEnum.AVAILABLE;
+    this.status = PlayerStatusEnum.PLAYER_STATUS_AVAILABLE;
     this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
 
     this.account.config.setConfigFilePath();

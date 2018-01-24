@@ -14,3 +14,18 @@ body {
 input:not(input[type="checkbox"]) {
   height: 25px;
 }
+
+#consoleTabDiv {
+  border: 1px solid white;
+  border-radius: 5px 5px 0px 0px;
+  width: 100%;
+  height: 450px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  background-color: #403f3f;
+}
+
+#consoleTabDiv span {
+  display: block;
+  position: relative;
+}

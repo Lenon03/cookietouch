@@ -1,6 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
@@ -117,7 +118,7 @@ export default class Inventory {
       position: possiblePositions[0],
       quantity: 1,
     });
-    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectEquipped", obj.name));
+    this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectEquipped", obj.name));
     return true;
   }
 
@@ -135,7 +136,7 @@ export default class Inventory {
       position: CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED,
       quantity: 1,
     });
-    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectUnEquipped", obj.name));
+    this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectUnEquipped", obj.name));
     return true;
   }
 
@@ -156,7 +157,7 @@ export default class Inventory {
         quantity: qty,
       });
     }
-    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectUsed", qty, obj.name));
+    this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectUsed", qty, obj.name));
   }
 
   public dropObject(obj: ObjectEntry, qty = 1) {
@@ -170,7 +171,7 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectDropped", qty, obj.name));
+    this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectDropped", qty, obj.name));
   }
 
   public deleteObject(obj: ObjectEntry, qty = 1) {
@@ -184,14 +185,14 @@ export default class Inventory {
       objectUID: obj.uid,
       quantity: qty,
     });
-    this.account.logger.logDebug(LanguageManager.trans("Inventory"), LanguageManager.trans("objectDeleted", qty, obj.name));
+    this.account.logger.logDebug(LanguageManager.trans("inventory"), LanguageManager.trans("objectDeleted", qty, obj.name));
   }
 
   public resetMaxWeight() {
     try {
       const job = this.account.game.character.jobs.jobs.Sum((j) => j.level);
       const jobCount = this.account.game.character.jobs.jobs.Count((j) => j.level === 100);
-      const strength = this.account.game.character.stats.strength.total;
+      const strength = this.totalStat(this.account.game.character.stats.strength);
       const boost = this.account.game.character.inventory.equipments.Sum((e) => e.weightBoost);
       if (!job || !jobCount || !strength || !boost) {
         this.weightMax = this._fallbackMaxWeight;
@@ -305,5 +306,9 @@ export default class Inventory {
     this.kamas = message.stats.kamas;
     this.resetMaxWeight();
     this.onInventoryUpdated.trigger(false);
+  }
+
+  private totalStat(stat: CharacterBaseCharacteristic): number {
+    return stat.base + stat.objectsAndMountBonus + stat.alignGiftBonus + stat.contextModif;
   }
 }

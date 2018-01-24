@@ -111,5 +111,5 @@ export default class GlobalConfiguration {
   private static _anticaptchaKey: string = "";
   private static _lang: Languages = Languages.FRENCH;
   private static _accounts = new List<AccountConfiguration>();
-  private static _showDebugMessages = true;
+  private static _showDebugMessages = false;
 }

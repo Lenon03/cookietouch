@@ -5,6 +5,7 @@ import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import GameActionFightCastRequestMessage from "@/protocol/network/messages/GameActionFightCastRequestMessage";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
@@ -358,7 +359,7 @@ export default class Fight implements IClearable {
         }
 
         if (spellLevel.effects.length > 0 && spellLevel.effects[0].effectId === 181
-          && this.invocationsCount >= this.account.game.character.stats.summonableCreaturesBoost.total) {
+          && this.invocationsCount >= this.totalStat(this.account.game.character.stats.summonableCreaturesBoost)) {
           return SpellInabilityReasons.TOO_MANY_INVOCATIONS;
         }
 
@@ -420,7 +421,7 @@ export default class Fight implements IClearable {
 
   public getSpellRange(characterCellId: number, spellLevel: SpellLevels): number[] {
     const range = new Array<number>();
-    for (const mp of SpellShapes.getSpellRange(characterCellId, spellLevel, this.account.game.character.stats.range.total)) {
+    for (const mp of SpellShapes.getSpellRange(characterCellId, spellLevel, this.totalStat(this.account.game.character.stats.range))) {
       if (mp === null || range.includes(mp.cellId)) {
         continue;
       }
@@ -744,5 +745,9 @@ export default class Fight implements IClearable {
     } else if (infos._type === "GameFightMonsterInformations") {
       this._fighters.add(infos.contextualId, new FightMonsterEntry(infos as GameFightMonsterInformations, infos));
     }
+  }
+
+  private totalStat(stat: CharacterBaseCharacteristic): number {
+    return stat.base + stat.objectsAndMountBonus + stat.alignGiftBonus + stat.contextModif;
   }
 }

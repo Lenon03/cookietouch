@@ -146,7 +146,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="startPlacement">Start placement</Label>
                     <Input type="select" className="form-control-sm" id="startPlacement"
-disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.startPlacement}
                       onChange={(event) => this.startPlacementChanged(event)}>
                       <option value={FightStartPlacement.FAR_FROM_ENEMIES}>{FightStartPlacement[FightStartPlacement.FAR_FROM_ENEMIES]}</option>
@@ -157,7 +157,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="monsterToApproach">S'approcher vers le monstre</Label>
                     <Input type="number" className="form-control-sm" id="monsterToApproach"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.monsterToApproach}
                       onChange={(event) => this.monsterToApproachChanged(event)}>
                     </Input>
@@ -168,7 +168,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="spellToApproach">S'approcher pour lancer le sort</Label>
                     <Input type="number" className="form-control-sm" id="spellToApproach"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.spellToApproach}
                       onChange={(event) => this.spellToApproachChanged(event)}>
                     </Input>
@@ -179,7 +179,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="blockSpectatorScenario">Bloquer le mode spectateur</Label>
                     <Input type="select" className="form-control-sm" id="blockSpectatorScenario"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.blockSpectatorScenario}
                       onChange={(event) => this.blockSpectatorScenarioChanged(event)}>
                       <option value={BlockSpectatorScenarios.ALWAYS}>{BlockSpectatorScenarios[BlockSpectatorScenarios.ALWAYS]}</option>
@@ -192,7 +192,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
+                        disabled={this.state.characterConnected ? "" : "disabled"}
                         checked={this.state.lockFight}
                         onChange={(event) => this.lockFightChanged(event)} />
                       Bloquer le combat
@@ -206,7 +206,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="tactic">Tactique</Label>
                     <Input type="select" className="form-control-sm" id="tactic"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.tactic}
                       onChange={(event) => this.tacticChanged(event)}>
                       <option value={FightTactics.AGGRESSIVE}>{FightTactics[FightTactics.AGGRESSIVE]}</option>
@@ -217,7 +217,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="fightSpeed">Vitesse des combats</Label>
                     <Input type="select" className="form-control-sm" id="fightSpeed"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.fightSpeed}
                       onChange={(event) => this.fightSpeedChanged(event)}>
                       <option value={FightSpeeds.SUICIDAL}>{FightSpeeds[FightSpeeds.SUICIDAL]}</option>
@@ -228,7 +228,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="maxCells">S'approcher si on est à plus de</Label>
                     <Input type="number" className="form-control-sm" id="maxCells"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.maxCells}
                       onChange={(event) => this.maxCellsChanged(event)}>
                     </Input>
@@ -237,7 +237,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
+                        disabled={this.state.characterConnected ? "" : "disabled"}
                         checked={this.state.approachWhenNoSpellCasted}
                         onChange={(event) => this.approachWhenNoSpellCastedChanged(event)} />
                       S'approcher si aucun sorts n'a été lancé
@@ -246,7 +246,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
+                        disabled={this.state.characterConnected ? "" : "disabled"}
                         checked={this.state.baseApproachAllMonsters}
                         onChange={(event) => this.baseApproachAllMonstersChanged(event)} />
                       Se baser sur tous les monstres quand on veut s'approcher (Tactique aggressive)
@@ -255,7 +255,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
+                        disabled={this.state.characterConnected ? "" : "disabled"}
                         checked={this.state.ignoreSummonedEnemies}
                         onChange={(event) => this.ignoreSummonedEnemiesChanged(event)} />
                       Ignorer les invocations
@@ -269,7 +269,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="regenStart">Minimum</Label>
                     <Input type="number" className="form-control-sm" id="regenStart"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.regenStart}
                       onChange={(event) => this.regenStartChanged(event)}>
                     </Input>
@@ -277,7 +277,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                   <FormGroup>
                     <Label for="regenEnd">Maximum</Label>
                     <Input type="number" className="form-control-sm" id="regenEnd"
-                    disabled={this.state.characterConnected ? "" : "disabled"}
+                      disabled={this.state.characterConnected ? "" : "disabled"}
                       value={this.state.regenEnd}
                       onChange={(event) => this.regenEndChanged(event)}>
                     </Input>
@@ -354,6 +354,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="spell">Spell</Label>
                           <Input disabled={this.state.characterConnected ? "" : "disabled"}
+                            id="spell"
                             type="select" className="form-control-sm" value={this.state.addSpellForm.spellId}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
@@ -368,8 +369,8 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         </FormGroup>
                         <FormGroup>
                           <Label for="target">Target</Label>
-                          <Input
-                          disabled={this.state.characterConnected ? "" : "disabled"}
+                          <Input id="target"
+                            disabled={this.state.characterConnected ? "" : "disabled"}
                             type="select" className="form-control-sm" value={this.state.addSpellForm.target}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
@@ -386,7 +387,8 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="turns">Turns</Label>
                           <Input
-                          disabled={this.state.characterConnected ? "" : "disabled"}
+                            id="turns"
+                            disabled={this.state.characterConnected ? "" : "disabled"}
                             type="number" className="form-control-sm" value={this.state.addSpellForm.turns}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
@@ -399,6 +401,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="relaunchs">Relaunchs</Label>
                           <Input
+                            id="relaunchs"
                             disabled={this.state.characterConnected ? "" : "disabled"}
                             type="number" className="form-control-sm" value={this.state.addSpellForm.relaunchs}
                             onChange={(event) => {
@@ -412,8 +415,9 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="targetLife">{"Target Life <="}</Label>
                           <Input
-                          disabled={this.state.characterConnected ? "" : "disabled"}
-                          type="number" className="form-control-sm" value={this.state.addSpellForm.targetHp}
+                            id="targetLife"
+                            disabled={this.state.characterConnected ? "" : "disabled"}
+                            type="number" className="form-control-sm" value={this.state.addSpellForm.targetHp}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
                               if (!value || value > 100 || value < 0) { return; }
@@ -425,8 +429,9 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="selfLife">{"Self Life <="}</Label>
                           <Input
-                          disabled={this.state.characterConnected ? "" : "disabled"}
-                          type="number" className="form-control-sm" value={this.state.addSpellForm.characterHp}
+                            id="selfLife"
+                            disabled={this.state.characterConnected ? "" : "disabled"}
+                            type="number" className="form-control-sm" value={this.state.addSpellForm.characterHp}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
                               if (!value || value > 100 || value < 0) { return; }
@@ -440,6 +445,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="resistance">Resistance</Label>
                           <Input
+                            id="resistance"
                             disabled={this.state.characterConnected ? "" : "disabled"}
                             type="select" className="form-control-sm" value={this.state.addSpellForm.resistance}
                             onChange={(event) => {
@@ -458,6 +464,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                         <FormGroup>
                           <Label for="targetResistance">{"de la cible <="}</Label>
                           <Input
+                            id="targetResistance"
                             disabled={this.state.characterConnected ? "" : "disabled"}
                             type="number" className="form-control-sm" value={this.state.addSpellForm.resistanceValue}
                             onChange={(event) => {
@@ -473,6 +480,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                             Distance entre nous et la cible la plus proche {"<="}
                           </Label>
                           <Input
+                            id="maxDistance"
                             disabled={this.state.characterConnected ? "" : "disabled"}
                             type="number" className="form-control-sm" value={this.state.addSpellForm.distanceToClosestMonster}
                             onChange={(event) => {
@@ -515,7 +523,7 @@ disabled={this.state.characterConnected ? "" : "disabled"}
                           <Label check>
                             <Input
                               type="checkbox"
-                              disabled={this.state.characterConnected  && this.state.addSpellForm.aoe ? "" : "disabled"}
+                              disabled={this.state.characterConnected && this.state.addSpellForm.aoe ? "" : "disabled"}
                               checked={this.state.addSpellForm.carefulAoe}
                               onChange={(event) => {
                                 const addSpellForm = Object.assign({}, this.state.addSpellForm);

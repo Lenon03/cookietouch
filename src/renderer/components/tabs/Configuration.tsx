@@ -138,8 +138,13 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <Button disabled={this.state.characterConnected ? false : true}
                   color="light" size="sm" onClick={async () => {
                     const resp = await DataManager.get<Spells>(DataTypes.Spells, this.state.spellId);
+                    if (resp.length === 0) { return; }
                     const name = resp[0].object.nameId;
-                    if (!name) { return; }
+                    const spellsAdded = this.props.account.config.spellsToBoost.map((s) => s.id);
+                    if (spellsAdded.includes(this.state.spellId)) {
+                      alert("Vous avez déjà ajouté ce sort.");
+                      return;
+                    }
                     const respBreeds = await DataManager.get<Breeds>(DataTypes.Breeds, this.props.account.game.character.breed);
                     const spellsIds = respBreeds[0].object.breedSpellsId;
                     if (!spellsIds.includes(this.state.spellId)) {

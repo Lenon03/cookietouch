@@ -1,7 +1,7 @@
 import Account from "@/account";
 import FloodConfiguration from "@/extensions/flood/FloodConfiguration";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
-import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
+import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import LiteEvent from "@/utils/LiteEvent";
 import { getRandomInt } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
@@ -59,7 +59,7 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const seekChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SEEK);
+    const seekChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_SEEK);
     if (seekChannelSentences.Count() > 0) {
       const sentence = seekChannelSentences.ElementAt(getRandomInt(0, seekChannelSentences.Count() - 1));
       await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
@@ -70,7 +70,7 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const salesChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_SALES);
+    const salesChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_SALES);
     if (salesChannelSentences.Count() > 0) {
       const sentence = salesChannelSentences.ElementAt(getRandomInt(0, salesChannelSentences.Count() - 1));
       await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
@@ -81,7 +81,7 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const generalChannelSentences = this.getSentences(ChatActivableChannelsEnum.CHANNEL_GLOBAL);
+    const generalChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_GLOBAL);
     if (generalChannelSentences.Count() > 0) {
       const sentence = generalChannelSentences.ElementAt(getRandomInt(0, generalChannelSentences.Count() - 1));
       await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
@@ -128,7 +128,7 @@ export default class FloodExtension {
     return this.smileys[getRandomInt(0, this.smileys.length - 1)];
   }
 
-  private getSentences(channel: ChatActivableChannelsEnum) {
+  private getSentences(channel: ChatChannelsMultiEnum) {
     return this.config.sentences.Where((s) => s.channel === channel);
   }
 

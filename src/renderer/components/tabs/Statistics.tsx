@@ -81,7 +81,8 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
             Total gathers time: {this.state.totalGathersTime}
           </Col>
           <Col>
-            Future place pour objets gagnés en combats et récoltes
+            {this.state.objectsObtainedInFights.length} objects obtained in fights<br/>
+            {this.state.objectsObtainedInGathers.length} objects obtained in gathers
           </Col>
         </Row>
       </Container>

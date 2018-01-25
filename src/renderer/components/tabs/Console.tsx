@@ -1,5 +1,5 @@
 import { IMessage } from "@/core/logger";
-import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
+import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@account";
 import * as moment from "moment";
@@ -16,7 +16,7 @@ interface IConsoleProps {
 
 interface IConsoleStates {
   messages: IMessage[];
-  channel: ChatActivableChannelsEnum;
+  channel: ChatChannelsMultiEnum;
   content: string;
   characterConnected: boolean;
   status: PlayerStatusEnum;
@@ -34,7 +34,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   constructor(props: IConsoleProps) {
     super(props);
     this.state = {
-      channel: ChatActivableChannelsEnum.CHANNEL_GLOBAL,
+      channel: ChatChannelsMultiEnum.CHANNEL_GLOBAL,
       characterConnected: false,
       content: "",
       messages: [],
@@ -103,16 +103,16 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                     const value = parseInt(event.target.value, 10);
                     this.setState({ channel: value });
                   }}>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_GLOBAL}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_GLOBAL]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_GUILD}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_GUILD]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_NOOB}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_NOOB]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_PARTY}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_PARTY]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_SALES}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_SALES]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_SEEK}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_SEEK]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_GUILD}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_GUILD]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_ALLIANCE}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_ALLIANCE]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_ARENA}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_ARENA]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_TEAM}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_TEAM]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_GLOBAL}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GLOBAL]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GUILD]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_NOOB}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_NOOB]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_PARTY}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_PARTY]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_SALES}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_SALES]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_SEEK}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_SEEK]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GUILD]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_ALLIANCE}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_ALLIANCE]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_ARENA}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_ARENA]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_TEAM}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_TEAM]}</option>
                 </Input>
               </Col>
               <Col>

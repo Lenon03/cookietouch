@@ -295,7 +295,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       </NavLink>
                     </NavItem>
                   </Nav>
-                  <hr/>
+                  <hr />
                   <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="0">
                       <Console account={this.state.selectedAccount} />

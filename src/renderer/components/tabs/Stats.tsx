@@ -2,7 +2,7 @@ import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
 import * as React from "react";
-import { Button, Card, CardBody, CardGroup, CardImg, CardSubtitle, CardText, CardTitle, Col, Container, Row } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 
 interface IStatsProps {
   account: Account;
@@ -66,119 +66,203 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
 
   public render() {
     return (
-      <Container>
+      <Container id="stats">
         <Row>
           <Col>
-            <CardGroup>
-              <Card body inverse color="dark">
-                <CardTitle>{this.props.account.game.character.name}</CardTitle>
-                <CardSubtitle>Level {this.state.level}</CardSubtitle>
-                <CardImg height="256" width="128" src={this.state.skinUrl} />
-              </Card>
-              <Card body inverse color="dark">
-                <CardTitle>Résumé</CardTitle>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/heart.png")} alt="heart" />
-                  Points de vie <span className="float-right">{this.state.lifePoints} / {this.state.maxLifePoints}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/starYellow.png")} alt="starYellow" />
-                  Points d'action <span className="float-right">{this.state.actionPoints}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/movement.png")} alt="movement" />
-                  Points de mouvement <span className="float-right">{this.state.movementPoints}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/initiative.png")} alt="initiative" />
-                  Initiative <span className="float-right">{this.state.initiative}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/prospecting.png")} alt="prospecting" />
-                  Prospection <span className="float-right">{this.state.prospecting}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/range.png")} alt="range" />
-                  Portée <span className="float-right">{this.state.range}</span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/summon.png")} alt="summon" />
-                  Invocations <span className="float-right">{this.state.summonableCreaturesBoost}</span>
-                </CardText>
-              </Card>
-              <Card body inverse color="dark">
-                <div className="clearfix">
-                  <CardTitle className="float-left">Stats</CardTitle>
-                  <h6 className="float-right">Capital {this.state.statsPoints}</h6>
-                </div>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/vitality.png")} alt="vitality" />
-                  Vitalité
-                  <span className="float-right">
-                    {this.state.vitality}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.VITALITY)}>+</Button>
-                  </span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/wisdom.png")} alt="wisdom" />
-                  Sagesse
-                  <span className="float-right">
-                    {this.state.wisdom}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.WISDOM)}>+</Button>
-                  </span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/strength.png")} alt="strength" />
-                  Force
-                  <span className="float-right">
-                    {this.state.strength}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.STRENGTH)}>+</Button>
-                  </span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/intelligence.png")} alt="intelligence" />
-                  Intelligence
-                  <span className="float-right">
-                    {this.state.intelligence}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.INTELLIGENCE)}>+</Button>
-                  </span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/chance.png")} alt="chance" />
-                  Chance
-                  <span className="float-right">
-                    {this.state.chance}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.CHANCE)}>+</Button>
-                  </span>
-                </CardText>
-                <CardText>
-                  <img height="20" width="20" className="float-left" src={require("../../img/agility.png")} alt="agility" />
-                  Agilité
-                  <span className="float-right">
-                    {this.state.agility}
-                    <Button size="sm"
-                      color="dark"
-                      disabled={this.state.statsPoints > 0 ? false : true}
-                      onClick={() => this.props.account.game.character.boostStat(BoostableStats.AGILITY)}>+</Button>
-                  </span>
-                </CardText>
-              </Card>
-            </CardGroup>
+            <Row>
+              <Col>
+                <h4>{this.props.account.game.character.name}</h4>
+                <h5>Level {this.state.level}</h5>
+              </Col>
+            </Row>
+            <img src={this.state.skinUrl} alt="personnage" />
+          </Col>
+
+          <Col>
+            <Row>
+              <Col><h4>Résumé</h4></Col>
+            </Row>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/heart.png")} alt="coeur" />
+              </div>
+              <div className="stats-label">
+                Points de vie
+                <span className="float-right">
+                  {this.state.lifePoints} / {this.state.maxLifePoints}
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/starYellow.png")} alt="etoile_jaune" />
+              </div>
+              <div className="stats-label">
+                Points d'action
+                <span className="float-right">{this.state.actionPoints}</span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/movement.png")} alt="mouvement" />
+              </div>
+              <div className="stats-label">
+                Points de mouvement
+                <span className="float-right">{this.state.movementPoints}</span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/initiative.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Initiative
+                <span className="float-right">{this.state.initiative}</span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/prospecting.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Prospection
+                <span className="float-right">{this.state.prospecting}</span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/range.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Portée
+                <span className="float-right">{this.state.range}</span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/summon.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Invocations
+                <span className="float-right">{this.state.summonableCreaturesBoost}</span>
+              </div>
+            </div>
+          </Col>
+
+          <Col>
+            <Row>
+              <Col xs="7"><h4>Stats</h4></Col>
+              <Col className="text-right"><h5>Capital {this.state.statsPoints}</h5></Col>
+            </Row>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/vitality.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Vitalité
+                <span className="float-right">
+                  {this.state.vitality}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.VITALITY)}>+</Button>
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/wisdom.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Sagesse
+                <span className="float-right">
+                  {this.state.wisdom}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.WISDOM)}>+</Button>
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/strength.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Force
+                <span className="float-right">
+                  {this.state.strength}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.STRENGTH)}>+</Button>
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/intelligence.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Intelligence
+                <span className="float-right">
+                  {this.state.intelligence}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.INTELLIGENCE)}>+</Button>
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/chance.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Chance
+                <span className="float-right">
+                  {this.state.chance}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.CHANCE)}>+</Button>
+                </span>
+              </div>
+            </div>
+
+            <div className="stats-field">
+              <div className="stats-logo">
+                <img src={require("../../img/agility.png")} alt="" />
+              </div>
+              <div className="stats-label">
+                Agilité
+                <span className="float-right">
+                  {this.state.agility}
+                  <Button size="sm"
+                    className="ml-3"
+                    color="dark"
+                    disabled={this.state.statsPoints <= 0}
+                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.AGILITY)}>+</Button>
+                </span>
+              </div>
+            </div>
           </Col>
         </Row>
       </Container>

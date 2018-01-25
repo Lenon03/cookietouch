@@ -98,12 +98,12 @@ export default class BidExtension implements IClearable {
     await sleep(400);
     // Get all the prices and save them
     this.pricesInBid = new Dictionary<number, number[]>();
-    const gids = this.config.objectsToSell.Select((o) => o.gid).Distinct();
-    gids.ForEach(async (gid) => {
+    const gids = this.config.objectsToSell.Select((o) => o.gid).Distinct().ToArray();
+    for (const gid of gids) {
       const prices = await this.account.game.bid.getItemPrices(gid);
       this.pricesInBid.add(gid, prices);
       await sleep(800);
-    });
+    }
     // Close the bidbuyer
     this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("pricesObtained"));
     this.account.leaveDialog();
@@ -133,8 +133,10 @@ export default class BidExtension implements IClearable {
     const objects = this.config.objectsToSell.ToArray();
     for (const objToSell of objects) {
       // Get the items that are already in the bid for this specific ObjectToSell
+      console.log(this.account.game.bid.objectsInSale);
       const objsInSale = this.account.game.bid.objectsInSale.Where((o) => o.objectGID === objToSell.gid && o.quantity === objToSell.lot);
       // Get the price in bid of this specific ObjectToSell
+      console.log(this.pricesInBid.getValue(objToSell.gid));
       const priceInBid = this.pricesInBid.getValue(objToSell.gid)[this.lotToIndex(objToSell.lot)];
       // This will hold the price that should our objects have (either modified or added)
       let newPrice = priceInBid;

@@ -87,7 +87,12 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             <Button style={{
               marginLeft: "15px",
             }} size="sm" color="info" onClick={() => {
-              remote.dialog.showOpenDialog({ properties: ["openFile"] }, (filepaths) => {
+              remote.dialog.showOpenDialog({
+                filters: [
+                  { name: "Cookie Scripts Format", extensions: ["js"] },
+                ],
+                properties: ["openFile"],
+              }, (filepaths) => {
                 const filepath = filepaths[0];
                 this.props.account.scripts.fromFile(filepath);
               });

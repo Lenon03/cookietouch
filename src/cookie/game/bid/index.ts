@@ -82,12 +82,14 @@ export default class Bid implements IClearable {
       return [0, 0, 0];
     }
 
-    const prices = res.ToArray().map((o) => o.prices);
+    const prices1 = res.ToArray().map((o) => o.prices[0]);
+    const prices10 = res.ToArray().map((o) => o.prices[1]);
+    const prices100 = res.ToArray().map((o) => o.prices[2]);
 
     return [
-      Math.min(...prices[0]),
-      Math.min(...prices[1]),
-      Math.min(...prices[2]),
+      Math.min(...prices1),
+      Math.min(...prices10),
+      Math.min(...prices100),
     ];
   }
 
@@ -142,7 +144,7 @@ export default class Bid implements IClearable {
 
     const item = this.account.game.character.inventory.getObjectByGid(gid);
 
-    if (item === null || item.quantity < lot) {
+    if (item === undefined || item.quantity < lot) {
       return false;
     }
 
@@ -205,13 +207,13 @@ export default class Bid implements IClearable {
   }
 
   public async UpdateExchangeTypesItemsExchangerDescriptionForUserMessage(message: any) {
-    this._itemDescription.resolve(message.itemTypeDescriptions);
+    this._itemDescription.resolve(new List(message.itemTypeDescriptions));
   }
 
   public async UpdateExchangeStartedBidSellerMessage(message: any) {
     this.account.state = AccountStates.SELLING;
     this.maxItemPerAccount = message.sellerDescriptor.maxItemPerAccount;
-    this.objectsInSale = message.objectsInfos;
+    this.objectsInSale = new List(message.objectsInfos);
     this.onStartedSelling.trigger();
   }
 

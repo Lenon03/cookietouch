@@ -2,6 +2,7 @@ import Account from "@/account";
 import FloodConfiguration from "@/extensions/flood/FloodConfiguration";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
+import LiteEvent from "@/utils/LiteEvent";
 import { getRandomInt } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 
@@ -15,6 +16,9 @@ export default class FloodExtension {
   private seekChannelTimer: TimerWrapper;
   private salesChannelTimer: TimerWrapper;
   private generalChannelTimer: TimerWrapper;
+
+  public get RunningChanged() { return this.onRunningChanged.expose(); }
+  private readonly onRunningChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
@@ -37,6 +41,7 @@ export default class FloodExtension {
     this.salesChannelTimer.change(0, this.config.salesChannelInterval * 1000);
     this.generalChannelTimer.change(0, this.config.generalChannelInterval * 1000);
     this.running = true;
+    this.onRunningChanged.trigger();
   }
 
   public stop() {
@@ -47,6 +52,7 @@ export default class FloodExtension {
     this.salesChannelTimer.stop();
     this.generalChannelTimer.stop();
     this.running = false;
+    this.onRunningChanged.trigger();
   }
 
   private async SeekChannel_Callback() {

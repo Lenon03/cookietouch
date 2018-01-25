@@ -46,6 +46,7 @@ export default class FloodConfiguration {
 
   public load() {
     if (!fs.existsSync(this.configFilePath)) {
+      this.save();
       return;
     }
     const data = fs.readFileSync(this.configFilePath);

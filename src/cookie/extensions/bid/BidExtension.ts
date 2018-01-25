@@ -133,10 +133,8 @@ export default class BidExtension implements IClearable {
     const objects = this.config.objectsToSell.ToArray();
     for (const objToSell of objects) {
       // Get the items that are already in the bid for this specific ObjectToSell
-      console.log(this.account.game.bid.objectsInSale);
       const objsInSale = this.account.game.bid.objectsInSale.Where((o) => o.objectGID === objToSell.gid && o.quantity === objToSell.lot);
       // Get the price in bid of this specific ObjectToSell
-      console.log(this.pricesInBid.getValue(objToSell.gid));
       const priceInBid = this.pricesInBid.getValue(objToSell.gid)[this.lotToIndex(objToSell.lot)];
       // This will hold the price that should our objects have (either modified or added)
       let newPrice = priceInBid;
@@ -229,6 +227,7 @@ export default class BidExtension implements IClearable {
     this.waiting = true;
     this.account.logger.logInfo(LanguageManager.trans("bidExtension"), LanguageManager.trans("bidNextSession", this.config.interval));
     this.timer.change(this.config.interval * 60000, this.config.interval * 60000);
+    this.timer.start();
   }
 
   private async HandleExchangeBidHouseItemAddOkMessage(account: Account, message: ExchangeBidHouseItemAddOkMessage) {

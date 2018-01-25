@@ -3,8 +3,8 @@ const config = {
 }
 
 const move = [
-  { map: "6,-20", fight: true, direction: "right" },
-  { map: "7,-20", fight: true, direction: "left" }
+  { map: "6,-20", fight: true, path: "right" },
+  { map: "7,-20", fight: true, path: "left" }
 ]
 
 const bank = [

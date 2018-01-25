@@ -39,7 +39,7 @@ export interface IConfig {
 
 export interface IMap {
   map: number|string;
-  direction: string;
+  path: string;
   gather: boolean;
   fight: boolean;
   npcBank: boolean;

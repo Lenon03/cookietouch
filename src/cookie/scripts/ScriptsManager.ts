@@ -293,8 +293,8 @@ export default class ScriptsManager {
       this.entryFlags.Add(new DoorFlag(entry.door));
     }
 
-    if (entry.direction) {
-      this.entryFlags.Add(new ChangeMapFlag(entry.direction));
+    if (entry.path) {
+      this.entryFlags.Add(new ChangeMapFlag(entry.path));
     }
 
     // Check if there is at least one valid flag

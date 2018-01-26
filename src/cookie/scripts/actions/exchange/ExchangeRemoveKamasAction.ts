@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ExchangeRemoveKamasAction extends ScriptAction {
+  public _name: string = "ExchangeRemoveKamasAction";
   public quantity: number;
 
   constructor(quantity: number) {

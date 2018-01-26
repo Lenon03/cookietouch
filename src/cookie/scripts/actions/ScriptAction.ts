@@ -17,9 +17,11 @@ export default abstract class ScriptAction {
     return ScriptActionResults.FAILED;
   }
 
-  public get name(): string {
-    return this.constructor.toString().match(/\w+/g)[1];
-  }
+  public abstract _name: string;
+
+  // public get name(): string {
+  //   return this.constructor.toString().match(/\w+/g)[1];
+  // }
 
   public abstract async process(account: Account): Promise<ScriptActionResults>;
 }

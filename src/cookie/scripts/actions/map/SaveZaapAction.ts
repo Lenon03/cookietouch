@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class SaveZaapAction extends ScriptAction {
+  public _name: string = "SaveZaapAction";
   public async process(account: Account): Promise<ScriptActionResults> {
     if (account.game.managers.teleportables.saveZaap()) {
       return ScriptAction.processingResult();

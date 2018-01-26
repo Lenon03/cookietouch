@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class JoinFriendAction extends ScriptAction {
+  public _name: string = "JoinFriendAction";
   public name: string;
 
   constructor(name: string) {

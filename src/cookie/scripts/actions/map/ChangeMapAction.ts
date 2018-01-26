@@ -35,6 +35,7 @@ export default class ChangeMapAction extends ScriptAction {
   private static REGEX_DIRECTIONS = /(top|haut|right|droite|bottom|bas|left|gauche)/;
   private static REGEX_CELLID = /(\d{1,3})/;
 
+  public _name: string = "ChangeMapAction";
   public direction: MapChangeDirections;
   public cellId: number;
 

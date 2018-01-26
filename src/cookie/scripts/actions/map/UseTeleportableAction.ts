@@ -4,6 +4,7 @@ import { TeleportablesEnum } from "@game/managers/teleportables";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseTeleportableAction extends ScriptAction {
+  public _name: string = "UseTeleportableAction";
   public type: TeleportablesEnum;
   public destinationMapId: number;
 

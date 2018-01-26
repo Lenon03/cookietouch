@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class StartExchangeAction extends ScriptAction {
+  public _name: string = "StartExchangeAction";
   public playerId: number;
 
   constructor(playerId: number) {

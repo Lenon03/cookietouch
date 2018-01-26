@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class EditItemInSalePriceAction extends ScriptAction {
+  public _name: string = "EditItemInSalePriceAction";
   public uid: number;
   public newPrice: number;
 

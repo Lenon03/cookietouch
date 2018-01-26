@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class StorageGetExistingItemsAction extends ScriptAction {
+  public _name: string = "StorageGetExistingItemsAction";
   public async process(account: Account): Promise<ScriptActionResults> {
     if (account.game.storage.getExistingItems()) {
       await sleep(1000);

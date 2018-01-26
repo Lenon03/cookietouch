@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class StorageGetAutoRegenStoreAction extends ScriptAction {
+  public _name: string = "StorageGetAutoRegenStoreAction";
   public items: number[];
   public store: number;
 

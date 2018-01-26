@@ -136,7 +136,7 @@ export default class ActionsManager {
       return;
     }
     try {
-      const name = this.currentAction ? this.currentAction.name : LanguageManager.trans("unknown");
+      const name = this.currentAction ? this.currentAction._name : LanguageManager.trans("unknown");
       const result = this.currentCoroutine.next();
       this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("processingCoroutine", name, result.done));
       if (result.done) {
@@ -152,7 +152,7 @@ export default class ActionsManager {
     if (!this.account.scripts.running) {
       return;
     }
-    const type = this.currentAction.name;
+    const type = this.currentAction._name;
     this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("currentAction", type));
     const res = await this.currentAction.process(this.account);
     switch (res) {

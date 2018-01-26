@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class SetRatioAction extends ScriptAction {
+  public _name: string = "SetRatioAction";
   public ratio: number;
 
   constructor(ratio: number) {

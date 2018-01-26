@@ -5,6 +5,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class FightAction extends ScriptAction {
+  public _name: string = "FightAction";
   public minMonsters: number;
   public maxMonsters: number;
   public minMonstersLevel: number;

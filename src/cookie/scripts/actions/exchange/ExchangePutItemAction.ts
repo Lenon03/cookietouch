@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ExchangePutItemAction extends ScriptAction {
+  public _name: string = "ExchangePutItemAction";
   public gid: number;
   public quantity: number;
 

@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class MoveToCellAction extends ScriptAction {
+  public _name: string = "MoveToCellAction";
   public cellId: number;
 
   constructor(cellId: number) {

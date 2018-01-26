@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class WaitMapChangeAction extends ScriptAction {
+  public _name: string = "WaitMapChangeAction";
   public delay: number;
 
   constructor(delay: number) {

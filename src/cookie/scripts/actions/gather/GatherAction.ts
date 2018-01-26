@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class GatherAction extends ScriptAction {
+  public _name: string = "GatherAction";
   public elements: number[];
 
   constructor(elements: number[]) {

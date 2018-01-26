@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class RemoveItemInSaleAction extends ScriptAction {
+  public _name: string = "RemoveItemInSaleAction";
   public uid: number;
 
   constructor(uid: number) {

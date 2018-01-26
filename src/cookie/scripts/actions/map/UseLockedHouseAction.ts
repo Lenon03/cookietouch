@@ -3,6 +3,7 @@ import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseLockedHouseAction extends ScriptAction {
+  public _name: string = "UseLockedHouseAction";
   public doorCellId: number;
   public lockCode: string;
 

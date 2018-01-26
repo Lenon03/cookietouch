@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class DropItemAction extends ScriptAction {
+  public _name: string = "DropItemAction";
   public gid: number;
   public quantity: number;
 

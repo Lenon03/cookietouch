@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class DelayAction extends ScriptAction {
+  public _name: string = "DelayAction";
   public ms: number;
 
   constructor(ms: number) {

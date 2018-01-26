@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ReplyAction extends ScriptAction {
+  public _name: string = "ReplyAction";
   public replyId: number;
 
   constructor(replyId: number) {

@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ExchangePutAllItemsAction extends ScriptAction {
+  public _name: string = "ExchangePutAllItemsAction";
 
   public async process(account: Account): Promise<ScriptActionResults> {
     const res = await account.game.exchange.putAllItems();

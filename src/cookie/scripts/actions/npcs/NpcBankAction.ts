@@ -4,6 +4,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class NpcBankAction extends ScriptAction {
+  public _name: string = "NpcBankAction";
   public npcId: number;
   public replyId: number;
 

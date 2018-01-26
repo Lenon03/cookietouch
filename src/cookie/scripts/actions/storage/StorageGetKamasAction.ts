@@ -3,6 +3,7 @@ import { sleep } from "@utils/Time";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class StorageGetKamasAction extends ScriptAction {
+  public _name: string = "StorageGetKamasAction";
   public amount: number;
 
   constructor(amount: number) {

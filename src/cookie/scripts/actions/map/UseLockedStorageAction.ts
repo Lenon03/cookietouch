@@ -3,6 +3,7 @@ import Account from "@account";
 import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseLockedStorageAction extends ScriptAction {
+  public _name: string = "UseLockedStorageAction";
   public elementCellId: number;
   public lockCode: string;
 

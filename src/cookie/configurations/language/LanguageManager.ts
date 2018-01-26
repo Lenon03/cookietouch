@@ -4,16 +4,33 @@ import Dictionary from "@/utils/Dictionary";
 import * as fs from "fs";
 import * as path from "path";
 
-/* tslint:disable */
-const en = require("./langs/en.json");
-const fr = require("./langs/fr.json");
-const de = require("./langs/de.json");
-const es = require("./langs/es.json");
-const it = require("./langs/it.json");
-const pt = require("./langs/pt.json");
-/* tslint:enable */
+declare var __static: string;
 
 export default class LanguageManager {
+
+  public static Init() {
+    const enFile  = fs.readFileSync(path.join(__static, "./langs/en.json"));
+    const en = JSON.parse(enFile.toString());
+    const frFile  = fs.readFileSync(path.join(__static, "./langs/fr.json"));
+    const fr = JSON.parse(frFile.toString());
+    const esFile  = fs.readFileSync(path.join(__static, "./langs/es.json"));
+    const es = JSON.parse(esFile.toString());
+    const itFile  = fs.readFileSync(path.join(__static, "./langs/it.json"));
+    const it = JSON.parse(itFile.toString());
+    const deFile  = fs.readFileSync(path.join(__static, "./langs/de.json"));
+    const de = JSON.parse(deFile.toString());
+    const ptFile  = fs.readFileSync(path.join(__static, "./langs/pt.json"));
+    const pt = JSON.parse(ptFile.toString());
+
+    this.langs = new Dictionary([
+      { key: Languages.FRENCH, value: fr },
+      { key: Languages.ENGLISH, value: en },
+      { key: Languages.DEUTSCH, value: de },
+      { key: Languages.ITALIAN, value: it },
+      { key: Languages.PORTUGUESE, value: pt },
+      { key: Languages.SPANISH, value: es },
+    ]);
+  }
 
   public static trans(key: string, ...params: any[]): string {
     const lang = GlobalConfiguration.lang;
@@ -32,12 +49,5 @@ export default class LanguageManager {
     }
   }
 
-  private static langs: Dictionary<Languages, any> = new Dictionary([
-    { key: Languages.FRENCH, value: fr },
-    { key: Languages.ENGLISH, value: en },
-    { key: Languages.DEUTSCH, value: de },
-    { key: Languages.ITALIAN, value: it },
-    { key: Languages.PORTUGUESE, value: pt },
-    { key: Languages.SPANISH, value: es },
-  ]);
+  private static langs: Dictionary<Languages, any>;
 }

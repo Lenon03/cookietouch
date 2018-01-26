@@ -109,6 +109,11 @@ export default class Account implements IEntity {
       .then(() => {
         this.network.connect(randomString(16), DTConstants.config.dataUrl);
         // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
+      })
+      .catch((error: Error) => {
+        if (error.message.includes("code 601")) {
+          this.logger.logError("", LanguageManager.trans("wrongCredentialsBanned"));
+        }
       });
   }
 

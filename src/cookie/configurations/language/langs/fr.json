@@ -219,5 +219,6 @@
   "unpaused": "Pause retirée",
   "groups": "Groupes",
   "waitingAllMembers": "En attente des ActionsFinished pour les membres",
-  "allMembersDone": "Toutes les actions des membres sont faites."
+  "allMembersDone": "Toutes les actions des membres sont faites.",
+  "wrongCredentialsBanned": "Mauvais identifiants (ou bannis...)"
 }

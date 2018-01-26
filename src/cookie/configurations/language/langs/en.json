@@ -219,6 +219,7 @@
   "unpaused": "Unpaused",
   "groups": "Groups",
   "waitingAllMembers": "Waiting the ActionsFinished for members",
-  "allMembersDone": "All the actions of the members are done."
+  "allMembersDone": "All the actions of the members are done.",
+  "wrongCredentialsBanned": "Wrong credentials (or banned...)"
 }
 

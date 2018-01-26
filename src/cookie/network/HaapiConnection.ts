@@ -8,9 +8,13 @@ export default class HaapiConnection {
 
   public processHaapi(username: string, password: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.haapi = await this.createApiKey(username, password);
-      this.token = await this.getToken();
-      resolve();
+      try {
+        this.haapi = await this.createApiKey(username, password);
+        this.token = await this.getToken();
+        return resolve();
+      } catch (e) {
+        return reject(e);
+      }
     });
   }
 

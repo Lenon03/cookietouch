@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
@@ -74,13 +75,13 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
                           this.props.account.extensions.bid.start();
                         }
                       }} />
-                    Active
-                </Label>
+                    {LanguageManager.trans("active")}
+                  </Label>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="interval">Interval</Label>
+                  <Label for="interval">{LanguageManager.trans("interval")}</Label>
                   <Input
                     id="interval"
                     disabled={this.state.characterConnected ? "" : "disabled"}
@@ -99,12 +100,12 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
               <thead>
                 <tr>
                   <th>GID</th>
-                  <th>Name</th>
-                  <th>Lot</th>
-                  <th>Quantity</th>
-                  <th>Min Price</th>
-                  <th>Base Price</th>
-                  <th>Actions</th>
+                  <th>{LanguageManager.trans("name")}</th>
+                  <th>{LanguageManager.trans("lot")}</th>
+                  <th>{LanguageManager.trans("quantity")}</th>
+                  <th>{LanguageManager.trans("minPrice")}</th>
+                  <th>{LanguageManager.trans("basePrice")}</th>
+                  <th>{LanguageManager.trans("actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -118,7 +119,7 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
                     <td>{o.basePrice}</td>
                     <td>
                       <Button size="sm" color="danger" onClick={() => this.deleteObject(o)}>
-                        Delete
+                        {LanguageManager.trans("delete")}
                       </Button>
                     </td>
                   </tr>
@@ -127,8 +128,8 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
             </Table>
           </Col>
           <Col>
-            Kamas Gained: {this.state.kamasGained}<br />
-            Kamas Paid on Taxes: {this.state.kamasPaidOnTaxes}<br />
+            {LanguageManager.trans("kamasGained")}: {this.state.kamasGained}<br />
+            {LanguageManager.trans("kamasTaxes")}: {this.state.kamasPaidOnTaxes}<br />
             Script: {this.state.script}
             <Button style={{
               marginLeft: "15px",
@@ -144,10 +145,10 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
                 this.props.account.extensions.bid.config.save();
               });
             }}>
-              Load
+              {LanguageManager.trans("load")}
             </Button>
             <Card body inverse color="dark">
-              <CardTitle>Add an Item</CardTitle>
+              <CardTitle>{LanguageManager.trans("addItem")}</CardTitle>
               <Form onSubmit={async (event) => {
                 event.preventDefault();
                 const gidString = (document.getElementById("gid") as HTMLInputElement).value;
@@ -174,12 +175,12 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
                 );
                 this.props.account.extensions.bid.config.save();
               }}>
-              <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                   <Label for="gid" className="mr-sm-2">GID</Label>
                   <Input type="number" name="gid" id="gid" />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="lot">Lot</Label>
+                  <Label for="lot">{LanguageManager.trans("lot")}</Label>
                   <Input
                     id="lot"
                     type="select" className="form-control-sm">
@@ -189,19 +190,19 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
                   </Input>
                 </FormGroup>
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                  <Label for="quantity" className="mr-sm-2">Quantity</Label>
+                  <Label for="quantity" className="mr-sm-2">{LanguageManager.trans("quantity")}</Label>
                   <Input type="number" name="quantity" id="quantity" />
                 </FormGroup>
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                  <Label for="minPrice" className="mr-sm-2">Min Price</Label>
+                  <Label for="minPrice" className="mr-sm-2">{LanguageManager.trans("minPrice")}</Label>
                   <Input type="number" name="minPrice" id="minPrice" />
                 </FormGroup>
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                  <Label for="basePrice" className="mr-sm-2">Base Price</Label>
+                  <Label for="basePrice" className="mr-sm-2">{LanguageManager.trans("basePrice")}</Label>
                   <Input type="number" name="basePrice" id="basePrice" />
                 </FormGroup>
                 <br />
-                <Button size="sm">Ajouter</Button>
+                <Button size="sm">{LanguageManager.trans("add")}</Button>
               </Form>
             </Card>
           </Col>

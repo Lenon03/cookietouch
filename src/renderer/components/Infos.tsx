@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { AccountStates } from "@account/AccountStates";
 import { faKorvue } from "@fortawesome/fontawesome-free-brands";
@@ -79,7 +80,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
               } else {
                 this.start();
               }
-            }}>{this.props.account.network.connected ? "Disconnect" : "Connect"}
+            }}>{this.props.account.network.connected ? LanguageManager.trans("disconnect") : LanguageManager.trans("connect")}
             </Button>
           </Col>
           <Col xs="8">
@@ -97,14 +98,18 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
                 this.props.account.scripts.fromFile(filepath);
               });
             }}>
-              Load
+              {LanguageManager.trans("load")}
             </Button>
             <Button size="sm"
               disabled={this.state.scriptLoaded ? false : true}
-              color="dark" onClick={() => this.launchScript()}>Play</Button>
+              color="dark" onClick={() => this.launchScript()}>
+                {LanguageManager.trans("play")}
+              </Button>
             <Button size="sm"
               disabled={this.state.scriptLoaded ? false : true}
-              color="warning" onClick={() => this.pauseScript()}>Pause</Button>
+              color="warning" onClick={() => this.pauseScript()}>
+                {LanguageManager.trans("pause")}
+              </Button>
           </Col>
           <Col xs="2">
             <Button size="sm"
@@ -112,7 +117,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
                 this.props.removeSelectedAccount();
               }}
             >
-              Remove
+              {LanguageManager.trans("remove")}
             </Button>
           </Col>
         </Row>
@@ -191,7 +196,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   private pauseScript() {
-    this.props.account.scripts.stopScript("The user stopped the script.");
+    this.props.account.scripts.stopScript(LanguageManager.trans("userStopScript"));
   }
 
   private scriptLoaded(scriptName: string) {

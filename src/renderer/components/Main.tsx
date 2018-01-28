@@ -15,6 +15,7 @@ import {
   NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
 } from "reactstrap";
 import CookieMain from "renderer/CookieMain";
+import CharacterCreation from "./CharacterCreation";
 import ConfigurationG from "./Configuration";
 import Infos from "./Infos";
 import Bid from "./tabs/Bid";
@@ -181,7 +182,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">
-                    form to add characters to create
+                    <CharacterCreation />
                   </TabPane>
                 </TabContent>
               </Col>

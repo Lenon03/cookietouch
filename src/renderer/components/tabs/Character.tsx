@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
@@ -34,7 +35,7 @@ export default class Character extends React.Component<ICharacterProps, ICharact
                 className={classnames({ active: this.state.activeTab === "0" })}
                 onClick={() => { this.toggle("0"); }}
               >
-                Stats
+                {LanguageManager.trans("stats")}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -42,7 +43,7 @@ export default class Character extends React.Component<ICharacterProps, ICharact
                 className={classnames({ active: this.state.activeTab === "1" })}
                 onClick={() => { this.toggle("1"); }}
               >
-                Spells
+                {LanguageManager.trans("spells")}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -50,7 +51,7 @@ export default class Character extends React.Component<ICharacterProps, ICharact
                 className={classnames({ active: this.state.activeTab === "2" })}
                 onClick={() => { this.toggle("2"); }}
               >
-                Jobs
+                {LanguageManager.trans("jobs")}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -58,7 +59,7 @@ export default class Character extends React.Component<ICharacterProps, ICharact
                 className={classnames({ active: this.state.activeTab === "3" })}
                 onClick={() => { this.toggle("3"); }}
               >
-                Equipments
+                {LanguageManager.trans("equipments")}
               </NavLink>
             </NavItem>
           </Nav>

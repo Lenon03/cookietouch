@@ -1,4 +1,5 @@
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import DataManager from "@/protocol/data";
 import Breeds from "@/protocol/data/classes/Breeds";
@@ -66,20 +67,20 @@ export default class Configuration extends React.Component<IConfigurationProps, 
         <Row>
           <Col>
             <Card body inverse color="dark">
-              <CardTitle>Augmentations Automatiques</CardTitle>
+              <CardTitle>{LanguageManager.trans("automaticIncreases")}</CardTitle>
               <FormGroup>
-                <Label for="boostableStat">Stat to boost</Label>
+                <Label for="boostableStat">{LanguageManager.trans("statToBoost")}</Label>
                 <Input type="select" className="form-control-sm" id="boostableStat"
                   disabled={this.state.characterConnected ? "" : "disabled"}
                   value={this.state.statToBoost}
                   onChange={(event) => this.boostableStatChanged(event)}>
-                  <option value={BoostableStats.NONE}>{BoostableStats[BoostableStats.NONE]}</option>
-                  <option value={BoostableStats.VITALITY}>{BoostableStats[BoostableStats.VITALITY]}</option>
-                  <option value={BoostableStats.WISDOM}>{BoostableStats[BoostableStats.WISDOM]}</option>
-                  <option value={BoostableStats.STRENGTH}>{BoostableStats[BoostableStats.STRENGTH]}</option>
-                  <option value={BoostableStats.AGILITY}>{BoostableStats[BoostableStats.AGILITY]}</option>
-                  <option value={BoostableStats.CHANCE}>{BoostableStats[BoostableStats.CHANCE]}</option>
-                  <option value={BoostableStats.INTELLIGENCE}>{BoostableStats[BoostableStats.INTELLIGENCE]}</option>
+                  <option value={BoostableStats.NONE}>{LanguageManager.trans("none")}</option>
+                  <option value={BoostableStats.VITALITY}>{LanguageManager.trans("vitality")}</option>
+                  <option value={BoostableStats.WISDOM}>{LanguageManager.trans("wisdom")}</option>
+                  <option value={BoostableStats.STRENGTH}>{LanguageManager.trans("strength")}</option>
+                  <option value={BoostableStats.AGILITY}>{LanguageManager.trans("agility")}</option>
+                  <option value={BoostableStats.CHANCE}>{LanguageManager.trans("chance")}</option>
+                  <option value={BoostableStats.INTELLIGENCE}>{LanguageManager.trans("intelligence")}</option>
                 </Input>
               </FormGroup>
               <hr />
@@ -87,9 +88,9 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Level</th>
-                    <th>Actions</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("level")}</th>
+                    <th>{LanguageManager.trans("actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,35 +143,35 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                     const name = resp[0].object.nameId;
                     const spellsAdded = this.props.account.config.spellsToBoost.map((s) => s.id);
                     if (spellsAdded.includes(this.state.spellId)) {
-                      alert("Vous avez déjà ajouté ce sort.");
+                      alert(LanguageManager.trans("alreadyAddSpell"));
                       return;
                     }
                     const respBreeds = await DataManager.get<Breeds>(DataTypes.Breeds, this.props.account.game.character.breed);
                     const spellsIds = respBreeds[0].object.breedSpellsId;
                     if (!spellsIds.includes(this.state.spellId)) {
-                      alert("Vous ne pouvez pas utiliser un sort qui ne correspond pas à votre classe.");
+                      alert(LanguageManager.trans("spellNotBreed"));
                       return;
                     }
                     this.props.account.config.spellsToBoost.push(new SpellToBoostEntry(this.state.spellId, name, this.state.spellLevel));
                     this.props.account.config.save();
                     this.setState({ spells: this.props.account.config.spellsToBoost });
                   }}>
-                  Ajouter
-                  </Button>
+                  {LanguageManager.trans("add")}
+                </Button>
               </InputGroup>
             </Card>
           </Col>
           <Col>
             <Card body inverse color="dark">
-              <CardTitle>Divers</CardTitle>
+              <CardTitle>{LanguageManager.trans("divers")}</CardTitle>
               <FormGroup check>
                 <Label check>
                   <Input type="checkbox"
                     disabled={this.state.characterConnected ? "" : "disabled"}
                     checked={this.state.enableSpeedHack}
                     onChange={(event) => this.speedhackChanged(event)} />
-                  SpeedHack
-              </Label>
+                  {LanguageManager.trans("speedhack")}
+                </Label>
               </FormGroup>
               <FormGroup check>
                 <Label check>
@@ -178,8 +179,8 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                     disabled={this.state.characterConnected ? "" : "disabled"}
                     checked={this.state.autoMount}
                     onChange={(event) => this.autoMountChanged(event)} />
-                  Auto Mount
-              </Label>
+                  {LanguageManager.trans("autoMount")}
+                </Label>
               </FormGroup>
               <FormGroup check>
                 <Label check>
@@ -187,8 +188,8 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                     disabled={this.state.characterConnected ? "" : "disabled"}
                     checked={this.state.acceptAchievements}
                     onChange={(event) => this.acceptAchievementsChanged(event)} />
-                  Accept Achievements
-              </Label>
+                  {LanguageManager.trans("acceptAchievements")}
+                </Label>
               </FormGroup>
               <FormGroup check>
                 <Label check>
@@ -200,8 +201,8 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                       this.props.account.config.disconnectUponFightsLimit = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Disconnect Upon Fights Limit
-                          </Label>
+                  {LanguageManager.trans("disconnectFightsLimit")}
+                </Label>
               </FormGroup>
               <FormGroup check>
                 <Label check>
@@ -213,14 +214,14 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                       this.props.account.config.autoRegenAccepted = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Auto regen with objects
-                          </Label>
+                  {LanguageManager.trans("autoRegenObjects")}
+                </Label>
               </FormGroup>
             </Card>
           </Col>
           <Col>
             <Card body inverse color="dark">
-              <CardTitle>Echanges</CardTitle>
+              <CardTitle>{LanguageManager.trans("exchanges")}</CardTitle>
               <FormGroup check>
                 <Label check>
                   <Input type="checkbox"
@@ -231,16 +232,16 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                       this.props.account.config.ignoreNonAuthorizedTrades = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Ignore non authorized trades
-                          </Label>
+                  {LanguageManager.trans("ignoreNonAuthorizedTrades")}
+                </Label>
               </FormGroup>
               <hr />
-              <CardText>Authorized players</CardText>
+              <CardText>{LanguageManager.trans("authorizedPlayers")}</CardText>
               <Table striped bordered size="sm" responsive>
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Actions</th>
+                    <th>{LanguageManager.trans("actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -277,7 +278,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                       this.props.account.config.save();
                       this.setState({ authorizedTradesFrom: this.props.account.config.authorizedTradesFrom });
                     }}>
-                    Ajouter
+                    {LanguageManager.trans("add")}
                   </Button>
                 </InputGroupAddon>
               </InputGroup>

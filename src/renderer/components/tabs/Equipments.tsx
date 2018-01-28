@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import Account from "@account";
 import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
@@ -37,8 +38,8 @@ export default class Equipments extends React.Component<IEquipmentsProps, IEquip
             <Table striped bordered size="sm" responsive>
               <thead>
                 <tr>
-                  <th>Items</th>
-                  <th>Name</th>
+                  <th>{LanguageManager.trans("items")}</th>
+                  <th>{LanguageManager.trans("name")}</th>
                 </tr>
               </thead>
               <tbody>

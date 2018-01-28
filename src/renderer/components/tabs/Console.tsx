@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { IMessage } from "@/core/logger";
 import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
@@ -103,16 +104,15 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                     const value = parseInt(event.target.value, 10);
                     this.setState({ channel: value });
                   }}>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_GLOBAL}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GLOBAL]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GUILD]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_NOOB}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_NOOB]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_PARTY}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_PARTY]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_SALES}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_SALES]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_SEEK}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_SEEK]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_GUILD]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_ALLIANCE}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_ALLIANCE]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_ARENA}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_ARENA]}</option>
-                  <option value={ChatChannelsMultiEnum.CHANNEL_TEAM}>{ChatChannelsMultiEnum[ChatChannelsMultiEnum.CHANNEL_TEAM]}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_GLOBAL}>{LanguageManager.trans("global")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{LanguageManager.trans("guild")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_NOOB}>{LanguageManager.trans("noob")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_PARTY}>{LanguageManager.trans("party")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_SALES}>{LanguageManager.trans("sales")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_SEEK}>{LanguageManager.trans("seek")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_ALLIANCE}>{LanguageManager.trans("alliance")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_ARENA}>{LanguageManager.trans("arena")}</option>
+                  <option value={ChatChannelsMultiEnum.CHANNEL_TEAM}>{LanguageManager.trans("team")}</option>
                 </Input>
               </Col>
               <Col>
@@ -136,7 +136,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
           </Col>
           <Col xs="3">
             <Card body inverse color="dark">
-              <CardTitle>Divers</CardTitle>
+              <CardTitle>{LanguageManager.trans("divers")}</CardTitle>
               <Input
                 disabled={this.state.characterConnected ? "" : "disabled"}
                 type="select" className="form-control-sm" value={this.state.status}
@@ -145,12 +145,10 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                   this.setState({ status: value });
                   this.props.account.game.character.changeStatus(this.state.status);
                 }}>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_AFK}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_AFK]}</option>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_AVAILABLE}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_AVAILABLE]}</option>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_PRIVATE}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_PRIVATE]}</option>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_SOLO}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_SOLO]}</option>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_OFFLINE}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_OFFLINE]}</option>
-                <option value={PlayerStatusEnum.PLAYER_STATUS_IDLE}>{PlayerStatusEnum[PlayerStatusEnum.PLAYER_STATUS_IDLE]}</option>
+                <option value={PlayerStatusEnum.PLAYER_STATUS_AFK}>{LanguageManager.trans("afk")}</option>
+                <option value={PlayerStatusEnum.PLAYER_STATUS_AVAILABLE}>{LanguageManager.trans("available")}</option>
+                <option value={PlayerStatusEnum.PLAYER_STATUS_PRIVATE}>{LanguageManager.trans("private")}</option>
+                <option value={PlayerStatusEnum.PLAYER_STATUS_SOLO}>{LanguageManager.trans("solo")}</option>
               </Input>
               <FormGroup check>
                 <Label check>
@@ -163,7 +161,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showGeneralMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show General messages
+                  {LanguageManager.trans("showGeneral")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -177,7 +175,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showAllianceMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Alliance messages
+                  {LanguageManager.trans("showAlliance")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -191,7 +189,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showGuildMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Guild messages
+                  {LanguageManager.trans("showGuild")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -205,7 +203,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showNoobMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Noob messages
+                  {LanguageManager.trans("showNoob")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -219,7 +217,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showPartyMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Party messages
+                  {LanguageManager.trans("showParty")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -233,7 +231,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showSaleMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Sales messages
+                  {LanguageManager.trans("showSales")}
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -247,11 +245,11 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                       this.props.account.config.showSeekMessages = event.target.checked;
                       this.props.account.config.save();
                     }} />
-                  Show Seek messages
+                  {LanguageManager.trans("showSeek")}
                 </Label>
               </FormGroup>
               <Button size="sm" outline color="danger" onClick={() => this.setState({ messages: [] })} >
-                Clear console
+                {LanguageManager.trans("clearConsole")}
               </Button>
             </Card>
           </Col>

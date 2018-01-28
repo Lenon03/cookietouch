@@ -1,4 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { Languages } from "@/configurations/language/Languages";
 import * as React from "react";
 import { Col, Container, FormGroup, Input, Label, Row } from "reactstrap";
@@ -30,7 +31,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
         <Row>
           <Col>
             <FormGroup>
-              <Label for="lang">Lang</Label>
+              <Label for="lang">{LanguageManager.trans("lang")}</Label>
               <Input type="select" className="form-control-sm" id="lang"
                 value={this.state.lang}
                 onChange={(event) => this.langChanged(event)}>
@@ -43,7 +44,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label for="anticaptcha">Clé Anticaptcha</Label>
+              <Label for="anticaptcha">{LanguageManager.trans("anticaptchaKey")}</Label>
               <Input type="text" value={this.state.anticaptchaKey} onChange={(e) => this.anticaptchaChanged(e)} />
             </FormGroup>
             <FormGroup check>
@@ -51,7 +52,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                 <Input type="checkbox"
                   checked={this.state.showDebugMessages}
                   onChange={(event) => this.showDebugMessagesChanged(event)} />
-                Show debug messages
+                {LanguageManager.trans("showDebug")}
               </Label>
             </FormGroup>
           </Col>

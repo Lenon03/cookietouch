@@ -15,7 +15,7 @@ export default class ChangeMapAction extends ScriptAction {
     const randomPart = parts[getRandomInt(0, parts.length - 1)];
     // Specific direction
     let m = randomPart.match(ChangeMapAction.REGEX_SPECIFIC);
-    if (m)  {
+    if (m) {
       return new ChangeMapAction(MapChangeDirections[capitalize(m[1])], parseInt(m[2], 10));
     } else {
       // Simple directions

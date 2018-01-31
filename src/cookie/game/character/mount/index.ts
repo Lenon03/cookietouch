@@ -1,3 +1,6 @@
+import MountRidingMessage from "@/protocol/network/messages/MountRidingMessage";
+import MountSetMessage from "@/protocol/network/messages/MountSetMessage";
+import MountXpRatioMessage from "@/protocol/network/messages/MountXpRatioMessage";
 import Account from "@account";
 import IClearable from "@utils/IClearable";
 
@@ -35,15 +38,15 @@ export default class Mount implements IClearable {
     this.isRiding = false;
   }
 
-  public UpdateMountSetMessage(message: any) {
+  public UpdateMountSetMessage(message: MountSetMessage) {
     this.hasMount = true;
   }
 
-  public UpdateMountRidingMessage(message: any) {
+  public UpdateMountRidingMessage(message: MountRidingMessage) {
     this.isRiding = message.isRiding;
   }
 
-  public UpdateMountXpRatioMessage(message: any) {
+  public UpdateMountXpRatioMessage(message: MountXpRatioMessage) {
     this.currentRatio = message.ratio;
   }
 }

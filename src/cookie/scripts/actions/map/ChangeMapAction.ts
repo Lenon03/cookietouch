@@ -14,19 +14,21 @@ export default class ChangeMapAction extends ScriptAction {
     const parts = text.split("|");
     const randomPart = parts[getRandomInt(0, parts.length - 1)];
     // Specific direction
-    let m = text.match(ChangeMapAction.REGEX_SPECIFIC);
-    if (m) {
+    let m = randomPart.match(ChangeMapAction.REGEX_SPECIFIC);
+    if (m)  {
       return new ChangeMapAction(MapChangeDirections[capitalize(m[1])], parseInt(m[2], 10));
-    }
-    // Simple directions
-    m = text.match(ChangeMapAction.REGEX_DIRECTIONS);
-    if (m) {
-      return new ChangeMapAction(MapChangeDirections[capitalize(m[0])], -1);
-    }
-    // Change map from cells
-    m = text.match(ChangeMapAction.REGEX_CELLID);
-    if (m) {
-      return new ChangeMapAction(MapChangeDirections.NONE, parseInt(m[0], 10));
+    } else {
+      // Simple directions
+      m = randomPart.match(ChangeMapAction.REGEX_DIRECTIONS);
+      if (m)  {
+        return new ChangeMapAction(MapChangeDirections[capitalize(m[0])], -1);
+      } else {
+        // Change map from cells
+        m = randomPart.match(ChangeMapAction.REGEX_CELLID);
+        if (m)  {
+          return new ChangeMapAction(MapChangeDirections.NONE, parseInt(m[0], 10));
+        }
+      }
     }
     return null;
   }

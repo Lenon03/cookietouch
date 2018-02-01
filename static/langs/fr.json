@@ -281,5 +281,10 @@
   "showSales": "Voir le canal commerce",
   "showSeek": "Voir le canal recrutement",
   "clearConsole": "Vider la Console",
-  "items": "Items"
+  "items": "Items",
+  "turnStarted": "Tour ? commencé.",
+  "spellError": "Sort échoué",
+  "endTurnMove": "(Fin de tour) On bouge vers la cellule ?",
+  "passingTurn": "On passe notre tour.",
+  "playerKicked": "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé."
 }

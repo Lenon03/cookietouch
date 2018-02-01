@@ -62,7 +62,7 @@ export default class FightsPathfinder {
       const cellId = current.cellId;
       const neighbours = MapPoint.getNeighbourCells(cellId, false);
 
-      const tacklers = new Array<FighterEntry>();
+      const tacklers = [];
       let i = 0;
       while (i < neighbours.length) {
         let tackler;

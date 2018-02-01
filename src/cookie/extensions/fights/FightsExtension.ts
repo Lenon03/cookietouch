@@ -59,6 +59,7 @@ export default class FightsExtension implements IClearable {
   }
 
   public async UpdateGameActionFightNoSpellCastMessage(message: GameActionFightNoSpellCastMessage) {
+    this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("spellError"));
     try {
       if (this.spellIndex >= this.spells.Count()) {
         await this.endTurn();
@@ -132,7 +133,7 @@ export default class FightsExtension implements IClearable {
     }
     // If this account is a group chief, wait for the group members to join (or for the fight to start :/)
     if (this.account.hasGroup && this.account.isGroupChief) {
-      // await this.account.group.waitForMembersToJoinFight();
+      await this.account.group.waitForMembersToJoinFight();
       // Group special case: If one of the members didn't join, and the fight started, there is no need to send ready message
       if (this.account.game.fight.isFightStarted) {
         return;
@@ -152,6 +153,7 @@ export default class FightsExtension implements IClearable {
       if (!this.account.group.isGroupMember(message.informations.contextualId)) {
         await sleep(800);
         await this.account.network.sendMessageFree("GameContextKickMessage", { targetId: message.informations.contextualId });
+        this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("playerKicked"));
         // If this person took a member's place, send a group signal so that the member joins again
         this.account.group.signalMembersToJoinFight();
       }
@@ -175,6 +177,7 @@ export default class FightsExtension implements IClearable {
 
   private async turnStarted() {
     this.turnId++;
+    this.account.logger.logInfo(LanguageManager.trans("fightsExtension"), LanguageManager.trans("turnStarted", this.turnId));
     this.spellIndex = 0;
     this._endTurn = false;
     this.spellCasted = false;
@@ -224,6 +227,7 @@ export default class FightsExtension implements IClearable {
       const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE
         || this.config.baseApproachAllMonsters);
       if (node !== null) {
+        this.account.logger.logDebug(LanguageManager.trans("fightsExtension"), LanguageManager.trans("endTurnMove", node.key));
         this._endTurn = true;
         await this.account.game.managers.movements.moveToCellInFight(node);
         return;
@@ -285,6 +289,7 @@ export default class FightsExtension implements IClearable {
   }
 
   private async finishTurn(delay: number) {
+    this.account.logger.logDebug(LanguageManager.trans("fightsExtension"), LanguageManager.trans("passingTurn"));
     await sleep(delay);
     await this.account.network.sendMessageFree("GameFightTurnFinishMessage");
   }

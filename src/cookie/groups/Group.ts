@@ -124,8 +124,8 @@ export default class Group implements IEntity {
     this.members.ForEach((t) => {
       if (t.state !== AccountStates.FIGHTING) {
         t.network.sendMessageFree("GameFightJoinRequestMessage", {
+          fightId: this.chief.game.fight.fightId,
           fighterId: this.chief.game.character.id,
-          figthId: this.chief.game.fight.fightId,
         });
       }
     });

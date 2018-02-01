@@ -1,29 +1,38 @@
-<a href="url"><img src="https://img4.hostingpics.net/pics/628470cookieicon.png" align="left" height="80" width="80"></a>
+<a href="#"><img src="https://img4.hostingpics.net/pics/628470cookieicon.png" align="left" height="80" width="80"></a>
 <center>
-	<h1>CookieTouch</h1>
+	<h1>
+    CookieTouch <a href="https://travis-ci.org/yovanoc/cookietouch">
+    <img src="https://travis-ci.org/yovanoc/cookietouch.svg?branch=master">
+  </a>
+  </h1>
 </center>
-
-###### DofusTouch Bot with Electron React/TypeScript.
 
 You need **Yarn** in order to use this bot properly.
 
 [Yarn Install](https://yarnpkg.com/lang/en/docs/install/)
 
+## Installation
+
+```bash
+git clone git@github.com:yovanoc/cookietouch.git
+cd cookietouch && yarn
+```
+
 ## Dev
 
-```sh
+```bash
 yarn dev
 ```
 
 ## Lint
 
-```sh
+```bash
 yarn lint
 ```
 
 ## Lint Fix
 
-```sh
+```bash
 yarn lint:fix
 ```
 

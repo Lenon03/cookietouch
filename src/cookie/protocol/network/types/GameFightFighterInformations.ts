@@ -7,6 +7,7 @@ export default class GameFightFighterInformations extends GameContextActorInform
   public teamId: number;
   public alive: boolean;
   public stats: GameFightMinimalStats;
+
   constructor(contextualId = 0, look: EntityLook, disposition: EntityDispositionInformations,
               teamId = 2, alive = false, stats: GameFightMinimalStats) {
     super(contextualId, look, disposition);

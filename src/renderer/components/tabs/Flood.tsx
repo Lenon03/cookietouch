@@ -1,9 +1,9 @@
 import FloodSentence from "@/extensions/flood/FloodSentence";
-import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
+import {ChatActivableChannelsEnum} from "@/protocol/enums/ChatActivableChannelsEnum";
 import Account from "@account";
-import { List } from "linqts";
+import {List} from "linqts";
 import * as React from "react";
-import { Button, Card, CardText, CardTitle, Col, Container, Form, FormGroup, Input, Label, Row, Table } from "reactstrap";
+import {Button, Card, CardText, CardTitle, Col, Container, Form, FormGroup, Input, Label, Row, Table} from "reactstrap";
 
 interface IFloodProps {
   account: Account;
@@ -63,33 +63,33 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
             </Button>
           </Col>
         </Row>
-        <hr />
+        <hr/>
         <Row>
           <Col>
             <Table striped bordered size="sm" responsive>
               <thead>
-                <tr>
-                  <th>Content</th>
-                  <th>Channel</th>
-                  <th>OnPlayerJoined</th>
-                  <th>OnPlayerLeft</th>
-                  <th>Actions</th>
-                </tr>
+              <tr>
+                <th>Content</th>
+                <th>Channel</th>
+                <th>OnPlayerJoined</th>
+                <th>OnPlayerLeft</th>
+                <th>Actions</th>
+              </tr>
               </thead>
               <tbody>
-                {this.state.sentences.map((s, index) => (
-                  <tr key={index}>
-                    <td>{s.content}</td>
-                    <td>{ChatActivableChannelsEnum[s.channel]}</td>
-                    <td>{s.onPlayerJoined ? "true" : "false"}</td>
-                    <td>{s.onPlayerLeft ? "true" : "false"}</td>
-                    <td>
-                      <Button size="sm" color="danger" onClick={() => this.deleteSentence(s)}>
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+              {this.state.sentences.map((s, index) => (
+                <tr key={index}>
+                  <td>{s.content}</td>
+                  <td>{ChatActivableChannelsEnum[s.channel]}</td>
+                  <td>{s.onPlayerJoined ? "true" : "false"}</td>
+                  <td>{s.onPlayerLeft ? "true" : "false"}</td>
+                  <td>
+                    <Button size="sm" color="danger" onClick={() => this.deleteSentence(s)}>
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </Table>
           </Col>
@@ -104,10 +104,12 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 type="number" className="form-control-sm" value={this.state.generalChannelInterval}
                 onChange={(event) => {
                   const value = parseInt(event.target.value, 10);
-                  if (!value || value < 0) { return; }
+                  if (!value || value < 0) {
+                    return;
+                  }
                   this.props.account.extensions.flood.config.generalChannelInterval = value;
                   this.props.account.extensions.flood.config.save();
-                }} />
+                }}/>
             </FormGroup>
             <FormGroup>
               <Label for="seekChannelInterval">Seek Channel Interval</Label>
@@ -117,10 +119,12 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 type="number" className="form-control-sm" value={this.state.seekChannelInterval}
                 onChange={(event) => {
                   const value = parseInt(event.target.value, 10);
-                  if (!value || value < 0) { return; }
+                  if (!value || value < 0) {
+                    return;
+                  }
                   this.props.account.extensions.flood.config.seekChannelInterval = value;
                   this.props.account.extensions.flood.config.save();
-                }} />
+                }}/>
             </FormGroup>
             <FormGroup>
               <Label for="salesChannelInterval">Sales Channel Interval</Label>
@@ -130,10 +134,12 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 type="number" className="form-control-sm" value={this.state.salesChannelInterval}
                 onChange={(event) => {
                   const value = parseInt(event.target.value, 10);
-                  if (!value || value < 0) { return; }
+                  if (!value || value < 0) {
+                    return;
+                  }
                   this.props.account.extensions.flood.config.salesChannelInterval = value;
                   this.props.account.extensions.flood.config.save();
-                }} />
+                }}/>
             </FormGroup>
           </Col>
           <Col>
@@ -152,7 +158,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
             }}>
               <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                 <Label for="content" className="mr-sm-2">Content</Label>
-                <Input type="text" name="content" id="content" />
+                <Input type="text" name="content" id="content"/>
               </FormGroup>
               <FormGroup>
                 <Label for="channel">Channel</Label>
@@ -169,17 +175,17 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
               </FormGroup>
               <FormGroup check>
                 <Label check>
-                  <Input type="checkbox" id="onplayerjoined" />
+                  <Input type="checkbox" id="onplayerjoined"/>
                   On Player Joined
                 </Label>
               </FormGroup>
               <FormGroup check>
                 <Label check>
-                  <Input type="checkbox" id="onplayerleft" />
+                  <Input type="checkbox" id="onplayerleft"/>
                   On Player Left
                 </Label>
               </FormGroup>
-              <br />
+              <br/>
               <Button size="sm">Ajouter</Button>
             </Form>
           </Col>
@@ -189,13 +195,13 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
             <Card body inverse color="dark">
               <CardTitle>Infos</CardTitle>
               <CardText>
-              Sur chaque channel, seulement 1 phrase est choisie aléatoirement pour être envoyée.<br/>
-              Vous pouvez utiliser ces attributs pour tous les canaux:<br/>
-              %nbr% : Insère un nombre aléatoire.<br/>
-              %smiley% : Insère un smiley aléatoire.<br/>
-              Vous pouvez utiliser ces attributs qu'en privé:<br/>
-              %name% : Insère le nom du joueur.<br/>
-              %level% : Insère le niveau du joueur.<br/>
+                Sur chaque channel, seulement 1 phrase est choisie aléatoirement pour être envoyée.<br/>
+                Vous pouvez utiliser ces attributs pour tous les canaux:<br/>
+                %nbr% : Insère un nombre aléatoire.<br/>
+                %smiley% : Insère un smiley aléatoire.<br/>
+                Vous pouvez utiliser ces attributs qu'en privé:<br/>
+                %name% : Insère le nom du joueur.<br/>
+                %level% : Insère le niveau du joueur.<br/>
               </CardText>
             </Card>
           </Col>
@@ -211,7 +217,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
   }
 
   private characterSelected() {
-    this.setState({ characterConnected: true });
+    this.setState({characterConnected: true});
   }
 
   private configChanged() {
@@ -225,6 +231,6 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
   }
 
   private runningChanged() {
-    this.setState({ running: this.props.account.extensions.flood.running });
+    this.setState({running: this.props.account.extensions.flood.running});
   }
 }

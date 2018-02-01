@@ -6,6 +6,7 @@ export default class GameFightResumeSlaveInfo extends Type {
   public slaveId: number;
   public summonCount: number;
   public bombCount: number;
+
   constructor(slaveId = 0, summonCount = 0, bombCount = 0, spellCooldowns: GameFightSpellCooldown[]) {
     super();
     this.spellCooldowns = spellCooldowns;

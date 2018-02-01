@@ -29,6 +29,7 @@ export default class GameFightMinimalStats extends Type {
   public tackleBlock: number;
   public tackleEvade: number;
   public invisibilityState: number;
+
   constructor(lifePoints = 0, maxLifePoints = 0, baseMaxLifePoints = 0,
               permanentDamagePercent = 0, shieldPoints = 0, actionPoints = 0,
               maxActionPoints = 0, movementPoints = 0, maxMovementPoints = 0,

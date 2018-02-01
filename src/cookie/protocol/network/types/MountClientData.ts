@@ -34,6 +34,7 @@ export default class MountClientData extends Type {
   public boostMax: number;
   public reproductionCount: number;
   public reproductionCountMax: number;
+
   constructor(id = 0, model = 0, name = "", sex = false,
               ownerId = 0, experience = 0, experienceForLevel = 0,
               experienceForNextLevel = 0, level = 0, isRideable = false,

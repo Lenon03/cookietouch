@@ -1,14 +1,19 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
-import { Deferred } from "@utils/Deferred";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {MapChangeDirections} from "@game/managers/movements/MapChangeDirections";
+import {Deferred} from "@utils/Deferred";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 import Group from "./Group";
 
 export default class Grouping {
   private _group: Group;
   private _missingMembers: List<Account>;
+
+  constructor(group: Group) {
+    this._group = group;
+    this._missingMembers = new List();
+  }
 
   private get ChiefPosX() {
     return this._group.chief.game.map.posX;
@@ -16,11 +21,6 @@ export default class Grouping {
 
   private get ChiefPosY() {
     return this._group.chief.game.map.posY;
-  }
-
-  constructor(group: Group) {
-    this._group = group;
-    this._missingMembers = new List();
   }
 
   public async groupMembers() {
@@ -42,10 +42,10 @@ export default class Grouping {
     };
     missingMember.game.map.MapChanged.on(mapChanged);
     while (this._group.chief.scripts.enabled &&
-      missingMember.game.map.currentPosition !== this._group.chief.game.map.currentPosition) {
-        tcs = Deferred<boolean>();
-        this.moveMissingMember(missingMember);
-        await tcs.promise;
+    missingMember.game.map.currentPosition !== this._group.chief.game.map.currentPosition) {
+      tcs = Deferred<boolean>();
+      this.moveMissingMember(missingMember);
+      await tcs.promise;
     }
     missingMember.game.map.MapChanged.off(mapChanged);
   }

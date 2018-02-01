@@ -6,8 +6,10 @@ import InteractiveElement from "@protocol/network/types/InteractiveElement";
 import MapObstacle from "@protocol/network/types/MapObstacle";
 import StatedElement from "@protocol/network/types/StatedElement";
 import MapComplementaryInformationsDataMessage from "./MapComplementaryInformationsDataMessage";
+
 export default class MapComplementaryInformationsDataInHouseMessage extends MapComplementaryInformationsDataMessage {
   public currentHouse: HouseInformationsInside;
+
   constructor(subAreaId = 0, mapId = 0, currentHouse: HouseInformationsInside,
               houses: HouseInformations[], actors: GameRolePlayActorInformations[],
               interactiveElements: InteractiveElement[], statedElements: StatedElement[],

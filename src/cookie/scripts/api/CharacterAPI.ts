@@ -1,5 +1,5 @@
 import Account from "@account";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
+import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
 
 export default class CharacterAPI {
   private account: Account;
@@ -64,11 +64,11 @@ export default class CharacterAPI {
     return this.account.game.character.inventory.kamas;
   }
 
-  public sit() {
-    this.account.game.character.sit();
-  }
-
   public get freeSoul(): boolean {
     return this.account.game.character.freeSoul;
+  }
+
+  public sit() {
+    this.account.game.character.sit();
   }
 }

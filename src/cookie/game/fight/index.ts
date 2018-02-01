@@ -1,19 +1,18 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Pathfinder from "@/core/pathfinder";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import GameActionFightCastRequestMessage from "@/protocol/network/messages/GameActionFightCastRequestMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
 import Spells from "@protocol/data/classes/Spells";
-import { FightOptionsEnum } from "@protocol/enums/FightOptionsEnum";
-import { FightTypeEnum } from "@protocol/enums/FightTypeEnum";
-import { GameActionFightInvisibilityStateEnum } from "@protocol/enums/GameActionFightInvisibilityStateEnum";
+import {FightOptionsEnum} from "@protocol/enums/FightOptionsEnum";
+import {FightTypeEnum} from "@protocol/enums/FightTypeEnum";
+import {GameActionFightInvisibilityStateEnum} from "@protocol/enums/GameActionFightInvisibilityStateEnum";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@protocol/network/messages/GameActionFightDispellableEffectMessage";
@@ -24,7 +23,6 @@ import GameActionFightSlideMessage from "@protocol/network/messages/GameActionFi
 import GameActionFightSpellCastMessage from "@protocol/network/messages/GameActionFightSpellCastMessage";
 import GameActionFightSummonMessage from "@protocol/network/messages/GameActionFightSummonMessage";
 import GameActionFightTeleportOnSameMapMessage from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
-import GameAction from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
 import GameEntitiesDispositionMessage from "@protocol/network/messages/GameEntitiesDispositionMessage";
 import GameFightEndMessage from "@protocol/network/messages/GameFightEndMessage";
 import GameFightJoinMessage from "@protocol/network/messages/GameFightJoinMessage";
@@ -48,11 +46,11 @@ import GameFightMonsterInformations from "@protocol/network/types/GameFightMonst
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import {  List } from "linqts";
+import {List} from "linqts";
 import FighterEntry from "./fighters/FighterEntry";
 import FightMonsterEntry from "./fighters/FightMonsterEntry";
 import FightPlayerEntry from "./fighters/FightPlayerEntry";
-import { SpellInabilityReasons } from "./SpellInabilityReasons";
+import {SpellInabilityReasons} from "./SpellInabilityReasons";
 
 export default class Fight implements IClearable {
   public type: FightTypeEnum;
@@ -64,21 +62,41 @@ export default class Fight implements IClearable {
   public positionsForChallengers = new List<number>();
   public positionsForDefenders = new List<number>();
   public fightId: number;
+  private account: Account;
+  private _allies: Dictionary<number, FighterEntry>;
+  private _enemies: Dictionary<number, FighterEntry>;
+  private _fighters: Dictionary<number, FighterEntry>;
+  private _effectsDurations: Dictionary<number, number>;
+  private _spellsIntervals: Dictionary<number, number>;
+  private _totalSpellLaunches: Dictionary<number, number>;
+  private _totalSpellLaunchesInCells: Dictionary<number, Dictionary<number, number>>;
+  private readonly onFightJoined = new LiteEvent<void>();
+  private readonly onFightIDReceived = new LiteEvent<void>();
+  private readonly onFightStarted = new LiteEvent<void>();
+  private readonly onFightEnded = new LiteEvent<void>();
+  private readonly onSpectatorJoined = new LiteEvent<void>();
+  private readonly onTurnStarted = new LiteEvent<void>();
+  private readonly onTurnEnded = new LiteEvent<void>();
+  private readonly onFightersUpdated = new LiteEvent<void>();
+  private readonly onFightersStatsUpdated = new LiteEvent<void>();
+  private readonly onPossiblePositionsReceived = new LiteEvent<void>();
+  private readonly onPlayerFighterMoving = new LiteEvent<number[]>();
 
-  get allies() {
-    return this._allies.values().filter((a) => a.alive);
-  }
+  constructor(account: Account) {
+    this.account = account;
 
-  get enemies() {
-    return this._enemies.values().filter((e) => e.alive && e.stats.invisibilityState !== GameActionFightInvisibilityStateEnum.INVISIBLE);
+    this._allies = new Dictionary<number, FighterEntry>();
+    this._effectsDurations = new Dictionary<number, number>();
+    this._enemies = new Dictionary<number, FighterEntry>();
+    this._fighters = new Dictionary<number, FighterEntry>();
+    this._spellsIntervals = new Dictionary<number, number>();
+    this._totalSpellLaunches = new Dictionary<number, number>();
+    this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
+    this.options = [];
   }
 
   get monsters() {
     return this._enemies.values().map((a) => a as FightMonsterEntry);
-  }
-
-  get fighters() {
-    return this._fighters.values().filter((a) => a.alive);
   }
 
   get invocationsCount() {
@@ -129,50 +147,60 @@ export default class Fight implements IClearable {
     return ally;
   }
 
-  private account: Account;
+  get allies() {
+    return this._allies.values().filter((a) => a.alive);
+  }
 
-  private _allies: Dictionary<number, FighterEntry>;
-  private _effectsDurations: Dictionary<number, number>;
-  private _enemies: Dictionary<number, FighterEntry>;
-  private _fighters: Dictionary<number, FighterEntry>;
-  private _spellsIntervals: Dictionary<number, number>;
-  private _totalSpellLaunches: Dictionary<number, number>;
-  private _totalSpellLaunchesInCells: Dictionary<number, Dictionary<number, number>>;
+  get enemies() {
+    return this._enemies.values().filter((e) => e.alive && e.stats.invisibilityState !== GameActionFightInvisibilityStateEnum.INVISIBLE);
+  }
 
-  public get FightJoined() { return this.onFightJoined.expose(); }
-  private readonly onFightJoined = new LiteEvent<void>();
-  public get FightIDReceived() { return this.onFightIDReceived.expose(); }
-  private readonly onFightIDReceived = new LiteEvent<void>();
-  public get FightStarted() { return this.onFightStarted.expose(); }
-  private readonly onFightStarted = new LiteEvent<void>();
-  public get FightEnded() { return this.onFightEnded.expose(); }
-  private readonly onFightEnded = new LiteEvent<void>();
-  public get SpectatorJoined() { return this.onSpectatorJoined.expose(); }
-  private readonly onSpectatorJoined = new LiteEvent<void>();
-  public get TurnStarted() { return this.onTurnStarted.expose(); }
-  private readonly onTurnStarted = new LiteEvent<void>();
-  public get TurnEnded() { return this.onTurnEnded.expose(); }
-  private readonly onTurnEnded = new LiteEvent<void>();
-  public get FightersUpdated() { return this.onFightersUpdated.expose(); }
-  private readonly onFightersUpdated = new LiteEvent<void>();
-  public get FightersStatsUpdated() { return this.onFightersStatsUpdated.expose(); }
-  private readonly onFightersStatsUpdated = new LiteEvent<void>();
-  public get PossiblePositionsReceived() { return this.onPossiblePositionsReceived.expose(); }
-  private readonly onPossiblePositionsReceived = new LiteEvent<void>();
-  public get PlayerFighterMoving() { return this.onPlayerFighterMoving.expose(); }
-  private readonly onPlayerFighterMoving = new LiteEvent<number[]>();
+  get fighters() {
+    return this._fighters.values().filter((a) => a.alive);
+  }
 
-  constructor(account: Account) {
-    this.account = account;
+  public get FightJoined() {
+    return this.onFightJoined.expose();
+  }
 
-    this._allies = new Dictionary<number, FighterEntry>();
-    this._effectsDurations = new Dictionary<number, number>();
-    this._enemies = new Dictionary<number, FighterEntry>();
-    this._fighters = new Dictionary<number, FighterEntry>();
-    this._spellsIntervals = new Dictionary<number, number>();
-    this._totalSpellLaunches = new Dictionary<number, number>();
-    this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
-    this.options = [];
+  public get FightIDReceived() {
+    return this.onFightIDReceived.expose();
+  }
+
+  public get FightStarted() {
+    return this.onFightStarted.expose();
+  }
+
+  public get FightEnded() {
+    return this.onFightEnded.expose();
+  }
+
+  public get SpectatorJoined() {
+    return this.onSpectatorJoined.expose();
+  }
+
+  public get TurnStarted() {
+    return this.onTurnStarted.expose();
+  }
+
+  public get TurnEnded() {
+    return this.onTurnEnded.expose();
+  }
+
+  public get FightersUpdated() {
+    return this.onFightersUpdated.expose();
+  }
+
+  public get FightersStatsUpdated() {
+    return this.onFightersStatsUpdated.expose();
+  }
+
+  public get PossiblePositionsReceived() {
+    return this.onPossiblePositionsReceived.expose();
+  }
+
+  public get PlayerFighterMoving() {
+    return this.onPlayerFighterMoving.expose();
   }
 
   public clear() {
@@ -200,7 +228,7 @@ export default class Fight implements IClearable {
     }
 
     if (!this.options.includes(option)) {
-      await this.account.network.sendMessageFree("GameFightOptionToggleMessage", { option });
+      await this.account.network.sendMessageFree("GameFightOptionToggleMessage", {option});
     }
   }
 
@@ -420,7 +448,7 @@ export default class Fight implements IClearable {
   }
 
   public getSpellRange(characterCellId: number, spellLevel: SpellLevels): number[] {
-    const range = new Array<number>();
+    const range = [];
     for (const mp of SpellShapes.getSpellRange(characterCellId, spellLevel, this.totalStat(this.account.game.character.stats.range))) {
       if (mp === null || range.includes(mp.cellId)) {
         continue;
@@ -483,7 +511,7 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateGameFightUpdateTeamMessage(message: GameFightUpdateTeamMessage) {
-    if (this.account.state === AccountStates.FIGHTING && message.team.leaderId === this.account.game.character.id && this.fightId === 0)  {
+    if (this.account.state === AccountStates.FIGHTING && message.team.leaderId === this.account.game.character.id && this.fightId === 0) {
       this.fightId = message.fightId;
       this.onFightIDReceived.trigger();
     }
@@ -711,7 +739,7 @@ export default class Fight implements IClearable {
         value.changeValueForKey(message.destinationCellId, value.getValue(message.destinationCellId) + 1);
       } else {
         this._totalSpellLaunchesInCells.add(spell.id, new Dictionary<number, number>([
-          { key: message.destinationCellId, value: 1 },
+          {key: message.destinationCellId, value: 1},
         ]));
       }
     }

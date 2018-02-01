@@ -1,7 +1,7 @@
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
 import * as React from "react";
-import { Button, Col, Container, Row, Table } from "reactstrap";
+import {Button, Col, Container, Row, Table} from "reactstrap";
 
 interface ISpellsProps {
   account: Account;
@@ -41,29 +41,29 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
             <h4>You have {this.state.spellsPoints} points to level up your spells.</h4>
             <Table striped bordered size="sm" responsive>
               <thead>
-                <tr>
-                  <th></th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Level</th>
-                  <th>Monter</th>
-                </tr>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Monter</th>
+              </tr>
               </thead>
               <tbody>
-                {this.state.spells.map((s, index) => (
-                  <tr key={index}>
-                    <td><img width="25" height="25" src={s.iconUrl} alt={s.name} /></td>
-                    <td>{s.id}</td>
-                    <td>{s.name}</td>
-                    <td>{s.level}</td>
-                    <td>
-                      <Button size="sm"
-                        disabled={this.state.spellsPoints > 0 ? false : true}
-                        color="dark"
-                        onClick={() => this.props.account.game.character.levelUpSpell(s)}>Monter</Button>
-                    </td>
-                  </tr>
-                ))}
+              {this.state.spells.map((s, index) => (
+                <tr key={index}>
+                  <td><img width="25" height="25" src={s.iconUrl} alt={s.name}/></td>
+                  <td>{s.id}</td>
+                  <td>{s.name}</td>
+                  <td>{s.level}</td>
+                  <td>
+                    <Button size="sm"
+                            disabled={this.state.spellsPoints > 0 ? false : true}
+                            color="dark"
+                            onClick={() => this.props.account.game.character.levelUpSpell(s)}>Monter</Button>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </Table>
           </Col>
@@ -73,11 +73,11 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
   }
 
   private StatsUpdated() {
-    this.setState({ spellsPoints: this.props.account.game.character.stats.spellsPoints });
+    this.setState({spellsPoints: this.props.account.game.character.stats.spellsPoints});
   }
 
   private spellsUpdated() {
-    this.setState({ spells: this.props.account.game.character.spells });
+    this.setState({spells: this.props.account.game.character.spells});
   }
 
 }

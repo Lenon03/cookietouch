@@ -1,4 +1,5 @@
 import FightTeamMemberInformations from "./FightTeamMemberInformations";
+
 export default class FightTeamMemberCompanionInformations extends FightTeamMemberInformations {
 
   public companionId: number;

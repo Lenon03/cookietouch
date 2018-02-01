@@ -8,10 +8,6 @@ export default class InteractiveElementEntry {
   public enabledSkills: SkillEntry[] = [];
   public disabledSkills: SkillEntry[] = [];
 
-  get usable(): boolean {
-    return this.enabledSkills.length > 0;
-  }
-
   constructor(elem: InteractiveElement) {
     this.id = elem.elementId;
     this.elementTypeId = elem.elementTypeId;
@@ -24,5 +20,9 @@ export default class InteractiveElementEntry {
     for (const e of elem.disabledSkills) {
       this.disabledSkills.push(new SkillEntry(e));
     }
+  }
+
+  get usable(): boolean {
+    return this.enabledSkills.length > 0;
   }
 }

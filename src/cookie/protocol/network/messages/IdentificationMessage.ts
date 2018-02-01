@@ -1,4 +1,5 @@
 import Message from "./Message";
+
 export default class IdentificationMessage extends Message {
   public credentials: number[];
   public lang: string;
@@ -7,6 +8,7 @@ export default class IdentificationMessage extends Message {
   public useCertificate: boolean;
   public useLoginToken: boolean;
   public sessionOptionalSalt: number;
+
   constructor(lang = "", serverId = 0, autoconnect = false, useCertificate = false,
               useLoginToken = false, sessionOptionalSalt = 0, credentials: number[]) {
     super();

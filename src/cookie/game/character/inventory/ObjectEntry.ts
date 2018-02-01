@@ -1,12 +1,12 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
 import ItemTypes from "@protocol/data/classes/ItemTypes";
 import DTConstants from "@protocol/DTConstants";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
 import ObjectEffectInteger from "@protocol/network/types/ObjectEffectInteger";
 import ObjectItem from "@protocol/network/types/ObjectItem";
-import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
+import InventoryHelper, {ObjectTypes} from "./InventoryHelper";
 
 export default class ObjectEntry {
   public gid: number;
@@ -25,10 +25,6 @@ export default class ObjectEntry {
   public superTypeId: number;
   public regenValue: number;
   public weightBoost: number;
-
-  get iconUrl() {
-    return `${DTConstants.config.assetsUrl}/gfx/items/${this.iconId}.png`;
-  }
 
   constructor(o: ObjectItem, item: Items = null) {
     this.gid = o.objectGID;
@@ -89,7 +85,7 @@ export default class ObjectEntry {
 
       // Check if this item gives hp back (BOOST_HP 110)
       for (const e of o.effects) {
-        if (!(e._type ===  "ObjectEffectInteger")) {
+        if (!(e._type === "ObjectEffectInteger")) {
           continue;
         }
         const newE = e as ObjectEffectInteger;
@@ -101,6 +97,10 @@ export default class ObjectEntry {
         }
       }
     });
+  }
+
+  get iconUrl() {
+    return `${DTConstants.config.assetsUrl}/gfx/items/${this.iconId}.png`;
   }
 
   public async UpdateObjectItem(item: ObjectItem) {

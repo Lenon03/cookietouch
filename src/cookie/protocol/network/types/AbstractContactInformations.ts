@@ -1,4 +1,5 @@
 import Type from "./Type";
+
 export default class AbstractContactInformations extends Type {
   public accountId: number;
   public accountName: string;

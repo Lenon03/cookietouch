@@ -1,4 +1,5 @@
 import Message from "./Message";
+
 export default class HelloConnectMessage extends Message {
 
   public key: number[];

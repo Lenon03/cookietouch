@@ -1,9 +1,9 @@
 import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import ScriptAction, {ScriptActionResults} from "../ScriptAction";
 
 export default class LeaveDialogAction extends ScriptAction {
   public _name: string = "LeaveDialogAction";
+
   public async process(account: Account): Promise<ScriptActionResults> {
     if (account.isInDialog) {
       account.network.sendMessageFree("LeaveDialogRequestMessage");

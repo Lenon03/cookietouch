@@ -6,6 +6,7 @@ export default class PartyMemberGeoPosition extends Type {
   public worldY: number;
   public mapId: number;
   public subAreaId: number;
+
   constructor(memberId = 0, worldX = 0, worldY = 0, mapId = 0, subAreaId = 0) {
     super();
     this.memberId = memberId;

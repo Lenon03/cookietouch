@@ -76,8 +76,8 @@ export default class Pathfinder {
         this.grid[cellPos.x + 1][cellPos.y + 1].weight += this.OCCUPIED_CELL_WEIGHT;
       }
     }
-    let candidates = new Array<CellPath>();
-    const selections = new Array<CellPath>();
+    let candidates = [];
+    const selections = [];
     const distSrcDst = Math.sqrt(Math.pow(si - di, 2) + Math.pow(sj - dj, 2));
     let selection = new CellPath(si, sj, 0, distSrcDst, null);
     let reachingPath: CellPath = null;
@@ -136,7 +136,7 @@ export default class Pathfinder {
       cellPos = MapPoint.fromCellId(cellId);
       this.grid[cellPos.x + 1][cellPos.y + 1].weight -= this.OCCUPIED_CELL_WEIGHT;
     }
-    const shortestPath = new Array<number>();
+    const shortestPath = [];
     while (closestPath !== null) {
       shortestPath.unshift(MapPoint.fromCoords(closestPath.i - 1, closestPath.j - 1).cellId);
       closestPath = closestPath.path;
@@ -145,7 +145,7 @@ export default class Pathfinder {
   }
 
   public compressPath(path: number[]): number[] {
-    const compressedPath = new Array<number>();
+    const compressedPath = [];
     let prevCellId = path[0];
     let prevDirection = -1;
     let prevX = 0;
@@ -207,7 +207,7 @@ export default class Pathfinder {
     if (path.length < 2) {
       return path;
     }
-    const result = new Array<number>();
+    const result = [];
     result.push(path[0]);
 
     let previous = MapPoint.fromCellId(path[0]);
@@ -359,7 +359,7 @@ export default class Pathfinder {
   }
 
   private getAdjacentCells(i: number, j: number): CellData[] {
-    const cells = new Array<CellData>();
+    const cells = [];
     cells.push(this.grid[i - 1][j]);
     cells.push(this.grid[i][j - 1]);
     cells.push(this.grid[i][j + 1]);

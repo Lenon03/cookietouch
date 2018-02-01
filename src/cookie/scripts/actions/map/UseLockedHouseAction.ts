@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import ScriptAction, {ScriptActionResults} from "../ScriptAction";
 
 export default class UseLockedHouseAction extends ScriptAction {
   public _name: string = "UseLockedHouseAction";

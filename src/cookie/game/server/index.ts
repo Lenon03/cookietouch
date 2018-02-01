@@ -1,4 +1,4 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Servers from "@protocol/data/classes/Servers";
@@ -11,12 +11,14 @@ export default class Server {
   public characters: CharacterBaseInformations[] = [];
 
   private account: Account;
-
-  public get ServerSelected() { return this.onServerSelected.expose(); }
   private readonly onServerSelected = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public get ServerSelected() {
+    return this.onServerSelected.expose();
   }
 
   public async UpdateSelectedServerDataMessage(message: any) {

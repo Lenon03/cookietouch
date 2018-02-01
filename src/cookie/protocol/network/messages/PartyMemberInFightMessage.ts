@@ -1,5 +1,6 @@
 import MapCoordinatesExtended from "@protocol/network/types/MapCoordinatesExtended";
 import AbstractPartyMessage from "./AbstractPartyMessage";
+
 export default class PartyMemberInFightMessage extends AbstractPartyMessage {
   public reason: number;
   public memberId: number;
@@ -8,6 +9,7 @@ export default class PartyMemberInFightMessage extends AbstractPartyMessage {
   public fightId: number;
   public fightMap: MapCoordinatesExtended;
   public secondsBeforeFightStart: number;
+
   constructor(partyId = 0, reason = 0, memberId = 0, memberAccountId = 0, memberName = "",
               fightId = 0, fightMap: MapCoordinatesExtended, secondsBeforeFightStart = 0) {
     super(partyId);

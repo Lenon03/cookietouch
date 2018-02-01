@@ -1,7 +1,6 @@
 import DTConstants from "@protocol/DTConstants";
-import Dictionary from "@utils/Dictionary";
 import axios from "axios";
-import { remote } from "electron";
+import {remote} from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import Cell from "./Cell";

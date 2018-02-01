@@ -8,6 +8,7 @@ export default class StartupActionAddObject extends Type {
   public text: string;
   public descUrl: string;
   public pictureUrl: string;
+
   constructor(uid = 0, title = "", text = "", descUrl = "", pictureUrl = "",
               items: ObjectItemInformationWithQuantity[] = null) {
     super();

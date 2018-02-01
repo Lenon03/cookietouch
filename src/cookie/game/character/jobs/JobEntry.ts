@@ -1,4 +1,4 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
 import Skills from "@protocol/data/classes/Skills";
@@ -6,7 +6,7 @@ import DTConstants from "@protocol/DTConstants";
 import JobDescription from "@protocol/network/types/JobDescription";
 import JobExperience from "@protocol/network/types/JobExperience";
 import SkillActionDescriptionCollect from "@protocol/network/types/SkillActionDescriptionCollect";
-import { List } from "linqts";
+import {List} from "linqts";
 import CollectSkillEntry from "./skills/CollectSkillEntry";
 
 export default class JobEntry {
@@ -18,15 +18,6 @@ export default class JobEntry {
   public experienceLevelFloor: number;
   public experienceNextLevelFloor: number;
   public collectSkills: List<CollectSkillEntry>;
-
-  get experiencePercent() {
-    return this.experience === 0 ? 0 :
-      (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
-  }
-
-  get iconUrl() {
-    return `${DTConstants.config.assetsUrl}/gfx/jobs/${this.iconId}.png`;
-  }
 
   constructor(job: JobDescription, jobData: Jobs) {
     this.id = job.jobId;
@@ -47,6 +38,15 @@ export default class JobEntry {
         }
       });
     }
+  }
+
+  get experiencePercent() {
+    return this.experience === 0 ? 0 :
+      (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
+  }
+
+  get iconUrl() {
+    return `${DTConstants.config.assetsUrl}/gfx/jobs/${this.iconId}.png`;
   }
 
   public async UpdateJobExperience(jobExp: JobExperience) {

@@ -1,6 +1,6 @@
-import { app, dialog } from "electron";
+import {app, dialog} from "electron";
 import log from "electron-log";
-import { autoUpdater } from "electron-updater";
+import {autoUpdater} from "electron-updater";
 
 autoUpdater.logger = log;
 (autoUpdater.logger as any).transports.file.level = "info";

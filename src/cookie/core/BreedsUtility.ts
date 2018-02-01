@@ -1,9 +1,9 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
 import DTConstants from "@protocol/DTConstants";
 import Color from "@utils/Color";
-import { Enumerable, List } from "linqts";
+import {Enumerable, List} from "linqts";
 
 export default class BreedsUtility {
   public static breeds: List<Breeds>;

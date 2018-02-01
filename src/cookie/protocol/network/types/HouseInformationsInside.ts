@@ -9,6 +9,7 @@ export default class HouseInformationsInside extends Type {
   public worldY: number;
   public price: number;
   public isLocked: boolean;
+
   constructor(houseId = 0, modelId = 0, ownerId = 0, ownerName = "",
               worldX = 0, worldY = 0, price = 0, isLocked = false) {
     super();

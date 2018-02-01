@@ -1,4 +1,5 @@
 import Message from "./Message";
+
 export default class SelectedServerDataMessage extends Message {
   public serverId: number;
   public address: string;

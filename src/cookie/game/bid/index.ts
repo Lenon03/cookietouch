@@ -1,17 +1,17 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
-import { ExchangeErrorEnum } from "@protocol/enums/ExchangeErrorEnum";
+import {ExchangeErrorEnum} from "@protocol/enums/ExchangeErrorEnum";
 import BidExchangerObjectInfo from "@protocol/network/types/BidExchangerObjectInfo";
 import ObjectItemToSellInBid from "@protocol/network/types/ObjectItemToSellInBid";
-import { Deferred, IDeferred } from "@utils/Deferred";
+import {Deferred} from "@utils/Deferred";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 
 export default class Bid implements IClearable {
   public maxItemPerAccount: number;
@@ -20,16 +20,24 @@ export default class Bid implements IClearable {
   private _itemDescription = Deferred<List<BidExchangerObjectInfo>>();
   private _lastSearchedGID: number;
   private account: Account;
-
-  public get StartedBuying() { return this.onStartedBuying.expose(); }
-  public get StartedSelling() { return this.onStartedSelling.expose(); }
-  public get BidLeft() { return this.onBidLeft.expose(); }
   private readonly onStartedBuying = new LiteEvent<void>();
   private readonly onStartedSelling = new LiteEvent<void>();
   private readonly onBidLeft = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public get StartedBuying() {
+    return this.onStartedBuying.expose();
+  }
+
+  public get StartedSelling() {
+    return this.onStartedSelling.expose();
+  }
+
+  public get BidLeft() {
+    return this.onBidLeft.expose();
   }
 
   public clear() {

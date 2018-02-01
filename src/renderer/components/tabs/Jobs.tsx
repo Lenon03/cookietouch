@@ -1,7 +1,7 @@
 import JobEntry from "@/game/character/jobs/JobEntry";
 import Account from "@account";
 import * as React from "react";
-import { Col, Container, Progress, Row, Table } from "reactstrap";
+import {Col, Container, Progress, Row, Table} from "reactstrap";
 
 interface IJobsProps {
   account: Account;
@@ -35,28 +35,28 @@ export default class Jobs extends React.Component<IJobsProps, IJobsStates> {
           <Col>
             <Table striped bordered size="sm" responsive>
               <thead>
-                <tr>
-                  <th></th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Level</th>
-                  <th>Experience</th>
-                </tr>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Experience</th>
+              </tr>
               </thead>
               <tbody>
-                {this.state.jobs.map((j, index) => (
-                  <tr key={index}>
-                    <td><img width="25" height="25" src={j.iconUrl} alt={j.name} /></td>
-                    <td>{j.id}</td>
-                    <td>{j.name}</td>
-                    <td>{j.level}</td>
-                    <td>
-                      <Progress value={j.experience} max={j.experienceNextLevelFloor}>
-                        {j.experience} / {j.experienceNextLevelFloor}
-                      </Progress>
-                    </td>
-                  </tr>
-                ))}
+              {this.state.jobs.map((j, index) => (
+                <tr key={index}>
+                  <td><img width="25" height="25" src={j.iconUrl} alt={j.name}/></td>
+                  <td>{j.id}</td>
+                  <td>{j.name}</td>
+                  <td>{j.level}</td>
+                  <td>
+                    <Progress value={j.experience} max={j.experienceNextLevelFloor}>
+                      {j.experience} / {j.experienceNextLevelFloor}
+                    </Progress>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </Table>
           </Col>

@@ -1,4 +1,4 @@
-import { Enumerable, List } from "linqts";
+import {Enumerable, List} from "linqts";
 import CharacterCreation from "./CharacterCreation";
 
 export default class AccountConfiguration {

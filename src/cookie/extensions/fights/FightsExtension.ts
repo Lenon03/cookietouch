@@ -1,40 +1,33 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
 import Spells from "@protocol/data/classes/Spells";
-import { FightOptionsEnum } from "@protocol/enums/FightOptionsEnum";
-import { SequenceTypeEnum } from "@protocol/enums/SequenceTypeEnum";
-import { TeamEnum } from "@protocol/enums/TeamEnum";
+import {FightOptionsEnum} from "@protocol/enums/FightOptionsEnum";
+import {SequenceTypeEnum} from "@protocol/enums/SequenceTypeEnum";
+import {TeamEnum} from "@protocol/enums/TeamEnum";
 import GameActionFightNoSpellCastMessage from "@protocol/network/messages/GameActionFightNoSpellCastMessage";
 import GameFightPlacementPossiblePositionsMessage from "@protocol/network/messages/GameFightPlacementPossiblePositionsMessage";
 import GameFightShowFighterMessage from "@protocol/network/messages/GameFightShowFighterMessage";
 import GameMapNoMovementMessage from "@protocol/network/messages/GameMapNoMovementMessage";
 import SequenceEndMessage from "@protocol/network/messages/SequenceEndMessage";
 import IClearable from "@utils/IClearable";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 import TutorialHelper from "../characterCreator/TutorialHelper";
-import { BlockSpectatorScenarios } from "./configuration/enums/BlockSpectatorScenarios";
-import { FightStartPlacement } from "./configuration/enums/FightStartPlacement";
-import { FightTactics } from "./configuration/enums/FightTactics";
+import {BlockSpectatorScenarios} from "./configuration/enums/BlockSpectatorScenarios";
+import {FightStartPlacement} from "./configuration/enums/FightStartPlacement";
+import {FightTactics} from "./configuration/enums/FightTactics";
 import FightsConfiguration from "./configuration/FightsConfiguration";
 import Spell from "./configuration/Spell";
-import { SpellCastingResults } from "./SpellCastingResults";
+import {SpellCastingResults} from "./SpellCastingResults";
 import SpellsManager from "./SpellsManager";
 import FightsUtility from "./utility/FightsUtility";
 
 export default class FightsExtension implements IClearable {
   public config: FightsConfiguration;
-
-  get spells() {
-    return this.account.extensions.characterCreation.isDoingTutorial
-      ? TutorialHelper.baseSpells.getValue(this.account.game.character.breed)
-      : new List(this.config.spells);
-  }
-
   private account: Account;
   private awaitingSequenceEnd: boolean;
   private _endTurn: boolean;
@@ -52,6 +45,12 @@ export default class FightsExtension implements IClearable {
     this.config = new FightsConfiguration(account);
 
     this.setEvents();
+  }
+
+  get spells() {
+    return this.account.extensions.characterCreation.isDoingTutorial
+      ? TutorialHelper.baseSpells.getValue(this.account.game.character.breed)
+      : new List(this.config.spells);
   }
 
   public clear() {
@@ -126,7 +125,7 @@ export default class FightsExtension implements IClearable {
             this.config.startPlacement === FightStartPlacement.CLOSE_TO_ENEMIES, possiblePositions.ToArray());
           // If we're not already close
           if (cellId !== this.account.game.fight.playedFighter.cellId) {
-            await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId });
+            await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId});
           }
         }
       }
@@ -140,7 +139,7 @@ export default class FightsExtension implements IClearable {
       }
     }
     await sleep(300);
-    this.account.network.sendMessageFree("GameFightReadyMessage", { isReady: true });
+    this.account.network.sendMessageFree("GameFightReadyMessage", {isReady: true});
   }
 
   public async UpdateGameFightShowFighterMessage(message: GameFightShowFighterMessage) {
@@ -152,7 +151,7 @@ export default class FightsExtension implements IClearable {
     if (this.account.hasGroup && this.account.isGroupChief) {
       if (!this.account.group.isGroupMember(message.informations.contextualId)) {
         await sleep(800);
-        await this.account.network.sendMessageFree("GameContextKickMessage", { targetId: message.informations.contextualId });
+        await this.account.network.sendMessageFree("GameContextKickMessage", {targetId: message.informations.contextualId});
         this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("playerKicked"));
         // If this person took a member's place, send a group signal so that the member joins again
         this.account.group.signalMembersToJoinFight();
@@ -220,9 +219,9 @@ export default class FightsExtension implements IClearable {
       // Also if distance to the nearest enemy is >= maxCells
       const nearest = this.config.tactic === FightTactics.AGGRESSIVE ||
         (this.config.approachWhenNoSpellCasted ||
-        this.account.extensions.characterCreation.isDoingTutorial) && !this.spellCasted ||
+          this.account.extensions.characterCreation.isDoingTutorial) && !this.spellCasted ||
         MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
-        .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
+          .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
         this.config.maxCells;
       const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE
         || this.config.baseApproachAllMonsters);
@@ -301,7 +300,7 @@ export default class FightsExtension implements IClearable {
     const spellResp = await DataManager.get<Spells>(DataTypes.Spells, this.config.spellToApproach);
     const spell = spellResp[0].object;
     const spellLevelResp = await DataManager.get<SpellLevels>
-      (DataTypes.SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
+    (DataTypes.SpellLevels, spell.spellLevels[this.account.game.character.getSpell(spell.id).level - 1]);
     const spellLevel = spellLevelResp[0].object;
 
     // Check if we can cast the spell from our current position
@@ -315,7 +314,7 @@ export default class FightsExtension implements IClearable {
         continue;
       }
       if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
-        await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId: t });
+        await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId: t});
         return true;
       }
     }
@@ -344,7 +343,7 @@ export default class FightsExtension implements IClearable {
 
     // If we're not already close
     if (cellId !== this.account.game.fight.playedFighter.cellId) {
-      await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId });
+      await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId});
     }
 
     return true;

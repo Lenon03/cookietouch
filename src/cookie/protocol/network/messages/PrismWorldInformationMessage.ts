@@ -1,6 +1,7 @@
 import PrismSubAreaInformation from "@protocol/network/types/PrismSubAreaInformation";
 import VillageConquestPrismInformation from "@protocol/network/types/VillageConquestPrismInformation";
 import Message from "./Message";
+
 export default class PrismWorldInformationMessage extends Message {
   public subAreasInformation: PrismSubAreaInformation[];
   public conquetesInformation: VillageConquestPrismInformation[];
@@ -9,6 +10,7 @@ export default class PrismWorldInformationMessage extends Message {
   public maxSub: number;
   public nbConqsOwned: number;
   public conqsTotal: number;
+
   constructor(nbSubOwned = 0, subTotal = 0, maxSub = 0, nbConqsOwned = 0,
               conqsTotal = 0, subAreasInformation: PrismSubAreaInformation[], conquetesInformation: VillageConquestPrismInformation[]) {
     super();

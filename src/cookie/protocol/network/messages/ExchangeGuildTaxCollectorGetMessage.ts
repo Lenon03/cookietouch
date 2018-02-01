@@ -1,5 +1,6 @@
 import ObjectItemQuantity from "@protocol/network/types/ObjectItemQuantity";
 import Message from "./Message";
+
 export default class ExchangeGuildTaxCollectorGetMessage extends Message {
   public objectsInfos: ObjectItemQuantity[];
   public collectorName: string;
@@ -9,6 +10,7 @@ export default class ExchangeGuildTaxCollectorGetMessage extends Message {
   public subAreaId: number;
   public userName: string;
   public experience: number;
+
   constructor(collectorName = "", worldX = 0, worldY = 0, mapId = 0, subAreaId = 0,
               userName = "", experience = 0, objectsInfos: ObjectItemQuantity[]) {
     super();

@@ -6,6 +6,7 @@ export default class Preset extends Type {
   public presetId: number;
   public symbolId: number;
   public mount: boolean;
+
   constructor(presetId = 0, symbolId = 0, mount = false, objects: PresetItem[] = null) {
     super();
     this.objects = objects;

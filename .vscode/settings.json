@@ -1,5 +1,6 @@
 {
   "eslint.enable": false,
   "editor.tabSize": 2,
-  "files.autoSave": "onFocusChange"
+  "files.autoSave": "onFocusChange",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -8,6 +8,7 @@ export default class InteractiveElementSkill extends Type {
   public _parentJobName: string;
   public _levelMin: number;
   public _parentJobId: number;
+
   constructor(skillId = 0, skillInstanceUid = 0) {
     super();
     this.skillId = skillId;

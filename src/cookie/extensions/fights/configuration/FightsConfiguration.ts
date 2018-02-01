@@ -1,12 +1,12 @@
 import Account from "@/account";
-import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
+import {FightSpeeds} from "@/extensions/fights/configuration/enums/FightSpeeds";
 import LiteEvent from "@/utils/LiteEvent";
-import { remote } from "electron";
+import {remote} from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import { BlockSpectatorScenarios } from "./enums/BlockSpectatorScenarios";
-import { FightStartPlacement } from "./enums/FightStartPlacement";
-import { FightTactics } from "./enums/FightTactics";
+import {BlockSpectatorScenarios} from "./enums/BlockSpectatorScenarios";
+import {FightStartPlacement} from "./enums/FightStartPlacement";
+import {FightTactics} from "./enums/FightTactics";
 import Spell from "./Spell";
 
 interface IFightsConfigurationJSON {
@@ -43,10 +43,7 @@ export default class FightsConfiguration {
   public tactic: FightTactics;
   public spells: Spell[];
   public fightSpeed: FightSpeeds;
-
-  public get Changed() { return this.onChanged.expose(); }
   private readonly onChanged = new LiteEvent<void>();
-
   private account: Account;
   private configFilePath = "";
 
@@ -67,6 +64,10 @@ export default class FightsConfiguration {
     this.regenEnd = 100;
     this.spells = [];
     this.fightSpeed = FightSpeeds.NORMAL;
+  }
+
+  public get Changed() {
+    return this.onChanged.expose();
   }
 
   public setConfigFilePath() {

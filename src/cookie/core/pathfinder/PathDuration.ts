@@ -6,6 +6,14 @@ enum AnimDurationTypes { MOUNTED, PARABLE, RUNNING, WALKING, SLIDE }
 
 export default class PathDuration {
 
+  private static animDurations = new Dictionary<AnimDurationTypes, AnimDuration>([
+    {key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120)},
+    {key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450)},
+    {key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150)},
+    {key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425)},
+    {key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50)},
+  ]);
+
   public static calculate(path: number[], isFight = false, slide = false, riding = false): number {
     let duration = 20; // TODO: Adding 20ms just in case, need tests, to see if its gonna cause problems
 
@@ -48,12 +56,4 @@ export default class PathDuration {
     console.log("[PathDuration] The duration for your movement is: " + duration + " ms.");
     return duration;
   }
-
-  private static animDurations = new Dictionary<AnimDurationTypes, AnimDuration>([
-    { key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120)},
-    { key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450)},
-    { key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150)},
-    { key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425)},
-    { key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50)},
-  ]);
 }

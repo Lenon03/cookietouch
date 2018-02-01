@@ -2,7 +2,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import MapGame from "@game/map";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 import InteractivesManager from "../interactives";
 
 export enum TeleportablesEnum { ZAAP, ZAAPI, NONE }
@@ -11,8 +11,6 @@ export default class TeleportablesManager {
   private _account: Account;
   private _destinationMapId: number;
   private _teleportable: TeleportablesEnum;
-
-  public get UseFinished() { return this.onUseFinished.expose(); }
   private readonly onUseFinished = new LiteEvent<boolean>();
 
   constructor(account: Account, interactives: InteractivesManager, map: MapGame) {
@@ -23,6 +21,10 @@ export default class TeleportablesManager {
       this.HandleTeleportDestinationsListMessage, this);
     map.MapChanged.on((success) => this.mapChanged.bind(this));
     interactives.UseFinished.on((success) => this.interactivesUseFinished.bind(this));
+  }
+
+  public get UseFinished() {
+    return this.onUseFinished.expose();
   }
 
   public saveZaap(): boolean {

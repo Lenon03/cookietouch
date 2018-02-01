@@ -6,13 +6,13 @@ export default class RangeNodeEntry {
   public touchedEnemiesByCell: Dictionary<number, number>;
   public node: MoveNode;
 
-  get mpUsed() {
-    return this.node.path.reachable.length > 0 ? this.node.path.reachable.length : 0;
-  }
-
   constructor(fromCellId: number, touchedEnemiesByCell: Dictionary<number, number>, node: MoveNode) {
     this.fromCellId = fromCellId;
     this.touchedEnemiesByCell = touchedEnemiesByCell;
     this.node = node;
+  }
+
+  get mpUsed() {
+    return this.node.path.reachable.length > 0 ? this.node.path.reachable.length : 0;
   }
 }

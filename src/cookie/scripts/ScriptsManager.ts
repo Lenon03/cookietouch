@@ -1,7 +1,7 @@
-import { AccountStates } from "@/account/AccountStates";
+import {AccountStates} from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { BoostableStats } from "@/game/character/BoostableStats";
-import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
+import {BoostableStats} from "@/game/character/BoostableStats";
+import {PlayerLifeStatusEnum} from "@/protocol/enums/PlayerLifeStatusEnum";
 import FightAction from "@/scripts/actions/fight/FightAction";
 import GatherAction from "@/scripts/actions/gather/GatherAction";
 import DelayAction from "@/scripts/actions/global/DelayAction";
@@ -24,18 +24,18 @@ import FightFlag from "@/scripts/flags/FightFlag";
 import GatherFlag from "@/scripts/flags/GatherFlag";
 import NpcBankFlag from "@/scripts/flags/NpcBankFlag";
 import PhenixFlag from "@/scripts/flags/PhenixFlag";
-import { sleep } from "@/utils/Time";
+import {sleep} from "@/utils/Time";
 import Account from "@account";
 import LiteEvent from "@utils/LiteEvent";
-import { isEmpty } from "@utils/String";
+import {isEmpty} from "@utils/String";
 import * as fs from "fs";
-import { List } from "linqts";
+import {List} from "linqts";
 import * as path from "path";
 import API from "./api";
-import { IFlag, IFlagType } from "./flags/IFlag";
-import { FunctionTypes } from "./FunctionTypes";
-import ActionsManager, { IActionsManagerEventData } from "./managers/ActionsManager";
-import JsonScriptManager, { IMap } from "./managers/JsonScriptManager";
+import {IFlag, IFlagType} from "./flags/IFlag";
+import {FunctionTypes} from "./FunctionTypes";
+import ActionsManager, {IActionsManagerEventData} from "./managers/ActionsManager";
+import JsonScriptManager, {IMap} from "./managers/JsonScriptManager";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;
@@ -43,13 +43,42 @@ export default class ScriptsManager {
   public enabled: boolean;
   public paused: boolean;
   private api: API;
+  private readonly onScriptLoaded = new LiteEvent<string>();
+  private readonly onScriptStarted = new LiteEvent<any>();
+  private readonly onScriptStopped = new LiteEvent<string>();
+  private account: Account;
+  private entryFlags: List<IFlag>;
+  private entryFlagsIndex: number;
+  private _currentFunctionType: FunctionTypes;
+  private _scriptManager: JsonScriptManager;
+
+  constructor(account: Account) {
+    this.account = account;
+    this._scriptManager = new JsonScriptManager();
+    this.api = new API(account);
+    this.actionsManager = new ActionsManager(account);
+    this.entryFlags = new List<IFlag>();
+
+    this.account.game.fight.FightJoined.on(this.onFightJoined.bind(this));
+    this.account.game.fight.FightEnded.on(this.onFightEnded.bind(this));
+    this.actionsManager.ActionsFinished.on(this.onActionsFinished.bind(this));
+    this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
+  }
 
   get running(): boolean {
     return this.account.isGroupChief === true ? this.enabled && !this.paused : this.account.group.chief.scripts.running === true;
   }
 
-  get scriptManager(): JsonScriptManager {
-    return this.account.isGroupChief ? this._scriptManager : this.account.group.chief.scripts._scriptManager;
+  public get ScriptLoaded() {
+    return this.onScriptLoaded.expose();
+  }
+
+  public get ScriptStarted() {
+    return this.onScriptStarted.expose();
+  }
+
+  public get ScriptStopped() {
+    return this.onScriptStopped.expose();
   }
 
   get currentFunctionType(): FunctionTypes {
@@ -64,35 +93,13 @@ export default class ScriptsManager {
     }
   }
 
+  get scriptManager(): JsonScriptManager {
+    return this.account.isGroupChief ? this._scriptManager : this.account.group.chief.scripts._scriptManager;
+  }
+
   private get gotToMaxPods(): boolean {
     const maxPods = this._scriptManager.config.MAX_PODS ? this._scriptManager.config.MAX_PODS : 90;
     return this.account.game.character.inventory.weightPercent >= maxPods;
-  }
-
-  public get ScriptLoaded() { return this.onScriptLoaded.expose(); }
-  private readonly onScriptLoaded = new LiteEvent<string>();
-  public get ScriptStarted() { return this.onScriptStarted.expose(); }
-  private readonly onScriptStarted = new LiteEvent<any>();
-  public get ScriptStopped() { return this.onScriptStopped.expose(); }
-  private readonly onScriptStopped = new LiteEvent<string>();
-
-  private account: Account;
-  private _currentFunctionType: FunctionTypes;
-  private entryFlags: List<IFlag>;
-  private entryFlagsIndex: number;
-  private _scriptManager: JsonScriptManager;
-
-  constructor(account: Account) {
-    this.account = account;
-    this._scriptManager = new JsonScriptManager();
-    this.api = new API(account);
-    this.actionsManager = new ActionsManager(account);
-    this.entryFlags = new List<IFlag>();
-
-    this.account.game.fight.FightJoined.on(this.onFightJoined.bind(this));
-    this.account.game.fight.FightEnded.on(this.onFightEnded.bind(this));
-    this.actionsManager.ActionsFinished.on(this.onActionsFinished.bind(this));
-    this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
   }
 
   public fromFile(filePath: string) {
@@ -460,7 +467,7 @@ export default class ScriptsManager {
         this.account.logger.logInfo(LanguageManager.trans("scriptsManager"), LanguageManager.trans("hpToGetBack", hpToRegen, estimatedTime));
         // Then just wait it before continuing
         for (let i = 0; i < estimatedTime &&
-          this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenEnd && this.running; i++) {
+        this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenEnd && this.running; i++) {
           await sleep(1000);
         }
         if (this.running) {

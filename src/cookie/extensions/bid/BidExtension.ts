@@ -7,7 +7,7 @@ import TextInformationMessage from "@/protocol/network/messages/TextInformationM
 import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
-import { sleep } from "@/utils/Time";
+import {sleep} from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
 
 export default class BidExtension implements IClearable {
@@ -20,14 +20,6 @@ export default class BidExtension implements IClearable {
   private enabled: boolean = false;
   private waiting: boolean = false;
   private pricesInBid: Dictionary<number, number[]>;
-
-  private get running() {
-    return this.enabled && !this.waiting;
-  }
-
-  public get Started() { return this.onStarted.expose(); }
-  public get Stopped() { return this.onStopped.expose(); }
-  public get StatisticsUpdated() { return this.onStatisticsUpdated.expose(); }
   private readonly onStarted = new LiteEvent<void>();
   private readonly onStopped = new LiteEvent<void>();
   private readonly onStatisticsUpdated = new LiteEvent<void>();
@@ -42,6 +34,22 @@ export default class BidExtension implements IClearable {
     this.account.scripts.ScriptStopped.on(this.onScriptStopped.bind(this));
     this.account.dispatcher.register("ExchangeBidHouseItemAddOkMessage", this.HandleExchangeBidHouseItemAddOkMessage, this);
     this.account.dispatcher.register("TextInformationMessage", this.HandleTextInformationMessage, this);
+  }
+
+  public get Started() {
+    return this.onStarted.expose();
+  }
+
+  public get Stopped() {
+    return this.onStopped.expose();
+  }
+
+  public get StatisticsUpdated() {
+    return this.onStatisticsUpdated.expose();
+  }
+
+  private get running() {
+    return this.enabled && !this.waiting;
   }
 
   public start() {
@@ -82,7 +90,7 @@ export default class BidExtension implements IClearable {
     this.account.game.bid.startBuying();
   }
 
-  private timerCallback()  {
+  private timerCallback() {
     this.waiting = false;
     this.timer.stop();
     if (!this.enabled) {

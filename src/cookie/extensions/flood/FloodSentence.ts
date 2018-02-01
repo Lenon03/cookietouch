@@ -1,4 +1,4 @@
-import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
+import {ChatChannelsMultiEnum} from "@/protocol/enums/ChatChannelsMultiEnum";
 
 export default class FloodSentence {
   public content: string;

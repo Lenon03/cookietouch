@@ -1,7 +1,7 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@protocol/network/messages/GameActionFightDispellableEffectMessage";
@@ -33,7 +33,7 @@ import GameMapMovementMessage from "@protocol/network/messages/GameMapMovementMe
 import GameMapNoMovementMessage from "@protocol/network/messages/GameMapNoMovementMessage";
 import SequenceEndMessage from "@protocol/network/messages/SequenceEndMessage";
 import TextInformationMessage from "@protocol/network/messages/TextInformationMessage";
-import {  sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 import * as moment from "moment";
 
 export default class FightFrame {
@@ -117,7 +117,7 @@ export default class FightFrame {
 
   private async HandleGameFightTurnReadyRequestMessage(account: Account, message: GameFightTurnReadyRequestMessage) {
     await sleep(message.id === account.game.character.id ? 200 : 400 * account.extensions.fights.config.fightSpeed);
-    await account.network.sendMessageFree("GameFightTurnReadyMessage", { isReady: true });
+    await account.network.sendMessageFree("GameFightTurnReadyMessage", {isReady: true});
   }
 
   private async HandleGameFightShowFighterRandomStaticPoseMessage(account: Account, message: GameFightShowFighterRandomStaticPoseMessage) {
@@ -196,7 +196,7 @@ export default class FightFrame {
 
   private async HandleFighterStatsListMessage(account: Account, message: FighterStatsListMessage) {
     account.game.fight.UpdateFighterStatsListMessage(message);
-    await account.network.sendMessageFree("GameActionAcknowledgementMessage", { valid: true, actionId: 0 });
+    await account.network.sendMessageFree("GameActionAcknowledgementMessage", {valid: true, actionId: 0});
   }
 
   private async HandleGameFightSynchronizeMessage(account: Account, message: GameFightSynchronizeMessage) {

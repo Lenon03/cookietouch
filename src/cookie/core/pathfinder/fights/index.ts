@@ -1,7 +1,7 @@
 import FightGame from "@game/fight";
 import FighterEntry from "@game/fight/fighters/FighterEntry";
 import Map from "@protocol/data/map";
-import { GameActionFightInvisibilityStateEnum } from "@protocol/enums/GameActionFightInvisibilityStateEnum";
+import {GameActionFightInvisibilityStateEnum} from "@protocol/enums/GameActionFightInvisibilityStateEnum";
 import Dictionary from "@utils/Dictionary";
 import MapPoint from "../MapPoint";
 import FightPath from "./FightPath";
@@ -80,7 +80,7 @@ export default class FightsPathfinder {
           tacklers.push(tackler);
         }
       }
-      const test = { apCost: 0, mpCost: 0 };
+      const test = {apCost: 0, mpCost: 0};
       this.getTackleCost(fight, tacklers, current.availableMp, current.availableAp, test);
 
       const availableMp = current.availableMp - test.mpCost - 1;

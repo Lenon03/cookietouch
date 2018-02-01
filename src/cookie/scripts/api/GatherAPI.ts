@@ -13,6 +13,7 @@ export default class GatherAPI {
     resourcesIds = resourcesIds.length === 0 ? this.account.game.character.jobs.collectSkillsIds.ToArray() : resourcesIds;
     return this.account.game.managers.gathers.canGather(...resourcesIds);
   }
+
   public gather(...resourcesIds: number[]): boolean {
     // Using canGather will handle the case of resourcesIds being empty
     if (!this.canGather(...resourcesIds)) {

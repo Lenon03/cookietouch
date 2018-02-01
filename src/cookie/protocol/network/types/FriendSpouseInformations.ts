@@ -12,6 +12,7 @@ export default class FriendSpouseInformations extends Type {
   public spouseEntityLook: EntityLook;
   public guildInfo: BasicGuildInformations;
   public alignmentSide: number;
+
   constructor(spouseAccountId = 0, spouseId = 0, spouseName = "", spouseLevel = 0, breed = 0, sex = 0,
               spouseEntityLook: EntityLook, guildInfo: BasicGuildInformations, alignmentSide = 0) {
     super();

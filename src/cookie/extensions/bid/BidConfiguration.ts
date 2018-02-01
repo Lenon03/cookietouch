@@ -1,10 +1,10 @@
 import Account from "@/account";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import LiteEvent from "@/utils/LiteEvent";
-import { isBlank } from "@/utils/String";
-import { remote } from "electron";
+import {isBlank} from "@/utils/String";
+import {remote} from "electron";
 import * as fs from "fs";
-import { List } from "linqts";
+import {List} from "linqts";
 import * as path from "path";
 
 interface IBidConfigurationJSON {
@@ -20,21 +20,22 @@ export default class BidConfiguration {
   public interval: number;
   public scriptPath: string;
   public objectsToSell: List<ObjectToSellEntry>;
-
-  get isScriptPathValid(): boolean {
-    return !isBlank(this.scriptPath);
-  }
-
   private account: Account;
   private configFilePath = "";
-
-  public get Changed() { return this.onChanged.expose(); }
   private readonly onChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
     this.interval = 10;
     this.objectsToSell = new List();
+  }
+
+  get isScriptPathValid(): boolean {
+    return !isBlank(this.scriptPath);
+  }
+
+  public get Changed() {
+    return this.onChanged.expose();
   }
 
   public setConfigFilePath() {

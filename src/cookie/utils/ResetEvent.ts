@@ -1,4 +1,4 @@
-import { extend, isFunction } from "lodash";
+import {extend, isFunction} from "lodash";
 
 let tokenId = 0;
 
@@ -41,17 +41,17 @@ export default class ResetEvent {
   private options: IOptions;
   private callbacksCount: number;
 
+  constructor(isSignaled?: boolean, options?: IOptions) {
+    this.queue = [];
+    this.isSignaled = isSignaled;
+    this.options = extend({}, ResetEvent.defaultOptions, options);
+  }
+
   /**
    * Returns the number of pending callbacks
    */
   public get queueSize() {
     return this.queue.length;
-  }
-
-  constructor(isSignaled?: boolean, options?: IOptions) {
-    this.queue = [];
-    this.isSignaled = isSignaled;
-    this.options = extend({}, ResetEvent.defaultOptions, options);
   }
 
   /**

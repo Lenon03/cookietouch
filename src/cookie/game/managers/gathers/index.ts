@@ -2,8 +2,8 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
+import {AccountStates} from "@account/AccountStates";
+import {MovementRequestResults} from "@game/managers/movements/MovementRequestResults";
 import MapGame from "@game/map";
 import InteractiveElementEntry from "@game/map/interactives/InteractiveElementEntry";
 import Dictionary from "@utils/Dictionary";
@@ -18,15 +18,13 @@ export enum GatherResults {
   BLACKLISTED,
   TIMED_OUT,
 }
+
 export default class GathersManager implements IClearable {
   private account: Account;
   private blacklistedElements: number[];
   private elementToGather: InteractiveElementEntry;
   private pathfinder: Pathfinder;
   private stolen: boolean;
-
-  public get GatherFinished() { return this.onGatherFinished.expose(); }
-  public get GatherStarted() { return this.onGatherStarted.expose(); }
   private readonly onGatherStarted = new LiteEvent<void>();
   private readonly onGatherFinished = new LiteEvent<GatherResults>();
 
@@ -39,6 +37,14 @@ export default class GathersManager implements IClearable {
     this.account.dispatcher.register("InteractiveUsedMessage", this.HandleInteractiveUsedMessage, this);
     this.account.dispatcher.register("InteractiveUseEndedMessage", this.HandleInteractiveUseEndedMessage, this);
     this.account.dispatcher.register("InteractiveUseErrorMessage", this.HandleInteractiveUseErrorMessage, this);
+  }
+
+  public get GatherFinished() {
+    return this.onGatherFinished.expose();
+  }
+
+  public get GatherStarted() {
+    return this.onGatherStarted.expose();
   }
 
   public clear() {

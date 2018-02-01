@@ -4,30 +4,30 @@ import ShaperEntry from "./ShaperEntry";
 
 export default class Shaper {
   public static shaperMap = new Dictionary<string, ShaperEntry>([
-    { key: "P", value: null },
-    { key: "A", value: null },
-    { key: "D", value: null },
-    { key: "X", value: new ShaperEntry(Shaper.shapeCross, false, false) },
-    { key: "L", value: new ShaperEntry(Shaper.shapeLine, true, false) },
-    { key: "T", value: new ShaperEntry(Shaper.shapePerpendicular, true, false) },
-    { key: "C", value: new ShaperEntry(Shaper.shapeRing, false, false) },
-    { key: "O", value: new ShaperEntry(Shaper.shapeCirclePerimeter, false, false) },
-    { key: "+", value: new ShaperEntry(Shaper.shapeStar, false, false) },
-    { key: "G", value: new ShaperEntry(Shaper.shapeSquare, false, false) },
-    { key: "V", value: new ShaperEntry(Shaper.shapeCone, true, false) },
-    { key: "W", value: new ShaperEntry(Shaper.shapeCones, false, false) },
-    { key: "/", value: new ShaperEntry(Shaper.shapeLine, true, false) },
-    { key: "-", value: new ShaperEntry(Shaper.shapePerpendicular, true, false) },
-    { key: "U", value: new ShaperEntry(Shaper.shapeHalfcircle, true, false) },
-    { key: "Q", value: new ShaperEntry(Shaper.shapeCross, false, true) },
-    { key: "#", value: new ShaperEntry(Shaper.shapeStar, false, true) },
-    { key: "*", value: new ShaperEntry(Shaper.shapeCrossAndStar, false, false) },
-    { key: "I", value: new ShaperEntry(Shaper.shapeInvertedCircle, false, false) },
+    {key: "P", value: null},
+    {key: "A", value: null},
+    {key: "D", value: null},
+    {key: "X", value: new ShaperEntry(Shaper.shapeCross, false, false)},
+    {key: "L", value: new ShaperEntry(Shaper.shapeLine, true, false)},
+    {key: "T", value: new ShaperEntry(Shaper.shapePerpendicular, true, false)},
+    {key: "C", value: new ShaperEntry(Shaper.shapeRing, false, false)},
+    {key: "O", value: new ShaperEntry(Shaper.shapeCirclePerimeter, false, false)},
+    {key: "+", value: new ShaperEntry(Shaper.shapeStar, false, false)},
+    {key: "G", value: new ShaperEntry(Shaper.shapeSquare, false, false)},
+    {key: "V", value: new ShaperEntry(Shaper.shapeCone, true, false)},
+    {key: "W", value: new ShaperEntry(Shaper.shapeCones, false, false)},
+    {key: "/", value: new ShaperEntry(Shaper.shapeLine, true, false)},
+    {key: "-", value: new ShaperEntry(Shaper.shapePerpendicular, true, false)},
+    {key: "U", value: new ShaperEntry(Shaper.shapeHalfcircle, true, false)},
+    {key: "Q", value: new ShaperEntry(Shaper.shapeCross, false, true)},
+    {key: "#", value: new ShaperEntry(Shaper.shapeStar, false, true)},
+    {key: "*", value: new ShaperEntry(Shaper.shapeCrossAndStar, false, false)},
+    {key: "I", value: new ShaperEntry(Shaper.shapeInvertedCircle, false, false)},
   ]);
 
   public static shapeCross(x: number, y: number, radiusMin: number, radiusMax: number,
                            dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -45,7 +45,7 @@ export default class Shaper {
 
   public static shapeLine(x: number, y: number, radiusMin: number, radiusMax: number,
                           dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -54,7 +54,7 @@ export default class Shaper {
 
   public static shapePerpendicular(x: number, y: number, radiusMin: number, radiusMax: number,
                                    dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     for (let i = radiusMin; i <= radiusMax; i++) {
       range.push(MapPoint.fromCoords(x + dirX * i, y + dirY * i));
     }
@@ -67,7 +67,7 @@ export default class Shaper {
 
   public static shapeRing(x: number, y: number, radiusMin: number, radiusMax: number,
                           dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -87,7 +87,7 @@ export default class Shaper {
 
   public static shapeStar(x: number, y: number, radiusMin: number, radiusMax: number,
                           dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -102,7 +102,7 @@ export default class Shaper {
 
   public static shapeSquare(x: number, y: number, radiusMin: number, radiusMax: number,
                             dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -133,7 +133,7 @@ export default class Shaper {
 
   public static shapeCone(x: number, y: number, radiusMin: number, radiusMax: number,
                           dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     for (let radius = radiusMin; radius <= radiusMax; radius++) {
       const xx = x + radius * dirX;
       const yy = y + radius * dirY;
@@ -149,7 +149,7 @@ export default class Shaper {
 
   public static shapeCones(x: number, y: number, radiusMin: number, radiusMax: number,
                            dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     for (let radius = radiusMin === 0 ? 1 : radiusMin; radius <= radiusMax; radius++) {
       range.push(MapPoint.fromCoords(x - radius, y));
       range.push(MapPoint.fromCoords(x + radius, y));
@@ -172,7 +172,7 @@ export default class Shaper {
 
   public static shapeHalfcircle(x: number, y: number, radiusMin: number, radiusMax: number,
                                 dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }
@@ -187,7 +187,7 @@ export default class Shaper {
 
   public static shapeCrossAndStar(x: number, y: number, radiusMin: number, radiusMax: number,
                                   dirX: number = 0, dirY: number = 0): MapPoint[] {
-    const range = new Array<MapPoint>();
+    const range = [];
     if (radiusMin === 0) {
       range.push(MapPoint.fromCoords(x, y));
     }

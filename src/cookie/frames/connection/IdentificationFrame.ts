@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { NetworkPhases } from "@/network/NetworkPhases";
-import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
+import {NetworkPhases} from "@/network/NetworkPhases";
+import {IdentificationFailureReasonEnum} from "@/protocol/enums/IdentificationFailureReasonEnum";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
 import Account from "@account";
 import DTConstants from "@protocol/DTConstants";

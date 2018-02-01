@@ -2,17 +2,15 @@ import Account from "@account";
 import InteractiveElementEntry from "@game/map/interactives/InteractiveElementEntry";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 import MovementsManager from "../movements";
-import { MovementRequestResults } from "../movements/MovementRequestResults";
+import {MovementRequestResults} from "../movements/MovementRequestResults";
 
 export default class InteractivesManager implements IClearable {
   private _account: Account;
   private _interactiveToUse: InteractiveElementEntry;
   private _lockCode: string;
   private _skillInstanceUid: number;
-
-  public get UseFinished() { return this.onUseFinished.expose(); }
   private readonly onUseFinished = new LiteEvent<boolean>();
 
   constructor(account: Account, movements: MovementsManager) {
@@ -36,6 +34,10 @@ export default class InteractivesManager implements IClearable {
       this.HandleLockableStateUpdateHouseDoorMessage, this);
     this._account.dispatcher.register("LockableStateUpdateStorageMessage",
       this.HandleLockableStateUpdateStorageMessage, this);
+  }
+
+  public get UseFinished() {
+    return this.onUseFinished.expose();
   }
 
   public getElementOnCell(cellId: number): InteractiveElementEntry {
@@ -113,32 +115,32 @@ export default class InteractivesManager implements IClearable {
 
   public moveToUseInteractive(interactive: InteractiveElementEntry,
                               cellId: number, skillInstanceUid: number, lockCode: string = null): boolean {
-      if (this._account.isBusy || this._interactiveToUse !== null) {
+    if (this._account.isBusy || this._interactiveToUse !== null) {
+      return false;
+    }
+
+    if (interactive === null || !interactive.usable) {
+      return false;
+    }
+
+    this._interactiveToUse = interactive;
+    this._skillInstanceUid = skillInstanceUid;
+    this._lockCode = lockCode;
+
+    switch (this._account.game.managers.movements.moveToCell(cellId, true)) {
+      case MovementRequestResults.MOVED: {
+        return true;
+      }
+      case MovementRequestResults.ALREADY_THERE: {
+        this.useElement();
+        return true;
+      }
+      default: {
+        // failed
+        this.clear();
         return false;
       }
-
-      if (interactive === null || !interactive.usable) {
-        return false;
-      }
-
-      this._interactiveToUse = interactive;
-      this._skillInstanceUid = skillInstanceUid;
-      this._lockCode = lockCode;
-
-      switch (this._account.game.managers.movements.moveToCell(cellId, true)) {
-        case MovementRequestResults.MOVED: {
-          return true;
-        }
-        case MovementRequestResults.ALREADY_THERE: {
-          this.useElement();
-          return true;
-        }
-        default: {
-          // failed
-          this.clear();
-          return false;
-        }
-      }
+    }
   }
 
   public clear() {

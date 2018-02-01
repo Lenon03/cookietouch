@@ -1,5 +1,14 @@
 export default class MapPoint {
   public static cells: MapPoint[];
+  public x: number;
+  public y: number;
+  public cellId: number;
+
+  constructor(cellId: number, x: number, y: number) {
+    this.cellId = cellId;
+    this.x = x;
+    this.y = y;
+  }
 
   public static Init() {
     this.cells = [];
@@ -23,7 +32,7 @@ export default class MapPoint {
 
   public static getNeighbourCells(cellId: number, allowDiagonal: boolean): MapPoint[] {
     const coord = this.fromCellId(cellId);
-    const neighbours = new Array<MapPoint>();
+    const neighbours = [];
 
     neighbours.push(this.fromCoords(coord.x, coord.y + 1));
     neighbours.push(this.fromCoords(coord.x - 1, coord.y));
@@ -37,17 +46,7 @@ export default class MapPoint {
       neighbours.push(this.fromCoords(coord.x + 1, coord.y - 1));
     }
 
-    return neighbours;
-  }
-
-  public x: number;
-  public y: number;
-  public cellId: number;
-
-  constructor(cellId: number, x: number, y: number) {
-    this.cellId = cellId;
-    this.x = x;
-    this.y = y;
+    return neighbours.filter((n) => n !== null);
   }
 
   public distanceTo(destination: MapPoint): number {

@@ -1,5 +1,5 @@
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import NpcEntry from "@game/map/entities/NpcEntry";
 import LiteEvent from "@utils/LiteEvent";
 
@@ -7,16 +7,24 @@ export default class Npcs {
   public possibleReplies: number[] = [];
 
   private account: Account;
-
-  public get DialogCreated() { return this.onDialogCreated.expose(); }
-  public get QuestionReceived() { return this.onQuestionReceived.expose(); }
-  public get DialogLeft() { return this.onDialogLeft.expose(); }
   private readonly onDialogCreated = new LiteEvent<void>();
   private readonly onQuestionReceived = new LiteEvent<void>();
   private readonly onDialogLeft = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public get DialogCreated() {
+    return this.onDialogCreated.expose();
+  }
+
+  public get QuestionReceived() {
+    return this.onQuestionReceived.expose();
+  }
+
+  public get DialogLeft() {
+    return this.onDialogLeft.expose();
   }
 
   public reply(replyId: number): boolean {
@@ -36,7 +44,7 @@ export default class Npcs {
     }
 
     if (this.possibleReplies.includes(replyId)) {
-      this.account.network.sendMessageFree("NpcDialogReplyMessage", { replyId });
+      this.account.network.sendMessageFree("NpcDialogReplyMessage", {replyId});
       return true;
     }
 

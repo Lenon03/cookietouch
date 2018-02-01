@@ -1,15 +1,15 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
 import Dictionary from "@utils/Dictionary";
 import LiteEvent from "@utils/LiteEvent";
-import { List } from "linqts";
-import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
+import {List} from "linqts";
+import InventoryHelper, {ObjectTypes} from "./InventoryHelper";
 import ObjectEntry from "./ObjectEntry";
 
 export default class Inventory {
@@ -18,8 +18,15 @@ export default class Inventory {
   public weightMax: number;
 
   private account: Account;
-  private _objects = new Dictionary<number, ObjectEntry>();
   private _fallbackMaxWeight: number;
+  private _objects = new Dictionary<number, ObjectEntry>();
+  private readonly onInventoryUpdated = new LiteEvent<boolean>();
+  private readonly onObjectGained = new LiteEvent<number>();
+  private readonly onObjectEquipped = new LiteEvent<number>();
+
+  constructor(account: Account) {
+    this.account = account;
+  }
 
   get objects() {
     return new List(this._objects.values());
@@ -50,15 +57,16 @@ export default class Inventory {
       (o) => o.position === CharacterInventoryPositionEnum.ACCESSORY_POSITION_WEAPON && o.isFishingRod) !== undefined;
   }
 
-  public get InventoryUpdated() { return this.onInventoryUpdated.expose(); }
-  private readonly onInventoryUpdated = new LiteEvent<boolean>();
-  public get ObjectGained() { return this.onObjectGained.expose(); }
-  private readonly onObjectGained = new LiteEvent<number>();
-  public get ObjectEquipped() { return this.onObjectEquipped.expose(); }
-  private readonly onObjectEquipped = new LiteEvent<number>();
+  public get InventoryUpdated() {
+    return this.onInventoryUpdated.expose();
+  }
 
-  constructor(account: Account) {
-    this.account = account;
+  public get ObjectGained() {
+    return this.onObjectGained.expose();
+  }
+
+  public get ObjectEquipped() {
+    return this.onObjectEquipped.expose();
   }
 
   get weaponRange(): number {

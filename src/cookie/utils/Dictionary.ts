@@ -5,7 +5,7 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
 
   private undefinedKeyErrorMessage: string = "Key is either undefined, null or an empty string.";
 
-  constructor(init?: Array<{key: T, value: U}>) {
+  constructor(init?: Array<{ key: T, value: U }>) {
     if (!init) {
       return;
     }
@@ -112,7 +112,7 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
       this.mIteratorIndex++;
       return {
         done: false,
-        value: { key: this.mKeys[current], value: this.mValues[current] },
+        value: {key: this.mKeys[current], value: this.mValues[current]},
       };
     }
   }

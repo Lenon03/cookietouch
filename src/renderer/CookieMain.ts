@@ -1,15 +1,16 @@
 import Account from "@/account";
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
-import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import Group from "@/groups/Group";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
-import { sleep } from "@/utils/Time";
-import { List } from "linqts";
+import {sleep} from "@/utils/Time";
+import {List} from "linqts";
 
 export default class CookieMain {
   public static entities = new List<IEntity>();
   public static selectedAccount: Account = null;
+  private static readonly onSelectedAccountChanged = new LiteEvent<Account>();
+  private static readonly onEntitiesUpdated = new LiteEvent<void>();
 
   public static get connectedAccounts(): List<Account> {
     return this.entities.Select((e) => {
@@ -18,6 +19,14 @@ export default class CookieMain {
       }
       return (e as Group).chief;
     });
+  }
+
+  public static get SelectedAccountChanged() {
+    return this.onSelectedAccountChanged.expose();
+  }
+
+  public static get EntitiesUpdated() {
+    return this.onEntitiesUpdated.expose();
   }
 
   public static connectAccounts(accountConfigs: List<AccountConfiguration>) {
@@ -117,9 +126,4 @@ export default class CookieMain {
     this.onEntitiesUpdated.trigger();
     this.onSelectedAccountChanged.trigger(this.selectedAccount);
   }
-
-  public static get SelectedAccountChanged() { return this.onSelectedAccountChanged.expose(); }
-  private static readonly onSelectedAccountChanged = new LiteEvent<Account>();
-  public static get EntitiesUpdated() { return this.onEntitiesUpdated.expose(); }
-  private static readonly onEntitiesUpdated = new LiteEvent<void>();
 }

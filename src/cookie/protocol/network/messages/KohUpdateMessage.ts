@@ -1,6 +1,7 @@
 import AllianceInformations from "@protocol/network/types/AllianceInformations";
 import BasicAllianceInformations from "@protocol/network/types/BasicAllianceInformations";
 import Message from "./Message";
+
 export default class KohUpdateMessage extends Message {
   public alliances: AllianceInformations[];
   public allianceNbMembers: number[];
@@ -10,6 +11,7 @@ export default class KohUpdateMessage extends Message {
   public allianceMapWinnerScore: number;
   public allianceMapMyAllianceScore: number;
   public nextTickTime: number;
+
   constructor(allianceMapWinner: BasicAllianceInformations, allianceMapWinnerScore = 0,
               allianceMapMyAllianceScore = 0, nextTickTime = 0, alliances: AllianceInformations[],
               allianceNbMembers: number[], allianceRoundWeigth: number[], allianceMatchScore: number[]) {

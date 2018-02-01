@@ -1,12 +1,12 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
-import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
+import {MapChangeDirections} from "@game/managers/movements/MapChangeDirections";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
-import { CharacterCreationResultEnum } from "@protocol/enums/CharacterCreationResultEnum";
+import {CharacterCreationResultEnum} from "@protocol/enums/CharacterCreationResultEnum";
 import CharacterCreationResultMessage from "@protocol/network/messages/CharacterCreationResultMessage";
 import CharacterNameSuggestionSuccessMessage from "@protocol/network/messages/CharacterNameSuggestionSuccessMessage";
 import CharactersListMessage from "@protocol/network/messages/CharactersListMessage";
@@ -19,11 +19,11 @@ import QuestStepInfoMessage from "@protocol/network/messages/QuestStepInfoMessag
 import QuestStepValidatedMessage from "@protocol/network/messages/QuestStepValidatedMessage";
 import QuestValidatedMessage from "@protocol/network/messages/QuestValidatedMessage";
 import QuestActiveDetailedInformations from "@protocol/network/types/QuestActiveDetailedInformations";
-import { Deferred } from "@utils/Deferred";
+import {Deferred} from "@utils/Deferred";
 import IClearable from "@utils/IClearable";
-import { getRandomInt } from "@utils/Random";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {getRandomInt} from "@utils/Random";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 import TutorialHelper from "./TutorialHelper";
 
 export default class CharacterCreatorExtension implements IClearable {
@@ -35,10 +35,6 @@ export default class CharacterCreatorExtension implements IClearable {
   private inTutorial: boolean = false;
   private name = Deferred<string>();
 
-  get isDoingTutorial() {
-    return this.inTutorial && this.currentStep !== null;
-  }
-
   constructor(account: Account) {
     this.account = account;
 
@@ -46,6 +42,10 @@ export default class CharacterCreatorExtension implements IClearable {
     this.account.game.character.inventory.ObjectEquipped.on(this.onObjectEquipped.bind(this));
     this.account.game.map.MapChanged.on(this.onMapChanged.bind(this));
     this.account.game.managers.movements.MovementFinished.on(this.onMovementFinished.bind(this));
+  }
+
+  get isDoingTutorial() {
+    return this.inTutorial && this.currentStep !== null;
   }
 
   public clear() {
@@ -137,7 +137,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (!this.inTutorial) {
       return;
     }
-    if (this.currentStep !== null && this.currentStep.stepId === (message.infos as QuestActiveDetailedInformations).stepId) {
+    if (this.currentStep !== null && this.currentStep.stepId === (message.infos as QuestActiveDetailedInformations).stepId) {
       return;
     }
     this.currentStep = message.infos as QuestActiveDetailedInformations;
@@ -182,7 +182,7 @@ export default class CharacterCreatorExtension implements IClearable {
     if (this.currentStepNumber === 6) {
       this.validateCurrentStep();
       await sleep(1000);
-      this.account.network.sendMessageFree("GameFightReadyMessage", { isReady: true });
+      this.account.network.sendMessageFree("GameFightReadyMessage", {isReady: true});
     }
   }
 

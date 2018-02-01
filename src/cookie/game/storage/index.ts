@@ -1,33 +1,42 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
 import DataManager from "@protocol/data";
 import Items from "@protocol/data/classes/Items";
-import { DialogTypeEnum } from "@protocol/enums/DialogTypeEnum";
+import {DialogTypeEnum} from "@protocol/enums/DialogTypeEnum";
 import LiteEvent from "@utils/LiteEvent";
-import { List } from "linqts";
+import {List} from "linqts";
 
 export default class Storage {
   public objects: List<ObjectEntry>;
   public kamas: number;
-
-  public get StorageStarted() { return this.onStorageStarted.expose(); }
   private readonly onStorageStarted = new LiteEvent<void>();
-  public get StorageUpdated() { return this.onStorageUpdated.expose(); }
   private readonly onStorageUpdated = new LiteEvent<void>();
-  public get StorageLeft() { return this.onStorageLeft.expose(); }
   private readonly onStorageLeft = new LiteEvent<void>();
-
   private account: Account;
-
-  public get ServerSelected() { return this.onServerSelected.expose(); }
   private readonly onServerSelected = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
     this.objects = new List<ObjectEntry>();
+  }
+
+  public get StorageStarted() {
+    return this.onStorageStarted.expose();
+  }
+
+  public get StorageUpdated() {
+    return this.onStorageUpdated.expose();
+  }
+
+  public get StorageLeft() {
+    return this.onStorageLeft.expose();
+  }
+
+  public get ServerSelected() {
+    return this.onServerSelected.expose();
   }
 
   public putItem(gid: number, quantity: number): boolean {
@@ -80,7 +89,7 @@ export default class Storage {
 
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
-      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
+      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity});
       this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageKamasAdded", quantity));
       return true;
     }
@@ -97,7 +106,7 @@ export default class Storage {
 
     // TODO: See if we really have to check the quantity here.
     if (quantity > 0) {
-      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: quantity * -1 });
+      this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity: quantity * -1});
       this.account.logger.logInfo(LanguageManager.trans("storage"), LanguageManager.trans("storageKamasRemoved", quantity));
       return true;
     }

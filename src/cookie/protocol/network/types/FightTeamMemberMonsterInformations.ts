@@ -1,4 +1,5 @@
 import FightTeamMemberInformations from "./FightTeamMemberInformations";
+
 export default class FightTeamMemberMonsterInformations extends FightTeamMemberInformations {
 
   public monsterId: number;

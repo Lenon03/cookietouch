@@ -1,7 +1,7 @@
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import Account from "@account";
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
+import {Col, Container, Row} from "reactstrap";
 
 interface IStatisticsProps {
   account: Account;
@@ -59,25 +59,25 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
         <Row>
           <Col xs="4">
             Achievements Finished: {this.state.achievementsFinished}
-            <br />
+            <br/>
             Average fight time: {this.state.averageFightTime}
-            <br />
+            <br/>
             Experience gained: {this.state.experienceGained}
-            <br />
+            <br/>
             Fights Count: {this.state.fightsCount}
-            <br />
+            <br/>
             Fights Lost: {this.state.fightsLost}
-            <br />
+            <br/>
             Fights Won: {this.state.fightsWon}
-            <br />
+            <br/>
             Gathers Count: {this.state.gathersCount}
-            <br />
+            <br/>
             Kamas Gained: {this.state.kamasGained}
-            <br />
+            <br/>
             Levels Gained: {this.state.levelsGained}
-            <br />
+            <br/>
             Total fights time: {this.state.totalFightsTime}
-            <br />
+            <br/>
             Total gathers time: {this.state.totalGathersTime}
           </Col>
           <Col>

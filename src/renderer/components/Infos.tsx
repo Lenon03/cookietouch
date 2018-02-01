@@ -1,13 +1,12 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { faKorvue } from "@fortawesome/fontawesome-free-brands";
-import { faBolt, faBriefcase, faHeart, faStar } from "@fortawesome/fontawesome-free-solid";
+import {AccountStates} from "@account/AccountStates";
+import {faKorvue} from "@fortawesome/fontawesome-free-brands";
+import {faBolt, faBriefcase, faHeart, faStar} from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { remote } from "electron";
+import {remote} from "electron";
 import * as React from "react";
-import { Button, Col, Container, Progress, Row, UncontrolledTooltip } from "reactstrap";
-import CookieMain from "renderer/CookieMain";
+import {Button, Col, Container, Progress, Row, UncontrolledTooltip} from "reactstrap";
 
 interface IInfosProps {
   account: Account;
@@ -90,7 +89,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             }} size="sm" color="info" onClick={() => {
               remote.dialog.showOpenDialog({
                 filters: [
-                  { name: "Cookie Scripts Format", extensions: ["js"] },
+                  {name: "Cookie Scripts Format", extensions: ["js"]},
                 ],
                 properties: ["openFile"],
               }, (filepaths) => {
@@ -101,42 +100,42 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
               {LanguageManager.trans("load")}
             </Button>
             <Button size="sm"
-              disabled={this.state.scriptLoaded ? false : true}
-              color="dark" onClick={() => this.launchScript()}>
-                {LanguageManager.trans("play")}
-              </Button>
+                    disabled={this.state.scriptLoaded ? false : true}
+                    color="dark" onClick={() => this.launchScript()}>
+              {LanguageManager.trans("play")}
+            </Button>
             <Button size="sm"
-              disabled={this.state.scriptLoaded ? false : true}
-              color="warning" onClick={() => this.pauseScript()}>
-                {LanguageManager.trans("pause")}
-              </Button>
+                    disabled={this.state.scriptLoaded ? false : true}
+                    color="warning" onClick={() => this.pauseScript()}>
+              {LanguageManager.trans("pause")}
+            </Button>
           </Col>
           <Col xs="2">
             <Button size="sm"
-              outline color="danger" onClick={() => {
-                this.props.removeSelectedAccount();
-              }}
+                    outline color="danger" onClick={() => {
+              this.props.removeSelectedAccount();
+            }}
             >
               {LanguageManager.trans("remove")}
             </Button>
           </Col>
         </Row>
-        <hr />
+        <hr/>
         <Row>
           <Col>{this.state.position}</Col>
           <Col md="3">Status: {AccountStates[this.state.status]}</Col>
         </Row>
-        <hr />
+        <hr/>
         <Row>
           <Col>
-            <FontAwesomeIcon className="float-left" size="lg" icon={faHeart} />
+            <FontAwesomeIcon className="float-left" size="lg" icon={faHeart}/>
             <Progress style={{
               marginLeft: "20px",
             }} id="hpProgress"
-              color={this.props.account.game.character.stats.lifePercent > 80 ? "success"
-                : this.props.account.game.character.stats.lifePercent < 20 ? "danger" : "info"}
-              value={this.state.lifePoints}
-              max={this.state.lifePointsMax}
+                      color={this.props.account.game.character.stats.lifePercent > 80 ? "success"
+                        : this.props.account.game.character.stats.lifePercent < 20 ? "danger" : "info"}
+                      value={this.state.lifePoints}
+                      max={this.state.lifePointsMax}
             >
               {(this.state.lifePoints !== -1 ? this.state.lifePoints / this.state.lifePointsMax * 100 : 0).toFixed(2)}%
             </Progress>
@@ -145,7 +144,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </UncontrolledTooltip>
           </Col>
           <Col>
-            <FontAwesomeIcon className="float-left" size="lg" icon={faBriefcase} />
+            <FontAwesomeIcon className="float-left" size="lg" icon={faBriefcase}/>
             <Progress style={{
               marginLeft: "20px",
             }} id="weightProgress" color="secondary" value={this.state.weight} max={this.state.weightMax}>
@@ -156,7 +155,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </UncontrolledTooltip>
           </Col>
           <Col>
-            <FontAwesomeIcon className="float-left" size="lg" icon={faStar} />
+            <FontAwesomeIcon className="float-left" size="lg" icon={faStar}/>
             <Progress style={{
               marginLeft: "20px",
             }} id="xpProgress" color="info" value={this.state.experiencePercent}>
@@ -167,7 +166,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </UncontrolledTooltip>
           </Col>
           <Col>
-            <FontAwesomeIcon className="float-left" size="lg" icon={faBolt} />
+            <FontAwesomeIcon className="float-left" size="lg" icon={faBolt}/>
             <Progress style={{
               marginLeft: "20px",
             }} id="energyProgress" color="warning" value={this.state.energyPoints} max={this.state.energyPointsMax}>
@@ -178,7 +177,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </UncontrolledTooltip>
           </Col>
           <Col>
-            <FontAwesomeIcon className="float-left" size="lg" icon={faKorvue} />
+            <FontAwesomeIcon className="float-left" size="lg" icon={faKorvue}/>
             <Progress style={{
               marginLeft: "20px",
             }} value={100}>
@@ -186,7 +185,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             </Progress>
           </Col>
         </Row>
-        <hr />
+        <hr/>
       </Container>
     );
   }
@@ -221,7 +220,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   private stateChanged() {
-    this.setState({ status: this.props.account.state });
+    this.setState({status: this.props.account.state});
   }
 
   private statsUpdated() {

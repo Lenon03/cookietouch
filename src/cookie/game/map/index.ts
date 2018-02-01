@@ -1,13 +1,12 @@
-import { AccountStates } from "@/account/AccountStates";
+import {AccountStates} from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Areas from "@/protocol/data/classes/Areas";
 import MapPositions from "@/protocol/data/classes/MapPositions";
 import SubAreas from "@/protocol/data/classes/SubAreas";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import { sleep } from "@/utils/Time";
+import {DataTypes} from "@/protocol/data/DataTypes";
+import {sleep} from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
-import DataClasses from "@protocol/data/classes";
 import MapData from "@protocol/data/map";
 import MapsManager from "@protocol/data/map/MapsManager";
 import GameRolePlayCharacterInformations from "@protocol/network/types/GameRolePlayCharacterInformations";
@@ -18,9 +17,6 @@ import StatedElement from "@protocol/network/types/StatedElement";
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { MapChangeDirections } from "../managers/movements/MapChangeDirections";
-import { MovementRequestResults } from "../managers/movements/MovementRequestResults";
-import MonsterEntry from "./entities/MonsterEntry";
 import MonstersGroupEntry from "./entities/MonstersGroupEntry";
 import NpcEntry from "./entities/NpcEntry";
 import PlayerEntry from "./entities/PlayerEntry";
@@ -43,17 +39,37 @@ export default class Map implements IClearable {
   public blacklistedMonsters: number[] = [];
   public zaap: ElementInCellEntry = null;
   public zaapi: ElementInCellEntry = null;
+  private _players = new Dictionary<number, PlayerEntry>();
+  private _npcs = new Dictionary<number, NpcEntry>();
+  private _monstersGroups = new Dictionary<number, MonstersGroupEntry>();
+  private _interactives = new Dictionary<number, InteractiveElementEntry>();
+  private _doors = new Dictionary<number, ElementInCellEntry>();
+  private _statedElements = new Dictionary<number, StatedElementEntry>();
+  private _phenixs = new Dictionary<number, ElementInCellEntry>();
+  private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
+  private readonly onMapChanged = new LiteEvent<void>();
+  private readonly onMapLoaded = new LiteEvent<void>();
+  private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
+  private readonly onPlayerLeft = new LiteEvent<PlayerEntry>();
+  private readonly onEntitiesUpdated = new LiteEvent<void>();
+  private readonly onInteractivesUpdated = new LiteEvent<void>();
+  private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
+  private account: Account;
+  private _joinedFight: boolean;
+  private _firstTime: boolean = true;
 
-  get players() { return this._players.values(); }
-  get npcs() { return this._npcs.values(); }
-  get monstersGroups() { return this._monstersGroups.values(); }
-  get interactives() { return this._interactives.values(); }
-  get doors() { return this._doors.values(); }
-  get statedElements() { return this._statedElements.values(); }
-  get phenixs() { return this._phenixs.values(); }
-  get lockedStorages() { return this._lockedStorages.values(); }
-  get id() { return this.data.id; }
-  get currentPosition() { return `${this.posX},${this.posY}`; }
+  constructor(account: Account) {
+    this.account = account;
+  }
+
+  get id() {
+    return this.data.id;
+  }
+
+  get currentPosition() {
+    return `${this.posX},${this.posY}`;
+  }
+
   get labelPosition() {
     return `${this.area} - ${this.subArea} [${this.posX},${this.posY}]`;
   }
@@ -66,36 +82,64 @@ export default class Map implements IClearable {
   }
 
   // Events
-  public get MapChanged() { return this.onMapChanged.expose(); }
-  public get MapLoaded() { return this.onMapLoaded.expose(); }
-  public get PlayerJoined() { return this.onPlayerJoined.expose(); }
-  public get PlayerLeft() { return this.onPlayerLeft.expose(); }
-  public get EntitiesUpdated() { return this.onEntitiesUpdated.expose(); }
-  public get InteractivesUpdated() { return this.onInteractivesUpdated.expose(); }
-  public get PlayedCharacterMoving() { return this.onPlayedCharacterMoving.expose(); }
-  private readonly onMapChanged = new LiteEvent<void>();
-  private readonly onMapLoaded = new LiteEvent<void>();
-  private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
-  private readonly onPlayerLeft = new LiteEvent<PlayerEntry>();
-  private readonly onEntitiesUpdated = new LiteEvent<void>();
-  private readonly onInteractivesUpdated = new LiteEvent<void>();
-  private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
+  public get MapChanged() {
+    return this.onMapChanged.expose();
+  }
 
-  private account: Account;
+  public get MapLoaded() {
+    return this.onMapLoaded.expose();
+  }
 
-  private _players = new Dictionary<number, PlayerEntry>();
-  private _npcs = new Dictionary<number, NpcEntry>();
-  private _monstersGroups = new Dictionary<number, MonstersGroupEntry>();
-  private _interactives = new Dictionary<number, InteractiveElementEntry>();
-  private _doors = new Dictionary<number, ElementInCellEntry>();
-  private _statedElements = new Dictionary<number, StatedElementEntry>();
-  private _phenixs = new Dictionary<number, ElementInCellEntry>();
-  private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
-  private _joinedFight: boolean;
-  private _firstTime: boolean = true;
+  public get PlayerJoined() {
+    return this.onPlayerJoined.expose();
+  }
 
-  constructor(account: Account) {
-    this.account = account;
+  public get PlayerLeft() {
+    return this.onPlayerLeft.expose();
+  }
+
+  public get EntitiesUpdated() {
+    return this.onEntitiesUpdated.expose();
+  }
+
+  public get InteractivesUpdated() {
+    return this.onInteractivesUpdated.expose();
+  }
+
+  public get PlayedCharacterMoving() {
+    return this.onPlayedCharacterMoving.expose();
+  }
+
+  get players() {
+    return this._players.values();
+  }
+
+  get npcs() {
+    return this._npcs.values();
+  }
+
+  get monstersGroups() {
+    return this._monstersGroups.values();
+  }
+
+  get interactives() {
+    return this._interactives.values();
+  }
+
+  get doors() {
+    return this._doors.values();
+  }
+
+  get statedElements() {
+    return this._statedElements.values();
+  }
+
+  get phenixs() {
+    return this._phenixs.values();
+  }
+
+  get lockedStorages() {
+    return this._lockedStorages.values();
   }
 
   public clear() {
@@ -238,11 +282,11 @@ export default class Map implements IClearable {
           this._players.add(actor.contextualId, new PlayerEntry(actor));
         }
       } else if (actor._type === "GameRolePlayMutantInformations") {
-          if (actor.ContextualId === this.account.game.character.id) {
-            this.playedCharacter = new PlayerEntry(actor);
-          } else {
-            this._players.add(actor.contextualId, new PlayerEntry(actor));
-          }
+        if (actor.ContextualId === this.account.game.character.id) {
+          this.playedCharacter = new PlayerEntry(actor);
+        } else {
+          this._players.add(actor.contextualId, new PlayerEntry(actor));
+        }
       } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
         this._npcs.add(actor.contextualId, new NpcEntry(actor));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {

@@ -1,5 +1,5 @@
 import Account from "@account";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
 import DeleteItemAction from "../actions/inventory/DeleteItemAction";
 import DropItemAction from "../actions/inventory/DropItemAction";
 import EquipItemAction from "../actions/inventory/EquipItemAction";

@@ -1,9 +1,9 @@
 import Account from "@/account";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import LiteEvent from "@/utils/LiteEvent";
-import { remote } from "electron";
+import {remote} from "electron";
 import * as fs from "fs";
-import { List } from "linqts";
+import {List} from "linqts";
 import * as path from "path";
 
 interface IFloodConfigurationJSON {
@@ -24,8 +24,6 @@ export default class FloodConfiguration {
 
   private account: Account;
   private configFilePath = "";
-
-  public get Changed() { return this.onChanged.expose(); }
   private readonly onChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -34,6 +32,10 @@ export default class FloodConfiguration {
     this.salesChannelInterval = 120;
     this.generalChannelInterval = 30;
     this.sentences = new List();
+  }
+
+  public get Changed() {
+    return this.onChanged.expose();
   }
 
   public setConfigFilePath() {

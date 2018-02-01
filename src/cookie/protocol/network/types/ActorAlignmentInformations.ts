@@ -1,4 +1,5 @@
 import Type from "./Type";
+
 export default class ActorAlignmentInformations extends Type {
   public alignmentSide: number;
   public alignmentValue: number;

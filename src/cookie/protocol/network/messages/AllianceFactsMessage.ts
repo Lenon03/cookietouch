@@ -6,6 +6,7 @@ export default class AllianceFactsMessage extends Message {
   public guilds: GuildInAllianceInformations[];
   public controlledSubareaIds: number[];
   public infos: AllianceFactSheetInformations;
+
   constructor(infos: AllianceFactSheetInformations,
               guilds: GuildInAllianceInformations[], controlledSubareaIds: number[]) {
     super();

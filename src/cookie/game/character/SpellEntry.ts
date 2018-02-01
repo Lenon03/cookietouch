@@ -1,5 +1,5 @@
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Spells from "@protocol/data/classes/Spells";
 import DTConstants from "@protocol/DTConstants";
@@ -10,10 +10,6 @@ export default class SpellEntry {
   public level: number;
   public name: string;
   public minPlayerLevel: number;
-
-  get iconUrl() {
-    return `${DTConstants.config.assetsUrl}/gfx/spells/sort_${this.id}.png`;
-  }
 
   constructor(s: SpellItem | number, spell: Spells | number) {
     if (typeof s === "number" && typeof spell === "number") {
@@ -31,6 +27,10 @@ export default class SpellEntry {
       this.name = spell.nameId;
       this.setMinPlayerLevel(spell);
     }
+  }
+
+  get iconUrl() {
+    return `${DTConstants.config.assetsUrl}/gfx/spells/sort_${this.id}.png`;
   }
 
   public UpdateSpellUpgradeSuccessMessage(message: any) {

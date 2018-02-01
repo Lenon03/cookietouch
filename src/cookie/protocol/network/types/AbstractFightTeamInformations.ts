@@ -1,4 +1,5 @@
 import Type from "./Type";
+
 export default class AbstractFightTeamInformations extends Type {
   public teamId: number;
   public leaderId: number;

@@ -1,4 +1,5 @@
 import FightTeamMemberInformations from "./FightTeamMemberInformations";
+
 export default class FightTeamMemberTaxCollectorInformations extends FightTeamMemberInformations {
 
   public firstNameDd: number;

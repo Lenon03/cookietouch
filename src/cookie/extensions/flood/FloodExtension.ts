@@ -1,9 +1,9 @@
 import Account from "@/account";
 import FloodConfiguration from "@/extensions/flood/FloodConfiguration";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
-import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
+import {ChatChannelsMultiEnum} from "@/protocol/enums/ChatChannelsMultiEnum";
 import LiteEvent from "@/utils/LiteEvent";
-import { getRandomInt } from "@/utils/Random";
+import {getRandomInt} from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 
 export default class FloodExtension {
@@ -16,8 +16,6 @@ export default class FloodExtension {
   private seekChannelTimer: TimerWrapper;
   private salesChannelTimer: TimerWrapper;
   private generalChannelTimer: TimerWrapper;
-
-  public get RunningChanged() { return this.onRunningChanged.expose(); }
   private readonly onRunningChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -31,6 +29,10 @@ export default class FloodExtension {
 
     this.account.game.map.PlayerJoined.on(this.Map_PlayerJoined.bind(this));
     this.account.game.map.PlayerLeft.on(this.Map_PlayerLeft.bind(this));
+  }
+
+  public get RunningChanged() {
+    return this.onRunningChanged.expose();
   }
 
   public start() {

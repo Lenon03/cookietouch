@@ -1,6 +1,6 @@
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { List } from "linqts";
+import {AccountStates} from "@account/AccountStates";
+import {List} from "linqts";
 import BuyItemAction from "../actions/bid/BuyItemAction";
 import EditItemInSalePriceAction from "../actions/bid/EditItemInSalePriceAction";
 import RemoveItemInSaleAction from "../actions/bid/RemoveItemInSaleAction";

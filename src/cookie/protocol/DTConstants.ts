@@ -26,6 +26,7 @@ export default class DTConstants {
     const response = await axios.get(`${DTConstants.MAIN_URL}/assetsVersions.json`);
     return response.data;
   }
+
   public static async getAppVersion(): Promise<string> {
     const response = await axios.get("https://itunes.apple.com/lookup?id=1041406978");
     return response.data.results[0].version;

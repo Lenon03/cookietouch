@@ -2,19 +2,19 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import FightsPathfinder from "@/core/pathfinder/fights";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
 import FighterEntry from "@game/fight/fighters/FighterEntry";
-import { SpellInabilityReasons } from "@game/fight/SpellInabilityReasons";
+import {SpellInabilityReasons} from "@game/fight/SpellInabilityReasons";
 import DataManager from "@protocol/data";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
 import Spells from "@protocol/data/classes/Spells";
 import Dictionary from "@utils/Dictionary";
-import {  SpellResistances } from "./configuration/enums/SpellResistances";
-import { SpellTargets } from "./configuration/enums/SpellTargets";
+import {SpellResistances} from "./configuration/enums/SpellResistances";
+import {SpellTargets} from "./configuration/enums/SpellTargets";
 import Spell from "./configuration/Spell";
 import RangeNodeEntry from "./RangeNodeEntry";
-import { SpellCastingResults } from "./SpellCastingResults";
+import {SpellCastingResults} from "./SpellCastingResults";
 
 export default class SpellsManager {
   private account: Account;
@@ -140,7 +140,7 @@ export default class SpellsManager {
           fromCellId = t.fromCellId;
           usedMps = t.mpUsed;
           if (t.node !== null) {
-            node = { key: fromCellId, value: t.node };
+            node = {key: fromCellId, value: t.node};
           }
         }
       }
@@ -181,7 +181,7 @@ export default class SpellsManager {
     return new RangeNodeEntry(fromCellId, touchedEnemiesByCell, node);
   }
 
-  private getTouchedEnemiesCount(fromCellId: number, targetCellId: number, spell: Spell, spellLevel: SpellLevels): number {
+  private getTouchedEnemiesCount(fromCellId: number, targetCellId: number, spell: Spell, spellLevel: SpellLevels): number {
     let n = 0;
     const zone = this.account.game.fight.getSpellZone(spell.spellId, fromCellId, targetCellId, spellLevel);
     if (zone === null) {
@@ -223,7 +223,7 @@ export default class SpellsManager {
         if (sir === SpellInabilityReasons.NONE) {
           this.account.logger.logDebug(
             LanguageManager.trans("spellsManager"),
-              LanguageManager.trans("spellCasted", spell.spellName, (target as any).name, target.cellId)); // TODO: fix name
+            LanguageManager.trans("spellCasted", spell.spellName, (target as any).name, target.cellId)); // TODO: fix name
           await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
           return resolve(SpellCastingResults.CASTED);
         }
@@ -246,7 +246,7 @@ export default class SpellsManager {
       let pmUsed = 99;
 
       for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
-           this.account.game.fight.playedFighter.cellId)) {
+        this.account.game.fight.playedFighter.cellId)) {
         if (!kvp.value.reachable) {
           continue;
         }

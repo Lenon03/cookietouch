@@ -1,10 +1,10 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { GatherResults } from "@game/managers/gathers";
+import {AccountStates} from "@account/AccountStates";
+import {GatherResults} from "@game/managers/gathers";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 import StartBuyingAction from "../actions/bid/StartBuyingAction";
 import StartSellingAction from "../actions/bid/StartSellingAction";
 import SendReadyAction from "../actions/exchange/SendReadyAction";
@@ -24,7 +24,7 @@ import WaitMapChangeAction from "../actions/map/WaitMapChangeAction";
 import NpcAction from "../actions/npcs/NpcAction";
 import NpcBankAction from "../actions/npcs/NpcBankAction";
 import ReplyAction from "../actions/npcs/ReplyAction";
-import ScriptAction, { ScriptActionResults } from "../actions/ScriptAction";
+import ScriptAction, {ScriptActionResults} from "../actions/ScriptAction";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -34,12 +34,8 @@ export interface IActionsManagerEventData {
 export default class ActionsManager {
   public fightsOnThisMap: number;
   public monstersGroupToAttack: number = 0;
-
-  public get ActionsFinished() { return this.onActionsFinished.expose(); }
-  public get CustomHandled() { return this.onCustomHandled.expose(); }
   private readonly onActionsFinished = new LiteEvent<IActionsManagerEventData>();
   private readonly onCustomHandled = new LiteEvent<IActionsManagerEventData>();
-
   private account: Account;
   private actionsQueue: ScriptAction[];
   private currentAction: ScriptAction;
@@ -70,6 +66,14 @@ export default class ActionsManager {
     this.account.game.bid.StartedSelling.on(this.bid_startedSelling.bind(this));
     this.account.game.bid.BidLeft.on(this.bid_bidLeft.bind(this));
     this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished.bind(this));
+  }
+
+  public get ActionsFinished() {
+    return this.onActionsFinished.expose();
+  }
+
+  public get CustomHandled() {
+    return this.onCustomHandled.expose();
   }
 
   public handleCustom(customFunction: GeneratorFunction) {
@@ -177,9 +181,9 @@ export default class ActionsManager {
   private actionsFinished() {
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onActionsFinished.trigger({ account: this.account, success: true });
+      this.onActionsFinished.trigger({account: this.account, success: true});
     } else {
-      this.onActionsFinished.trigger({ account: this.account, success: false });
+      this.onActionsFinished.trigger({account: this.account, success: false});
     }
   }
 
@@ -187,9 +191,9 @@ export default class ActionsManager {
     this.currentCoroutine = null;
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onCustomHandled.trigger({ account: this.account, success: true });
+      this.onCustomHandled.trigger({account: this.account, success: true});
     } else {
-      this.onCustomHandled.trigger({ account: this.account, success: false });
+      this.onCustomHandled.trigger({account: this.account, success: false});
     }
   }
 

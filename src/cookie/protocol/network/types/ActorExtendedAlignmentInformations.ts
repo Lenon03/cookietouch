@@ -8,7 +8,7 @@ export default class ActorExtendedAlignmentInformations extends ActorAlignmentIn
   public aggressable: number;
 
   constructor(alignmentSide = 0, alignmentValue = 0, alignmentGrade = 0, characterPower = 0,
-              honor = 0, honorGradeFloor = 0, honornextGradeFloor = 0, aggressable = 0 ) {
+              honor = 0, honorGradeFloor = 0, honornextGradeFloor = 0, aggressable = 0) {
     super(alignmentSide, alignmentValue, alignmentGrade, characterPower);
     this.honor = honor;
     this.honorGradeFloor = honorGradeFloor;

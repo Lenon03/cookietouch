@@ -1,8 +1,8 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { Languages } from "@/configurations/language/Languages";
+import {Languages} from "@/configurations/language/Languages";
 import * as React from "react";
-import { Col, Container, FormGroup, Input, Label, Row } from "reactstrap";
+import {Col, Container, FormGroup, Input, Label, Row} from "reactstrap";
 
 interface IConfigurationProps {
   //
@@ -33,8 +33,8 @@ export default class Configuration extends React.Component<IConfigurationProps, 
             <FormGroup>
               <Label for="lang">{LanguageManager.trans("lang")}</Label>
               <Input type="select" className="form-control-sm" id="lang"
-                value={this.state.lang}
-                onChange={(event) => this.langChanged(event)}>
+                     value={this.state.lang}
+                     onChange={(event) => this.langChanged(event)}>
                 <option value={Languages.FRENCH}>{Languages.FRENCH}</option>
                 <option value={Languages.ENGLISH}>{Languages.ENGLISH}</option>
                 <option value={Languages.SPANISH}>{Languages.SPANISH}</option>
@@ -45,13 +45,13 @@ export default class Configuration extends React.Component<IConfigurationProps, 
             </FormGroup>
             <FormGroup>
               <Label for="anticaptcha">{LanguageManager.trans("anticaptchaKey")}</Label>
-              <Input type="text" value={this.state.anticaptchaKey} onChange={(e) => this.anticaptchaChanged(e)} />
+              <Input type="text" value={this.state.anticaptchaKey} onChange={(e) => this.anticaptchaChanged(e)}/>
             </FormGroup>
             <FormGroup check>
               <Label check>
                 <Input type="checkbox"
-                  checked={this.state.showDebugMessages}
-                  onChange={(event) => this.showDebugMessagesChanged(event)} />
+                       checked={this.state.showDebugMessages}
+                       onChange={(event) => this.showDebugMessagesChanged(event)}/>
                 {LanguageManager.trans("showDebug")}
               </Label>
             </FormGroup>
@@ -69,7 +69,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
   }
 
   private langChanged(e) {
-    this.setState({ lang: e.target.value });
+    this.setState({lang: e.target.value});
     GlobalConfiguration.lang = e.target.value;
   }
 

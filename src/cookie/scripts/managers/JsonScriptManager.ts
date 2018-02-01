@@ -1,6 +1,4 @@
-import Account from "@/account";
-import { FunctionTypes } from "@/scripts/FunctionTypes";
-import { remote } from "electron";
+import {FunctionTypes} from "@/scripts/FunctionTypes";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -38,7 +36,7 @@ export interface IConfig {
 }
 
 export interface IMap {
-  map: number|string;
+  map: number | string;
   path: string;
   gather: boolean;
   fight: boolean;

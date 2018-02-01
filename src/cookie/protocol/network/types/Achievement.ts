@@ -8,7 +8,7 @@ export default class Achievement extends Type {
   public startedObjectives: AchievementStartedObjective[];
   public id: number;
 
-  constructor(id = 0, finishedObjective: AchievementObjective[], startedObjectives: AchievementStartedObjective[] ) {
+  constructor(id = 0, finishedObjective: AchievementObjective[], startedObjectives: AchievementStartedObjective[]) {
     super();
     this.finishedObjective = finishedObjective;
     this.startedObjectives = startedObjectives;

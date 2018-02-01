@@ -287,6 +287,7 @@
   "spellError": "Spell Error",
   "endTurnMove": "(End Turn) Move to  cell ?",
   "passingTurn": "We're passing our turn.",
-  "playerKicked": "A player who doesn't belong to your group tried to join your fight. He has been kicked."
+  "playerKicked": "A player who doesn't belong to your group tried to join your fight. He has been kicked.",
+  "planification": "Planification"
 }
 

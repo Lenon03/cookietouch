@@ -286,5 +286,6 @@
   "spellError": "Sort échoué",
   "endTurnMove": "(Fin de tour) On bouge vers la cellule ?",
   "passingTurn": "On passe notre tour.",
-  "playerKicked": "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé."
+  "playerKicked": "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé.",
+  "planification": "Planification"
 }

@@ -1,7 +1,6 @@
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import StorageGetAllItemsAction from "../actions/storage/StorageGetAllItemsAction";
-import StorageGetAutoRegenStoreAction from "../actions/storage/StorageGetAutoRegenStoreAction";
 import StorageGetExistingItemsAction from "../actions/storage/StorageGetExistingItemsAction";
 import StorageGetItemAction from "../actions/storage/StorageGetItemAction";
 import StorageGetKamasAction from "../actions/storage/StorageGetKamasAction";
@@ -17,12 +16,12 @@ export default class StorageAPI {
     this.account = account;
   }
 
-  public itemCount(gid: number): number {
-    return this.account.game.storage.objects.Where((o) => o.gid === gid).Sum((o) => o.quantity);
-  }
-
   public get kamas(): number {
     return this.account.game.storage.kamas;
+  }
+
+  public itemCount(gid: number): number {
+    return this.account.game.storage.objects.Where((o) => o.gid === gid).Sum((o) => o.quantity);
   }
 
   public putItem(gid: number, quantity: number): boolean {

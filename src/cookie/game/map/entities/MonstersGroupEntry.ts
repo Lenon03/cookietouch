@@ -7,6 +7,16 @@ export default class MonstersGroupEntry extends MovableEntity {
   public leader: MonsterEntry;
   public followers: MonsterEntry[] = [];
 
+  constructor(infos: GameRolePlayGroupMonsterInformations) {
+    super();
+    this.id = infos.contextualId;
+    this.cellId = infos.disposition.cellId;
+    for (const u of infos.staticInfos.underlings) {
+      this.followers.push(new MonsterEntry(u));
+    }
+    this.leader = new MonsterEntry(infos.staticInfos.mainCreatureLightInfos);
+  }
+
   get monstersCount() {
     return this.followers.length + 1;
   }
@@ -17,16 +27,6 @@ export default class MonstersGroupEntry extends MovableEntity {
     } else {
       return this.leader.level;
     }
-  }
-
-  constructor(infos: GameRolePlayGroupMonsterInformations) {
-    super();
-    this.id = infos.contextualId;
-    this.cellId = infos.disposition.cellId;
-    for (const u of infos.staticInfos.underlings) {
-      this.followers.push(new MonsterEntry(u));
-    }
-    this.leader = new MonsterEntry(infos.staticInfos.mainCreatureLightInfos);
   }
 
   public containsMonster(gid: number): boolean {

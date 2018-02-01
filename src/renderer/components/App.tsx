@@ -24,6 +24,6 @@ export class App extends React.Component<{}, {}> {
   }
 
   public render() {
-    return <Main />;
+    return <Main/>;
   }
 }

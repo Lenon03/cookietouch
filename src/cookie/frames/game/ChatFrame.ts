@@ -1,13 +1,12 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ChatServerWithObjectMessage from "@/protocol/network/messages/ChatServerWithObjectMessage";
 import Account from "@account";
-import { ChannelColors } from "@logger/ChannelColors";
-import { LogType } from "@logger/LogType";
-import { ChatActivableChannelsEnum } from "@protocol/enums/ChatActivableChannelsEnum";
-import { ChatChannelsMultiEnum } from "@protocol/enums/ChatChannelsMultiEnum";
-import { ChatErrorEnum } from "@protocol/enums/ChatErrorEnum";
-import { ObjectErrorEnum } from "@protocol/enums/ObjectErrorEnum";
-import { TextInformationTypeEnum } from "@protocol/enums/TextInformationTypeEnum";
+import {ChannelColors} from "@logger/ChannelColors";
+import {ChatActivableChannelsEnum} from "@protocol/enums/ChatActivableChannelsEnum";
+import {ChatChannelsMultiEnum} from "@protocol/enums/ChatChannelsMultiEnum";
+import {ChatErrorEnum} from "@protocol/enums/ChatErrorEnum";
+import {ObjectErrorEnum} from "@protocol/enums/ObjectErrorEnum";
+import {TextInformationTypeEnum} from "@protocol/enums/TextInformationTypeEnum";
 
 export default class ChatFrame {
 

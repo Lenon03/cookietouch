@@ -1,12 +1,26 @@
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
-import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import {CharacterInventoryPositionEnum} from "@/protocol/enums/CharacterInventoryPositionEnum";
 import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
 import {
-  Button, Col, Container, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader,
-  Nav, NavItem, NavLink, Row, TabContent,
-  Table, TabPane,
+  Button,
+  Col,
+  Container,
+  FormGroup,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  Table,
+  TabPane,
 } from "reactstrap";
 
 enum DeleteDropUseChoice { Delete, Drop, Use }
@@ -59,162 +73,170 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
           <Nav pills>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "0" })}
-                onClick={() => { this.toggle("0"); }}
+                className={classnames({active: this.state.activeTab === "0"})}
+                onClick={() => {
+                  this.toggle("0");
+                }}
               >
                 Equipments
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "1" })}
-                onClick={() => { this.toggle("1"); }}
+                className={classnames({active: this.state.activeTab === "1"})}
+                onClick={() => {
+                  this.toggle("1");
+                }}
               >
                 Consumables
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "2" })}
-                onClick={() => { this.toggle("2"); }}
+                className={classnames({active: this.state.activeTab === "2"})}
+                onClick={() => {
+                  this.toggle("2");
+                }}
               >
                 Resources
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "3" })}
-                onClick={() => { this.toggle("3"); }}
+                className={classnames({active: this.state.activeTab === "3"})}
+                onClick={() => {
+                  this.toggle("3");
+                }}
               >
                 Quest Objects
               </NavLink>
             </NavItem>
           </Nav>
         </Row>
-        <hr />
+        <hr/>
         <Row>
           <Col>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="0">
                 <Table striped bordered size="sm" responsive>
                   <thead>
-                    <tr>
-                      <th></th>
-                      <th>GID</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Position</th>
-                      <th>Actions</th>
-                    </tr>
+                  <tr>
+                    <th></th>
+                    <th>GID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Position</th>
+                    <th>Actions</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {this.state.equipments.map((c, index) => (
-                      <tr key={index}>
-                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
-                        <td>{c.gid}</td>
-                        <td>{c.name}</td>
-                        <td>{c.quantity}</td>
-                        <td>{CharacterInventoryPositionEnum[c.position]}</td>
-                        <td>
-                          <Button size="sm" color="dark" onClick={() => this.equipUnEquipItem(c)}>
-                            {c.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED ? "Déséquiper" : "Equiper"}
-                          </Button>
-                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                            Jeter
-                          </Button>
-                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                            Supprimer
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                  {this.state.equipments.map((c, index) => (
+                    <tr key={index}>
+                      <td><img width="25" height="25" src={c.iconUrl} alt={c.name}/></td>
+                      <td>{c.gid}</td>
+                      <td>{c.name}</td>
+                      <td>{c.quantity}</td>
+                      <td>{CharacterInventoryPositionEnum[c.position]}</td>
+                      <td>
+                        <Button size="sm" color="dark" onClick={() => this.equipUnEquipItem(c)}>
+                          {c.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED ? "Déséquiper" : "Equiper"}
+                        </Button>
+                        <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
+                          Jeter
+                        </Button>
+                        <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
+                          Supprimer
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </Table>
               </TabPane>
               <TabPane tabId="1">
                 <Table striped bordered size="sm" responsive>
                   <thead>
-                    <tr>
-                      <th></th>
-                      <th>GID</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Actions</th>
-                    </tr>
+                  <tr>
+                    <th></th>
+                    <th>GID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {this.state.consumables.map((c, index) => (
-                      <tr key={index}>
-                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
-                        <td>{c.gid}</td>
-                        <td>{c.name}</td>
-                        <td>{c.quantity}</td>
-                        <td>
-                          <Button size="sm" color="dark" onClick={() => this.useObject(c)}>
-                            Use
-                          </Button>
-                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                            Jeter
-                          </Button>
-                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                            Supprimer
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                  {this.state.consumables.map((c, index) => (
+                    <tr key={index}>
+                      <td><img width="25" height="25" src={c.iconUrl} alt={c.name}/></td>
+                      <td>{c.gid}</td>
+                      <td>{c.name}</td>
+                      <td>{c.quantity}</td>
+                      <td>
+                        <Button size="sm" color="dark" onClick={() => this.useObject(c)}>
+                          Use
+                        </Button>
+                        <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
+                          Jeter
+                        </Button>
+                        <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
+                          Supprimer
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </Table>
               </TabPane>
               <TabPane tabId="2">
                 <Table striped bordered size="sm" responsive>
                   <thead>
-                    <tr>
-                      <th></th>
-                      <th>GID</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Actions</th>
-                    </tr>
+                  <tr>
+                    <th></th>
+                    <th>GID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {this.state.resources.map((c, index) => (
-                      <tr key={index}>
-                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
-                        <td>{c.gid}</td>
-                        <td>{c.name}</td>
-                        <td>{c.quantity}</td>
-                        <td>
-                          <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                            Jeter
-                      </Button>
-                          <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                            Supprimer
-                      </Button>
-                        </td>
-                      </tr>
-                    ))}
+                  {this.state.resources.map((c, index) => (
+                    <tr key={index}>
+                      <td><img width="25" height="25" src={c.iconUrl} alt={c.name}/></td>
+                      <td>{c.gid}</td>
+                      <td>{c.name}</td>
+                      <td>{c.quantity}</td>
+                      <td>
+                        <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
+                          Jeter
+                        </Button>
+                        <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
+                          Supprimer
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </Table>
               </TabPane>
               <TabPane tabId="3">
                 <Table striped bordered size="sm" responsive>
                   <thead>
-                    <tr>
-                      <th></th>
-                      <th>GID</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                    </tr>
+                  <tr>
+                    <th></th>
+                    <th>GID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {this.state.questObjects.map((c, index) => (
-                      <tr key={index}>
-                        <td><img width="25" height="25" src={c.iconUrl} alt={c.name} /></td>
-                        <td>{c.gid}</td>
-                        <td>{c.name}</td>
-                        <td>{c.quantity}</td>
-                      </tr>
-                    ))}
+                  {this.state.questObjects.map((c, index) => (
+                    <tr key={index}>
+                      <td><img width="25" height="25" src={c.iconUrl} alt={c.name}/></td>
+                      <td>{c.gid}</td>
+                      <td>{c.name}</td>
+                      <td>{c.quantity}</td>
+                    </tr>
+                  ))}
                   </tbody>
                 </Table>
               </TabPane>
@@ -231,9 +253,11 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                 type="number" className="form-control-sm" value={this.state.quantity}
                 onChange={(event) => {
                   const value = parseInt(event.target.value, 10);
-                  if (!value) { return; }
-                  this.setState({ quantity: value });
-                }} />
+                  if (!value) {
+                    return;
+                  }
+                  this.setState({quantity: value});
+                }}/>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -245,7 +269,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
               } else if (this.state.deleteDropUseChoice === DeleteDropUseChoice.Use) {
                 this.props.account.game.character.inventory.useObject(this.state.object, this.state.quantity);
               }
-              this.setState({ quantity: -1, object: null });
+              this.setState({quantity: -1, object: null});
               this.toggleModal();
             }}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]}</Button>
             <Button color="danger" onClick={() => this.toggleModal()}>Cancel</Button>
@@ -288,7 +312,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
   }
 
   private toggleModal() {
-    this.setState({ modal: !this.state.modal });
+    this.setState({modal: !this.state.modal});
   }
 
   private toggle(tab: string) {

@@ -1,8 +1,10 @@
 import Message from "./Message";
+
 export default class PrismFightAttackerRemoveMessage extends Message {
   public subAreaId: number;
   public fightId: number;
   public fighterToRemoveId: number;
+
   constructor(subAreaId = 0, fightId = 0, fighterToRemoveId = 0) {
     super();
     this.subAreaId = subAreaId;

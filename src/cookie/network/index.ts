@@ -2,11 +2,12 @@ import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Message from "@/protocol/network/messages/Message";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import DTConstants from "@protocol/DTConstants";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { NetworkPhases } from "./NetworkPhases";
+import {NetworkPhases} from "./NetworkPhases";
+
 const Primus = require("./primus"); // tslint:disable-line
 
 export default class Network implements IClearable {
@@ -14,18 +15,18 @@ export default class Network implements IClearable {
   private account: Account;
   private socket: any;
   private sessionId: string;
-  private _phase: NetworkPhases;
   private server: any;
   private access: string;
-
-  public get PhaseChanged() { return this.onPhaseChanged.expose(); }
-  public get Disconnected() { return this.onDisconnected.expose(); }
-  public get MessageSent() { return this.onMessageSent.expose(); }
-  public get MessageReceived() { return this.onMessageReceived.expose(); }
+  private _phase: NetworkPhases;
   private readonly onPhaseChanged = new LiteEvent<NetworkPhases>();
   private readonly onDisconnected = new LiteEvent<void>();
-  private readonly onMessageSent = new LiteEvent<{type: string, data: any}>();
-  private readonly onMessageReceived = new LiteEvent<{type: string, data: any}>();
+  private readonly onMessageSent = new LiteEvent<{ type: string, data: any }>();
+  private readonly onMessageReceived = new LiteEvent<{ type: string, data: any }>();
+
+  constructor(account: Account) {
+    this.account = account;
+    this._phase = NetworkPhases.NONE;
+  }
 
   get phase() {
     return this._phase;
@@ -36,9 +37,20 @@ export default class Network implements IClearable {
     this.onPhaseChanged.trigger(phase);
   }
 
-  constructor(account: Account) {
-    this.account = account;
-    this._phase = NetworkPhases.NONE;
+  public get PhaseChanged() {
+    return this.onPhaseChanged.expose();
+  }
+
+  public get Disconnected() {
+    return this.onDisconnected.expose();
+  }
+
+  public get MessageSent() {
+    return this.onMessageSent.expose();
+  }
+
+  public get MessageReceived() {
+    return this.onMessageReceived.expose();
   }
 
   public clear() {
@@ -95,27 +107,27 @@ export default class Network implements IClearable {
     if (call === "sendMessage") {
       msgName = data.type;
       if (data.data) {
-        msg = { call, data };
+        msg = {call, data};
       } else {
-        msg = { call, data: { type: data.type } };
+        msg = {call, data: {type: data.type}};
       }
     } else {
       msgName = call;
       if (data) {
-        msg = { call, data };
+        msg = {call, data};
       } else {
-        msg = { call };
+        msg = {call};
       }
     }
 
     console.log("Sent", msg);
-    this.onMessageSent.trigger({ type: msgName, data});
+    this.onMessageSent.trigger({type: msgName, data});
     this.account.dispatcher.emit(msgName, this.account, data);
     this.socket.write(msg);
   }
 
   public async sendMessageFree(messageName: string, data?: any) {
-    await this.send("sendMessage", { type: messageName, data });
+    await this.send("sendMessage", {type: messageName, data});
   }
 
   public async sendMessage(message: Message) {
@@ -150,7 +162,7 @@ export default class Network implements IClearable {
 
     this.socket.on("data", (data: any) => {
       console.log("Received", data);
-      this.onMessageReceived.trigger({ type: data._messageType, data});
+      this.onMessageReceived.trigger({type: data._messageType, data});
       this.account.dispatcher.emit(data._messageType, this.account, data);
     });
 

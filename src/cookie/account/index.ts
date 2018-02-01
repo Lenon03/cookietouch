@@ -2,16 +2,18 @@ import AccountData from "@/account/AccountData";
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Group from "@/groups/Group";
+import HaapiConnection from "@/network/HaapiConnection";
+import {NetworkPhases} from "@/network/NetworkPhases";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
 import IEntity from "@/utils/IEntity";
-import { randomString } from "@/utils/Random";
+import {randomString} from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 import * as moment from "moment";
 import RecaptchaHandler from "../core/RecaptchaHandler";
 import Extensions from "../extensions";
@@ -19,9 +21,7 @@ import Frames from "../frames";
 import FramesData from "../frames/FramesData";
 import Game from "../game";
 import Network from "../network";
-import HaapiConnection from "../network/HaapiConnection";
-import { NetworkPhases } from "../network/NetworkPhases";
-import { AccountStates } from "./AccountStates";
+import {AccountStates} from "./AccountStates";
 import Configuration from "./configurations/Configuration";
 
 export default class Account implements IEntity {
@@ -40,28 +40,14 @@ export default class Account implements IEntity {
   public group: Group = null;
   public planificationTimer: TimerWrapper;
   public statistics: StatisticsManager;
-
-  get hasGroup(): boolean {
-    return this.group !== null;
-  }
-
-  get isGroupChief(): boolean {
-    return !this.hasGroup || this.group.chief === this;
-  }
-
-  public get StateChanged() { return this.onStateChanged.expose(); }
-  // public get Disconnected() { return this.onDisconnected.expose(); }
-  public get RecaptchaReceived() { return this.onRecaptchaReceived.expose(); }
-  public get RecaptchaResolved() { return this.onRecaptchaResolved.expose(); }
   private readonly onStateChanged = new LiteEvent<void>();
   // private readonly onDisconnected = new LiteEvent<void>();
   private readonly onRecaptchaReceived = new LiteEvent<Account>();
   private readonly onRecaptchaResolved = new LiteEvent<{ account: Account, success: boolean }>();
-
   private frames: Frames;
-  private _state: AccountStates;
   private _wasScriptRunning = false;
   private _wasScriptEnabled = false;
+  private _state: AccountStates;
 
   constructor(config: AccountConfiguration) {
     this.logger = new Logger();
@@ -84,6 +70,27 @@ export default class Account implements IEntity {
     this.game.map.MapLoaded.on(this.onMapLoaded.bind(this));
   }
 
+  get hasGroup(): boolean {
+    return this.group !== null;
+  }
+
+  get isGroupChief(): boolean {
+    return !this.hasGroup || this.group.chief === this;
+  }
+
+  public get StateChanged() {
+    return this.onStateChanged.expose();
+  }
+
+  // public get Disconnected() { return this.onDisconnected.expose(); }
+  public get RecaptchaReceived() {
+    return this.onRecaptchaReceived.expose();
+  }
+
+  public get RecaptchaResolved() {
+    return this.onRecaptchaResolved.expose();
+  }
+
   get state() {
     return this._state;
   }
@@ -91,6 +98,24 @@ export default class Account implements IEntity {
   set state(state: AccountStates) {
     this._state = state;
     this.onStateChanged.trigger();
+  }
+
+  get isBusy(): boolean {
+    return this.state !== AccountStates.NONE && this.state !== AccountStates.REGENERATING;
+  }
+
+  get isFighting() {
+    return this.state === AccountStates.FIGHTING;
+  }
+
+  get isGathering() {
+    return this.state === AccountStates.GATHERING;
+  }
+
+  get isInDialog() {
+    return this.state === AccountStates.STORAGE || this.state === AccountStates.TALKING
+      || this.state === AccountStates.EXCHANGE || this.state === AccountStates.BUYING
+      || this.state === AccountStates.SELLING;
   }
 
   public start() {
@@ -119,24 +144,6 @@ export default class Account implements IEntity {
 
   public stop() {
     this.network.close();
-  }
-
-  get isBusy(): boolean {
-    return this.state !== AccountStates.NONE && this.state !== AccountStates.REGENERATING;
-  }
-
-  get isFighting() {
-    return this.state === AccountStates.FIGHTING;
-  }
-
-  get isGathering() {
-    return this.state === AccountStates.GATHERING;
-  }
-
-  get isInDialog() {
-    return this.state === AccountStates.STORAGE || this.state === AccountStates.TALKING
-      || this.state === AccountStates.EXCHANGE || this.state === AccountStates.BUYING
-      || this.state === AccountStates.SELLING;
   }
 
   public leaveDialog() {
@@ -169,7 +176,7 @@ export default class Account implements IEntity {
         // We shouldn't leave this true
         this._wasScriptRunning = false;
         this.logger.logError("reCaptcha", "You have to enter a Anticaptcha key in order to bypass recaptcha.");
-        this.onRecaptchaResolved.trigger({ account: this, success: false });
+        this.onRecaptchaResolved.trigger({account: this, success: false});
       } else {
         const diff = process.hrtime(time);
         this.logger.logInfo("reCaptcha", `Recaptcha solved in ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds.`);
@@ -192,7 +199,7 @@ export default class Account implements IEntity {
           }
         } else if (this.hasGroup) {
           // Otherwise if this is a group member, trigger onRecaptchaResolved
-          this.onRecaptchaResolved.trigger({ account: this, success: true });
+          this.onRecaptchaResolved.trigger({account: this, success: true});
         }
       }
     } catch (error) {
@@ -211,11 +218,11 @@ export default class Account implements IEntity {
     const hour = moment().hour();
     // If the bot is connected and the hour is red
     if (this.network.connected && this.accountConfig.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
-      this.logger.logInfo("Planification", LanguageManager.trans("autoConnect"));
+      this.logger.logInfo("planification", LanguageManager.trans("autoConnect"));
       this.stop();
     } else if (this.state === AccountStates.DISCONNECTED && this.accountConfig.planification[hour]) {
       // If the bot is disconnected and the hour is green
-      this.logger.logInfo("Planification", LanguageManager.trans("autoDisconnect"));
+      this.logger.logInfo("planification", LanguageManager.trans("autoDisconnect"));
       this.start();
     }
   }
@@ -235,7 +242,7 @@ export default class Account implements IEntity {
       return;
     }
     await sleep(1500);
-    this.logger.logInfo("Planification", LanguageManager.trans("restartingScript"));
+    this.logger.logInfo("planification", LanguageManager.trans("restartingScript"));
     this.scripts.startScript();
   }
 }

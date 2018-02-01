@@ -1,10 +1,10 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 import JobEntry from "./JobEntry";
 
 export default class Job {
@@ -12,8 +12,6 @@ export default class Job {
 
   private account: Account;
   private _jobsInitialized: boolean;
-
-  public get JobsUpdated() { return this.onJobsUpdated.expose(); }
   private readonly onJobsUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -21,12 +19,16 @@ export default class Job {
     this.jobs = new List<JobEntry>();
   }
 
-  public hasCollectSkills(id: number) {
-    return this.jobs.FirstOrDefault((j) => j.collectSkills.FirstOrDefault((s) => s.interactiveId === id) !== undefined) !== undefined;
+  public get JobsUpdated() {
+    return this.onJobsUpdated.expose();
   }
 
   get collectSkillsIds() {
     return this.jobs.SelectMany((j) => j.collectSkills.Select((s) => s.interactiveId));
+  }
+
+  public hasCollectSkills(id: number) {
+    return this.jobs.FirstOrDefault((j) => j.collectSkills.FirstOrDefault((s) => s.interactiveId === id) !== undefined) !== undefined;
   }
 
   public async UpdateJobDescriptionMessage(message: any) {

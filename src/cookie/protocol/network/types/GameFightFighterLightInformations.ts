@@ -6,6 +6,7 @@ export default class GameFightFighterLightInformations extends Type {
   public breed: number;
   public sex: boolean;
   public alive: boolean;
+
   constructor(id = 0, level = 0, breed = 0, sex = false, alive = false) {
     super();
     this.id = id;

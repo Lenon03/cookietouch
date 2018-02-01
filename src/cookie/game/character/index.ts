@@ -1,16 +1,16 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
+import {DataTypes} from "@/protocol/data/DataTypes";
+import {PlayerStatusEnum} from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
 import Spells from "@protocol/data/classes/Spells";
-import { BreedEnum } from "@protocol/enums/BreedEnum";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
+import {BreedEnum} from "@protocol/enums/BreedEnum";
+import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
 import EntityLook from "@protocol/network/types/EntityLook";
 import LiteEvent from "@utils/LiteEvent";
-import { BoostableStats } from "./BoostableStats";
+import {BoostableStats} from "./BoostableStats";
 import CharacterStats from "./CharacterStats";
 import Inventory from "./inventory";
 import Jobs from "./jobs";
@@ -36,24 +36,31 @@ export default class Character {
   public inventory: Inventory;
 
   private regenTimer: NodeJS.Timer = null;
-
-  public get CharacterSelected() { return this.onCharacterSelected.expose(); }
-  public get StatsUpdated() { return this.onStatsUpdated.expose(); }
-  public get SpellsUpdated() { return this.onSpellsUpdated.expose(); }
   private readonly onCharacterSelected = new LiteEvent<void>();
   private readonly onStatsUpdated = new LiteEvent<void>();
   private readonly onSpellsUpdated = new LiteEvent<void>();
-
   private account: Account;
 
   constructor(account: Account) {
     this.account = account;
 
     this.stats = new CharacterStats();
-    this.spells = new Array<SpellEntry>();
+    this.spells = [];
     this.mount = new Mount(account);
     this.jobs = new Jobs(account);
     this.inventory = new Inventory(account);
+  }
+
+  public get CharacterSelected() {
+    return this.onCharacterSelected.expose();
+  }
+
+  public get StatsUpdated() {
+    return this.onStatsUpdated.expose();
+  }
+
+  public get SpellsUpdated() {
+    return this.onSpellsUpdated.expose();
   }
 
   get freeSoul() {
@@ -69,7 +76,7 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessageFree("EmotePlayRequestMessage", { emoteId: 1 });
+    this.account.network.sendMessageFree("EmotePlayRequestMessage", {emoteId: 1});
   }
 
   public getSpell(id: number): SpellEntry {
@@ -417,7 +424,7 @@ export default class Character {
   }
 
   public async UpdateSpellListMessage(message: any) {
-    this.spells = new Array<SpellEntry>();
+    this.spells = [];
 
     const ids = message.spells.map((s: any) => s.spellId);
     const spells = await DataManager.get<Spells>(DataTypes.Spells, ...ids);

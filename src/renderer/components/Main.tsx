@@ -1,18 +1,38 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import Group from "@/groups/Group";
 import IEntity from "@/utils/IEntity";
-import { sleep } from "@/utils/Time";
 import Account from "@account";
 import classnames from "classnames";
-import { List } from "linqts";
+import {List} from "linqts";
 import * as React from "react";
 import {
-  Button, Col, Collapse, Container, DropdownItem, DropdownMenu,
-  DropdownToggle, Form, FormGroup, Input, Label,
-  ListGroup, ListGroupItem, Modal, ModalBody,
-  ModalFooter, ModalHeader, Nav, Navbar, NavbarBrand,
-  NavbarToggler, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledDropdown,
+  Button,
+  Col,
+  Collapse,
+  Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  ListGroup,
+  ListGroupItem,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
+  UncontrolledDropdown,
 } from "reactstrap";
 import CookieMain from "renderer/CookieMain";
 import CharacterCreation from "./CharacterCreation";
@@ -77,7 +97,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
       <Container fluid={true}>
         <Navbar dark expand="md">
           <NavbarBrand href="#">CookieTouch</NavbarBrand>
-          <NavbarToggler onClick={() => this.toggleOpen()} />
+          <NavbarToggler onClick={() => this.toggleOpen()}/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
@@ -101,25 +121,31 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                 <ListGroup>
                   <ListGroupItem
                     color="dark"
-                    className={classnames({ active: this.state.modalItem === "0" })}
+                    className={classnames({active: this.state.modalItem === "0"})}
                   >
-                    <NavLink onClick={() => { this.toggleModalItem("0"); }}>
+                    <NavLink onClick={() => {
+                      this.toggleModalItem("0");
+                    }}>
                       Connect Accounts
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
                     color="dark"
-                    className={classnames({ active: this.state.modalItem === "1" })}
+                    className={classnames({active: this.state.modalItem === "1"})}
                   >
-                    <NavLink onClick={() => { this.toggleModalItem("1"); }}>
+                    <NavLink onClick={() => {
+                      this.toggleModalItem("1");
+                    }}>
                       Add Accounts
                     </NavLink>
                   </ListGroupItem>
                   <ListGroupItem
                     color="dark"
-                    className={classnames({ active: this.state.modalItem === "2" })}
+                    className={classnames({active: this.state.modalItem === "2"})}
                   >
-                    <NavLink onClick={() => { this.toggleModalItem("2"); }}>
+                    <NavLink onClick={() => {
+                      this.toggleModalItem("2");
+                    }}>
                       Character Creator
                     </NavLink>
                   </ListGroupItem>
@@ -163,26 +189,26 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     }}>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Label for="username" className="mr-sm-2">Nom de compte</Label>
-                        <Input type="text" name="text" id="username" />
+                        <Input type="text" name="text" id="username"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Label for="examplePassword" className="mr-sm-2">Mot de passe</Label>
-                        <Input type="password" name="password" id="examplePassword" />
+                        <Input type="password" name="password" id="examplePassword"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Label for="server" className="mr-sm-2">Serveur</Label>
-                        <Input type="text" name="text" id="server" />
+                        <Input type="text" name="text" id="server"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Label for="character" className="mr-sm-2">Personnage</Label>
-                        <Input type="text" name="text" id="character" />
+                        <Input type="text" name="text" id="character"/>
                       </FormGroup>
-                      <br />
+                      <br/>
                       <Button size="sm">Ajouter</Button>
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">
-                    <CharacterCreation />
+                    <CharacterCreation/>
                   </TabPane>
                 </TabContent>
               </Col>
@@ -195,7 +221,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
         <Modal isOpen={this.state.modalConfig} size="lg" toggle={() => this.toggleModalConfig()}>
           <ModalHeader toggle={() => this.toggleModalConfig()}>Configuration</ModalHeader>
           <ModalBody>
-            <ConfigurationG />
+            <ConfigurationG/>
           </ModalBody>
           <ModalFooter>
             <Button size="sm" color="dark" onClick={() => this.toggleModalConfig()}>Close</Button>
@@ -208,9 +234,11 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                 <ListGroupItem
                   key={index}
                   color="dark"
-                  className={classnames({ active: this.state.activeAccount === `${index}` })}
+                  className={classnames({active: this.state.activeAccount === `${index}`})}
                 >
-                  <NavLink onClick={() => { this.toggleAccount(`${index}`); }}>
+                  <NavLink onClick={() => {
+                    this.toggleAccount(`${index}`);
+                  }}>
                     {(item as Account).accountConfig.username}
                   </NavLink>
                 </ListGroupItem>
@@ -221,109 +249,127 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <TabContent activeTab={this.state.activeAccount}>
               {this.state.connectedAccounts.ToArray().map((item, index) => (
                 <TabPane key={index} tabId={`${index}`}>
-                  <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount} />
+                  <Infos removeSelectedAccount={this.removeSelectedAccount.bind(this)} account={this.state.selectedAccount}/>
                   <Nav pills justified>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "0" })}
-                        onClick={() => { this.toggle("0"); }}
+                        className={classnames({active: this.state.activeTab === "0"})}
+                        onClick={() => {
+                          this.toggle("0");
+                        }}
                       >
                         Console
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "1" })}
-                        onClick={() => { this.toggle("1"); }}
+                        className={classnames({active: this.state.activeTab === "1"})}
+                        onClick={() => {
+                          this.toggle("1");
+                        }}
                       >
                         Character
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "2" })}
-                        onClick={() => { this.toggle("2"); }}
+                        className={classnames({active: this.state.activeTab === "2"})}
+                        onClick={() => {
+                          this.toggle("2");
+                        }}
                       >
                         Inventory
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "3" })}
-                        onClick={() => { this.toggle("3"); }}
+                        className={classnames({active: this.state.activeTab === "3"})}
+                        onClick={() => {
+                          this.toggle("3");
+                        }}
                       >
                         Map
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "4" })}
-                        onClick={() => { this.toggle("4"); }}
+                        className={classnames({active: this.state.activeTab === "4"})}
+                        onClick={() => {
+                          this.toggle("4");
+                        }}
                       >
                         Combat
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "5" })}
-                        onClick={() => { this.toggle("5"); }}
+                        className={classnames({active: this.state.activeTab === "5"})}
+                        onClick={() => {
+                          this.toggle("5");
+                        }}
                       >
                         Flood
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "6" })}
-                        onClick={() => { this.toggle("6"); }}
+                        className={classnames({active: this.state.activeTab === "6"})}
+                        onClick={() => {
+                          this.toggle("6");
+                        }}
                       >
                         HDV
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "7" })}
-                        onClick={() => { this.toggle("7"); }}
+                        className={classnames({active: this.state.activeTab === "7"})}
+                        onClick={() => {
+                          this.toggle("7");
+                        }}
                       >
                         Stats
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: this.state.activeTab === "8" })}
-                        onClick={() => { this.toggle("8"); }}
+                        className={classnames({active: this.state.activeTab === "8"})}
+                        onClick={() => {
+                          this.toggle("8");
+                        }}
                       >
                         Configuration
                       </NavLink>
                     </NavItem>
                   </Nav>
-                  <hr />
+                  <hr/>
                   <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="0">
-                      <Console account={this.state.selectedAccount} />
+                      <Console account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="1">
-                      <Character account={this.state.selectedAccount} />
+                      <Character account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="2">
-                      <Inventory account={this.state.selectedAccount} />
+                      <Inventory account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="3">
-                      <Map account={this.state.selectedAccount} />
+                      <Map account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="4">
-                      <Fights account={this.state.selectedAccount} />
+                      <Fights account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="5">
-                      <Flood account={this.state.selectedAccount} />
+                      <Flood account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="6">
-                      <Bid account={this.state.selectedAccount} />
+                      <Bid account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="7">
-                      <Statistics account={this.state.selectedAccount} />
+                      <Statistics account={this.state.selectedAccount}/>
                     </TabPane>
                     <TabPane tabId="8">
-                      <Configuration account={this.state.selectedAccount} />
+                      <Configuration account={this.state.selectedAccount}/>
                     </TabPane>
                   </TabContent>
                 </TabPane>

@@ -1,11 +1,13 @@
 import Message from "./Message";
-export default class ExchangeStartOkMulticraftCrafterMessage extends Message {
-public maxCase: number;
-public skillId: number;
-constructor(maxCase = 0, skillId = 0) {
-super();
-this.maxCase = maxCase;
-this.skillId = skillId;
 
-}
+export default class ExchangeStartOkMulticraftCrafterMessage extends Message {
+  public maxCase: number;
+  public skillId: number;
+
+  constructor(maxCase = 0, skillId = 0) {
+    super();
+    this.maxCase = maxCase;
+    this.skillId = skillId;
+
+  }
 }

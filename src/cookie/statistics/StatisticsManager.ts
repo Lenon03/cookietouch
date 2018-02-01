@@ -1,8 +1,8 @@
 import Account from "@/account";
-import { GatherResults } from "@/game/managers/gathers";
+import {GatherResults} from "@/game/managers/gathers";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import AchievementRewardSuccessMessage from "@/protocol/network/messages/AchievementRewardSuccessMessage";
 import CharacterExperienceGainMessage from "@/protocol/network/messages/CharacterExperienceGainMessage";
 import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
@@ -11,7 +11,7 @@ import GameFightEndMessage from "@/protocol/network/messages/GameFightEndMessage
 import FightResultPlayerListEntry from "@/protocol/network/types/FightResultPlayerListEntry";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import LiteEvent from "@/utils/LiteEvent";
-import { List } from "linqts";
+import {List} from "linqts";
 
 export default class StatisticsManager {
 
@@ -33,8 +33,6 @@ export default class StatisticsManager {
   private gatherStartTime: [number, number];
 
   private account: Account;
-
-  public get StatisticsUpdated() { return this.onStatisticsUpdated.expose(); }
   private readonly onStatisticsUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -57,6 +55,10 @@ export default class StatisticsManager {
     this.account.game.managers.gathers.GatherStarted.on(() => this.gatherStarted.bind(this));
     this.account.game.managers.gathers.GatherFinished.on(() => this.gatherFinished.bind(this));
     this.account.game.character.inventory.ObjectGained.on(() => this.objectGained.bind(this));
+  }
+
+  public get StatisticsUpdated() {
+    return this.onStatisticsUpdated.expose();
   }
 
   public async UpdateGameFightEndMessage(message: GameFightEndMessage) {

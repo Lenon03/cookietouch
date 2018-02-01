@@ -1,8 +1,8 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import CharactersListMessage from "@protocol/network/messages/CharactersListMessage";
-import { randomString } from "@utils/Random";
-import { isBlank } from "@utils/String";
+import {randomString} from "@utils/Random";
+import {isBlank} from "@utils/String";
 
 export default class CharacterSelectionFrame {
 
@@ -75,7 +75,7 @@ export default class CharacterSelectionFrame {
     account.network.send("bakSoftToHardCurrentRateRequest");
     account.network.send("bakHardToSoftCurrentRateRequest");
     account.network.send("restoreMysteryBox");
-    account.network.sendMessageFree("ClientKeyMessage", { key: randomString(21) });
+    account.network.sendMessageFree("ClientKeyMessage", {key: randomString(21)});
     account.network.sendMessageFree("GameContextCreateRequestMessage");
   }
 

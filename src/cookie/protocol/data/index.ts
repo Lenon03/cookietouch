@@ -1,12 +1,11 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import Dictionary from "@/utils/Dictionary";
 import axios from "axios";
-import { remote } from "electron";
+import {remote} from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import DTConstants from "../DTConstants";
 import Data from "./Data";
-import { DataTypes } from "./DataTypes";
+import {DataTypes} from "./DataTypes";
 
 export interface IDataResponse<T> {
   id: number;
@@ -40,7 +39,7 @@ export default class DataManager {
     });
     for (const item in response.data) {
       if (response.data.hasOwnProperty(item)) {
-        const dataRes = { id: parseInt(item, 10), object: response.data[item] } as IDataResponse<T>;
+        const dataRes = {id: parseInt(item, 10), object: response.data[item]} as IDataResponse<T>;
         fs.writeFileSync(this.getFilePath(DataTypes[type], dataRes.id), JSON.stringify(dataRes));
       }
     }
@@ -51,7 +50,7 @@ export default class DataManager {
   private static buildData<T extends Data>(json: any, array: Array<IDataResponse<T>>) {
     for (const item in json) {
       if (json.hasOwnProperty(item)) {
-        const dataRes = { id: parseInt(item, 10), object: json[item] } as IDataResponse<T>;
+        const dataRes = {id: parseInt(item, 10), object: json[item]} as IDataResponse<T>;
         array.push(dataRes);
       }
     }

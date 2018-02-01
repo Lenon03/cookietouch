@@ -155,7 +155,8 @@ export default class Dofus1Line {
           }
           break;
         }
-        default: /* cas 1 */ {
+        default: /* cas 1 */
+        {
           if (this.isCellObstructed(Math.floor(xPadX), Math.floor(yPadY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
             return true;
           }

@@ -7,6 +7,10 @@ export default class JobsAPI {
     this.account = account;
   }
 
+  public get allCollectSkills() {
+    return this.account.game.character.jobs.collectSkillsIds.ToArray();
+  }
+
   public hasJob(jobId: number): boolean {
     return this.account.game.character.jobs.jobs.FirstOrDefault((j) => j.id === jobId) !== undefined;
   }
@@ -24,9 +28,5 @@ export default class JobsAPI {
   public getCollectSkills(jobId: number): number[] {
     const job = this.account.game.character.jobs.jobs.FirstOrDefault((j) => j.id === jobId);
     return job ? job.collectSkills.Select((f) => f.interactiveId).ToArray() : [];
-  }
-
-  public get allCollectSkills() {
-    return this.account.game.character.jobs.collectSkillsIds.ToArray();
   }
 }

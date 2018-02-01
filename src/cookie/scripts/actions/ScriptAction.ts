@@ -7,17 +7,19 @@ export enum ScriptActionResults {
 }
 
 export default abstract class ScriptAction {
+  public abstract _name: string;
+
   protected static async doneResult(): Promise<ScriptActionResults> {
     return ScriptActionResults.DONE;
   }
+
   protected static async processingResult(): Promise<ScriptActionResults> {
     return ScriptActionResults.PROCESSING;
   }
+
   protected static async failedResult(): Promise<ScriptActionResults> {
     return ScriptActionResults.FAILED;
   }
-
-  public abstract _name: string;
 
   // public get name(): string {
   //   return this.constructor.toString().match(/\w+/g)[1];

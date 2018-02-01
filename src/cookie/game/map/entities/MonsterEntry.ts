@@ -1,7 +1,6 @@
 import Monsters from "@/protocol/data/classes/Monsters";
-import { DataTypes } from "@/protocol/data/DataTypes";
+import {DataTypes} from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
-import DataClasses from "@protocol/data/classes";
 import MonsterInGroupLightInformations from "@protocol/network/types/MonsterInGroupLightInformations";
 
 export default class MonsterEntry {

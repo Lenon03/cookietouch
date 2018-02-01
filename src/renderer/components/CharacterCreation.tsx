@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Row } from "reactstrap";
+import {Container, Row} from "reactstrap";
 
 interface ICharacterCreationProps {
   //
@@ -18,6 +18,7 @@ export default class CharacterCreation extends React.Component<ICharacterCreatio
       //
     };
   }
+
   public render() {
     return (
       <Container>

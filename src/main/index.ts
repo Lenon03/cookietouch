@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Menu } from "electron";
-import { appUpdater } from "./Updater";
+import {app, BrowserWindow, Menu} from "electron";
+import {appUpdater} from "./Updater";
 
 const template: any[] = [];
 if (process.platform === "darwin") {
@@ -14,7 +14,9 @@ if (process.platform === "darwin") {
       },
       {
         accelerator: "Command+Q",
-        click() { app.quit(); },
+        click() {
+          app.quit();
+        },
         label: "Quit",
       },
     ],
@@ -60,11 +62,15 @@ function createMainWindow() {
 }
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") { app.quit(); }
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("activate", () => {
-  if (mainWindow === null) { mainWindow = createMainWindow(); }
+  if (mainWindow === null) {
+    mainWindow = createMainWindow();
+  }
 });
 
 app.on("ready", () => {

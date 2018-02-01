@@ -1,9 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import Account from "@account";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
 import * as React from "react";
-import { Col, Container, Row, Table } from "reactstrap";
+import {Col, Container, Row, Table} from "reactstrap";
 
 interface IEquipmentsProps {
   account: Account;
@@ -37,20 +37,20 @@ export default class Equipments extends React.Component<IEquipmentsProps, IEquip
           <Col>
             <Table striped bordered size="sm" responsive>
               <thead>
-                <tr>
-                  <th>{LanguageManager.trans("items")}</th>
-                  <th>{LanguageManager.trans("name")}</th>
-                </tr>
+              <tr>
+                <th>{LanguageManager.trans("items")}</th>
+                <th>{LanguageManager.trans("name")}</th>
+              </tr>
               </thead>
               <tbody>
-                {this.state.equippedItems.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td><img width="25" height="25" src={item.iconUrl} alt={item.name} /></td>
-                      <td>{item.name}</td>
-                    </tr>
-                  );
-                })}
+              {this.state.equippedItems.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td><img width="25" height="25" src={item.iconUrl} alt={item.name}/></td>
+                    <td>{item.name}</td>
+                  </tr>
+                );
+              })}
               </tbody>
             </Table>
           </Col>

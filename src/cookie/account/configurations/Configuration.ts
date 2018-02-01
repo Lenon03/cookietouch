@@ -1,6 +1,6 @@
 import Account from "@/account";
-import { BoostableStats } from "@game/character/BoostableStats";
-import { remote } from "electron";
+import {BoostableStats} from "@game/character/BoostableStats";
+import {remote} from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import SpellToBoostEntry from "./SpellToBoostEntry";

@@ -1,9 +1,9 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LiteEvent from "@/utils/LiteEvent";
-import { isBlank } from "@utils/String";
+import {isBlank} from "@utils/String";
 import * as moment from "moment";
-import { ChannelColors } from "./ChannelColors";
-import { LogType } from "./LogType";
+import {ChannelColors} from "./ChannelColors";
+import {LogType} from "./LogType";
 
 export interface IMessage {
   source?: string;
@@ -14,8 +14,11 @@ export interface IMessage {
 
 export default class Logger {
 
-  public get OnLog() { return this.onLog.expose(); }
   private readonly onLog = new LiteEvent<IMessage>();
+
+  public get OnLog() {
+    return this.onLog.expose();
+  }
 
   public log(source: string, message: string, color: string | LogType | ChannelColors) {
     if (color === LogType.DEBUG && !GlobalConfiguration.showDebugMessages) {

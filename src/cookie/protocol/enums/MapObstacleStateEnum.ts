@@ -1,4 +1,4 @@
 export enum MapObstacleStateEnum {
-    OBSTACLE_OPENED = 1,
-    OBSTACLE_CLOSED = 2,
+  OBSTACLE_OPENED = 1,
+  OBSTACLE_CLOSED = 2,
 }

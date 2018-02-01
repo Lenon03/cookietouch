@@ -1,12 +1,11 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import IEntity from "@/utils/IEntity";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
-import Dictionary from "@utils/Dictionary";
-import ResetEvent, { IToken } from "@utils/ResetEvent";
-import { sleep } from "@utils/Time";
-import { List } from "linqts";
+import {AccountStates} from "@account/AccountStates";
+import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
+import ResetEvent, {IToken} from "@utils/ResetEvent";
+import {sleep} from "@utils/Time";
+import {List} from "linqts";
 import FightAction from "../scripts/actions/fight/FightAction";
 import ScriptAction from "../scripts/actions/ScriptAction";
 import Grouping from "./Grouping";
@@ -34,6 +33,25 @@ export default class Group implements IEntity {
     chief.RecaptchaResolved.on(this.accountRecaptchaResolved.bind(this));
   }
 
+  get isAnyoneBusy() {
+    return this.chief.isBusy || this.members.Any((m: Account) => m.isBusy);
+  }
+
+  get isAnyoneFullWeight() {
+    const maxPods = this.chief.scripts.scriptManager.config.MAX_PODS ? this.chief.scripts.scriptManager.config.MAX_PODS : 90;
+    if (this.chief.game.character.inventory.weightPercent >= maxPods) {
+      return true;
+    }
+    return this.members.Any((t: Account) => t.game.character.inventory.weightPercent >= maxPods);
+  }
+
+  get isEveryoneAliveAndKicking() {
+    if (this.chief.game.character.lifeStatus !== PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING) {
+      return false;
+    }
+    return this.members.All((t: Account) => t.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING);
+  }
+
   public addMember(member: Account) {
     if (this.members.Count() >= 7) {
       return;
@@ -41,7 +59,7 @@ export default class Group implements IEntity {
 
     member.group = this;
     this.members.Add(member);
-    this._membersAccountsFinished.push({ account: member, event: new ResetEvent(false) });
+    this._membersAccountsFinished.push({account: member, event: new ResetEvent(false)});
     member.scripts.actionsManager.ActionsFinished.on(this.memberActionsFinished.bind(this));
     member.RecaptchaResolved.on(this.accountRecaptchaResolved.bind(this));
   }
@@ -66,25 +84,6 @@ export default class Group implements IEntity {
       t.game.managers.interactives.cancelUse();
       t.scripts.actionsManager.clearEverything();
     });
-  }
-
-  get isAnyoneBusy() {
-    return this.chief.isBusy || this.members.Any((m: Account) => m.isBusy);
-  }
-
-  get isAnyoneFullWeight() {
-    const maxPods = this.chief.scripts.scriptManager.config.MAX_PODS ? this.chief.scripts.scriptManager.config.MAX_PODS : 90;
-    if (this.chief.game.character.inventory.weightPercent >= maxPods) {
-      return true;
-    }
-    return this.members.Any((t: Account) => t.game.character.inventory.weightPercent >= maxPods);
-  }
-
-  get isEveryoneAliveAndKicking() {
-    if (this.chief.game.character.lifeStatus !== PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING) {
-      return false;
-    }
-    return this.members.All((t: Account) => t.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING);
   }
 
   public async applyCheckings() {
@@ -150,7 +149,9 @@ export default class Group implements IEntity {
     });
 
     // Reset all ResetEvents of the members if this action will start dequeueing actions
-    if (!startDequeueingAction) { return; }
+    if (!startDequeueingAction) {
+      return;
+    }
     this.members.ForEach((m) => {
       const test = this._membersAccountsFinished.find((e) => e.account === m);
       if (test !== undefined) {
@@ -164,7 +165,8 @@ export default class Group implements IEntity {
     const tasks: IToken[] = [];
 
     for (const e of events) {
-      tasks.push(e.wait(async () => {/**/}));
+      tasks.push(e.wait(async () => {/**/
+      }));
     }
 
     Promise.all(tasks.map((t) => t.callback)); // TODO: Check this

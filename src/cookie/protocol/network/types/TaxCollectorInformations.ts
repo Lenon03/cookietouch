@@ -14,6 +14,7 @@ export default class TaxCollectorInformations extends Type {
   public subAreaId: number;
   public state: number;
   public look: EntityLook;
+
   constructor(uniqueId = 0, firtNameId = 0, lastNameId = 0, additionalInfos: AdditionalTaxCollectorInformations = null,
               worldX = 0, worldY = 0, subAreaId = 0, state = 0, look: EntityLook = null,
               complements: TaxCollectorComplementaryInformations[] = null) {

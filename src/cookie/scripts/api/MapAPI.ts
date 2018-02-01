@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import { TeleportablesEnum } from "@game/managers/teleportables";
+import {TeleportablesEnum} from "@game/managers/teleportables";
 import JoinFriendAction from "../actions/global/JoinFriendAction";
 import ChangeMapAction from "../actions/map/ChangeMapAction";
 import MoveToCellAction from "../actions/map/MoveToCellAction";
@@ -17,6 +17,22 @@ export default class MapAPI {
 
   constructor(account: Account) {
     this.account = account;
+  }
+
+  public get currentPos(): string {
+    return this.account.game.map.currentPosition;
+  }
+
+  public get currentMapId(): number {
+    return this.account.game.map.id;
+  }
+
+  public get area(): string {
+    return this.account.game.map.area;
+  }
+
+  public get subArea(): string {
+    return this.account.game.map.subArea;
   }
 
   public changeMap(where: string): boolean {
@@ -37,7 +53,7 @@ export default class MapAPI {
       return false;
     }
     if (!this.account.game.map.data.cells[cellId].isWalkable(false) ||
-      this.account.game.map.data.cells[cellId].isObstacle())  {
+      this.account.game.map.data.cells[cellId].isObstacle()) {
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(new MoveToCellAction(cellId), true);
@@ -131,21 +147,5 @@ export default class MapAPI {
 
   public onMap(coords: string): boolean {
     return this.account.game.map.isOnMap(coords);
-  }
-
-  public get currentPos(): string {
-    return this.account.game.map.currentPosition;
-  }
-
-  public get currentMapId(): number {
-    return this.account.game.map.id;
-  }
-
-  public get area(): string {
-    return this.account.game.map.area;
-  }
-
-  public get subArea(): string {
-    return this.account.game.map.subArea;
   }
 }

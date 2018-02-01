@@ -1,4 +1,5 @@
 import Message from "./Message";
+
 export default class GameFightJoinMessage extends Message {
   public canBeCancelled: boolean;
   public canSayReady: boolean;
@@ -6,6 +7,7 @@ export default class GameFightJoinMessage extends Message {
   public isFightStarted: boolean;
   public timeMaxBeforeFightStart: number;
   public fightType: number;
+
   constructor(canBeCancelled = false, canSayReady = false, isSpectator = false,
               isFightStarted = false, timeMaxBeforeFightStart = 0, fightType = 0) {
     super();

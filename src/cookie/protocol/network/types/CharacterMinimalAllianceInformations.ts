@@ -8,7 +8,7 @@ export default class CharacterMinimalAllianceInformations extends CharacterMinim
   public alliance: BasicAllianceInformations;
 
   constructor(id = 0, level = 0, name = "", entitylook: Entitylook, guild: BasicGuildInformations,
-              alliance: BasicAllianceInformations ) {
+              alliance: BasicAllianceInformations) {
     super(id, level, name, entitylook, guild);
     this.alliance = alliance;
   }

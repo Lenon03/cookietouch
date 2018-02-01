@@ -1,4 +1,5 @@
 import Type from "./Type";
+
 export default class AchievementRewardable extends Type {
 
   public id: number;

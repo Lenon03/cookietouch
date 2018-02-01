@@ -1,4 +1,4 @@
-import { TeamEnum } from "@protocol/enums/TeamEnum";
+import {TeamEnum} from "@protocol/enums/TeamEnum";
 import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightLifePointsGainMessage from "@protocol/network/messages/GameActionFightLifePointsGainMessage";
 import GameActionFightLifePointsLostMessage from "@protocol/network/messages/GameActionFightLifePointsLostMessage";
@@ -12,8 +12,6 @@ import FightTemporaryBoostEffect from "@protocol/network/types/FightTemporaryBoo
 import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
 import GameFightMinimalStats from "@protocol/network/types/GameFightMinimalStats";
 import IdentifiedEntityDispositionInformations from "@protocol/network/types/IdentifiedEntityDispositionInformations";
-import FightMonsterEntry from "./FightMonsterEntry";
-import FightPlayerEntry from "./FightPlayerEntry";
 
 export default class FighterEntry {
   public contextualId: number;
@@ -26,8 +24,8 @@ export default class FighterEntry {
   public actionPoints: number;
   public movementPoints: number;
 
-  get lifePercent() {
-    return this.lifePoints / this.maxLifePoints * 100;
+  constructor(infos: GameFightFighterInformations) {
+    this.UpdateGameFightFighterInformations(infos);
   }
 
   // get name(): string {
@@ -40,8 +38,8 @@ export default class FighterEntry {
   //   return "";
   // }
 
-  constructor(infos: GameFightFighterInformations) {
-    this.UpdateGameFightFighterInformations(infos);
+  get lifePercent() {
+    return this.lifePoints / this.maxLifePoints * 100;
   }
 
   public UpdateGameFightFighterInformations(infos: GameFightFighterInformations) {

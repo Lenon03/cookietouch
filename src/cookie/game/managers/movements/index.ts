@@ -3,25 +3,18 @@ import Pathfinder from "@/core/pathfinder";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import MapGame from "@game/map";
-import Map from "@protocol/data/map";
-import Cell from "@protocol/data/map/Cell";
-import GraphicalElement from "@protocol/data/map/GraphicalElement";
-import DTConstants from "@protocol/DTConstants";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { getRandomInt } from "@utils/Random";
-import { sleep } from "@utils/Time";
-import axios from "axios";
-import { Enumerable, List } from "linqts";
-import { MapChangeDirections } from "./MapChangeDirections";
-import { MovementRequestResults } from "./MovementRequestResults";
+import {getRandomInt} from "@utils/Random";
+import {sleep} from "@utils/Time";
+import {Enumerable, List} from "linqts";
+import {MapChangeDirections} from "./MapChangeDirections";
+import {MovementRequestResults} from "./MovementRequestResults";
 
 export default class MovementsManager implements IClearable {
-  public get MovementFinished() { return this.onMovementFinished.expose(); }
   private readonly onMovementFinished = new LiteEvent<boolean>();
-
   private account: Account;
   private currentPath: number[] = null;
   private neighbourMapId: number = 0;
@@ -34,6 +27,10 @@ export default class MovementsManager implements IClearable {
     map.MapChanged.on(() => {
       this.pathfinder.setMap(this.account.game.map.data);
     });
+  }
+
+  public get MovementFinished() {
+    return this.onMovementFinished.expose();
   }
 
   public moveToCell(cellId: number, stopNextToTarget: boolean = false): MovementRequestResults {

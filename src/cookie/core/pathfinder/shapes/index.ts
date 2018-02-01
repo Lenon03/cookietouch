@@ -1,7 +1,7 @@
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
 import Map from "@protocol/data/map";
-import { union } from "@utils/Arrays";
+import {union} from "@utils/Arrays";
 import Shaper from "./zones/Shaper";
 import Zone from "./zones/Zone";
 import ZonesUtility from "./zones/ZonesUtility";
@@ -13,7 +13,7 @@ export default class SpellShapes {
 
     if (spellLevel.castInLine && spellLevel.castInDiagonal) {
       return union([Shaper.shapeCross(mp.x, mp.y, spellLevel.minRange, range),
-      Shaper.shapeStar(mp.x, mp.y, spellLevel.minRange, range)]);
+        Shaper.shapeStar(mp.x, mp.y, spellLevel.minRange, range)]);
     }
 
     if (spellLevel.castInDiagonal) {
@@ -28,7 +28,7 @@ export default class SpellShapes {
   }
 
   public static getSpellEffectZone(map: Map, spellLevel: SpellLevels, casterCellId: number, targetCellId: number): MapPoint[] {
-    const zone = new Array<MapPoint>();
+    const zone = [];
 
     const effect = this.getZoneEffect(spellLevel);
     const shaper = Shaper.shaperMap.getValue(effect.zoneShape);
@@ -64,7 +64,7 @@ export default class SpellShapes {
     let zoneEffect: Zone = null;
     let ray = 63;
 
-    for (const e of spellLevel.effects)  {
+    for (const e of spellLevel.effects) {
       if (e.rawZone !== undefined) {
         const ze = ZonesUtility.parseZone(e.rawZone);
         if (ze.zoneSize > 0 && ze.zoneSize < ray) {

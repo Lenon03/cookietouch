@@ -1,11 +1,11 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
+import {AccountStates} from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import { ExchangeTypeEnum } from "@protocol/enums/ExchangeTypeEnum";
+import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
+import {ExchangeTypeEnum} from "@protocol/enums/ExchangeTypeEnum";
 import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import {sleep} from "@utils/Time";
 
 export default class Exchange {
   public objects: ObjectEntry[];
@@ -18,6 +18,19 @@ export default class Exchange {
   public remoteMaxWeight: number;
   public isReady: boolean;
   public remoteIsReady: boolean;
+  private account: Account;
+  private step: number;
+  private readonly onExchangeRequested = new LiteEvent<number>();
+  private readonly onExchangeStarted = new LiteEvent<void>();
+  private readonly onExchangeContentChanged = new LiteEvent<void>();
+  private readonly onRemoteReady = new LiteEvent<void>();
+  private readonly onExchangeLeft = new LiteEvent<void>();
+
+  constructor(account: Account) {
+    this.account = account;
+    this.objects = [];
+    this.remoteObjects = [];
+  }
 
   get weightPercent() {
     return this.currentWeight / this.maxWeight * 100;
@@ -27,24 +40,24 @@ export default class Exchange {
     return this.remoteCurrentWeight / this.remoteMaxWeight * 100;
   }
 
-  private account: Account;
-  private step: number;
+  public get ExchangeRequested() {
+    return this.onExchangeRequested.expose();
+  }
 
-  public get ExchangeRequested() { return this.onExchangeRequested.expose(); }
-  public get ExchangeStarted() { return this.onExchangeStarted.expose(); }
-  public get ExchangeContentChanged() { return this.onExchangeContentChanged.expose(); }
-  public get RemoteReady() { return this.onRemoteReady.expose(); }
-  public get ExchangeLeft() { return this.onExchangeLeft.expose(); }
-  private readonly onExchangeRequested = new LiteEvent<number>();
-  private readonly onExchangeStarted = new LiteEvent<void>();
-  private readonly onExchangeContentChanged = new LiteEvent<void>();
-  private readonly onRemoteReady = new LiteEvent<void>();
-  private readonly onExchangeLeft = new LiteEvent<void>();
+  public get ExchangeStarted() {
+    return this.onExchangeStarted.expose();
+  }
 
-  constructor(account: Account) {
-    this.account = account;
-    this.objects = new Array<ObjectEntry>();
-    this.remoteObjects = new Array<ObjectEntry>();
+  public get ExchangeContentChanged() {
+    return this.onExchangeContentChanged.expose();
+  }
+
+  public get RemoteReady() {
+    return this.onRemoteReady.expose();
+  }
+
+  public get ExchangeLeft() {
+    return this.onExchangeLeft.expose();
   }
 
   public startExchange(id: number): boolean {
@@ -174,7 +187,7 @@ export default class Exchange {
         this.account.game.character.inventory.kamas : quantity);
 
     this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeAddedKamas", quantity));
-    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity });
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity});
     return true;
   }
 
@@ -186,7 +199,7 @@ export default class Exchange {
     quantity = quantity <= 0 ? this.kamas : (quantity > this.kamas ? this.kamas : quantity);
 
     this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeRemovedKamas", quantity));
-    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", { quantity: this.kamas - quantity });
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity: this.kamas - quantity});
     return true;
   }
 

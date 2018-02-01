@@ -1,20 +1,39 @@
-import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
-import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
-import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
-import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
-import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
-import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
+import {BlockSpectatorScenarios} from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
+import {FightSpeeds} from "@/extensions/fights/configuration/enums/FightSpeeds";
+import {FightStartPlacement} from "@/extensions/fights/configuration/enums/FightStartPlacement";
+import {FightTactics} from "@/extensions/fights/configuration/enums/FightTactics";
+import {SpellResistances} from "@/extensions/fights/configuration/enums/SpellResistances";
+import {SpellTargets} from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
 import SpellEntry from "@/game/character/SpellEntry";
-import DataManager from "@/protocol/data";
-import Spells from "@/protocol/data/classes/Spells";
 import Account from "@account";
 import classnames from "classnames";
 import * as React from "react";
 import {
-  Alert, Button, Card, CardText,
-  CardTitle, Col, Container, Form, FormGroup, Input, Label, ListGroup, ListGroupItem, Modal,
-  ModalBody, ModalFooter, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, Table, TabPane,
+  Alert,
+  Button,
+  Card,
+  CardText,
+  CardTitle,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  ListGroup,
+  ListGroupItem,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  Table,
+  TabPane,
 } from "reactstrap";
 
 interface IFightsProps {
@@ -120,23 +139,27 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
           <Nav pills>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "0" })}
-                onClick={() => { this.toggle("0"); }}
+                className={classnames({active: this.state.activeTab === "0"})}
+                onClick={() => {
+                  this.toggle("0");
+                }}
               >
                 General
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                className={classnames({ active: this.state.activeTab === "1" })}
-                onClick={() => { this.toggle("1"); }}
+                className={classnames({active: this.state.activeTab === "1"})}
+                onClick={() => {
+                  this.toggle("1");
+                }}
               >
                 Sorts
               </NavLink>
             </NavItem>
           </Nav>
         </Row>
-        <hr />
+        <hr/>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="0">
             <Row>
@@ -146,9 +169,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="startPlacement">Start placement</Label>
                     <Input type="select" className="form-control-sm" id="startPlacement"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.startPlacement}
-                      onChange={(event) => this.startPlacementChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.startPlacement}
+                           onChange={(event) => this.startPlacementChanged(event)}>
                       <option value={FightStartPlacement.FAR_FROM_ENEMIES}>{FightStartPlacement[FightStartPlacement.FAR_FROM_ENEMIES]}</option>
                       <option value={FightStartPlacement.CLOSE_TO_ENEMIES}>{FightStartPlacement[FightStartPlacement.CLOSE_TO_ENEMIES]}</option>
                       <option value={FightStartPlacement.STAY_STILL}>{FightStartPlacement[FightStartPlacement.STAY_STILL]}</option>
@@ -157,9 +180,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="monsterToApproach">S'approcher vers le monstre</Label>
                     <Input type="number" className="form-control-sm" id="monsterToApproach"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.monsterToApproach}
-                      onChange={(event) => this.monsterToApproachChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.monsterToApproach}
+                           onChange={(event) => this.monsterToApproachChanged(event)}>
                     </Input>
                     <Alert color="warning">
                       Mettez l'ID du monstre que vous voulez approcher au début du combat, si le monstre n'est pas dans le combat l'option sera ignorée.
@@ -168,9 +191,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="spellToApproach">S'approcher pour lancer le sort</Label>
                     <Input type="number" className="form-control-sm" id="spellToApproach"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.spellToApproach}
-                      onChange={(event) => this.spellToApproachChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.spellToApproach}
+                           onChange={(event) => this.spellToApproachChanged(event)}>
                     </Input>
                     <Alert color="warning">
                       Le personnage essayera de s'approcher pour lancer le sort choisit. S'il ne peut pas il se placera normalement.
@@ -179,9 +202,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="blockSpectatorScenario">Bloquer le mode spectateur</Label>
                     <Input type="select" className="form-control-sm" id="blockSpectatorScenario"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.blockSpectatorScenario}
-                      onChange={(event) => this.blockSpectatorScenarioChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.blockSpectatorScenario}
+                           onChange={(event) => this.blockSpectatorScenarioChanged(event)}>
                       <option value={BlockSpectatorScenarios.ALWAYS}>{BlockSpectatorScenarios[BlockSpectatorScenarios.ALWAYS]}</option>
                       <option value={BlockSpectatorScenarios.NEVER}>{BlockSpectatorScenarios[BlockSpectatorScenarios.NEVER]}</option>
                       <option value={BlockSpectatorScenarios.WHEN_SOMEONE_JOINS}>
@@ -192,9 +215,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                        disabled={this.state.characterConnected ? "" : "disabled"}
-                        checked={this.state.lockFight}
-                        onChange={(event) => this.lockFightChanged(event)} />
+                             disabled={this.state.characterConnected ? "" : "disabled"}
+                             checked={this.state.lockFight}
+                             onChange={(event) => this.lockFightChanged(event)}/>
                       Bloquer le combat
                     </Label>
                   </FormGroup>
@@ -206,9 +229,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="tactic">Tactique</Label>
                     <Input type="select" className="form-control-sm" id="tactic"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.tactic}
-                      onChange={(event) => this.tacticChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.tactic}
+                           onChange={(event) => this.tacticChanged(event)}>
                       <option value={FightTactics.AGGRESSIVE}>{FightTactics[FightTactics.AGGRESSIVE]}</option>
                       <option value={FightTactics.FUGITIVE}>{FightTactics[FightTactics.FUGITIVE]}</option>
                       <option value={FightTactics.PASSIVE}>{FightTactics[FightTactics.PASSIVE]}</option>
@@ -217,9 +240,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="fightSpeed">Vitesse des combats</Label>
                     <Input type="select" className="form-control-sm" id="fightSpeed"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.fightSpeed}
-                      onChange={(event) => this.fightSpeedChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.fightSpeed}
+                           onChange={(event) => this.fightSpeedChanged(event)}>
                       <option value={FightSpeeds.SUICIDAL}>{FightSpeeds[FightSpeeds.SUICIDAL]}</option>
                       <option value={FightSpeeds.FAST}>{FightSpeeds[FightSpeeds.FAST]}</option>
                       <option value={FightSpeeds.NORMAL}>{FightSpeeds[FightSpeeds.NORMAL]}</option>
@@ -228,36 +251,36 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="maxCells">S'approcher si on est à plus de</Label>
                     <Input type="number" className="form-control-sm" id="maxCells"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.maxCells}
-                      onChange={(event) => this.maxCellsChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.maxCells}
+                           onChange={(event) => this.maxCellsChanged(event)}>
                     </Input>
                     <Label for="maxCells">cases de l'ennemi le plus proche.</Label>
                   </FormGroup>
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                        disabled={this.state.characterConnected ? "" : "disabled"}
-                        checked={this.state.approachWhenNoSpellCasted}
-                        onChange={(event) => this.approachWhenNoSpellCastedChanged(event)} />
+                             disabled={this.state.characterConnected ? "" : "disabled"}
+                             checked={this.state.approachWhenNoSpellCasted}
+                             onChange={(event) => this.approachWhenNoSpellCastedChanged(event)}/>
                       S'approcher si aucun sorts n'a été lancé
                     </Label>
                   </FormGroup>
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                        disabled={this.state.characterConnected ? "" : "disabled"}
-                        checked={this.state.baseApproachAllMonsters}
-                        onChange={(event) => this.baseApproachAllMonstersChanged(event)} />
+                             disabled={this.state.characterConnected ? "" : "disabled"}
+                             checked={this.state.baseApproachAllMonsters}
+                             onChange={(event) => this.baseApproachAllMonstersChanged(event)}/>
                       Se baser sur tous les monstres quand on veut s'approcher (Tactique aggressive)
                     </Label>
                   </FormGroup>
                   <FormGroup check>
                     <Label check>
                       <Input type="checkbox"
-                        disabled={this.state.characterConnected ? "" : "disabled"}
-                        checked={this.state.ignoreSummonedEnemies}
-                        onChange={(event) => this.ignoreSummonedEnemiesChanged(event)} />
+                             disabled={this.state.characterConnected ? "" : "disabled"}
+                             checked={this.state.ignoreSummonedEnemies}
+                             onChange={(event) => this.ignoreSummonedEnemiesChanged(event)}/>
                       Ignorer les invocations
                     </Label>
                   </FormGroup>
@@ -269,17 +292,17 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <FormGroup>
                     <Label for="regenStart">Minimum</Label>
                     <Input type="number" className="form-control-sm" id="regenStart"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.regenStart}
-                      onChange={(event) => this.regenStartChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.regenStart}
+                           onChange={(event) => this.regenStartChanged(event)}>
                     </Input>
                   </FormGroup>
                   <FormGroup>
                     <Label for="regenEnd">Maximum</Label>
                     <Input type="number" className="form-control-sm" id="regenEnd"
-                      disabled={this.state.characterConnected ? "" : "disabled"}
-                      value={this.state.regenEnd}
-                      onChange={(event) => this.regenEndChanged(event)}>
+                           disabled={this.state.characterConnected ? "" : "disabled"}
+                           value={this.state.regenEnd}
+                           onChange={(event) => this.regenEndChanged(event)}>
                     </Input>
                   </FormGroup>
                 </Card>
@@ -291,38 +314,38 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
               <Col>
                 <Table striped bordered size="sm" responsive>
                   <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Cible</th>
-                      <th>Tours</th>
-                      <th>Relances</th>
-                      <th>CAC</th>
-                      <th>AOE</th>
-                      <th>Actions</th>
-                    </tr>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Cible</th>
+                    <th>Tours</th>
+                    <th>Relances</th>
+                    <th>CAC</th>
+                    <th>AOE</th>
+                    <th>Actions</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {this.state.spells.map((s, index) => (
-                      <tr key={index}>
-                        <td>{s.spellId}</td>
-                        <td>{s.spellName}</td>
-                        <td>{SpellTargets[s.target]}</td>
-                        <td>{s.turns}</td>
-                        <td>{s.relaunchs}</td>
-                        <td>{s.handToHand ? "oui" : "non"}</td>
-                        <td>{s.aoe ? "oui" : "non"}</td>
-                        <td>
-                          <Button disabled={this.state.characterConnected ? false : true} size="sm" outline color="danger"
-                            onClick={() => {
-                              this.props.account.extensions.fights.config.spells = this.state.spells.filter((sp) => sp.spellId !== s.spellId);
-                              this.props.account.extensions.fights.config.save();
-                            }}>
-                            X
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                  {this.state.spells.map((s, index) => (
+                    <tr key={index}>
+                      <td>{s.spellId}</td>
+                      <td>{s.spellName}</td>
+                      <td>{SpellTargets[s.target]}</td>
+                      <td>{s.turns}</td>
+                      <td>{s.relaunchs}</td>
+                      <td>{s.handToHand ? "oui" : "non"}</td>
+                      <td>{s.aoe ? "oui" : "non"}</td>
+                      <td>
+                        <Button disabled={this.state.characterConnected ? false : true} size="sm" outline color="danger"
+                                onClick={() => {
+                                  this.props.account.extensions.fights.config.spells = this.state.spells.filter((sp) => sp.spellId !== s.spellId);
+                                  this.props.account.extensions.fights.config.save();
+                                }}>
+                          X
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </Table>
                 <Card body inverse color="dark" className="clearfix">
@@ -354,14 +377,14 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                         <FormGroup>
                           <Label for="spell">Spell</Label>
                           <Input disabled={this.state.characterConnected ? "" : "disabled"}
-                            id="spell"
-                            type="select" className="form-control-sm" value={this.state.addSpellForm.spellId}
-                            onChange={(event) => {
-                              const value = parseInt(event.target.value, 10);
-                              const addSpellForm = Object.assign({}, this.state.addSpellForm);
-                              addSpellForm.spellId = value;
-                              this.setState({ addSpellForm });
-                            }}>
+                                 id="spell"
+                                 type="select" className="form-control-sm" value={this.state.addSpellForm.spellId}
+                                 onChange={(event) => {
+                                   const value = parseInt(event.target.value, 10);
+                                   const addSpellForm = Object.assign({}, this.state.addSpellForm);
+                                   addSpellForm.spellId = value;
+                                   this.setState({addSpellForm});
+                                 }}>
                             {this.state.characterSpells.map((s, index) => (
                               <option key={index} value={s.id}>{s.name}</option>
                             ))}
@@ -370,14 +393,14 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                         <FormGroup>
                           <Label for="target">Target</Label>
                           <Input id="target"
-                            disabled={this.state.characterConnected ? "" : "disabled"}
-                            type="select" className="form-control-sm" value={this.state.addSpellForm.target}
-                            onChange={(event) => {
-                              const value = parseInt(event.target.value, 10);
-                              const addSpellForm = Object.assign({}, this.state.addSpellForm);
-                              addSpellForm.target = value;
-                              this.setState({ addSpellForm });
-                            }}>
+                                 disabled={this.state.characterConnected ? "" : "disabled"}
+                                 type="select" className="form-control-sm" value={this.state.addSpellForm.target}
+                                 onChange={(event) => {
+                                   const value = parseInt(event.target.value, 10);
+                                   const addSpellForm = Object.assign({}, this.state.addSpellForm);
+                                   addSpellForm.target = value;
+                                   this.setState({addSpellForm});
+                                 }}>
                             <option value={SpellTargets.ALLY}>{SpellTargets[SpellTargets.ALLY]}</option>
                             <option value={SpellTargets.SELF}>{SpellTargets[SpellTargets.SELF]}</option>
                             <option value={SpellTargets.ENEMY}>{SpellTargets[SpellTargets.ENEMY]}</option>
@@ -392,11 +415,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.turns}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value) { return; }
+                              if (!value) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.turns = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="relaunchs">Relaunchs</Label>
@@ -406,11 +431,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.relaunchs}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value) { return; }
+                              if (!value) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.relaunchs = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="targetLife">{"Target Life <="}</Label>
@@ -420,11 +447,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.targetHp}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value || value > 100 || value < 0) { return; }
+                              if (!value || value > 100 || value < 0) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.targetHp = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="selfLife">{"Self Life <="}</Label>
@@ -434,11 +463,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.characterHp}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value || value > 100 || value < 0) { return; }
+                              if (!value || value > 100 || value < 0) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.characterHp = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                       </Col>
                       <Col>
@@ -452,7 +483,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               const value = parseInt(event.target.value, 10);
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.resistance = value;
-                              this.setState({ addSpellForm });
+                              this.setState({addSpellForm});
                             }}>
                             <option value={SpellResistances.EARTH}>{SpellResistances[SpellResistances.EARTH]}</option>
                             <option value={SpellResistances.FIRE}>{SpellResistances[SpellResistances.FIRE]}</option>
@@ -469,11 +500,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.resistanceValue}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value || value > 100 || value < 0) { return; }
+                              if (!value || value > 100 || value < 0) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.resistanceValue = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="maxDistance">
@@ -485,11 +518,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             type="number" className="form-control-sm" value={this.state.addSpellForm.distanceToClosestMonster}
                             onChange={(event) => {
                               const value = parseInt(event.target.value, 10);
-                              if (!value) { return; }
+                              if (!value) {
+                                return;
+                              }
                               const addSpellForm = Object.assign({}, this.state.addSpellForm);
                               addSpellForm.distanceToClosestMonster = value;
-                              this.setState({ addSpellForm });
-                            }} />
+                              this.setState({addSpellForm});
+                            }}/>
                         </FormGroup>
                         <FormGroup check>
                           <Label check>
@@ -500,8 +535,8 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               onChange={(event) => {
                                 const addSpellForm = Object.assign({}, this.state.addSpellForm);
                                 addSpellForm.handToHand = event.target.checked;
-                                this.setState({ addSpellForm });
-                              }} />
+                                this.setState({addSpellForm});
+                              }}/>
                             Corps à corps
                           </Label>
                         </FormGroup>
@@ -514,8 +549,8 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               onChange={(event) => {
                                 const addSpellForm = Object.assign({}, this.state.addSpellForm);
                                 addSpellForm.aoe = event.target.checked;
-                                this.setState({ addSpellForm });
-                              }} />
+                                this.setState({addSpellForm});
+                              }}/>
                             Toucher le plus d'enemies possible
                           </Label>
                         </FormGroup>
@@ -528,8 +563,8 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               onChange={(event) => {
                                 const addSpellForm = Object.assign({}, this.state.addSpellForm);
                                 addSpellForm.carefulAoe = event.target.checked;
-                                this.setState({ addSpellForm });
-                              }} />
+                                this.setState({addSpellForm});
+                              }}/>
                             Ne pas se toucher
                           </Label>
                         </FormGroup>
@@ -542,12 +577,12 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               onChange={(event) => {
                                 const addSpellForm = Object.assign({}, this.state.addSpellForm);
                                 addSpellForm.avoidAllies = event.target.checked;
-                                this.setState({ addSpellForm });
-                              }} />
+                                this.setState({addSpellForm});
+                              }}/>
                             Ne pas toucher les alliés
                           </Label>
                         </FormGroup>
-                        <br />
+                        <br/>
                         <Button disabled={this.state.characterConnected ? false : true} size="sm" color="success">Ajouter</Button>
                       </Col>
                     </Row>
@@ -624,12 +659,12 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
   }
 
   private characterSelected() {
-    this.setState({ characterConnected: true });
+    this.setState({characterConnected: true});
   }
 
   private toggle(tab: string) {
     if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab });
+      this.setState({activeTab: tab});
     }
   }
 
@@ -673,68 +708,78 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
 
   private tacticChanged(e) {
     const value = parseInt(e.target.value, 10);
-    this.setState({ tactic: value });
+    this.setState({tactic: value});
     this.props.account.extensions.fights.config.tactic = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private fightSpeedChanged(e) {
     const value = parseInt(e.target.value, 10);
-    this.setState({ fightSpeed: value });
+    this.setState({fightSpeed: value});
     this.props.account.extensions.fights.config.fightSpeed = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private startPlacementChanged(e) {
     const value = parseInt(e.target.value, 10);
-    this.setState({ startPlacement: value });
+    this.setState({startPlacement: value});
     this.props.account.extensions.fights.config.startPlacement = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private blockSpectatorScenarioChanged(e) {
     const value = parseInt(e.target.value, 10);
-    this.setState({ blockSpectatorScenario: value });
+    this.setState({blockSpectatorScenario: value});
     this.props.account.extensions.fights.config.blockSpectatorScenario = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private maxCellsChanged(e) {
     const value = parseInt(e.target.value, 10);
-    if (!value) { return; }
-    this.setState({ maxCells: value });
+    if (!value) {
+      return;
+    }
+    this.setState({maxCells: value});
     this.props.account.extensions.fights.config.maxCells = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private monsterToApproachChanged(e) {
     const value = parseInt(e.target.value, 10);
-    if (!value) { return; }
-    this.setState({ monsterToApproach: value });
+    if (!value) {
+      return;
+    }
+    this.setState({monsterToApproach: value});
     this.props.account.extensions.fights.config.monsterToApproach = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private spellToApproachChanged(e) {
     const value = parseInt(e.target.value, 10);
-    if (!value) { return; }
-    this.setState({ spellToApproach: value });
+    if (!value) {
+      return;
+    }
+    this.setState({spellToApproach: value});
     this.props.account.extensions.fights.config.spellToApproach = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private regenStartChanged(e) {
     const value = parseInt(e.target.value, 10);
-    if (!value) { return; }
-    this.setState({ regenStart: value });
+    if (!value) {
+      return;
+    }
+    this.setState({regenStart: value});
     this.props.account.extensions.fights.config.regenStart = value;
     this.props.account.extensions.fights.config.save();
   }
 
   private regenEndChanged(e) {
     const value = parseInt(e.target.value, 10);
-    if (!value) { return; }
-    this.setState({ regenEnd: value });
+    if (!value) {
+      return;
+    }
+    this.setState({regenEnd: value});
     this.props.account.extensions.fights.config.regenEnd = value;
     this.props.account.extensions.fights.config.save();
   }
@@ -745,6 +790,6 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
     });
     const addSpellForm = Object.assign({}, this.state.addSpellForm);
     addSpellForm.spellId = this.state.characterSpells[0].id;
-    this.setState({ addSpellForm });
+    this.setState({addSpellForm});
   }
 }

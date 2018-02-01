@@ -1,4 +1,5 @@
 import Type from "./Type";
+
 export default class AbstractFightDispellableEffect extends Type {
 
   public uid: number;

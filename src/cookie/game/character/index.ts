@@ -196,7 +196,7 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessageFree("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeRequestMessage", {
       spellId: spell.id,
       spellLevel: spell.level + 1,
     });

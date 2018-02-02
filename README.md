@@ -14,7 +14,7 @@ You need **Yarn** in order to use this bot properly.
 ## Installation
 
 ```bash
-git clone git@github.com:yovanoc/cookietouch.git
+git clone https://github.com/yovanoc/cookietouch/
 cd cookietouch && yarn
 ```
 

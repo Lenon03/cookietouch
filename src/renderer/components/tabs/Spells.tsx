@@ -58,7 +58,7 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
                   <td>{s.level}</td>
                   <td>
                     <Button size="sm"
-                            disabled={this.state.spellsPoints > 0 ? false : true}
+                            disabled={this.state.spellsPoints > 0 ? this.state.spellsPoints < s.level : true}
                             color="dark"
                             onClick={() => this.props.account.game.character.levelUpSpell(s)}>Monter</Button>
                   </td>

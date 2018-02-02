@@ -78,9 +78,9 @@ export default class Fight implements IClearable {
   private readonly onTurnStarted = new LiteEvent<void>();
   private readonly onTurnEnded = new LiteEvent<void>();
   private readonly onFightersUpdated = new LiteEvent<void>();
-  private readonly onFightersStatsUpdated = new LiteEvent<void>();
+  private readonly onFighterStatsUpdated = new LiteEvent<void>();
   private readonly onPossiblePositionsReceived = new LiteEvent<void>();
-  private readonly onPlayerFighterMoving = new LiteEvent<number[]>();
+  private readonly onPlayedFighterMoving = new LiteEvent<number[]>();
 
   constructor(account: Account) {
     this.account = account;
@@ -191,16 +191,16 @@ export default class Fight implements IClearable {
     return this.onFightersUpdated.expose();
   }
 
-  public get FightersStatsUpdated() {
-    return this.onFightersStatsUpdated.expose();
+  public get FighterStatsUpdated() {
+    return this.onFighterStatsUpdated.expose();
   }
 
   public get PossiblePositionsReceived() {
     return this.onPossiblePositionsReceived.expose();
   }
 
-  public get PlayerFighterMoving() {
-    return this.onPlayerFighterMoving.expose();
+  public get PlayedFighterMoving() {
+    return this.onPlayedFighterMoving.expose();
   }
 
   public clear() {
@@ -551,7 +551,7 @@ export default class Fight implements IClearable {
       this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
       this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
     }
-    this.onFightersStatsUpdated.trigger();
+    this.onFighterStatsUpdated.trigger();
   }
 
   public async UpdateGameActionFightPointsVariationMessage(message: GameActionFightPointsVariationMessage) {
@@ -581,7 +581,7 @@ export default class Fight implements IClearable {
       f.UpdateGameMapMovementMessage(message);
 
       if (f.contextualId === this.playedFighter.contextualId) {
-        this.onPlayerFighterMoving.trigger(message.keyMovements);
+        this.onPlayedFighterMoving.trigger(message.keyMovements);
       } else {
         this.onFightersUpdated.trigger();
       }
@@ -611,7 +611,7 @@ export default class Fight implements IClearable {
       if (message.targetId === this.playedFighter.contextualId) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-        this.onFightersStatsUpdated.trigger();
+        this.onFighterStatsUpdated.trigger();
       }
     }
   }
@@ -625,7 +625,7 @@ export default class Fight implements IClearable {
       if (message.targetId === this.playedFighter.contextualId) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-        this.onFightersStatsUpdated.trigger();
+        this.onFighterStatsUpdated.trigger();
       }
     }
   }

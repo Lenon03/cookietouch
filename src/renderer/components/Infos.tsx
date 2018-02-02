@@ -54,6 +54,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
 
   public componentDidMount() {
     this.props.account.game.character.StatsUpdated.on(this.statsUpdated.bind(this));
+    this.props.account.game.fight.FighterStatsUpdated.on(this.fighterStatsUpdated.bind(this));
     this.props.account.StateChanged.on(this.stateChanged.bind(this));
     this.props.account.game.map.MapChanged.on(this.mapChanged.bind(this));
     this.props.account.game.character.inventory.InventoryUpdated.on(this.inventoryUpdated.bind(this));
@@ -62,6 +63,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
 
   public componentWillUnmount() {
     this.props.account.game.character.StatsUpdated.off(this.statsUpdated.bind(this));
+    this.props.account.game.fight.FighterStatsUpdated.off(this.fighterStatsUpdated.bind(this));
     this.props.account.StateChanged.off(this.stateChanged.bind(this));
     this.props.account.game.map.MapChanged.off(this.mapChanged.bind(this));
     this.props.account.game.character.inventory.InventoryUpdated.off(this.inventoryUpdated.bind(this));
@@ -224,6 +226,18 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
   }
 
   private statsUpdated() {
+    this.setState({
+      energyPoints: this.props.account.game.character.stats.energyPoints,
+      energyPointsMax: this.props.account.game.character.stats.maxEnergyPoints,
+      experience: this.props.account.game.character.stats.experience,
+      experienceMax: this.props.account.game.character.stats.experienceNextLevelFloor,
+      experiencePercent: this.props.account.game.character.stats.experiencePercent,
+      lifePoints: this.props.account.game.character.stats.lifePoints,
+      lifePointsMax: this.props.account.game.character.stats.maxLifePoints,
+    });
+  }
+
+  private fighterStatsUpdated() {
     this.setState({
       energyPoints: this.props.account.game.character.stats.energyPoints,
       energyPointsMax: this.props.account.game.character.stats.maxEnergyPoints,

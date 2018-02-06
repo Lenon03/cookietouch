@@ -160,7 +160,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
             <FontAwesomeIcon className="float-left" size="lg" icon={faStar}/>
             <Progress style={{
               marginLeft: "20px",
-            }} id="xpProgress" color="info" value={this.state.experiencePercent}>
+            }} id="xpProgress" color="info" value={this.state.experiencePercent} max={this.state.experiencePercent !== -1 ? 100 : -1}>
               {(this.state.experiencePercent !== -1 ? this.state.experiencePercent : 0).toFixed(2)}%
             </Progress>
             <UncontrolledTooltip placement="top" target="xpProgress">

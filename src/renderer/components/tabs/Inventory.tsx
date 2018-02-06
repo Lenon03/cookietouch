@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import {CharacterInventoryPositionEnum} from "@/protocol/enums/CharacterInventoryPositionEnum";
 import Account from "@account";
@@ -78,7 +79,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   this.toggle("0");
                 }}
               >
-                Equipments
+                {LanguageManager.trans("equipments")}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -88,7 +89,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   this.toggle("1");
                 }}
               >
-                Consumables
+                {LanguageManager.trans("consumables")}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -108,7 +109,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   this.toggle("3");
                 }}
               >
-                Quest Objects
+                {LanguageManager.trans("questobjects")}
               </NavLink>
             </NavItem>
           </Nav>
@@ -123,8 +124,8 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tr>
                     <th></th>
                     <th>GID</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("quantity")}</th>
                     <th>Position</th>
                     <th>Actions</th>
                   </tr>
@@ -139,13 +140,14 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <td>{CharacterInventoryPositionEnum[c.position]}</td>
                       <td>
                         <Button size="sm" color="dark" onClick={() => this.equipUnEquipItem(c)}>
-                          {c.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED ? "Déséquiper" : "Equiper"}
+                          {c.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+                            ? LanguageManager.trans("unequip") : LanguageManager.trans("equip")}
                         </Button>
                         <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                          Jeter
+                          {LanguageManager.trans("drop")}
                         </Button>
                         <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                          Supprimer
+                          {LanguageManager.trans("delete")}
                         </Button>
                       </td>
                     </tr>
@@ -159,8 +161,8 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tr>
                     <th></th>
                     <th>GID</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("quantity")}</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -173,13 +175,13 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <td>{c.quantity}</td>
                       <td>
                         <Button size="sm" color="dark" onClick={() => this.useObject(c)}>
-                          Use
+                          {LanguageManager.trans("use")}
                         </Button>
                         <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                          Jeter
+                          {LanguageManager.trans("drop")}
                         </Button>
                         <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                          Supprimer
+                          {LanguageManager.trans("delete")}
                         </Button>
                       </td>
                     </tr>
@@ -193,8 +195,8 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tr>
                     <th></th>
                     <th>GID</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("quantity")}</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -207,10 +209,10 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                       <td>{c.quantity}</td>
                       <td>
                         <Button size="sm" color="dark" onClick={() => this.dropItem(c)}>
-                          Jeter
+                          {LanguageManager.trans("drop")}
                         </Button>
                         <Button size="sm" color="danger" onClick={() => this.deleteItem(c)}>
-                          Supprimer
+                          {LanguageManager.trans("delete")}
                         </Button>
                       </td>
                     </tr>
@@ -224,8 +226,8 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
                   <tr>
                     <th></th>
                     <th>GID</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("quantity")}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -272,7 +274,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
               this.setState({quantity: -1, object: null});
               this.toggleModal();
             }}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]}</Button>
-            <Button color="danger" onClick={() => this.toggleModal()}>Cancel</Button>
+            <Button color="danger" onClick={() => this.toggleModal()}>{LanguageManager.trans("cancel")}</Button>
           </ModalFooter>
         </Modal>
       </Container>

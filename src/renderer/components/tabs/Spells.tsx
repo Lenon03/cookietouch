@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
 import * as React from "react";
@@ -38,15 +39,15 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
       <Container>
         <Row>
           <Col>
-            <h4>You have {this.state.spellsPoints} points to level up your spells.</h4>
+            <h4>{LanguageManager.trans("spellsPoints", this.state.spellsPoints)}</h4>
             <Table striped bordered size="sm" responsive>
               <thead>
               <tr>
                 <th></th>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Level</th>
-                <th>Monter</th>
+                <th>{LanguageManager.trans("name")}</th>
+                <th>{LanguageManager.trans("level")}</th>
+                <th>{LanguageManager.trans("up")}</th>
               </tr>
               </thead>
               <tbody>

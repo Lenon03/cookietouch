@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import JobEntry from "@/game/character/jobs/JobEntry";
 import Account from "@account";
 import * as React from "react";
@@ -38,8 +39,8 @@ export default class Jobs extends React.Component<IJobsProps, IJobsStates> {
               <tr>
                 <th></th>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Level</th>
+                <th>{LanguageManager.trans("name")}</th>
+                <th>{LanguageManager.trans("level")}</th>
                 <th>Experience</th>
               </tr>
               </thead>

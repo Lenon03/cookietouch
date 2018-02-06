@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import {BlockSpectatorScenarios} from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
 import {FightSpeeds} from "@/extensions/fights/configuration/enums/FightSpeeds";
 import {FightStartPlacement} from "@/extensions/fights/configuration/enums/FightStartPlacement";
@@ -154,7 +155,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   this.toggle("1");
                 }}
               >
-                Sorts
+                {LanguageManager.trans("spells")}
               </NavLink>
             </NavItem>
           </Nav>
@@ -178,29 +179,29 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                     </Input>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="monsterToApproach">S'approcher vers le monstre</Label>
+                    <Label for="monsterToApproach">{LanguageManager.trans("approachMonster")}</Label>
                     <Input type="number" className="form-control-sm" id="monsterToApproach"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.monsterToApproach}
                            onChange={(event) => this.monsterToApproachChanged(event)}>
                     </Input>
                     <Alert color="warning">
-                      Mettez l'ID du monstre que vous voulez approcher au début du combat, si le monstre n'est pas dans le combat l'option sera ignorée.
+                      {LanguageManager.trans("monsterToApproachInfo")}
                     </Alert>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="spellToApproach">S'approcher pour lancer le sort</Label>
+                    <Label for="spellToApproach">{LanguageManager.trans("spellToApproach")}</Label>
                     <Input type="number" className="form-control-sm" id="spellToApproach"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.spellToApproach}
                            onChange={(event) => this.spellToApproachChanged(event)}>
                     </Input>
                     <Alert color="warning">
-                      Le personnage essayera de s'approcher pour lancer le sort choisit. S'il ne peut pas il se placera normalement.
+                      {LanguageManager.trans("spellToApproachInfo")}
                     </Alert>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="blockSpectatorScenario">Bloquer le mode spectateur</Label>
+                    <Label for="blockSpectatorScenario">{LanguageManager.trans("blockSpectator")}</Label>
                     <Input type="select" className="form-control-sm" id="blockSpectatorScenario"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.blockSpectatorScenario}
@@ -218,16 +219,16 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                              disabled={this.state.characterConnected ? "" : "disabled"}
                              checked={this.state.lockFight}
                              onChange={(event) => this.lockFightChanged(event)}/>
-                      Bloquer le combat
+                      {LanguageManager.trans("lockFight")}
                     </Label>
                   </FormGroup>
                 </Card>
               </Col>
               <Col>
                 <Card body inverse color="dark">
-                  <CardTitle>Durant le combat</CardTitle>
+                  <CardTitle>{LanguageManager.trans("duringFights")}</CardTitle>
                   <FormGroup>
-                    <Label for="tactic">Tactique</Label>
+                    <Label for="tactic">{LanguageManager.trans("tactic")}</Label>
                     <Input type="select" className="form-control-sm" id="tactic"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.tactic}
@@ -238,7 +239,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                     </Input>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="fightSpeed">Vitesse des combats</Label>
+                    <Label for="fightSpeed">{LanguageManager.trans("fightSpeed")}</Label>
                     <Input type="select" className="form-control-sm" id="fightSpeed"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.fightSpeed}
@@ -249,13 +250,13 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                     </Input>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="maxCells">S'approcher si on est à plus de</Label>
+                    <Label for="maxCells">{LanguageManager.trans("maxCells")}</Label>
                     <Input type="number" className="form-control-sm" id="maxCells"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.maxCells}
                            onChange={(event) => this.maxCellsChanged(event)}>
                     </Input>
-                    <Label for="maxCells">cases de l'ennemi le plus proche.</Label>
+                    <Label for="maxCells">{LanguageManager.trans("maxCells2")}</Label>
                   </FormGroup>
                   <FormGroup check>
                     <Label check>
@@ -263,7 +264,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                              disabled={this.state.characterConnected ? "" : "disabled"}
                              checked={this.state.approachWhenNoSpellCasted}
                              onChange={(event) => this.approachWhenNoSpellCastedChanged(event)}/>
-                      S'approcher si aucun sorts n'a été lancé
+                      {LanguageManager.trans("approachWhenNoSpellCasted")}
                     </Label>
                   </FormGroup>
                   <FormGroup check>
@@ -272,7 +273,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                              disabled={this.state.characterConnected ? "" : "disabled"}
                              checked={this.state.baseApproachAllMonsters}
                              onChange={(event) => this.baseApproachAllMonstersChanged(event)}/>
-                      Se baser sur tous les monstres quand on veut s'approcher (Tactique aggressive)
+                      {LanguageManager.trans("baseApproachAllMonsters")}
                     </Label>
                   </FormGroup>
                   <FormGroup check>
@@ -281,7 +282,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                              disabled={this.state.characterConnected ? "" : "disabled"}
                              checked={this.state.ignoreSummonedEnemies}
                              onChange={(event) => this.ignoreSummonedEnemiesChanged(event)}/>
-                      Ignorer les invocations
+                      {LanguageManager.trans("ignoreSummonedEnemies")}
                     </Label>
                   </FormGroup>
                 </Card>
@@ -316,10 +317,10 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Cible</th>
-                    <th>Tours</th>
-                    <th>Relances</th>
+                    <th>{LanguageManager.trans("name")}</th>
+                    <th>{LanguageManager.trans("target")}</th>
+                    <th>{LanguageManager.trans("turns")}</th>
+                    <th>{LanguageManager.trans("relaunchs")}</th>
                     <th>CAC</th>
                     <th>AOE</th>
                     <th>Actions</th>
@@ -333,8 +334,8 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                       <td>{SpellTargets[s.target]}</td>
                       <td>{s.turns}</td>
                       <td>{s.relaunchs}</td>
-                      <td>{s.handToHand ? "oui" : "non"}</td>
-                      <td>{s.aoe ? "oui" : "non"}</td>
+                      <td>{s.handToHand ? LanguageManager.trans("yes") : LanguageManager.trans("no")}</td>
+                      <td>{s.aoe ? LanguageManager.trans("yes") : LanguageManager.trans("no")}</td>
                       <td>
                         <Button disabled={this.state.characterConnected ? false : true} size="sm" outline color="danger"
                                 onClick={() => {
@@ -350,7 +351,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                 </Table>
                 <Card body inverse color="dark" className="clearfix">
                   <CardTitle>
-                    <span className="float-left">Ajouter un sort</span>
+                    <span className="float-left">{LanguageManager.trans("addSpell")}</span>
                     <Button size="sm" color="info" className="float-right" onClick={() => {
                       this.toggleModalInfos();
                     }}>
@@ -375,7 +376,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                     <Row>
                       <Col>
                         <FormGroup>
-                          <Label for="spell">Spell</Label>
+                          <Label for="spell">{LanguageManager.trans("spell")}</Label>
                           <Input disabled={this.state.characterConnected ? "" : "disabled"}
                                  id="spell"
                                  type="select" className="form-control-sm" value={this.state.addSpellForm.spellId}
@@ -391,7 +392,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                           </Input>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="target">Target</Label>
+                          <Label for="target">{LanguageManager.trans("target")}</Label>
                           <Input id="target"
                                  disabled={this.state.characterConnected ? "" : "disabled"}
                                  type="select" className="form-control-sm" value={this.state.addSpellForm.target}
@@ -408,7 +409,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                           </Input>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="turns">Turns</Label>
+                          <Label for="turns">{LanguageManager.trans("turns")}</Label>
                           <Input
                             id="turns"
                             disabled={this.state.characterConnected ? "" : "disabled"}
@@ -424,7 +425,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             }}/>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="relaunchs">Relaunchs</Label>
+                          <Label for="relaunchs">{LanguageManager.trans("relaunchs")}</Label>
                           <Input
                             id="relaunchs"
                             disabled={this.state.characterConnected ? "" : "disabled"}
@@ -440,7 +441,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             }}/>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="targetLife">{"Target Life <="}</Label>
+                          <Label for="targetLife">{LanguageManager.trans("targetLife")} {"<="}</Label>
                           <Input
                             id="targetLife"
                             disabled={this.state.characterConnected ? "" : "disabled"}
@@ -456,7 +457,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                             }}/>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="selfLife">{"Self Life <="}</Label>
+                          <Label for="selfLife">{LanguageManager.trans("selfLife")} {"<="}</Label>
                           <Input
                             id="selfLife"
                             disabled={this.state.characterConnected ? "" : "disabled"}
@@ -493,7 +494,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                           </Input>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="targetResistance">{"de la cible <="}</Label>
+                          <Label for="targetResistance">{LanguageManager.trans("targetResistance")} {"<="}</Label>
                           <Input
                             id="targetResistance"
                             disabled={this.state.characterConnected ? "" : "disabled"}
@@ -510,7 +511,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                         </FormGroup>
                         <FormGroup>
                           <Label for="maxDistance">
-                            Distance entre nous et la cible la plus proche {"<="}
+                            {LanguageManager.trans("maxDistance")} {"<="}
                           </Label>
                           <Input
                             id="maxDistance"
@@ -537,7 +538,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                                 addSpellForm.handToHand = event.target.checked;
                                 this.setState({addSpellForm});
                               }}/>
-                            Corps à corps
+                            {LanguageManager.trans("melee")}
                           </Label>
                         </FormGroup>
                         <FormGroup check>
@@ -551,7 +552,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                                 addSpellForm.aoe = event.target.checked;
                                 this.setState({addSpellForm});
                               }}/>
-                            Toucher le plus d'enemies possible
+                            {LanguageManager.trans("hitManyPossible")}
                           </Label>
                         </FormGroup>
                         <FormGroup check>
@@ -565,7 +566,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                                 addSpellForm.carefulAoe = event.target.checked;
                                 this.setState({addSpellForm});
                               }}/>
-                            Ne pas se toucher
+                            {LanguageManager.trans("dontTouchSelf")}
                           </Label>
                         </FormGroup>
                         <FormGroup check>
@@ -579,11 +580,11 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                                 addSpellForm.avoidAllies = event.target.checked;
                                 this.setState({addSpellForm});
                               }}/>
-                            Ne pas toucher les alliés
+                            {LanguageManager.trans("dontTouchAllies")}
                           </Label>
                         </FormGroup>
                         <br/>
-                        <Button disabled={this.state.characterConnected ? false : true} size="sm" color="success">Ajouter</Button>
+                        <Button disabled={this.state.characterConnected ? false : true} size="sm" color="success">{LanguageManager.trans("add")}</Button>
                       </Col>
                     </Row>
                   </Form>
@@ -597,42 +598,42 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
           <ModalBody>
             <ListGroup>
               <ListGroupItem>
-                Sort: Le sort à lancer
+                {LanguageManager.trans("spellInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Cible: Ennemi, allié, sois-même ou case vide
+                {LanguageManager.trans("targetInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Tours: Le nombre de tours à attendre après chaque relance (1 = lancer tous les tours)
+                {LanguageManager.trans("turnsInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Relances: Le nombre de relances par tour
+                {LanguageManager.trans("castPerTurnInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Vie de la cible: Lance le sort sur la cible seulement si ses points de vie sont inferieurs ou égaux à ce nombre, en pourcentage
+                {LanguageManager.trans("targetLifeInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Vie du personnage: Lance le sort sur la cible seulement si nos points de vie sont inferieurs ou égaux à ce nombre, en pourcentage
+                {LanguageManager.trans("characterLifeInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Résistance: Lance le sort uniquement si la resistance choisie de la cible est inférieure ou égale à la valeur (en pourcentage)
+                {LanguageManager.trans("resistanceInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Corps à corps: Lance le sort uniquement si notre personnage est en corps à corps avec un ennemi (ou plusieurs)
+                {LanguageManager.trans("meleeInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Toucher le plus d'ennemis possible: Si ce sort est une attaque en zone, cocher cette case permet donc de toucher le plus d'ennemis possible
+                {LanguageManager.trans("hitManyPossibleInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Ne pas se toucher: Pour tous sorts de zones, indique si on permet de toucher son personnage ou pas
+                {LanguageManager.trans("dontTouchSelfInfo")}
               </ListGroupItem>
               <ListGroupItem>
-                Ne pas toucher ses alliés: Pour tous sorts de zones, indique si on permet de toucher nos alliés ou pas
+                {LanguageManager.trans("dontTouchAlliesInfo")}
               </ListGroupItem>
             </ListGroup>
           </ModalBody>
           <ModalFooter>
-            <Button size="sm" color="dark" onClick={() => this.toggleModalInfos()}>Close</Button>
+            <Button size="sm" color="dark" onClick={() => this.toggleModalInfos()}>{LanguageManager.trans("close")}</Button>
           </ModalFooter>
         </Modal>
       </Container>

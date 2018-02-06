@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import {MapChangeDirections} from "@/game/managers/movements/MapChangeDirections";
 import {MovementRequestResults} from "@/game/managers/movements/MovementRequestResults";
 import Account from "@account";
@@ -36,19 +37,19 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
       <Container>
         <Row>
           <Col>
-            <Button size="sm" color="danger" onClick={() => this.attack()}>Attack</Button>
+            <Button size="sm" color="danger" onClick={() => this.attack()}>{LanguageManager.trans("attack")}</Button>
             <Button size="sm"
                     color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Top)}>Top</Button>
+                    onClick={() => this.changeMap(MapChangeDirections.Top)}>{LanguageManager.trans("top")}</Button>
             <Button size="sm"
                     color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Bottom)}>Bottom</Button>
+                    onClick={() => this.changeMap(MapChangeDirections.Bottom)}>{LanguageManager.trans("bottom")}</Button>
             <Button size="sm"
                     color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Left)}>Left</Button>
+                    onClick={() => this.changeMap(MapChangeDirections.Left)}>{LanguageManager.trans("left")}</Button>
             <Button size="sm"
                     color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Right)}>Right</Button>
+                    onClick={() => this.changeMap(MapChangeDirections.Right)}>{LanguageManager.trans("right")}</Button>
           </Col>
         </Row>
       </Container>

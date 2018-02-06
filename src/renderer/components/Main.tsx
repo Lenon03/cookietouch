@@ -1,5 +1,6 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import IEntity from "@/utils/IEntity";
 import Account from "@account";
 import classnames from "classnames";
@@ -188,23 +189,23 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                       });
                     }}>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                        <Label for="username" className="mr-sm-2">Nom de compte</Label>
+                        <Label for="username" className="mr-sm-2">{LanguageManager.trans("username")}</Label>
                         <Input type="text" name="text" id="username"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                        <Label for="examplePassword" className="mr-sm-2">Mot de passe</Label>
+                        <Label for="examplePassword" className="mr-sm-2">{LanguageManager.trans("password")}</Label>
                         <Input type="password" name="password" id="examplePassword"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                        <Label for="server" className="mr-sm-2">Serveur</Label>
+                        <Label for="server" className="mr-sm-2">{LanguageManager.trans("server")}</Label>
                         <Input type="text" name="text" id="server"/>
                       </FormGroup>
                       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                        <Label for="character" className="mr-sm-2">Personnage</Label>
+                        <Label for="character" className="mr-sm-2">{LanguageManager.trans("character")}</Label>
                         <Input type="text" name="text" id="character"/>
                       </FormGroup>
                       <br/>
-                      <Button size="sm">Ajouter</Button>
+                      <Button size="sm">{LanguageManager.trans("add")}</Button>
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">
@@ -215,7 +216,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             </Row>
           </ModalBody>
           <ModalFooter>
-            <Button size="sm" color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            <Button size="sm" color="secondary" onClick={() => this.toggleModal()}>{LanguageManager.trans("cancel")}</Button>
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.modalConfig} size="lg" toggle={() => this.toggleModalConfig()}>
@@ -224,7 +225,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
             <ConfigurationG/>
           </ModalBody>
           <ModalFooter>
-            <Button size="sm" color="dark" onClick={() => this.toggleModalConfig()}>Close</Button>
+            <Button size="sm" color="dark" onClick={() => this.toggleModalConfig()}>{LanguageManager.trans("close")}</Button>
           </ModalFooter>
         </Modal>
         <Row>
@@ -268,7 +269,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                           this.toggle("1");
                         }}
                       >
-                        Character
+                        {LanguageManager.trans("character")}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -278,7 +279,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                           this.toggle("2");
                         }}
                       >
-                        Inventory
+                        {LanguageManager.trans("inventory")}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -298,7 +299,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                           this.toggle("4");
                         }}
                       >
-                        Combat
+                        {LanguageManager.trans("fight")}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -318,7 +319,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                           this.toggle("6");
                         }}
                       >
-                        HDV
+                        {LanguageManager.trans("bid")}
                       </NavLink>
                     </NavItem>
                     <NavItem>

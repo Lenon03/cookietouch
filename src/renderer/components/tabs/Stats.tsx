@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import {BoostableStats} from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
@@ -72,7 +73,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
             <Row>
               <Col>
                 <h4>{this.props.account.game.character.name}</h4>
-                <h5>Level {this.state.level}</h5>
+                <h5>{LanguageManager.trans("level")} {this.state.level}</h5>
               </Col>
             </Row>
             <img src={this.state.skinUrl} alt="personnage"/>
@@ -88,7 +89,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/heart.png")} alt="coeur"/>
               </div>
               <div className="stats-label">
-                Points de vie
+                {LanguageManager.trans("healthPoints")}
                 <span className="float-right">
                   {this.state.lifePoints} / {this.state.maxLifePoints}
                 </span>
@@ -100,7 +101,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/starYellow.png")} alt="etoile_jaune"/>
               </div>
               <div className="stats-label">
-                Points d'action
+                {LanguageManager.trans("actionPoints")}
                 <span className="float-right">{this.state.actionPoints}</span>
               </div>
             </div>
@@ -110,7 +111,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/movement.png")} alt="mouvement"/>
               </div>
               <div className="stats-label">
-                Points de mouvement
+                {LanguageManager.trans("movementPoints")}
                 <span className="float-right">{this.state.movementPoints}</span>
               </div>
             </div>
@@ -130,7 +131,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/prospecting.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Prospection
+                {LanguageManager.trans("prospecting")}
                 <span className="float-right">{this.state.prospecting}</span>
               </div>
             </div>
@@ -140,7 +141,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/range.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Portée
+                {LanguageManager.trans("range")}
                 <span className="float-right">{this.state.range}</span>
               </div>
             </div>
@@ -150,7 +151,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/summon.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Invocations
+                {LanguageManager.trans("summons")}
                 <span className="float-right">{this.state.summonableCreaturesBoost}</span>
               </div>
             </div>
@@ -167,7 +168,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/vitality.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Vitalité
+                {LanguageManager.trans("vitality")}
                 <span className="float-right">
                   {this.state.vitality}
                   <Button size="sm"
@@ -184,7 +185,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/wisdom.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Sagesse
+                {LanguageManager.trans("wisdom")}
                 <span className="float-right">
                   {this.state.wisdom}
                   <Button size="sm"
@@ -201,7 +202,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/strength.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Force
+                {LanguageManager.trans("strength")}
                 <span className="float-right">
                   {this.state.strength}
                   <Button size="sm"
@@ -218,7 +219,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/intelligence.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Intelligence
+                {LanguageManager.trans("intelligence")}
                 <span className="float-right">
                   {this.state.intelligence}
                   <Button size="sm"
@@ -235,7 +236,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/chance.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Chance
+                {LanguageManager.trans("chance")}
                 <span className="float-right">
                   {this.state.chance}
                   <Button size="sm"
@@ -252,7 +253,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsStates> {
                 <img src={require("../../img/agility.png")} alt=""/>
               </div>
               <div className="stats-label">
-                Agilité
+                {LanguageManager.trans("agility")}
                 <span className="float-right">
                   {this.state.agility}
                   <Button size="sm"

@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import {ChatActivableChannelsEnum} from "@/protocol/enums/ChatActivableChannelsEnum";
 import Account from "@account";
@@ -59,7 +60,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                   this.props.account.extensions.flood.start();
                 }
               }}>
-              {this.state.running ? "Stop" : "Start"}
+              {this.state.running ? LanguageManager.trans("pause") : LanguageManager.trans("start")}
             </Button>
           </Col>
         </Row>
@@ -69,8 +70,8 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
             <Table striped bordered size="sm" responsive>
               <thead>
               <tr>
-                <th>Content</th>
-                <th>Channel</th>
+                <th>{LanguageManager.trans("content")}</th>
+                <th>{LanguageManager.trans("channel")}</th>
                 <th>OnPlayerJoined</th>
                 <th>OnPlayerLeft</th>
                 <th>Actions</th>
@@ -85,7 +86,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                   <td>{s.onPlayerLeft ? "true" : "false"}</td>
                   <td>
                     <Button size="sm" color="danger" onClick={() => this.deleteSentence(s)}>
-                      Delete
+                      {LanguageManager.trans("delete")}
                     </Button>
                   </td>
                 </tr>
@@ -97,7 +98,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
         <Row>
           <Col xs="2">
             <FormGroup>
-              <Label for="generalChannelInterval">General Channel Interval</Label>
+              <Label for="generalChannelInterval">{LanguageManager.trans("generalChannelInterval")}</Label>
               <Input
                 id="generalChannelInterval"
                 disabled={this.state.characterConnected ? "" : "disabled"}
@@ -112,7 +113,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 }}/>
             </FormGroup>
             <FormGroup>
-              <Label for="seekChannelInterval">Seek Channel Interval</Label>
+              <Label for="seekChannelInterval">{LanguageManager.trans("seekChannelInterval")}</Label>
               <Input
                 id="seekChannelInterval"
                 disabled={this.state.characterConnected ? "" : "disabled"}
@@ -127,7 +128,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 }}/>
             </FormGroup>
             <FormGroup>
-              <Label for="salesChannelInterval">Sales Channel Interval</Label>
+              <Label for="salesChannelInterval">{LanguageManager.trans("salesChannelInterval")}</Label>
               <Input
                 id="salesChannelInterval"
                 disabled={this.state.characterConnected ? "" : "disabled"}
@@ -157,11 +158,11 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
               this.props.account.extensions.flood.config.save();
             }}>
               <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Label for="content" className="mr-sm-2">Content</Label>
+                <Label for="content" className="mr-sm-2">{LanguageManager.trans("content")}</Label>
                 <Input type="text" name="content" id="content"/>
               </FormGroup>
               <FormGroup>
-                <Label for="channel">Channel</Label>
+                <Label for="channel">{LanguageManager.trans("channel")}</Label>
                 <Input
                   id="channel"
                   type="select" className="form-control-sm">
@@ -186,7 +187,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 </Label>
               </FormGroup>
               <br/>
-              <Button size="sm">Ajouter</Button>
+              <Button size="sm">{LanguageManager.trans("add")}</Button>
             </Form>
           </Col>
         </Row>
@@ -195,13 +196,13 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
             <Card body inverse color="dark">
               <CardTitle>Infos</CardTitle>
               <CardText>
-                Sur chaque channel, seulement 1 phrase est choisie aléatoirement pour être envoyée.<br/>
-                Vous pouvez utiliser ces attributs pour tous les canaux:<br/>
-                %nbr% : Insère un nombre aléatoire.<br/>
-                %smiley% : Insère un smiley aléatoire.<br/>
-                Vous pouvez utiliser ces attributs qu'en privé:<br/>
-                %name% : Insère le nom du joueur.<br/>
-                %level% : Insère le niveau du joueur.<br/>
+                {LanguageManager.trans("infoFlood1")}<br/>
+                {LanguageManager.trans("infoFlood2")}<br/>
+                {LanguageManager.trans("infoFloodnbr")}<br/>
+                {LanguageManager.trans("infoFloodsmiley")}<br/>
+                {LanguageManager.trans("infoFlood3")}<br/>
+                {LanguageManager.trans("infoFloodname")}<br/>
+                {LanguageManager.trans("infoFloodlevel")}<br/>
               </CardText>
             </Card>
           </Col>

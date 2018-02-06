@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import Account from "@account";
 import * as React from "react";
@@ -58,31 +59,31 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
       <Container>
         <Row>
           <Col xs="4">
-            Achievements Finished: {this.state.achievementsFinished}
+            {LanguageManager.trans("achievementsFinished")} {this.state.achievementsFinished}
             <br/>
-            Average fight time: {this.state.averageFightTime}
+            {LanguageManager.trans("averageFightTime")} {this.state.averageFightTime}
             <br/>
-            Experience gained: {this.state.experienceGained}
+            {LanguageManager.trans("experienceGained")} {this.state.experienceGained}
             <br/>
-            Fights Count: {this.state.fightsCount}
+            {LanguageManager.trans("fightsCount")} {this.state.fightsCount}
             <br/>
-            Fights Lost: {this.state.fightsLost}
+            {LanguageManager.trans("fightsLost")} {this.state.fightsLost}
             <br/>
-            Fights Won: {this.state.fightsWon}
+            {LanguageManager.trans("fightsWon")} {this.state.fightsWon}
             <br/>
-            Gathers Count: {this.state.gathersCount}
+            {LanguageManager.trans("gathersCount")} {this.state.gathersCount}
             <br/>
-            Kamas Gained: {this.state.kamasGained}
+            {LanguageManager.trans("kamasGained") + ":"} {this.state.kamasGained}
             <br/>
-            Levels Gained: {this.state.levelsGained}
+            {LanguageManager.trans("levelsGained")} {this.state.levelsGained}
             <br/>
-            Total fights time: {this.state.totalFightsTime}
+            {LanguageManager.trans("totalFightsTime")} {this.state.totalFightsTime}
             <br/>
-            Total gathers time: {this.state.totalGathersTime}
+            {LanguageManager.trans("totalGathersTime")} {this.state.totalGathersTime}
           </Col>
           <Col>
-            {this.state.objectsObtainedInFights.length} objects obtained in fights<br/>
-            {this.state.objectsObtainedInGathers.length} objects obtained in gathers
+            {this.state.objectsObtainedInFights.length} {LanguageManager.trans("objectsObtainedInFights")}<br/>
+            {this.state.objectsObtainedInGathers.length} {LanguageManager.trans("objectsObtainedInGathers")}
           </Col>
         </Row>
       </Container>

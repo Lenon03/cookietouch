@@ -131,12 +131,12 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                          const value = parseInt(event.target.value, 10);
                          this.setState({spellLevel: value});
                        }}>
-                  <option value={SpellLevels.ONE}>{SpellLevels[SpellLevels.ONE]}</option>
-                  <option value={SpellLevels.TWO}>{SpellLevels[SpellLevels.TWO]}</option>
-                  <option value={SpellLevels.THREE}>{SpellLevels[SpellLevels.THREE]}</option>
-                  <option value={SpellLevels.FOUR}>{SpellLevels[SpellLevels.FOUR]}</option>
-                  <option value={SpellLevels.FIVE}>{SpellLevels[SpellLevels.FIVE]}</option>
-                  <option value={SpellLevels.SIX}>{SpellLevels[SpellLevels.SIX]}</option>
+                  <option value={SpellLevels.ONE}>1</option>
+                  <option value={SpellLevels.TWO}>2</option>
+                  <option value={SpellLevels.THREE}>3</option>
+                  <option value={SpellLevels.FOUR}>4</option>
+                  <option value={SpellLevels.FIVE}>5</option>
+                  <option value={SpellLevels.SIX}>6</option>
                 </Input>
                 <Button disabled={this.state.characterConnected ? false : true}
                         color="light" size="sm" onClick={async () => {

@@ -104,7 +104,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
               <NavItem>
                 <NavLink href="#" onClick={() => {
                   this.toggleModal();
-                }}>Accounts Manager</NavLink>
+                }}>{LanguageManager.trans("accountsManager")}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="#" onClick={() => {
@@ -115,7 +115,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
           </Collapse>
         </Navbar>
         <Modal isOpen={this.state.modal} size="lg" toggle={() => this.toggleModal()}>
-          <ModalHeader toggle={() => this.toggleModal()}>Accounts Manager</ModalHeader>
+          <ModalHeader toggle={() => this.toggleModal()}>{LanguageManager.trans("accountsManager")}</ModalHeader>
           <ModalBody>
             <Row>
               <Col xs="3">

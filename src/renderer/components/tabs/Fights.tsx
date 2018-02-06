@@ -141,9 +141,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "0"})}
-                onClick={() => {
-                  this.toggle("0");
-                }}
+                onClick={() => { this.toggle("0"); }}
               >
                 General
               </NavLink>
@@ -151,9 +149,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "1"})}
-                onClick={() => {
-                  this.toggle("1");
-                }}
+                onClick={() => { this.toggle("1"); }}
               >
                 {LanguageManager.trans("spells")}
               </NavLink>
@@ -166,16 +162,16 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
             <Row>
               <Col>
                 <Card body inverse color="dark">
-                  <CardTitle>Préparation</CardTitle>
+                  <CardTitle>{LanguageManager.trans("warmup")}</CardTitle>
                   <FormGroup>
-                    <Label for="startPlacement">Start placement</Label>
+                    <Label for="startPlacement">{LanguageManager.trans("startPlacement")}</Label>
                     <Input type="select" className="form-control-sm" id="startPlacement"
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.startPlacement}
                            onChange={(event) => this.startPlacementChanged(event)}>
-                      <option value={FightStartPlacement.FAR_FROM_ENEMIES}>{FightStartPlacement[FightStartPlacement.FAR_FROM_ENEMIES]}</option>
-                      <option value={FightStartPlacement.CLOSE_TO_ENEMIES}>{FightStartPlacement[FightStartPlacement.CLOSE_TO_ENEMIES]}</option>
-                      <option value={FightStartPlacement.STAY_STILL}>{FightStartPlacement[FightStartPlacement.STAY_STILL]}</option>
+                      <option value={FightStartPlacement.FAR_FROM_ENEMIES}>{LanguageManager.trans("farFromEnemies")}</option>
+                      <option value={FightStartPlacement.CLOSE_TO_ENEMIES}>{LanguageManager.trans("closeToEnemies")}</option>
+                      <option value={FightStartPlacement.STAY_STILL}>{LanguageManager.trans("stayStill")}</option>
                     </Input>
                   </FormGroup>
                   <FormGroup>
@@ -206,11 +202,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.blockSpectatorScenario}
                            onChange={(event) => this.blockSpectatorScenarioChanged(event)}>
-                      <option value={BlockSpectatorScenarios.ALWAYS}>{BlockSpectatorScenarios[BlockSpectatorScenarios.ALWAYS]}</option>
-                      <option value={BlockSpectatorScenarios.NEVER}>{BlockSpectatorScenarios[BlockSpectatorScenarios.NEVER]}</option>
-                      <option value={BlockSpectatorScenarios.WHEN_SOMEONE_JOINS}>
-                        {BlockSpectatorScenarios[BlockSpectatorScenarios.WHEN_SOMEONE_JOINS]}
-                      </option>
+                      <option value={BlockSpectatorScenarios.ALWAYS}>{LanguageManager.trans("always")}</option>
+                      <option value={BlockSpectatorScenarios.NEVER}>{LanguageManager.trans("never")}</option>
+                      <option value={BlockSpectatorScenarios.WHEN_SOMEONE_JOINS}>{LanguageManager.trans("whenSomeoneJoins")}</option>
                     </Input>
                   </FormGroup>
                   <FormGroup check>
@@ -233,9 +227,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.tactic}
                            onChange={(event) => this.tacticChanged(event)}>
-                      <option value={FightTactics.AGGRESSIVE}>{FightTactics[FightTactics.AGGRESSIVE]}</option>
-                      <option value={FightTactics.FUGITIVE}>{FightTactics[FightTactics.FUGITIVE]}</option>
-                      <option value={FightTactics.PASSIVE}>{FightTactics[FightTactics.PASSIVE]}</option>
+                      <option value={FightTactics.AGGRESSIVE}>{LanguageManager.trans("aggressive")}</option>
+                      <option value={FightTactics.FUGITIVE}>{LanguageManager.trans("fugitive")}</option>
+                      <option value={FightTactics.PASSIVE}>{LanguageManager.trans("passive")}</option>
                     </Input>
                   </FormGroup>
                   <FormGroup>
@@ -244,9 +238,9 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                            disabled={this.state.characterConnected ? "" : "disabled"}
                            value={this.state.fightSpeed}
                            onChange={(event) => this.fightSpeedChanged(event)}>
-                      <option value={FightSpeeds.SUICIDAL}>{FightSpeeds[FightSpeeds.SUICIDAL]}</option>
-                      <option value={FightSpeeds.FAST}>{FightSpeeds[FightSpeeds.FAST]}</option>
-                      <option value={FightSpeeds.NORMAL}>{FightSpeeds[FightSpeeds.NORMAL]}</option>
+                      <option value={FightSpeeds.SUICIDAL}>{LanguageManager.trans("suicidal")}</option>
+                      <option value={FightSpeeds.FAST}>{LanguageManager.trans("fast")}</option>
+                      <option value={FightSpeeds.NORMAL}>{LanguageManager.trans("normal")}</option>
                     </Input>
                   </FormGroup>
                   <FormGroup>
@@ -402,10 +396,10 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                                    addSpellForm.target = value;
                                    this.setState({addSpellForm});
                                  }}>
-                            <option value={SpellTargets.ALLY}>{SpellTargets[SpellTargets.ALLY]}</option>
-                            <option value={SpellTargets.SELF}>{SpellTargets[SpellTargets.SELF]}</option>
-                            <option value={SpellTargets.ENEMY}>{SpellTargets[SpellTargets.ENEMY]}</option>
-                            <option value={SpellTargets.EMPTY_CELL}>{SpellTargets[SpellTargets.EMPTY_CELL]}</option>
+                            <option value={SpellTargets.ALLY}>{LanguageManager.trans("ally")}</option>
+                            <option value={SpellTargets.SELF}>{LanguageManager.trans("self")}</option>
+                            <option value={SpellTargets.ENEMY}>{LanguageManager.trans("enemy")}</option>
+                            <option value={SpellTargets.EMPTY_CELL}>{LanguageManager.trans("emptyCell")}</option>
                           </Input>
                         </FormGroup>
                         <FormGroup>
@@ -486,11 +480,11 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
                               addSpellForm.resistance = value;
                               this.setState({addSpellForm});
                             }}>
-                            <option value={SpellResistances.EARTH}>{SpellResistances[SpellResistances.EARTH]}</option>
-                            <option value={SpellResistances.FIRE}>{SpellResistances[SpellResistances.FIRE]}</option>
-                            <option value={SpellResistances.NEUTRAL}>{SpellResistances[SpellResistances.NEUTRAL]}</option>
-                            <option value={SpellResistances.WATER}>{SpellResistances[SpellResistances.WATER]}</option>
-                            <option value={SpellResistances.WIND}>{SpellResistances[SpellResistances.WIND]}</option>
+                            <option value={SpellResistances.EARTH}>{LanguageManager.trans("earth")}</option>
+                            <option value={SpellResistances.FIRE}>{LanguageManager.trans("fire")}</option>
+                            <option value={SpellResistances.NEUTRAL}>{LanguageManager.trans("neutral")}</option>
+                            <option value={SpellResistances.WATER}>{LanguageManager.trans("water")}</option>
+                            <option value={SpellResistances.WIND}>{LanguageManager.trans("wind")}</option>
                           </Input>
                         </FormGroup>
                         <FormGroup>
@@ -597,39 +591,17 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
           <ModalHeader toggle={() => this.toggleModalInfos()}>Infos</ModalHeader>
           <ModalBody>
             <ListGroup>
-              <ListGroupItem>
-                {LanguageManager.trans("spellInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("targetInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("turnsInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("castPerTurnInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("targetLifeInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("characterLifeInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("resistanceInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("meleeInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("hitManyPossibleInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("dontTouchSelfInfo")}
-              </ListGroupItem>
-              <ListGroupItem>
-                {LanguageManager.trans("dontTouchAlliesInfo")}
-              </ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("spellInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("targetInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("turnsInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("castPerTurnInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("targetLifeInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("characterLifeInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("resistanceInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("meleeInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("hitManyPossibleInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("dontTouchSelfInfo")}</ListGroupItem>
+              <ListGroupItem>{LanguageManager.trans("dontTouchAlliesInfo")}</ListGroupItem>
             </ListGroup>
           </ModalBody>
           <ModalFooter>

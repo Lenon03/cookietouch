@@ -75,9 +75,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "0"})}
-                onClick={() => {
-                  this.toggle("0");
-                }}
+                onClick={() => { this.toggle("0"); }}
               >
                 {LanguageManager.trans("equipments")}
               </NavLink>
@@ -85,9 +83,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "1"})}
-                onClick={() => {
-                  this.toggle("1");
-                }}
+                onClick={() => { this.toggle("1"); }}
               >
                 {LanguageManager.trans("consumables")}
               </NavLink>
@@ -95,9 +91,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "2"})}
-                onClick={() => {
-                  this.toggle("2");
-                }}
+                onClick={() => { this.toggle("2"); }}
               >
                 Resources
               </NavLink>
@@ -105,9 +99,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
             <NavItem>
               <NavLink
                 className={classnames({active: this.state.activeTab === "3"})}
-                onClick={() => {
-                  this.toggle("3");
-                }}
+                onClick={() => { this.toggle("3"); }}
               >
                 {LanguageManager.trans("questobjects")}
               </NavLink>
@@ -249,7 +241,11 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
           <ModalHeader toggle={() => this.toggleModal()}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]} ?</ModalHeader>
           <ModalBody>
             <FormGroup>
-              <Label for="qty">Combien voulez vous {DeleteDropUseChoice[this.state.deleteDropUseChoice]} ?</Label>
+              <Label for="qty">
+                {this.state.deleteDropUseChoice === DeleteDropUseChoice.Delete
+                  ? LanguageManager.trans("howManyDelete")
+                  : LanguageManager.trans("howManyDrop")}
+              </Label>
               <Input
                 id="qty"
                 type="number" className="form-control-sm" value={this.state.quantity}

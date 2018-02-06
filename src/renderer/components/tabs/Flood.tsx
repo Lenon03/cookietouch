@@ -166,12 +166,10 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
                 <Input
                   id="channel"
                   type="select" className="form-control-sm">
-                  <option value={ChatActivableChannelsEnum.CHANNEL_GLOBAL}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_GLOBAL]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_SEEK}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_SEEK]}</option>
-                  <option value={ChatActivableChannelsEnum.CHANNEL_SALES}>{ChatActivableChannelsEnum[ChatActivableChannelsEnum.CHANNEL_SALES]}</option>
-                  <option value={ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE}>
-                    {ChatActivableChannelsEnum[ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE]}
-                  </option>
+                  <option value={ChatActivableChannelsEnum.CHANNEL_GLOBAL}>{LanguageManager.trans("global")}</option>
+                  <option value={ChatActivableChannelsEnum.CHANNEL_SEEK}>{LanguageManager.trans("seek")}</option>
+                  <option value={ChatActivableChannelsEnum.CHANNEL_SALES}>{LanguageManager.trans("sales")}</option>
+                  <option value={ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE}>{LanguageManager.trans("private")}</option>
                 </Input>
               </FormGroup>
               <FormGroup check>

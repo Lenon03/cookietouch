@@ -388,6 +388,7 @@
   "water": "Water",
   "wind": "Wind",
   "howManyDrop": "How many you want to drop?",
+  "howManyUse":  "How many you want to use?",
   "howManyDelete": "How many you want to delete?",
   "accountsManager": "Accounts Manager",
   "warmup": "Warm up",

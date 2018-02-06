@@ -238,13 +238,21 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
           </Col>
         </Row>
         <Modal isOpen={this.state.modal} toggle={() => this.toggleModal()}>
-          <ModalHeader toggle={() => this.toggleModal()}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]} ?</ModalHeader>
+          <ModalHeader toggle={() => this.toggleModal()}>
+          {this.state.deleteDropUseChoice === DeleteDropUseChoice.Delete
+                  ? LanguageManager.trans("delete")
+                  : this.state.deleteDropUseChoice === DeleteDropUseChoice.Drop
+                  ? LanguageManager.trans("drop")
+                  : LanguageManager.trans("use")}
+          </ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label for="qty">
                 {this.state.deleteDropUseChoice === DeleteDropUseChoice.Delete
                   ? LanguageManager.trans("howManyDelete")
-                  : LanguageManager.trans("howManyDrop")}
+                  : this.state.deleteDropUseChoice === DeleteDropUseChoice.Drop
+                  ? LanguageManager.trans("howManyDrop")
+                  : LanguageManager.trans("howManyUse")}
               </Label>
               <Input
                 id="qty"
@@ -269,7 +277,13 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
               }
               this.setState({quantity: -1, object: null});
               this.toggleModal();
-            }}>{DeleteDropUseChoice[this.state.deleteDropUseChoice]}</Button>
+            }}>
+             {this.state.deleteDropUseChoice === DeleteDropUseChoice.Delete
+                  ? LanguageManager.trans("delete")
+                  : this.state.deleteDropUseChoice === DeleteDropUseChoice.Drop
+                  ? LanguageManager.trans("drop")
+                  : LanguageManager.trans("use")}
+            </Button>
             <Button color="danger" onClick={() => this.toggleModal()}>{LanguageManager.trans("cancel")}</Button>
           </ModalFooter>
         </Modal>

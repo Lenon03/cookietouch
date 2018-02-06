@@ -387,6 +387,7 @@
   "water": "Eau",
   "wind": "Air",
   "howManyDrop": "Combien voulez-vous en jeter?",
+  "howManyUse":  "Combien voulez-vous en utiliser?",
   "howManyDelete": "Combien voulez-vous en supprimer?",
   "accountsManager": "Gestionnaire de comptes",
   "warmup": "Préparation",

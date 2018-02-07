@@ -152,7 +152,7 @@ export default class MovementsManager implements IClearable {
   }
 
   public changeMapWithCellId(direction: MapChangeDirections, cellId: number): boolean {
-    if (this.account.isBusy || this.neighbourMapId === 0) {
+    if (this.account.isBusy || this.neighbourMapId !== 0) {
       return false;
     }
 

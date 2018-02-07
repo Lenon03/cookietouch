@@ -1,9 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import {MapChangeDirections} from "@/game/managers/movements/MapChangeDirections";
-import {MovementRequestResults} from "@/game/managers/movements/MovementRequestResults";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import Account from "@account";
 import * as React from "react";
-import {Button, Col, Container, Row} from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
+import MapViewer from "./MapViewer";
 
 interface IMapProps {
   account: Account;
@@ -22,43 +22,19 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
     };
   }
 
-  public componentDidMount() {
-    this.props.account.game.map.EntitiesUpdated.on(this.entitiesUpdated.bind(this));
-    this.props.account.game.map.InteractivesUpdated.on(this.interactivesUpdated.bind(this));
-  }
-
-  public componentWillUnmount() {
-    this.props.account.game.map.EntitiesUpdated.off(this.entitiesUpdated.bind(this));
-    this.props.account.game.map.InteractivesUpdated.off(this.interactivesUpdated.bind(this));
-  }
-
   public render() {
     return (
       <Container>
         <Row>
           <Col>
             <Button size="sm" color="danger" onClick={() => this.attack()}>{LanguageManager.trans("attack")}</Button>
-            <Button size="sm"
-                    color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Top)}>{LanguageManager.trans("top")}</Button>
-            <Button size="sm"
-                    color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Bottom)}>{LanguageManager.trans("bottom")}</Button>
-            <Button size="sm"
-                    color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Left)}>{LanguageManager.trans("left")}</Button>
-            <Button size="sm"
-                    color="secondary"
-                    onClick={() => this.changeMap(MapChangeDirections.Right)}>{LanguageManager.trans("right")}</Button>
           </Col>
+        </Row>
+        <Row>
+          <MapViewer account={this.props.account} />
         </Row>
       </Container>
     );
-  }
-
-  private changeMap(dir: MapChangeDirections) {
-    const res = this.props.account.game.managers.movements.changeMap(dir);
-    this.props.account.logger.logDebug("Map", `Movement Result: ${res}`);
   }
 
   private attack() {
@@ -72,17 +48,5 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
         monsterGroupId: group.id,
       });
     }
-  }
-
-  private entitiesUpdated() {
-    this.setState({
-      //
-    });
-  }
-
-  private interactivesUpdated() {
-    this.setState({
-      //
-    });
   }
 }

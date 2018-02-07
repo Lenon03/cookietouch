@@ -255,9 +255,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "0"})}
-                        onClick={() => {
-                          this.toggle("0");
-                        }}
+                        onClick={() => { this.toggle("0"); }}
                       >
                         Console
                       </NavLink>
@@ -265,9 +263,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "1"})}
-                        onClick={() => {
-                          this.toggle("1");
-                        }}
+                        onClick={() => { this.toggle("1"); }}
                       >
                         {LanguageManager.trans("character")}
                       </NavLink>
@@ -275,9 +271,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "2"})}
-                        onClick={() => {
-                          this.toggle("2");
-                        }}
+                        onClick={() => { this.toggle("2"); }}
                       >
                         {LanguageManager.trans("inventory")}
                       </NavLink>
@@ -285,9 +279,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "3"})}
-                        onClick={() => {
-                          this.toggle("3");
-                        }}
+                        onClick={() => { this.toggle("3"); }}
                       >
                         Map
                       </NavLink>
@@ -295,9 +287,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "4"})}
-                        onClick={() => {
-                          this.toggle("4");
-                        }}
+                        onClick={() => { this.toggle("4"); }}
                       >
                         {LanguageManager.trans("fight")}
                       </NavLink>
@@ -305,9 +295,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "5"})}
-                        onClick={() => {
-                          this.toggle("5");
-                        }}
+                        onClick={() => { this.toggle("5"); }}
                       >
                         Flood
                       </NavLink>
@@ -315,9 +303,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "6"})}
-                        onClick={() => {
-                          this.toggle("6");
-                        }}
+                        onClick={() => { this.toggle("6"); }}
                       >
                         {LanguageManager.trans("bid")}
                       </NavLink>
@@ -325,9 +311,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "7"})}
-                        onClick={() => {
-                          this.toggle("7");
-                        }}
+                        onClick={() => { this.toggle("7"); }}
                       >
                         Stats
                       </NavLink>
@@ -335,9 +319,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
                     <NavItem>
                       <NavLink
                         className={classnames({active: this.state.activeTab === "8"})}
-                        onClick={() => {
-                          this.toggle("8");
-                        }}
+                        onClick={() => { this.toggle("8"); }}
                       >
                         Configuration
                       </NavLink>

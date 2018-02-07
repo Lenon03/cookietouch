@@ -1,6 +1,22 @@
 export const RGB_COLOR_REGEX = /\((\d+),\s*(\d+),\s*(\d+)(,\s*(\d*.\d*))?\)/;
 
 export default class Color {
+
+  public static fromRgba(r: number, g: number, b: number, a: number): Color {
+    const co = new Color();
+    co.r = r;
+    co.g = g;
+    co.b = b;
+
+    if (a > 1) {
+      co.a = a / 255;
+    } else {
+      co.a = a;
+    }
+
+    return co;
+  }
+
   public r: number;
   public g: number;
   public b: number;

@@ -1,22 +1,6 @@
 export const RGB_COLOR_REGEX = /\((\d+),\s*(\d+),\s*(\d+)(,\s*(\d*.\d*))?\)/;
 
 export default class Color {
-
-  public static fromRgba(r: number, g: number, b: number, a: number): Color {
-    const co = new Color();
-    co.r = r;
-    co.g = g;
-    co.b = b;
-
-    if (a > 1) {
-      co.a = a / 255;
-    } else {
-      co.a = a;
-    }
-
-    return co;
-  }
-
   public r: number;
   public g: number;
   public b: number;
@@ -38,6 +22,9 @@ export default class Color {
         this.g = parseInt(res[2], 10);
         this.b = parseInt(res[3], 10);
         this.a = res[5] ? parseFloat(res[5]) : 1;
+        if (this.a > 1) {
+          this.a /= 255;
+        }
       }
     } else {
       this.r = r;
@@ -48,7 +35,19 @@ export default class Color {
   }
 
   public toHex() {
-    return "#" + this.r.toString(16) + this.g.toString(16) + this.b.toString(16);
+    let r = this.r.toString(16);
+    if (r.length === 1) {
+      r = r.padStart(2, "0");
+    }
+    let g = this.g.toString(16);
+    if (g.length === 1) {
+      g = g.padStart(2, "0");
+    }
+    let b = this.b.toString(16);
+    if (b.length === 1) {
+      b = b.padStart(2, "0");
+    }
+    return "#" + r + g + b;
   }
 
   public toRgb() {

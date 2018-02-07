@@ -26,13 +26,13 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   private readonly walkableCellBrush = new Color(145, 145, 148);
   private readonly losCellBrush = new Color(77, 77, 77);
   private readonly obstacleCellBrush = new Color(45, 45, 48);
-  private readonly selectedCellBrush = Color.fromRgba(255, 91, 90, 90);
+  private readonly selectedCellBrush = new Color("rgba(255, 91, 90, 90)");
   private readonly ourPlayerBrush = new Color(0, 0, 255);
-  private readonly monstersGroupsBrush = Color.fromRgba(255, 139, 0, 0);
-  private readonly playersBrush = Color.fromRgba(255, 81, 113, 202);
-  private readonly doorsBrush = Color.fromRgba(255, 150, 75, 13);
-  private readonly interactivesBrush = Color.fromRgba(55, 1, 143, 140);
-  private readonly npcsBrush = Color.fromRgba(255, 179, 120, 211);
+  private readonly monstersGroupsBrush = new Color("rgba(255, 139, 0, 0)");
+  private readonly playersBrush = new Color("rgba(255, 81, 113, 202)");
+  private readonly doorsBrush = new Color("rgba(255, 150, 75, 13)");
+  private readonly interactivesBrush = new Color("rgba(55, 1, 143, 140)");
+  private readonly npcsBrush = new Color("rgba(255, 179, 120, 211)");
   private readonly sunImage = "21000.png";
   private readonly phenixImage = "7521.png";
   private readonly lockedStorageImage = "12367.png";
@@ -168,7 +168,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         this.cells.ElementAt(cellId).DrawPie(drawingContext, this.monstersGroupsBrush);
       }
     } else {
-      if (this.props.account.game.fight.playedFighter &&
+      if (this.props.account.game.map.playedCharacter &&
         this.props.account.game.map.playedCharacter.cellId === cellId) {
         this.cells.ElementAt(cellId).DrawPie(drawingContext, this.ourPlayerBrush);
       } else if (this.props.account.game.map.monstersGroups.find((mg) => mg.cellId === cellId) !== undefined) {

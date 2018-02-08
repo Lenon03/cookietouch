@@ -465,6 +465,7 @@ export default class Character {
   }
 
   public UpdateLifePointsRegenEndMessage(message: any) {
+    this.onStatsUpdated.trigger();
     global.clearInterval(this.regenTimer);
   }
 

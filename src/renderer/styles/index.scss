@@ -54,3 +54,16 @@ input:not(input[type="checkbox"]) {
     margin-left: 5px;
   }
 }
+
+#tooltip {
+  color: black;
+  position:absolute;
+  background-color: #fff;
+  margin: 2px;
+  padding: 2px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 0 0 5px #AAA;
+  border: #AAA 1px solid;
+  display: none;
+}

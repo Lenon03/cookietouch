@@ -1,5 +1,12 @@
 import PathDuration from "@/core/pathfinder/PathDuration";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
+import MonstersGroupEntry from "@/game/map/entities/MonstersGroupEntry";
+import NpcEntry from "@/game/map/entities/NpcEntry";
+import PlayerEntry from "@/game/map/entities/PlayerEntry";
+import ElementInCellEntry from "@/game/map/interactives/ElementInCellEntry";
+import StatedElementEntry from "@/game/map/interactives/StatedElementEntry";
 import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import Point from "@/utils/Point";
@@ -26,13 +33,13 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   private readonly walkableCellBrush = new Color(145, 145, 148);
   private readonly losCellBrush = new Color(77, 77, 77);
   private readonly obstacleCellBrush = new Color(45, 45, 48);
-  private readonly selectedCellBrush = new Color("rgba(255, 91, 90, 90)");
+  private readonly selectedCellBrush = new Color(255, 91, 90);
   private readonly ourPlayerBrush = new Color(0, 0, 255);
-  private readonly monstersGroupsBrush = new Color("rgba(255, 139, 0, 0)");
-  private readonly playersBrush = new Color("rgba(255, 81, 113, 202)");
-  private readonly doorsBrush = new Color("rgba(255, 150, 75, 13)");
-  private readonly interactivesBrush = new Color("rgba(55, 1, 143, 140)");
-  private readonly npcsBrush = new Color("rgba(255, 179, 120, 211)");
+  private readonly monstersGroupsBrush = new Color(255, 139, 0);
+  private readonly playersBrush = new Color(155, 81, 13);
+  private readonly doorsBrush = new Color(255, 150, 75);
+  private readonly interactivesBrush = new Color(55, 50, 140);
+  private readonly npcsBrush = new Color(100, 179, 120);
   private readonly sunImage = "21000.png";
   private readonly phenixImage = "7521.png";
   private readonly lockedStorageImage = "12367.png";
@@ -52,6 +59,8 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   public componentDidMount() {
     const c = this.refs.canvas as HTMLCanvasElement;
     c.addEventListener("click", this.onMouseClick.bind(this), false);
+    c.addEventListener("mousemove", this.onMouseMove.bind(this), false);
+
     this.props.account.game.map.MapChanged.on(this.refreshMapViewer.bind(this));
     this.props.account.game.map.EntitiesUpdated.on(this.refreshMapViewer.bind(this));
     this.props.account.game.map.InteractivesUpdated.on(this.refreshMapViewer.bind(this));
@@ -66,6 +75,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   public componentWillUnmount() {
     const c = this.refs.canvas as HTMLCanvasElement;
     c.removeEventListener("click", this.onMouseClick.bind(this), false);
+    c.removeEventListener("mousemove", this.onMouseMove.bind(this), false);
 
     this.props.account.game.map.MapChanged.off(this.refreshMapViewer.bind(this));
     this.props.account.game.map.EntitiesUpdated.off(this.refreshMapViewer.bind(this));
@@ -83,6 +93,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       <Container>
         <Row>
           <Col>
+            <div id="tooltip"></div>
             <canvas id="mapStatus"
               ref="canvas"
               width={DTConstants.tileWidth * (DTConstants.MAP_WIDTH + 1)}
@@ -219,6 +230,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     const c = this.refs.canvas as HTMLCanvasElement;
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
+
     for (let i = 0; i < this.cells.Count(); i++) {
       const brush = this.GetCellBrush(i);
 
@@ -254,70 +266,165 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     }
   }
 
-  private onMouseClick(event) {
-    // No need to check if the map is not valid or the bot is not inactif
-    if (this.props.account.isBusy) {
-      return;
-    }
-
+  private onMouseMove(event) {
     const pos = new Point(event.offsetX, event.offsetY);
+    const c = this.refs.canvas as HTMLCanvasElement;
+    const ctx = c.getContext("2d");
 
-    for (let i = 0; i < this.cells.Count(); i++) {
-      if (this.cells.ElementAt(i).IsPointInside(pos)) {
-        if (this.props.account.game.map.data.cells[i].isWalkable(false)) {
-          this.setState({ selectedCellId: i });
-          this.buildMap();
+    for (let cellId = 0; cellId < this.cells.Count(); cellId++) {
+      const cell = this.cells.ElementAt(cellId);
 
-          const task = async () => {
-            await sleep(200);
-            if (this.state.selectedCellId !== -1) {
-              this.setState({ selectedCellId: -1 });
-              this.buildMap();
-            }
-          };
-
-          task();
-
-          this.HandleWalkableCellClicked(i);
+      if (cell.IsPointInside(pos)) {
+        if (this.props.account.isFighting) {
+          if (this.props.account.game.fight.playedFighter &&
+            this.props.account.game.fight.playedFighter.cellId === cellId) {
+            this.showCellInfo(this.props.account.game.fight.playedFighter, cell.mid);
+            return;
+          } else if (this.props.account.game.fight.allies.find((a) => a.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.fight.allies.find((a) => a.cellId === cellId), cell.mid);
+            return;
+          } else if (this.props.account.game.fight.enemies.find((e) => e.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.fight.enemies.find((e) => e.cellId === cellId), cell.mid);
+            return;
+          }
+        } else {
+          if (this.props.account.game.map.playedCharacter &&
+            this.props.account.game.map.playedCharacter.cellId === cellId) {
+            this.showCellInfo(this.props.account.game.map.playedCharacter, cell.mid);
+            return;
+          } else if (this.props.account.game.map.monstersGroups.find((mg) => mg.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.map.monstersGroups.find((mg) => mg.cellId === cellId), cell.mid);
+            return;
+          } else if (this.props.account.game.map.players.find((p) => p.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.map.players.find((p) => p.cellId === cellId), cell.mid);
+            return;
+          } else if (this.props.account.game.map.doors.find((d) => d.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.map.doors.find((d) => d.cellId === cellId), cell.mid, "door");
+            return;
+          } else if (this.props.account.game.map.statedElements.find((se) => se.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.map.statedElements.find((se) => se.cellId === cellId), cell.mid);
+            return;
+          } else if (this.props.account.game.map.zaap && this.props.account.game.map.zaap.cellId === cellId) {
+            this.showCellInfo(this.props.account.game.map.zaap, cell.mid, "zaap");
+            return;
+          } else if (this.props.account.game.map.zaapi && this.props.account.game.map.zaapi.cellId === cellId) {
+            this.showCellInfo(this.props.account.game.map.zaapi, cell.mid, "zaapi");
+            return;
+          } else if (this.props.account.game.map.npcs.find((n) => n.cellId === cellId) !== undefined) {
+            this.showCellInfo(this.props.account.game.map.npcs.find((n) => n.cellId === cellId), cell.mid);
+            return;
+          }
         }
-
-        break;
       }
     }
+
+    this.hideCellInfo();
   }
+
+  private showCellInfo(e: FightPlayerEntry | FighterEntry | PlayerEntry |
+                       NpcEntry | MonstersGroupEntry | ElementInCellEntry | StatedElementEntry,
+                       point: Point, info?: string) {
+  const tooltip = document.getElementById("tooltip");
+  tooltip.style.display = "block";
+
+  let htmlBuffer = "";
+
+  if (e instanceof FightPlayerEntry) {
+    htmlBuffer += `${e.name} (${e.level})`;
+  } else if (e instanceof FighterEntry) {
+    htmlBuffer += `${e.contextualId} (${e.lifePercent}%)`;
+  } else if (e instanceof PlayerEntry) {
+    htmlBuffer += `${e.name} (${e.level})`;
+  } else if (e instanceof NpcEntry) {
+    htmlBuffer += `${e.name} (${e.npcId})`;
+  } else if (e instanceof MonstersGroupEntry) {
+    htmlBuffer += `${e.monstersCount} (${e.totalLevel})`;
+  } else if (e instanceof ElementInCellEntry) {
+    if (info === "zaap") {
+      htmlBuffer += `Zaap: ${e.element.id}`;
+    } else if (info === "zaapi") {
+      htmlBuffer += `Zaapi: ${e.element.id}`;
+    } else if (info === "door") {
+      htmlBuffer += `Door: ${e.element.id}`;
+    }
+  } else if (e instanceof StatedElementEntry) {
+    htmlBuffer += `${e.id}`;
+  }
+
+  tooltip.innerHTML = htmlBuffer;
+  tooltip.style.left = (point.x + 10) + "px";
+  tooltip.style.top = (point.y + 10) + "px";
+}
+
+  private hideCellInfo() {
+  const tooltip = document.getElementById("tooltip");
+  tooltip.style.display = "none";
+}
+
+  private onMouseClick(event) {
+  // No need to check if the map is not valid or the bot is not inactif
+  if (this.props.account.isBusy) {
+    return;
+  }
+
+  const pos = new Point(event.offsetX, event.offsetY);
+
+  for (let i = 0; i < this.cells.Count(); i++) {
+    if (this.cells.ElementAt(i).IsPointInside(pos)) {
+      if (this.props.account.game.map.data.cells[i].isWalkable(false)) {
+        this.setState({ selectedCellId: i });
+        this.buildMap();
+
+        const task = async () => {
+          await sleep(200);
+          if (this.state.selectedCellId !== -1) {
+            this.setState({ selectedCellId: -1 });
+            this.buildMap();
+          }
+        };
+
+        task();
+
+        this.HandleWalkableCellClicked(i);
+      }
+
+      break;
+    }
+  }
+}
 
   private HandleWalkableCellClicked(cell: number) {
-    // Check if we can change the map from this cell
-    if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Left)) {
-      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Left, cell);
-    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Right)) {
-      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Right, cell);
-    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Top)) {
-      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Top, cell);
-    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Bottom)) {
-      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Bottom, cell);
-    } else {
-      // Otherwise just move to the cell
-      this.props.account.game.managers.movements.moveToCell(cell);
-    }
+  // Check if we can change the map from this cell
+  if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Left)) {
+    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Left, cell);
+  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Right)) {
+    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Right, cell);
+  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Top)) {
+    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Top, cell);
+  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Bottom)) {
+    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Bottom, cell);
+  } else {
+    // Otherwise just move to the cell
+    this.props.account.game.managers.movements.moveToCell(cell);
   }
+}
 
   private drawPath(ctx: CanvasRenderingContext2D) {
-    if (this.state.path.length === 0) {
-      return;
-    }
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "#525d5f";
-    ctx.beginPath();
-    const first = this.cells.ElementAt(this.state.path[0]);
-    ctx.beginPath();
-    ctx.moveTo(first.mid.x, first.mid.y);
-
-    for (const cell of this.state.path) {
-      const p = this.cells.ElementAt(cell);
-
-      ctx.lineTo(p.mid.x, p.mid.y);
-    }
-    ctx.stroke();
+  if (this.state.path.length === 0) {
+    return;
   }
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#34495e";
+  ctx.beginPath();
+  const first = this.cells.ElementAt(this.state.path[0]);
+  ctx.beginPath();
+  ctx.moveTo(first.mid.x, first.mid.y);
+
+  for (const cell of this.state.path) {
+    const p = this.cells.ElementAt(cell);
+
+    ctx.lineTo(p.mid.x, p.mid.y);
+  }
+  ctx.stroke();
+}
 }

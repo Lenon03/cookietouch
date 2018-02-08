@@ -253,7 +253,6 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         ctx.fillText(`${i}`, cell.mid.x - 10, cell.mid.y + 5);
       }
 
-      // Draw the sun image if this cell has it
       if (this.props.account.game.map.teleportableCells.includes(i)) {
         this.cells.ElementAt(i).DrawImage(ctx, this.sunImage);
       } else if (this.props.account.game.map.phenixs.find((p) => p.cellId === i) != null) {
@@ -324,107 +323,106 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   private showCellInfo(e: FightPlayerEntry | FighterEntry | PlayerEntry |
                        NpcEntry | MonstersGroupEntry | ElementInCellEntry | StatedElementEntry,
                        point: Point, info?: string) {
-  const tooltip = document.getElementById("tooltip");
-  tooltip.style.display = "block";
+    const tooltip = document.getElementById("tooltip");
+    tooltip.style.display = "block";
 
-  let htmlBuffer = "";
+    let htmlBuffer = "";
 
-  if (e instanceof FightPlayerEntry) {
-    htmlBuffer += `${e.name} (${e.level})`;
-  } else if (e instanceof FighterEntry) {
-    htmlBuffer += `${e.contextualId} (${e.lifePercent}%)`;
-  } else if (e instanceof PlayerEntry) {
-    htmlBuffer += `${e.name} (${e.level})`;
-  } else if (e instanceof NpcEntry) {
-    htmlBuffer += `${e.name} (${e.npcId})`;
-  } else if (e instanceof MonstersGroupEntry) {
-    htmlBuffer += `${e.monstersCount} (${e.totalLevel})`;
-  } else if (e instanceof ElementInCellEntry) {
-    if (info === "zaap") {
-      htmlBuffer += `Zaap: ${e.element.id}`;
-    } else if (info === "zaapi") {
-      htmlBuffer += `Zaapi: ${e.element.id}`;
-    } else if (info === "door") {
-      htmlBuffer += `Door: ${e.element.id}`;
+    if (e instanceof FightPlayerEntry) {
+      htmlBuffer += `${e.name} (${e.level})`;
+    } else if (e instanceof FighterEntry) {
+      htmlBuffer += `${e.contextualId} (${e.lifePercent}%)`;
+    } else if (e instanceof PlayerEntry) {
+      htmlBuffer += `${e.name} (${e.level})`;
+    } else if (e instanceof NpcEntry) {
+      htmlBuffer += `${e.name} (${e.npcId})`;
+    } else if (e instanceof MonstersGroupEntry) {
+      htmlBuffer += `${e.monstersCount} (${e.totalLevel})`;
+    } else if (e instanceof ElementInCellEntry) {
+      if (info === "zaap") {
+        htmlBuffer += `Zaap: ${e.element.id}`;
+      } else if (info === "zaapi") {
+        htmlBuffer += `Zaapi: ${e.element.id}`;
+      } else if (info === "door") {
+        htmlBuffer += `Door: ${e.element.id}`;
+      }
+    } else if (e instanceof StatedElementEntry) {
+      htmlBuffer += `${e.id}`;
     }
-  } else if (e instanceof StatedElementEntry) {
-    htmlBuffer += `${e.id}`;
-  }
 
-  tooltip.innerHTML = htmlBuffer;
-  tooltip.style.left = (point.x + 10) + "px";
-  tooltip.style.top = (point.y + 10) + "px";
-}
+    tooltip.innerHTML = htmlBuffer;
+    tooltip.style.left = (point.x + 5) + "px";
+    tooltip.style.top = (point.y + 5) + "px";
+  }
 
   private hideCellInfo() {
-  const tooltip = document.getElementById("tooltip");
-  tooltip.style.display = "none";
-}
+    const tooltip = document.getElementById("tooltip");
+    tooltip.style.display = "none";
+  }
 
   private onMouseClick(event) {
-  // No need to check if the map is not valid or the bot is not inactif
-  if (this.props.account.isBusy) {
-    return;
-  }
+    if (this.props.account.isBusy) {
+      return;
+    }
 
-  const pos = new Point(event.offsetX, event.offsetY);
+    const pos = new Point(event.offsetX, event.offsetY);
 
-  for (let i = 0; i < this.cells.Count(); i++) {
-    if (this.cells.ElementAt(i).IsPointInside(pos)) {
-      if (this.props.account.game.map.data.cells[i].isWalkable(false)) {
-        this.setState({ selectedCellId: i });
-        this.buildMap();
+    for (let i = 0; i < this.cells.Count(); i++) {
+      if (this.cells.ElementAt(i).IsPointInside(pos)) {
+        if (this.props.account.game.map.data.cells[i].isWalkable(false)) {
+          this.setState({ selectedCellId: i });
+          this.buildMap();
 
-        const task = async () => {
-          await sleep(200);
-          if (this.state.selectedCellId !== -1) {
-            this.setState({ selectedCellId: -1 });
-            this.buildMap();
-          }
-        };
+          const task = async () => {
+            await sleep(200);
+            if (this.state.selectedCellId !== -1) {
+              this.setState({ selectedCellId: -1 });
+              this.buildMap();
+            }
+          };
 
-        task();
+          task();
 
-        this.HandleWalkableCellClicked(i);
+          this.HandleWalkableCellClicked(i);
+        }
+
+        break;
       }
-
-      break;
     }
   }
-}
 
   private HandleWalkableCellClicked(cell: number) {
-  // Check if we can change the map from this cell
-  if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Left)) {
-    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Left, cell);
-  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Right)) {
-    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Right, cell);
-  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Top)) {
-    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Top, cell);
-  } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Bottom)) {
-    this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Bottom, cell);
-  } else {
-    // Otherwise just move to the cell
-    this.props.account.game.managers.movements.moveToCell(cell);
+    // Check if we can change the map from this cell
+    if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Left)) {
+      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Left, cell);
+    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Right)) {
+      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Right, cell);
+    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Top)) {
+      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Top, cell);
+    } else if (this.props.account.game.managers.movements.canChangeMap(cell, MapChangeDirections.Bottom)) {
+      this.props.account.game.managers.movements.changeMapWithCellId(MapChangeDirections.Bottom, cell);
+    } else {
+      // Otherwise just move to the cell
+      this.props.account.game.managers.movements.moveToCell(cell);
+    }
   }
-}
 
   private drawPath(ctx: CanvasRenderingContext2D) {
-  if (this.state.path.length === 0) {
-    return;
-  }
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#34495e";
-  ctx.beginPath();
-  const first = this.cells.ElementAt(this.state.path[0]);
-  ctx.beginPath();
-  ctx.moveTo(first.mid.x, first.mid.y);
+    if (this.state.path.length === 0) {
+      return;
+    }
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#34495e";
+    ctx.beginPath();
+    const first = this.cells.ElementAt(this.state.path[0]);
+    ctx.beginPath();
+    ctx.moveTo(first.mid.x, first.mid.y);
 
-  for (const cell of this.state.path) {
-    const p = this.cells.ElementAt(cell);
+    for (const cell of this.state.path) {
+      const p = this.cells.ElementAt(cell);
 
-    ctx.lineTo(p.mid.x, p.mid.y);
+      ctx.lineTo(p.mid.x, p.mid.y);
+    }
+    ctx.stroke();
   }
-  ctx.stroke();
-}
 }

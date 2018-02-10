@@ -1,6 +1,5 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
-
 body {
   background-color: #34495e;
   color: white;
@@ -32,23 +31,19 @@ input:not(input[type="checkbox"]) {
 
 #stats {
   $logo-height: 30px;
-
   .stats-field {
     display: flex;
     font-size: 14px;
     line-height: $logo-height;
     margin-bottom: 8px;
   }
-
   .stats-logo {
     flex: 0 0 50px;
     text-align: center;
-
     img {
       height: $logo-height;
     }
   }
-
   .stats-label {
     flex: 1;
     margin-left: 5px;
@@ -57,11 +52,10 @@ input:not(input[type="checkbox"]) {
 
 #tooltip {
   color: black;
-  position:absolute;
+  position: absolute;
   background-color: #fff;
   margin: 2px;
   padding: 2px;
-  -moz-border-radius: 3px;
   border-radius: 3px;
   box-shadow: 0 0 5px #AAA;
   border: #AAA 1px solid;

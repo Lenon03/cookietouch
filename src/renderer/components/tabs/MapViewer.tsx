@@ -33,13 +33,13 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   private readonly walkableCellBrush = new Color(145, 145, 148);
   private readonly losCellBrush = new Color(77, 77, 77);
   private readonly obstacleCellBrush = new Color(45, 45, 48);
-  private readonly selectedCellBrush = new Color(255, 91, 90);
+  private readonly selectedCellBrush = new Color(255, 91, 90, 90);
   private readonly ourPlayerBrush = new Color(0, 0, 255);
-  private readonly monstersGroupsBrush = new Color(255, 139, 0);
-  private readonly playersBrush = new Color(155, 81, 13);
-  private readonly doorsBrush = new Color(255, 150, 75);
-  private readonly interactivesBrush = new Color(55, 50, 140);
-  private readonly npcsBrush = new Color(100, 179, 120);
+  private readonly monstersGroupsBrush = new Color(255, 139, 0, 0);
+  private readonly playersBrush = new Color(255, 81, 113, 202);
+  private readonly doorsBrush = new Color(255, 150, 75, 13);
+  private readonly interactivesBrush = new Color(255, 1, 143, 140);
+  private readonly npcsBrush = new Color(255, 179, 120, 211);
   private readonly sunImage = "21000.png";
   private readonly phenixImage = "7521.png";
   private readonly lockedStorageImage = "12367.png";
@@ -415,7 +415,6 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     ctx.strokeStyle = "#34495e";
     ctx.beginPath();
     const first = this.cells.ElementAt(this.state.path[0]);
-    ctx.beginPath();
     ctx.moveTo(first.mid.x, first.mid.y);
 
     for (const cell of this.state.path) {

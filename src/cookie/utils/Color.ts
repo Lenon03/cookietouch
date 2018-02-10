@@ -6,8 +6,6 @@ export default class Color {
   public b: number;
   public a: number;
 
-  constructor(colorStr?: string)
-  constructor(r?: string | number, g?: number, b?: number)
   constructor(r?: string | number, g?: number, b?: number, a?: number) {
     if (typeof r === "string") {
       r = r.trim();
@@ -35,19 +33,9 @@ export default class Color {
   }
 
   public toHex() {
-    let r = this.r.toString(16);
-    if (r.length === 1) {
-      r = r.padStart(2, "0");
-    }
-    let g = this.g.toString(16);
-    if (g.length === 1) {
-      g = g.padStart(2, "0");
-    }
-    let b = this.b.toString(16);
-    if (b.length === 1) {
-      b = b.padStart(2, "0");
-    }
-    return "#" + r + g + b;
+    return "#" + ("0" + this.r.toString(16)).slice(-2)
+      + ("0" + this.g.toString(16)).slice(-2)
+      + ("0" + this.b.toString(16)).slice(-2);
   }
 
   public toRgb() {

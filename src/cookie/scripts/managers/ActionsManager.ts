@@ -40,8 +40,8 @@ export default class ActionsManager {
   private actionsQueue: ScriptAction[];
   private currentAction: ScriptAction;
   private currentCoroutine: Generator;
-  private fightsCounter: number;
-  private gathersCounter: number;
+  private fightsCounter: number = 0;
+  private gathersCounter: number = 0;
   private mapChanged: boolean;
   private timeoutTimer: TimerWrapper;
 

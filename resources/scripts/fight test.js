@@ -31,6 +31,6 @@ const config = {
 }
 
 const move = [
-  { map: "6,-16", fight: true, path: "right" },
-  { map: "7,-17", fight: true, path: "left" }
+  { map: "4,-24", fight: true, path: "right" },
+  { map: "5,-24", fight: true, path: "left" }
 ]

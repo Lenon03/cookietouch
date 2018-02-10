@@ -337,7 +337,11 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     } else if (e instanceof NpcEntry) {
       htmlBuffer += `${e.name} (${e.npcId})`;
     } else if (e instanceof MonstersGroupEntry) {
-      htmlBuffer += `${e.monstersCount} (${e.totalLevel})`;
+      htmlBuffer += `${e.monstersCount} Monsters (${e.totalLevel})<br>`;
+      htmlBuffer += `- [${e.leader.genericId}] ${e.leader.name} (${e.leader.level})<br>`;
+      for (const m of e.followers) {
+        htmlBuffer += `- [${m.genericId}] ${m.name} (${m.level})<br>`;
+      }
     } else if (e instanceof ElementInCellEntry) {
       if (info === "zaap") {
         htmlBuffer += `Zaap: ${e.element.id}`;

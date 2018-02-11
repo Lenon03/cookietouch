@@ -475,6 +475,7 @@ export default class Character {
       return;
     }
     this.stats.lifePoints++;
+    this.onStatsUpdated.trigger();
   }
 
   private getNeededPointsToBoostStat(stat: BoostableStats): number {

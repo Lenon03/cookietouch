@@ -157,11 +157,11 @@ export default class Map implements IClearable {
     const accountMapChanged = () => {
       mapChanged = true;
     };
-    this.account.game.map.onMapChanged.on(accountMapChanged);
+    this.account.game.map.onMapChanged.on(accountMapChanged.bind(this));
     for (let i = 0; i < maxDelayInSeconds && !mapChanged && this.account.state !== AccountStates.FIGHTING && this.account.scripts.running; i++) {
       await sleep(1000);
     }
-    this.account.game.map.onMapChanged.off(accountMapChanged);
+    this.account.game.map.onMapChanged.off(accountMapChanged.bind(this));
     return mapChanged;
   }
 

@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import {MapChangeDirections} from "@game/managers/movements/MapChangeDirections";
-import {Deferred} from "@utils/Deferred";
+import {Deferred, IDeferred} from "@utils/Deferred";
 import {sleep} from "@utils/Time";
 import {List} from "linqts";
 import Group from "./Group";
@@ -35,7 +35,7 @@ export default class Grouping {
   }
 
   private async groupMissingMember(missingMember: Account) {
-    let tcs = null;
+    let tcs: IDeferred<boolean> = null;
     const mapChanged = async () => {
       await sleep(1500);
       tcs.resolve(true);

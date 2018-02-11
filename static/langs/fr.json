@@ -61,6 +61,7 @@
   "sales": "Commerce",
   "seek": "Recrutement",
   "noob": "Débutant",
+  "arena": "Kolizeum",
   "team": "Equipe",
   "messageFrom": "de ?",
   "fightFrame": "FightFrame",
@@ -403,5 +404,6 @@
   "passive": "Passive",
   "suicidal": "Suicidaire",
   "fast": "Rapide",
-  "normal": "Normale"
+  "normal": "Normale",
+  "send": "Envoyer"
 }

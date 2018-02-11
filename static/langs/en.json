@@ -404,5 +404,6 @@
   "passive": "Passive",
   "suicidal": "Suicidal",
   "fast": "Fast",
-  "normal": "Normal"
+  "normal": "Normal",
+  "send": "Send"
 }

@@ -48,7 +48,7 @@ export default class ActionsManager {
   constructor(account: Account) {
     this.account = account;
     this.actionsQueue = [];
-    this.timeoutTimer = new TimerWrapper(this.timeoutTimerCallback, this, 60000, 60000);
+    this.timeoutTimer = new TimerWrapper(this.timeoutTimerCallback, this, 1, 60000);
 
     this.account.game.map.MapChanged.on(this.map_mapChanged.bind(this));
     this.account.game.managers.movements.MovementFinished.on(this.movements_movementFinished.bind(this));

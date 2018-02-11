@@ -125,7 +125,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                         this.props.account.game.chat.sendMessage(this.state.content, this.state.channel);
                         this.setState({content: ""});
                       }
-                    }}>Send</Button>
+                    }}>{LanguageManager.trans("send")}</Button>
                   </InputGroupAddon>
                 </InputGroup>
               </Col>

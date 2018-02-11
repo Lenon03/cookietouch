@@ -388,10 +388,10 @@ export default class ScriptsManager {
     if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
       this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterTombstone"));
       await this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
+      // Wait for a map change since after a free soul, we get teleported
+      await this.account.game.map.waitMapChange(10);
+      await sleep(1000);
     }
-    // Wait for a map change since after a free soul, we get teleported
-    await this.account.game.map.waitMapChange(10);
-    await sleep(1000);
     // Check if the character is a phantom (in case the user reconnects as a phantom and not a tombstone)
     if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM) {
       this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterPhantom"));

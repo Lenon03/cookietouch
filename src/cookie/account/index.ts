@@ -64,7 +64,7 @@ export default class Account implements IEntity {
     this.frames = new Frames(this);
     this.extensions = new Extensions(this);
     this.statistics = new StatisticsManager(this);
-    this.planificationTimer = new TimerWrapper(this.plannificationCallback, this, 30000, 30000);
+    this.planificationTimer = new TimerWrapper(this.plannificationCallback, this, 1, 30000);
 
     this.network.Disconnected.on(this.onNetworkDisconnected.bind(this));
     this.game.map.MapLoaded.on(this.onMapLoaded.bind(this));

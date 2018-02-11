@@ -31,7 +31,7 @@ export default class Jobs extends React.Component<IJobsProps, IJobsStates> {
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <Table striped bordered size="sm" responsive>

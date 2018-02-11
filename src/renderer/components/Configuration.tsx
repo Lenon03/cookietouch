@@ -27,7 +27,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <FormGroup>

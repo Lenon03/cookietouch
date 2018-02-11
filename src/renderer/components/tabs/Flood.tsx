@@ -48,7 +48,7 @@ export default class Flood extends React.Component<IFloodProps, IFloodStates> {
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <Button

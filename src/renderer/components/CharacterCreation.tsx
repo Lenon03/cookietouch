@@ -21,7 +21,7 @@ export default class CharacterCreation extends React.Component<ICharacterCreatio
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           CharacterCreation
         </Row>

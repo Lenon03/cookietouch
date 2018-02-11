@@ -63,7 +63,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <Card body inverse color="dark">

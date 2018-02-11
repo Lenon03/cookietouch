@@ -32,7 +32,7 @@ export default class Equipments extends React.Component<IEquipmentsProps, IEquip
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <Table striped bordered size="sm" responsive>

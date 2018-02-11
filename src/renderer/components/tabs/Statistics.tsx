@@ -56,7 +56,7 @@ export default class Statistics extends React.Component<IStatisticsProps, IStati
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col xs="4">
             {LanguageManager.trans("achievementsFinished")} {this.state.achievementsFinished}

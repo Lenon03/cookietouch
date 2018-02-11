@@ -57,7 +57,7 @@ export default class Bid extends React.Component<IBidProps, IBidStates> {
 
   public render() {
     return (
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <Row>

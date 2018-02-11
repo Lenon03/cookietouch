@@ -63,7 +63,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col>
             <Card body inverse color="dark">
@@ -277,7 +277,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
                     }
                     this.setState({toAddToAuthorized: value});
                   }}/>
-                <InputGroupAddon addontype="append">
+                <InputGroupAddon addonType="append">
                   <Button disabled={this.state.characterConnected ? false : true}
                           color="light" size="sm" onClick={async () => {
                     this.props.account.config.authorizedTradesFrom.push(this.state.toAddToAuthorized);

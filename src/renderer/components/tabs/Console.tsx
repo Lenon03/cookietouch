@@ -77,7 +77,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col>
             <div id="consoleTabDiv">
@@ -115,7 +115,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                     onChange={(event) => {
                       this.setState({ content: event.target.value });
                     }} />
-                  <InputGroupAddon addontype="append">
+                  <InputGroupAddon addonType="append">
                     <Button color="secondary" size="sm" onClick={() => {
                       if (this.state.content !== "") {
                         this.props.account.game.chat.sendMessage(this.state.content, this.state.channel);

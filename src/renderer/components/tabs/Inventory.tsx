@@ -69,7 +69,7 @@ export default class Inventory extends React.Component<IInventoryProps, IInvento
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Nav pills>
             <NavItem>

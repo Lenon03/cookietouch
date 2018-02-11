@@ -24,7 +24,7 @@ export default class Map extends React.Component<IMapProps, IMapStates> {
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col>
             <Button size="sm" color="danger" onClick={() => this.attack()}>{LanguageManager.trans("attack")}</Button>

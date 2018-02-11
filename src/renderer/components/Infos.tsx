@@ -72,7 +72,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col xs="2">
             <Button size="sm" color={this.props.account.network.connected ? "danger" : "success"} onClick={() => {

@@ -90,7 +90,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col>
             <div id="tooltip"></div>

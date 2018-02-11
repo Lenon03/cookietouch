@@ -27,7 +27,7 @@ export default class Character extends React.Component<ICharacterProps, ICharact
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Nav pills>
             <NavItem>

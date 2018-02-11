@@ -135,7 +135,7 @@ export default class Fights extends React.Component<IFightsProps, IFightsStates>
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Nav pills>
             <NavItem>

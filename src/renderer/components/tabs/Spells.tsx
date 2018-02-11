@@ -25,20 +25,18 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
   }
 
   public componentDidMount() {
-    this.props.account.logger.logDofus("TESTING", "ON StatsUpdated");
     this.props.account.game.character.StatsUpdated.on(this.statsUpdated.bind(this));
     this.props.account.game.character.SpellsUpdated.on(this.spellsUpdated.bind(this));
   }
 
   public componentWillUnmount() {
-    this.props.account.logger.logDofus("TESTING", "OFF StatsUpdated");
     this.props.account.game.character.StatsUpdated.off(this.statsUpdated.bind(this));
     this.props.account.game.character.SpellsUpdated.off(this.spellsUpdated.bind(this));
   }
 
   public render() {
     return (
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col>
             <h4>{LanguageManager.trans("spellsPoints", this.state.spellsPoints)}</h4>
@@ -76,7 +74,6 @@ export default class Spells extends React.Component<ISpellsProps, ISpellsStates>
   }
 
   private statsUpdated() {
-    this.props.account.logger.logDofus("TESTING", "IN StatsUpdated");
     this.setState({spellsPoints: this.props.account.game.character.stats.spellsPoints});
   }
 

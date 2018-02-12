@@ -20,7 +20,6 @@ import StatedElement from "@protocol/network/types/StatedElement";
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import { parseDn } from "builder-util-runtime";
 import MonstersGroupEntry from "./entities/MonstersGroupEntry";
 import NpcEntry from "./entities/NpcEntry";
 import PlayerEntry from "./entities/PlayerEntry";
@@ -303,15 +302,10 @@ export default class Map implements IClearable {
     }
 
     for (const interactive of message.interactiveElements) {
-      if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
-        const parsed = interactive as InteractiveElement;
-        this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
-      }
+      this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
     }
     for (const stated of message.statedElements) {
-      if (stated._type === "StatedElement") {
-        this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
-      }
+      this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
     }
 
     // Doors
@@ -322,7 +316,7 @@ export default class Map implements IClearable {
         if (graph.g === 21000) {
           this.teleportableCells.push(kvp.key);
         } else { // Check for other usable interactives (like doors)
-          const interactive = this.getInteractiveElement(graph.cellId);
+          const interactive = this.getInteractiveElement(graph.id);
 
           if (interactive === null) {
             continue;
@@ -331,7 +325,7 @@ export default class Map implements IClearable {
           // Check if this element is a phenix
           // (a phenix doesn't have skills that's why we check here)
           if (graph.g === 7521) {
-            this._phenixs.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
+            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           }
 
           if (!interactive.usable) {
@@ -342,14 +336,14 @@ export default class Map implements IClearable {
           if (graph.g === 15363 || graph.g === 38003) {
             this.zaap = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 15004) {
-            // zaapi
+            // Zaapi
             this.zaapi = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 12367) {
-            // locked storage
-            this._lockedStorages.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
+            // Locked Storages
+            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           } else if (Map.doorTypeIds.includes(interactive.elementTypeId) &&
             Map.doorSkillIds.includes(interactive.enabledSkills[0].id)) {
-            this._doors.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
+            this._doors.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
           }
         }
       }

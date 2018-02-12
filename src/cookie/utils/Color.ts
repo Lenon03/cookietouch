@@ -20,15 +20,15 @@ export default class Color {
         this.g = parseInt(res[2], 10);
         this.b = parseInt(res[3], 10);
         this.a = res[5] ? parseFloat(res[5]) : 1;
-        if (this.a > 1) {
-          this.a /= 255;
-        }
       }
     } else {
       this.r = r;
       this.g = g;
       this.b = b;
       this.a = a || 1;
+    }
+    if (this.a > 1) {
+      this.a /= 255;
     }
   }
 

@@ -29,6 +29,7 @@ interface IMapViewerStates {
   path: number[];
   selectedCellId: number;
   showCellIds: boolean;
+  showReal: boolean;
 }
 
 export default class MapViewer extends React.Component<IMapViewerProps, IMapViewerStates> {
@@ -41,7 +42,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
   private readonly ourPlayerBrush = new Color(0, 0, 255);
   private readonly monstersGroupsBrush = new Color(255, 139, 0, 0);
   private readonly playersBrush = new Color(255, 81, 113, 202);
-  private readonly doorsBrush = new Color(255, 150, 75, 13);
+  private readonly doorsBrush = new Color(255, 150, 75, 133);
   private readonly interactivesBrush = new Color(255, 1, 143, 140);
   private readonly npcsBrush = new Color(255, 179, 120, 211);
   private readonly sunImage = "21000.png";
@@ -55,6 +56,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       path: [],
       selectedCellId: -1,
       showCellIds: false,
+      showReal: false,
     };
 
     this.initCells();
@@ -97,17 +99,17 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       <Container fluid={true}>
         <Row>
           <Col>
-            {/* <img style={{ display: "none" }} id="mapimg" /> */}
-            {/* {this.props.account.game.map.data ? this.props.account.game.map.data.midgroundLayer.keys().map((cellId, index) => (
+            <img style={{ display: "none" }} id="mapimg" />
+            {this.props.account.game.map.data ? this.props.account.game.map.data.midgroundLayer.keys().map((cellId, index) => (
               this.props.account.game.map.data.midgroundLayer.getValue(cellId).map((g, index2) => (
-                <img key={`${index}-${index2}`} style={{ display: "none" }} id={`g-${cellId}-${g.g}`} />
+                g.g ? <img key={`${index}-${index2}`} style={{ display: "none" }} id={`g-${cellId}-${g.g}`} /> : ""
               ))
-            )) : ""} */}
+            )) : ""}
             <div id="tooltip"></div>
             <canvas id="mapStatus"
               ref="canvas"
-              width={DTConstants.tileWidth * (DTConstants.MAP_WIDTH + 1)}
-              height={DTConstants.tileHeight * (DTConstants.MAP_HEIGHT + 1)}></canvas>
+              width={DTConstants.TILE_WIDTH * (DTConstants.MAP_WIDTH + 0.5)}
+              height={DTConstants.TILE_HEIGHT * (DTConstants.MAP_HEIGHT + 0.5)}></canvas>
           </Col>
           <Col>
             <FormGroup check>
@@ -119,6 +121,17 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
                     this.buildMap();
                   }} />
                 Cells ID
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input type="checkbox"
+                  checked={this.state.showReal}
+                  onChange={(event) => {
+                    this.setState({ showReal: event.target.checked });
+                    this.buildMap();
+                  }} />
+                Real MAP
               </Label>
             </FormGroup>
           </Col>
@@ -216,13 +229,13 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         const coords = this.cellCoords(cell);
         const x = coords.x;
         const y = coords.y;
-        const startPtX = x * (DTConstants.tileWidth) + (y % 2 === 1 ? (DTConstants.tileWidth) / 2 : 0);
-        const startPtY = y * (DTConstants.tileHeight) / 2;
+        const startPtX = x * (DTConstants.TILE_WIDTH) + (y % 2 === 1 ? (DTConstants.TILE_WIDTH) / 2 : 0);
+        const startPtY = y * (DTConstants.TILE_HEIGHT) / 2;
         this.cells.Add(new MapViewerCell([
-          new Point(startPtX + (DTConstants.tileWidth) / 2, startPtY),
-          new Point(startPtX + (DTConstants.tileWidth), startPtY + (DTConstants.tileHeight) / 2),
-          new Point(startPtX + (DTConstants.tileWidth) / 2, startPtY + (DTConstants.tileHeight)),
-          new Point(startPtX, startPtY + (DTConstants.tileHeight) / 2),
+          new Point(startPtX + (DTConstants.TILE_WIDTH) / 2, startPtY),
+          new Point(startPtX + (DTConstants.TILE_WIDTH), startPtY + (DTConstants.TILE_HEIGHT) / 2),
+          new Point(startPtX + (DTConstants.TILE_WIDTH) / 2, startPtY + (DTConstants.TILE_HEIGHT)),
+          new Point(startPtX, startPtY + (DTConstants.TILE_HEIGHT) / 2),
         ]));
         cell++;
       }
@@ -240,9 +253,19 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     const c = this.refs.canvas as HTMLCanvasElement;
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
-    // const img = document.getElementById("mapimg") as HTMLImageElement;
-    // img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id}.jpg`;
-    // ctx.drawImage(img, 0, 0, 1267, 866, 0, 0, c.width, c.height);
+
+    if (this.state.showReal) {
+      this.walkableCellBrush.a = 0.5;
+      this.losCellBrush.a = 0.5;
+      this.obstacleCellBrush.a = 0.5;
+      const img = document.getElementById("mapimg") as HTMLImageElement;
+      img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id}.jpg`;
+      ctx.drawImage(img, 0, 0, DTConstants.ORIGINAL_WIDTH, 866, 0, 0, c.width, c.height);
+    } else {
+      this.walkableCellBrush.a = 1;
+      this.losCellBrush.a = 1;
+      this.obstacleCellBrush.a = 1;
+    }
 
     for (let i = 0; i < this.cells.Count(); i++) {
       const brush = this.GetCellBrush(i);
@@ -259,17 +282,21 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         // }
       }
 
-      // if (this.props.account.game.map.data.midgroundLayer.containsKey(i)) {
-      //   const gs = this.props.account.game.map.data.midgroundLayer.getValue(i);
-      //   for (const g of gs) {
-      //     const img2 = document.getElementById(`g-${i}-${g.g}`) as HTMLImageElement;
-      //     if (!img2) {
-      //       return;
-      //     }
-      //     img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${g.g}.png`;
-      //     ctx.drawImage(img2, 0, 0, g.cw, g.ch, g.x, g.y, g.cw, g.ch);
-      //   }
-      // }
+      if (this.state.showReal && this.props.account.game.map.data.midgroundLayer.containsKey(i)) {
+        const gs = this.props.account.game.map.data.midgroundLayer.getValue(i);
+        for (const g of gs) {
+          if (g.g) {
+            const img2 = document.getElementById(`g-${i}-${g.g}`) as HTMLImageElement;
+            img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${g.g}.png`;
+            ctx.drawImage(img2, 0, 0, g.cw, g.ch,
+                          g.x / DTConstants.ORIGINAL_WIDTH * c.width + DTConstants.TILE_WIDTH / 2,
+                          g.y / DTConstants.ORIGINAL_HEIGHT * c.height + DTConstants.TILE_HEIGHT / 2,
+                          g.cw / 1267 * c.width,
+                          g.ch / 866 * c.height,
+                        );
+          }
+        }
+      }
 
       if (this.state.showCellIds) {
         const cell = this.cells.ElementAt(i);
@@ -380,10 +407,10 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       let usable: string;
       if (interactive.enabledSkills.length === 0) {
         resp = await DataManager.get<Skills>(DataTypes.Skills, interactive.disabledSkills[0].id);
-        usable = "Usable";
+        usable = "Not Usable";
       } else {
         resp = await DataManager.get<Skills>(DataTypes.Skills, interactive.enabledSkills[0].id);
-        usable = "Not Usable";
+        usable = "Usable";
       }
       const respItem = await DataManager.get<Items>(DataTypes.Items, resp[0].object.gatheredRessourceItem);
       const obj = respItem[0].object;

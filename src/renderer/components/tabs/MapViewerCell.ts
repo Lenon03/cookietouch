@@ -51,7 +51,7 @@ export default class MapViewerCell {
     }
 
     drawingContext.beginPath();
-    drawingContext.arc(this.mid.x, this.mid.y, DTConstants.tileHeight / 3, 0, Math.PI * 2, false);
+    drawingContext.arc(this.mid.x, this.mid.y, DTConstants.TILE_HEIGHT / 3, 0, Math.PI * 2, false);
     drawingContext.closePath();
 
     if (brush) {
@@ -65,7 +65,7 @@ export default class MapViewerCell {
     }
 
     drawingContext.beginPath();
-    const s =  DTConstants.tileHeight * .6;
+    const s =  DTConstants.TILE_HEIGHT * .6;
     drawingContext.fillRect(this.mid.x - s / 2, this.mid.y - s / 2, s, s);
     drawingContext.closePath();
 

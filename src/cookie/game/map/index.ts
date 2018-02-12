@@ -322,7 +322,7 @@ export default class Map implements IClearable {
         if (graph.g === 21000) {
           this.teleportableCells.push(kvp.key);
         } else { // Check for other usable interactives (like doors)
-          const interactive = this.getInteractiveElement(graph.id);
+          const interactive = this.getInteractiveElement(graph.cellId);
 
           if (interactive === null) {
             continue;
@@ -331,7 +331,7 @@ export default class Map implements IClearable {
           // Check if this element is a phenix
           // (a phenix doesn't have skills that's why we check here)
           if (graph.g === 7521) {
-            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
+            this._phenixs.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
           }
 
           if (!interactive.usable) {
@@ -346,10 +346,10 @@ export default class Map implements IClearable {
             this.zaapi = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 12367) {
             // locked storage
-            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
+            this._lockedStorages.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
           } else if (Map.doorTypeIds.includes(interactive.elementTypeId) &&
             Map.doorSkillIds.includes(interactive.enabledSkills[0].id)) {
-            this._doors.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
+            this._doors.add(graph.cellId, new ElementInCellEntry(interactive, kvp.key));
           }
         }
       }

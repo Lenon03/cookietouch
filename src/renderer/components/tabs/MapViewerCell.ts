@@ -47,7 +47,7 @@ export default class MapViewerCell {
 
   public DrawPie(drawingContext: CanvasRenderingContext2D, brush: Color) {
     if (brush) {
-      drawingContext.fillStyle = brush.toHex();
+      drawingContext.fillStyle = brush.toRgba();
     }
 
     drawingContext.beginPath();
@@ -61,7 +61,7 @@ export default class MapViewerCell {
 
   public DrawRectangle(drawingContext: CanvasRenderingContext2D, brush: Color) {
     if (brush) {
-      drawingContext.fillStyle = brush.toHex();
+      drawingContext.fillStyle = brush.toRgba();
     }
 
     drawingContext.beginPath();
@@ -115,11 +115,11 @@ export default class MapViewerCell {
 
   private DrawPolygonOrPolyline(target: CanvasRenderingContext2D, points: Point[], color?: Color, borderColor?: Color) {
     if (color) {
-      target.fillStyle = color.toHex();
+      target.fillStyle = color.toRgba();
     }
 
     if (borderColor) {
-      target.strokeStyle = borderColor.toHex();
+      target.strokeStyle = borderColor.toRgba();
       target.lineWidth = .5;
     }
 

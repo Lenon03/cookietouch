@@ -8,10 +8,12 @@ export default class DTConstants {
   public static staticDataVersion: string;
   public static config: any;
 
-  public static readonly tileWidth = 43 + 43 * 0.5;
-  public static readonly tileHeight = 21.5 + 21.5 * 0.35;
   public static readonly MAP_WIDTH = 14;
   public static readonly MAP_HEIGHT = 20;
+  // public static readonly tileWidth = 1267 / DTConstants.MAP_WIDTH;
+  // public static readonly tileHeight = 866 / DTConstants.MAP_HEIGHT;
+  public static readonly tileWidth = 43 + 43 * 0.5;
+  public static readonly tileHeight = 21.5 + 21.5 * 0.35;
 
   public static async Init() {
     this.config = await DTConstants.getConfig();

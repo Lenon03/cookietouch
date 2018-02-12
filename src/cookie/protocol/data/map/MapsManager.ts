@@ -1,3 +1,4 @@
+import { AtlasLayout, GraphicSizes } from "@/protocol/data/map/AtlasLayout";
 import DTConstants from "@protocol/DTConstants";
 import axios from "axios";
 import {remote} from "electron";
@@ -48,6 +49,15 @@ export default class MapsManager {
         map.midgroundLayer.add(parseInt(key, 10), values);
       }
     }
+    map.atlasLayout.width = json.atlasLayout.width;
+    map.atlasLayout.height = json.atlasLayout.height;
+    for (const key in json.atlasLayout.graphicsPositions) {
+      if (json.atlasLayout.graphicsPositions.hasOwnProperty(key)) {
+        const gs = json.atlasLayout.graphicsPositions[key] as GraphicSizes;
+        map.atlasLayout.graphicsPositions.add(parseInt(key, 10), gs);
+      }
+    }
+
     return map;
   }
 }

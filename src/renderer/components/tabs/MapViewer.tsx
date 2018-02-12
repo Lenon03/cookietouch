@@ -7,8 +7,9 @@ import NpcEntry from "@/game/map/entities/NpcEntry";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
 import ElementInCellEntry from "@/game/map/interactives/ElementInCellEntry";
 import StatedElementEntry from "@/game/map/interactives/StatedElementEntry";
-import DataManager from "@/protocol/data";
+import DataManager, { IDataResponse } from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
+import Skills from "@/protocol/data/classes/Skills";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
@@ -96,10 +97,10 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       <Container fluid={true}>
         <Row>
           <Col>
-            {/* <img style={{ display: "none" }} id="mapimg" />
-            {this.props.account.game.map.data ? this.props.account.game.map.data.midgroundLayer.values().map((graphs, index) => (
-              graphs.map((graph, index2) => (
-                <img key={index + index2} style={{ display: "none" }} id={`g-${graph.g}`} />
+            {/* <img style={{ display: "none" }} id="mapimg" /> */}
+            {/* {this.props.account.game.map.data ? this.props.account.game.map.data.midgroundLayer.keys().map((cellId, index) => (
+              this.props.account.game.map.data.midgroundLayer.getValue(cellId).map((g, index2) => (
+                <img key={`${index}-${index2}`} style={{ display: "none" }} id={`g-${cellId}-${g.g}`} />
               ))
             )) : ""} */}
             <div id="tooltip"></div>
@@ -230,8 +231,8 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
 
   private cellCoords(cellId: number) {
     return {
-      x: cellId % DTConstants.MAP_WIDTH, // X
-      y: Math.floor(cellId / DTConstants.MAP_WIDTH), // Y
+      x: cellId % DTConstants.MAP_WIDTH,
+      y: Math.floor(cellId / DTConstants.MAP_WIDTH),
     };
   }
 
@@ -240,8 +241,8 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
     // const img = document.getElementById("mapimg") as HTMLImageElement;
-    // img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id }.jpg`;
-    // ctx.drawImage(img, 0, 0, c.width, c.height, 0, 0, 1267, 866);
+    // img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id}.jpg`;
+    // ctx.drawImage(img, 0, 0, 1267, 866, 0, 0, c.width, c.height);
 
     for (let i = 0; i < this.cells.Count(); i++) {
       const brush = this.GetCellBrush(i);
@@ -261,10 +262,12 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       // if (this.props.account.game.map.data.midgroundLayer.containsKey(i)) {
       //   const gs = this.props.account.game.map.data.midgroundLayer.getValue(i);
       //   for (const g of gs) {
-      //     const img2 = document.getElementById(`g-${g.g}`) as HTMLImageElement;
+      //     const img2 = document.getElementById(`g-${i}-${g.g}`) as HTMLImageElement;
+      //     if (!img2) {
+      //       return;
+      //     }
       //     img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${g.g}.png`;
-      //     const tmp = this.cells.ElementAt(i);
-      //     ctx.drawImage(img2, tmp.mid.x, tmp.mid.y);
+      //     ctx.drawImage(img2, 0, 0, g.cw, g.ch, g.x, g.y, g.cw, g.ch);
       //   }
       // }
 
@@ -373,13 +376,19 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       htmlBuffer += `Door ${e.element.name ? `: ${e.element.name}` : ""} (${e.cellId})`;
     } else if (e instanceof StatedElementEntry) {
       const interactive = this.props.account.game.map.getInteractiveElement(e.id);
-      htmlBuffer += `[${interactive.elementTypeId}] ${interactive.name}`;
-      // const resp = await DataManager.get<Items>(DataTypes.Items, 289);
-      // if (resp) {
-      //   const obj = resp[0].object;
-      //   htmlBuffer += `<img height="20" width="20" src="${`${DTConstants.config.assetsUrl}/gfx/items/${obj.iconId}.png`}">`;
-      //   htmlBuffer += `[${interactive.elementTypeId}] ${interactive.name}`;
-      // }
+      let resp: Array<IDataResponse<Skills>>;
+      let usable: string;
+      if (interactive.enabledSkills.length === 0) {
+        resp = await DataManager.get<Skills>(DataTypes.Skills, interactive.disabledSkills[0].id);
+        usable = "Usable";
+      } else {
+        resp = await DataManager.get<Skills>(DataTypes.Skills, interactive.enabledSkills[0].id);
+        usable = "Not Usable";
+      }
+      const respItem = await DataManager.get<Items>(DataTypes.Items, resp[0].object.gatheredRessourceItem);
+      const obj = respItem[0].object;
+      htmlBuffer += `<img height="25" width="25" src="${`${DTConstants.config.assetsUrl}/gfx/items/${obj.iconId}.png`}">`;
+      htmlBuffer += ` (${usable}) [${interactive.elementTypeId}] ${interactive.name}`;
     }
 
     tooltip.innerHTML = htmlBuffer;

@@ -68,7 +68,7 @@ export default class FighterEntry {
   public UpdateGameActionFightPointsVariationMessage(message: GameActionFightPointsVariationMessage) {
     switch (message.actionId) {
       case 101:
-      case 101:
+      case 102:
       case 120:
         this.actionPoints += message.delta;
         break;

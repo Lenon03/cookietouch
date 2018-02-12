@@ -7,6 +7,9 @@ import NpcEntry from "@/game/map/entities/NpcEntry";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
 import ElementInCellEntry from "@/game/map/interactives/ElementInCellEntry";
 import StatedElementEntry from "@/game/map/interactives/StatedElementEntry";
+import DataManager from "@/protocol/data";
+import Items from "@/protocol/data/classes/Items";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import Point from "@/utils/Point";
@@ -93,6 +96,12 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       <Container fluid={true}>
         <Row>
           <Col>
+            {/* <img style={{ display: "none" }} id="mapimg" />
+            {this.props.account.game.map.data ? this.props.account.game.map.data.midgroundLayer.values().map((graphs, index) => (
+              graphs.map((graph, index2) => (
+                <img key={index + index2} style={{ display: "none" }} id={`g-${graph.g}`} />
+              ))
+            )) : ""} */}
             <div id="tooltip"></div>
             <canvas id="mapStatus"
               ref="canvas"
@@ -230,6 +239,9 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     const c = this.refs.canvas as HTMLCanvasElement;
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
+    // const img = document.getElementById("mapimg") as HTMLImageElement;
+    // img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id }.jpg`;
+    // ctx.drawImage(img, 0, 0, c.width, c.height, 0, 0, 1267, 866);
 
     for (let i = 0; i < this.cells.Count(); i++) {
       const brush = this.GetCellBrush(i);
@@ -245,6 +257,16 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         //   this.cells.ElementAt(i).DrawCross(ctx);
         // }
       }
+
+      // if (this.props.account.game.map.data.midgroundLayer.containsKey(i)) {
+      //   const gs = this.props.account.game.map.data.midgroundLayer.getValue(i);
+      //   for (const g of gs) {
+      //     const img2 = document.getElementById(`g-${g.g}`) as HTMLImageElement;
+      //     img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${g.g}.png`;
+      //     const tmp = this.cells.ElementAt(i);
+      //     ctx.drawImage(img2, tmp.mid.x, tmp.mid.y);
+      //   }
+      // }
 
       if (this.state.showCellIds) {
         const cell = this.cells.ElementAt(i);
@@ -298,16 +320,16 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
             this.showCellInfo(this.props.account.game.map.players.find((p) => p.cellId === cellId), cell.mid);
             return;
           } else if (this.props.account.game.map.doors.find((d) => d.cellId === cellId) !== undefined) {
-            this.showCellInfo(this.props.account.game.map.doors.find((d) => d.cellId === cellId), cell.mid, "door");
+            this.showCellInfo(this.props.account.game.map.doors.find((d) => d.cellId === cellId), cell.mid);
             return;
           } else if (this.props.account.game.map.statedElements.find((se) => se.cellId === cellId) !== undefined) {
             this.showCellInfo(this.props.account.game.map.statedElements.find((se) => se.cellId === cellId), cell.mid);
             return;
           } else if (this.props.account.game.map.zaap && this.props.account.game.map.zaap.cellId === cellId) {
-            this.showCellInfo(this.props.account.game.map.zaap, cell.mid, "zaap");
+            this.showCellInfo(this.props.account.game.map.zaap, cell.mid);
             return;
           } else if (this.props.account.game.map.zaapi && this.props.account.game.map.zaapi.cellId === cellId) {
-            this.showCellInfo(this.props.account.game.map.zaapi, cell.mid, "zaapi");
+            this.showCellInfo(this.props.account.game.map.zaapi, cell.mid);
             return;
           } else if (this.props.account.game.map.npcs.find((n) => n.cellId === cellId) !== undefined) {
             this.showCellInfo(this.props.account.game.map.npcs.find((n) => n.cellId === cellId), cell.mid);
@@ -320,22 +342,27 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
     this.hideCellInfo();
   }
 
-  private showCellInfo(e: FightPlayerEntry | FighterEntry | PlayerEntry |
-                       NpcEntry | MonstersGroupEntry | ElementInCellEntry | StatedElementEntry,
-                       point: Point, info?: string) {
+  private async showCellInfo(e: FightPlayerEntry | FighterEntry | PlayerEntry |
+                             NpcEntry | MonstersGroupEntry | ElementInCellEntry | StatedElementEntry,
+                             point: Point) {
     const tooltip = document.getElementById("tooltip");
     tooltip.style.display = "block";
 
     let htmlBuffer = "";
 
     if (e instanceof FightPlayerEntry) {
-      htmlBuffer += `${e.name} (${e.level})`;
+      htmlBuffer += `${e.name} (${e.level})<br>`;
+      htmlBuffer += `${e.lifePercent}%<br>`;
+      htmlBuffer += `PA: ${e.actionPoints}, PM: ${e.movementPoints}<br>`;
     } else if (e instanceof FighterEntry) {
-      htmlBuffer += `${e.contextualId} (${e.lifePercent}%)`;
+      htmlBuffer += `${e.contextualId}<br>`;
+      htmlBuffer += `${e.lifePercent}%<br>`;
+      htmlBuffer += `PA: ${e.actionPoints}, PM: ${e.movementPoints}<br>`;
     } else if (e instanceof PlayerEntry) {
-      htmlBuffer += `${e.name} (${e.level})`;
+      htmlBuffer += `${e.name} (${e.id})<br>`;
+      htmlBuffer += `Level ${e.level}`;
     } else if (e instanceof NpcEntry) {
-      htmlBuffer += `${e.name} (${e.npcId})`;
+      htmlBuffer += `${e.name} (${e.id})`;
     } else if (e instanceof MonstersGroupEntry) {
       htmlBuffer += `${e.monstersCount} Monsters (${e.totalLevel})<br>`;
       htmlBuffer += `- [${e.leader.genericId}] ${e.leader.name} (${e.leader.level})<br>`;
@@ -343,15 +370,16 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
         htmlBuffer += `- [${m.genericId}] ${m.name} (${m.level})<br>`;
       }
     } else if (e instanceof ElementInCellEntry) {
-      if (info === "zaap") {
-        htmlBuffer += `Zaap: ${e.element.id}`;
-      } else if (info === "zaapi") {
-        htmlBuffer += `Zaapi: ${e.element.id}`;
-      } else if (info === "door") {
-        htmlBuffer += `Door: ${e.element.id}`;
-      }
+      htmlBuffer += `Door ${e.element.name ? `: ${e.element.name}` : ""} (${e.cellId})`;
     } else if (e instanceof StatedElementEntry) {
-      htmlBuffer += `${e.id}`;
+      const interactive = this.props.account.game.map.getInteractiveElement(e.id);
+      htmlBuffer += `[${interactive.elementTypeId}] ${interactive.name}`;
+      // const resp = await DataManager.get<Items>(DataTypes.Items, 289);
+      // if (resp) {
+      //   const obj = resp[0].object;
+      //   htmlBuffer += `<img height="20" width="20" src="${`${DTConstants.config.assetsUrl}/gfx/items/${obj.iconId}.png`}">`;
+      //   htmlBuffer += `[${interactive.elementTypeId}] ${interactive.name}`;
+      // }
     }
 
     tooltip.innerHTML = htmlBuffer;

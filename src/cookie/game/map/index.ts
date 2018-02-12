@@ -4,6 +4,9 @@ import Areas from "@/protocol/data/classes/Areas";
 import MapPositions from "@/protocol/data/classes/MapPositions";
 import SubAreas from "@/protocol/data/classes/SubAreas";
 import {DataTypes} from "@/protocol/data/DataTypes";
+import MapComplementaryInformationsDataMessage from "@/protocol/network/messages/MapComplementaryInformationsDataMessage";
+import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
+import GameRolePlayNpcWithQuestInformations from "@/protocol/network/types/GameRolePlayNpcWithQuestInformations";
 import {sleep} from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
@@ -17,6 +20,7 @@ import StatedElement from "@protocol/network/types/StatedElement";
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
+import { parseDn } from "builder-util-runtime";
 import MonstersGroupEntry from "./entities/MonstersGroupEntry";
 import NpcEntry from "./entities/NpcEntry";
 import PlayerEntry from "./entities/PlayerEntry";
@@ -244,7 +248,7 @@ export default class Map implements IClearable {
     return this._players.getValue(id);
   }
 
-  public async UpdateMapComplementaryInformationsDataMessage(message: any) {
+  public async UpdateMapComplementaryInformationsDataMessage(message: MapComplementaryInformationsDataMessage) {
     this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("getMCIDM", message.mapId));
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
@@ -276,26 +280,31 @@ export default class Map implements IClearable {
     // Entities
     for (const actor of message.actors) {
       if (actor._type === "GameRolePlayCharacterInformations") {
-        if (actor.contextualId === this.account.game.character.id) {
-          this.playedCharacter = new PlayerEntry(actor);
+        const parsed = actor as GameRolePlayCharacterInformations;
+        if (parsed.contextualId === this.account.game.character.id) {
+          this.playedCharacter = new PlayerEntry(parsed);
         } else {
-          this._players.add(actor.contextualId, new PlayerEntry(actor));
+          this._players.add(parsed.contextualId, new PlayerEntry(parsed));
         }
       } else if (actor._type === "GameRolePlayMutantInformations") {
-        if (actor.ContextualId === this.account.game.character.id) {
-          this.playedCharacter = new PlayerEntry(actor);
+        const parsed = actor as GameRolePlayMutantInformations;
+        if (parsed.contextualId === this.account.game.character.id) {
+          this.playedCharacter = new PlayerEntry(parsed);
         } else {
-          this._players.add(actor.contextualId, new PlayerEntry(actor));
+          this._players.add(parsed.contextualId, new PlayerEntry(parsed));
         }
       } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
-        this._npcs.add(actor.contextualId, new NpcEntry(actor));
+        const parsed = actor as GameRolePlayNpcInformations;
+        this._npcs.add(actor.contextualId, new NpcEntry(parsed));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
-        this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(actor));
+        const parsed = actor as GameRolePlayGroupMonsterInformations;
+        this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(parsed));
       }
     }
 
     for (const interactive of message.interactiveElements) {
       if (interactive._type === "InteractiveElement" || interactive._type === "InteractiveElementWithAgeBonus") {
+        const parsed = interactive as InteractiveElement;
         this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
       }
     }

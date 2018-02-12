@@ -1,6 +1,6 @@
 import Type from "./Type";
 
-export default class GameRolePlayNpcWithQuestInformations extends Type {
+export default class GameRolePlayNpcQuestFlag extends Type {
   public contextualId: number;
   public disposition: any[];
   public look: any[];

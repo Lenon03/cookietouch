@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IDofusTouchConfig } from "./IDofusTouchConfig";
 
 export default class DTConstants {
   public static readonly MAIN_URL = "https://proxyconnection.touch.dofus.com";
@@ -6,7 +7,7 @@ export default class DTConstants {
   public static buildVersion: string;
   public static assetsVersion: string;
   public static staticDataVersion: string;
-  public static config: any;
+  public static config: IDofusTouchConfig;
 
   public static readonly MAP_WIDTH = 14;
   public static readonly MAP_HEIGHT = 20;
@@ -26,7 +27,7 @@ export default class DTConstants {
     this.buildVersion = await DTConstants.getBuildVersion();
   }
 
-  public static async getConfig(): Promise<any> {
+  public static async getConfig(): Promise<IDofusTouchConfig> {
     const response = await axios.get(`${DTConstants.MAIN_URL}/config.json`);
     return response.data;
   }
@@ -37,7 +38,14 @@ export default class DTConstants {
   }
 
   public static async getAppVersion(): Promise<string> {
-    const response = await axios.get("https://itunes.apple.com/lookup?id=1041406978");
+    const response = await axios.get("https://itunes.apple.com/lookup", {
+      params: {
+        country: "fr",
+        id: 1041406978,
+        lang: "fr",
+        limit: 1,
+      },
+    });
     return response.data.results[0].version;
   }
 

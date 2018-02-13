@@ -231,6 +231,11 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
 
   private selectedAccountChanged(account: Account) {
     this.setState({ selectedAccount: account });
+    const index = CookieMain.connectedAccounts.ToArray().indexOf(account);
+    if (index === -1) {
+      return;
+    }
+    this.setState({ activeAccount: `${index}` });
   }
 
   private entitiesUpdated() {
@@ -258,7 +263,7 @@ export default class Main extends React.Component<IMainProps, IMainStates> {
   private toggleAccount(tab: string) {
     if (this.state.activeAccount !== tab) {
       CookieMain.refreshSelectedAccount(parseInt(tab, 10));
-      this.setState({  activeAccount: tab });
+      this.setState({ activeAccount: tab });
     }
   }
 }

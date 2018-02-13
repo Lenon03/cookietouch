@@ -72,99 +72,97 @@ export default class SpellsManager {
     return SpellCastingResults.NOT_CASTED;
   }
 
-  private castAoeSpell(spell: Spell): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      if (spell.target === SpellTargets.ALLY || spell.target === SpellTargets.EMPTY_CELL) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
-      if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
+  private async castAoeSpell(spell: Spell): Promise<SpellCastingResults> {
+    if (spell.target === SpellTargets.ALLY || spell.target === SpellTargets.EMPTY_CELL) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+    if (await this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
+      return SpellCastingResults.NOT_CASTED;
+    }
 
-      const spellEntry = this.account.game.character.getSpell(spell.spellId);
-      const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
-      const spellData = spellDataResp[0].object;
-      const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
-      const spellLevel = spellLevelResp[0].object;
+    const spellEntry = this.account.game.character.getSpell(spell.spellId);
+    const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
+    const spellData = spellDataResp[0].object;
+    const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
+    const spellLevel = spellLevelResp[0].object;
 
-      // Get all the possible ranges
-      const entries: RangeNodeEntry[] = [];
-      // Include our current cell
-      let entry = this.getRangeNodeEntry(this.account.game.fight.playedFighter.cellId, null, spell, spellLevel);
+    // Get all the possible ranges
+    const entries: RangeNodeEntry[] = [];
+    // Include our current cell
+    let entry = this.getRangeNodeEntry(this.account.game.fight.playedFighter.cellId, null, spell, spellLevel);
+    if (entry.touchedEnemiesByCell.count() > 0) {
+      entries.push(entry);
+    }
+
+    for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight,
+      this.account.game.map.data, this.account.game.fight.playedFighter.cellId)) {
+      if (!kvp.value.reachable) {
+        continue;
+      }
+      if (kvp.value.ap > 0 || kvp.value.mp > 0) {
+        continue;
+      }
+      entry = this.getRangeNodeEntry(kvp.key, kvp.value, spell, spellLevel);
       if (entry.touchedEnemiesByCell.count() > 0) {
         entries.push(entry);
       }
+    }
 
-      for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight,
-        this.account.game.map.data, this.account.game.fight.playedFighter.cellId)) {
-        if (!kvp.value.reachable) {
+    // Get a cell where we can hit the most
+    // If we need to move, try to move with te lowest amount of mps (with the same number of touched enemies of course)
+    let cellId = -1;
+    let fromCellId = -1;
+    let node: { key: number, value: MoveNode } = null;
+    let touchedEnemies = 0;
+    let usedMps = 99;
+
+    for (const t of entries) {
+      for (const kvp of t.touchedEnemiesByCell) {
+        // Check hand to hand
+        if (spell.handToHand && !this.account.game.fight.isHandToHandWithAnEnemy(t.fromCellId)) {
           continue;
         }
-        if (kvp.value.ap > 0 || kvp.value.mp > 0) {
+        // Check if we can cast the spell first
+        if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, t.fromCellId, kvp.key) !== SpellInabilityReasons.NONE) {
           continue;
         }
-        entry = this.getRangeNodeEntry(kvp.key, kvp.value, spell, spellLevel);
-        if (entry.touchedEnemiesByCell.count() > 0) {
-          entries.push(entry);
+
+        // >= in case a cell uses less mp
+        if (kvp.value < touchedEnemies) {
+          continue;
+        }
+        if (kvp.value <= touchedEnemies && (kvp.value !== touchedEnemies || t.mpUsed > usedMps)) {
+          continue;
+        }
+        touchedEnemies = kvp.value;
+        cellId = kvp.key;
+        fromCellId = t.fromCellId;
+        usedMps = t.mpUsed;
+        if (t.node !== null) {
+          node = {key: fromCellId, value: t.node};
         }
       }
+    }
 
-      // Get a cell where we can hit the most
-      // If we need to move, try to move with te lowest amount of mps (with the same number of touched enemies of course)
-      let cellId = -1;
-      let fromCellId = -1;
-      let node: { key: number, value: MoveNode } = null;
-      let touchedEnemies = 0;
-      let usedMps = 99;
+    if (cellId === -1) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+    if (node === null) {
+      this.account.logger.logDebug(LanguageManager.trans("spellsManager"),
+        LanguageManager.trans("spellLaunchedAOE", spell.spellName, cellId, touchedEnemies));
+      await this.account.game.fight.launchSpell(spell.spellId, cellId);
+      return SpellCastingResults.CASTED;
+    } else {
+      // We need to move
+      this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("needToMoveToCast", fromCellId, spell.spellName));
+      // Set the spell to cast
+      this.spellIdToCast = spell.spellId;
+      this.targetCellId = cellId;
+      this.enemiesTouched = touchedEnemies;
 
-      for (const t of entries) {
-        for (const kvp of t.touchedEnemiesByCell) {
-          // Check hand to hand
-          if (spell.handToHand && !this.account.game.fight.isHandToHandWithAnEnemy(t.fromCellId)) {
-            continue;
-          }
-          // Check if we can cast the spell first
-          if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, t.fromCellId, kvp.key) !== SpellInabilityReasons.NONE) {
-            continue;
-          }
-
-          // >= in case a cell uses less mp
-          if (kvp.value < touchedEnemies) {
-            continue;
-          }
-          if (kvp.value <= touchedEnemies && (kvp.value !== touchedEnemies || t.mpUsed > usedMps)) {
-            continue;
-          }
-          touchedEnemies = kvp.value;
-          cellId = kvp.key;
-          fromCellId = t.fromCellId;
-          usedMps = t.mpUsed;
-          if (t.node !== null) {
-            node = {key: fromCellId, value: t.node};
-          }
-        }
-      }
-
-      if (cellId === -1) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
-      if (node === null) {
-        this.account.logger.logDebug(LanguageManager.trans("spellsManager"),
-          LanguageManager.trans("spellLaunchedAOE", spell.spellName, cellId, touchedEnemies));
-        await this.account.game.fight.launchSpell(spell.spellId, cellId);
-        return resolve(SpellCastingResults.CASTED);
-      } else {
-        // We need to move
-        this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("needToMoveToCast", fromCellId, spell.spellName));
-        // Set the spell to cast
-        this.spellIdToCast = spell.spellId;
-        this.targetCellId = cellId;
-        this.enemiesTouched = touchedEnemies;
-
-        await this.account.game.managers.movements.moveToCellInFight(node);
-        return resolve(SpellCastingResults.MOVED);
-      }
-    });
+      await this.account.game.managers.movements.moveToCellInFight(node);
+      return SpellCastingResults.MOVED;
+    }
   }
 
   private getRangeNodeEntry(fromCellId: number, node: MoveNode, spell: Spell, spellLevel: SpellLevels): RangeNodeEntry {
@@ -210,142 +208,134 @@ export default class SpellsManager {
     return n;
   }
 
-  private castSimpleSpell(spell: Spell): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        return resolve(SpellCastingResults.NOT_CASTED);
+  private async castSimpleSpell(spell: Spell): Promise<SpellCastingResults> {
+    if (await this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+
+    const target = this.getNearestTarget(spell);
+    if (target !== null) {
+      const sir = this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, this.account.game.fight.playedFighter.cellId, target.cellId);
+
+      if (sir === SpellInabilityReasons.NONE) {
+        this.account.logger.logDebug(
+          LanguageManager.trans("spellsManager"),
+          LanguageManager.trans("spellCasted", spell.spellName, (target as any).name, target.cellId)); // TODO: fix name
+        await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
+        return SpellCastingResults.CASTED;
       }
 
-      const target = this.getNearestTarget(spell);
-      if (target !== null) {
-        const sir = this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, this.account.game.fight.playedFighter.cellId, target.cellId);
-
-        if (sir === SpellInabilityReasons.NONE) {
-          this.account.logger.logDebug(
-            LanguageManager.trans("spellsManager"),
-            LanguageManager.trans("spellCasted", spell.spellName, (target as any).name, target.cellId)); // TODO: fix name
-          await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
-          return resolve(SpellCastingResults.CASTED);
-        }
-
-        if (sir === SpellInabilityReasons.NOT_IN_RANGE) {
-          return resolve(await this.moveToCastSimpleSpell(spell, target));
-        }
-      } else if (spell.target === SpellTargets.EMPTY_CELL) {
-        // A spell on empty cell is special case
-        return resolve(await this.castSpellOnEmptyCell(spell));
+      if (sir === SpellInabilityReasons.NOT_IN_RANGE) {
+        return await this.moveToCastSimpleSpell(spell, target);
       }
-      return resolve(SpellCastingResults.NOT_CASTED);
-    });
+    } else if (spell.target === SpellTargets.EMPTY_CELL) {
+      // A spell on empty cell is special case
+      return await this.castSpellOnEmptyCell(spell);
+    }
+    return SpellCastingResults.NOT_CASTED;
   }
 
-  private moveToCastSimpleSpell(spell: Spell, target: FighterEntry): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      // We'll move to cast the spell (if we can) with the lowest number of MP possible
-      let node: { key: number, value: MoveNode } = null;
-      let pmUsed = 99;
+  private async moveToCastSimpleSpell(spell: Spell, target: FighterEntry): Promise<SpellCastingResults> {
+    // We'll move to cast the spell (if we can) with the lowest number of MP possible
+    let node: { key: number, value: MoveNode } = null;
+    let pmUsed = 99;
 
-      for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
-        this.account.game.fight.playedFighter.cellId)) {
-        if (!kvp.value.reachable) {
-          continue;
-        }
-
-        // Only choose the safe paths
-        if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
-          continue;
-        }
-
-        if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId(kvp.key))) {
-          continue;
-        }
-
-        if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, kvp.key, target.cellId) !== SpellInabilityReasons.NONE) {
-          continue;
-        }
-
-        if (kvp.value.path.reachable.length <= pmUsed) {
-          node = kvp;
-          pmUsed = kvp.value.path.reachable.length;
-        }
+    for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
+      this.account.game.fight.playedFighter.cellId)) {
+      if (!kvp.value.reachable) {
+        continue;
       }
 
-      if (node !== null) {
-        this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("moveToCast", node.key, spell.spellName));
-        await this.account.game.managers.movements.moveToCellInFight(node);
-        return resolve(SpellCastingResults.MOVED);
+      // Only choose the safe paths
+      if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
+        continue;
       }
-      return resolve(SpellCastingResults.NOT_CASTED);
-    });
+
+      if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId(kvp.key))) {
+        continue;
+      }
+
+      if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, kvp.key, target.cellId) !== SpellInabilityReasons.NONE) {
+        continue;
+      }
+
+      if (kvp.value.path.reachable.length <= pmUsed) {
+        node = kvp;
+        pmUsed = kvp.value.path.reachable.length;
+      }
+    }
+
+    if (node !== null) {
+      this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("moveToCast", node.key, spell.spellName));
+      await this.account.game.managers.movements.moveToCellInFight(node);
+      return SpellCastingResults.MOVED;
+    }
+    return SpellCastingResults.NOT_CASTED;
   }
 
-  private castSpellOnEmptyCell(spell: Spell): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      if (this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
-      // In case we need to cast the spell on an empty case next to the character but all of them are taken
-      if (spell.target === SpellTargets.EMPTY_CELL && this.account.game.fight.getHandToHandEnemies().length === 4) {
-        return resolve(SpellCastingResults.NOT_CASTED);
-      }
+  private async castSpellOnEmptyCell(spell: Spell): Promise<SpellCastingResults> {
+    if (await this.account.game.fight.canLaunchSpell(spell.spellId) !== SpellInabilityReasons.NONE) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+    // In case we need to cast the spell on an empty case next to the character but all of them are taken
+    if (spell.target === SpellTargets.EMPTY_CELL && this.account.game.fight.getHandToHandEnemies().length === 4) {
+      return SpellCastingResults.NOT_CASTED;
+    }
 
-      const spellEntry = this.account.game.character.getSpell(spell.spellId);
-      const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
-      const spellData = spellDataResp[0].object;
-      const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
-      const spellLevel = spellLevelResp[0].object;
+    const spellEntry = this.account.game.character.getSpell(spell.spellId);
+    const spellDataResp = await DataManager.get<Spells>(DataTypes.Spells, spell.spellId);
+    const spellData = spellDataResp[0].object;
+    const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spellData.spellLevels[spellEntry.level - 1]);
+    const spellLevel = spellLevelResp[0].object;
 
-      const range = this.account.game.fight.getSpellRange(this.account.game.fight.playedFighter.cellId, spellLevel);
-      for (const t of range) {
-        if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, this.account.game.fight.playedFighter.cellId, t)
-          === SpellInabilityReasons.NONE) {
-          if (spell.handToHand && MapPoint.fromCellId(t).distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) !== 1) {
-            continue;
-          }
-          this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("spellCastedCell", spell.spellName, t));
-          await this.account.game.fight.launchSpell(spell.spellId, t);
-          return resolve(SpellCastingResults.CASTED);
+    const range = this.account.game.fight.getSpellRange(this.account.game.fight.playedFighter.cellId, spellLevel);
+    for (const t of range) {
+      if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, this.account.game.fight.playedFighter.cellId, t)
+        === SpellInabilityReasons.NONE) {
+        if (spell.handToHand && MapPoint.fromCellId(t).distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) !== 1) {
+          continue;
         }
+        this.account.logger.logDebug(LanguageManager.trans("spellsManager"), LanguageManager.trans("spellCastedCell", spell.spellName, t));
+        await this.account.game.fight.launchSpell(spell.spellId, t);
+        return SpellCastingResults.CASTED;
       }
-      return resolve(await this.moveToCastSpellOnEmptyCell(spell, spellLevel));
-    });
+    }
+    return await this.moveToCastSpellOnEmptyCell(spell, spellLevel);
   }
 
-  private moveToCastSpellOnEmptyCell(spell: Spell, spellLevel: SpellLevels): Promise<SpellCastingResults> {
-    return new Promise(async (resolve, reject) => {
-      // We'll move to cast the spell (if we can) with the lowest number of MP possible
-      let node: { key: number, value: MoveNode } = null;
-      let pmUsed = 99;
-      for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
-        this.account.game.fight.playedFighter.cellId)) {
-        if (!kvp.value.reachable) {
-          continue;
-        }
-        // Only choose the safe paths
-        if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
-          continue;
-        }
-        // if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId())) {
-        //   continue;
-        // }
-        const range = this.account.game.fight.getSpellRange(kvp.key, spellLevel);
-        for (const t of range) {
-          if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, kvp.key, t) !== SpellInabilityReasons.NONE) {
-            continue;
-          }
-          if (kvp.value.path.reachable.length >= pmUsed) {
-            continue;
-          }
-          node = kvp;
-          pmUsed = kvp.value.path.reachable.length;
-        }
-      }
-      if (node !== null) {
-        await this.account.game.managers.movements.moveToCellInFight(node);
-        return resolve(SpellCastingResults.MOVED);
-      }
-      return resolve(SpellCastingResults.NOT_CASTED);
-    });
+  private async moveToCastSpellOnEmptyCell(spell: Spell, spellLevel: SpellLevels): Promise<SpellCastingResults> {
+     // We'll move to cast the spell (if we can) with the lowest number of MP possible
+     let node: { key: number, value: MoveNode } = null;
+     let pmUsed = 99;
+     for (const kvp of FightsPathfinder.getReachableZone(this.account.game.fight, this.account.game.map.data,
+       this.account.game.fight.playedFighter.cellId)) {
+       if (!kvp.value.reachable) {
+         continue;
+       }
+       // Only choose the safe paths
+       if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
+         continue;
+       }
+       // if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId())) {
+       //   continue;
+       // }
+       const range = this.account.game.fight.getSpellRange(kvp.key, spellLevel);
+       for (const t of range) {
+         if (this.account.game.fight.canLaunchSpellOnTarget(spell.spellId, kvp.key, t) !== SpellInabilityReasons.NONE) {
+           continue;
+         }
+         if (kvp.value.path.reachable.length >= pmUsed) {
+           continue;
+         }
+         node = kvp;
+         pmUsed = kvp.value.path.reachable.length;
+       }
+     }
+     if (node !== null) {
+       await this.account.game.managers.movements.moveToCellInFight(node);
+       return SpellCastingResults.MOVED;
+     }
+     return SpellCastingResults.NOT_CASTED;
   }
 
   private getNearestTarget(spell: Spell): FighterEntry {

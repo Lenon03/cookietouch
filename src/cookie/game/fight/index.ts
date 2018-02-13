@@ -2,17 +2,17 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import GameActionFightCastRequestMessage from "@/protocol/network/messages/GameActionFightCastRequestMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
+import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import SpellLevels from "@protocol/data/classes/SpellLevels";
 import Spells from "@protocol/data/classes/Spells";
-import {FightOptionsEnum} from "@protocol/enums/FightOptionsEnum";
-import {FightTypeEnum} from "@protocol/enums/FightTypeEnum";
-import {GameActionFightInvisibilityStateEnum} from "@protocol/enums/GameActionFightInvisibilityStateEnum";
+import { FightOptionsEnum } from "@protocol/enums/FightOptionsEnum";
+import { FightTypeEnum } from "@protocol/enums/FightTypeEnum";
+import { GameActionFightInvisibilityStateEnum } from "@protocol/enums/GameActionFightInvisibilityStateEnum";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@protocol/network/messages/GameActionFightDispellableEffectMessage";
@@ -46,11 +46,11 @@ import GameFightMonsterInformations from "@protocol/network/types/GameFightMonst
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import {List} from "linqts";
+import { List } from "linqts";
 import FighterEntry from "./fighters/FighterEntry";
 import FightMonsterEntry from "./fighters/FightMonsterEntry";
 import FightPlayerEntry from "./fighters/FightPlayerEntry";
-import {SpellInabilityReasons} from "./SpellInabilityReasons";
+import { SpellInabilityReasons } from "./SpellInabilityReasons";
 
 export default class Fight implements IClearable {
   public type: FightTypeEnum;
@@ -228,7 +228,7 @@ export default class Fight implements IClearable {
     }
 
     if (!this.options.includes(option)) {
-      await this.account.network.sendMessageFree("GameFightOptionToggleMessage", {option});
+      await this.account.network.sendMessageFree("GameFightOptionToggleMessage", { option });
     }
   }
 
@@ -357,53 +357,49 @@ export default class Fight implements IClearable {
     return SpellShapes.getSpellEffectZone(this.account.game.map.data, spellLevel, fromCellId, targetCellId);
   }
 
-  public canLaunchSpell(spellId: number): SpellInabilityReasons {
+  public async canLaunchSpell(spellId: number): Promise<SpellInabilityReasons> {
     const spellEntry = this.account.game.character.getSpell(spellId);
 
     if (spellEntry === null) {
       return SpellInabilityReasons.UNKNOWN;
     }
 
-    DataManager.get<Spells>(DataTypes.Spells, spellId).then((response) => {
-      const spell = response[0].object;
-      DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
-        const spellLevel = response2[0].object;
+    const spellResp = await DataManager.get<Spells>(DataTypes.Spells, spellId);
+    const spell = spellResp[0].object;
+    const spellLevelResp = await DataManager.get<SpellLevels>(DataTypes.SpellLevels, spell.spellLevels[spellEntry.level - 1]);
+    const spellLevel = spellLevelResp[0].object;
 
-        if (this.playedFighter.actionPoints < spellLevel.apCost) {
-          return SpellInabilityReasons.ACTION_POINTS;
-        }
+    if (this.playedFighter.actionPoints < spellLevel.apCost) {
+      return SpellInabilityReasons.ACTION_POINTS;
+    }
 
-        if (spellLevel.maxCastPerTurn > 0 && this._totalSpellLaunches.containsKey(spellId)
-          && this._totalSpellLaunches.getValue(spellId) >= spellLevel.maxCastPerTurn) {
-          return SpellInabilityReasons.TOO_MANY_LAUNCHES;
-        }
+    if (spellLevel.maxCastPerTurn > 0 && this._totalSpellLaunches.containsKey(spellId)
+      && this._totalSpellLaunches.getValue(spellId) >= spellLevel.maxCastPerTurn) {
+      return SpellInabilityReasons.TOO_MANY_LAUNCHES;
+    }
 
-        if (this._spellsIntervals.containsKey(spellId)) {
-          return SpellInabilityReasons.COOLDOWN;
-        }
+    if (this._spellsIntervals.containsKey(spellId)) {
+      return SpellInabilityReasons.COOLDOWN;
+    }
 
-        if (spellLevel.initialCooldown > 0 && this.roundNumber <= spellLevel.initialCooldown) {
-          return SpellInabilityReasons.COOLDOWN;
-        }
+    if (spellLevel.initialCooldown > 0 && this.roundNumber <= spellLevel.initialCooldown) {
+      return SpellInabilityReasons.COOLDOWN;
+    }
 
-        if (spellLevel.effects.length > 0 && spellLevel.effects[0].effectId === 181
-          && this.invocationsCount >= this.totalStat(this.account.game.character.stats.summonableCreaturesBoost)) {
-          return SpellInabilityReasons.TOO_MANY_INVOCATIONS;
-        }
+    if (spellLevel.effects.length > 0 && spellLevel.effects[0].effectId === 181
+      && this.invocationsCount >= this.totalStat(this.account.game.character.stats.summonableCreaturesBoost)) {
+      return SpellInabilityReasons.TOO_MANY_INVOCATIONS;
+    }
 
-        const tmp = spellLevel.statesRequired.filter((s) => !this._effectsDurations.containsKey(s));
-        if (tmp !== undefined && tmp.length > 0) {
-          return SpellInabilityReasons.REQUIRED_STATE;
-        }
+    const tmp = spellLevel.statesRequired.filter((s) => !this._effectsDurations.containsKey(s));
+    if (tmp !== undefined && tmp.length > 0) {
+      return SpellInabilityReasons.REQUIRED_STATE;
+    }
 
-        const tmp2 = spellLevel.statesForbidden.filter((s) => this._effectsDurations.containsKey(s));
-        if (tmp2 !== undefined && tmp2.length > 0) {
-          return SpellInabilityReasons.FORBIDDEN_STATE;
-        }
-
-        return SpellInabilityReasons.NONE; // TODO: needed?
-      });
-    });
+    const tmp2 = spellLevel.statesForbidden.filter((s) => this._effectsDurations.containsKey(s));
+    if (tmp2 !== undefined && tmp2.length > 0) {
+      return SpellInabilityReasons.FORBIDDEN_STATE;
+    }
 
     return SpellInabilityReasons.NONE;
   }
@@ -655,34 +651,37 @@ export default class Fight implements IClearable {
 
   public async UpdateGameFightTurnEndMessage(message: GameFightTurnEndMessage) {
     const fighter = this.getFighter(message.id);
-    if (fighter !== null) {
-      if (fighter === this.playedFighter) {
-        this.isOurTurn = false;
-        this._totalSpellLaunches = new Dictionary<number, number>();
-        this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
-
-        // Effects
-        for (let i = this._effectsDurations.count() - 1; i >= 0; i--) {
-          const key = this._effectsDurations.keys()[i];
-          this._effectsDurations.changeValueForKey(key, this._effectsDurations.getValue(key) - 1);
-          if (this._effectsDurations.getValue(key) === 0) {
-            this._effectsDurations.remove(key);
-          }
-        }
-
-        // Spells
-        for (let i = this._spellsIntervals.count() - 1; i >= 0; i--) {
-          const key = this._spellsIntervals.keys()[i];
-          this._spellsIntervals.changeValueForKey(key, this._spellsIntervals.getValue(key) - 1);
-          if (this._spellsIntervals.getValue(key) === 0) {
-            this._spellsIntervals.remove(key);
-          }
-        }
-
-        this.onTurnEnded.trigger();
-      }
-      fighter.UpdateGameFightTurnEndMessage(message);
+    if (fighter === null) {
+      return;
     }
+    if (fighter === this.playedFighter) {
+      this.isOurTurn = false;
+      this._totalSpellLaunches = new Dictionary<number, number>();
+      this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
+
+      // Effects
+      for (let i = this._effectsDurations.count() - 1; i >= 0; i--) {
+        const key = this._effectsDurations.keys()[i];
+        const actualValue = this._effectsDurations.getValue(key);
+        this._effectsDurations.changeValueForKey(key, actualValue - 1);
+        if (actualValue - 1 === 0) {
+          this._effectsDurations.remove(key);
+        }
+      }
+
+      // Spells
+      for (let i = this._spellsIntervals.count() - 1; i >= 0; i--) {
+        const key = this._spellsIntervals.keys()[i];
+        const actualValue = this._spellsIntervals.getValue(key);
+        this._spellsIntervals.changeValueForKey(key, actualValue - 1);
+        if (actualValue - 1 === 0) {
+          this._spellsIntervals.remove(key);
+        }
+      }
+
+      this.onTurnEnded.trigger();
+    }
+    fighter.UpdateGameFightTurnEndMessage(message);
   }
 
   public async UpdateGameActionFightDispellableEffectMessage(message: GameActionFightDispellableEffectMessage) {
@@ -739,7 +738,7 @@ export default class Fight implements IClearable {
         value.changeValueForKey(message.destinationCellId, value.getValue(message.destinationCellId) + 1);
       } else {
         this._totalSpellLaunchesInCells.add(spell.id, new Dictionary<number, number>([
-          {key: message.destinationCellId, value: 1},
+          { key: message.destinationCellId, value: 1 },
         ]));
       }
     }

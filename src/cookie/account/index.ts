@@ -131,15 +131,9 @@ export default class Account implements IEntity {
     this.extensions.clear();
     this.state = AccountStates.CONNECTING;
     this.haapi.processHaapi(this.accountConfig.username, this.accountConfig.password)
-      .then(() => {
-        this.network.connect(randomString(16), DTConstants.config.dataUrl);
-        // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
-      })
-      .catch((error: Error) => {
-        if (error.message.includes("code 601")) {
-          this.logger.logError("", LanguageManager.trans("wrongCredentialsBanned"));
-        }
-      });
+      .then(() => this.network.connect(randomString(16), DTConstants.config.dataUrl))
+      .catch((error: Error) => this.logger.logError("", error.message));
+      // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
   }
 
   public stop() {

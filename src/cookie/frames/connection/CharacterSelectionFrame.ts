@@ -15,16 +15,11 @@ export default class CharacterSelectionFrame {
 
   private register() {
     this.account.dispatcher.register("CharactersListMessage", this.HandleCharactersListMessage, this);
-    this.account.dispatcher.register("CharacterNameSuggestionSuccessMessage",
-      this.HandleCharacterNameSuggestionSuccessMessage, this);
-    this.account.dispatcher.register("CharacterCreationResultMessage",
-      this.HandleCharacterCreationResultMessage, this);
-    this.account.dispatcher.register("CharacterSelectedSuccessMessage",
-      this.HandleCharacterSelectedSuccessMessage, this);
-    this.account.dispatcher.register("CharacterSelectedForceMessage",
-      this.HandleCharacterSelectedForceMessage, this);
-    this.account.dispatcher.register("GameContextCreateMessage",
-      this.HandleGameContextCreateMessage, this);
+    this.account.dispatcher.register("CharacterNameSuggestionSuccessMessage", this.HandleCharacterNameSuggestionSuccessMessage, this);
+    this.account.dispatcher.register("CharacterCreationResultMessage", this.HandleCharacterCreationResultMessage, this);
+    this.account.dispatcher.register("CharacterSelectedSuccessMessage", this.HandleCharacterSelectedSuccessMessage, this);
+    this.account.dispatcher.register("CharacterSelectedForceMessage", this.HandleCharacterSelectedForceMessage, this);
+    this.account.dispatcher.register("GameContextCreateMessage", this.HandleGameContextCreateMessage, this);
   }
 
   private async HandleCharactersListMessage(account: Account, message: CharactersListMessage) {

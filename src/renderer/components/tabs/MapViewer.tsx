@@ -260,7 +260,7 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
       this.obstacleCellBrush.a = 0.5;
       const img = document.getElementById("mapimg") as HTMLImageElement;
       img.src = `${DTConstants.config.assetsUrl}/backgrounds/${this.props.account.game.map.data.id}.jpg`;
-      ctx.drawImage(img, 0, 0, DTConstants.ORIGINAL_WIDTH, 866, 0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, DTConstants.ORIGINAL_WIDTH, DTConstants.ORIGINAL_HEIGHT, 0, 0, c.width, c.height);
     } else {
       this.walkableCellBrush.a = 1;
       this.losCellBrush.a = 1;
@@ -291,8 +291,8 @@ export default class MapViewer extends React.Component<IMapViewerProps, IMapView
             ctx.drawImage(img2, 0, 0, g.cw, g.ch,
                           g.x / DTConstants.ORIGINAL_WIDTH * c.width + DTConstants.TILE_WIDTH / 2,
                           g.y / DTConstants.ORIGINAL_HEIGHT * c.height + DTConstants.TILE_HEIGHT / 2,
-                          g.cw / 1267 * c.width,
-                          g.ch / 866 * c.height,
+                          g.cw / DTConstants.ORIGINAL_WIDTH * c.width,
+                          g.ch / DTConstants.ORIGINAL_HEIGHT * c.height,
                         );
           }
         }

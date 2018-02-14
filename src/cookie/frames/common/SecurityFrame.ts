@@ -16,6 +16,7 @@ export default class SecurityFrame {
     this.account.dispatcher.register("BasicLatencyStatsRequestMessage", this.HandleBasicLatencyStatsRequestMessage, this);
     this.account.dispatcher.register("TextInformationMessage", this.HandleTextInformationMessage, this);
     this.account.dispatcher.register("AccountLoggingKickedMessage", this.HandleAccountLoggingKickedMessage, this);
+    this.account.dispatcher.register("_ErrorPopupMessage", this.Handle_ErrorPopupMessage, this);
   }
 
   private async HandleRecaptchaRequestMessage(account: Account, data: any) {
@@ -51,5 +52,9 @@ export default class SecurityFrame {
   private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
     this.account.logger
       .logDebug(LanguageManager.trans("securityFrame"), LanguageManager.trans("kickedTime", data.days, data.hours, data.minutes));
+  }
+
+  private async Handle_ErrorPopupMessage(account: Account, data: any) {
+    this.account.logger.logError(data.title, data.text);
   }
 }

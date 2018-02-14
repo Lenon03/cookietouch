@@ -130,11 +130,12 @@ export default class Network implements IClearable {
     await this.send("sendMessage", {type: messageName, data});
   }
 
-  public async sendMessage(message: Message) {
-    const str = JSON.stringify(message);
-    const data = JSON.parse(str);
-    await this.sendMessageFree(message.constructor.name, data);
-  }
+  // Remove for now because class are rename in production mode...
+  // public async sendMessage(message: Message) {
+  //   const str = JSON.stringify(message);
+  //   const data = JSON.parse(str);
+  //   await this.sendMessageFree(message.constructor.name, data);
+  // }
 
   private setCurrentConnection() {
     this.socket.on("open", () => {

@@ -8,6 +8,5 @@ export default class GameFightTurnStartMessage extends Message {
     super();
     this.id = id;
     this.waitTime = waitTime;
-
   }
 }

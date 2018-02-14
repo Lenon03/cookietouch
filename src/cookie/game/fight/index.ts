@@ -244,8 +244,8 @@ export default class Fight implements IClearable {
     //     targetId: cellId,
     //   });
     // } else {
-    // await this.account.network.sendMessageFree("GameActionFightCastRequestMessage", { spellId, cellId });
-    await this.account.network.sendMessage(new GameActionFightCastRequestMessage(spellId, cellId));
+    await this.account.network.sendMessageFree("GameActionFightCastRequestMessage", { spellId, cellId });
+    // await this.account.network.sendMessage(new GameActionFightCastRequestMessage(spellId, cellId));
     // }
   }
 

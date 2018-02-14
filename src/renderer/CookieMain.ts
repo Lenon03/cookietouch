@@ -126,4 +126,9 @@ export default class CookieMain {
     this.onEntitiesUpdated.trigger();
     this.onSelectedAccountChanged.trigger(this.selectedAccount);
   }
+
+  // For now to communicate between AddAccountForm And AccountsList
+  public static refreshEntities() {
+    this.onEntitiesUpdated.trigger();
+  }
 }

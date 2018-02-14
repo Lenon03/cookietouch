@@ -62,9 +62,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
   }
 
   private anticaptchaChanged(e) {
-    this.setState({
-      anticaptchaKey: e.target.value,
-    });
+    this.setState({ anticaptchaKey: e.target.value });
     GlobalConfiguration.anticaptchaKey = e.target.value;
   }
 
@@ -74,9 +72,7 @@ export default class Configuration extends React.Component<IConfigurationProps, 
   }
 
   private showDebugMessagesChanged(event) {
-    this.setState({
-      showDebugMessages: event.target.checked,
-    });
+    this.setState({ showDebugMessages: event.target.checked });
     GlobalConfiguration.showDebugMessages = event.target.checked;
   }
 }

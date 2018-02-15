@@ -7,10 +7,10 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import {remote} from "electron";
 import * as React from "react";
 import {Button, Col, Container, Progress, Row, UncontrolledTooltip} from "reactstrap";
+import CookieMain from "../CookieMain";
 
 interface IInfosProps {
   account: Account;
-  removeSelectedAccount: () => void;
 }
 
 interface IInfosStates {
@@ -115,7 +115,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
           <Col xs="2">
             <Button size="sm"
                     outline color="danger" onClick={() => {
-              this.props.removeSelectedAccount();
+              this.removeSelectedAccount();
             }}
             >
               {LanguageManager.trans("remove")}
@@ -198,6 +198,10 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
 
   private pauseScript() {
     this.props.account.scripts.stopScript(LanguageManager.trans("userStopScript"));
+  }
+
+  private removeSelectedAccount() {
+    CookieMain.removeSelectedAccount();
   }
 
   private scriptLoaded(scriptName: string) {

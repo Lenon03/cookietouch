@@ -3,14 +3,23 @@ import AccountConfiguration from "@/configurations/accounts/AccountConfiguration
 import Group from "@/groups/Group";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
-import {sleep} from "@/utils/Time";
-import {List} from "linqts";
+import { sleep } from "@/utils/Time";
+import { List } from "linqts";
 
 export default class CookieMain {
   public static entities = new List<IEntity>();
-  public static selectedAccount: Account = null;
+  private static _selectedAccount: Account = null;
   private static readonly onSelectedAccountChanged = new LiteEvent<Account>();
   private static readonly onEntitiesUpdated = new LiteEvent<void>();
+
+  public static get selectedAccount() {
+    return this._selectedAccount;
+  }
+
+  public static set selectedAccount(account: Account) {
+    this._selectedAccount = account;
+    this.onSelectedAccountChanged.trigger(this._selectedAccount);
+  }
 
   public static get connectedAccounts(): List<Account> {
     return this.entities.Select((e) => {
@@ -35,7 +44,6 @@ export default class CookieMain {
       this.entities.Add(account);
       this.onEntitiesUpdated.trigger();
       this.selectedAccount = account;
-      this.onSelectedAccountChanged.trigger(this.selectedAccount);
       account.start();
     });
   }
@@ -46,7 +54,6 @@ export default class CookieMain {
     this.entities.Add(group);
     this.onEntitiesUpdated.trigger();
     this.selectedAccount = group.chief;
-    this.onSelectedAccountChanged.trigger(this.selectedAccount);
     group.connect();
   }
 
@@ -109,7 +116,12 @@ export default class CookieMain {
     }
   }
 
-  public static refreshSelectedAccount(index: number) {
+  // For now to communicate between AddAccountForm And AccountsList
+  public static refreshEntities() {
+    this.onEntitiesUpdated.trigger();
+  }
+
+  private static refreshSelectedAccount(index: number) {
     // If there are no account left, set it to null
     if (this.entities.Count() === 0 || index === -1) {
       this.selectedAccount = null;
@@ -125,10 +137,5 @@ export default class CookieMain {
     }
     this.onEntitiesUpdated.trigger();
     this.onSelectedAccountChanged.trigger(this.selectedAccount);
-  }
-
-  // For now to communicate between AddAccountForm And AccountsList
-  public static refreshEntities() {
-    this.onEntitiesUpdated.trigger();
   }
 }

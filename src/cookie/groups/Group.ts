@@ -66,16 +66,12 @@ export default class Group implements IEntity {
 
   public connect() {
     this.chief.start();
-    this.members.ForEach((t: Account) => {
-      t.start();
-    });
+    this.members.ForEach((t: Account) => t.start());
   }
 
   public disconnect() {
     this.chief.stop();
-    this.members.ForEach((t: Account) => {
-      t.stop();
-    });
+    this.members.ForEach((t: Account) => t.stop());
   }
 
   public membersCleaningAndClearing() {

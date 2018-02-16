@@ -48,6 +48,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
       showSeekMessages: true,
       status: PlayerStatusEnum.PLAYER_STATUS_UNKNOWN,
     };
+
     this.commandProcessor = new CommandProcessor("/");
     this.commandProcessor.registerCommandHandler("sendMessage", new SendMessageCommand());
   }

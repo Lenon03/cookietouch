@@ -6,6 +6,8 @@ import Account from "@account";
 import * as moment from "moment";
 import * as React from "react";
 import { Button, Card, CardTitle, Col, Container, FormGroup, Input, InputGroup, InputGroupAddon, Label, Row } from "reactstrap";
+import CommandProcessor from "./Commands/CommandProcessor";
+import SendMessageCommand from "./Commands/Handlers/SendMessageCommand";
 
 interface IConsoleProps {
   account: Account;
@@ -28,6 +30,7 @@ interface IConsoleStates {
 }
 
 export default class Console extends React.Component<IConsoleProps, IConsoleStates> {
+  private commandProcessor: CommandProcessor;
 
   constructor(props: IConsoleProps) {
     super(props);
@@ -45,6 +48,8 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
       showSeekMessages: true,
       status: PlayerStatusEnum.PLAYER_STATUS_UNKNOWN,
     };
+    this.commandProcessor = new CommandProcessor("/");
+    this.commandProcessor.registerCommandHandler("sendMessage", new SendMessageCommand());
   }
 
   public componentDidMount() {
@@ -117,10 +122,15 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
                     }} />
                   <InputGroupAddon addonType="append">
                     <Button color="secondary" size="sm" onClick={() => {
-                      if (this.state.content !== "") {
-                        this.props.account.game.chat.sendMessage(this.state.content, this.state.channel);
-                        this.setState({ content: "" });
+                      if (this.state.content === "") {
+                        return;
                       }
+
+                      if (!this.commandProcessor.processCommand(this.state.content, this.props.account)) {
+                        this.props.account.game.chat.sendMessage(this.state.content, this.state.channel);
+                      }
+
+                      this.setState({ content: "" });
                     }}>{LanguageManager.trans("send")}</Button>
                   </InputGroupAddon>
                 </InputGroup>

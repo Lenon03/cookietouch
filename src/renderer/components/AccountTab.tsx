@@ -52,6 +52,7 @@ export default class AccountTab extends React.Component<IAccountTabProps, IAccou
     }
     return (
       <Container fluid={true}>
+        {this.state.selectedAccount.accountConfig.username}
         <Infos account={this.state.selectedAccount} />
         <Nav pills justified>
           <NavItem>

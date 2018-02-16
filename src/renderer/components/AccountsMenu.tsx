@@ -32,25 +32,26 @@ export default class AccountsMenu extends React.Component<IAccountsMenuProps, IA
   }
 
   public render() {
+    let mydata = null;
+    {
+      mydata = this.state.connectedAccounts.ToArray().map((e, index) => {
+        if (e.hasGroup) {
+          return <Container key={index} fluid={true}>
+            <AccountItem account={e.group.chief} />
+            {e.group.members.ToArray().map((m, idx) => (
+              <AccountItem key={idx} account={m} />
+            ))}
+          </Container>;
+        } else {
+          return <AccountItem key={index} account={e} />;
+        }
+      });
+    }
+
     return (
       <Container fluid={true}>
         <ListGroup>
-          {this.state.connectedAccounts.ToArray().map((e, index) => {
-            if (e.hasGroup) {
-              return (
-                <Container key={index} fluid={true}>
-                  <AccountItem account={e.group.chief} />
-                  {e.group.members.ToArray().map((m, idx) => (
-                    <AccountItem key={idx} account={m}/>
-                  ))}
-                </Container>
-              );
-            } else {
-              return (
-                <AccountItem key={index} account={e} />
-              );
-            }
-          })}
+          {mydata}
         </ListGroup>
       </Container>
     );

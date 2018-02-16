@@ -806,7 +806,7 @@ export default class ScriptsManager {
     (global as any).API[this.account.accountConfig.username] = this.api;
 
     (global as any).API[this.account.accountConfig.username].isFighting = () => this.account.isFighting;
-    (global as any).API[this.account.accountConfig.username].isGathering = () => this.account.isInDialog;
+    (global as any).API[this.account.accountConfig.username].isGathering = () => this.account.isGathering;
     (global as any).API[this.account.accountConfig.username].isInDialog = () => this.account.isInDialog;
 
     (global as any).API[this.account.accountConfig.username].printMessage = (message: string) => {

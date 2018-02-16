@@ -63,11 +63,12 @@ export default class Character {
     return this.onSpellsUpdated.expose();
   }
 
-  get freeSoul() {
+  public freeSoul() {
     if (this.lifeStatus !== PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
       return false;
     }
 
+    this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
     return true;
   }
 

@@ -64,8 +64,8 @@ export default class CharacterAPI {
     return this.account.game.character.inventory.kamas;
   }
 
-  public get freeSoul(): boolean {
-    return this.account.game.character.freeSoul;
+  public freeSoul(): boolean {
+    return this.account.game.character.freeSoul();
   }
 
   public sit() {

@@ -5,6 +5,7 @@
     "removeComments": true,
     "jsx": "react",
     "strict": false,
+    "noUnusedParameters": false,
     "noUnusedLocals": false,
     "noImplicitAny": false,
     "baseUrl": "./src",

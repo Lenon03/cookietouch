@@ -59,7 +59,7 @@ export default class StorageAPI {
     return true;
   }
 
-  public putAllItems(quantity: number): boolean {
+  public putAllItems(): boolean {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
@@ -67,7 +67,7 @@ export default class StorageAPI {
     return true;
   }
 
-  public getAllItems(quantity: number): boolean {
+  public getAllItems(): boolean {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
@@ -75,7 +75,7 @@ export default class StorageAPI {
     return true;
   }
 
-  public putExistingItems(quantity: number): boolean {
+  public putExistingItems(): boolean {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
@@ -83,7 +83,7 @@ export default class StorageAPI {
     return true;
   }
 
-  public getExistingItems(quantity: number): boolean {
+  public getExistingItems(): boolean {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }

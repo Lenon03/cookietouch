@@ -31,25 +31,26 @@ interface IInfosStates {
 }
 
 export default class Infos extends React.Component<IInfosProps, IInfosStates> {
+  private idleState = {
+    energyPoints: -1,
+    energyPointsMax: -1,
+    experience: -1,
+    experienceMax: -1,
+    experiencePercent: -1,
+    kamas: -1,
+    lifePoints: -1,
+    lifePointsMax: -1,
+    position: "",
+    scriptLoaded: false,
+    scriptName: "",
+    status: AccountStates.DISCONNECTED,
+    weight: -1,
+    weightMax: -1,
+  };
 
   constructor(props: IInfosProps) {
     super(props);
-    this.state = {
-      energyPoints: -1,
-      energyPointsMax: -1,
-      experience: -1,
-      experienceMax: -1,
-      experiencePercent: -1,
-      kamas: -1,
-      lifePoints: -1,
-      lifePointsMax: -1,
-      position: "",
-      scriptLoaded: false,
-      scriptName: "",
-      status: AccountStates.DISCONNECTED,
-      weight: -1,
-      weightMax: -1,
-    };
+    this.state = this.idleState;
   }
 
   public componentDidMount() {
@@ -217,6 +218,7 @@ export default class Infos extends React.Component<IInfosProps, IInfosStates> {
 
   private stop() {
     this.props.account.stop();
+    this.setState(this.idleState);
   }
 
   private mapChanged() {

@@ -1,3 +1,4 @@
+import Account from "@/account";
 import Command from "./Command";
 import ICommand from "./ICommand";
 
@@ -15,9 +16,9 @@ export default class SendMessageCommand extends Command<ISendMessage> implements
     this.args = ["receiver", "message"];
   }
 
-  public handle(command: string): ISendMessage {
+  public handle(command: string, account: Account): ISendMessage {
     const args = this.parseArgs(command);
-    alert(`Sending ${args.message} to ${args.receiver}`);
+    account.game.chat.sendMessageTo(args.message, args.receiver);
 
     return args;
   }

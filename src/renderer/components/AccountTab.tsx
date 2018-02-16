@@ -12,7 +12,7 @@ import Infos from "./Infos";
 import Bid from "./tabs/Bid";
 import Character from "./tabs/Character";
 import Configuration from "./tabs/Configuration";
-import Console from "./tabs/Console";
+import Console from "./tabs/Console/index";
 import Fights from "./tabs/Fights";
 import Flood from "./tabs/Flood";
 import Inventory from "./tabs/Inventory";

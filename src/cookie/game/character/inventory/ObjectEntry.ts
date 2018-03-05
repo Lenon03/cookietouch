@@ -26,13 +26,13 @@ export default class ObjectEntry {
   public regenValue: number;
   public weightBoost: number;
 
-  constructor(o: ObjectItem, item: Items = null) {
+  constructor(o: ObjectItem, item?: Items) {
     this.gid = o.objectGID;
     this.uid = o.objectUID;
     this.quantity = o.quantity;
     this.position = o.position;
 
-    if (item === null) {
+    if (item === undefined) {
       DataManager.get<Items>(DataTypes.Items, this.gid).then((data) => {
         item = data[0].object;
 

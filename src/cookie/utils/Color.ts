@@ -4,7 +4,7 @@ export default class Color {
   public r: number;
   public g: number;
   public b: number;
-  public a: number;
+  public a: number = 1;
 
   constructor(r?: string | number, g?: number, b?: number, a?: number) {
     if (typeof r === "string") {

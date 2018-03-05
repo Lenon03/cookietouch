@@ -1,0 +1,68 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
+import * as firebase from "firebase";
+import Paper from "material-ui/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
+import * as React from "react";
+import withRoot from "../withRoot";
+import BottomAppBar from "./BottomAppBar";
+import MainContent from "./MainContent";
+import TopAppBar from "./TopAppBar";
+
+type style = "root" | "paper";
+
+const styles: StyleRulesCallback<style> = (theme) => ({
+  paper: {
+    color: theme.palette.text.secondary,
+    margin: theme.spacing.unit,
+    marginTop: 120,
+    padding: theme.spacing.unit * 2,
+    textAlign: "center",
+  },
+  root: {
+    flexGrow: 1,
+  },
+});
+
+interface IState {
+  sidenavStatus: number;
+  user: firebase.User;
+}
+
+class Main extends React.Component<WithStyles<style>, IState> {
+
+  public state: IState = {
+    sidenavStatus: 0,
+    user: null,
+  };
+
+  public componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
+
+  public render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <TopAppBar user={this.state.user} clickMenu={this.toggleDrawer.bind(this)} />
+        {this.state.user ? <MainContent sidenavStatus={this.state.sidenavStatus} />
+          : <Paper className={classes.paper}>{LanguageManager.trans("mustLogin")}</Paper>}
+        <BottomAppBar />
+      </div>
+    );
+  }
+
+  private toggleDrawer = () => {
+    this.setState((prev) => ({
+      sidenavStatus: prev.sidenavStatus === 0 ? 250 : 0,
+    }));
+  }
+}
+
+export default withRoot(withStyles(styles)<{}>(Main));

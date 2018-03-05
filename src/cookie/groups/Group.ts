@@ -29,8 +29,8 @@ export default class Group implements IEntity {
     this.members = new List<Account>();
 
     chief.group = this;
-    chief.game.fight.FightIDReceived.on(this.chiefFightIdReceived.bind(this));
-    chief.RecaptchaResolved.on(this.accountRecaptchaResolved.bind(this));
+    chief.game.fight.FightIDReceived.on(this.chiefFightIdReceived);
+    chief.RecaptchaResolved.on(this.accountRecaptchaResolved);
   }
 
   get isAnyoneBusy() {
@@ -60,8 +60,8 @@ export default class Group implements IEntity {
     member.group = this;
     this.members.Add(member);
     this._membersAccountsFinished.push({account: member, event: new ResetEvent(false)});
-    member.scripts.actionsManager.ActionsFinished.on(this.memberActionsFinished.bind(this));
-    member.RecaptchaResolved.on(this.accountRecaptchaResolved.bind(this));
+    member.scripts.actionsManager.ActionsFinished.on(this.memberActionsFinished);
+    member.RecaptchaResolved.on(this.accountRecaptchaResolved);
   }
 
   public connect() {
@@ -168,11 +168,11 @@ export default class Group implements IEntity {
     Promise.all(tasks.map((t) => t.callback)); // TODO: Check this
   }
 
-  private chiefFightIdReceived() {
+  private chiefFightIdReceived = () => {
     this.signalMembersToJoinFight();
   }
 
-  private memberActionsFinished(data: { account: Account, mapChanged: boolean }) {
+  private memberActionsFinished = (data: { account: Account, mapChanged: boolean }) => {
     data.account.logger.logDebug(LanguageManager.trans("group"), LanguageManager.trans("finishedActions"));
     const test = this._membersAccountsFinished.find((e) => e.account === data.account);
     if (test !== undefined) {
@@ -180,7 +180,7 @@ export default class Group implements IEntity {
     }
   }
 
-  private async accountRecaptchaResolved(data: { account: Account, success: boolean }) {
+  private accountRecaptchaResolved = async (data: { account: Account, success: boolean }) => {
     if (!data.success) {
       return;
     }

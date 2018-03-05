@@ -1,3 +1,4 @@
+import CharacterStatsListMessage from "@/protocol/network/messages/CharacterStatsListMessage";
 import CharacterBaseCharacteristic from "@protocol/network/types/CharacterBaseCharacteristic";
 
 export default class CharacterStats {
@@ -36,7 +37,7 @@ export default class CharacterStats {
       (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
   }
 
-  public UpdateCharacterStatsListMessage(message: any) {
+  public UpdateCharacterStatsListMessage(message: CharacterStatsListMessage) {
     this.lifePoints = message.stats.lifePoints;
     this.maxLifePoints = message.stats.maxLifePoints;
     this.energyPoints = message.stats.energyPoints;

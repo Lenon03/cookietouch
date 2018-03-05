@@ -1,3 +1,4 @@
+import AveragePricesFrame from "@/frames/common/AveragePricesFrame";
 import Account from "@account";
 import QueueFrame from "./common/QueueFrame";
 import SecurityFrame from "./common/SecurityFrame";
@@ -34,6 +35,7 @@ export default class Frames {
   private quests: QuestsFrame;
   private storage: StorageFrame;
   private fight: FightFrame;
+  private averagePrices: AveragePricesFrame;
 
   constructor(account: Account) {
     this.achievements = new AchievementsFrame(account);
@@ -52,5 +54,6 @@ export default class Frames {
     this.quests = new QuestsFrame(account);
     this.storage = new StorageFrame(account);
     this.fight = new FightFrame(account);
+    this.averagePrices = new AveragePricesFrame(account);
   }
 }

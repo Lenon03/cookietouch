@@ -19,8 +19,8 @@ export default class TeleportablesManager {
     this._account.dispatcher.register("ZaapListMessage", this.HandleZaapListMessage, this);
     this._account.dispatcher.register("TeleportDestinationsListMessage",
       this.HandleTeleportDestinationsListMessage, this);
-    map.MapChanged.on((success) => this.mapChanged.bind(this));
-    interactives.UseFinished.on((success) => this.interactivesUseFinished.bind(this));
+    map.MapChanged.on((success) => this.mapChanged);
+    interactives.UseFinished.on((success) => this.interactivesUseFinished);
   }
 
   public get UseFinished() {
@@ -132,7 +132,7 @@ export default class TeleportablesManager {
     });
   }
 
-  private mapChanged(success: boolean) {
+  private mapChanged = (success: boolean) => {
     if (this._teleportable === TeleportablesEnum.NONE || this._destinationMapId === 0) {
       return;
     }
@@ -140,7 +140,7 @@ export default class TeleportablesManager {
     this.isUseFinished(true);
   }
 
-  private interactivesUseFinished(success: boolean) {
+  private interactivesUseFinished = (success: boolean) => {
     if (this._teleportable === TeleportablesEnum.NONE || this._destinationMapId === 0) {
       return;
     }

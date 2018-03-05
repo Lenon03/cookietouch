@@ -71,7 +71,7 @@ export default class Inventory {
 
   get weaponRange(): number {
     const tmp = this.getObjectInPosition(CharacterInventoryPositionEnum.ACCESSORY_POSITION_WEAPON);
-    if (tmp !== null) {
+    if (tmp !== undefined) {
       return tmp.range;
     }
     return 0;
@@ -94,7 +94,7 @@ export default class Inventory {
   }
 
   public equipObject(obj: ObjectEntry): boolean {
-    if (obj === null) {
+    if (obj === undefined) {
       return false;
     }
 
@@ -131,7 +131,7 @@ export default class Inventory {
   }
 
   public unEquipObject(obj: ObjectEntry): boolean {
-    if (obj === null) {
+    if (obj === undefined) {
       return false;
     }
 
@@ -149,7 +149,7 @@ export default class Inventory {
   }
 
   public useObject(obj: ObjectEntry, qty = 1) {
-    if (obj === null) {
+    if (obj === undefined) {
       return;
     }
 
@@ -169,7 +169,7 @@ export default class Inventory {
   }
 
   public dropObject(obj: ObjectEntry, qty = 1) {
-    if (obj === null) {
+    if (obj === undefined) {
       return;
     }
 
@@ -183,7 +183,7 @@ export default class Inventory {
   }
 
   public deleteObject(obj: ObjectEntry, qty = 1) {
-    if (obj === null) {
+    if (obj === undefined) {
       return;
     }
 
@@ -220,7 +220,7 @@ export default class Inventory {
 
     for (const obj of message.objects) {
       const e = items.find((f) => f.id === obj.objectGID).object;
-      const entry = new ObjectEntry(obj, e ? e : null);
+      const entry = new ObjectEntry(obj, e ? e : undefined);
       this._objects.add(obj.objectUID, entry);
     }
 
@@ -260,7 +260,7 @@ export default class Inventory {
 
   public async UpdateObjectModifiedMessage(message: any) {
     const obj = this._objects.getValue(message.object.objectUID);
-    if (obj !== null) {
+    if (obj !== undefined) {
       obj.UpdateObjectItem(message.object);
     }
     this.onInventoryUpdated.trigger(true);
@@ -268,7 +268,7 @@ export default class Inventory {
 
   public async UpdateObjectMovementMessage(message: any) {
     const obj = this._objects.getValue(message.objectUID);
-    if (obj !== null) {
+    if (obj !== undefined) {
       obj.UpdateObjectMovementMessage(message);
 
       if (obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
@@ -280,7 +280,7 @@ export default class Inventory {
 
   public async UpdateObjectQuantityMessage(message: any) {
     const obj = this._objects.getValue(message.objectUID);
-    if (obj !== null) {
+    if (obj !== undefined) {
       obj.UpdateQuantity(message.quantity);
       this.onObjectGained.trigger(obj.gid);
     }
@@ -290,7 +290,7 @@ export default class Inventory {
   public async UpdateObjectsQuantityMessage(message: any) {
     for (const o of message.objectsUIDAndQty) {
       const obj = this._objects.getValue(o.objectUID);
-      if (obj !== null) {
+      if (obj !== undefined) {
         obj.UpdateQuantity(message.quantity);
         this.onObjectGained.trigger(obj.gid);
       }

@@ -24,9 +24,7 @@ export default class MovementsManager implements IClearable {
   constructor(account: Account, map: MapGame) {
     this.account = account;
     this.pathfinder = new Pathfinder();
-    map.MapChanged.on(() => {
-      this.pathfinder.setMap(this.account.game.map.data);
-    });
+    map.MapChanged.on(() => this.pathfinder.setMap(this.account.game.map.data));
   }
 
   public get MovementFinished() {

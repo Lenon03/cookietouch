@@ -37,9 +37,7 @@ export default class CharacterSelectionFrame {
       if (char === undefined) {
         account.logger.logError(LanguageManager.trans("characterSelectionFrame"), `Character ${account.accountConfig.character} don't found!`);
       } else {
-        await account.network.sendMessageFree("CharacterSelectionMessage", {
-          id: char.id,
-        });
+        await account.network.sendMessageFree("CharacterSelectionMessage", { id: char.id });
         account.logger.logDebug(LanguageManager.trans("characterSelectionFrame"), LanguageManager.trans("characterSelected", char.name, char.level));
       }
     } else {

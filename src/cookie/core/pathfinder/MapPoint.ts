@@ -22,7 +22,7 @@ export default class MapPoint {
   }
 
   public static fromCellId(cellId: number) {
-    return this.cells[cellId];
+    return this.cells.find((cell) => cell.cellId === cellId);
   }
 
   public static fromCoords(x: number, y: number) {

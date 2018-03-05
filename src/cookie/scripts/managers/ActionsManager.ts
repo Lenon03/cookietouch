@@ -28,7 +28,7 @@ import ScriptAction, {ScriptActionResults} from "../actions/ScriptAction";
 
 export interface IActionsManagerEventData {
   account: Account;
-  success: boolean;
+  mapChanged: boolean;
 }
 
 export default class ActionsManager {
@@ -50,22 +50,22 @@ export default class ActionsManager {
     this.actionsQueue = [];
     this.timeoutTimer = new TimerWrapper(this.timeoutTimerCallback, this, 1, 60000);
 
-    this.account.game.map.MapChanged.on(this.map_mapChanged.bind(this));
-    this.account.game.managers.movements.MovementFinished.on(this.movements_movementFinished.bind(this));
-    this.account.game.managers.interactives.UseFinished.on(this.interactives_useFinished.bind(this));
-    this.account.game.fight.FightJoined.on(this.fight_fightJoined.bind(this));
-    this.account.game.managers.gathers.GatherFinished.on(this.gathers_gatherFinished.bind(this));
-    this.account.game.managers.gathers.GatherStarted.on(this.gathers_gatherStarted.bind(this));
-    this.account.game.npcs.QuestionReceived.on(this.npcs_questionReceived.bind(this));
-    this.account.game.storage.StorageStarted.on(this.storage_storageStarted.bind(this));
-    this.account.game.storage.StorageLeft.on(this.storage_storageLeft.bind(this));
-    this.account.game.npcs.DialogLeft.on(this.npcs_dialogLeft.bind(this));
-    this.account.game.exchange.ExchangeStarted.on(this.exchange_exchangeStarted.bind(this));
-    this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft.bind(this));
-    this.account.game.bid.StartedBuying.on(this.bid_startedBuying.bind(this));
-    this.account.game.bid.StartedSelling.on(this.bid_startedSelling.bind(this));
-    this.account.game.bid.BidLeft.on(this.bid_bidLeft.bind(this));
-    this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished.bind(this));
+    this.account.game.map.MapChanged.on(this.map_mapChanged);
+    this.account.game.managers.movements.MovementFinished.on(this.movements_movementFinished);
+    this.account.game.managers.interactives.UseFinished.on(this.interactives_useFinished);
+    this.account.game.fight.FightJoined.on(this.fight_fightJoined);
+    this.account.game.managers.gathers.GatherFinished.on(this.gathers_gatherFinished);
+    this.account.game.managers.gathers.GatherStarted.on(this.gathers_gatherStarted);
+    this.account.game.npcs.QuestionReceived.on(this.npcs_questionReceived);
+    this.account.game.storage.StorageStarted.on(this.storage_storageStarted);
+    this.account.game.storage.StorageLeft.on(this.storage_storageLeft);
+    this.account.game.npcs.DialogLeft.on(this.npcs_dialogLeft);
+    this.account.game.exchange.ExchangeStarted.on(this.exchange_exchangeStarted);
+    this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft);
+    this.account.game.bid.StartedBuying.on(this.bid_startedBuying);
+    this.account.game.bid.StartedSelling.on(this.bid_startedSelling);
+    this.account.game.bid.BidLeft.on(this.bid_bidLeft);
+    this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished);
   }
 
   public get ActionsFinished() {
@@ -181,9 +181,9 @@ export default class ActionsManager {
   private actionsFinished() {
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onActionsFinished.trigger({account: this.account, success: true});
+      this.onActionsFinished.trigger({account: this.account, mapChanged: true});
     } else {
-      this.onActionsFinished.trigger({account: this.account, success: false});
+      this.onActionsFinished.trigger({account: this.account, mapChanged: false});
     }
   }
 
@@ -191,13 +191,13 @@ export default class ActionsManager {
     this.currentCoroutine = null;
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onCustomHandled.trigger({account: this.account, success: true});
+      this.onCustomHandled.trigger({account: this.account, mapChanged: true});
     } else {
-      this.onCustomHandled.trigger({account: this.account, success: false});
+      this.onCustomHandled.trigger({account: this.account, mapChanged: false});
     }
   }
 
-  private map_mapChanged() {
+  private map_mapChanged = () => {
     if (!this.account.scripts.running || !this.currentAction) {
       return;
     }
@@ -229,7 +229,7 @@ export default class ActionsManager {
     this.dequeueActions(1500);
   }
 
-  private async movements_movementFinished(success: boolean) {
+  private movements_movementFinished = async (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -263,7 +263,7 @@ export default class ActionsManager {
     }
   }
 
-  private interactives_useFinished(success: boolean) {
+  private interactives_useFinished = (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -277,7 +277,7 @@ export default class ActionsManager {
     }
   }
 
-  private fight_fightJoined() {
+  private fight_fightJoined = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -295,7 +295,7 @@ export default class ActionsManager {
     }
   }
 
-  private gathers_gatherFinished(result: GatherResults) {
+  private gathers_gatherFinished = (result: GatherResults) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -311,7 +311,7 @@ export default class ActionsManager {
     }
   }
 
-  private gathers_gatherStarted() {
+  private gathers_gatherStarted = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -326,7 +326,7 @@ export default class ActionsManager {
     }
   }
 
-  private npcs_questionReceived() {
+  private npcs_questionReceived = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -340,7 +340,7 @@ export default class ActionsManager {
     }
   }
 
-  private storage_storageStarted() {
+  private storage_storageStarted = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -349,7 +349,7 @@ export default class ActionsManager {
     }
   }
 
-  private storage_storageLeft() {
+  private storage_storageLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -358,7 +358,7 @@ export default class ActionsManager {
     }
   }
 
-  private npcs_dialogLeft() {
+  private npcs_dialogLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -368,7 +368,7 @@ export default class ActionsManager {
     }
   }
 
-  private exchange_exchangeStarted() {
+  private exchange_exchangeStarted = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -377,7 +377,7 @@ export default class ActionsManager {
     }
   }
 
-  private exchange_exchangeLeft() {
+  private exchange_exchangeLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -386,7 +386,7 @@ export default class ActionsManager {
     }
   }
 
-  private bid_startedBuying() {
+  private bid_startedBuying = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -395,7 +395,7 @@ export default class ActionsManager {
     }
   }
 
-  private bid_startedSelling() {
+  private bid_startedSelling = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -404,7 +404,7 @@ export default class ActionsManager {
     }
   }
 
-  private bid_bidLeft() {
+  private bid_bidLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -413,7 +413,7 @@ export default class ActionsManager {
     }
   }
 
-  private teleportables_useFinished(success: boolean) {
+  private teleportables_useFinished = (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }

@@ -29,9 +29,9 @@ export default class BidExtension implements IClearable {
     this.config = new BidConfiguration(account);
     this.timer = new TimerWrapper(this.timerCallback, this, 1, 1);
 
-    this.account.game.bid.StartedBuying.on(this.startedBuying.bind(this));
-    this.account.game.bid.StartedSelling.on(this.startedSelling.bind(this));
-    this.account.scripts.ScriptStopped.on(this.onScriptStopped.bind(this));
+    this.account.game.bid.StartedBuying.on(this.startedBuying);
+    this.account.game.bid.StartedSelling.on(this.startedSelling);
+    this.account.scripts.ScriptStopped.on(this.onScriptStopped);
     this.account.dispatcher.register("ExchangeBidHouseItemAddOkMessage", this.HandleExchangeBidHouseItemAddOkMessage, this);
     this.account.dispatcher.register("TextInformationMessage", this.HandleTextInformationMessage, this);
   }
@@ -99,7 +99,7 @@ export default class BidExtension implements IClearable {
     this.process();
   }
 
-  private async startedBuying() {
+  private startedBuying = async () => {
     if (!this.running) {
       return;
     }
@@ -120,12 +120,12 @@ export default class BidExtension implements IClearable {
     this.account.game.bid.startSelling();
   }
 
-  private async startedSelling() {
+  private startedSelling = async () => {
     // Process sales session
     await this.processSalesSession();
   }
 
-  private onScriptStopped(name: string) {
+  private onScriptStopped = (name: string) => {
     if (!this.enabled) {
       return;
     }

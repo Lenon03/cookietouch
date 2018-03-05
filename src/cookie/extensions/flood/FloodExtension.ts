@@ -27,8 +27,8 @@ export default class FloodExtension {
     this.salesChannelTimer = new TimerWrapper(this.SalesChannel_Callback, this, Infinity, Infinity);
     this.generalChannelTimer = new TimerWrapper(this.GeneralChannel_Callback, this, Infinity, Infinity);
 
-    this.account.game.map.PlayerJoined.on(this.Map_PlayerJoined.bind(this));
-    this.account.game.map.PlayerLeft.on(this.Map_PlayerLeft.bind(this));
+    this.account.game.map.PlayerJoined.on(this.map_PlayerJoined);
+    this.account.game.map.PlayerLeft.on(this.map_PlayerLeft);
   }
 
   public get RunningChanged() {
@@ -90,7 +90,7 @@ export default class FloodExtension {
     }
   }
 
-  private async Map_PlayerJoined(player: PlayerEntry) {
+  private map_PlayerJoined = async (player: PlayerEntry) => {
     if (!this.running) {
       return;
     }
@@ -101,7 +101,7 @@ export default class FloodExtension {
     }
   }
 
-  private async Map_PlayerLeft(player: PlayerEntry) {
+  private map_PlayerLeft = async (player: PlayerEntry) => {
     if (!this.running) {
       return;
     }

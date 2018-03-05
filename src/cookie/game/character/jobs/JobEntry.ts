@@ -41,8 +41,8 @@ export default class JobEntry {
   }
 
   get experiencePercent() {
-    return this.experience === 0 ? 0 :
-      (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
+    return this.experience === 0 ? 0 : this.experienceNextLevelFloor === 0 ? 100 :
+    (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
   }
 
   get iconUrl() {

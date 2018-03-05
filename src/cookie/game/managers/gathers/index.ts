@@ -32,8 +32,8 @@ export default class GathersManager implements IClearable {
     this.account = account;
     this.blacklistedElements = [];
     this.pathfinder = new Pathfinder();
-    movements.MovementFinished.on(this.onMovementFinished.bind(this));
-    map.MapChanged.on(this.mapChanged.bind(this));
+    movements.MovementFinished.on(this.onMovementFinished);
+    map.MapChanged.on(this.mapChanged);
     this.account.dispatcher.register("InteractiveUsedMessage", this.HandleInteractiveUsedMessage, this);
     this.account.dispatcher.register("InteractiveUseEndedMessage", this.HandleInteractiveUseEndedMessage, this);
     this.account.dispatcher.register("InteractiveUseErrorMessage", this.HandleInteractiveUseErrorMessage, this);
@@ -157,7 +157,7 @@ export default class GathersManager implements IClearable {
     }
   }
 
-  private mapChanged() {
+  private mapChanged = () => {
     this.pathfinder.setMap(this.account.game.map.data);
     this.blacklistedElements = [];
   }
@@ -168,7 +168,7 @@ export default class GathersManager implements IClearable {
     this.onGatherFinished.trigger(result);
   }
 
-  private onMovementFinished(success: boolean) {
+  private onMovementFinished = (success: boolean) => {
     if (this.elementToGather === null) {
       return;
     }

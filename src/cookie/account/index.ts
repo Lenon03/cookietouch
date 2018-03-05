@@ -66,8 +66,8 @@ export default class Account implements IEntity {
     this.statistics = new StatisticsManager(this);
     this.planificationTimer = new TimerWrapper(this.plannificationCallback, this, 1, 30000);
 
-    this.network.Disconnected.on(this.onNetworkDisconnected.bind(this));
-    this.game.map.MapLoaded.on(this.onMapLoaded.bind(this));
+    this.network.Disconnected.on(this.onNetworkDisconnected);
+    this.game.map.MapLoaded.on(this.onMapLoaded);
   }
 
   get hasGroup(): boolean {
@@ -221,7 +221,7 @@ export default class Account implements IEntity {
     }
   }
 
-  private onNetworkDisconnected() {
+  private onNetworkDisconnected = () => {
     this.state = AccountStates.DISCONNECTED;
     if (this.network.phase !== NetworkPhases.SWITCHING_TO_GAME) {
       this._wasScriptEnabled = this.scripts.enabled;
@@ -231,7 +231,7 @@ export default class Account implements IEntity {
     // this.onDisconnected.trigger();
   }
 
-  private async onMapLoaded() {
+  private onMapLoaded = async () => {
     if (!this.accountConfig.planificationActivated || !this._wasScriptEnabled) {
       return;
     }

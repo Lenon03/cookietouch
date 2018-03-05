@@ -17,7 +17,8 @@
       "@protocol/*": ["cookie/protocol/*"],
       "@utils/*": ["cookie/utils/*"],
       "@logger": ["cookie/core/logger"],
-      "@logger/*": ["cookie/core/logger/*"]
+      "@logger/*": ["cookie/core/logger/*"],
+      "@renderer/*": ["renderer/*"]
     }
   }
 }

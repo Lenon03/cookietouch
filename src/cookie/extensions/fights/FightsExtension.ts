@@ -160,13 +160,13 @@ export default class FightsExtension implements IClearable {
   }
 
   private setEvents() {
-    this.account.game.fight.TurnStarted.on(this.turnStarted.bind(this));
-    this.account.game.fight.TurnEnded.on(this.turnEnded.bind(this));
-    this.account.game.fight.FightJoined.on(this.fightJoined.bind(this));
-    this.account.game.fight.SpectatorJoined.on(this.spectatorJoined.bind(this));
+    this.account.game.fight.TurnStarted.on(this.turnStarted);
+    this.account.game.fight.TurnEnded.on(this.turnEnded);
+    this.account.game.fight.FightJoined.on(this.fightJoined);
+    this.account.game.fight.SpectatorJoined.on(this.spectatorJoined);
   }
 
-  private fightJoined() {
+  private fightJoined = () => {
     this.turnId = 0;
     this.spells.ForEach((s) => {
       s.lastTurn = 0;
@@ -174,7 +174,7 @@ export default class FightsExtension implements IClearable {
     });
   }
 
-  private async turnStarted() {
+  private turnStarted = async () => {
     this.turnId++;
     this.account.logger.logInfo(LanguageManager.trans("fightsExtension"), LanguageManager.trans("turnStarted", this.turnId));
     this.spellIndex = 0;
@@ -191,11 +191,11 @@ export default class FightsExtension implements IClearable {
     await this.processSpells();
   }
 
-  private turnEnded() {
+  private turnEnded = () => {
     this.account.logger.logInfo(LanguageManager.trans("fightsExtension"), LanguageManager.trans("turnEnded"));
   }
 
-  private async spectatorJoined() {
+  private spectatorJoined = async () => {
     if (this.config.blockSpectatorScenario === BlockSpectatorScenarios.WHEN_SOMEONE_JOINS) {
       await this.account.game.fight.toggleOption(FightOptionsEnum.FIGHT_OPTION_SET_SECRET);
     }

@@ -59,10 +59,10 @@ export default class ScriptsManager {
     this.actionsManager = new ActionsManager(account);
     this.entryFlags = new List<IFlag>();
 
-    this.account.game.fight.FightJoined.on(this.onFightJoined.bind(this));
-    this.account.game.fight.FightEnded.on(this.onFightEnded.bind(this));
-    this.actionsManager.ActionsFinished.on(this.onActionsFinished.bind(this));
-    this.actionsManager.CustomHandled.on(this.onCustomHandled.bind(this));
+    this.account.game.fight.FightJoined.on(this.onFightJoined);
+    this.account.game.fight.FightEnded.on(this.onFightEnded);
+    this.actionsManager.ActionsFinished.on(this.onActionsFinished);
+    this.actionsManager.CustomHandled.on(this.onCustomHandled);
   }
 
   get running(): boolean {
@@ -743,7 +743,7 @@ export default class ScriptsManager {
     }
   }
 
-  private onFightJoined() {
+  private onFightJoined = () => {
     if (!this.enabled) {
       return;
     }
@@ -753,7 +753,7 @@ export default class ScriptsManager {
     this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("paused"));
   }
 
-  private onFightEnded() {
+  private onFightEnded = () => {
     if (!this.enabled) {
       return;
     }
@@ -761,7 +761,7 @@ export default class ScriptsManager {
     this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("unpaused"));
   }
 
-  private onActionsFinished(data: IActionsManagerEventData) {
+  private onActionsFinished = (data: IActionsManagerEventData) => {
     // If this account is a member of a group
     if (this.account.hasGroup) {
       // If this account is not the chief, ignore this event since the group will handle it
@@ -778,14 +778,14 @@ export default class ScriptsManager {
       return;
     }
     // If a map changed occured, re-process the script
-    if (data.success) {
+    if (data.mapChanged) {
       this.processScript();
     } else {
       this.processEntryFlags();
     }
   }
 
-  private onCustomHandled(data: IActionsManagerEventData) {
+  private onCustomHandled = (data: IActionsManagerEventData) => {
     // If this account is a member of a group, ignore this event because group will handle it
     if (this.account.hasGroup && !this.account.isGroupChief) {
       return;
@@ -795,7 +795,7 @@ export default class ScriptsManager {
       return;
     }
     // If a map changed occured, re-process the script
-    if (data.success) {
+    if (data.mapChanged) {
       this.processScript();
     } else {
       this.processEntryFlags();

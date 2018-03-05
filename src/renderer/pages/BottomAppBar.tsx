@@ -1,0 +1,67 @@
+import * as firebase from "firebase";
+import AppBar from "material-ui/AppBar";
+import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
+import * as React from "react";
+
+type style = "root" | "appbar" | "toolbar";
+
+const styles: StyleRulesCallback<style> = (theme) => ({
+  appbar: {
+    background: "linear-gradient(45deg, #1dc8cd, #1de099)",
+  },
+  root: {
+    bottom: 0,
+    flexGrow: 1,
+    position: "absolute",
+    width: "100%",
+  },
+  toolbar: {
+    minHeight: 28,
+  },
+});
+
+interface IState {
+  usersConnected: number;
+}
+
+class BottomAppBar extends React.Component<WithStyles<style>, IState> {
+
+  public state: IState = {
+    usersConnected: 0,
+  };
+
+  public componentDidMount() {
+    const listRef = firebase.database().ref("status");
+    listRef.on("value", (snap) => {
+      let num = 0;
+      snap.forEach((x) => {
+        if (x.val().state === "online") {
+          num++;
+        }
+        return false;
+      });
+      this.setState({ usersConnected: num });
+    });
+  }
+
+  public render() {
+    const { classes } = this.props;
+    const { usersConnected } = this.state;
+
+    return (
+      <div className={classes.root}>
+        <AppBar className={classes.appbar} position="sticky">
+          <Toolbar className={classes.toolbar}>
+            <Typography variant="subheading" color="inherit">
+              {usersConnected} users connected.
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)<{}>(BottomAppBar);

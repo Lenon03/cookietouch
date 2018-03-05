@@ -38,10 +38,10 @@ export default class CharacterCreatorExtension implements IClearable {
   constructor(account: Account) {
     this.account = account;
 
-    this.account.game.npcs.QuestionReceived.on(this.onQuestionReceived.bind(this));
-    this.account.game.character.inventory.ObjectEquipped.on(this.onObjectEquipped.bind(this));
-    this.account.game.map.MapChanged.on(this.onMapChanged.bind(this));
-    this.account.game.managers.movements.MovementFinished.on(this.onMovementFinished.bind(this));
+    this.account.game.npcs.QuestionReceived.on(this.onQuestionReceived);
+    this.account.game.character.inventory.ObjectEquipped.on(this.onObjectEquipped);
+    this.account.game.map.MapChanged.on(this.onMapChanged);
+    this.account.game.managers.movements.MovementFinished.on(this.onMovementFinished);
   }
 
   get isDoingTutorial() {
@@ -64,7 +64,9 @@ export default class CharacterCreatorExtension implements IClearable {
     // If the character has been successfully created
     if (this.created) {
       // Set the create to false so that we don't create a character each time we connect
-      this.account.accountConfig.characterCreation.create = false;
+      // TODO: Check this when we pass _accounts back to private
+      // this.account.accountConfig.characterCreation.create = false;
+      GlobalConfiguration._accounts.First((a) => a.username === this.account.accountConfig.username).characterCreation.create = false;
       GlobalConfiguration.save();
       this.account.network.sendMessageFree("CharacterFirstSelectionMessage", {
         doTutorial: true,
@@ -76,22 +78,22 @@ export default class CharacterCreatorExtension implements IClearable {
     let max = 0;
     BreedsUtility.breeds.ForEach((b) => b.id > max ? max = b.id : b); // TODO: check this...
     const breed = this.account.accountConfig.characterCreation.breed === -1
-      ? getRandomInt(1, max + 1)
+      ? getRandomInt(1, max)
       : this.account.accountConfig.characterCreation.breed;
     const sex = (this.account.accountConfig.characterCreation.sex === -1
-      ? getRandomInt(0, 2) : this.account.accountConfig.characterCreation.sex) === 1;
+      ? getRandomInt(0, 1) : this.account.accountConfig.characterCreation.sex) === 1;
     const headOrder = this.account.accountConfig.characterCreation.head === -1
-      ? getRandomInt(0, 8) : this.account.accountConfig.characterCreation.head;
+      ? getRandomInt(1, 8) : this.account.accountConfig.characterCreation.head;
     const breedClass = await DataManager.get<Breeds>(DataTypes.Breeds, breed);
     const colors = this.account.accountConfig.characterCreation.colors.length === 5
-      ? this.account.accountConfig.characterCreation.colors.length
+      ? this.account.accountConfig.characterCreation.colors
       : (sex ? breedClass[0].object.femaleColors : breedClass[0].object.maleColors);
-    // If the user wanter a random name, use DT's random name generator
+    // If the user want a random name, use DT's random name generator
     if (name === "") {
       this.name = Deferred<string>();
       this.account.network.sendMessageFree("CharacterNameSuggestionRequestMessage");
       name = await this.name.promise;
-      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("characterCreator")), LanguageManager.trans("nameGenerate", name));
+      this.account.logger.logInfo(LanguageManager.trans("characterCreator"), LanguageManager.trans("nameGenerate", name));
     }
     await sleep(1000);
     // Send the character creation request message, take in consideration random stuff to generate
@@ -266,7 +268,7 @@ export default class CharacterCreatorExtension implements IClearable {
     }
   }
 
-  private onQuestionReceived() {
+  private onQuestionReceived = () => {
     if (!this.isDoingTutorial) {
       return;
     }
@@ -276,7 +278,7 @@ export default class CharacterCreatorExtension implements IClearable {
     }
   }
 
-  private async onObjectEquipped(gid: number) {
+  private onObjectEquipped = async (gid: number) => {
     if (!this.isDoingTutorial) {
       return;
     }
@@ -298,17 +300,15 @@ export default class CharacterCreatorExtension implements IClearable {
     }
   }
 
-  private async onMapChanged() {
+  private onMapChanged = async () => {
     if (!this.isDoingTutorial) {
       return;
     }
     // Step 10: Talk and reply to npc
     if (this.currentStepNumber === 10 && this.account.game.map.id === TutorialHelper.mapIdSecondAfterFight) {
-      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 10`);
       await sleep(1600);
       console.log("used?", this.account.game.npcs.useNpc(-1, 1));
     } else if (this.currentStepNumber === 14 && this.account.game.map.id === TutorialHelper.mapIdThirdAfterFight) {
-      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 14`);
       await sleep(1200);
       // Buy the shield
       await this.account.network.sendMessageFree("QuestObjectiveValidationMessage", {
@@ -325,12 +325,11 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     // Step 12: start fight
     if (this.currentStepNumber === 12 && this.account.game.map.id === TutorialHelper.mapIdThirdBeforeFight) {
-      this.account.logger.logError(LanguageManager.trans("characterCreator"), `(${this.currentStepNumber}) ... Step 12`);
       this.account.game.managers.movements.moveToCell(this.account.game.map.monstersGroups[0].cellId);
     }
   }
 
-  private onMovementFinished(success: boolean) {
+  private onMovementFinished = (success: boolean) => {
     if (!success) {
       return;
     }

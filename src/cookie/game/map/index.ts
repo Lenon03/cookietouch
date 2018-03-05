@@ -160,11 +160,11 @@ export default class Map implements IClearable {
     const accountMapChanged = () => {
       mapChanged = true;
     };
-    this.account.game.map.onMapChanged.on(accountMapChanged.bind(this));
+    this.account.game.map.onMapChanged.on(accountMapChanged);
     for (let i = 0; i < maxDelayInSeconds && !mapChanged && this.account.state !== AccountStates.FIGHTING && this.account.scripts.running; i++) {
       await sleep(1000);
     }
-    this.account.game.map.onMapChanged.off(accountMapChanged.bind(this));
+    this.account.game.map.onMapChanged.off(accountMapChanged);
     return mapChanged;
   }
 
@@ -373,6 +373,7 @@ export default class Map implements IClearable {
       } else {
         this._players.add(pe.id, pe);
       }
+      this.onEntitiesUpdated.trigger();
       this.onPlayerJoined.trigger(pe);
     } else if (message.informations._type === "GameRolePlayMutantInformations") {
       const pe = new PlayerEntry(message.informations);

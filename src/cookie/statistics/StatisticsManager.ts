@@ -52,9 +52,9 @@ export default class StatisticsManager {
     this.objectsObtainedInGathers = new List();
     this.lastObjectGained = 0;
 
-    this.account.game.managers.gathers.GatherStarted.on(() => this.gatherStarted.bind(this));
-    this.account.game.managers.gathers.GatherFinished.on(() => this.gatherFinished.bind(this));
-    this.account.game.character.inventory.ObjectGained.on(() => this.objectGained.bind(this));
+    this.account.game.managers.gathers.GatherStarted.on(this.gatherStarted);
+    this.account.game.managers.gathers.GatherFinished.on(this.gatherFinished);
+    this.account.game.character.inventory.ObjectGained.on(this.objectGained);
   }
 
   public get StatisticsUpdated() {
@@ -120,11 +120,11 @@ export default class StatisticsManager {
     this.onStatisticsUpdated.trigger();
   }
 
-  private gatherStarted() {
+  private gatherStarted = () => {
     this.gatherStartTime = process.hrtime();
   }
 
-  private gatherFinished(result: GatherResults) {
+  private gatherFinished = (result: GatherResults) => {
     if (result === GatherResults.GATHERED) {
       this.gathersCount++;
       const MS_PER_SEC = 1e3;
@@ -135,7 +135,7 @@ export default class StatisticsManager {
     this.onStatisticsUpdated.trigger();
   }
 
-  private objectGained(obj: number) {
+  private objectGained = (obj: number) => {
     this.lastObjectGained = obj;
   }
 

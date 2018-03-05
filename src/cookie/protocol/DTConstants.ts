@@ -15,8 +15,8 @@ export default class DTConstants {
   public static readonly ORIGINAL_HEIGHT = 866;
   // public static readonly TILE_WIDTH = DTConstants.ORIGINAL_WIDTH / DTConstants.MAP_WIDTH;
   // public static readonly TILE_HEIGHT = DTConstats.ORIGINAL_HEIGHT / DTConstants.MAP_HEIGHT;
-  public static readonly TILE_WIDTH = 43 + 43 * 0.5;
-  public static readonly TILE_HEIGHT = 21.5 + 21.5 * 0.35;
+  public static readonly TILE_WIDTH = 43 + 43 * 0.40;
+  public static readonly TILE_HEIGHT = 21.5 + 21.5 * 0.25;
 
   public static async Init() {
     this.config = await DTConstants.getConfig();
@@ -44,6 +44,7 @@ export default class DTConstants {
         id: 1041406978,
         lang: "fr",
         limit: 1,
+        t: Date.now(),
       },
     });
     return response.data.results[0].version;

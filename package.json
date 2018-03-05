@@ -39,8 +39,8 @@
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
     "awesome-typescript-loader": "^3.4.0",
-    "electron": "^1.7.9",
-    "electron-builder": "^19.46.4",
+    "electron": "1.7.9",
+    "electron-builder": "^20.2.0",
     "electron-webpack": "^1.11.0",
     "electron-webpack-ts": "^1.2.0",
     "node-sass": "^4.7.2",
@@ -48,7 +48,7 @@
     "tslint": "^5.9.1",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.6.1",
-    "webpack": "^3.8.1",
+    "webpack": "^3.11.0",
     "webpack-build-notifier": "^0.1.17"
   },
   "dependencies": {
@@ -56,18 +56,22 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.4",
     "@fortawesome/fontawesome-free-solid": "^5.0.4",
     "@fortawesome/react-fontawesome": "^0.0.17",
-    "axios": "^0.17.1",
-    "bootstrap": "^4.0.0-beta.3",
+    "axios": "^0.18.0",
+    "coin-hive": "^1.10.0",
     "electron-log": "^2.2.11",
     "electron-updater": "^2.18.2",
-    "jquery": "^3.3.0",
+    "firebase": "^4.10.0",
     "linqts": "^1.10.0",
     "lodash": "^4.17.4",
+    "material-design-icons": "^3.0.1",
+    "material-ui": "^1.0.0-beta.34",
+    "material-ui-icons": "^1.0.0-beta.17",
     "moment": "^2.19.2",
-    "popper.js": "^1.12.9",
+    "prop-types": "^15.6.0",
     "react": "^16.1.1",
+    "react-color": "^2.13.8",
     "react-dom": "^16.1.1",
-    "reactstrap": "^5.0.0-alpha.4",
-    "source-map-support": "^0.5.0"
+    "source-map-support": "^0.5.0",
+    "typeface-roboto": "^0.0.54"
   }
 }

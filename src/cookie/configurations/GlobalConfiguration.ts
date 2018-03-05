@@ -17,8 +17,9 @@ interface IGlobalConfigurationJSON {
 }
 
 export default class GlobalConfiguration {
+  // TODO: Put this private and fix validate method on CharacterCreator
+  public static _accounts = new List<AccountConfiguration>();
   private static configPath = path.join(remote.app.getPath("userData"), "config.cookie");
-  private static _accounts = new List<AccountConfiguration>();
 
   public static get accountsList(): AccountConfiguration[] {
     let list = new List<AccountConfiguration>(JSON.parse(JSON.stringify(this._accounts.ToArray()))).ToArray();
@@ -68,15 +69,13 @@ export default class GlobalConfiguration {
     this.save();
   }
 
-  public static addAccountAndSave(username: string, password: string, server: string, character: string) {
+  public static addAccountAndSave(username: string, password: string, server: number, character: string) {
     this._accounts.Add(new AccountConfiguration(username, password, server, character));
     this.save();
   }
 
   public static addAccountsAndSave(accounts: List<AccountConfiguration>) {
-    accounts.ForEach((account) => {
-      this._accounts.Add(account);
-    });
+    accounts.ForEach((account) => this._accounts.Add(account));
     this.save();
   }
 

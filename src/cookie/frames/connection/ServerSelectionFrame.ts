@@ -1,10 +1,10 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import {NetworkPhases} from "@/network/NetworkPhases";
+import { NetworkPhases } from "@/network/NetworkPhases";
 import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
-import {sleep} from "@/utils/Time";
+import { sleep } from "@/utils/Time";
 import Account from "@account";
-import {ServerStatusEnum} from "@protocol/enums/ServerStatusEnum";
+import { ServerStatusEnum } from "@protocol/enums/ServerStatusEnum";
 import ServersListMessage from "@protocol/network/messages/ServersListMessage";
 
 export default class ServerSelectionFrame {
@@ -22,18 +22,16 @@ export default class ServerSelectionFrame {
     this.account.dispatcher.register("SelectedServerDataMessage", this.HandleSelectedServerDataMessage, this);
     this.account.dispatcher.register("serverDisconnecting", this.HandleserverDisconnecting, this);
     this.account.dispatcher.register("HelloGameMessage", this.HandleHelloGameMessage, this);
-    this.account.dispatcher.register("AuthenticationTicketAcceptedMessage",
-      this.HandleAuthenticationTicketAcceptedMessage, this);
-    this.account.dispatcher.register("AuthenticationTicketRefusedMessage",
-      this.HandleAuthenticationTicketRefusedMessage, this);
+    this.account.dispatcher.register("AuthenticationTicketAcceptedMessage", this.HandleAuthenticationTicketAcceptedMessage, this);
+    this.account.dispatcher.register("AuthenticationTicketRefusedMessage", this.HandleAuthenticationTicketRefusedMessage, this);
   }
 
   private async HandleServersListMessage(account: Account, message: ServersListMessage) {
     const server = account.accountConfig.characterCreation.create ?
-      message.servers.find((s) => s._name === account.accountConfig.characterCreation.server)
-      : account.accountConfig.characterCreation.server === "-" ?
+      message.servers.find((s) => s.id === account.accountConfig.characterCreation.server)
+      : account.accountConfig.server === -1 ?
         message.servers.find((s) => s.charactersCount > 0)
-        : message.servers.find((s) => s._name === account.accountConfig.server);
+        : message.servers.find((s) => s.id === account.accountConfig.server);
 
     if (server === undefined || server.charactersCount === 0 && !account.accountConfig.characterCreation.create) {
       account.logger.logError(LanguageManager.trans("serverSelection"), LanguageManager.trans("cantSelectServer"));

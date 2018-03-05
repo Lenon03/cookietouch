@@ -39,7 +39,7 @@
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
     "awesome-typescript-loader": "^3.4.0",
-    "electron": "1.7.9",
+    "electron": "1.7.11",
     "electron-builder": "^20.2.0",
     "electron-webpack": "^1.11.0",
     "electron-webpack-ts": "^1.2.0",

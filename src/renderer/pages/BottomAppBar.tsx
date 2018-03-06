@@ -23,12 +23,14 @@ const styles: StyleRulesCallback<style> = (theme) => ({
 });
 
 interface IState {
+  totalUsers: number;
   usersConnected: number;
 }
 
 class BottomAppBar extends React.Component<WithStyles<style>, IState> {
 
   public state: IState = {
+    totalUsers: 0,
     usersConnected: 0,
   };
 
@@ -42,20 +44,23 @@ class BottomAppBar extends React.Component<WithStyles<style>, IState> {
         }
         return false;
       });
-      this.setState({ usersConnected: num });
+      this.setState({
+        totalUsers: snap.numChildren(),
+        usersConnected: num,
+      });
     });
   }
 
   public render() {
     const { classes } = this.props;
-    const { usersConnected } = this.state;
+    const { totalUsers, usersConnected } = this.state;
 
     return (
       <div className={classes.root}>
         <AppBar className={classes.appbar} position="sticky">
           <Toolbar className={classes.toolbar}>
             <Typography variant="subheading" color="inherit">
-              {usersConnected} users connected.
+              {usersConnected} / {totalUsers} users connected.
             </Typography>
           </Toolbar>
         </AppBar>

@@ -431,5 +431,9 @@
   "infos": "Infos",
   "resistance": "Resistance",
   "onPlayerJoined": "On Player Joined",
-  "onPlayerLeft": "On Player Left"
+  "onPlayerLeft": "On Player Left",
+  "placementCell": "Placing character on cell ?",
+  "placementCellSpell": "(Spell) Placing character on cell ?",
+  "placementCellMonster": "(Monster) Placing character on cell ?",
+  "noMonsterToApproach": "The monster to approach was not found in this fight."
 }

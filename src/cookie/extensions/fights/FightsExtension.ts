@@ -84,7 +84,7 @@ export default class FightsExtension implements IClearable {
     }
     // If it's the end of the turn
     if (this._endTurn && message.sequenceType === SequenceTypeEnum.SEQUENCE_MOVE) {
-      await this.finishTurn(400);
+      await this.finishTurn(200);
       return;
     }
     if (this.awaitingSequenceEnd) {
@@ -93,7 +93,7 @@ export default class FightsExtension implements IClearable {
       return;
     }
     // Otherwise handle the spells
-    await sleep(400);
+    await sleep(200);
     await this.processSpells();
   }
 
@@ -105,12 +105,12 @@ export default class FightsExtension implements IClearable {
     if (this.config.lockFight) {
       await this.account.game.fight.toggleOption(FightOptionsEnum.FIGHT_OPTION_SET_CLOSED);
     }
-    await sleep(300);
+    await sleep(200);
     // Check if we should block spectator mode
     if (this.config.blockSpectatorScenario === BlockSpectatorScenarios.ALWAYS) {
       await this.account.game.fight.toggleOption(FightOptionsEnum.FIGHT_OPTION_SET_SECRET);
     }
-    await sleep(300);
+    await sleep(200);
     const allies = new List(this.account.game.fight.allies);
     const selectAllies = allies.Select((a) => a.cellId);
     const defenders = new List(message.positionsForDefenders);
@@ -125,7 +125,8 @@ export default class FightsExtension implements IClearable {
             this.config.startPlacement === FightStartPlacement.CLOSE_TO_ENEMIES, possiblePositions.ToArray());
           // If we're not already close
           if (cellId !== this.account.game.fight.playedFighter.cellId) {
-            await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId});
+            this.account.logger.logDebug(LanguageManager.trans("fightsExtension"), LanguageManager.trans("placementCell", cellId));
+            await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", { cellId });
           }
         }
       }
@@ -138,7 +139,7 @@ export default class FightsExtension implements IClearable {
         return;
       }
     }
-    await sleep(300);
+    await sleep(200);
     this.account.network.sendMessageFree("GameFightReadyMessage", {isReady: true});
   }
 
@@ -206,12 +207,12 @@ export default class FightsExtension implements IClearable {
       return;
     }
     if (this.config.tactic === FightTactics.PASSIVE) {
-      await this.finishTurn(400);
+      await this.finishTurn(200);
       return;
     }
     // If we're h2h then just avoid this
     if (this.account.game.fight.isHandToHandWithAnEnemy() && this.config.tactic === FightTactics.AGGRESSIVE) {
-      await this.finishTurn(400);
+      await this.finishTurn(200);
       return;
     }
     if (this.account.game.fight.playedFighter.movementPoints > 0 && this.account.game.fight.enemies.length > 0) {
@@ -223,8 +224,8 @@ export default class FightsExtension implements IClearable {
         MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
           .distanceToCell(MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)) >=
         this.config.maxCells;
-      const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, this.config.tactic === FightTactics.FUGITIVE
-        || this.config.baseApproachAllMonsters);
+      const node = this.utility.getNearestOrFarthestEndMoveNode(nearest, (this.config.tactic === FightTactics.FUGITIVE
+        || this.config.baseApproachAllMonsters));
       if (node !== null) {
         this.account.logger.logDebug(LanguageManager.trans("fightsExtension"), LanguageManager.trans("endTurnMove", node.key));
         this._endTurn = true;
@@ -232,7 +233,7 @@ export default class FightsExtension implements IClearable {
         return;
       }
     }
-    await this.finishTurn(400);
+    await this.finishTurn(200);
   }
 
   private async processSpells() {
@@ -256,6 +257,7 @@ export default class FightsExtension implements IClearable {
     if (!(this.turnId === 1 || currentSpell.lastTurn === 0 || currentSpell.turns === 1 ||
       this.turnId === currentSpell.lastTurn + currentSpell.turns)) {
       await this.processNextSpell(currentSpell);
+      return;
     }
     const result = await this.spellsManager.manageSpell(currentSpell);
     switch (result) {
@@ -314,6 +316,7 @@ export default class FightsExtension implements IClearable {
         continue;
       }
       if (this.utility.spellIsHittingAnyEnemy(t, spellLevel)) {
+        this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("placementCellSpell", t));
         await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId: t});
         return true;
       }
@@ -327,6 +330,7 @@ export default class FightsExtension implements IClearable {
     }
     const monster = this.account.game.fight.monsters.find((m) => m.creatureGenericId === this.config.monsterToApproach);
     if (monster === undefined) {
+      this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("noMonsterToApproach"));
       return false;
     }
     // The monster to approach is in the fight !
@@ -343,6 +347,7 @@ export default class FightsExtension implements IClearable {
 
     // If we're not already close
     if (cellId !== this.account.game.fight.playedFighter.cellId) {
+      this.account.logger.logError(LanguageManager.trans("fightsExtension"), LanguageManager.trans("placementCellMonster", cellId));
       await this.account.network.sendMessageFree("GameFightPlacementPositionRequestMessage", {cellId});
     }
 

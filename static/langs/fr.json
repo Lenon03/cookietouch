@@ -431,5 +431,9 @@
   "infos": "Infos",
   "resistance": "Résistance",
   "onPlayerJoined": "Quand un joueur rentre sur la map",
-  "onPlayerLeft": "Quand un joueur quitte la map"
+  "onPlayerLeft": "Quand un joueur quitte la map",
+  "placementCell": "On se place sur la cellule ?",
+  "placementCellSpell": "(Sort) On se place sur la cellule ?",
+  "placementCellMonster": "(Monstre) On se place sur la cellule ?",
+  "noMonsterToApproach": "Le monstre à approcher ne se trouve pas dans ce combat."
 }

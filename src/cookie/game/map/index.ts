@@ -335,7 +335,7 @@ export default class Map implements IClearable {
           // Zaap
           if (graph.g === 15363 || graph.g === 38003) {
             this.zaap = new ElementInCellEntry(interactive, kvp.key);
-          } else if (graph.g === 15004) {
+          } else if (graph.g === 15004 || graph.g === 9541) {
             // Zaapi
             this.zaapi = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 12367) {

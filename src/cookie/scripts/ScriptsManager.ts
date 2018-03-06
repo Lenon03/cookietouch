@@ -675,7 +675,7 @@ export default class ScriptsManager {
     const bankPutItems = this.scriptManager.config.BANK_PUT_ITEMS;
     if (bankPutItems && bankPutItems.length > 0) {
       for (const val of bankPutItems) {
-        if (val.id && val.quantity) {
+        if (typeof val.id  === "number" && typeof val.quantity === "number") {
           this.actionsManager.enqueueAction(new StoragePutItemAction(val.id, val.quantity));
         }
       }

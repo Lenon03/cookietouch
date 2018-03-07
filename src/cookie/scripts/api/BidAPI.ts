@@ -54,11 +54,10 @@ export default class BidAPI {
     return this.account.game.bid.objectsInSale ? this.account.game.bid.objectsInSale.Count() : 0;
   }
 
-  public getItemsInSale(): List<IObjectInSale> {
-    const itemsInSale = new List<IObjectInSale>();
+  public getItemsInSale(): IObjectInSale[] {
     // This will automatically handle the list being null
     if (this.account.state !== AccountStates.SELLING) {
-      return itemsInSale;
+      return [];
     }
 
     const tmp = this.account.game.bid.objectsInSale.Select((t) => {
@@ -70,9 +69,7 @@ export default class BidAPI {
       } as IObjectInSale;
     });
 
-    itemsInSale.AddRange(tmp.ToArray());
-
-    return itemsInSale;
+    return tmp.ToArray();
   }
 
   public sellItem(gid: number, lot: number, price: number): boolean {

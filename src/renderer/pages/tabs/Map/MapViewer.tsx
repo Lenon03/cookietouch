@@ -287,7 +287,9 @@ class MapViewer extends React.Component<Props, IState> {
           if (g.g) {
             const img2 = document.getElementById(`g-${i}-${g.g}`) as HTMLImageElement;
             img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${g.g}.png`;
-            // if (g.sx)
+            if (g.sx) {
+              // TODO: Turn correctly the image...
+            }
             ctx.drawImage(img2, 0, 0, g.cw, g.ch,
               g.x / DTConstants.ORIGINAL_WIDTH * c.width + DTConstants.TILE_WIDTH / 2,
               g.y / DTConstants.ORIGINAL_HEIGHT * c.height + DTConstants.TILE_HEIGHT / 2,

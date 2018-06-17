@@ -194,7 +194,10 @@ export default class Bid implements IClearable {
     return true;
   }
 
-  public editItemInSalePrice(uid: number, newPrice: number): boolean {
+  public async editItemInSalePrice(
+    uid: number,
+    newPrice: number
+  ): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
@@ -211,7 +214,7 @@ export default class Bid implements IClearable {
       return false;
     }
 
-    sleep(1500);
+    await sleep(1500);
 
     this.sellItem(itemInSale.objectUID, itemInSale.quantity, newPrice);
 

@@ -208,7 +208,10 @@ export default class BidExtension implements IClearable {
             )
           );
           if (
-            this.account.game.bid.editItemInSalePrice(o.objectUID, newPrice)
+            await this.account.game.bid.editItemInSalePrice(
+              o.objectUID,
+              newPrice
+            )
           ) {
             await sleep(800);
           }

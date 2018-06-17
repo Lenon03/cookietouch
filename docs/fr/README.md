@@ -1,4 +1,5 @@
 # CookieTouch API Documentation
+
 [Summary](SUMMARY.md) | [Single page summary](singlepage.md)
 
 <hr>

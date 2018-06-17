@@ -20,9 +20,8 @@ cd cookietouch && yarn
 
 ## Documentation
 
-To update the documentation you just have to modify the /docs/src folder then
-in the docs folder do a `bash publish.sh`, then normally push to the master branch.
-The website is available on https://cookie-project.github.io/cookietouch/
+The documentation is available on https://cookie-project.github.io/cookietouch/
+To update the documentation you just have to modify the /docs/ folder.
 
 ## Dev
 

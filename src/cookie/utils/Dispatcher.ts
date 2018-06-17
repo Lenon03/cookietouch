@@ -1,5 +1,4 @@
 export default class Dispatcher {
-
   private prefix: string;
   private listeners: any;
 
@@ -20,7 +19,10 @@ export default class Dispatcher {
     const newEventName = this.prefix + eventName;
     if (typeof this.listeners[newEventName] !== "undefined") {
       for (let i = 0, l = this.listeners[newEventName].length; i < l; i++) {
-        this.listeners[newEventName][i][1].call(this.listeners[newEventName][i][0], ...params);
+        this.listeners[newEventName][i][1].call(
+          this.listeners[newEventName][i][0],
+          ...params
+        );
       }
     }
   }

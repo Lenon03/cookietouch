@@ -33,7 +33,9 @@ export default class MountAPI {
     if (ratio > 100 || !this.account.game.character.mount.hasMount) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new SetRatioAction(ratio));
+    this.account.scripts.actionsManager.enqueueAction(
+      new SetRatioAction(ratio)
+    );
     return true;
   }
 }

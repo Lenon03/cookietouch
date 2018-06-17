@@ -3,10 +3,27 @@ import MapPoint from "@/core/pathfinder/MapPoint";
 export default class ShaperEntry {
   public hasDirection: boolean;
   public withoutCenter: boolean;
-  public fn: (x: number, y: number, radiusMin: number, radiusMax: number, dirX: number, dirY: number) => MapPoint[];
+  public fn: (
+    x: number,
+    y: number,
+    radiusMin: number,
+    radiusMax: number,
+    dirX: number,
+    dirY: number
+  ) => MapPoint[];
 
-  constructor(fn: (x: number, y: number, radiusMin: number, radiusMax: number, dirX: number, dirY: number) => MapPoint[],
-              hasDirection: boolean, withoutCenter: boolean) {
+  constructor(
+    fn: (
+      x: number,
+      y: number,
+      radiusMin: number,
+      radiusMax: number,
+      dirX: number,
+      dirY: number
+    ) => MapPoint[],
+    hasDirection: boolean,
+    withoutCenter: boolean
+  ) {
     this.fn = fn;
     this.hasDirection = hasDirection;
     this.withoutCenter = withoutCenter;

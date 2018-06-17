@@ -11,11 +11,11 @@ export default class LiteEvent<T> implements ILiteEvent<T> {
   }
 
   public off(handler: (data?: T) => void): void {
-    this.handlers = this.handlers.filter((h) => h !== handler);
+    this.handlers = this.handlers.filter(h => h !== handler);
   }
 
   public trigger(data?: T) {
-    this.handlers.slice(0).forEach((h) => h(data));
+    this.handlers.slice(0).forEach(h => h(data));
   }
 
   public expose(): ILiteEvent<T> {

@@ -2,9 +2,9 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Account from "@account";
-import Button from "material-ui/Button";
-import Grid from "material-ui/Grid";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 
 type style = "root" | "statsField" | "statsLogo" | "statsLabel" | "statsLabelSpan";
@@ -12,6 +12,7 @@ type style = "root" | "statsField" | "statsLogo" | "statsLabel" | "statsLabelSpa
 const styles: StyleRulesCallback<style> = (theme) => ({
   root: {
     flexGrow: 1,
+    padding: 10,
   },
   statsField: {
     // display: "flex",

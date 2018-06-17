@@ -1,9 +1,9 @@
 import Account from "@/account";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import LiteEvent from "@/utils/LiteEvent";
-import {remote} from "electron";
+import { remote } from "electron";
 import * as fs from "fs";
-import {List} from "linqts";
+import { List } from "linqts";
 import * as path from "path";
 
 interface IFloodConfigurationJSON {
@@ -14,7 +14,6 @@ interface IFloodConfigurationJSON {
 }
 
 export default class FloodConfiguration {
-
   public readonly configurationsPath = "parameters/flood";
 
   public seekChannelInterval: number;
@@ -39,11 +38,19 @@ export default class FloodConfiguration {
   }
 
   public setConfigFilePath() {
-    const folderPath = path.join(remote.app.getPath("userData"), this.configurationsPath);
+    const folderPath = path.join(
+      remote.app.getPath("userData"),
+      this.configurationsPath
+    );
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
-    this.configFilePath = path.join(folderPath, `${this.account.accountConfig.username}_${this.account.game.character.name}.config`);
+    this.configFilePath = path.join(
+      folderPath,
+      `${this.account.accountConfig.username}_${
+        this.account.game.character.name
+      }.config`
+    );
   }
 
   public load() {
@@ -65,7 +72,7 @@ export default class FloodConfiguration {
       generalChannelInterval: this.generalChannelInterval,
       salesChannelInterval: this.salesChannelInterval,
       seekChannelInterval: this.seekChannelInterval,
-      sentences: this.sentences.ToArray(),
+      sentences: this.sentences.ToArray()
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
     this.onChanged.trigger();

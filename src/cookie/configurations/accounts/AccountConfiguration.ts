@@ -1,4 +1,4 @@
-import {Enumerable, List} from "linqts";
+import { Enumerable } from "linqts";
 import CharacterCreation from "./CharacterCreation";
 
 export default class AccountConfiguration {
@@ -8,7 +8,7 @@ export default class AccountConfiguration {
   public character: string;
   public characterCreation: CharacterCreation;
   public planificationActivated: boolean;
-  public planification: List<boolean>;
+  public planification: boolean[];
 
   constructor(username: string, password: string, server = -1, character = "") {
     this.server = server;
@@ -17,6 +17,6 @@ export default class AccountConfiguration {
     this.password = password;
     this.characterCreation = new CharacterCreation();
     this.planificationActivated = false;
-    this.planification = Enumerable.Repeat(true, 24);
+    this.planification = Enumerable.Repeat(true, 24).ToArray();
   }
 }

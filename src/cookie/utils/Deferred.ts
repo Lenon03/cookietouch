@@ -8,7 +8,7 @@ export function Deferred<T>(): IDeferred<T> {
   const deferred: IDeferred<T> = {
     promise: null as any,
     reject: null as any,
-    resolve: null as any,
+    resolve: null as any
   };
 
   deferred.promise = new Promise<T>((resolve: any, reject: any) => {

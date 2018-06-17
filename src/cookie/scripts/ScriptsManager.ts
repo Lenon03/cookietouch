@@ -1,7 +1,7 @@
-import {AccountStates} from "@/account/AccountStates";
+import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import {BoostableStats} from "@/game/character/BoostableStats";
-import {PlayerLifeStatusEnum} from "@/protocol/enums/PlayerLifeStatusEnum";
+import { BoostableStats } from "@/game/character/BoostableStats";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import FightAction from "@/scripts/actions/fight/FightAction";
 import GatherAction from "@/scripts/actions/gather/GatherAction";
 import DelayAction from "@/scripts/actions/global/DelayAction";
@@ -24,18 +24,20 @@ import FightFlag from "@/scripts/flags/FightFlag";
 import GatherFlag from "@/scripts/flags/GatherFlag";
 import NpcBankFlag from "@/scripts/flags/NpcBankFlag";
 import PhenixFlag from "@/scripts/flags/PhenixFlag";
-import {sleep} from "@/utils/Time";
+import { sleep } from "@/utils/Time";
 import Account from "@account";
 import LiteEvent from "@utils/LiteEvent";
-import {isEmpty} from "@utils/String";
+import { isEmpty } from "@utils/String";
 import * as fs from "fs";
-import {List} from "linqts";
+import { List } from "linqts";
 import * as path from "path";
 import API from "./api";
-import {IFlag, IFlagType} from "./flags/IFlag";
-import {FunctionTypes} from "./FunctionTypes";
-import ActionsManager, {IActionsManagerEventData} from "./managers/ActionsManager";
-import JsonScriptManager, {IMap} from "./managers/JsonScriptManager";
+import { IFlag, IFlagType } from "./flags/IFlag";
+import { FunctionTypes } from "./FunctionTypes";
+import ActionsManager, {
+  IActionsManagerEventData
+} from "./managers/ActionsManager";
+import JsonScriptManager, { IMap } from "./managers/JsonScriptManager";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;
@@ -66,7 +68,9 @@ export default class ScriptsManager {
   }
 
   get running(): boolean {
-    return this.account.isGroupChief === true ? this.enabled && !this.paused : this.account.group.chief.scripts.running === true;
+    return this.account.isGroupChief === true
+      ? this.enabled && !this.paused
+      : this.account.group.chief.scripts.running === true;
   }
 
   public get ScriptLoaded() {
@@ -82,7 +86,9 @@ export default class ScriptsManager {
   }
 
   get currentFunctionType(): FunctionTypes {
-    return this.account.isGroupChief ? this._currentFunctionType : this.account.group.chief.scripts._currentFunctionType;
+    return this.account.isGroupChief
+      ? this._currentFunctionType
+      : this.account.group.chief.scripts._currentFunctionType;
   }
 
   set currentFunctionType(type: FunctionTypes) {
@@ -94,26 +100,43 @@ export default class ScriptsManager {
   }
 
   get scriptManager(): JsonScriptManager {
-    return this.account.isGroupChief ? this._scriptManager : this.account.group.chief.scripts._scriptManager;
+    return this.account.isGroupChief
+      ? this._scriptManager
+      : this.account.group.chief.scripts._scriptManager;
   }
 
   private get gotToMaxPods(): boolean {
-    const maxPods = this._scriptManager.config.MAX_PODS ? this._scriptManager.config.MAX_PODS : 90;
+    const maxPods = this.scriptManager.config.MAX_PODS
+      ? this.scriptManager.config.MAX_PODS
+      : 90;
     return this.account.game.character.inventory.weightPercent >= maxPods;
   }
 
   public fromFile(filePath: string) {
     if (this.enabled) {
-      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("cantStartMultipleScript"));
+      this.account.logger.logError(
+        LanguageManager.trans("script"),
+        LanguageManager.trans("cantStartMultipleScript")
+      );
       return;
     }
     if (!fs.existsSync(filePath) || path.extname(filePath) !== ".js") {
-      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("scriptErrorFormat"));
+      this.account.logger.logError(
+        LanguageManager.trans("script"),
+        LanguageManager.trans("scriptErrorFormat")
+      );
       return;
     }
-    this.scriptManager.loadFromFile(filePath, this.account.accountConfig.username, this.beforeDoFile.bind(this));
+    this.scriptManager.loadFromFile(
+      filePath,
+      this.account.accountConfig.username,
+      this.beforeDoFile.bind(this)
+    );
     this.currentScriptName = path.basename(filePath, ".js");
-    this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptLoaded", path.basename(filePath, ".js")));
+    this.account.logger.logInfo(
+      LanguageManager.trans("script"),
+      LanguageManager.trans("scriptLoaded", path.basename(filePath, ".js"))
+    );
     this.onScriptLoaded.trigger(this.currentScriptName);
   }
 
@@ -124,7 +147,10 @@ export default class ScriptsManager {
       return;
     }
     // Only check for regeneration when we're alive and kicking
-    if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING) {
+    if (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+    ) {
       // Check for regeneration in the script
       await this.checkScriptRegeneration();
       if (!this.running) {
@@ -166,13 +192,19 @@ export default class ScriptsManager {
     // If this account is a group chief, do some checkings
     if (this.account.hasGroup && this.account.isGroupChief) {
       if (this.account.group.isAnyoneBusy) {
-        this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("errorLaunchScriptBusy"));
+        this.account.logger.logError(
+          LanguageManager.trans("script"),
+          LanguageManager.trans("errorLaunchScriptBusy")
+        );
         return;
       }
     }
 
     this.enabled = true;
-    this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptStarted"));
+    this.account.logger.logInfo(
+      LanguageManager.trans("script"),
+      LanguageManager.trans("scriptStarted")
+    );
     this.onScriptStarted.trigger();
     this.currentFunctionType = FunctionTypes.MOVE;
     this.processScript();
@@ -180,7 +212,11 @@ export default class ScriptsManager {
 
   public stopScript(reason: string = "") {
     // In case the account is a member of a group, stop the chief's group.
-    if (this.account.hasGroup && !this.account.isGroupChief && this.account.group.chief.scripts.enabled) {
+    if (
+      this.account.hasGroup &&
+      !this.account.isGroupChief &&
+      this.account.group.chief.scripts.enabled
+    ) {
       this.account.group.chief.scripts.stopScript(reason);
       return;
     }
@@ -201,9 +237,15 @@ export default class ScriptsManager {
     }
 
     if (reason === "") {
-      this.account.logger.logInfo(LanguageManager.trans("script"), LanguageManager.trans("scriptStopped"));
+      this.account.logger.logInfo(
+        LanguageManager.trans("script"),
+        LanguageManager.trans("scriptStopped")
+      );
     } else {
-      this.account.logger.logError(LanguageManager.trans("script"), LanguageManager.trans("scriptStoppedReason", reason));
+      this.account.logger.logError(
+        LanguageManager.trans("script"),
+        LanguageManager.trans("scriptStoppedReason", reason)
+      );
     }
 
     this.onScriptStopped.trigger(reason);
@@ -237,11 +279,18 @@ export default class ScriptsManager {
       }
 
       // Handle function
-      const entries = this.scriptManager.getFunctionEntries(this.currentFunctionType);
+      const entries = this.scriptManager.getFunctionEntries(
+        this.currentFunctionType
+      );
 
       // In case the script doesn't have a function we need
       if (!entries) {
-        this.stopScript(LanguageManager.trans("scriptDoesntInclude", FunctionTypes[this.currentFunctionType]));
+        this.stopScript(
+          LanguageManager.trans(
+            "scriptDoesntInclude",
+            FunctionTypes[this.currentFunctionType]
+          )
+        );
         return;
       }
 
@@ -260,7 +309,13 @@ export default class ScriptsManager {
       }
 
       // In case no entry was found in this map
-      this.stopScript(LanguageManager.trans("mapNoEntry", this.account.game.map.currentPosition, this.account.game.map.id));
+      this.stopScript(
+        LanguageManager.trans(
+          "mapNoEntry",
+          this.account.game.map.currentPosition,
+          this.account.game.map.id
+        )
+      );
     } catch (error) {
       this.account.logger.logError(LanguageManager.trans("script"), error);
       this.stopScript();
@@ -326,16 +381,27 @@ export default class ScriptsManager {
         case IFlagType.GatherFlag:
           const gatherAction = this.createGatherAction();
           // We'll assume gatherAction can never be null
-          if (this.account.game.managers.gathers.canGather(...gatherAction.elements)) {
+          if (
+            this.account.game.managers.gathers.canGather(
+              ...gatherAction.elements
+            )
+          ) {
             this.processCurrentEntryFlag(gatherAction);
             return;
           }
           break;
         case IFlagType.FightFlag:
           const fightAction = this.createFightAction();
-          if (this.account.game.map.canFight(fightAction.minMonsters, fightAction.maxMonsters,
-            fightAction.minMonstersLevel, fightAction.maxMonstersLevel,
-            fightAction.forbiddenMonsters, fightAction.mandatoryMonsters)) {
+          if (
+            this.account.game.map.canFight(
+              fightAction.minMonsters,
+              fightAction.maxMonsters,
+              fightAction.minMonstersLevel,
+              fightAction.maxMonstersLevel,
+              fightAction.forbiddenMonsters,
+              fightAction.mandatoryMonsters
+            )
+          ) {
             this.processCurrentEntryFlag(fightAction);
             return;
           }
@@ -385,16 +451,30 @@ export default class ScriptsManager {
 
   private async checkForDeath() {
     // Check first if the character is a tombstone to free it
-    if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
-      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterTombstone"));
-      await this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
+    if (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_TOMBSTONE
+    ) {
+      this.account.logger.logInfo(
+        LanguageManager.trans(LanguageManager.trans("scriptsManager")),
+        LanguageManager.trans("characterTombstone")
+      );
+      await this.account.network.sendMessageFree(
+        "GameRolePlayFreeSoulRequestMessage"
+      );
       // Wait for a map change since after a free soul, we get teleported
       await this.account.game.map.waitMapChange(10);
       await sleep(1000);
     }
     // Check if the character is a phantom (in case the user reconnects as a phantom and not a tombstone)
-    if (this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM) {
-      this.account.logger.logInfo(LanguageManager.trans(LanguageManager.trans("scriptsManager")), LanguageManager.trans("characterPhantom"));
+    if (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_PHANTOM
+    ) {
+      this.account.logger.logInfo(
+        LanguageManager.trans(LanguageManager.trans("scriptsManager")),
+        LanguageManager.trans("characterPhantom")
+      );
       this.currentFunctionType = FunctionTypes.PHENIX;
     }
   }
@@ -407,17 +487,27 @@ export default class ScriptsManager {
     }
 
     // TODO: Get this from autoRegen in script?
-    const minLife = this.scriptManager.config.AUTO_REGEN.minLife ? this.scriptManager.config.AUTO_REGEN.minLife : 0;
-    const maxLife = this.scriptManager.config.AUTO_REGEN.maxLife ? this.scriptManager.config.AUTO_REGEN.maxLife : 100;
+    const minLife = this.scriptManager.config.AUTO_REGEN.minLife
+      ? this.scriptManager.config.AUTO_REGEN.minLife
+      : 0;
+    const maxLife = this.scriptManager.config.AUTO_REGEN.maxLife
+      ? this.scriptManager.config.AUTO_REGEN.maxLife
+      : 100;
     // Check if we need to regenerate
-    if (minLife === 0 || this.account.game.character.stats.lifePercent > minLife) {
+    if (
+      minLife === 0 ||
+      this.account.game.character.stats.lifePercent > minLife
+    ) {
       return;
     }
     // Calculate how much HP we need back, base on maxLife
-    const endHp = maxLife * this.account.game.character.stats.maxLifePoints / 100;
+    const endHp =
+      (maxLife * this.account.game.character.stats.maxLifePoints) / 100;
     let hpToRegen = endHp - this.account.game.character.stats.lifePoints;
     // Get the items that the user wants us to use for regen
-    const items = this.scriptManager.config.AUTO_REGEN.items ? this.scriptManager.config.AUTO_REGEN.items : [];
+    const items = this.scriptManager.config.AUTO_REGEN.items
+      ? this.scriptManager.config.AUTO_REGEN.items
+      : [];
     for (const t of items) {
       // Hard coded the value 20 because its useless to waste a regen item for this much hp to regen
       if (hpToRegen < 20) {
@@ -450,13 +540,22 @@ export default class ScriptsManager {
       return;
     }
     // In case some user is...
-    if (this.account.extensions.fights.config.regenEnd <= this.account.extensions.fights.config.regenStart) {
+    if (
+      this.account.extensions.fights.config.regenEnd <=
+      this.account.extensions.fights.config.regenStart
+    ) {
       return;
     }
     // Check if we need to regen
-    if (this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenStart) {
+    if (
+      this.account.game.character.stats.lifePercent <=
+      this.account.extensions.fights.config.regenStart
+    ) {
       // Calculate how much HP we need back, based on the regenEnd option
-      const endHp = this.account.extensions.fights.config.regenEnd * this.account.game.character.stats.maxLifePoints / 100;
+      const endHp =
+        (this.account.extensions.fights.config.regenEnd *
+          this.account.game.character.stats.maxLifePoints) /
+        100;
       const hpToRegen = endHp - this.account.game.character.stats.lifePoints;
       if (hpToRegen > 0) {
         const estimatedTime = hpToRegen / 2;
@@ -464,10 +563,19 @@ export default class ScriptsManager {
         if (this.account.state !== AccountStates.REGENERATING) {
           this.account.game.character.sit();
         }
-        this.account.logger.logInfo(LanguageManager.trans("scriptsManager"), LanguageManager.trans("hpToGetBack", hpToRegen, estimatedTime));
+        this.account.logger.logInfo(
+          LanguageManager.trans("scriptsManager"),
+          LanguageManager.trans("hpToGetBack", hpToRegen, estimatedTime)
+        );
         // Then just wait it before continuing
-        for (let i = 0; i < estimatedTime &&
-        this.account.game.character.stats.lifePercent <= this.account.extensions.fights.config.regenEnd && this.running; i++) {
+        for (
+          let i = 0;
+          i < estimatedTime &&
+          this.account.game.character.stats.lifePercent <=
+            this.account.extensions.fights.config.regenEnd &&
+          this.running;
+          i++
+        ) {
           await sleep(1000);
         }
         if (this.running) {
@@ -475,7 +583,10 @@ export default class ScriptsManager {
           if (this.account.state === AccountStates.REGENERATING) {
             this.account.game.character.sit();
           }
-          this.account.logger.logInfo(LanguageManager.trans("scriptsManager"), LanguageManager.trans("regenEnded"));
+          this.account.logger.logInfo(
+            LanguageManager.trans("scriptsManager"),
+            LanguageManager.trans("regenEnded")
+          );
         }
       }
     }
@@ -485,28 +596,47 @@ export default class ScriptsManager {
     if (!this.scriptManager.config.OPEN_BAGS) {
       return;
     }
-    const bags = this.account.game.character.inventory.objects.Where((o) => o.typeId === 100 && o.superTypeId === 6);
+    const bags = this.account.game.character.inventory.objects.Where(
+      o => o.typeId === 100 && o.superTypeId === 6
+    );
     if (bags.Count() > 0) {
-      bags.ForEach(async (b) => {
+      bags.ForEach(async b => {
         this.account.game.character.inventory.useObject(b);
         await sleep(800);
       });
-      this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("bagsOpen", bags.Count()));
+      this.account.logger.logInfo(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("bagsOpen", bags.Count())
+      );
     }
   }
 
   private async checkAutoBoosting() {
     // Stat
-    if (this.account.config.statToBoost !== BoostableStats.NONE &&
-      this.account.game.character.stats.statsPoints > 0) {
-      if (this.account.game.character.autoBoostStat(this.account.config.statToBoost)) {
+    if (
+      this.account.config.statToBoost !== BoostableStats.NONE &&
+      this.account.game.character.stats.statsPoints > 0
+    ) {
+      if (
+        this.account.game.character.autoBoostStat(
+          this.account.config.statToBoost
+        )
+      ) {
         await sleep(1000);
       }
     }
     // Spells
-    if (this.account.config.spellsToBoost.length > 0 && this.account.game.character.stats.spellsPoints > 0) {
+    if (
+      this.account.config.spellsToBoost.length > 0 &&
+      this.account.game.character.stats.spellsPoints > 0
+    ) {
       for (const spellToBoost of this.account.config.spellsToBoost) {
-        if (this.account.game.character.autoLevelUpSpell(spellToBoost.id, spellToBoost.level)) {
+        if (
+          this.account.game.character.autoLevelUpSpell(
+            spellToBoost.id,
+            spellToBoost.level
+          )
+        ) {
           await sleep(1000);
         }
       }
@@ -514,11 +644,18 @@ export default class ScriptsManager {
   }
 
   private async checkForMount() {
-    if (!this.account.config.autoMount || !this.account.game.character.mount.hasMount || this.account.game.character.mount.isRiding) {
+    if (
+      !this.account.config.autoMount ||
+      !this.account.game.character.mount.hasMount ||
+      this.account.game.character.mount.isRiding
+    ) {
       return;
     }
     this.account.game.character.mount.toggleRiding();
-    this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("nowOnMount"));
+    this.account.logger.logInfo(
+      LanguageManager.trans("scripts"),
+      LanguageManager.trans("nowOnMount")
+    );
     await sleep(1000);
   }
 
@@ -535,7 +672,10 @@ export default class ScriptsManager {
       }
       // If the character is still full
       if (this.gotToMaxPods) {
-        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("maxPodsReached"));
+        this.account.logger.logInfo(
+          LanguageManager.trans("scripts"),
+          LanguageManager.trans("maxPodsReached")
+        );
         this.currentFunctionType = FunctionTypes.BANK;
       }
     }
@@ -545,35 +685,56 @@ export default class ScriptsManager {
     const autoDeleteElements = this.scriptManager.config.AUTO_DELETE;
     // If the script has an AUTO_DELETE configuration
     if (autoDeleteElements) {
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("autoDeleteStarted"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("autoDeleteStarted")
+      );
       for (const gid of autoDeleteElements) {
         // Remove all the objects and not only the first one, because sometimes objects are simplette to 1-s
-        this.account.game.character.inventory.getObjectsByGid(gid).ForEach(async (obj) => {
-          this.account.game.character.inventory.deleteObject(obj, 0);
-          await sleep(800);
-        });
+        this.account.game.character.inventory
+          .getObjectsByGid(gid)
+          .ForEach(async obj => {
+            this.account.game.character.inventory.deleteObject(obj, 0);
+            await sleep(800);
+          });
       }
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("autoDeleteEnded"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("autoDeleteEnded")
+      );
     }
   }
 
   private checkForSpecialCases(): boolean {
     // Special case: When we release the character from being a phantom, we have to go back to the move function.
     // Group special case: only reset the current function when everyone is alive
-    if (this.currentFunctionType === FunctionTypes.PHENIX &&
+    if (
+      this.currentFunctionType === FunctionTypes.PHENIX &&
       (this.account.hasGroup && this.account.isGroupChief
         ? this.account.group.isEveryoneAliveAndKicking
-        : this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)) {
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("characterNoMorePhantom"));
+        : this.account.game.character.lifeStatus ===
+          PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)
+    ) {
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("characterNoMorePhantom")
+      );
       this.currentFunctionType = FunctionTypes.MOVE;
       this.processScript();
       return true;
     }
     // Special case: When it's the BANK function and the character is not fullpods anymore
     // Group special case: only reset the current function when everyone is not full pods anymore
-    if (this.currentFunctionType === FunctionTypes.BANK && (this.account.hasGroup && this.account.isGroupChief
-      ? !this.account.group.isAnyoneFullWeight : !this.gotToMaxPods)) {
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("characterNoMoreFullWeight"));
+    if (
+      this.currentFunctionType === FunctionTypes.BANK &&
+      (this.account.hasGroup && this.account.isGroupChief
+        ? !this.account.group.isAnyoneFullWeight
+        : !this.gotToMaxPods)
+    ) {
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("characterNoMoreFullWeight")
+      );
       this.currentFunctionType = FunctionTypes.MOVE;
       this.processScript();
       return true;
@@ -594,7 +755,10 @@ export default class ScriptsManager {
     } else {
       // Otherwise move to next flag
       // We'll avoid the checks because we know we can't gather anymore
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("noResource"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("noResource")
+      );
       this.processEntryFlags(true);
     }
   }
@@ -613,7 +777,9 @@ export default class ScriptsManager {
     }
     // If the list of resources is empty (not set in the script)
     if (resourcesIds.Count() === 0) {
-      resourcesIds.AddRange(this.account.game.character.jobs.collectSkillsIds.ToArray());
+      resourcesIds.AddRange(
+        this.account.game.character.jobs.collectSkillsIds.ToArray()
+      );
     }
     // In case the character has no jobs or something
     if (resourcesIds.Count() === 0) {
@@ -626,29 +792,56 @@ export default class ScriptsManager {
   private handleFightFlag(fightAction: FightAction) {
     const action = fightAction ? fightAction : this.createFightAction();
     // If we got the max fights per map, reprocess entry flags
-    const maxFightsPerMap = this.scriptManager.config.MAX_FIGHTS_PER_MAP ? this.scriptManager.config.MAX_FIGHTS_PER_MAP : -1;
-    if (maxFightsPerMap !== -1 && this.actionsManager.fightsOnThisMap >= maxFightsPerMap) {
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("maxFightsPerMap", maxFightsPerMap));
+    const maxFightsPerMap = this.scriptManager.config.MAX_FIGHTS_PER_MAP
+      ? this.scriptManager.config.MAX_FIGHTS_PER_MAP
+      : -1;
+    if (
+      maxFightsPerMap !== -1 &&
+      this.actionsManager.fightsOnThisMap >= maxFightsPerMap
+    ) {
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("maxFightsPerMap", maxFightsPerMap)
+      );
       this.processEntryFlags(true);
       return;
     }
     // If we can actually fight in this map, enqueue the action
-    if (this.account.game.map.canFight(action.minMonsters, action.maxMonsters, action.minMonstersLevel,
-      action.maxMonstersLevel, action.forbiddenMonsters, action.mandatoryMonsters)) {
+    if (
+      this.account.game.map.canFight(
+        action.minMonsters,
+        action.maxMonsters,
+        action.minMonstersLevel,
+        action.maxMonstersLevel,
+        action.forbiddenMonsters,
+        action.mandatoryMonsters
+      )
+    ) {
       this.actionsManager.enqueueAction(action, true);
     } else {
       // Otherwise move to the next flag
       // We'll avoid the checks because we know we can't fight anymore
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("noMonstersGroup"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("noMonstersGroup")
+      );
       this.processEntryFlags(true);
     }
   }
 
   private createFightAction(): FightAction {
-    const minMonsters = this.scriptManager.config.MIN_MONSTERS ? this.scriptManager.config.MIN_MONSTERS : 1;
-    const maxMonsters = this.scriptManager.config.MAX_MONSTERS ? this.scriptManager.config.MAX_MONSTERS : 8;
-    const minLevel = this.scriptManager.config.MIN_MONSTERS_LEVEL ? this.scriptManager.config.MIN_MONSTERS_LEVEL : 1;
-    const maxLevel = this.scriptManager.config.MAX_MONSTERS_LEVEL ? this.scriptManager.config.MAX_MONSTERS_LEVEL : 1000;
+    const minMonsters = this.scriptManager.config.MIN_MONSTERS
+      ? this.scriptManager.config.MIN_MONSTERS
+      : 1;
+    const maxMonsters = this.scriptManager.config.MAX_MONSTERS
+      ? this.scriptManager.config.MAX_MONSTERS
+      : 8;
+    const minLevel = this.scriptManager.config.MIN_MONSTERS_LEVEL
+      ? this.scriptManager.config.MIN_MONSTERS_LEVEL
+      : 1;
+    const maxLevel = this.scriptManager.config.MAX_MONSTERS_LEVEL
+      ? this.scriptManager.config.MAX_MONSTERS_LEVEL
+      : 1000;
     const forbiddenMonsters = [];
     const mandatoryMonsters = [];
     // Forbidden monsters
@@ -665,7 +858,14 @@ export default class ScriptsManager {
         mandatoryMonsters.push(fm);
       }
     }
-    return new FightAction(minMonsters, maxMonsters, minLevel, maxLevel, forbiddenMonsters, mandatoryMonsters);
+    return new FightAction(
+      minMonsters,
+      maxMonsters,
+      minLevel,
+      maxLevel,
+      forbiddenMonsters,
+      mandatoryMonsters
+    );
   }
 
   private handleNpcBankFlag() {
@@ -675,8 +875,10 @@ export default class ScriptsManager {
     const bankPutItems = this.scriptManager.config.BANK_PUT_ITEMS;
     if (bankPutItems && bankPutItems.length > 0) {
       for (const val of bankPutItems) {
-        if (typeof val.id  === "number" && typeof val.quantity === "number") {
-          this.actionsManager.enqueueAction(new StoragePutItemAction(val.id, val.quantity));
+        if (typeof val.id === "number" && typeof val.quantity === "number") {
+          this.actionsManager.enqueueAction(
+            new StoragePutItemAction(val.id, val.quantity)
+          );
         }
       }
     } else {
@@ -687,8 +889,10 @@ export default class ScriptsManager {
     const bankGetItems = this.scriptManager.config.BANK_GET_ITEMS;
     if (bankGetItems && bankGetItems.length > 0) {
       for (const val of bankGetItems) {
-        if (typeof val.id  === "number" && typeof val.quantity === "number") {
-          this.actionsManager.enqueueAction(new StorageGetItemAction(val.id, val.quantity));
+        if (typeof val.id === "number" && typeof val.quantity === "number") {
+          this.actionsManager.enqueueAction(
+            new StorageGetItemAction(val.id, val.quantity)
+          );
         }
       }
     }
@@ -696,16 +900,22 @@ export default class ScriptsManager {
     const autoRegen = this.scriptManager.config.AUTO_REGEN;
     if (autoRegen) {
       if (autoRegen.store > 0) {
-        this.actionsManager.enqueueAction(new StorageGetAutoRegenStoreAction(autoRegen.items, autoRegen.store));
+        this.actionsManager.enqueueAction(
+          new StorageGetAutoRegenStoreAction(autoRegen.items, autoRegen.store)
+        );
       }
     }
     // BANK_PUT_KAMAS
-    let amount = this.scriptManager.config.BANK_PUT_KAMAS ? this.scriptManager.config.BANK_PUT_KAMAS : -1;
+    let amount = this.scriptManager.config.BANK_PUT_KAMAS
+      ? this.scriptManager.config.BANK_PUT_KAMAS
+      : -1;
     if (amount >= 0) {
       this.actionsManager.enqueueAction(new StoragePutKamasAction(amount));
     }
     // BANK_GET_KAMAS
-    amount = this.scriptManager.config.BANK_GET_KAMAS ? this.scriptManager.config.BANK_GET_KAMAS : -1;
+    amount = this.scriptManager.config.BANK_GET_KAMAS
+      ? this.scriptManager.config.BANK_GET_KAMAS
+      : -1;
     if (amount >= 0) {
       this.actionsManager.enqueueAction(new StorageGetKamasAction(amount));
     }
@@ -714,7 +924,9 @@ export default class ScriptsManager {
   }
 
   private handlePhenixFlag(flag: PhenixFlag) {
-    const phenix = this.account.game.map.phenixs.find((ph) => ph.cellId === flag.cellId);
+    const phenix = this.account.game.map.phenixs.find(
+      ph => ph.cellId === flag.cellId
+    );
     // If the phenix wasn't found
     if (!phenix) {
       this.stopScript(LanguageManager.trans("noPhenixOnCell", flag.cellId));
@@ -725,7 +937,9 @@ export default class ScriptsManager {
   }
 
   private handleDoorFlag(flag: DoorFlag) {
-    const door = this.account.game.map.doors.find((d) => d.cellId === flag.cellId);
+    const door = this.account.game.map.doors.find(
+      d => d.cellId === flag.cellId
+    );
     if (!door) {
       this.stopScript(LanguageManager.trans("noDoorOnCell", flag.cellId));
       return;
@@ -750,18 +964,24 @@ export default class ScriptsManager {
     this.paused = true;
     this.account.game.managers.gathers.cancelGather();
     this.account.game.managers.interactives.cancelUse();
-    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("paused"));
-  }
+    this.account.logger.logDebug(
+      LanguageManager.trans("scripts"),
+      LanguageManager.trans("paused")
+    );
+  };
 
   private onFightEnded = () => {
     if (!this.enabled) {
       return;
     }
     this.paused = false;
-    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("unpaused"));
-  }
+    this.account.logger.logDebug(
+      LanguageManager.trans("scripts"),
+      LanguageManager.trans("unpaused")
+    );
+  };
 
-  private onActionsFinished = (data: IActionsManagerEventData) => {
+  private onActionsFinished = async (data: IActionsManagerEventData) => {
     // If this account is a member of a group
     if (this.account.hasGroup) {
       // If this account is not the chief, ignore this event since the group will handle it
@@ -769,9 +989,15 @@ export default class ScriptsManager {
         return;
       }
       // Otherwise wait for all the actionsFinished events from the members
-      this.account.logger.logDebug(LanguageManager.trans("groups"), LanguageManager.trans("waitingAllMembers"));
-      this.account.group.waitForAllActionsFinished();
-      this.account.logger.logDebug(LanguageManager.trans("groups"), LanguageManager.trans("allMembersDone"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("groups"),
+        LanguageManager.trans("waitingAllMembers")
+      );
+      await this.account.group.waitForAllActionsFinished();
+      this.account.logger.logDebug(
+        LanguageManager.trans("groups"),
+        LanguageManager.trans("allMembersDone")
+      );
     }
     // Check for special cases (full pods, phenix)
     if (this.checkForSpecialCases()) {
@@ -783,7 +1009,7 @@ export default class ScriptsManager {
     } else {
       this.processEntryFlags();
     }
-  }
+  };
 
   private onCustomHandled = (data: IActionsManagerEventData) => {
     // If this account is a member of a group, ignore this event because group will handle it
@@ -800,40 +1026,57 @@ export default class ScriptsManager {
     } else {
       this.processEntryFlags();
     }
-  }
+  };
 
   private async beforeDoFile() {
     (global as any).API[this.account.accountConfig.username] = this.api;
 
-    (global as any).API[this.account.accountConfig.username].isFighting = () => this.account.isFighting;
-    (global as any).API[this.account.accountConfig.username].isGathering = () => this.account.isGathering;
-    (global as any).API[this.account.accountConfig.username].isInDialog = () => this.account.isInDialog;
+    (global as any).API[this.account.accountConfig.username].isFighting = () =>
+      this.account.isFighting;
+    (global as any).API[this.account.accountConfig.username].isGathering = () =>
+      this.account.isGathering;
+    (global as any).API[this.account.accountConfig.username].isInDialog = () =>
+      this.account.isInDialog;
 
-    (global as any).API[this.account.accountConfig.username].printMessage = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printMessage = (
+      message: string
+    ) => {
       this.account.logger.logMessage(LanguageManager.trans("scripts"), message);
     };
 
-    (global as any).API[this.account.accountConfig.username].printDebug = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printDebug = (
+      message: string
+    ) => {
       this.account.logger.logDebug(LanguageManager.trans("scripts"), message);
     };
 
-    (global as any).API[this.account.accountConfig.username].printSuccess = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printSuccess = (
+      message: string
+    ) => {
       this.account.logger.logInfo(LanguageManager.trans("scripts"), message);
     };
 
-    (global as any).API[this.account.accountConfig.username].printError = (message: string) => {
+    (global as any).API[this.account.accountConfig.username].printError = (
+      message: string
+    ) => {
       this.account.logger.logError(LanguageManager.trans("scripts"), message);
     };
 
-    (global as any).API[this.account.accountConfig.username].stopScript = () => {
-      this.stopScript();
+    (global as any).API[this.account.accountConfig.username].stopScript = (
+      reason?: string
+    ) => {
+      this.stopScript(reason);
     };
 
-    (global as any).API[this.account.accountConfig.username].delayFunc = (delay: number) => {
+    (global as any).API[this.account.accountConfig.username].delayFunc = (
+      delay: number
+    ) => {
       this.actionsManager.enqueueAction(new DelayAction(delay), true);
     };
 
-    (global as any).API[this.account.accountConfig.username].leaveDialogFunc = (): boolean => {
+    (global as any).API[
+      this.account.accountConfig.username
+    ].leaveDialogFunc = (): boolean => {
       if (this.account.isInDialog) {
         this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
         return true;

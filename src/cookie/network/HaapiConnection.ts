@@ -4,7 +4,6 @@ import DTConstants from "@protocol/DTConstants";
 import axios from "axios";
 
 export default class HaapiConnection {
-
   public haapi: IHaapi;
   public token: string;
 
@@ -27,10 +26,15 @@ export default class HaapiConnection {
     }
   }
 
-  private async createApiKey(username: string, password: string): Promise<IHaapi> {
+  private async createApiKey(
+    username: string,
+    password: string
+  ): Promise<IHaapi> {
     try {
-      const response = await axios.post(`${DTConstants.config.haapi.url}/Api/CreateApiKey`,
-        "login=" + username + "&password=" + password + "&long_life_token=false");
+      const response = await axios.post(
+        `${DTConstants.config.haapi.url}/Api/CreateApiKey`,
+        "login=" + username + "&password=" + password + "&long_life_token=false"
+      );
       return response.data;
     } catch (e) {
       if (e.response.status === 601) {
@@ -43,14 +47,17 @@ export default class HaapiConnection {
   private async getToken(): Promise<string> {
     const config = {
       headers: {
-        apikey: this.haapi.key,
+        apikey: this.haapi.key
       },
       params: {
-        game: DTConstants.config.haapi.id,
-      },
+        game: DTConstants.config.haapi.id
+      }
     };
     try {
-      const response = await axios.get(`${DTConstants.config.haapi.url}/Account/CreateToken`, config);
+      const response = await axios.get(
+        `${DTConstants.config.haapi.url}/Account/CreateToken`,
+        config
+      );
       return response.data.token;
     } catch (e) {
       throw new Error(e.message);

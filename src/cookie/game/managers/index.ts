@@ -16,7 +16,11 @@ export default class Managers implements IClearable {
     this.movements = new MovementsManager(account, map);
     this.interactives = new InteractivesManager(account, this.movements);
     this.gathers = new GathersManager(account, this.movements, map);
-    this.teleportables = new TeleportablesManager(account, this.interactives, map);
+    this.teleportables = new TeleportablesManager(
+      account,
+      this.interactives,
+      map
+    );
   }
 
   public clear() {

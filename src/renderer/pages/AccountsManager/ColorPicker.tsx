@@ -1,6 +1,6 @@
 import Color from "@/utils/Color";
 import React from "react";
-import { ChromePicker, CustomPicker } from "react-color";
+import { ChromePicker } from "react-color";
 import reactCSS from "reactcss";
 
 interface IProps {

@@ -1,5 +1,5 @@
-import {SpellResistances} from "./enums/SpellResistances";
-import {SpellTargets} from "./enums/SpellTargets";
+import { SpellResistances } from "./enums/SpellResistances";
+import { SpellTargets } from "./enums/SpellTargets";
 
 export default class Spell {
   public spellId: number;
@@ -19,9 +19,22 @@ export default class Spell {
   public carefulAoe: boolean;
   public avoidAllies: boolean;
 
-  constructor(spellId: number, spellName: string, target: SpellTargets, turns: number, relaunchs: number,
-              targetHp: number, characterHp: number, resistance: SpellResistances, resistanceValue: number,
-              distanceToClosestMonster: number, handToHand: boolean, aoe: boolean, carefulAoe: boolean, avoidAllies: boolean) {
+  constructor(
+    spellId: number,
+    spellName: string,
+    target: SpellTargets,
+    turns: number,
+    relaunchs: number,
+    targetHp: number,
+    characterHp: number,
+    resistance: SpellResistances,
+    resistanceValue: number,
+    distanceToClosestMonster: number,
+    handToHand: boolean,
+    aoe: boolean,
+    carefulAoe: boolean,
+    avoidAllies: boolean
+  ) {
     this.spellId = spellId;
     this.spellName = spellName;
     this.target = target;

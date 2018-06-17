@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseByIdAction extends ScriptAction {
   public _name: string = "UseByIdAction";
@@ -14,10 +14,17 @@ export default class UseByIdAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    if (account.game.managers.interactives.useInteractive(this.elementId, this.skillInstanceUid)) {
+    if (
+      account.game.managers.interactives.useInteractive(
+        this.elementId,
+        this.skillInstanceUid
+      )
+    ) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript(LanguageManager.trans("errorInteractive", this.elementId));
+    account.scripts.stopScript(
+      LanguageManager.trans("errorInteractive", this.elementId)
+    );
     return ScriptAction.failedResult();
   }
 }

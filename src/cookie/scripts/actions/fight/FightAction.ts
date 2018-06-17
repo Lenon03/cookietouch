@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {MovementRequestResults} from "@game/managers/movements/MovementRequestResults";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class FightAction extends ScriptAction {
   public _name: string = "FightAction";
@@ -12,8 +12,14 @@ export default class FightAction extends ScriptAction {
   public forbiddenMonsters: number[];
   public mandatoryMonsters: number[];
 
-  constructor(minMonsters: number, maxMonsters: number, minMonstersLevel: number, maxMonstersLevel: number,
-              forbiddenMonsters: number[], mandatoryMonsters: number[]) {
+  constructor(
+    minMonsters: number,
+    maxMonsters: number,
+    minMonstersLevel: number,
+    maxMonstersLevel: number,
+    forbiddenMonsters: number[],
+    mandatoryMonsters: number[]
+  ) {
     super();
     this.minMonsters = minMonsters;
     this.maxMonsters = maxMonsters;
@@ -24,8 +30,14 @@ export default class FightAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    const availableGroups = account.game.map.getMonstersGroup(this.minMonsters, this.maxMonsters, this.minMonstersLevel,
-      this.maxMonstersLevel, this.forbiddenMonsters, this.mandatoryMonsters);
+    const availableGroups = account.game.map.getMonstersGroup(
+      this.minMonsters,
+      this.maxMonsters,
+      this.minMonstersLevel,
+      this.maxMonstersLevel,
+      this.forbiddenMonsters,
+      this.mandatoryMonsters
+    );
 
     if (availableGroups.length <= 0) {
       return ScriptAction.doneResult();
@@ -37,16 +49,29 @@ export default class FightAction extends ScriptAction {
       switch (account.game.managers.movements.moveToCell(t.cellId)) {
         case MovementRequestResults.MOVED:
           account.scripts.actionsManager.monstersGroupToAttack = t.id;
-          account.logger.logDebug(LanguageManager.trans("scripts"),
-            LanguageManager.trans("movingToGroup", t.cellId, t.monstersCount, t.totalLevel));
+          account.logger.logDebug(
+            LanguageManager.trans("scripts"),
+            LanguageManager.trans(
+              "movingToGroup",
+              t.cellId,
+              t.monstersCount,
+              t.totalLevel
+            )
+          );
           return ScriptAction.processingResult();
         case MovementRequestResults.ALREADY_THERE:
         case MovementRequestResults.PATH_BLOCKED:
-          account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("movingToGroupBlocked"));
+          account.logger.logWarning(
+            LanguageManager.trans("scripts"),
+            LanguageManager.trans("movingToGroupBlocked")
+          );
           account.game.map.blacklistedMonsters.push(t.id);
           continue;
-        default: // FAILED
-          account.scripts.stopScript(LanguageManager.trans("movingToGroupFailed"));
+        default:
+          // FAILED
+          account.scripts.stopScript(
+            LanguageManager.trans("movingToGroupFailed")
+          );
           return ScriptAction.failedResult();
       }
     }

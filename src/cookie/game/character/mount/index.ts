@@ -29,7 +29,7 @@ export default class Mount implements IClearable {
     }
 
     this.account.network.sendMessageFree("MountSetXpRatioRequestMessage", {
-      xpRatio: ratio,
+      xpRatio: ratio
     });
   }
 

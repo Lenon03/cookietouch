@@ -6,18 +6,25 @@ import Breeds from "@/protocol/data/classes/Breeds";
 import Spells from "@/protocol/data/classes/Spells";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
-import Button from "material-ui/Button";
-import Card, { CardContent } from "material-ui/Card";
-import { FormControl, FormControlLabel, FormGroup } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import TextField from "material-ui/TextField";
-import Typography from "material-ui/Typography";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
 type style = "root" | "card" | "title" | "formControl" | "table";
@@ -399,14 +406,14 @@ class Configuration extends React.Component<Props, IState> {
   }
 
   private handleSwitchChange = (event, checked) => {
-    this.setState({ [event.target.name]: checked });
+    this.setState({ [event.target.name]: checked } as Pick<IState, keyof IState>);
     this.props.account.config[event.target.name] = checked;
     this.props.account.config.save();
   }
 
   private handleSelectChange = (event) => {
     const value = parseInt(event.target.value, 10);
-    this.setState({ [event.target.name]: value });
+    this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
     this.props.account.config[event.target.name] = value;
     this.props.account.config.save();
   }

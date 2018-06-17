@@ -5,7 +5,13 @@ export default class Zone {
   public zoneEfficiencyPercent: number;
   public zoneMaxEfficiency: number;
 
-  constructor(zoneShape: string, zoneSize: number, zoneMinSize: number, zoneEfficiencyPercent: number, zoneMaxEfficiency: number) {
+  constructor(
+    zoneShape: string,
+    zoneSize: number,
+    zoneMinSize: number,
+    zoneEfficiencyPercent: number,
+    zoneMaxEfficiency: number
+  ) {
     this.zoneShape = zoneShape;
     this.zoneSize = zoneSize;
     this.zoneMinSize = zoneMinSize;

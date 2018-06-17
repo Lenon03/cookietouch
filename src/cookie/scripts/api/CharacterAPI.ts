@@ -1,5 +1,5 @@
 import Account from "@account";
-import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
+import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
 
 export default class CharacterAPI {
   private account: Account;
@@ -9,15 +9,24 @@ export default class CharacterAPI {
   }
 
   public get isAlive(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+    );
   }
 
   public get isTombstone(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_TOMBSTONE
+    );
   }
 
   public get isPhantom(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_PHANTOM
+    );
   }
 
   public get name(): string {

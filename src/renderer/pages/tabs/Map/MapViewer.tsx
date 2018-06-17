@@ -1,5 +1,6 @@
 import PathDuration from "@/core/pathfinder/PathDuration";
 import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
 import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import MonstersGroupEntry from "@/game/map/entities/MonstersGroupEntry";
@@ -16,11 +17,12 @@ import Color from "@/utils/Color";
 import Point from "@/utils/Point";
 import { sleep } from "@/utils/Time";
 import Account from "@account";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
 import { List } from "linqts";
-import { FormControlLabel, FormGroup } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
 import * as React from "react";
 import MapViewerCell from "./MapViewerCell";
 
@@ -192,6 +194,9 @@ class MapViewer extends React.Component<Props, IState> {
       return new Color(0, 0, 255);
     }
     let brush = this.losCellBrush;
+    if (!this.props.account.game.map.data) {
+      return brush;
+    }
     if (this.props.account.game.map.data.cells[cell].isObstacle()) {
       brush = this.obstacleCellBrush;
     } else if (this.props.account.game.map.data.cells[cell].isWalkable(this.props.account.isFighting)) {
@@ -378,15 +383,21 @@ class MapViewer extends React.Component<Props, IState> {
     tooltip.style.padding = "5px";
     tooltip.style.position = "absolute";
     tooltip.style.display = "block";
+
     let htmlBuffer = "";
     if (e instanceof FightPlayerEntry) {
       htmlBuffer += `${e.name} (${e.level})<br>`;
       htmlBuffer += `${e.lifePercent}%<br>`;
       htmlBuffer += `PA: ${e.actionPoints}, PM: ${e.movementPoints}<br>`;
     } else if (e instanceof FighterEntry) {
+      if (e instanceof FightMonsterEntry) {
+        htmlBuffer += `<img height="25" width="25" src="${`${DTConstants.config.assetsUrl}/gfx/monsters/${e.creatureGenericId}.png`}">`;
+        htmlBuffer += `${e.name}<br>`;
+      }
       htmlBuffer += `${e.contextualId}<br>`;
-      htmlBuffer += `${e.lifePercent}%<br>`;
-      htmlBuffer += `PA: ${e.actionPoints}, PM: ${e.movementPoints}<br>`;
+      htmlBuffer += `HP: ${e.lifePercent}%<br>`;
+      htmlBuffer += `PA: ${e.actionPoints}<br>`;
+      htmlBuffer += `PM: ${e.movementPoints}<br>`;
     } else if (e instanceof PlayerEntry) {
       htmlBuffer += `${e.name} (${e.id})<br>`;
       htmlBuffer += `Level ${e.level}`;
@@ -394,8 +405,10 @@ class MapViewer extends React.Component<Props, IState> {
       htmlBuffer += `${e.name} (${e.id})`;
     } else if (e instanceof MonstersGroupEntry) {
       htmlBuffer += `${e.monstersCount} Monsters (${e.totalLevel})<br>`;
+      htmlBuffer += `<img height="25" width="25" src="${e.leader.iconUrl}">`;
       htmlBuffer += `- [${e.leader.genericId}] ${e.leader.name} (${e.leader.level})<br>`;
       for (const m of e.followers) {
+        htmlBuffer += `<img height="25" width="25" src="${m.iconUrl}">`;
         htmlBuffer += `- [${m.genericId}] ${m.name} (${m.level})<br>`;
       }
     } else if (e instanceof ElementInCellEntry) {

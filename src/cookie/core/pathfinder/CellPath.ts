@@ -1,5 +1,4 @@
 export default class CellPath {
-
   public i: number;
   public j: number;
   public w: number;

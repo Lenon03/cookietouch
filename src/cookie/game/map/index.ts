@@ -1,13 +1,12 @@
-import {AccountStates} from "@/account/AccountStates";
+import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Areas from "@/protocol/data/classes/Areas";
 import MapPositions from "@/protocol/data/classes/MapPositions";
 import SubAreas from "@/protocol/data/classes/SubAreas";
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import MapComplementaryInformationsDataMessage from "@/protocol/network/messages/MapComplementaryInformationsDataMessage";
 import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
-import GameRolePlayNpcWithQuestInformations from "@/protocol/network/types/GameRolePlayNpcWithQuestInformations";
-import {sleep} from "@/utils/Time";
+import { sleep } from "@/utils/Time";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import MapData from "@protocol/data/map";
@@ -15,8 +14,6 @@ import MapsManager from "@protocol/data/map/MapsManager";
 import GameRolePlayCharacterInformations from "@protocol/network/types/GameRolePlayCharacterInformations";
 import GameRolePlayGroupMonsterInformations from "@protocol/network/types/GameRolePlayGroupMonsterInformations";
 import GameRolePlayNpcInformations from "@protocol/network/types/GameRolePlayNpcInformations";
-import InteractiveElement from "@protocol/network/types/InteractiveElement";
-import StatedElement from "@protocol/network/types/StatedElement";
 import Dictionary from "@utils/Dictionary";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
@@ -28,7 +25,6 @@ import InteractiveElementEntry from "./interactives/InteractiveElementEntry";
 import StatedElementEntry from "./interactives/StatedElementEntry";
 
 export default class Map implements IClearable {
-
   private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
   private static readonly doorTypeIds = [-1, 128, 168, 16];
 
@@ -78,9 +74,9 @@ export default class Map implements IClearable {
   }
 
   get occupiedCells(): number[] {
-    const pCells = this.players.map((p) => p.cellId);
-    const mCells = this.monstersGroups.map((m) => m.cellId);
-    const nCells = this.npcs.map((n) => n.cellId);
+    const pCells = this.players.map(p => p.cellId);
+    const mCells = this.monstersGroups.map(m => m.cellId);
+    const nCells = this.npcs.map(n => n.cellId);
     return pCells.concat(mCells, nCells);
   }
 
@@ -161,7 +157,14 @@ export default class Map implements IClearable {
       mapChanged = true;
     };
     this.account.game.map.onMapChanged.on(accountMapChanged);
-    for (let i = 0; i < maxDelayInSeconds && !mapChanged && this.account.state !== AccountStates.FIGHTING && this.account.scripts.running; i++) {
+    for (
+      let i = 0;
+      i < maxDelayInSeconds &&
+      !mapChanged &&
+      this.account.state !== AccountStates.FIGHTING &&
+      this.account.scripts.running;
+      i++
+    ) {
       await sleep(1000);
     }
     this.account.game.map.onMapChanged.off(accountMapChanged);
@@ -180,16 +183,34 @@ export default class Map implements IClearable {
     return this._interactives.getValue(elementId);
   }
 
-  public canFight(minMonsters = 1, maxMonsters = 8, minLevel = 1, maxLevel = 1000,
-                  forbiddenMonsters: number[] = null,
-                  mandatoryMonsters: number[] = null): boolean {
-    return this.getMonstersGroup(minMonsters, maxMonsters, minLevel,
-      maxLevel, forbiddenMonsters, mandatoryMonsters).length > 0;
+  public canFight(
+    minMonsters = 1,
+    maxMonsters = 8,
+    minLevel = 1,
+    maxLevel = 1000,
+    forbiddenMonsters: number[] = null,
+    mandatoryMonsters: number[] = null
+  ): boolean {
+    return (
+      this.getMonstersGroup(
+        minMonsters,
+        maxMonsters,
+        minLevel,
+        maxLevel,
+        forbiddenMonsters,
+        mandatoryMonsters
+      ).length > 0
+    );
   }
 
-  public getMonstersGroup(minMonsters = 1, maxMonsters = 8, minLevel = 1, maxLevel = 1000,
-                          forbiddenMonsters: number[] = null,
-                          mandatoryMonsters: number[] = null): MonstersGroupEntry[] {
+  public getMonstersGroup(
+    minMonsters = 1,
+    maxMonsters = 8,
+    minLevel = 1,
+    maxLevel = 1000,
+    forbiddenMonsters: number[] = null,
+    mandatoryMonsters: number[] = null
+  ): MonstersGroupEntry[] {
     const monstersGroups: MonstersGroupEntry[] = [];
 
     for (const monstersGroup of this.monstersGroups) {
@@ -198,11 +219,17 @@ export default class Map implements IClearable {
         continue;
       }
 
-      if (monstersGroup.monstersCount < minMonsters || monstersGroup.monstersCount > maxMonsters) {
+      if (
+        monstersGroup.monstersCount < minMonsters ||
+        monstersGroup.monstersCount > maxMonsters
+      ) {
         continue;
       }
 
-      if (monstersGroup.totalLevel < minLevel || monstersGroup.totalLevel > maxLevel) {
+      if (
+        monstersGroup.totalLevel < minLevel ||
+        monstersGroup.totalLevel > maxLevel
+      ) {
         continue;
       }
 
@@ -247,14 +274,28 @@ export default class Map implements IClearable {
     return this._players.getValue(id);
   }
 
-  public async UpdateMapComplementaryInformationsDataMessage(message: MapComplementaryInformationsDataMessage) {
-    this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("getMCIDM", message.mapId));
+  public async UpdateMapComplementaryInformationsDataMessage(
+    message: MapComplementaryInformationsDataMessage
+  ) {
+    this.account.logger.logDebug(
+      LanguageManager.trans("map"),
+      LanguageManager.trans("getMCIDM", message.mapId)
+    );
     const start = performance.now();
     const sameMap = this.data && message.mapId === this.id;
     this.data = await MapsManager.getMap(message.mapId);
-    const mp = (await DataManager.get<MapPositions>(DataTypes.MapPositions, this.id))[0];
-    const subArea = (await DataManager.get<SubAreas>(DataTypes.SubAreas, message.subAreaId))[0];
-    const area = (await DataManager.get<Areas>(DataTypes.Areas, subArea.object.areaId))[0];
+    const mp = (await DataManager.get<MapPositions>(
+      DataTypes.MapPositions,
+      this.id
+    ))[0];
+    const subArea = (await DataManager.get<SubAreas>(
+      DataTypes.SubAreas,
+      message.subAreaId
+    ))[0];
+    const area = (await DataManager.get<Areas>(
+      DataTypes.Areas,
+      subArea.object.areaId
+    ))[0];
 
     this.subArea = subArea.object.nameId;
     this.area = area.object.nameId;
@@ -262,7 +303,10 @@ export default class Map implements IClearable {
     this.posY = mp.object.posY;
 
     const stop = performance.now();
-    this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("gotMapInfos", this.currentPosition, stop - start));
+    this.account.logger.logDebug(
+      LanguageManager.trans("map"),
+      LanguageManager.trans("gotMapInfos", this.currentPosition, stop - start)
+    );
 
     this._players = new Dictionary<number, PlayerEntry>();
     this._npcs = new Dictionary<number, NpcEntry>();
@@ -292,30 +336,42 @@ export default class Map implements IClearable {
         } else {
           this._players.add(parsed.contextualId, new PlayerEntry(parsed));
         }
-      } else if (actor._type === "GameRolePlayNpcInformations" || actor._type === "GameRolePlayNpcWithQuestInformations") {
+      } else if (
+        actor._type === "GameRolePlayNpcInformations" ||
+        actor._type === "GameRolePlayNpcWithQuestInformations"
+      ) {
         const parsed = actor as GameRolePlayNpcInformations;
         this._npcs.add(actor.contextualId, new NpcEntry(parsed));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
         const parsed = actor as GameRolePlayGroupMonsterInformations;
-        this._monstersGroups.add(actor.contextualId, new MonstersGroupEntry(parsed));
+        this._monstersGroups.add(
+          actor.contextualId,
+          new MonstersGroupEntry(parsed)
+        );
       }
     }
 
     for (const interactive of message.interactiveElements) {
-      this._interactives.add(interactive.elementId, new InteractiveElementEntry(interactive));
+      this._interactives.add(
+        interactive.elementId,
+        new InteractiveElementEntry(interactive)
+      );
     }
     for (const stated of message.statedElements) {
-      this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
+      this._statedElements.add(
+        stated.elementId,
+        new StatedElementEntry(stated)
+      );
     }
 
     // Doors
     for (const kvp of this.data.midgroundLayer) {
-
       for (const graph of kvp.value) {
         // Check for teleportable cells
         if (graph.g === 21000) {
           this.teleportableCells.push(kvp.key);
-        } else { // Check for other usable interactives (like doors)
+        } else {
+          // Check for other usable interactives (like doors)
           const interactive = this.getInteractiveElement(graph.id);
 
           if (interactive === null) {
@@ -325,7 +381,10 @@ export default class Map implements IClearable {
           // Check if this element is a phenix
           // (a phenix doesn't have skills that's why we check here)
           if (graph.g === 7521) {
-            this._phenixs.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
+            this._phenixs.add(
+              graph.id,
+              new ElementInCellEntry(interactive, kvp.key)
+            );
           }
 
           if (!interactive.usable) {
@@ -340,10 +399,18 @@ export default class Map implements IClearable {
             this.zaapi = new ElementInCellEntry(interactive, kvp.key);
           } else if (graph.g === 12367) {
             // Locked Storages
-            this._lockedStorages.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
-          } else if (Map.doorTypeIds.includes(interactive.elementTypeId) &&
-            Map.doorSkillIds.includes(interactive.enabledSkills[0].id)) {
-            this._doors.add(graph.id, new ElementInCellEntry(interactive, kvp.key));
+            this._lockedStorages.add(
+              graph.id,
+              new ElementInCellEntry(interactive, kvp.key)
+            );
+          } else if (
+            Map.doorTypeIds.includes(interactive.elementTypeId) &&
+            Map.doorSkillIds.includes(interactive.enabledSkills[0].id)
+          ) {
+            this._doors.add(
+              graph.id,
+              new ElementInCellEntry(interactive, kvp.key)
+            );
           }
         }
       }
@@ -353,14 +420,20 @@ export default class Map implements IClearable {
     // IDK why DT has this, but there is a possibility that we get a second MCIDM for the same map
     if (!sameMap || this._joinedFight) {
       this._joinedFight = false;
-      this.account.logger.logDebug(LanguageManager.trans("map"), LanguageManager.trans("triggerMapChanged"));
+      this.account.logger.logDebug(
+        LanguageManager.trans("map"),
+        LanguageManager.trans("triggerMapChanged")
+      );
       this.onMapChanged.trigger();
       if (this._firstTime) {
         this._firstTime = false;
         this.onMapLoaded.trigger();
       }
     } else {
-      this.account.logger.logWarning(LanguageManager.trans("map"), LanguageManager.trans("sameMap"));
+      this.account.logger.logWarning(
+        LanguageManager.trans("map"),
+        LanguageManager.trans("sameMap")
+      );
     }
   }
 
@@ -375,12 +448,16 @@ export default class Map implements IClearable {
       }
       this.onEntitiesUpdated.trigger();
       this.onPlayerJoined.trigger(pe);
-    } else if (message.informations._type === "GameRolePlayMutantInformations") {
+    } else if (
+      message.informations._type === "GameRolePlayMutantInformations"
+    ) {
       const pe = new PlayerEntry(message.informations);
       this._players.add(pe.id, pe);
       this.onPlayerJoined.trigger(pe);
       this.onEntitiesUpdated.trigger();
-    } else if (message.informations._type === "GameRolePlayGroupMonsterInformations") {
+    } else if (
+      message.informations._type === "GameRolePlayGroupMonsterInformations"
+    ) {
       const mge = new MonstersGroupEntry(message.informations);
       this._monstersGroups.add(message.informations.contextualId, mge);
       this.onEntitiesUpdated.trigger();
@@ -419,8 +496,10 @@ export default class Map implements IClearable {
 
   public async UpdateInteractiveElementUpdatedMessage(message: any) {
     if (this._interactives.remove(message.interactiveElement.elementId)) {
-      this._interactives.add(message.interactiveElement.elementId,
-        new InteractiveElementEntry(message.interactiveElement));
+      this._interactives.add(
+        message.interactiveElement.elementId,
+        new InteractiveElementEntry(message.interactiveElement)
+      );
     }
 
     this.onInteractivesUpdated.trigger();
@@ -430,7 +509,10 @@ export default class Map implements IClearable {
     this._interactives = new Dictionary<number, InteractiveElementEntry>();
 
     for (const inter of message.interactiveElements) {
-      this._interactives.add(inter.elementId, new InteractiveElementEntry(inter));
+      this._interactives.add(
+        inter.elementId,
+        new InteractiveElementEntry(inter)
+      );
     }
 
     this.onInteractivesUpdated.trigger();
@@ -438,7 +520,10 @@ export default class Map implements IClearable {
 
   public async UpdateStatedElementUpdatedMessage(message: any) {
     if (this._statedElements.remove(message.statedElement.elementId)) {
-      this._statedElements.add(message.statedElement.elementId, new StatedElementEntry(message.statedElement));
+      this._statedElements.add(
+        message.statedElement.elementId,
+        new StatedElementEntry(message.statedElement)
+      );
     }
 
     this.onInteractivesUpdated.trigger();
@@ -448,7 +533,10 @@ export default class Map implements IClearable {
     this._statedElements = new Dictionary<number, StatedElementEntry>();
 
     for (const stated of message.statedElements) {
-      this._statedElements.add(stated.elementId, new StatedElementEntry(stated));
+      this._statedElements.add(
+        stated.elementId,
+        new StatedElementEntry(stated)
+      );
     }
 
     this.onInteractivesUpdated.trigger();

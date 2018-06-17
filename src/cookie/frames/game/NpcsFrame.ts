@@ -1,7 +1,6 @@
 import Account from "@account";
 
 export default class NpcsFrame {
-
   private account: Account;
 
   constructor(account: Account) {
@@ -10,9 +9,21 @@ export default class NpcsFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("NpcDialogCreationMessage", this.HandleNpcDialogCreationMessage, this);
-    this.account.dispatcher.register("NpcDialogQuestionMessage", this.HandleNpcDialogQuestionMessage, this);
-    this.account.dispatcher.register("LeaveDialogMessage", this.HandleLeaveDialogMessage, this);
+    this.account.dispatcher.register(
+      "NpcDialogCreationMessage",
+      this.HandleNpcDialogCreationMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "NpcDialogQuestionMessage",
+      this.HandleNpcDialogQuestionMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "LeaveDialogMessage",
+      this.HandleLeaveDialogMessage,
+      this
+    );
   }
 
   private async HandleNpcDialogCreationMessage(account: Account, message: any) {

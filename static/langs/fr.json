@@ -229,6 +229,7 @@
   "connect": "Connecter",
   "disconnect": "Déconnecter",
   "load": "Charger",
+  "unload": "Décharger",
   "remove": "Retirer",
   "userStopScript": "L'utilisateur a arrêté le script",
   "play": "Démarrer",
@@ -435,5 +436,9 @@
   "placementCell": "On se place sur la cellule ?",
   "placementCellSpell": "(Sort) On se place sur la cellule ?",
   "placementCellMonster": "(Monstre) On se place sur la cellule ?",
-  "noMonsterToApproach": "Le monstre à approcher ne se trouve pas dans ce combat."
+  "noMonsterToApproach": "Le monstre à approcher ne se trouve pas dans ce combat.",
+  "nosubscriber": "Vous n'avez pas de Bonus Pack",
+  "subscriber": "Votre Bonus Pack se termine le ?",
+  "planningConfig": "Planification",
+  "planningActivate": "Activer/Désactiver"
 }

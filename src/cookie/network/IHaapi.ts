@@ -1,6 +1,6 @@
 export enum HaapiErrorReasons {
   FAILED = "FAILED",
-  BAN = "BAN",
+  BAN = "BAN"
 }
 
 export interface IHaapi {
@@ -10,8 +10,8 @@ export interface IHaapi {
   added_date: string;
   meta: any[];
   data: {
-    country: string,
-    currency: string,
+    country: string;
+    currency: string;
   };
   access: any[];
   refresh_token: string;

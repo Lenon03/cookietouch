@@ -1,18 +1,19 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
 import { faChessQueen, faTrash } from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import Paper from "@material-ui/core/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
 import { List as LinqList } from "linqts";
-import Button from "material-ui/Button";
-import Checkbox from "material-ui/Checkbox";
-import IconButton from "material-ui/IconButton";
-import Input, { InputLabel } from "material-ui/Input";
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
-import Paper from "material-ui/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
 import * as React from "react";
 
 type style = "root" | "icon";

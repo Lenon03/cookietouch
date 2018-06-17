@@ -1,10 +1,11 @@
 import Account from "@account";
 import { faBullhorn, faChartLine, faChess, faCoffee, faCogs, faMap, faMoneyBillAlt, faShoppingBag, faUser } from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import AppBar from "material-ui/AppBar";
-import Paper from "material-ui/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Tabs, { Tab } from "material-ui/Tabs";
+import AppBar from "@material-ui/core/AppBar";
+import Paper from "@material-ui/core/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import * as React from "react";
 import Bid from "./tabs/Bid";
 import Character from "./tabs/Character";

@@ -1,8 +1,8 @@
+import AppBar from "@material-ui/core/AppBar";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import * as firebase from "firebase";
-import AppBar from "material-ui/AppBar";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
 import * as React from "react";
 
 type style = "root" | "appbar" | "toolbar";

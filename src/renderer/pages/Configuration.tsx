@@ -1,24 +1,19 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { Languages } from "@/configurations/language/Languages";
-import Account from "@account";
-import Visibility from "material-ui-icons/Visibility";
-import VisibilityOff from "material-ui-icons/VisibilityOff";
-import Button from "material-ui/Button";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "material-ui/Dialog";
-import { FormControlLabel, FormGroup } from "material-ui/Form";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import IconButton from "material-ui/IconButton";
-import Input, { InputAdornment, InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
 import * as React from "react";
 
 type style = "root" | "formControl";
@@ -72,12 +67,12 @@ class Configuration extends React.Component<Props, IState> {
                 onChange={this.langChanged}
                 inputProps={{ id: "lang-simple", name: "lang" }}
               >
-                <MenuItem value="fr">fr</MenuItem>
-                <MenuItem value="de">de</MenuItem>
-                <MenuItem value="en">en</MenuItem>
-                <MenuItem value="es">es</MenuItem>
-                <MenuItem value="it">it</MenuItem>
-                <MenuItem value="pt">pt</MenuItem>
+                <MenuItem value="fr"><img src={require("../img/fr.png")} alt="fr" /></MenuItem>
+                <MenuItem value="de"><img src={require("../img/de.png")} alt="de" /></MenuItem>
+                <MenuItem value="en"><img src={require("../img/us.png")} alt="us" /></MenuItem>
+                <MenuItem value="es"><img src={require("../img/es.png")} alt="es" /></MenuItem>
+                <MenuItem value="it"><img src={require("../img/it.png")} alt="it" /></MenuItem>
+                <MenuItem value="pt"><img src={require("../img/pt.png")} alt="pt" /></MenuItem>
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>

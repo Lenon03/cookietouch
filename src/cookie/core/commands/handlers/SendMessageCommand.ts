@@ -10,7 +10,8 @@ import ICommand from "./ICommand";
  * @class SendMessageCommand
  * @implements {ICommand<ISendMessage>}
  */
-export default class SendMessageCommand extends Command<ISendMessage> implements ICommand<ISendMessage> {
+export default class SendMessageCommand extends Command<ISendMessage>
+  implements ICommand<ISendMessage> {
   constructor() {
     super();
     this.args = ["receiver", "message"];

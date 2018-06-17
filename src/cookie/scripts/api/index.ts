@@ -12,7 +12,6 @@ import NpcAPI from "./NpcAPI";
 import StorageAPI from "./StorageAPI";
 
 export default class API {
-
   public bid: BidAPI;
   public character: CharacterAPI;
   public exchange: ExchangeAPI;

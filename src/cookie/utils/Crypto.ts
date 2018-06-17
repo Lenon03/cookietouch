@@ -1,7 +1,6 @@
 import * as crypto from "crypto";
 
 export default class Crypto {
-
   public static algorithm = "aes-256-ctr";
 
   public static encrypt(text: string, password: string) {
@@ -19,6 +18,9 @@ export default class Crypto {
   }
 
   public static createHash(text: string) {
-    return crypto.createHash("md5").update(text).digest("hex");
+    return crypto
+      .createHash("md5")
+      .update(text)
+      .digest("hex");
   }
 }

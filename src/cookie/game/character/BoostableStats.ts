@@ -5,5 +5,5 @@ export enum BoostableStats {
   WISDOM = 12,
   CHANCE = 13,
   AGILITY = 14,
-  INTELLIGENCE = 15,
+  INTELLIGENCE = 15
 }

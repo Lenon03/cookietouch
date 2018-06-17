@@ -1,5 +1,5 @@
-import {app, BrowserWindow, Menu} from "electron";
-import {appUpdater} from "./Updater";
+import { app, BrowserWindow, Menu } from "electron";
+import { appUpdater } from "./Updater";
 
 const template: any[] = [];
 if (process.platform === "darwin") {
@@ -10,16 +10,16 @@ if (process.platform === "darwin") {
     submenu: [
       {
         label: "About " + name,
-        role: "about",
+        role: "about"
       },
       {
         accelerator: "Command+Q",
         click() {
           app.quit();
         },
-        label: "Quit",
-      },
-    ],
+        label: "Quit"
+      }
+    ]
   });
 }
 
@@ -29,7 +29,7 @@ let mainWindow: BrowserWindow;
 
 function createMainWindow() {
   const window = new BrowserWindow({
-    show: false,
+    show: false
     // webPreferences: {
     //   webSecurity: false,
     // },

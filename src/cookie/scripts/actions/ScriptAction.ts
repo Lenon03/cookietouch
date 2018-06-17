@@ -3,7 +3,7 @@ import Account from "@account";
 export enum ScriptActionResults {
   DONE,
   PROCESSING,
-  FAILED,
+  FAILED
 }
 
 export default abstract class ScriptAction {

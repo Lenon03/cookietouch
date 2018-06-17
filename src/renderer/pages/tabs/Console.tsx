@@ -6,14 +6,17 @@ import { IMessage } from "@/core/logger";
 import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@account";
-import Button from "material-ui/Button";
-import { FormControl, FormControlLabel, FormGroup } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -318,7 +321,7 @@ class Console extends React.Component<Props, IState> {
   }
 
   private handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
   }
 
   private characterSelected = () => {

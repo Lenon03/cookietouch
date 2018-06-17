@@ -1,10 +1,14 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import JobEntry from "@/game/character/jobs/JobEntry";
 import Account from "@account";
-import { LinearProgress } from "material-ui/Progress";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Tooltip from "material-ui/Tooltip";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Tooltip from "@material-ui/core/Tooltip";
 import * as React from "react";
 
 type style = "root" | "table";
@@ -14,6 +18,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     flexGrow: 1,
     maxHeight: 400,
     overflowY: "auto",
+    padding: 10,
   },
   table: {
     minWidth: 700,

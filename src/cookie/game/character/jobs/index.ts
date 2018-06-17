@@ -1,10 +1,10 @@
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
 import LiteEvent from "@utils/LiteEvent";
-import {sleep} from "@utils/Time";
-import {List} from "linqts";
+import { sleep } from "@utils/Time";
+import { List } from "linqts";
 import JobEntry from "./JobEntry";
 
 export default class Job {
@@ -24,21 +24,35 @@ export default class Job {
   }
 
   get collectSkillsIds() {
-    return this.jobs.SelectMany((j) => j.collectSkills.Select((s) => s.interactiveId));
+    return this.jobs.SelectMany(j =>
+      j.collectSkills.Select(s => s.interactiveId)
+    );
   }
 
   public hasCollectSkills(id: number) {
-    return this.jobs.FirstOrDefault((j) => j.collectSkills.FirstOrDefault((s) => s.interactiveId === id) !== undefined) !== undefined;
+    return (
+      this.jobs.FirstOrDefault(
+        j =>
+          j.collectSkills.FirstOrDefault(s => s.interactiveId === id) !==
+          undefined
+      ) !== undefined
+    );
   }
 
   public async UpdateJobDescriptionMessage(message: any) {
     this._jobsInitialized = false;
     this.jobs = new List<JobEntry>();
 
-    const jobsData = await DataManager.get<Jobs>(DataTypes.Jobs, ...message.jobsDescription.map((f: any) => f.jobId));
+    const jobsData = await DataManager.get<Jobs>(
+      DataTypes.Jobs,
+      ...message.jobsDescription.map((f: any) => f.jobId)
+    );
 
     for (const job of message.jobsDescription) {
-      const jobEntry = new JobEntry(job, jobsData.find((f) => f.id === job.jobId).object);
+      const jobEntry = new JobEntry(
+        job,
+        jobsData.find(f => f.id === job.jobId).object
+      );
       this.jobs.Add(jobEntry);
     }
 
@@ -54,14 +68,18 @@ export default class Job {
     }
 
     for (const exp of message.experiencesUpdate) {
-      this.jobs.FirstOrDefault((j) => j.id === exp.jobId).UpdateJobExperience(exp);
+      this.jobs
+        .FirstOrDefault(j => j.id === exp.jobId)
+        .UpdateJobExperience(exp);
     }
 
     this.onJobsUpdated.trigger();
   }
 
   public async UpdateJobExperienceUpdateMessage(message: any) {
-    this.jobs.FirstOrDefault((j) => j.id === message.experiencesUpdate.jobId).UpdateJobExperience(message.experiencesUpdate);
+    this.jobs
+      .FirstOrDefault(j => j.id === message.experiencesUpdate.jobId)
+      .UpdateJobExperience(message.experiencesUpdate);
     this.onJobsUpdated.trigger();
   }
 }

@@ -10,5 +10,5 @@ export enum ChannelColors {
   ADMIN = "#ff6b9f",
   PRIVATE = "#00c0fa",
   ARENA = "#f16392",
-  ADS = "#47c9bc",
+  ADS = "#47c9bc"
 }

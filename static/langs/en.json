@@ -229,6 +229,7 @@
   "connect": "Connect",
   "disconnect": "Disconnect",
   "load": "Load",
+  "unload": "Unload",
   "remove": "Remove",
   "userStopScript": "The user stopped the script.",
   "play": "Play",
@@ -435,5 +436,9 @@
   "placementCell": "Placing character on cell ?",
   "placementCellSpell": "(Spell) Placing character on cell ?",
   "placementCellMonster": "(Monster) Placing character on cell ?",
-  "noMonsterToApproach": "The monster to approach was not found in this fight."
+  "noMonsterToApproach": "The monster to approach was not found in this fight.",
+  "nosubscriber": "You don't have Bonus Pack",
+  "subscriber": "Your Bonus Pack ends ?",
+  "planningConfig": "Planning",
+  "planningActivate": "Activate/Deactivate"
 }

@@ -1,11 +1,11 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import axios from "axios";
-import {remote} from "electron";
+import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import DTConstants from "../DTConstants";
 import Data from "./Data";
-import {DataTypes} from "./DataTypes";
+import { DataTypes } from "./DataTypes";
 
 export interface IDataResponse<T> {
   id: number;
@@ -13,8 +13,10 @@ export interface IDataResponse<T> {
 }
 
 export default class DataManager {
-
-  public static async get<T extends Data>(type: DataTypes, ...ids: number[]): Promise<Array<IDataResponse<T>>> {
+  public static async get<T extends Data>(
+    type: DataTypes,
+    ...ids: number[]
+  ): Promise<Array<IDataResponse<T>>> {
     const myArray: Array<IDataResponse<T>> = [];
     const newIds = [];
     for (const id of ids) {
@@ -31,33 +33,53 @@ export default class DataManager {
     }
     const params = {
       lang: GlobalConfiguration.lang,
-      v: DTConstants.assetsVersion,
+      v: DTConstants.assetsVersion
     };
-    const response = await axios.post(`${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${params.v}`, {
-      class: DataTypes[type],
-      ids: newIds,
-    });
+    const response = await axios.post(
+      `${DTConstants.config.dataUrl}/data/map?lang=${params.lang}&v=${
+        params.v
+      }`,
+      {
+        class: DataTypes[type],
+        ids: newIds
+      }
+    );
     for (const item in response.data) {
       if (response.data.hasOwnProperty(item)) {
-        const dataRes = {id: parseInt(item, 10), object: response.data[item]} as IDataResponse<T>;
-        fs.writeFileSync(this.getFilePath(DataTypes[type], dataRes.id), JSON.stringify(dataRes));
+        const dataRes = {
+          id: parseInt(item, 10),
+          object: response.data[item]
+        } as IDataResponse<T>;
+        fs.writeFileSync(
+          this.getFilePath(DataTypes[type], dataRes.id),
+          JSON.stringify(dataRes)
+        );
       }
     }
     this.buildData(response.data, myArray);
     return myArray;
   }
 
-  private static buildData<T extends Data>(json: any, array: Array<IDataResponse<T>>) {
+  private static buildData<T extends Data>(
+    json: any,
+    array: Array<IDataResponse<T>>
+  ) {
     for (const item in json) {
       if (json.hasOwnProperty(item)) {
-        const dataRes = {id: parseInt(item, 10), object: json[item]} as IDataResponse<T>;
+        const dataRes = {
+          id: parseInt(item, 10),
+          object: json[item]
+        } as IDataResponse<T>;
         array.push(dataRes);
       }
     }
   }
 
   private static getFilePath(type: string, id: number): string {
-    let folderPath = path.join(remote.app.getPath("userData"), DTConstants.assetsVersion);
+    let folderPath = path.join(
+      remote.app.getPath("userData"),
+      DTConstants.assetsVersion
+    );
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }

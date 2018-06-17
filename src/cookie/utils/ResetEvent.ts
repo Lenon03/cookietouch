@@ -1,11 +1,11 @@
-import {extend, isFunction} from "lodash";
+import { extend, isFunction } from "lodash";
 
 let tokenId = 0;
 
 export interface IOptions {
   autoResetCount: number;
   maxQueueSize: number;
-  overflowStrategy: string;
+  overflowStrategy: "this" | "last" | "first";
 }
 
 export interface IToken {
@@ -25,11 +25,10 @@ export interface IToken {
  * @param {object} options - optional set of options for this reset event
  */
 export default class ResetEvent {
-
   private static defaultOptions: IOptions = {
     autoResetCount: Infinity,
     maxQueueSize: Infinity,
-    overflowStrategy: "this",
+    overflowStrategy: "this"
   };
 
   /**
@@ -65,7 +64,7 @@ export default class ResetEvent {
       isCanceled: false,
       resetEvent: this.set,
       start: new Date(),
-      timeoutId: null as NodeJS.Timer,
+      timeoutId: null as NodeJS.Timer
     } as IToken;
     token.elapsed = () => new Date().getTime() - token.start.getTime();
     return token;
@@ -77,16 +76,19 @@ export default class ResetEvent {
    * @param {object} options - The options that control the reduction algorithm
    * @returns an array of the tokens which were removed from the queue
    */
-  public reduceQueue(queue: any[], options: any) {
-    const result: any[] = [];
-    if ((typeof options.maxQueueSize !== "number") || isNaN(options.maxQueueSize)) {
+  public reduceQueue(queue: IToken[], options: IOptions) {
+    const result: IToken[] = [];
+    if (
+      typeof options.maxQueueSize !== "number" ||
+      isNaN(options.maxQueueSize)
+    ) {
       return result;
     }
 
     if (queue.length > options.maxQueueSize) {
       if (options.overflowStrategy === "last") {
         const last = queue.pop();
-        while (queue.length && queue.length > (options.maxQueueSize - 1)) {
+        while (queue.length && queue.length > options.maxQueueSize - 1) {
           result.unshift(queue.pop());
         }
         queue.push(last);
@@ -122,7 +124,6 @@ export default class ResetEvent {
    * Takes control over the reset event, callers to wait will wait until the reset event is reset.
    */
   public reset() {
-
     if (this.isSignaled === false) {
       throw new Error("The reset event is already in a non signaled state");
     }

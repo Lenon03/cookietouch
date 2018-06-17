@@ -7,7 +7,9 @@ export default class PlayerEntry extends MovableEntity {
   public name: string;
   public level: number;
 
-  constructor(infos: GameRolePlayCharacterInformations | GameRolePlayMutantInformations) {
+  constructor(
+    infos: GameRolePlayCharacterInformations | GameRolePlayMutantInformations
+  ) {
     super();
     if (infos._type === "GameRolePlayCharacterInformations") {
       infos = infos as GameRolePlayCharacterInformations;

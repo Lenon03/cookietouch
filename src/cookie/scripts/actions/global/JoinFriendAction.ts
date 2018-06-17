@@ -1,5 +1,5 @@
 import Account from "@account";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class JoinFriendAction extends ScriptAction {
   public _name: string = "JoinFriendAction";
@@ -14,7 +14,9 @@ export default class JoinFriendAction extends ScriptAction {
     if (account.isBusy) {
       return ScriptAction.failedResult();
     }
-    account.network.sendMessageFree("FriendJoinRequestMessage", {name: this.name});
+    account.network.sendMessageFree("FriendJoinRequestMessage", {
+      name: this.name
+    });
     return ScriptAction.doneResult();
   }
 }

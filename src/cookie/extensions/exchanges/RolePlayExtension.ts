@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import GameRolePlayPlayerFightFriendlyRequestedMessage from "@protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 
 export default class RolePlayExtension {
   private account: Account;
@@ -9,11 +9,16 @@ export default class RolePlayExtension {
   constructor(account: Account) {
     this.account = account;
 
-    this.account.game.exchange.ExchangeRequested.on((from) => this.exchangeRequested(from));
+    this.account.game.exchange.ExchangeRequested.on(from =>
+      this.exchangeRequested(from)
+    );
     this.account.game.exchange.RemoteReady.on(() => this.remoteReady());
 
-    this.account.dispatcher.register("GameRolePlayPlayerFightFriendlyRequestedMessage",
-      this.HandleGameRolePlayPlayerFightFriendlyRequestedMessage, this);
+    this.account.dispatcher.register(
+      "GameRolePlayPlayerFightFriendlyRequestedMessage",
+      this.HandleGameRolePlayPlayerFightFriendlyRequestedMessage,
+      this
+    );
   }
 
   private exchangeRequested(from: number) {
@@ -23,9 +28,15 @@ export default class RolePlayExtension {
         const player = this.account.game.map.getPlayer(from);
 
         if (player !== null) {
-          this.account.network.sendMessageFree("IgnoredAddRequestMessage", {name: player.name, session: true});
+          this.account.network.sendMessageFree("IgnoredAddRequestMessage", {
+            name: player.name,
+            session: true
+          });
           this.account.network.sendMessageFree("LeaveDialogRequestMessage");
-          this.account.logger.logInfo(LanguageManager.trans("rolePlayExtension"), LanguageManager.trans("playerIgnored", player.name));
+          this.account.logger.logInfo(
+            LanguageManager.trans("rolePlayExtension"),
+            LanguageManager.trans("playerIgnored", player.name)
+          );
           return;
         }
       } else {
@@ -42,7 +53,10 @@ export default class RolePlayExtension {
     this.account.game.exchange.sendReady();
   }
 
-  private async HandleGameRolePlayPlayerFightFriendlyRequestedMessage(account: Account, message: GameRolePlayPlayerFightFriendlyRequestedMessage) {
+  private async HandleGameRolePlayPlayerFightFriendlyRequestedMessage(
+    account: Account,
+    message: GameRolePlayPlayerFightFriendlyRequestedMessage
+  ) {
     if (message.targetId !== account.game.character.id) {
       return;
     }
@@ -51,13 +65,22 @@ export default class RolePlayExtension {
 
     const player = account.game.map.getPlayer(message.sourceId);
     if (player !== null) {
-      await account.network.sendMessageFree("GameRolePlayPlayerFightFriendlyAnswerMessage", {
-        accept: false,
-        fightId: message.fightId,
+      await account.network.sendMessageFree(
+        "GameRolePlayPlayerFightFriendlyAnswerMessage",
+        {
+          accept: false,
+          fightId: message.fightId
+        }
+      );
+      account.network.sendMessageFree("IgnoredAddRequestMessage", {
+        name: player.name,
+        session: true
       });
-      account.network.sendMessageFree("IgnoredAddRequestMessage", {name: player.name, session: true});
       account.network.sendMessageFree("LeaveDialogRequestMessage");
-      this.account.logger.logInfo(LanguageManager.trans("rolePlayExtension"), LanguageManager.trans("playerIgnored", player.name));
+      this.account.logger.logInfo(
+        LanguageManager.trans("rolePlayExtension"),
+        LanguageManager.trans("playerIgnored", player.name)
+      );
     }
   }
 }

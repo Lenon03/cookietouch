@@ -3,5 +3,5 @@ export enum SpellResistances {
   EARTH,
   FIRE,
   WIND,
-  WATER,
+  WATER
 }

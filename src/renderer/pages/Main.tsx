@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Paper from "@material-ui/core/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
 import * as firebase from "firebase";
-import Paper from "material-ui/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
 import * as React from "react";
 import withRoot from "../withRoot";
 import BottomAppBar from "./BottomAppBar";

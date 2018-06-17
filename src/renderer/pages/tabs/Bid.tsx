@@ -4,20 +4,27 @@ import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import { remote } from "electron";
 import { List } from "linqts";
-import Button from "material-ui/Button";
-import Card, { CardContent } from "material-ui/Card";
-import { FormControl, FormControlLabel, FormGroup } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import TextField from "material-ui/TextField";
-import Typography from "material-ui/Typography";
 import * as React from "react";
 
 type style = "root" | "table" | "card" | "title" | "formControl";
@@ -167,6 +174,18 @@ class Bid extends React.Component<Props, IState> {
             >
               {LanguageManager.trans("load")}
             </Button>
+            <Button
+              size="small"
+              style={{ marginLeft: "15px" }}
+              onClick={() => {
+                  this.props.account.extensions.bid.config.scriptPath = "";
+                  this.props.account.extensions.bid.config.save();
+              }}
+              variant="raised"
+              color="primary"
+            >
+              {LanguageManager.trans("unload")}
+            </Button>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title}>{LanguageManager.trans("addItem")}</Typography>
@@ -303,14 +322,14 @@ class Bid extends React.Component<Props, IState> {
   }
 
   private handleSelectChangeForm = (event) => {
-    const addObjectForm = Object.assign({}, this.state.addObjectForm);
+    const addObjectForm = { ...this.state.addObjectForm };
     addObjectForm[event.target.name] = event.target.value;
     this.setState({ addObjectForm });
   }
 
   private handleInputChange = (event) => {
     const value = parseInt(event.target.value, 10);
-    this.setState({ [event.target.name]: value });
+    this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
     this.props.account.extensions.bid.config[event.target.name] = value;
     this.props.account.extensions.bid.config.save();
   }

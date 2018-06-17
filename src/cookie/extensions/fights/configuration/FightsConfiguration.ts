@@ -1,12 +1,12 @@
 import Account from "@/account";
-import {FightSpeeds} from "@/extensions/fights/configuration/enums/FightSpeeds";
+import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
 import LiteEvent from "@/utils/LiteEvent";
-import {remote} from "electron";
+import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import {BlockSpectatorScenarios} from "./enums/BlockSpectatorScenarios";
-import {FightStartPlacement} from "./enums/FightStartPlacement";
-import {FightTactics} from "./enums/FightTactics";
+import { BlockSpectatorScenarios } from "./enums/BlockSpectatorScenarios";
+import { FightStartPlacement } from "./enums/FightStartPlacement";
+import { FightTactics } from "./enums/FightTactics";
 import Spell from "./Spell";
 
 interface IFightsConfigurationJSON {
@@ -71,11 +71,19 @@ export default class FightsConfiguration {
   }
 
   public setConfigFilePath() {
-    const folderPath = path.join(remote.app.getPath("userData"), this.configurationsPath);
+    const folderPath = path.join(
+      remote.app.getPath("userData"),
+      this.configurationsPath
+    );
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
-    this.configFilePath = path.join(folderPath, `${this.account.accountConfig.username}_${this.account.game.character.name}.config`);
+    this.configFilePath = path.join(
+      folderPath,
+      `${this.account.accountConfig.username}_${
+        this.account.game.character.name
+      }.config`
+    );
   }
 
   public load() {
@@ -117,7 +125,7 @@ export default class FightsConfiguration {
       spellToApproach: this.spellToApproach,
       spells: this.spells,
       startPlacement: this.startPlacement,
-      tactic: this.tactic,
+      tactic: this.tactic
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
     this.onChanged.trigger();

@@ -8,26 +8,34 @@ import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTarge
 import Spell from "@/extensions/fights/configuration/Spell";
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
-import AppBar from "material-ui/AppBar";
-import Button from "material-ui/Button";
-import Card, { CardContent } from "material-ui/Card";
-import { FormControl, FormControlLabel, FormGroup, FormHelperText } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import { InputLabel } from "material-ui/Input";
-import List, {
-  ListItem,
-  ListItemText,
-} from "material-ui/List";
-import { MenuItem } from "material-ui/Menu";
-import Modal from "material-ui/Modal";
-import Paper from "material-ui/Paper";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Tabs, { Tab } from "material-ui/Tabs";
-import TextField from "material-ui/TextField";
-import Typography from "material-ui/Typography";
+import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from "@material-ui/core/MenuItem";
+import Modal from "@material-ui/core/Modal";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
+import Tab from "@material-ui/core/Tab";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Tabs from "@material-ui/core/Tabs";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
 type style = "root" | "appBar" | "tab" | "card" | "title" | "formControl" | "table" | "paper" | "modal" | "overflow";
@@ -694,25 +702,25 @@ class Fights extends React.Component<Props, IState> {
   }
 
   private handleSwitchChange = (event, checked) => {
-    this.setState({ [event.target.name]: checked });
+    this.setState({ [event.target.name]: checked } as Pick<IState, keyof IState>);
     this.props.account.extensions.fights.config[event.target.name] = checked;
     this.props.account.extensions.fights.config.save();
   }
 
   private handleSwitchChangeForm = (event, checked) => {
-    const addSpellForm = Object.assign({}, this.state.addSpellForm);
+    const addSpellForm = { ...this.state.addSpellForm };
     addSpellForm[event.target.name] = checked;
     this.setState({ addSpellForm });
   }
 
   private handleSelectChangeForm = (event) => {
-    const addSpellForm = Object.assign({}, this.state.addSpellForm);
+    const addSpellForm = { ...this.state.addSpellForm };
     addSpellForm[event.target.name] = event.target.value;
     this.setState({ addSpellForm });
   }
 
   private handleSelectChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value } as Pick<IState, keyof IState>);
     this.props.account.extensions.fights.config[event.target.name] = event.target.value;
     this.props.account.extensions.fights.config.save();
   }
@@ -744,7 +752,7 @@ class Fights extends React.Component<Props, IState> {
     this.setState({
       characterSpells: this.props.account.game.character.spells,
     }, () => {
-      const addSpellForm = Object.assign({}, this.state.addSpellForm);
+      const addSpellForm = { ...this.state.addSpellForm };
       addSpellForm.spellId = this.state.characterSpells[0].id;
       this.setState({ addSpellForm });
     });

@@ -1,6 +1,6 @@
 import Account from "@account";
-import {MovementRequestResults} from "@game/managers/movements/MovementRequestResults";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class MoveToCellAction extends ScriptAction {
   public _name: string = "MoveToCellAction";
@@ -18,7 +18,8 @@ export default class MoveToCellAction extends ScriptAction {
       case MovementRequestResults.PATH_BLOCKED:
       case MovementRequestResults.ALREADY_THERE:
         return ScriptAction.doneResult();
-      default: // Failed
+      default:
+        // Failed
         return ScriptAction.failedResult();
     }
   }

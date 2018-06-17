@@ -1,4 +1,4 @@
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@account";
 import DataManager from "@protocol/data";
 import Servers from "@protocol/data/classes/Servers";
@@ -23,7 +23,10 @@ export default class Server {
 
   public async UpdateSelectedServerDataMessage(message: any) {
     this.id = message.serverId;
-    const serverResp = await DataManager.get<Servers>(DataTypes.Servers, this.id);
+    const serverResp = await DataManager.get<Servers>(
+      DataTypes.Servers,
+      this.id
+    );
     this.name = serverResp[0].object.nameId;
     this.onServerSelected.trigger();
   }

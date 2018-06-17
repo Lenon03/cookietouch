@@ -2,9 +2,9 @@ import Account from "@account";
 import InteractiveElementEntry from "@game/map/interactives/InteractiveElementEntry";
 import IClearable from "@utils/IClearable";
 import LiteEvent from "@utils/LiteEvent";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 import MovementsManager from "../movements";
-import {MovementRequestResults} from "../movements/MovementRequestResults";
+import { MovementRequestResults } from "../movements/MovementRequestResults";
 
 export default class InteractivesManager implements IClearable {
   private _account: Account;
@@ -16,7 +16,7 @@ export default class InteractivesManager implements IClearable {
   constructor(account: Account, movements: MovementsManager) {
     this._account = account;
     this.clear(); // TODO: Maybe we don't need this
-    movements.MovementFinished.on((success) => {
+    movements.MovementFinished.on(success => {
       if (this._interactiveToUse === null) {
         return;
       }
@@ -26,14 +26,36 @@ export default class InteractivesManager implements IClearable {
         this.isUseFinished(false);
       }
     });
-    this._account.dispatcher.register("InteractiveUsedMessage", this.HandleInteractiveUsedMessage, this);
-    this._account.dispatcher.register("InteractiveUseErrorMessage", this.HandleInteractiveUseErrorMessage, this);
-    this._account.dispatcher.register("LockableShowCodeDialogMessage", this.HandleLockableShowCodeDialogMessage, this);
-    this._account.dispatcher.register("LockableCodeResultMessage", this.HandleLockableCodeResultMessage, this);
-    this._account.dispatcher.register("LockableStateUpdateHouseDoorMessage",
-      this.HandleLockableStateUpdateHouseDoorMessage, this);
-    this._account.dispatcher.register("LockableStateUpdateStorageMessage",
-      this.HandleLockableStateUpdateStorageMessage, this);
+    this._account.dispatcher.register(
+      "InteractiveUsedMessage",
+      this.HandleInteractiveUsedMessage,
+      this
+    );
+    this._account.dispatcher.register(
+      "InteractiveUseErrorMessage",
+      this.HandleInteractiveUseErrorMessage,
+      this
+    );
+    this._account.dispatcher.register(
+      "LockableShowCodeDialogMessage",
+      this.HandleLockableShowCodeDialogMessage,
+      this
+    );
+    this._account.dispatcher.register(
+      "LockableCodeResultMessage",
+      this.HandleLockableCodeResultMessage,
+      this
+    );
+    this._account.dispatcher.register(
+      "LockableStateUpdateHouseDoorMessage",
+      this.HandleLockableStateUpdateHouseDoorMessage,
+      this
+    );
+    this._account.dispatcher.register(
+      "LockableStateUpdateStorageMessage",
+      this.HandleLockableStateUpdateStorageMessage,
+      this
+    );
   }
 
   public get UseFinished() {
@@ -43,26 +65,32 @@ export default class InteractivesManager implements IClearable {
   public getElementOnCell(cellId: number): InteractiveElementEntry {
     // Search for a stated element in the cellId
     // (not sure if its good to search in stated elements)
-    const statedElem = this._account.game.map.statedElements.find((s) => s.cellId === cellId);
+    const statedElem = this._account.game.map.statedElements.find(
+      s => s.cellId === cellId
+    );
 
     if (statedElem !== undefined && statedElem.state === 0) {
       return this._account.game.map.getInteractiveElement(statedElem.id);
     }
 
     // Search for a door in the cellId
-    const door = this._account.game.map.doors.find((d) => d.cellId === cellId);
+    const door = this._account.game.map.doors.find(d => d.cellId === cellId);
     if (door !== undefined) {
       return door.element;
     }
 
     // Search for a phenix in the cellId
-    const phenix = this._account.game.map.phenixs.find((p) => p.cellId === cellId);
+    const phenix = this._account.game.map.phenixs.find(
+      p => p.cellId === cellId
+    );
     if (phenix !== undefined) {
       return phenix.element;
     }
 
     // Search for a locked storage in the cellId
-    const lockedStorage = this._account.game.map.lockedStorages.find((l) => l.cellId === cellId);
+    const lockedStorage = this._account.game.map.lockedStorages.find(
+      l => l.cellId === cellId
+    );
     if (lockedStorage !== undefined) {
       return lockedStorage.element;
     }
@@ -71,7 +99,9 @@ export default class InteractivesManager implements IClearable {
   }
 
   public useInteractive(interactiveId: number, skillInstanceUid = -1): boolean {
-    const interactive = this._account.game.map.getInteractiveElement(interactiveId);
+    const interactive = this._account.game.map.getInteractiveElement(
+      interactiveId
+    );
     if (!interactive || !interactive.usable) {
       return false;
     }
@@ -81,12 +111,22 @@ export default class InteractivesManager implements IClearable {
       return false;
     }
 
-    return this.moveToUseInteractive(interactive, statedElem.cellId, skillInstanceUid);
+    return this.moveToUseInteractive(
+      interactive,
+      statedElem.cellId,
+      skillInstanceUid
+    );
   }
 
-  public useInteractiveByCellId(cellId: number, skillInstanceUid = -1): boolean {
+  public useInteractiveByCellId(
+    cellId: number,
+    skillInstanceUid = -1
+  ): boolean {
     const interactive = this.getElementOnCell(cellId);
-    return interactive !== null && this.moveToUseInteractive(interactive, cellId, skillInstanceUid);
+    return (
+      interactive !== null &&
+      this.moveToUseInteractive(interactive, cellId, skillInstanceUid)
+    );
   }
 
   public useLockedDoor(doorCellId: number, lockCode: string): boolean {
@@ -96,7 +136,10 @@ export default class InteractivesManager implements IClearable {
 
     const interactive = this.getElementOnCell(doorCellId);
 
-    return interactive !== null && this.moveToUseInteractive(interactive, doorCellId, -1, lockCode);
+    return (
+      interactive !== null &&
+      this.moveToUseInteractive(interactive, doorCellId, -1, lockCode)
+    );
   }
 
   public useLockedStorage(cellId: number, lockCode: string): boolean {
@@ -106,15 +149,22 @@ export default class InteractivesManager implements IClearable {
 
     const interactive = this.getElementOnCell(cellId);
 
-    return interactive !== null && this.moveToUseInteractive(interactive, cellId, -1, lockCode);
+    return (
+      interactive !== null &&
+      this.moveToUseInteractive(interactive, cellId, -1, lockCode)
+    );
   }
 
   public cancelUse() {
     this._interactiveToUse = null;
   }
 
-  public moveToUseInteractive(interactive: InteractiveElementEntry,
-                              cellId: number, skillInstanceUid: number, lockCode: string = null): boolean {
+  public moveToUseInteractive(
+    interactive: InteractiveElementEntry,
+    cellId: number,
+    skillInstanceUid: number,
+    lockCode: string = null
+  ): boolean {
     if (this._account.isBusy || this._interactiveToUse !== null) {
       return false;
     }
@@ -164,12 +214,14 @@ export default class InteractivesManager implements IClearable {
         return;
       }
 
-      this._skillInstanceUid = this._interactiveToUse.enabledSkills[index].instanceUid;
+      this._skillInstanceUid = this._interactiveToUse.enabledSkills[
+        index
+      ].instanceUid;
     }
 
     this._account.network.sendMessageFree("InteractiveUseRequestMessage", {
       elemId: this._interactiveToUse.id,
-      skillInstanceUid: this._skillInstanceUid,
+      skillInstanceUid: this._skillInstanceUid
     });
   }
 
@@ -179,7 +231,10 @@ export default class InteractivesManager implements IClearable {
   }
 
   private async HandleInteractiveUsedMessage(account: Account, message: any) {
-    if (this._interactiveToUse === null || message.entityId !== this._account.game.character.id) {
+    if (
+      this._interactiveToUse === null ||
+      message.entityId !== this._account.game.character.id
+    ) {
       return;
     }
 
@@ -189,7 +244,10 @@ export default class InteractivesManager implements IClearable {
     }
   }
 
-  private async HandleInteractiveUseErrorMessage(account: Account, message: any) {
+  private async HandleInteractiveUseErrorMessage(
+    account: Account,
+    message: any
+  ) {
     if (this._interactiveToUse === null) {
       return;
     }
@@ -197,7 +255,10 @@ export default class InteractivesManager implements IClearable {
     this.isUseFinished(false);
   }
 
-  private async HandleLockableShowCodeDialogMessage(account: Account, message: any) {
+  private async HandleLockableShowCodeDialogMessage(
+    account: Account,
+    message: any
+  ) {
     await sleep(1000);
 
     if (this._interactiveToUse === null || this._lockCode === null) {
@@ -205,11 +266,14 @@ export default class InteractivesManager implements IClearable {
     }
 
     await account.network.sendMessageFree("LockableUseCodeMessage", {
-      code: this._lockCode.padEnd(8, "_"),
+      code: this._lockCode.padEnd(8, "_")
     });
   }
 
-  private async HandleLockableCodeResultMessage(account: Account, message: any) {
+  private async HandleLockableCodeResultMessage(
+    account: Account,
+    message: any
+  ) {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }
@@ -221,7 +285,10 @@ export default class InteractivesManager implements IClearable {
     this.isUseFinished(false);
   }
 
-  private async HandleLockableStateUpdateHouseDoorMessage(account: Account, message: any) {
+  private async HandleLockableStateUpdateHouseDoorMessage(
+    account: Account,
+    message: any
+  ) {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }
@@ -231,7 +298,10 @@ export default class InteractivesManager implements IClearable {
     }
   }
 
-  private async HandleLockableStateUpdateStorageMessage(account: Account, message: any) {
+  private async HandleLockableStateUpdateStorageMessage(
+    account: Account,
+    message: any
+  ) {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }

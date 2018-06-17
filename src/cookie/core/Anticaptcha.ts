@@ -1,4 +1,4 @@
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 import axios from "axios";
 
 const connectionTimeout = 20;
@@ -7,13 +7,13 @@ const normalWaitingInterval = 2;
 
 export enum TaskStatus {
   READY = "ready",
-  PROCESSING = "processing",
+  PROCESSING = "processing"
 }
 
 export enum IOptionType {
   ImageToTextTask = "ImageToTextTask",
   NoCaptchaTaskProxyless = "NoCaptchaTaskProxyless",
-  NoCaptchaTask = "NoCaptchaTask",
+  NoCaptchaTask = "NoCaptchaTask"
 }
 
 export interface ITaskResponse {
@@ -66,30 +66,30 @@ export class Anticaptcha {
   public getBalance(): Promise<number> {
     return new Promise((resolve, reject) => {
       const postData = {
-        clientKey: this.clientKey,
+        clientKey: this.clientKey
       };
       this.jsonPostRequest("getBalance", postData)
-        .then((response) => {
+        .then(response => {
           return resolve(response.balance);
         })
-        .catch((e) => reject(e));
+        .catch(e => reject(e));
     });
   }
 
-  public getTaskSolution(taskId: string, currentAttempt = 0,
-                         tickCb?: (response: ITaskResponse) => any): Promise<ITaskResponse> {
+  public getTaskSolution(
+    taskId: string,
+    currentAttempt = 0,
+    tickCb?: (response: ITaskResponse) => any
+  ): Promise<ITaskResponse> {
     return new Promise(async (resolve, reject) => {
       const postData = {
         clientKey: this.clientKey,
-        taskId,
+        taskId
       };
-      let waitingInterval;
-      if (currentAttempt === 0) {
-        waitingInterval = firstAttemptWaitingInterval;
-      } else {
-        waitingInterval = normalWaitingInterval;
-      }
-
+      const waitingInterval =
+        currentAttempt === 0
+          ? firstAttemptWaitingInterval
+          : normalWaitingInterval;
       await sleep(waitingInterval * 1000);
 
       try {
@@ -119,7 +119,7 @@ export class Anticaptcha {
 
   public async createTask(type = IOptionType.NoCaptchaTask, taskData?: any) {
     const taskPostData = this.getPostData(type);
-    Object.assign(taskPostData, {type});
+    Object.assign(taskPostData, { type });
 
     // Merge incoming and already fetched taskData, incoming data has priority
     if (typeof taskData === "object") {
@@ -131,14 +131,14 @@ export class Anticaptcha {
     const postData: any = {
       clientKey: this.clientKey,
       softId: this.softId !== null ? this.softId : 0,
-      task: taskPostData,
+      task: taskPostData
     };
 
     if (this.languagePool !== null) {
       postData.languagePool = this.languagePool;
     }
 
-    return await this.jsonPostRequest("createTask", postData);
+    return this.jsonPostRequest("createTask", postData);
   }
 
   private getPostData(type: IOptionType) {
@@ -150,15 +150,16 @@ export class Anticaptcha {
           maxLength: this.maxLength,
           minLength: this.minLength,
           numeric: this.numeric,
-          phrase: this.phrase,
+          phrase: this.phrase
         };
       case IOptionType.NoCaptchaTaskProxyless:
         return {
           websiteKey: this.websiteKey,
           websiteSToken: this.websiteSToken,
-          websiteURL: this.websiteUrl,
+          websiteURL: this.websiteUrl
         };
-      default: // NoCaptchaTask
+      default:
+        // NoCaptchaTask
         return {
           websiteKey: this.websiteKey,
           websiteSToken: this.websiteSToken,
@@ -169,7 +170,7 @@ export class Anticaptcha {
           proxyPassword: this.proxyPassword,
           proxyPort: this.proxyPort,
           proxyType: this.proxyType,
-          userAgent: this.userAgent,
+          userAgent: this.userAgent
         };
     }
   }
@@ -179,23 +180,28 @@ export class Anticaptcha {
       const options = {
         data,
         headers: {
-          "accept": "application/json",
+          accept: "application/json",
           "accept-encoding": "gzip,deflate",
           "content-length": Buffer.byteLength(JSON.stringify(data)),
-          "content-type": "application/json; charset=utf-8",
+          "content-type": "application/json; charset=utf-8"
         },
         method: "post",
         timeout: connectionTimeout * 1000,
-        url: `${this.url}/${methodName}`,
+        url: `${this.url}/${methodName}`
       };
 
-      axios(options).then((response) => {
-        const jsonResult = response.data;
-        if (jsonResult.errorId) {
-          return reject({code: jsonResult.errorCode, error: jsonResult.errorDescription});
-        }
-        return resolve(jsonResult);
-      }).catch((e) => reject(e));
+      axios(options)
+        .then(response => {
+          const jsonResult = response.data;
+          if (jsonResult.errorId) {
+            return reject({
+              code: jsonResult.errorCode,
+              error: jsonResult.errorDescription
+            });
+          }
+          return resolve(jsonResult);
+        })
+        .catch(e => reject(e));
     });
   }
 }

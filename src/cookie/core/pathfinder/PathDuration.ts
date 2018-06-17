@@ -2,19 +2,32 @@ import Dictionary from "@utils/Dictionary";
 import AnimDuration from "./AnimDuration";
 import MapPoint from "./MapPoint";
 
-enum AnimDurationTypes { MOUNTED, PARABLE, RUNNING, WALKING, SLIDE }
+enum AnimDurationTypes {
+  MOUNTED,
+  PARABLE,
+  RUNNING,
+  WALKING,
+  SLIDE
+}
 
 export default class PathDuration {
-
-  private static animDurations = new Dictionary<AnimDurationTypes, AnimDuration>([
-    {key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120)},
-    {key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450)},
-    {key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150)},
-    {key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425)},
-    {key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50)},
+  private static animDurations = new Dictionary<
+    AnimDurationTypes,
+    AnimDuration
+  >([
+    { key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120) },
+    { key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450) },
+    { key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150) },
+    { key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425) },
+    { key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50) }
   ]);
 
-  public static calculate(path: number[], isFight = false, slide = false, riding = false): number {
+  public static calculate(
+    path: number[],
+    isFight = false,
+    slide = false,
+    riding = false
+  ): number {
     let duration = 20; // TODO: Adding 20ms just in case, need tests, to see if its gonna cause problems
 
     if (path.length === 1) {
@@ -28,9 +41,10 @@ export default class PathDuration {
     } else if (riding) {
       motionScheme = this.animDurations.getValue(AnimDurationTypes.MOUNTED);
     } else {
-      motionScheme = path.length > 3 ?
-        this.animDurations.getValue(AnimDurationTypes.RUNNING)
-        : this.animDurations.getValue(AnimDurationTypes.WALKING);
+      motionScheme =
+        path.length > 3
+          ? this.animDurations.getValue(AnimDurationTypes.RUNNING)
+          : this.animDurations.getValue(AnimDurationTypes.WALKING);
     }
 
     let prevX = -1;
@@ -53,7 +67,9 @@ export default class PathDuration {
       prevY = coord.y;
     }
 
-    console.log("[PathDuration] The duration for your movement is: " + duration + " ms.");
+    console.log(
+      "[PathDuration] The duration for your movement is: " + duration + " ms."
+    );
     return duration;
   }
 }

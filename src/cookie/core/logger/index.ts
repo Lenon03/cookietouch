@@ -1,9 +1,9 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LiteEvent from "@/utils/LiteEvent";
-import {isBlank} from "@utils/String";
+import { isBlank } from "@utils/String";
 import * as moment from "moment";
-import {ChannelColors} from "./ChannelColors";
-import {LogType} from "./LogType";
+import { ChannelColors } from "./ChannelColors";
+import { LogType } from "./LogType";
 
 export interface IMessage {
   source?: string;
@@ -13,14 +13,17 @@ export interface IMessage {
 }
 
 export default class Logger {
-
   private readonly onLog = new LiteEvent<IMessage>();
 
   public get OnLog() {
     return this.onLog.expose();
   }
 
-  public log(source: string, message: string, color: string | LogType | ChannelColors) {
+  public log(
+    source: string,
+    message: string,
+    color: string | LogType | ChannelColors
+  ) {
     if (color === LogType.DEBUG && !GlobalConfiguration.showDebugMessages) {
       return;
     }
@@ -29,16 +32,22 @@ export default class Logger {
         color,
         content: message,
         source,
-        time: new Date(),
+        time: new Date()
       });
-      console.log(`%c[${moment().format("LTS")}][${source}] ${message}`, `color: ${color}; font-style: normal; font-size: 12px`);
+      console.log(
+        `%c[${moment().format("LTS")}][${source}] ${message}`,
+        `color: ${color}; font-style: normal; font-size: 12px`
+      );
     } else {
       this.onLog.trigger({
         color,
         content: message,
-        time: new Date(),
+        time: new Date()
       });
-      console.log(`%c[${moment().format("LTS")}] ${message}`, `color: ${color}; font-style: normal; font-size: 12px`);
+      console.log(
+        `%c[${moment().format("LTS")}] ${message}`,
+        `color: ${color}; font-style: normal; font-size: 12px`
+      );
     }
   }
 

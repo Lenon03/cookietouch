@@ -1,5 +1,5 @@
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
+import { AccountStates } from "@account/AccountStates";
 import NpcEntry from "@game/map/entities/NpcEntry";
 import LiteEvent from "@utils/LiteEvent";
 
@@ -44,7 +44,9 @@ export default class Npcs {
     }
 
     if (this.possibleReplies.includes(replyId)) {
-      this.account.network.sendMessageFree("NpcDialogReplyMessage", {replyId});
+      this.account.network.sendMessageFree("NpcDialogReplyMessage", {
+        replyId
+      });
       return true;
     }
 
@@ -73,7 +75,7 @@ export default class Npcs {
       }
       npc = npcs[index];
     } else {
-      npc = npcs.find((n) => n.npcId === npcId);
+      npc = npcs.find(n => n.npcId === npcId);
     }
 
     // Npc not found
@@ -87,7 +89,7 @@ export default class Npcs {
     this.account.network.sendMessageFree("NpcGenericActionRequestMessage", {
       npcActionId: npc.data.actions[actionIndex],
       npcId: npc.id,
-      npcMapId: this.account.game.map.id,
+      npcMapId: this.account.game.map.id
     });
     return true;
   }

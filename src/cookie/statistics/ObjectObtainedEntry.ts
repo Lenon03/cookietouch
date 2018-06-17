@@ -1,5 +1,4 @@
 export default class ObjectObtainedEntry {
-
   public percentage: number;
   public quantity: number;
   public gid: number;

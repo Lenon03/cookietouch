@@ -1,9 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {MapChangeDirections} from "@game/managers/movements/MapChangeDirections";
-import {Deferred, IDeferred} from "@utils/Deferred";
-import {sleep} from "@utils/Time";
-import {List} from "linqts";
+import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
+import { Deferred, IDeferred } from "@utils/Deferred";
+import { sleep } from "@utils/Time";
+import { List } from "linqts";
 import Group from "./Group";
 
 export default class Grouping {
@@ -24,12 +24,16 @@ export default class Grouping {
   }
 
   public async groupMembers() {
-    const missingMembers = this._group.members.Where((m) => m.game.map.currentPosition !== this._group.chief.game.map.currentPosition);
+    const missingMembers = this._group.members.Where(
+      m =>
+        m.game.map.currentPosition !==
+        this._group.chief.game.map.currentPosition
+    );
     if (this._missingMembers.Count() === 0) {
       return;
     }
     this._missingMembers = missingMembers;
-    this._missingMembers.ForEach(async (m) => {
+    this._missingMembers.ForEach(async m => {
       await this.groupMissingMember(m);
     });
   }
@@ -41,8 +45,11 @@ export default class Grouping {
       tcs.resolve(true);
     };
     missingMember.game.map.MapChanged.on(mapChanged);
-    while (this._group.chief.scripts.enabled &&
-    missingMember.game.map.currentPosition !== this._group.chief.game.map.currentPosition) {
+    while (
+      this._group.chief.scripts.enabled &&
+      missingMember.game.map.currentPosition !==
+        this._group.chief.game.map.currentPosition
+    ) {
       tcs = Deferred<boolean>();
       this.moveMissingMember(missingMember);
       await tcs.promise;
@@ -71,7 +78,10 @@ export default class Grouping {
     if (dir === MapChangeDirections.NONE) {
       return;
     }
-    missingMember.logger.logDebug(LanguageManager.trans("grouping"), `${MapChangeDirections[dir]}`);
+    missingMember.logger.logDebug(
+      LanguageManager.trans("grouping"),
+      `${MapChangeDirections[dir]}`
+    );
     missingMember.game.managers.movements.changeMap(dir);
   }
 }

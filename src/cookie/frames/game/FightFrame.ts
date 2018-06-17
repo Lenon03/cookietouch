@@ -1,7 +1,7 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
+import { AccountStates } from "@account/AccountStates";
 import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@protocol/network/messages/GameActionFightDispellableEffectMessage";
@@ -33,11 +33,10 @@ import GameMapMovementMessage from "@protocol/network/messages/GameMapMovementMe
 import GameMapNoMovementMessage from "@protocol/network/messages/GameMapNoMovementMessage";
 import SequenceEndMessage from "@protocol/network/messages/SequenceEndMessage";
 import TextInformationMessage from "@protocol/network/messages/TextInformationMessage";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 import * as moment from "moment";
 
 export default class FightFrame {
-
   private account: Account;
 
   constructor(account: Account) {
@@ -46,47 +45,179 @@ export default class FightFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("GameMapMovementMessage", this.HandleGameMapMovementMessage, this);
-    this.account.dispatcher.register("GameMapNoMovementMessage", this.HandleGameMapNoMovementMessage, this);
-    this.account.dispatcher.register("GameActionFightNoSpellCastMessage", this.HandleGameActionFightNoSpellCastMessage, this);
-    this.account.dispatcher.register("GameFightPlacementPossiblePositionsMessage", this.HandleGameFightPlacementPossiblePositionsMessage, this);
-    this.account.dispatcher.register("SequenceEndMessage", this.HandleSequenceEndMessage, this);
-    this.account.dispatcher.register("GameFightTurnReadyRequestMessage", this.HandleGameFightTurnReadyRequestMessage, this);
-    this.account.dispatcher.register("GameFightShowFighterRandomStaticPoseMessage", this.HandleGameFightShowFighterRandomStaticPoseMessage, this);
-    this.account.dispatcher.register("GameFightNewRoundMessage", this.HandleGameFightNewRoundMessage, this);
-    this.account.dispatcher.register("GameActionFightSpellCastMessage", this.HandleGameActionFightSpellCastMessage, this);
-    this.account.dispatcher.register("GameFightEndMessage", this.HandleGameFightEndMessage, this);
-    this.account.dispatcher.register("GameActionFightDispellableEffectMessage", this.HandleGameActionFightDispellableEffectMessage, this);
-    this.account.dispatcher.register("GameFightTurnEndMessage", this.HandleGameFightTurnEndMessage, this);
-    this.account.dispatcher.register("GameFightTurnStartMessage", this.HandleGameFightTurnStartMessage, this);
-    this.account.dispatcher.register("GameFightLeaveMessage", this.HandleGameFightLeaveMessage, this);
-    this.account.dispatcher.register("GameActionFightLifePointsGainMessage", this.HandleGameActionFightLifePointsGainMessage, this);
-    this.account.dispatcher.register("GameActionFightLifePointsLostMessage", this.HandleGameActionFightLifePointsLostMessage, this);
-    this.account.dispatcher.register("GameActionFightSummonMessage", this.HandleGameActionFightSummonMessage, this);
-    this.account.dispatcher.register("GameActionFightSlideMessage", this.HandleGameActionFightSlideMessage, this);
-    this.account.dispatcher.register("GameActionFightTeleportOnSameMapMessage", this.HandleGameActionFightTeleportOnSameMapMessage, this);
-    this.account.dispatcher.register("GameActionFightDeathMessage", this.HandleGameActionFightDeathMessage, this);
-    this.account.dispatcher.register("GameActionFightPointsVariationMessage", this.HandleGameActionFightPointsVariationMessage, this);
-    this.account.dispatcher.register("FighterStatsListMessage", this.HandleFighterStatsListMessage, this);
-    this.account.dispatcher.register("GameFightSynchronizeMessage", this.HandleGameFightSynchronizeMessage, this);
-    this.account.dispatcher.register("GameEntitiesDispositionMessage", this.HandleGameEntitiesDispositionMessage, this);
-    this.account.dispatcher.register("GameFightOptionStateUpdateMessage", this.HandleGameFightOptionStateUpdateMessage, this);
-    this.account.dispatcher.register("GameFightUpdateTeamMessage", this.HandleGameFightUpdateTeamMessage, this);
-    this.account.dispatcher.register("GameFightShowFighterMessage", this.HandleGameFightShowFighterMessage, this);
-    this.account.dispatcher.register("TextInformationMessage", this.HandleTextInformationMessage, this);
-    this.account.dispatcher.register("GameFightStartMessage", this.HandleGameFightStartMessage, this);
-    this.account.dispatcher.register("GameFightStartingMessage", this.HandleGameFightStartingMessage, this);
-    this.account.dispatcher.register("GameFightJoinMessage", this.HandleGameFightJoinMessage, this);
+    this.account.dispatcher.register(
+      "GameMapMovementMessage",
+      this.HandleGameMapMovementMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameMapNoMovementMessage",
+      this.HandleGameMapNoMovementMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightNoSpellCastMessage",
+      this.HandleGameActionFightNoSpellCastMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightPlacementPossiblePositionsMessage",
+      this.HandleGameFightPlacementPossiblePositionsMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "SequenceEndMessage",
+      this.HandleSequenceEndMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightTurnReadyRequestMessage",
+      this.HandleGameFightTurnReadyRequestMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightShowFighterRandomStaticPoseMessage",
+      this.HandleGameFightShowFighterRandomStaticPoseMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightNewRoundMessage",
+      this.HandleGameFightNewRoundMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightSpellCastMessage",
+      this.HandleGameActionFightSpellCastMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightEndMessage",
+      this.HandleGameFightEndMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightDispellableEffectMessage",
+      this.HandleGameActionFightDispellableEffectMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightTurnEndMessage",
+      this.HandleGameFightTurnEndMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightTurnStartMessage",
+      this.HandleGameFightTurnStartMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightLeaveMessage",
+      this.HandleGameFightLeaveMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightLifePointsGainMessage",
+      this.HandleGameActionFightLifePointsGainMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightLifePointsLostMessage",
+      this.HandleGameActionFightLifePointsLostMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightSummonMessage",
+      this.HandleGameActionFightSummonMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightSlideMessage",
+      this.HandleGameActionFightSlideMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightTeleportOnSameMapMessage",
+      this.HandleGameActionFightTeleportOnSameMapMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightDeathMessage",
+      this.HandleGameActionFightDeathMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameActionFightPointsVariationMessage",
+      this.HandleGameActionFightPointsVariationMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "FighterStatsListMessage",
+      this.HandleFighterStatsListMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightSynchronizeMessage",
+      this.HandleGameFightSynchronizeMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameEntitiesDispositionMessage",
+      this.HandleGameEntitiesDispositionMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightOptionStateUpdateMessage",
+      this.HandleGameFightOptionStateUpdateMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightUpdateTeamMessage",
+      this.HandleGameFightUpdateTeamMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightShowFighterMessage",
+      this.HandleGameFightShowFighterMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "TextInformationMessage",
+      this.HandleTextInformationMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightStartMessage",
+      this.HandleGameFightStartMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightStartingMessage",
+      this.HandleGameFightStartingMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "GameFightJoinMessage",
+      this.HandleGameFightJoinMessage,
+      this
+    );
   }
 
-  private async HandleGameMapMovementMessage(account: Account, message: GameMapMovementMessage) {
+  private async HandleGameMapMovementMessage(
+    account: Account,
+    message: GameMapMovementMessage
+  ) {
     if (account.state === AccountStates.FIGHTING) {
       account.game.fight.UpdateGameMapMovementMessage(message);
-      account.extensions.characterCreation.UpdateGameMapMovementMessage(message);
+      account.extensions.characterCreation.UpdateGameMapMovementMessage(
+        message
+      );
     }
   }
 
-  private async HandleGameMapNoMovementMessage(account: Account, message: GameMapNoMovementMessage) {
+  private async HandleGameMapNoMovementMessage(
+    account: Account,
+    message: GameMapNoMovementMessage
+  ) {
     if (account.state !== AccountStates.FIGHTING) {
       return;
     }
@@ -95,146 +226,270 @@ export default class FightFrame {
     account.game.managers.movements.clear();
   }
 
-  private async HandleGameActionFightNoSpellCastMessage(account: Account, message: GameActionFightNoSpellCastMessage) {
+  private async HandleGameActionFightNoSpellCastMessage(
+    account: Account,
+    message: GameActionFightNoSpellCastMessage
+  ) {
     account.extensions.fights.UpdateGameActionFightNoSpellCastMessage(message);
   }
 
-  private async HandleGameFightPlacementPossiblePositionsMessage(account: Account, message: GameFightPlacementPossiblePositionsMessage) {
-    account.game.fight.UpdateGameFightPlacementPossiblePositionsMessage(message);
-    await account.extensions.fights.UpdateGameFightPlacementPossiblePositionsMessage(message);
+  private async HandleGameFightPlacementPossiblePositionsMessage(
+    account: Account,
+    message: GameFightPlacementPossiblePositionsMessage
+  ) {
+    account.game.fight.UpdateGameFightPlacementPossiblePositionsMessage(
+      message
+    );
+    await account.extensions.fights.UpdateGameFightPlacementPossiblePositionsMessage(
+      message
+    );
   }
 
-  private async HandleSequenceEndMessage(account: Account, message: SequenceEndMessage) {
+  private async HandleSequenceEndMessage(
+    account: Account,
+    message: SequenceEndMessage
+  ) {
     if (account.game.character.id === message.authorId) {
       await sleep(200 * account.extensions.fights.config.fightSpeed);
-      await account.network.sendMessageFree("GameActionAcknowledgementMessage", {
-        actionId: message.actionId,
-        valid: true,
-      });
+      await account.network.sendMessageFree(
+        "GameActionAcknowledgementMessage",
+        {
+          actionId: message.actionId,
+          valid: true
+        }
+      );
     }
     await account.extensions.fights.UpdateSequenceEndMessage(message);
   }
 
-  private async HandleGameFightTurnReadyRequestMessage(account: Account, message: GameFightTurnReadyRequestMessage) {
-    await sleep(message.id === account.game.character.id ? 200 : 400 * account.extensions.fights.config.fightSpeed);
-    await account.network.sendMessageFree("GameFightTurnReadyMessage", {isReady: true});
+  private async HandleGameFightTurnReadyRequestMessage(
+    account: Account,
+    message: GameFightTurnReadyRequestMessage
+  ) {
+    await sleep(
+      message.id === account.game.character.id
+        ? 200
+        : 400 * account.extensions.fights.config.fightSpeed
+    );
+    await account.network.sendMessageFree("GameFightTurnReadyMessage", {
+      isReady: true
+    });
   }
 
-  private async HandleGameFightShowFighterRandomStaticPoseMessage(account: Account, message: GameFightShowFighterRandomStaticPoseMessage) {
+  private async HandleGameFightShowFighterRandomStaticPoseMessage(
+    account: Account,
+    message: GameFightShowFighterRandomStaticPoseMessage
+  ) {
     this.HandleGameFightShowFighterMessage(account, message);
   }
 
-  private async HandleGameFightNewRoundMessage(account: Account, message: GameFightNewRoundMessage) {
+  private async HandleGameFightNewRoundMessage(
+    account: Account,
+    message: GameFightNewRoundMessage
+  ) {
     account.game.fight.UpdateGameFightNewRoundMessage(message);
   }
 
-  private async HandleGameActionFightSpellCastMessage(account: Account, message: GameActionFightSpellCastMessage) {
+  private async HandleGameActionFightSpellCastMessage(
+    account: Account,
+    message: GameActionFightSpellCastMessage
+  ) {
     account.game.fight.UpdateGameActionFightSpellCastMessage(message);
-    account.extensions.characterCreation.UpdateGameActionFightSpellCastMessage(message);
+    account.extensions.characterCreation.UpdateGameActionFightSpellCastMessage(
+      message
+    );
   }
 
-  private async HandleGameFightEndMessage(account: Account, message: GameFightEndMessage) {
+  private async HandleGameFightEndMessage(
+    account: Account,
+    message: GameFightEndMessage
+  ) {
     moment.locale(GlobalConfiguration.lang);
     const elapsed = moment.duration(message.duration);
-    account.logger.logInfo(LanguageManager.trans("fightFrame"), LanguageManager.trans("fightEnded", elapsed.minutes(), elapsed.seconds()));
+    account.logger.logInfo(
+      LanguageManager.trans("fightFrame"),
+      LanguageManager.trans("fightEnded", elapsed.minutes(), elapsed.seconds())
+    );
     account.game.fight.UpdateGameFightEndMessage(message);
     await account.statistics.UpdateGameFightEndMessage(message);
   }
 
-  private async HandleGameActionFightDispellableEffectMessage(account: Account, message: GameActionFightDispellableEffectMessage) {
+  private async HandleGameActionFightDispellableEffectMessage(
+    account: Account,
+    message: GameActionFightDispellableEffectMessage
+  ) {
     account.game.fight.UpdateGameActionFightDispellableEffectMessage(message);
   }
 
-  private async HandleGameFightTurnEndMessage(account: Account, message: GameFightTurnEndMessage) {
+  private async HandleGameFightTurnEndMessage(
+    account: Account,
+    message: GameFightTurnEndMessage
+  ) {
     account.game.fight.UpdateGameFightTurnEndMessage(message);
   }
 
-  private async HandleGameFightTurnStartMessage(account: Account, message: GameFightTurnStartMessage) {
+  private async HandleGameFightTurnStartMessage(
+    account: Account,
+    message: GameFightTurnStartMessage
+  ) {
     account.game.fight.UpdateGameFightTurnStartMessage(message);
   }
 
-  private async HandleGameFightLeaveMessage(account: Account, message: GameFightLeaveMessage) {
+  private async HandleGameFightLeaveMessage(
+    account: Account,
+    message: GameFightLeaveMessage
+  ) {
     account.game.fight.UpdateGameFightLeaveMessage(message);
   }
 
-  private async HandleGameActionFightLifePointsGainMessage(account: Account, message: GameActionFightLifePointsGainMessage) {
+  private async HandleGameActionFightLifePointsGainMessage(
+    account: Account,
+    message: GameActionFightLifePointsGainMessage
+  ) {
     account.game.fight.UpdateGameActionFightLifePointsGainMessage(message);
     const fighter = account.game.fight.getFighter(message.targetId);
-    account.logger.logInfo(LanguageManager.trans("fightFrame"),
-      LanguageManager.trans("hpGained", (fighter as any).name, message.delta)); // TODO: fix name
+    account.logger.logInfo(
+      LanguageManager.trans("fightFrame"),
+      LanguageManager.trans("hpGained", (fighter as any).name, message.delta)
+    ); // TODO: fix name
   }
 
-  private async HandleGameActionFightLifePointsLostMessage(account: Account, message: GameActionFightLifePointsLostMessage) {
+  private async HandleGameActionFightLifePointsLostMessage(
+    account: Account,
+    message: GameActionFightLifePointsLostMessage
+  ) {
     account.game.fight.UpdateGameActionFightLifePointsLostMessage(message);
     const fighter = account.game.fight.getFighter(message.targetId);
     if (fighter) {
       const tmp = fighter.lifePoints === 0 ? " (mort)." : ".";
-      account.logger.logInfo(LanguageManager.trans("fightFrame"),
-        LanguageManager.trans("hpLoss", (fighter as any).name, message.loss, tmp)); // TODO: fix name
+      account.logger.logInfo(
+        LanguageManager.trans("fightFrame"),
+        LanguageManager.trans(
+          "hpLoss",
+          (fighter as any).name,
+          message.loss,
+          tmp
+        )
+      ); // TODO: fix name
     }
   }
 
-  private async HandleGameActionFightSummonMessage(account: Account, message: GameActionFightSummonMessage) {
+  private async HandleGameActionFightSummonMessage(
+    account: Account,
+    message: GameActionFightSummonMessage
+  ) {
     account.game.fight.UpdateGameActionFightSummonMessage(message);
   }
 
-  private async HandleGameActionFightSlideMessage(account: Account, message: GameActionFightSlideMessage) {
+  private async HandleGameActionFightSlideMessage(
+    account: Account,
+    message: GameActionFightSlideMessage
+  ) {
     account.game.fight.UpdateGameActionFightSlideMessage(message);
   }
 
-  private async HandleGameActionFightTeleportOnSameMapMessage(account: Account, message: GameActionFightTeleportOnSameMapMessage) {
+  private async HandleGameActionFightTeleportOnSameMapMessage(
+    account: Account,
+    message: GameActionFightTeleportOnSameMapMessage
+  ) {
     account.game.fight.UpdateGameActionFightTeleportOnSameMapMessage(message);
   }
 
-  private async HandleGameActionFightDeathMessage(account: Account, message: GameActionFightDeathMessage) {
+  private async HandleGameActionFightDeathMessage(
+    account: Account,
+    message: GameActionFightDeathMessage
+  ) {
     account.game.fight.UpdateGameActionFightDeathMessage(message);
   }
 
-  private async HandleGameActionFightPointsVariationMessage(account: Account, message: GameActionFightPointsVariationMessage) {
+  private async HandleGameActionFightPointsVariationMessage(
+    account: Account,
+    message: GameActionFightPointsVariationMessage
+  ) {
     account.game.fight.UpdateGameActionFightPointsVariationMessage(message);
   }
 
-  private async HandleFighterStatsListMessage(account: Account, message: FighterStatsListMessage) {
+  private async HandleFighterStatsListMessage(
+    account: Account,
+    message: FighterStatsListMessage
+  ) {
     account.game.fight.UpdateFighterStatsListMessage(message);
-    await account.network.sendMessageFree("GameActionAcknowledgementMessage", {valid: true, actionId: 0});
+    await account.network.sendMessageFree("GameActionAcknowledgementMessage", {
+      actionId: 0,
+      valid: true
+    });
   }
 
-  private async HandleGameFightSynchronizeMessage(account: Account, message: GameFightSynchronizeMessage) {
+  private async HandleGameFightSynchronizeMessage(
+    account: Account,
+    message: GameFightSynchronizeMessage
+  ) {
     account.game.fight.UpdateGameFightSynchronizeMessage(message);
   }
 
-  private async HandleGameEntitiesDispositionMessage(account: Account, message: GameEntitiesDispositionMessage) {
+  private async HandleGameEntitiesDispositionMessage(
+    account: Account,
+    message: GameEntitiesDispositionMessage
+  ) {
     account.game.fight.UpdateGameEntitiesDispositionMessage(message);
-    await account.extensions.characterCreation.UpdateGameEntitiesDispositionMessage(message);
+    await account.extensions.characterCreation.UpdateGameEntitiesDispositionMessage(
+      message
+    );
   }
 
-  private async HandleGameFightOptionStateUpdateMessage(account: Account, message: GameFightOptionStateUpdateMessage) {
+  private async HandleGameFightOptionStateUpdateMessage(
+    account: Account,
+    message: GameFightOptionStateUpdateMessage
+  ) {
     account.game.fight.UpdateGameFightOptionStateUpdateMessage(message);
   }
 
-  private async HandleGameFightUpdateTeamMessage(account: Account, message: GameFightUpdateTeamMessage) {
+  private async HandleGameFightUpdateTeamMessage(
+    account: Account,
+    message: GameFightUpdateTeamMessage
+  ) {
     account.game.fight.UpdateGameFightUpdateTeamMessage(message);
   }
 
-  private async HandleGameFightShowFighterMessage(account: Account, message: GameFightShowFighterMessage) {
+  private async HandleGameFightShowFighterMessage(
+    account: Account,
+    message: GameFightShowFighterMessage
+  ) {
     account.game.fight.UpdateGameFightShowFighterMessage(message);
     await account.extensions.fights.UpdateGameFightShowFighterMessage(message);
   }
 
-  private async HandleTextInformationMessage(account: Account, message: TextInformationMessage) {
+  private async HandleTextInformationMessage(
+    account: Account,
+    message: TextInformationMessage
+  ) {
     account.game.fight.UpdateTextInformationMessage(message);
   }
 
-  private async HandleGameFightStartMessage(account: Account, message: GameFightStartMessage) {
-    account.logger.logInfo(LanguageManager.trans("fightFrame"), LanguageManager.trans("fightBegin"));
+  private async HandleGameFightStartMessage(
+    account: Account,
+    message: GameFightStartMessage
+  ) {
+    account.logger.logInfo(
+      LanguageManager.trans("fightFrame"),
+      LanguageManager.trans("fightBegin")
+    );
     account.game.fight.UpdateGameFightStartMessage(message);
   }
 
-  private async HandleGameFightStartingMessage(account: Account, message: GameFightStartingMessage) {
-    account.extensions.characterCreation.UpdateGameFightStartingMessage(message);
+  private async HandleGameFightStartingMessage(
+    account: Account,
+    message: GameFightStartingMessage
+  ) {
+    account.extensions.characterCreation.UpdateGameFightStartingMessage(
+      message
+    );
   }
 
-  private async HandleGameFightJoinMessage(account: Account, message: GameFightJoinMessage) {
+  private async HandleGameFightJoinMessage(
+    account: Account,
+    message: GameFightJoinMessage
+  ) {
     account.game.map.UpdateGameFightJoinMessage(message);
     account.game.fight.UpdateGameFightJoinMessage(message);
   }

@@ -1,6 +1,5 @@
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
-import {List} from "linqts";
+import { AccountStates } from "@account/AccountStates";
 import BuyItemAction from "../actions/bid/BuyItemAction";
 import EditItemInSalePriceAction from "../actions/bid/EditItemInSalePriceAction";
 import RemoveItemInSaleAction from "../actions/bid/RemoveItemInSaleAction";
@@ -26,19 +25,25 @@ export default class BidAPI {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StartBuyingAction(), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new StartBuyingAction(),
+      true
+    );
     return true;
   }
 
   public async getItemPrice(gid: number, lot: number): Promise<number> {
-    return await this.account.game.bid.getItemPrice(gid, lot);
+    return this.account.game.bid.getItemPrice(gid, lot);
   }
 
   public buyItem(gid: number, lot: number): boolean {
     if (this.account.state !== AccountStates.BUYING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new BuyItemAction(gid, lot), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new BuyItemAction(gid, lot),
+      true
+    );
     return true;
   }
 
@@ -46,12 +51,17 @@ export default class BidAPI {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StartSellingAction(), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new StartSellingAction(),
+      true
+    );
     return true;
   }
 
   public get itemsInSaleCount(): number {
-    return this.account.game.bid.objectsInSale ? this.account.game.bid.objectsInSale.Count() : 0;
+    return this.account.game.bid.objectsInSale
+      ? this.account.game.bid.objectsInSale.Count()
+      : 0;
   }
 
   public getItemsInSale(): IObjectInSale[] {
@@ -60,12 +70,12 @@ export default class BidAPI {
       return [];
     }
 
-    const tmp = this.account.game.bid.objectsInSale.Select((t) => {
+    const tmp = this.account.game.bid.objectsInSale.Select(t => {
       return {
         gid: t.objectGID,
         lot: t.quantity,
         price: t.objectPrice,
-        uid: t.objectUID,
+        uid: t.objectUID
       } as IObjectInSale;
     });
 
@@ -76,7 +86,10 @@ export default class BidAPI {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new SellItemAction(gid, lot, price), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new SellItemAction(gid, lot, price),
+      true
+    );
     return true;
   }
 
@@ -84,7 +97,10 @@ export default class BidAPI {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new RemoveItemInSaleAction(uid), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new RemoveItemInSaleAction(uid),
+      true
+    );
     return true;
   }
 
@@ -95,7 +111,10 @@ export default class BidAPI {
     if (newPrice === 0) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new EditItemInSalePriceAction(uid, newPrice), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new EditItemInSalePriceAction(uid, newPrice),
+      true
+    );
     return true;
   }
 }

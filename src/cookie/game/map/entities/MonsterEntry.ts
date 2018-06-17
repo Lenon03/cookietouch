@@ -1,5 +1,6 @@
 import Monsters from "@/protocol/data/classes/Monsters";
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import DTConstants from "@/protocol/DTConstants";
 import DataManager from "@protocol/data";
 import MonsterInGroupLightInformations from "@protocol/network/types/MonsterInGroupLightInformations";
 
@@ -15,7 +16,7 @@ export default class MonsterEntry {
   constructor(infos: MonsterInGroupLightInformations) {
     this.genericId = infos.creatureGenericId;
     this.grade = infos.grade;
-    DataManager.get<Monsters>(DataTypes.Monsters, this.genericId).then((data) => {
+    DataManager.get<Monsters>(DataTypes.Monsters, this.genericId).then(data => {
       const m = data[0].object;
       this.name = m.nameId;
       this.level = m.grades[this.grade - 1].level;
@@ -23,5 +24,8 @@ export default class MonsterEntry {
       this.miniBoss = m.isMiniBoss;
       this.questMonster = m.isQuestMonster;
     });
+  }
+  get iconUrl() {
+    return `${DTConstants.config.assetsUrl}/gfx/monsters/${this.genericId}.png`;
   }
 }

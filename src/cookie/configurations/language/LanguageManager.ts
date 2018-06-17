@@ -1,5 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import {Languages} from "@/configurations/language/Languages";
+import { Languages } from "@/configurations/language/Languages";
 import Dictionary from "@/utils/Dictionary";
 import * as fs from "fs";
 import * as path from "path";
@@ -7,7 +7,6 @@ import * as path from "path";
 declare var __static: string;
 
 export default class LanguageManager {
-
   private static langs: Dictionary<Languages, any>;
 
   public static Init() {
@@ -25,12 +24,12 @@ export default class LanguageManager {
     const pt = JSON.parse(ptFile.toString());
 
     this.langs = new Dictionary([
-      {key: Languages.FRENCH, value: fr},
-      {key: Languages.ENGLISH, value: en},
-      {key: Languages.DEUTSCH, value: de},
-      {key: Languages.ITALIAN, value: it},
-      {key: Languages.PORTUGUESE, value: pt},
-      {key: Languages.SPANISH, value: es},
+      { key: Languages.FRENCH, value: fr },
+      { key: Languages.ENGLISH, value: en },
+      { key: Languages.DEUTSCH, value: de },
+      { key: Languages.ITALIAN, value: it },
+      { key: Languages.PORTUGUESE, value: pt },
+      { key: Languages.SPANISH, value: es }
     ]);
   }
 

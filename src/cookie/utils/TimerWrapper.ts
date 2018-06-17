@@ -1,32 +1,29 @@
 export default class TimerWrapper {
-
   public enabled: boolean;
 
   private timer: NodeJS.Timer;
-  private startTime: number;
   private interval: number;
   private callback: () => void;
   private object: any;
 
-  constructor(timerCallback: () => void, object: any, startTime: number, interval: number) {
+  constructor(timerCallback: () => void, object: any, interval: number) {
     this.interval = interval;
     this.callback = timerCallback;
     this.object = object;
-    this.startTime = startTime;
-
-    if (this.startTime <= 0) {
-      this.start();
-    }
   }
 
-  public start() {
+  public start(now = false) {
     if (this.enabled) {
       return;
     }
     this.enabled = true;
-    global.setTimeout(() => {
-      this.timer = global.setInterval(this.callback.bind(this.object), this.interval);
-    }, this.startTime);
+    if (now) {
+      this.callback.bind(this.object)();
+    }
+    this.timer = global.setInterval(
+      this.callback.bind(this.object),
+      this.interval
+    );
   }
 
   public stop() {
@@ -37,12 +34,9 @@ export default class TimerWrapper {
     global.clearInterval(this.timer);
   }
 
-  public change(startTime: number, interval: number) {
-    this.startTime = startTime;
+  public change(interval: number, now = false) {
     this.interval = interval;
-    if (this.enabled || this.startTime <= 0) {
-      this.stop();
-      this.start();
-    }
+    this.stop();
+    this.start(now);
   }
 }

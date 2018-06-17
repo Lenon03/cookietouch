@@ -1,18 +1,24 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
-import Button from "material-ui/Button";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
+import Button from "@material-ui/core/Button";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import * as React from "react";
 
 type style = "root" | "table";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   root: {
+    borderCollapse: "collapse",
     flexGrow: 1,
-    maxHeight: 400,
+    maxHeight: 900,
     overflowY: "auto",
+    padding: 10,
   },
   table: {
     minWidth: 700,

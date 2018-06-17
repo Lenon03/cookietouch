@@ -28,18 +28,17 @@ export default class Semaphore {
   }
 
   public use<T>(f: () => Promise<T>) {
-    return this.acquire()
-      .then((release: any) => {
-        return f()
-          .then((res) => {
-            release();
-            return res;
-          })
-          .catch((err) => {
-            release();
-            throw err;
-          });
-      });
+    return this.acquire().then((release: any) => {
+      return f()
+        .then(res => {
+          release();
+          return res;
+        })
+        .catch(err => {
+          release();
+          throw err;
+        });
+    });
   }
 
   private sched() {

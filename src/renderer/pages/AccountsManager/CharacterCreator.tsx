@@ -9,28 +9,27 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import Color from "@/utils/Color";
 import Dictionary from "@/utils/Dictionary";
 import { getRandomInt } from "@/utils/Random";
-import Account from "@account";
 import { faMars, faVenus } from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Switch from "@material-ui/core/Switch";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
-import { List } from "linqts";
-import ExpandMoreIcon from "material-ui-icons/ExpandMore";
-import Avatar from "material-ui/Avatar";
-import Button from "material-ui/Button";
-import Chip from "material-ui/Chip";
-import ExpansionPanel, {
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-} from "material-ui/ExpansionPanel";
-import { FormControl, FormControlLabel, FormGroup, FormHelperText } from "material-ui/Form";
-import IconButton from "material-ui/IconButton";
-import Input, { InputAdornment, InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
-import TextField from "material-ui/TextField";
-import Typography from "material-ui/Typography";
 import * as React from "react";
 import ColorPicker from "./ColorPicker";
 
@@ -351,7 +350,7 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
   }
 
   private handleChangeColor = (name) => (color) => {
-    this.setState({ [name]: color.hex });
+    this.setState({ [name]: color.hex } as Pick<IState, keyof IState>);
   }
 
   private tutorialChanged = (event) => {
@@ -363,13 +362,13 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
   }
 
   private handleSelectChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value }, () => {
+    this.setState({ [event.target.name]: event.target.value } as Pick<IState, keyof IState>, () => {
       this.refreshColors();
     });
   }
 
   private handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
   }
 
   private handleChangeAccounts = (event) => {

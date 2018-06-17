@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class ReplyAction extends ScriptAction {
   public _name: string = "ReplyAction";
@@ -13,7 +13,9 @@ export default class ReplyAction extends ScriptAction {
 
   public async process(account: Account): Promise<ScriptActionResults> {
     if (!account.game.npcs.reply(this.replyId)) {
-      account.scripts.stopScript(LanguageManager.trans("errorReplyNpc", this.replyId));
+      account.scripts.stopScript(
+        LanguageManager.trans("errorReplyNpc", this.replyId)
+      );
       return ScriptAction.failedResult();
     }
     return ScriptAction.processingResult();

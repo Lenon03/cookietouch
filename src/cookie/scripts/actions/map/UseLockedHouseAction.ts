@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseLockedHouseAction extends ScriptAction {
   public _name: string = "UseLockedHouseAction";
@@ -14,7 +14,12 @@ export default class UseLockedHouseAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    if (account.game.managers.interactives.useLockedDoor(this.doorCellId, this.lockCode)) {
+    if (
+      account.game.managers.interactives.useLockedDoor(
+        this.doorCellId,
+        this.lockCode
+      )
+    ) {
       return ScriptAction.processingResult();
     }
     account.scripts.stopScript(LanguageManager.trans("errorLockedDoor"));

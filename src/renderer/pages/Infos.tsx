@@ -1,19 +1,18 @@
 import { AccountStates } from "@/account/AccountStates";
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
 import { faKorvue } from "@fortawesome/fontawesome-free-brands";
-import { faBolt, faBriefcase, faHeart, faStar } from "@fortawesome/fontawesome-free-solid";
+import { faBolt, faBriefcase, faGem, faHeart, faStar } from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Paper from "@material-ui/core/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Tooltip from "@material-ui/core/Tooltip";
 import CookieMain from "@renderer/CookieMain";
 import { remote } from "electron";
-import Button from "material-ui/Button";
-import { FormControlLabel, FormGroup } from "material-ui/Form";
-import Grid from "material-ui/Grid";
-import Paper from "material-ui/Paper";
-import { LinearProgress } from "material-ui/Progress";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Switch from "material-ui/Switch";
-import Tooltip from "material-ui/Tooltip";
 import * as React from "react";
 
 type style = "root" | "paper" | "icon";
@@ -51,6 +50,8 @@ interface IState {
   status: AccountStates;
   weight: number;
   weightMax: number;
+  goultines: number;
+  bonuspack: string;
 }
 
 type Props = IProps & WithStyles<style>;
@@ -58,11 +59,13 @@ type Props = IProps & WithStyles<style>;
 class Infos extends React.Component<Props, {}> {
 
   public readonly idleState: IState = {
+    bonuspack: "",
     energyPoints: -1,
     energyPointsMax: -1,
     experience: -1,
     experienceMax: -1,
     experiencePercent: -1,
+    goultines: -1,
     kamas: -1,
     lifePoints: -1,
     lifePointsMax: -1,
@@ -83,6 +86,7 @@ class Infos extends React.Component<Props, {}> {
     this.props.account.game.map.MapChanged.on(this.mapChanged);
     this.props.account.game.character.inventory.InventoryUpdated.on(this.inventoryUpdated);
     this.props.account.scripts.ScriptLoaded.on(this.scriptLoaded);
+    this.props.account.data.GoultinesUpdated.on(this.goultinesUpdated);
   }
 
   public componentWillUnmount() {
@@ -92,11 +96,11 @@ class Infos extends React.Component<Props, {}> {
     this.props.account.game.map.MapChanged.off(this.mapChanged);
     this.props.account.game.character.inventory.InventoryUpdated.off(this.inventoryUpdated);
     this.props.account.scripts.ScriptLoaded.off(this.scriptLoaded);
+    this.props.account.data.GoultinesUpdated.off(this.goultinesUpdated);
   }
 
   public render() {
-    const { account, classes } = this.props;
-    const { position } = this.state;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -112,6 +116,7 @@ class Infos extends React.Component<Props, {}> {
                 <Button size="small" variant="raised" onClick={() => {
                   if (this.props.account.network.connected) {
                     this.stop();
+                    this.props.account.planificationTimer.stop();
                   } else {
                     this.start();
                   }
@@ -157,10 +162,13 @@ class Infos extends React.Component<Props, {}> {
           </Paper>
           <Paper className={classes.paper}>
             <Grid container spacing={0}>
-              <Grid item xs={9}>
+              <Grid item xs={4}>
                 {this.state.position}
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={4}>
+                {this.state.bonuspack}
+              </Grid>
+              <Grid item xs={4}>
                 <span style={{ float: "right" }}>Status: {AccountStates[this.state.status]}</span>
               </Grid>
             </Grid>
@@ -176,7 +184,7 @@ class Infos extends React.Component<Props, {}> {
                   />
                 </Tooltip>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <FontAwesomeIcon className={classes.icon} size="lg" icon={faBriefcase} />
                 {(this.state.weight !== -1 ? this.state.weight / this.state.weightMax * 100 : 0).toFixed(2)}%
                 <Tooltip title={`${this.state.weight} / ${this.state.weightMax}`}>
@@ -185,7 +193,7 @@ class Infos extends React.Component<Props, {}> {
                   />
                 </Tooltip>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <FontAwesomeIcon className={classes.icon} size="lg" icon={faStar} />
                 {(this.state.experiencePercent !== -1 ? this.state.experiencePercent : 0).toFixed(2)}%
                 <Tooltip title={`${this.state.experience} / ${this.state.experienceMax}`}>
@@ -194,7 +202,7 @@ class Infos extends React.Component<Props, {}> {
                   />
                 </Tooltip>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <FontAwesomeIcon className={classes.icon} size="lg" icon={faBolt} />
                 {(this.state.energyPoints !== -1 ? this.state.energyPoints / this.state.energyPointsMax * 100 : 0).toFixed(2)}%
                 <Tooltip title={`${this.state.energyPoints} / ${this.state.energyPointsMax}`}>
@@ -203,9 +211,13 @@ class Infos extends React.Component<Props, {}> {
                   />
                 </Tooltip>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <FontAwesomeIcon className={classes.icon} size="lg" icon={faKorvue} />
-                {this.state.kamas}
+                {" "}{this.state.kamas}
+              </Grid>
+              <Grid item xs={2}>
+                <FontAwesomeIcon className={classes.icon} size="lg" icon={faGem} />
+                {" "}{this.state.goultines}
               </Grid>
             </Grid>
           </Paper>
@@ -281,6 +293,15 @@ class Infos extends React.Component<Props, {}> {
       kamas: this.props.account.game.character.inventory.kamas,
       weight: this.props.account.game.character.inventory.weight,
       weightMax: this.props.account.game.character.inventory.weightMax,
+    });
+  }
+
+  private goultinesUpdated = () => {
+    this.setState({
+      bonuspack: this.props.account.data.isSubscriber ?
+        `${LanguageManager.trans("subscriber", this.props.account.data.subscriptionEndDate.toLocaleString(GlobalConfiguration.lang))}`
+        : LanguageManager.trans("nosubscriber"),
+      goultines: this.props.account.data.goultines,
     });
   }
 }

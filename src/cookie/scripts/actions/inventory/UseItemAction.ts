@@ -1,5 +1,5 @@
 import Account from "@account";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseItemAction extends ScriptAction {
   public _name: string = "UseItemAction";

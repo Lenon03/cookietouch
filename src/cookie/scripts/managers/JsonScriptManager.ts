@@ -1,4 +1,4 @@
-import {FunctionTypes} from "@/scripts/FunctionTypes";
+import { FunctionTypes } from "@/scripts/FunctionTypes";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -53,7 +53,6 @@ export interface IFunc {
 declare var __static: string;
 
 export default class JsonScriptManager {
-
   public script: string = "";
   private username: string;
 
@@ -61,13 +60,19 @@ export default class JsonScriptManager {
     return eval(`${this.script};config`);
   }
 
-  public loadFromFile(filePath: string, username: string, beforeDoFile: () => void) {
+  public loadFromFile(
+    filePath: string,
+    username: string,
+    beforeDoFile: () => void
+  ) {
     this.script = "";
     this.username = username;
     const content = fs.readFileSync(filePath);
     this.regexYield();
     beforeDoFile();
-    this.script += fs.readFileSync(path.join(__static, "./ScriptsHelpers.js")) + content.toString();
+    this.script +=
+      fs.readFileSync(path.join(__static, "./ScriptsHelpers.js")) +
+      content.toString();
     this.regexAll();
   }
 
@@ -86,7 +91,7 @@ export default class JsonScriptManager {
 
   private getFunc(name: string): IFunc {
     return {
-      maps: eval(`${this.script};${name}`),
+      maps: eval(`${this.script};${name}`)
     };
   }
 

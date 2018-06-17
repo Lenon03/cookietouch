@@ -22,7 +22,7 @@ export default class CookieMain {
   }
 
   public static get connectedAccounts(): List<Account> {
-    return this.entities.Select((e) => {
+    return this.entities.Select(e => {
       if (e instanceof Account) {
         return e;
       }
@@ -39,7 +39,7 @@ export default class CookieMain {
   }
 
   public static connectAccounts(accountConfigs: List<AccountConfiguration>) {
-    accountConfigs.ForEach((accountConfig) => {
+    accountConfigs.ForEach(accountConfig => {
       const account = new Account(accountConfig);
       this.entities.Add(account);
       this.onEntitiesUpdated.trigger();
@@ -48,9 +48,12 @@ export default class CookieMain {
     });
   }
 
-  public static connectGroup(chief: AccountConfiguration, members: List<AccountConfiguration>) {
+  public static connectGroup(
+    chief: AccountConfiguration,
+    members: List<AccountConfiguration>
+  ) {
     const group = new Group(new Account(chief));
-    members.ForEach((m) => group.addMember(new Account(m)));
+    members.ForEach(m => group.addMember(new Account(m)));
     this.entities.Add(group);
     this.onEntitiesUpdated.trigger();
     this.selectedAccount = group.chief;
@@ -61,7 +64,7 @@ export default class CookieMain {
     if (!this.selectedAccount) {
       return;
     }
-
+    this.selectedAccount.planificationTimer.stop();
     let index = -1;
 
     // Remove the account from the list
@@ -127,13 +130,11 @@ export default class CookieMain {
       this.selectedAccount = null;
     } else {
       // Otherwise look for another one
-      index = index > this.entities.Count() - 1 ? this.entities.Count() - 1 : index;
+      index =
+        index > this.entities.Count() - 1 ? this.entities.Count() - 1 : index;
       const entity = this.entities.ElementAt(index);
-      if (entity instanceof Group) {
-        this.selectedAccount = entity.chief;
-      } else {
-        this.selectedAccount = entity as Account;
-      }
+      this.selectedAccount =
+        entity instanceof Group ? entity.chief : (entity as Account);
     }
     this.onEntitiesUpdated.trigger();
     this.onSelectedAccountChanged.trigger(this.selectedAccount);

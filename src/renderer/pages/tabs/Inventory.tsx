@@ -2,28 +2,32 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import Account from "@account";
-import AppBar from "material-ui/AppBar";
-import Button from "material-ui/Button";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "material-ui/Dialog";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Tabs, { Tab } from "material-ui/Tabs";
-import TextField from "material-ui/TextField";
+import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Tab from "@material-ui/core/Tab";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Tabs from "@material-ui/core/Tabs";
+import TextField from "@material-ui/core/TextField";
 import * as React from "react";
 
-type style = "root" | "appBar" | "tab" | "table" | "overflow";
+type style = "root" | "appBar" | "tab" | "table" | "overflow"| "tablecell";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   appBar: {
     height: 30,
   },
   overflow: {
-    maxHeight: 400,
+    maxHeight: "40vh",
     overflowY: "auto",
   },
   root: {
@@ -36,6 +40,12 @@ const styles: StyleRulesCallback<style> = (theme) => ({
   },
   table: {
     minWidth: 700,
+    textAlign: "center",
+    verticalAlign: "middle",
+  },
+  tablecell: {
+    textAlign: "center",
+    verticalAlign: "middle",
   },
 });
 
@@ -105,26 +115,26 @@ class Inventory extends React.Component<Props, IState> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell numeric>ID</TableCell>
-                <TableCell>{LanguageManager.trans("name")}</TableCell>
-                <TableCell numeric>{LanguageManager.trans("quantity")}</TableCell>
-                <TableCell>{LanguageManager.trans("position")}</TableCell>
-                <TableCell>{LanguageManager.trans("actions")}</TableCell>
+                <TableCell className={classes.tablecell}></TableCell>
+                <TableCell className={classes.tablecell} numeric>ID</TableCell>
+                <TableCell className={classes.tablecell}>{LanguageManager.trans("name")}</TableCell>
+                <TableCell className={classes.tablecell} numeric>{LanguageManager.trans("quantity")}</TableCell>
+                <TableCell className={classes.tablecell}>{LanguageManager.trans("position")}</TableCell>
+                <TableCell className={classes.tablecell}>{LanguageManager.trans("actions")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.state.equipments.map((e, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableCell>
+                    <TableCell className={classes.tablecell}>
                       <img width="40" height="40" src={e.iconUrl} alt={e.name} />
                     </TableCell>
-                    <TableCell numeric>{e.gid}</TableCell>
-                    <TableCell>{e.name}</TableCell>
-                    <TableCell numeric>{e.quantity}</TableCell>
-                    <TableCell>{CharacterInventoryPositionEnum[e.position]}</TableCell>
-                    <TableCell>
+                    <TableCell className={classes.tablecell} numeric>{e.gid}</TableCell>
+                    <TableCell className={classes.tablecell}>{e.name}</TableCell>
+                    <TableCell  className={classes.tablecell}numeric>{e.quantity}</TableCell>
+                    <TableCell className={classes.tablecell}>{CharacterInventoryPositionEnum[e.position]}</TableCell>
+                    <TableCell className={classes.tablecell}>
                       <Button variant="raised"
                         size="small"
                         color="primary"
@@ -350,7 +360,7 @@ class Inventory extends React.Component<Props, IState> {
   }
 
   private handleQuantityChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
   }
 
   private equipUnEquipItem = (obj: ObjectEntry) => {

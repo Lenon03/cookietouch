@@ -1,8 +1,8 @@
 import Account from "@/account";
-import {GatherResults} from "@/game/managers/gathers";
+import { GatherResults } from "@/game/managers/gathers";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import AchievementRewardSuccessMessage from "@/protocol/network/messages/AchievementRewardSuccessMessage";
 import CharacterExperienceGainMessage from "@/protocol/network/messages/CharacterExperienceGainMessage";
 import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
@@ -11,10 +11,9 @@ import GameFightEndMessage from "@/protocol/network/messages/GameFightEndMessage
 import FightResultPlayerListEntry from "@/protocol/network/types/FightResultPlayerListEntry";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import LiteEvent from "@/utils/LiteEvent";
-import {List} from "linqts";
+import { List } from "linqts";
 
 export default class StatisticsManager {
-
   public objectsObtainedInFights: List<ObjectObtainedEntry>;
   public objectsObtainedInGathers: List<ObjectObtainedEntry>;
   public achievementsFinished: number;
@@ -64,7 +63,8 @@ export default class StatisticsManager {
   public async UpdateGameFightEndMessage(message: GameFightEndMessage) {
     this.fightsCount++;
     this.totalFightsTime += message.duration;
-    this.averageFightTime += ((message.duration - this.averageFightTime) / this.fightsCount);
+    this.averageFightTime +=
+      (message.duration - this.averageFightTime) / this.fightsCount;
 
     for (const t of message.results) {
       if (t._type === "FightResultPlayerListEntry") {
@@ -79,20 +79,26 @@ export default class StatisticsManager {
           }
           // Objects obtained
           for (let i = 0; i < result.rewards.objects.length; i += 2) {
-            await this.addOrUpdate(this.objectsObtainedInFights, result.rewards.objects[i], result.rewards.objects[i + 1]);
+            await this.addOrUpdate(
+              this.objectsObtainedInFights,
+              result.rewards.objects[i],
+              result.rewards.objects[i + 1]
+            );
           }
         }
       }
     }
     // Set object's percentages
-    const totalQty = this.objectsObtainedInFights.Sum((o) => o.quantity);
-    this.objectsObtainedInFights.ForEach((obj) => {
-      obj.percentage = obj.quantity / totalQty * 100;
+    const totalQty = this.objectsObtainedInFights.Sum(o => o.quantity);
+    this.objectsObtainedInFights.ForEach(obj => {
+      obj.percentage = (obj.quantity / totalQty) * 100;
     });
     this.onStatisticsUpdated.trigger();
   }
 
-  public UpdateCharacterExperienceGainMessage(message: CharacterExperienceGainMessage) {
+  public UpdateCharacterExperienceGainMessage(
+    message: CharacterExperienceGainMessage
+  ) {
     this.experienceGained += message.experienceCharacter;
     this.onStatisticsUpdated.trigger();
   }
@@ -102,19 +108,30 @@ export default class StatisticsManager {
     this.onStatisticsUpdated.trigger();
   }
 
-  public UpdateAchievementRewardSuccessMessage(message: AchievementRewardSuccessMessage) {
+  public UpdateAchievementRewardSuccessMessage(
+    message: AchievementRewardSuccessMessage
+  ) {
     this.achievementsFinished++;
     this.onStatisticsUpdated.trigger();
   }
 
-  public async UpdateDisplayNumericalValueMessage(message: DisplayNumericalValueMessage) {
-    if (message.entityId === this.account.game.character.id && this.lastObjectGained !== 0) {
-      await this.addOrUpdate(this.objectsObtainedInGathers, this.lastObjectGained, message.value);
+  public async UpdateDisplayNumericalValueMessage(
+    message: DisplayNumericalValueMessage
+  ) {
+    if (
+      message.entityId === this.account.game.character.id &&
+      this.lastObjectGained !== 0
+    ) {
+      await this.addOrUpdate(
+        this.objectsObtainedInGathers,
+        this.lastObjectGained,
+        message.value
+      );
       this.lastObjectGained = 0;
       // Set object's percentages
-      const totalQty = this.objectsObtainedInGathers.Sum((o) => o.quantity);
-      this.objectsObtainedInGathers.ForEach((obj) => {
-        obj.percentage = obj.quantity / totalQty * 100;
+      const totalQty = this.objectsObtainedInGathers.Sum(o => o.quantity);
+      this.objectsObtainedInGathers.ForEach(obj => {
+        obj.percentage = (obj.quantity / totalQty) * 100;
       });
     }
     this.onStatisticsUpdated.trigger();
@@ -122,7 +139,7 @@ export default class StatisticsManager {
 
   private gatherStarted = () => {
     this.gatherStartTime = process.hrtime();
-  }
+  };
 
   private gatherFinished = (result: GatherResults) => {
     if (result === GatherResults.GATHERED) {
@@ -133,14 +150,18 @@ export default class StatisticsManager {
       this.totalGathersTime += diff[0] * MS_PER_SEC + diff[1] * MS_PER_NS;
     }
     this.onStatisticsUpdated.trigger();
-  }
+  };
 
   private objectGained = (obj: number) => {
     this.lastObjectGained = obj;
-  }
+  };
 
-  private async addOrUpdate(list: List<ObjectObtainedEntry>, gid: number, qty: number) {
-    let elem = list.FirstOrDefault((o) => o.gid === gid);
+  private async addOrUpdate(
+    list: List<ObjectObtainedEntry>,
+    gid: number,
+    qty: number
+  ) {
+    let elem = list.FirstOrDefault(o => o.gid === gid);
     if (!elem) {
       const itemResp = await DataManager.get<Items>(DataTypes.Items, gid);
       elem = new ObjectObtainedEntry(gid, itemResp[0].object.nameId, 0);

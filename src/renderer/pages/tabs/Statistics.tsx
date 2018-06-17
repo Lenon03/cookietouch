@@ -1,11 +1,15 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import Account from "@account";
-import Grid from "material-ui/Grid";
-import { LinearProgress } from "material-ui/Progress";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Typography from "material-ui/Typography";
+import Grid from "@material-ui/core/Grid";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
 type style = "root" | "table";

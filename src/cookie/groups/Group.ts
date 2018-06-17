@@ -1,11 +1,11 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import IEntity from "@/utils/IEntity";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
-import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
-import ResetEvent, {IToken} from "@utils/ResetEvent";
-import {sleep} from "@utils/Time";
-import {List} from "linqts";
+import { AccountStates } from "@account/AccountStates";
+import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
+import ResetEvent, { IToken } from "@utils/ResetEvent";
+import { sleep } from "@utils/Time";
+import { List } from "linqts";
 import FightAction from "../scripts/actions/fight/FightAction";
 import ScriptAction from "../scripts/actions/ScriptAction";
 import Grouping from "./Grouping";
@@ -38,18 +38,29 @@ export default class Group implements IEntity {
   }
 
   get isAnyoneFullWeight() {
-    const maxPods = this.chief.scripts.scriptManager.config.MAX_PODS ? this.chief.scripts.scriptManager.config.MAX_PODS : 90;
+    const maxPods = this.chief.scripts.scriptManager.config.MAX_PODS
+      ? this.chief.scripts.scriptManager.config.MAX_PODS
+      : 90;
     if (this.chief.game.character.inventory.weightPercent >= maxPods) {
       return true;
     }
-    return this.members.Any((t: Account) => t.game.character.inventory.weightPercent >= maxPods);
+    return this.members.Any(
+      (t: Account) => t.game.character.inventory.weightPercent >= maxPods
+    );
   }
 
   get isEveryoneAliveAndKicking() {
-    if (this.chief.game.character.lifeStatus !== PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING) {
+    if (
+      this.chief.game.character.lifeStatus !==
+      PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+    ) {
       return false;
     }
-    return this.members.All((t: Account) => t.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING);
+    return this.members.All(
+      (t: Account) =>
+        t.game.character.lifeStatus ===
+        PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+    );
   }
 
   public addMember(member: Account) {
@@ -59,8 +70,13 @@ export default class Group implements IEntity {
 
     member.group = this;
     this.members.Add(member);
-    this._membersAccountsFinished.push({account: member, event: new ResetEvent(false)});
-    member.scripts.actionsManager.ActionsFinished.on(this.memberActionsFinished);
+    this._membersAccountsFinished.push({
+      account: member,
+      event: new ResetEvent(false)
+    });
+    member.scripts.actionsManager.ActionsFinished.on(
+      this.memberActionsFinished
+    );
     member.RecaptchaResolved.on(this.accountRecaptchaResolved);
   }
 
@@ -89,24 +105,35 @@ export default class Group implements IEntity {
       await m.scripts.applyCheckings();
     };
 
-    const test = this.members.ToArray().map((m) => task(m));
+    const test = this.members.ToArray().map(m => task(m));
 
     await Promise.all(test);
   }
 
   public isGroupMember(playerId: number): boolean {
-    return this.members.FirstOrDefault((m) => m.game.character.id === playerId) !== null;
+    return (
+      this.members.FirstOrDefault(m => m.game.character.id === playerId) !==
+      null
+    );
   }
 
   public async regroupMembersIfNeeded() {
-    if (this.members.All((m: Account) => m.game.map.currentPosition === this.chief.game.map.currentPosition)) {
+    if (
+      this.members.All(
+        (m: Account) =>
+          m.game.map.currentPosition === this.chief.game.map.currentPosition
+      )
+    ) {
       return;
     }
     await this._grouping.groupMembers();
   }
 
   public async waitForMembersToJoinFight() {
-    while (this.members.Any((m) => m.state !== AccountStates.FIGHTING) && !this.chief.game.fight.isFightStarted) {
+    while (
+      this.members.Any(m => m.state !== AccountStates.FIGHTING) &&
+      !this.chief.game.fight.isFightStarted
+    ) {
       // Waiting for members to join the fight...
       await sleep(1000);
     }
@@ -116,31 +143,34 @@ export default class Group implements IEntity {
     if (this.chief.state !== AccountStates.FIGHTING) {
       return;
     }
-    this.members.ForEach((t) => {
+    this.members.ForEach(t => {
       if (t.state !== AccountStates.FIGHTING) {
         t.network.sendMessageFree("GameFightJoinRequestMessage", {
           fightId: this.chief.game.fight.fightId,
-          fighterId: this.chief.game.character.id,
+          fighterId: this.chief.game.character.id
         });
       }
     });
   }
 
-  public enqueueActionToMembers(action: ScriptAction, startDequeueingAction: boolean = false) {
+  public enqueueActionToMembers(
+    action: ScriptAction,
+    startDequeueingAction: boolean = false
+  ) {
     // Avoid enqueueing a fight action to group members, since they will be joining the chief
     if (action instanceof FightAction) {
       // We will also set the reset events so that the chief continues the script after the fight
       // Since the members don't get this action, ActionsFinished never gets fired
-      this.members.ForEach((m) => {
-        const test = this._membersAccountsFinished.find((e) => e.account === m);
-        if (test !== undefined) {
+      this.members.ForEach(m => {
+        const test = this._membersAccountsFinished.find(e => e.account === m);
+        if (test !== undefined && !test.event.isSignaled) {
           test.event.set();
         }
       });
       return;
     }
 
-    this.members.ForEach((t) => {
+    this.members.ForEach(t => {
       t.scripts.actionsManager.enqueueAction(action, startDequeueingAction);
     });
 
@@ -148,39 +178,58 @@ export default class Group implements IEntity {
     if (!startDequeueingAction) {
       return;
     }
-    this.members.ForEach((m) => {
-      const test = this._membersAccountsFinished.find((e) => e.account === m);
-      if (test !== undefined) {
+    this.members.ForEach(m => {
+      const test = this._membersAccountsFinished.find(e => e.account === m);
+      if (test !== undefined && test.event.isSignaled) {
         test.event.reset();
       }
     });
   }
 
-  public waitForAllActionsFinished() {
-    const events = this._membersAccountsFinished.map((m) => m.event);
+  public async waitForAllActionsFinished() {
+    const events = this._membersAccountsFinished.map(m => m.event);
     const tasks: IToken[] = [];
 
     for (const e of events) {
-      tasks.push(e.wait(async () => {/**/
-      }));
+      tasks.push(
+        e.wait(() => {
+          /**/
+        })
+      );
     }
 
-    Promise.all(tasks.map((t) => t.callback)); // TODO: Check this
+    await Promise.all(
+      tasks.map(t => {
+        t.callback();
+        Promise.resolve();
+      })
+    ); // TODO: Check this
   }
 
   private chiefFightIdReceived = () => {
     this.signalMembersToJoinFight();
-  }
+  };
 
-  private memberActionsFinished = (data: { account: Account, mapChanged: boolean }) => {
-    data.account.logger.logDebug(LanguageManager.trans("group"), LanguageManager.trans("finishedActions"));
-    const test = this._membersAccountsFinished.find((e) => e.account === data.account);
+  private memberActionsFinished = (data: {
+    account: Account;
+    mapChanged: boolean;
+  }) => {
+    data.account.logger.logDebug(
+      LanguageManager.trans("group"),
+      LanguageManager.trans("finishedActions")
+    );
+    const test = this._membersAccountsFinished.find(
+      e => e.account === data.account
+    );
     if (test !== undefined) {
       test.event.set();
     }
-  }
+  };
 
-  private accountRecaptchaResolved = async (data: { account: Account, success: boolean }) => {
+  private accountRecaptchaResolved = async (data: {
+    account: Account;
+    success: boolean;
+  }) => {
     if (!data.success) {
       return;
     }
@@ -192,5 +241,5 @@ export default class Group implements IEntity {
 
     await sleep(2000);
     this.chief.scripts.startScript();
-  }
+  };
 }

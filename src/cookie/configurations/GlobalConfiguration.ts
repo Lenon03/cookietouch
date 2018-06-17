@@ -1,11 +1,11 @@
 import Account from "@/account";
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
-import {Languages} from "@/configurations/language/Languages";
+import { Languages } from "@/configurations/language/Languages";
 import Group from "@/groups/Group";
 import Crypto from "@/utils/Crypto";
-import {remote} from "electron";
+import { remote } from "electron";
 import * as fs from "fs";
-import {List} from "linqts";
+import { List } from "linqts";
 import * as path from "path";
 import CookieMain from "renderer/CookieMain";
 
@@ -19,17 +19,26 @@ interface IGlobalConfigurationJSON {
 export default class GlobalConfiguration {
   // TODO: Put this private and fix validate method on CharacterCreator
   public static _accounts = new List<AccountConfiguration>();
-  private static configPath = path.join(remote.app.getPath("userData"), "config.cookie");
+  private static configPath = path.join(
+    remote.app.getPath("userData"),
+    "config.cookie"
+  );
 
   public static get accountsList(): AccountConfiguration[] {
-    let list = new List<AccountConfiguration>(JSON.parse(JSON.stringify(this._accounts.ToArray()))).ToArray();
-    CookieMain.entities.ForEach((e) => {
+    let list = new List<AccountConfiguration>(
+      JSON.parse(JSON.stringify(this._accounts.ToArray()))
+    ).ToArray();
+    CookieMain.entities.ForEach(e => {
       if (e instanceof Account) {
-        list = list.filter((elem) => elem.username !== e.accountConfig.username);
+        list = list.filter(elem => elem.username !== e.accountConfig.username);
       } else if (e instanceof Group) {
-        list = list.filter((elem) => elem.username !== e.chief.accountConfig.username);
-        e.members.ForEach((member) => {
-          list = list.filter((elem) => elem.username !== member.accountConfig.username);
+        list = list.filter(
+          elem => elem.username !== e.chief.accountConfig.username
+        );
+        e.members.ForEach(member => {
+          list = list.filter(
+            elem => elem.username !== member.accountConfig.username
+          );
         });
       }
     });
@@ -69,24 +78,31 @@ export default class GlobalConfiguration {
     this.save();
   }
 
-  public static addAccountAndSave(username: string, password: string, server: number, character: string) {
-    this._accounts.Add(new AccountConfiguration(username, password, server, character));
+  public static addAccountAndSave(
+    username: string,
+    password: string,
+    server: number,
+    character: string
+  ) {
+    this._accounts.Add(
+      new AccountConfiguration(username, password, server, character)
+    );
     this.save();
   }
 
   public static addAccountsAndSave(accounts: List<AccountConfiguration>) {
-    accounts.ForEach((account) => this._accounts.Add(account));
+    accounts.ForEach(account => this._accounts.Add(account));
     this.save();
   }
 
   public static removeAccount(accountConfig: AccountConfiguration) {
     let accounts = this._accounts.ToArray();
-    accounts = accounts.filter((a) => a.username !== accountConfig.username);
+    accounts = accounts.filter(a => a.username !== accountConfig.username);
     this._accounts = new List(accounts);
   }
 
   public static getAccount(username: string): AccountConfiguration {
-    return this._accounts.FirstOrDefault((a) => a.username === username);
+    return this._accounts.FirstOrDefault(a => a.username === username);
   }
 
   public static load() {
@@ -107,7 +123,7 @@ export default class GlobalConfiguration {
       accounts: this._accounts.ToArray(),
       anticaptchaKey: this._anticaptchaKey,
       lang: this._lang,
-      showDebugMessages: this._showDebugMessages,
+      showDebugMessages: this._showDebugMessages
     };
     const crypted = Crypto.encrypt(JSON.stringify(toSave), "c0oKïeT0uCh");
     fs.writeFileSync(this.configPath, crypted);

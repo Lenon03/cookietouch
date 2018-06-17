@@ -1,4 +1,5 @@
 import AveragePricesFrame from "@/frames/common/AveragePricesFrame";
+import GoultinesFrame from "@/frames/common/GoultinesFrame";
 import Account from "@account";
 import QueueFrame from "./common/QueueFrame";
 import SecurityFrame from "./common/SecurityFrame";
@@ -18,7 +19,6 @@ import QuestsFrame from "./game/QuestsFrame";
 import StorageFrame from "./game/StorageFrame";
 
 export default class Frames {
-
   private chat: ChatFrame;
   private queue: QueueFrame;
   private security: SecurityFrame;
@@ -36,6 +36,7 @@ export default class Frames {
   private storage: StorageFrame;
   private fight: FightFrame;
   private averagePrices: AveragePricesFrame;
+  private goultines: GoultinesFrame;
 
   constructor(account: Account) {
     this.achievements = new AchievementsFrame(account);
@@ -55,5 +56,6 @@ export default class Frames {
     this.storage = new StorageFrame(account);
     this.fight = new FightFrame(account);
     this.averagePrices = new AveragePricesFrame(account);
+    this.goultines = new GoultinesFrame(account);
   }
 }

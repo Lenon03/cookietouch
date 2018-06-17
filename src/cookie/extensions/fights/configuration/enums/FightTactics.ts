@@ -1,5 +1,5 @@
 export enum FightTactics {
   AGGRESSIVE,
   PASSIVE,
-  FUGITIVE,
+  FUGITIVE
 }

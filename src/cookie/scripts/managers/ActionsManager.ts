@@ -1,10 +1,10 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
-import {GatherResults} from "@game/managers/gathers";
+import { AccountStates } from "@account/AccountStates";
+import { GatherResults } from "@game/managers/gathers";
 import LiteEvent from "@utils/LiteEvent";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 import StartBuyingAction from "../actions/bid/StartBuyingAction";
 import StartSellingAction from "../actions/bid/StartSellingAction";
 import SendReadyAction from "../actions/exchange/SendReadyAction";
@@ -24,7 +24,7 @@ import WaitMapChangeAction from "../actions/map/WaitMapChangeAction";
 import NpcAction from "../actions/npcs/NpcAction";
 import NpcBankAction from "../actions/npcs/NpcBankAction";
 import ReplyAction from "../actions/npcs/ReplyAction";
-import ScriptAction, {ScriptActionResults} from "../actions/ScriptAction";
+import ScriptAction, { ScriptActionResults } from "../actions/ScriptAction";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -34,7 +34,9 @@ export interface IActionsManagerEventData {
 export default class ActionsManager {
   public fightsOnThisMap: number;
   public monstersGroupToAttack: number = 0;
-  private readonly onActionsFinished = new LiteEvent<IActionsManagerEventData>();
+  private readonly onActionsFinished = new LiteEvent<
+    IActionsManagerEventData
+  >();
   private readonly onCustomHandled = new LiteEvent<IActionsManagerEventData>();
   private account: Account;
   private actionsQueue: ScriptAction[];
@@ -48,24 +50,40 @@ export default class ActionsManager {
   constructor(account: Account) {
     this.account = account;
     this.actionsQueue = [];
-    this.timeoutTimer = new TimerWrapper(this.timeoutTimerCallback, this, 1, 60000);
+    this.timeoutTimer = new TimerWrapper(
+      this.timeoutTimerCallback,
+      this,
+      60000
+    );
 
     this.account.game.map.MapChanged.on(this.map_mapChanged);
-    this.account.game.managers.movements.MovementFinished.on(this.movements_movementFinished);
-    this.account.game.managers.interactives.UseFinished.on(this.interactives_useFinished);
+    this.account.game.managers.movements.MovementFinished.on(
+      this.movements_movementFinished
+    );
+    this.account.game.managers.interactives.UseFinished.on(
+      this.interactives_useFinished
+    );
     this.account.game.fight.FightJoined.on(this.fight_fightJoined);
-    this.account.game.managers.gathers.GatherFinished.on(this.gathers_gatherFinished);
-    this.account.game.managers.gathers.GatherStarted.on(this.gathers_gatherStarted);
+    this.account.game.managers.gathers.GatherFinished.on(
+      this.gathers_gatherFinished
+    );
+    this.account.game.managers.gathers.GatherStarted.on(
+      this.gathers_gatherStarted
+    );
     this.account.game.npcs.QuestionReceived.on(this.npcs_questionReceived);
     this.account.game.storage.StorageStarted.on(this.storage_storageStarted);
     this.account.game.storage.StorageLeft.on(this.storage_storageLeft);
     this.account.game.npcs.DialogLeft.on(this.npcs_dialogLeft);
-    this.account.game.exchange.ExchangeStarted.on(this.exchange_exchangeStarted);
+    this.account.game.exchange.ExchangeStarted.on(
+      this.exchange_exchangeStarted
+    );
     this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft);
     this.account.game.bid.StartedBuying.on(this.bid_startedBuying);
     this.account.game.bid.StartedSelling.on(this.bid_startedSelling);
     this.account.game.bid.BidLeft.on(this.bid_bidLeft);
-    this.account.game.managers.teleportables.UseFinished.on(this.teleportables_useFinished);
+    this.account.game.managers.teleportables.UseFinished.on(
+      this.teleportables_useFinished
+    );
   }
 
   public get ActionsFinished() {
@@ -119,7 +137,10 @@ export default class ActionsManager {
     if (delay > 0) {
       await sleep(delay);
     }
-    this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("waitedMs", delay));
+    this.account.logger.logDebug(
+      LanguageManager.trans("scripts"),
+      LanguageManager.trans("waitedMs", delay)
+    );
     // If the queue still have actions
     if (this.actionsQueue.length > 0) {
       this.currentAction = this.actionsQueue.shift();
@@ -140,11 +161,19 @@ export default class ActionsManager {
       return;
     }
     try {
-      const name = this.currentAction ? this.currentAction._name : LanguageManager.trans("unknown");
+      const name = this.currentAction
+        ? this.currentAction._name
+        : LanguageManager.trans("unknown");
       const result = this.currentCoroutine.next();
-      this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("processingCoroutine", name, result.done));
+      this.account.logger.logDebug(
+        LanguageManager.trans("scripts"),
+        LanguageManager.trans("processingCoroutine", name, result.done)
+      );
       if (result.done) {
-        this.account.logger.logDebug(LanguageManager.trans("scripts"), LanguageManager.trans("endingCoroutine"));
+        this.account.logger.logDebug(
+          LanguageManager.trans("scripts"),
+          LanguageManager.trans("endingCoroutine")
+        );
         this.customHandled();
       }
     } catch (error) {
@@ -157,15 +186,24 @@ export default class ActionsManager {
       return;
     }
     const type = this.currentAction._name;
-    this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("currentAction", type));
+    this.account.logger.logDebug(
+      LanguageManager.trans("actionsManager"),
+      LanguageManager.trans("currentAction", type)
+    );
     const res = await this.currentAction.process(this.account);
     switch (res) {
       case ScriptActionResults.DONE:
-        this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("actionDone", type));
+        this.account.logger.logDebug(
+          LanguageManager.trans("actionsManager"),
+          LanguageManager.trans("actionDone", type)
+        );
         this.dequeueActions(100);
         break;
       case ScriptActionResults.FAILED:
-        this.account.logger.logDebug(LanguageManager.trans("actionsManager"), LanguageManager.trans("actionFailed", type));
+        this.account.logger.logDebug(
+          LanguageManager.trans("actionsManager"),
+          LanguageManager.trans("actionFailed", type)
+        );
         break;
       case ScriptActionResults.PROCESSING:
         this.timeoutTimer.start();
@@ -181,9 +219,15 @@ export default class ActionsManager {
   private actionsFinished() {
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onActionsFinished.trigger({account: this.account, mapChanged: true});
+      this.onActionsFinished.trigger({
+        account: this.account,
+        mapChanged: true
+      });
     } else {
-      this.onActionsFinished.trigger({account: this.account, mapChanged: false});
+      this.onActionsFinished.trigger({
+        account: this.account,
+        mapChanged: false
+      });
     }
   }
 
@@ -191,9 +235,12 @@ export default class ActionsManager {
     this.currentCoroutine = null;
     if (this.mapChanged) {
       this.mapChanged = false;
-      this.onCustomHandled.trigger({account: this.account, mapChanged: true});
+      this.onCustomHandled.trigger({ account: this.account, mapChanged: true });
     } else {
-      this.onCustomHandled.trigger({account: this.account, mapChanged: false});
+      this.onCustomHandled.trigger({
+        account: this.account,
+        mapChanged: false
+      });
     }
   }
 
@@ -213,38 +260,58 @@ export default class ActionsManager {
     // we need to re-run the script after it
     // Added coroutine here also because the character can get into a fight thanks to
     // a cutom function (fight() or gather() or even npc)
-    if (!(this.currentAction instanceof ChangeMapAction) && !(this.currentAction instanceof FightAction) &&
-      !(this.currentAction instanceof GatherAction) && !(this.currentAction instanceof UseAction) &&
-      this.currentCoroutine === null) {
+    if (
+      !(this.currentAction instanceof ChangeMapAction) &&
+      !(this.currentAction instanceof FightAction) &&
+      !(this.currentAction instanceof GatherAction) &&
+      !(this.currentAction instanceof UseAction) &&
+      this.currentCoroutine === null
+    ) {
       return;
     }
 
     // WaitMapChangeAction and UseTeleportableAction handle themselves
     // so we ignore this event to not get a double-actions
-    if (this.currentAction instanceof WaitMapChangeAction || this.currentAction instanceof UseTeleportableAction) {
+    if (
+      this.currentAction instanceof WaitMapChangeAction ||
+      this.currentAction instanceof UseTeleportableAction
+    ) {
       return;
     }
 
     this.clearActions();
     this.dequeueActions(1500);
-  }
+  };
 
   private movements_movementFinished = async (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
-    if (this.currentAction instanceof FightAction && this.monstersGroupToAttack !== 0) {
+    if (
+      this.currentAction instanceof FightAction &&
+      this.monstersGroupToAttack !== 0
+    ) {
       if (success) {
-        this.account.network.sendMessageFree("GameRolePlayAttackMonsterRequestMessage", {
-          monsterGroupId: this.monstersGroupToAttack,
-        });
+        this.account.network.sendMessageFree(
+          "GameRolePlayAttackMonsterRequestMessage",
+          {
+            monsterGroupId: this.monstersGroupToAttack
+          }
+        );
         // Check if the bot got into a fight or not
-        for (let delay = 0; delay < 10000 && this.account.state !== AccountStates.FIGHTING; delay += 500) {
+        for (
+          let delay = 0;
+          delay < 10000 && this.account.state !== AccountStates.FIGHTING;
+          delay += 500
+        ) {
           await sleep(500);
         }
         // If not, the group either moved or got stolen from us
         if (this.account.state !== AccountStates.FIGHTING) {
-          this.account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("errorLaunchFight"));
+          this.account.logger.logWarning(
+            LanguageManager.trans("scripts"),
+            LanguageManager.trans("errorLaunchFight")
+          );
           this.dequeueActions(0);
         }
 
@@ -261,21 +328,25 @@ export default class ActionsManager {
         this.account.scripts.stopScript();
       }
     }
-  }
+  };
 
   private interactives_useFinished = (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
-    if (this.currentAction instanceof UseAction || this.currentAction instanceof UseByIdAction
-      || this.currentAction instanceof SaveZaapAction || this.currentAction instanceof UseLockedHouseAction) {
+    if (
+      this.currentAction instanceof UseAction ||
+      this.currentAction instanceof UseByIdAction ||
+      this.currentAction instanceof SaveZaapAction ||
+      this.currentAction instanceof UseLockedHouseAction
+    ) {
       if (!success) {
         this.account.scripts.stopScript();
       } else {
         this.dequeueActions(this.actionsQueue.length > 0 ? 0 : 500);
       }
     }
-  }
+  };
 
   private fight_fightJoined = () => {
     if (!this.account.scripts.running) {
@@ -287,13 +358,18 @@ export default class ActionsManager {
       this.fightsCounter++;
       this.fightsOnThisMap++;
       // Log the counter only if the script says so
-      const display = this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT ?
-        this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT : false;
+      const display = this.account.scripts.scriptManager.config
+        .DISPLAY_FIGHT_COUNT
+        ? this.account.scripts.scriptManager.config.DISPLAY_FIGHT_COUNT
+        : false;
       if (display) {
-        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("fightNumber", this.fightsCounter));
+        this.account.logger.logInfo(
+          LanguageManager.trans("scripts"),
+          LanguageManager.trans("fightNumber", this.fightsCounter)
+        );
       }
     }
-  }
+  };
 
   private gathers_gatherFinished = (result: GatherResults) => {
     if (!this.account.scripts.running) {
@@ -302,14 +378,17 @@ export default class ActionsManager {
     if (this.currentAction instanceof GatherAction) {
       switch (result) {
         case GatherResults.FAILED:
-          this.account.scripts.stopScript(LanguageManager.trans("gatherFailed"));
+          this.account.scripts.stopScript(
+            LanguageManager.trans("gatherFailed")
+          );
           break;
-        default: // GATHERED, STOLEN, BLACKLISTED, or TIMED_OUT
+        default:
+          // GATHERED, STOLEN, BLACKLISTED, or TIMED_OUT
           this.dequeueActions(1000);
           break;
       }
     }
-  }
+  };
 
   private gathers_gatherStarted = () => {
     if (!this.account.scripts.running) {
@@ -318,13 +397,18 @@ export default class ActionsManager {
     if (this.currentAction instanceof GatherAction) {
       this.gathersCounter++;
       // Log the counter only if the script says so
-      const displayGatherCount = this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT ?
-        this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT : false;
+      const displayGatherCount = this.account.scripts.scriptManager.config
+        .DISPLAY_GATHER_COUNT
+        ? this.account.scripts.scriptManager.config.DISPLAY_GATHER_COUNT
+        : false;
       if (displayGatherCount) {
-        this.account.logger.logInfo(LanguageManager.trans("scripts"), LanguageManager.trans("gatherNumber", this.gathersCounter));
+        this.account.logger.logInfo(
+          LanguageManager.trans("scripts"),
+          LanguageManager.trans("gatherNumber", this.gathersCounter)
+        );
       }
     }
-  }
+  };
 
   private npcs_questionReceived = () => {
     if (!this.account.scripts.running) {
@@ -333,21 +417,29 @@ export default class ActionsManager {
     if (this.currentAction instanceof NpcBankAction) {
       const nba = this.currentAction as NpcBankAction;
       if (!this.account.game.npcs.reply(nba.replyId)) {
-        this.account.scripts.stopScript(LanguageManager.trans("replyNpcFailed"));
+        this.account.scripts.stopScript(
+          LanguageManager.trans("replyNpcFailed")
+        );
       }
-    } else if (this.currentAction instanceof NpcAction || this.currentAction instanceof ReplyAction) {
+    } else if (
+      this.currentAction instanceof NpcAction ||
+      this.currentAction instanceof ReplyAction
+    ) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private storage_storageStarted = () => {
     if (!this.account.scripts.running) {
       return;
     }
-    if (this.currentAction instanceof NpcBankAction || this.currentAction instanceof UseLockedStorageAction) {
+    if (
+      this.currentAction instanceof NpcBankAction ||
+      this.currentAction instanceof UseLockedStorageAction
+    ) {
       this.dequeueActions(200);
     }
-  }
+  };
 
   private storage_storageLeft = () => {
     if (!this.account.scripts.running) {
@@ -356,17 +448,20 @@ export default class ActionsManager {
     if (this.currentAction instanceof LeaveDialogAction) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private npcs_dialogLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
     // Also dequeue in case it's an ReplyAction because sometimes the dialog is left without requesting it
-    if (this.currentAction instanceof ReplyAction || this.currentAction instanceof LeaveDialogAction) {
+    if (
+      this.currentAction instanceof ReplyAction ||
+      this.currentAction instanceof LeaveDialogAction
+    ) {
       this.dequeueActions(200);
     }
-  }
+  };
 
   private exchange_exchangeStarted = () => {
     if (!this.account.scripts.running) {
@@ -375,16 +470,19 @@ export default class ActionsManager {
     if (this.currentAction instanceof StartExchangeAction) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private exchange_exchangeLeft = () => {
     if (!this.account.scripts.running) {
       return;
     }
-    if (this.currentAction instanceof SendReadyAction || this.currentAction instanceof LeaveDialogAction) {
+    if (
+      this.currentAction instanceof SendReadyAction ||
+      this.currentAction instanceof LeaveDialogAction
+    ) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private bid_startedBuying = () => {
     if (!this.account.scripts.running) {
@@ -393,7 +491,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof StartBuyingAction) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private bid_startedSelling = () => {
     if (!this.account.scripts.running) {
@@ -402,7 +500,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof StartSellingAction) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private bid_bidLeft = () => {
     if (!this.account.scripts.running) {
@@ -411,7 +509,7 @@ export default class ActionsManager {
     if (this.currentAction instanceof LeaveDialogAction) {
       this.dequeueActions(400);
     }
-  }
+  };
 
   private teleportables_useFinished = (success: boolean) => {
     if (!this.account.scripts.running) {
@@ -421,17 +519,25 @@ export default class ActionsManager {
       if (success) {
         this.dequeueActions(1500);
       } else {
-        this.account.scripts.stopScript(LanguageManager.trans("cantUseTeleportable", (this.currentAction as UseTeleportableAction).type));
+        this.account.scripts.stopScript(
+          LanguageManager.trans(
+            "cantUseTeleportable",
+            (this.currentAction as UseTeleportableAction).type
+          )
+        );
       }
     }
-  }
+  };
 
   private timeoutTimerCallback() {
     // Running and not Enabled because during fights, the script is paused
     if (!this.account.scripts.running) {
       return;
     }
-    this.account.logger.logWarning(LanguageManager.trans("scripts"), LanguageManager.trans("timedOut"));
+    this.account.logger.logWarning(
+      LanguageManager.trans("scripts"),
+      LanguageManager.trans("timedOut")
+    );
     this.account.scripts.stopScript();
     this.account.scripts.startScript();
   }

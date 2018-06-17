@@ -1,18 +1,29 @@
 import Account from "@/account";
 import FloodConfiguration from "@/extensions/flood/FloodConfiguration";
 import PlayerEntry from "@/game/map/entities/PlayerEntry";
-import {ChatChannelsMultiEnum} from "@/protocol/enums/ChatChannelsMultiEnum";
+import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import LiteEvent from "@/utils/LiteEvent";
-import {getRandomInt} from "@/utils/Random";
+import { getRandomInt } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 
 export default class FloodExtension {
-
   public config: FloodConfiguration;
   public running: boolean = false;
 
   private account: Account;
-  private smileys = [":p", ":D", ":)", ":]", ":')", ":'D", ":3", "^^", ":'p", "x)", ";)"];
+  private smileys = [
+    ":p",
+    ":D",
+    ":)",
+    ":]",
+    ":')",
+    ":'D",
+    ":3",
+    "^^",
+    ":'p",
+    "x)",
+    ";)"
+  ];
   private seekChannelTimer: TimerWrapper;
   private salesChannelTimer: TimerWrapper;
   private generalChannelTimer: TimerWrapper;
@@ -23,9 +34,21 @@ export default class FloodExtension {
 
     this.config = new FloodConfiguration(account);
 
-    this.seekChannelTimer = new TimerWrapper(this.SeekChannel_Callback, this, Infinity, Infinity);
-    this.salesChannelTimer = new TimerWrapper(this.SalesChannel_Callback, this, Infinity, Infinity);
-    this.generalChannelTimer = new TimerWrapper(this.GeneralChannel_Callback, this, Infinity, Infinity);
+    this.seekChannelTimer = new TimerWrapper(
+      this.SeekChannel_Callback,
+      this,
+      this.config.seekChannelInterval * 1000
+    );
+    this.salesChannelTimer = new TimerWrapper(
+      this.SalesChannel_Callback,
+      this,
+      this.config.seekChannelInterval * 1000
+    );
+    this.generalChannelTimer = new TimerWrapper(
+      this.GeneralChannel_Callback,
+      this,
+      this.config.seekChannelInterval * 1000
+    );
 
     this.account.game.map.PlayerJoined.on(this.map_PlayerJoined);
     this.account.game.map.PlayerLeft.on(this.map_PlayerLeft);
@@ -39,9 +62,9 @@ export default class FloodExtension {
     if (this.running) {
       return;
     }
-    this.seekChannelTimer.change(0, this.config.seekChannelInterval * 1000);
-    this.salesChannelTimer.change(0, this.config.salesChannelInterval * 1000);
-    this.generalChannelTimer.change(0, this.config.generalChannelInterval * 1000);
+    this.seekChannelTimer.start(true);
+    this.salesChannelTimer.start(true);
+    this.generalChannelTimer.start(true);
     this.running = true;
     this.onRunningChanged.trigger();
   }
@@ -61,10 +84,17 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const seekChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_SEEK);
+    const seekChannelSentences = this.getSentences(
+      ChatChannelsMultiEnum.CHANNEL_SEEK
+    );
     if (seekChannelSentences.Count() > 0) {
-      const sentence = seekChannelSentences.ElementAt(getRandomInt(0, seekChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      const sentence = seekChannelSentences.ElementAt(
+        getRandomInt(0, seekChannelSentences.Count() - 1)
+      );
+      await this.account.game.chat.sendMessage(
+        this.setAttributes(sentence.content),
+        sentence.channel
+      );
     }
   }
 
@@ -72,10 +102,17 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const salesChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_SALES);
+    const salesChannelSentences = this.getSentences(
+      ChatChannelsMultiEnum.CHANNEL_SALES
+    );
     if (salesChannelSentences.Count() > 0) {
-      const sentence = salesChannelSentences.ElementAt(getRandomInt(0, salesChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      const sentence = salesChannelSentences.ElementAt(
+        getRandomInt(0, salesChannelSentences.Count() - 1)
+      );
+      await this.account.game.chat.sendMessage(
+        this.setAttributes(sentence.content),
+        sentence.channel
+      );
     }
   }
 
@@ -83,10 +120,17 @@ export default class FloodExtension {
     if (!this.running) {
       return;
     }
-    const generalChannelSentences = this.getSentences(ChatChannelsMultiEnum.CHANNEL_GLOBAL);
+    const generalChannelSentences = this.getSentences(
+      ChatChannelsMultiEnum.CHANNEL_GLOBAL
+    );
     if (generalChannelSentences.Count() > 0) {
-      const sentence = generalChannelSentences.ElementAt(getRandomInt(0, generalChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessage(this.setAttributes(sentence.content), sentence.channel);
+      const sentence = generalChannelSentences.ElementAt(
+        getRandomInt(0, generalChannelSentences.Count() - 1)
+      );
+      await this.account.game.chat.sendMessage(
+        this.setAttributes(sentence.content),
+        sentence.channel
+      );
     }
   }
 
@@ -96,10 +140,15 @@ export default class FloodExtension {
     }
     const privateChannelSentences = this.getPrivateSentences(true, false);
     if (privateChannelSentences.Count() > 0) {
-      const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+      const sentence = privateChannelSentences.ElementAt(
+        getRandomInt(0, privateChannelSentences.Count() - 1)
+      );
+      await this.account.game.chat.sendMessageTo(
+        this.setAttributes(sentence.content, player),
+        player.name
+      );
     }
-  }
+  };
 
   private map_PlayerLeft = async (player: PlayerEntry) => {
     if (!this.running) {
@@ -107,10 +156,15 @@ export default class FloodExtension {
     }
     const privateChannelSentences = this.getPrivateSentences(false, true);
     if (privateChannelSentences.Count() > 0) {
-      const sentence = privateChannelSentences.ElementAt(getRandomInt(0, privateChannelSentences.Count() - 1));
-      await this.account.game.chat.sendMessageTo(this.setAttributes(sentence.content, player), player.name);
+      const sentence = privateChannelSentences.ElementAt(
+        getRandomInt(0, privateChannelSentences.Count() - 1)
+      );
+      await this.account.game.chat.sendMessageTo(
+        this.setAttributes(sentence.content, player),
+        player.name
+      );
     }
-  }
+  };
 
   private setAttributes(content: string, player: PlayerEntry = null): string {
     content = content.replace("%nbr%", this.getRandomNumber());
@@ -131,11 +185,11 @@ export default class FloodExtension {
   }
 
   private getSentences(channel: ChatChannelsMultiEnum) {
-    return this.config.sentences.Where((s) => s.channel === channel);
+    return this.config.sentences.Where(s => s.channel === channel);
   }
 
   private getPrivateSentences(onPlayerJoined: boolean, onPlayerLeft: boolean) {
-    return this.config.sentences.Where((s) => {
+    return this.config.sentences.Where(s => {
       if (onPlayerJoined && !s.onPlayerJoined) {
         return false;
       }

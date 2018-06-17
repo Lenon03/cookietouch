@@ -4,5 +4,5 @@ export enum Languages {
   DEUTSCH = "de",
   SPANISH = "es",
   ITALIAN = "it",
-  PORTUGUESE = "pt",
+  PORTUGUESE = "pt"
 }

@@ -10,7 +10,10 @@ export default class GatherAPI {
 
   public canGather(...resourcesIds: number[]): boolean {
     // If no resources were set, use the character's jobs
-    resourcesIds = resourcesIds.length === 0 ? this.account.game.character.jobs.collectSkillsIds.ToArray() : resourcesIds;
+    resourcesIds =
+      resourcesIds.length === 0
+        ? this.account.game.character.jobs.collectSkillsIds.ToArray()
+        : resourcesIds;
     return this.account.game.managers.gathers.canGather(...resourcesIds);
   }
 
@@ -19,7 +22,10 @@ export default class GatherAPI {
     if (!this.canGather(...resourcesIds)) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new GatherAction(resourcesIds), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new GatherAction(resourcesIds),
+      true
+    );
     return true;
   }
 }

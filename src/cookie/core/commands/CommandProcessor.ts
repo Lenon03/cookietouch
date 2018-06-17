@@ -22,7 +22,10 @@ export default class CommandProcessor {
    * @param {ICommand<any>} commandHandler
    * @memberof CommandProcessor
    */
-  public registerCommandHandler(commandName: string, commandHandler: ICommand<any>): void {
+  public registerCommandHandler(
+    commandName: string,
+    commandHandler: ICommand<any>
+  ): void {
     this.handlers[commandName] = commandHandler;
   }
 

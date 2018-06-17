@@ -2,8 +2,8 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
-import {MovementRequestResults} from "@game/managers/movements/MovementRequestResults";
+import { AccountStates } from "@account/AccountStates";
+import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
 import MapGame from "@game/map";
 import InteractiveElementEntry from "@game/map/interactives/InteractiveElementEntry";
 import Dictionary from "@utils/Dictionary";
@@ -16,7 +16,7 @@ export enum GatherResults {
   FAILED,
   STOLEN,
   BLACKLISTED,
-  TIMED_OUT,
+  TIMED_OUT
 }
 
 export default class GathersManager implements IClearable {
@@ -34,9 +34,21 @@ export default class GathersManager implements IClearable {
     this.pathfinder = new Pathfinder();
     movements.MovementFinished.on(this.onMovementFinished);
     map.MapChanged.on(this.mapChanged);
-    this.account.dispatcher.register("InteractiveUsedMessage", this.HandleInteractiveUsedMessage, this);
-    this.account.dispatcher.register("InteractiveUseEndedMessage", this.HandleInteractiveUseEndedMessage, this);
-    this.account.dispatcher.register("InteractiveUseErrorMessage", this.HandleInteractiveUseErrorMessage, this);
+    this.account.dispatcher.register(
+      "InteractiveUsedMessage",
+      this.HandleInteractiveUsedMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "InteractiveUseEndedMessage",
+      this.HandleInteractiveUseEndedMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "InteractiveUseErrorMessage",
+      this.HandleInteractiveUseErrorMessage,
+      this
+    );
   }
 
   public get GatherFinished() {
@@ -63,21 +75,28 @@ export default class GathersManager implements IClearable {
 
   public gather(...resourcesIds: number[]): boolean {
     if (this.account.isBusy || this.elementToGather !== null) {
-      this.account.logger.logWarning(LanguageManager.trans("gathersManager"), LanguageManager.trans("gatherBusy", AccountStates[this.account.state]));
+      this.account.logger.logWarning(
+        LanguageManager.trans("gathersManager"),
+        LanguageManager.trans("gatherBusy", AccountStates[this.account.state])
+      );
       return false;
     }
-
     for (const kvp of this.getUsableElements(...resourcesIds)) {
       if (this.moveToElement(kvp)) {
         return true;
       }
     }
 
-    this.account.logger.logWarning(LanguageManager.trans("gathersManager"), LanguageManager.trans("noGather"));
+    this.account.logger.logWarning(
+      LanguageManager.trans("gathersManager"),
+      LanguageManager.trans("noGather")
+    );
     return false;
   }
 
-  private getUsableElements(...resourcesIds: number[]): Dictionary<number, InteractiveElementEntry> {
+  private getUsableElements(
+    ...resourcesIds: number[]
+  ): Dictionary<number, InteractiveElementEntry> {
     const usableElements = new Dictionary<number, InteractiveElementEntry>();
     const hasFishingRod = this.account.game.character.inventory.hasFishingRod;
     const weaponRange = this.account.game.character.inventory.weaponRange;
@@ -88,7 +107,7 @@ export default class GathersManager implements IClearable {
         continue;
       }
       // Check if the element is blacklisted
-      if (this.blacklistedElements.includes(interactive.elementTypeId)) {
+      if (this.blacklistedElements.includes(interactive.id)) {
         continue;
       }
 
@@ -97,11 +116,18 @@ export default class GathersManager implements IClearable {
         continue;
       }
 
-      const statedElement = this.account.game.map.getStatedElement(interactive.id);
+      const statedElement = this.account.game.map.getStatedElement(
+        interactive.id
+      );
       const elem = MapPoint.fromCellId(statedElement.cellId);
 
-      const path = this.pathfinder.getPath(this.account.game.map.playedCharacter.cellId,
-        statedElement.cellId, this.account.game.map.occupiedCells, true, true);
+      const path = this.pathfinder.getPath(
+        this.account.game.map.playedCharacter.cellId,
+        statedElement.cellId,
+        this.account.game.map.occupiedCells,
+        true,
+        true
+      );
 
       // If the path if invalid.
       if (path.length === 0) {
@@ -114,23 +140,34 @@ export default class GathersManager implements IClearable {
       const lastCell = MapPoint.fromCellId(path[path.length - 1]);
       const distToCell = lastCell.distanceToCell(elem);
       const distTo = lastCell.distanceTo(elem);
-      if (hasFishingRod && distToCell <= weaponRange || !hasFishingRod && distTo === 1) {
+      if (
+        (hasFishingRod && distToCell <= weaponRange) ||
+        (!hasFishingRod && distTo === 1)
+      ) {
         // Check if this path ends with a group of monsters
-        if (this.account.game.map.monstersGroups.find((mg) => mg.cellId === path[path.length - 1]) !== undefined) {
+        if (
+          this.account.game.map.monstersGroups.find(
+            mg => mg.cellId === path[path.length - 1]
+          ) !== undefined
+        ) {
           continue;
         }
         usableElements.add(statedElement.cellId, interactive);
       }
     }
-
     return usableElements;
   }
 
-  private moveToElement(element: { key: number, value: InteractiveElementEntry }): boolean {
+  private moveToElement(element: {
+    key: number;
+    value: InteractiveElementEntry;
+  }): boolean {
     this.elementToGather = element.value;
 
     // Assuming there is no way statedElem will be null
-    switch (this.account.game.managers.movements.moveToCell(element.key, true)) {
+    switch (
+      this.account.game.managers.movements.moveToCell(element.key, true)
+    ) {
       case MovementRequestResults.MOVED: {
         return true;
       }
@@ -147,12 +184,15 @@ export default class GathersManager implements IClearable {
 
   private tryUsingElementToGather() {
     if (this.stolen) {
-      this.account.logger.logInfo(LanguageManager.trans("gathersManager"), LanguageManager.trans("stolenResource"));
+      this.account.logger.logInfo(
+        LanguageManager.trans("gathersManager"),
+        LanguageManager.trans("stolenResource")
+      );
       this.isGatherFinished(GatherResults.STOLEN);
     } else {
       this.account.network.sendMessageFree("InteractiveUseRequestMessage", {
         elemId: this.elementToGather.id,
-        skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid,
+        skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid
       });
     }
   }
@@ -160,7 +200,7 @@ export default class GathersManager implements IClearable {
   private mapChanged = () => {
     this.pathfinder.setMap(this.account.game.map.data);
     this.blacklistedElements = [];
-  }
+  };
 
   private isGatherFinished(result: GatherResults) {
     this.stolen = false;
@@ -177,10 +217,13 @@ export default class GathersManager implements IClearable {
     } else {
       this.isGatherFinished(GatherResults.FAILED);
     }
-  }
+  };
 
   private async HandleInteractiveUsedMessage(account: Account, message: any) {
-    if (this.elementToGather === null || this.elementToGather.id !== message.elemId) {
+    if (
+      this.elementToGather === null ||
+      this.elementToGather.id !== message.elemId
+    ) {
       return;
     }
     // Check if the element has been STOLEN
@@ -192,12 +235,18 @@ export default class GathersManager implements IClearable {
     }
   }
 
-  private async HandleInteractiveUseEndedMessage(account: Account, message: any) {
+  private async HandleInteractiveUseEndedMessage(
+    account: Account,
+    message: any
+  ) {
     this.account.state = AccountStates.NONE;
     this.isGatherFinished(GatherResults.GATHERED);
   }
 
-  private async HandleInteractiveUseErrorMessage(account: Account, message: any) {
+  private async HandleInteractiveUseErrorMessage(
+    account: Account,
+    message: any
+  ) {
     this.blacklistedElements.push(this.elementToGather.id);
     this.isGatherFinished(GatherResults.BLACKLISTED);
   }

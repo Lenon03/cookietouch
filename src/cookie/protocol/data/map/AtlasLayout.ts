@@ -1,6 +1,6 @@
 import Dictionary from "@/utils/Dictionary";
 
-export class GraphicSizes {
+export class GraphicSizes {
   public sx: number;
   public sy: number;
   public sw: number;

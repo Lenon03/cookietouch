@@ -23,7 +23,10 @@ export default class MonstersGroupEntry extends MovableEntity {
 
   get totalLevel() {
     if (this.followers.length > 0) {
-      return this.leader.level + this.followers.map((f) => f.level).reduce((prev, next) => prev + next);
+      return (
+        this.leader.level +
+        this.followers.map(f => f.level).reduce((prev, next) => prev + next)
+      );
     } else {
       return this.leader.level;
     }

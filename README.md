@@ -1,4 +1,4 @@
-<a href="#"><img src="https://img4.hostingpics.net/pics/628470cookieicon.png" align="left" height="80" width="80"></a>
+<a href="#"><img src="https://image.ibb.co/j8rmqJ/icon.png" align="left" height="80" width="80"></a>
 <center>
 	<h1>
     CookieTouch <a href="https://travis-ci.org/yovanoc/cookietouch">
@@ -20,20 +20,32 @@ cd cookietouch && yarn
 
 ## Dev
 
-```bash
+```bash En mod Dev
 yarn dev
 ```
 
 ## Lint
 
-```bash
+```bash Les erreurs de style
 yarn lint
 ```
 
 ## Lint Fix
 
-```bash
+```bash Fix les erreurs
 yarn lint:fix
+```
+
+## yarn dist
+
+```bash Creer l'installateur
+yarn dist
+```
+
+## yarn dist:dir
+
+```bash Creer l'ex
+yarn dist:dir
 ```
 
 ## Socials Links

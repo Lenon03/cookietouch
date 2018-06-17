@@ -1,5 +1,5 @@
 import Account from "@account";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 import MapViewer from "./MapViewer";
 

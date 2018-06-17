@@ -3,7 +3,6 @@ import Color from "@/utils/Color";
 import Point from "@/utils/Point";
 
 export default class MapViewerCell {
-
   public points: Point[];
 
   constructor(points: Point[]) {
@@ -42,7 +41,12 @@ export default class MapViewerCell {
     newPoints[13] = this.points[2];
     newPoints[14] = new Point(this.points[2].x, this.points[2].y - 10);
 
-    this.DrawPolygonOrPolyline(drawingContext, newPoints, brush, new Color(100, 100, 100));
+    this.DrawPolygonOrPolyline(
+      drawingContext,
+      newPoints,
+      brush,
+      new Color(100, 100, 100)
+    );
   }
 
   public DrawPie(drawingContext: CanvasRenderingContext2D, brush: Color) {
@@ -51,7 +55,14 @@ export default class MapViewerCell {
     }
 
     drawingContext.beginPath();
-    drawingContext.arc(this.mid.x, this.mid.y, DTConstants.TILE_HEIGHT / 3, 0, Math.PI * 2, false);
+    drawingContext.arc(
+      this.mid.x,
+      this.mid.y,
+      DTConstants.TILE_HEIGHT / 3,
+      0,
+      Math.PI * 2,
+      false
+    );
     drawingContext.closePath();
 
     if (brush) {
@@ -65,7 +76,7 @@ export default class MapViewerCell {
     }
 
     drawingContext.beginPath();
-    const s =  DTConstants.TILE_HEIGHT * .6;
+    const s = DTConstants.TILE_HEIGHT * 0.6;
     drawingContext.fillRect(this.mid.x - s / 2, this.mid.y - s / 2, s, s);
     drawingContext.closePath();
 
@@ -102,8 +113,17 @@ export default class MapViewerCell {
 
     let j = this.points.length - 1;
     for (let i = 0; i < this.points.length; i++) {
-      if (this.points[i].y < pos.y && this.points[j].y >= pos.y || this.points[j].y < pos.y && this.points[i].y >= pos.y) {
-        if (this.points[i].x + (pos.y - this.points[i].y) / (this.points[j].y - this.points[i].y) * (this.points[j].x - this.points[i].x) < pos.x) {
+      if (
+        (this.points[i].y < pos.y && this.points[j].y >= pos.y) ||
+        (this.points[j].y < pos.y && this.points[i].y >= pos.y)
+      ) {
+        if (
+          this.points[i].x +
+            ((pos.y - this.points[i].y) /
+              (this.points[j].y - this.points[i].y)) *
+              (this.points[j].x - this.points[i].x) <
+          pos.x
+        ) {
           inside = !inside;
         }
       }
@@ -113,14 +133,19 @@ export default class MapViewerCell {
     return inside;
   }
 
-  private DrawPolygonOrPolyline(target: CanvasRenderingContext2D, points: Point[], color?: Color, borderColor?: Color) {
+  private DrawPolygonOrPolyline(
+    target: CanvasRenderingContext2D,
+    points: Point[],
+    color?: Color,
+    borderColor?: Color
+  ) {
     if (color) {
       target.fillStyle = color.toRgba();
     }
 
     if (borderColor) {
       target.strokeStyle = borderColor.toRgba();
-      target.lineWidth = .5;
+      target.lineWidth = 0.5;
     }
 
     target.beginPath();

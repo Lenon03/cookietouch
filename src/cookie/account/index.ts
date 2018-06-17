@@ -3,17 +3,17 @@ import AccountConfiguration from "@/configurations/accounts/AccountConfiguration
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Group from "@/groups/Group";
 import HaapiConnection from "@/network/HaapiConnection";
-import {NetworkPhases} from "@/network/NetworkPhases";
+import { NetworkPhases } from "@/network/NetworkPhases";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
 import IEntity from "@/utils/IEntity";
-import {randomString} from "@/utils/Random";
+import { randomString } from "@/utils/Random";
 import TimerWrapper from "@/utils/TimerWrapper";
 import Logger from "@logger";
 import DTConstants from "@protocol/DTConstants";
 import Dispatcher from "@utils/Dispatcher";
 import LiteEvent from "@utils/LiteEvent";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 import * as moment from "moment";
 import RecaptchaHandler from "../core/RecaptchaHandler";
 import Extensions from "../extensions";
@@ -21,11 +21,10 @@ import Frames from "../frames";
 import FramesData from "../frames/FramesData";
 import Game from "../game";
 import Network from "../network";
-import {AccountStates} from "./AccountStates";
+import { AccountStates } from "./AccountStates";
 import Configuration from "./configurations/Configuration";
 
 export default class Account implements IEntity {
-
   public accountConfig: AccountConfiguration;
   public game: Game;
   public data: AccountData;
@@ -43,7 +42,10 @@ export default class Account implements IEntity {
   private readonly onStateChanged = new LiteEvent<void>();
   // private readonly onDisconnected = new LiteEvent<void>();
   private readonly onRecaptchaReceived = new LiteEvent<Account>();
-  private readonly onRecaptchaResolved = new LiteEvent<{ account: Account, success: boolean }>();
+  private readonly onRecaptchaResolved = new LiteEvent<{
+    account: Account;
+    success: boolean;
+  }>();
   private frames: Frames;
   private _wasScriptRunning = false;
   private _wasScriptEnabled = false;
@@ -64,7 +66,11 @@ export default class Account implements IEntity {
     this.frames = new Frames(this);
     this.extensions = new Extensions(this);
     this.statistics = new StatisticsManager(this);
-    this.planificationTimer = new TimerWrapper(this.plannificationCallback, this, 1, 30000);
+    this.planificationTimer = new TimerWrapper(
+      this.plannificationCallback,
+      this,
+      30000
+    );
 
     this.network.Disconnected.on(this.onNetworkDisconnected);
     this.game.map.MapLoaded.on(this.onMapLoaded);
@@ -101,7 +107,10 @@ export default class Account implements IEntity {
   }
 
   get isBusy(): boolean {
-    return this.state !== AccountStates.NONE && this.state !== AccountStates.REGENERATING;
+    return (
+      this.state !== AccountStates.NONE &&
+      this.state !== AccountStates.REGENERATING
+    );
   }
 
   get isFighting() {
@@ -113,9 +122,13 @@ export default class Account implements IEntity {
   }
 
   get isInDialog() {
-    return this.state === AccountStates.STORAGE || this.state === AccountStates.TALKING
-      || this.state === AccountStates.EXCHANGE || this.state === AccountStates.BUYING
-      || this.state === AccountStates.SELLING;
+    return (
+      this.state === AccountStates.STORAGE ||
+      this.state === AccountStates.TALKING ||
+      this.state === AccountStates.EXCHANGE ||
+      this.state === AccountStates.BUYING ||
+      this.state === AccountStates.SELLING
+    );
   }
 
   public start() {
@@ -130,10 +143,16 @@ export default class Account implements IEntity {
     this.game.clear();
     this.extensions.clear();
     this.state = AccountStates.CONNECTING;
-    this.haapi.processHaapi(this.accountConfig.username, this.accountConfig.password)
-      .then(() => this.network.connect(randomString(16), DTConstants.config.dataUrl))
+    this.haapi
+      .processHaapi(this.accountConfig.username, this.accountConfig.password)
+      .then(() =>
+        this.network.connect(
+          randomString(16),
+          DTConstants.config.dataUrl
+        )
+      )
       .catch((error: Error) => this.logger.logError("", error.message));
-      // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
+    // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
   }
 
   public stop() {
@@ -160,7 +179,10 @@ export default class Account implements IEntity {
       try {
         response = await RecaptchaHandler.getResponse(sitekey);
       } catch (error) {
-        this.logger.logError("reCaptcha", "No idle workers are available at the moment, please try a bit later");
+        this.logger.logError(
+          "reCaptcha",
+          "No idle workers are available at the moment, please try a bit later"
+        );
         await this.handleRecaptcha(sitekey); // TODO: Really ?
         return;
       }
@@ -169,11 +191,17 @@ export default class Account implements IEntity {
       if (response === null) {
         // We shouldn't leave this true
         this._wasScriptRunning = false;
-        this.logger.logError("reCaptcha", "You have to enter a Anticaptcha key in order to bypass recaptcha.");
-        this.onRecaptchaResolved.trigger({account: this, success: false});
+        this.logger.logError(
+          "reCaptcha",
+          "You have to enter a Anticaptcha key in order to bypass recaptcha."
+        );
+        this.onRecaptchaResolved.trigger({ account: this, success: false });
       } else {
         const diff = process.hrtime(time);
-        this.logger.logInfo("reCaptcha", `Recaptcha solved in ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds.`);
+        this.logger.logInfo(
+          "reCaptcha",
+          `Recaptcha solved in ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds.`
+        );
 
         await this.network.send("recaptchaResponse", response);
 
@@ -193,7 +221,7 @@ export default class Account implements IEntity {
           }
         } else if (this.hasGroup) {
           // Otherwise if this is a group member, trigger onRecaptchaResolved
-          this.onRecaptchaResolved.trigger({account: this, success: true});
+          this.onRecaptchaResolved.trigger({ account: this, success: true });
         }
       }
     } catch (error) {
@@ -205,21 +233,34 @@ export default class Account implements IEntity {
     }
   }
 
-  private async plannificationCallback() {
+  private plannificationCallback = () => {
     if (!this.accountConfig.planificationActivated) {
       return;
     }
     const hour = moment().hour();
     // If the bot is connected and the hour is red
-    if (this.network.connected && this.accountConfig.planification[hour] === false && this.state !== AccountStates.FIGHTING) {
-      this.logger.logInfo("planification", LanguageManager.trans("autoConnect"));
+    if (
+      this.network.connected &&
+      this.accountConfig.planification[hour] === false &&
+      this.state !== AccountStates.FIGHTING
+    ) {
+      this.logger.logInfo(
+        "planification",
+        LanguageManager.trans("autoDisconnect")
+      );
       this.stop();
-    } else if (this.state === AccountStates.DISCONNECTED && this.accountConfig.planification[hour]) {
+    } else if (
+      this.state === AccountStates.DISCONNECTED &&
+      this.accountConfig.planification[hour]
+    ) {
       // If the bot is disconnected and the hour is green
-      this.logger.logInfo("planification", LanguageManager.trans("autoDisconnect"));
+      this.logger.logInfo(
+        "planification",
+        LanguageManager.trans("autoConnect")
+      );
       this.start();
     }
-  }
+  };
 
   private onNetworkDisconnected = () => {
     this.state = AccountStates.DISCONNECTED;
@@ -229,14 +270,17 @@ export default class Account implements IEntity {
       this.extensions.flood.stop();
     }
     // this.onDisconnected.trigger();
-  }
+  };
 
   private onMapLoaded = async () => {
     if (!this.accountConfig.planificationActivated || !this._wasScriptEnabled) {
       return;
     }
     await sleep(1500);
-    this.logger.logInfo("planification", LanguageManager.trans("restartingScript"));
+    this.logger.logInfo(
+      "planification",
+      LanguageManager.trans("restartingScript")
+    );
     this.scripts.startScript();
-  }
+  };
 }

@@ -1,7 +1,6 @@
 import Account from "@account";
 
 export default class QuestsFrame {
-
   private account: Account;
 
   constructor(account: Account) {
@@ -10,10 +9,26 @@ export default class QuestsFrame {
   }
 
   private register() {
-    this.account.dispatcher.register("QuestStartedMessage", this.HandleQuestStartedMessage, this);
-    this.account.dispatcher.register("QuestStepInfoMessage", this.HandleQuestStepInfoMessage, this);
-    this.account.dispatcher.register("QuestStepValidatedMessage", this.HandleQuestStepValidatedMessage, this);
-    this.account.dispatcher.register("QuestValidatedMessage", this.HandleQuestValidatedMessage, this);
+    this.account.dispatcher.register(
+      "QuestStartedMessage",
+      this.HandleQuestStartedMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "QuestStepInfoMessage",
+      this.HandleQuestStepInfoMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "QuestStepValidatedMessage",
+      this.HandleQuestStepValidatedMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "QuestValidatedMessage",
+      this.HandleQuestValidatedMessage,
+      this
+    );
   }
 
   private async HandleQuestStartedMessage(account: Account, message: any) {
@@ -24,8 +39,13 @@ export default class QuestsFrame {
     account.extensions.characterCreation.UpdateQuestStepInfoMessage(message);
   }
 
-  private async HandleQuestStepValidatedMessage(account: Account, message: any) {
-    account.extensions.characterCreation.UpdateQuestStepValidatedMessage(message);
+  private async HandleQuestStepValidatedMessage(
+    account: Account,
+    message: any
+  ) {
+    account.extensions.characterCreation.UpdateQuestStepValidatedMessage(
+      message
+    );
   }
 
   private async HandleQuestValidatedMessage(account: Account, message: any) {

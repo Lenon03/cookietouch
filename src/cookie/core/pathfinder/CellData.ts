@@ -1,7 +1,6 @@
 import CellPath from "./CellPath";
 
 export default class CellData {
-
   public i: number;
   public j: number;
   public floor: number = -1;

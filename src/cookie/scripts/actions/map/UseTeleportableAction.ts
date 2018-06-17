@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {TeleportablesEnum} from "@game/managers/teleportables";
-import ScriptAction, {ScriptActionResults} from "../ScriptAction";
+import { TeleportablesEnum } from "@game/managers/teleportables";
+import ScriptAction, { ScriptActionResults } from "../ScriptAction";
 
 export default class UseTeleportableAction extends ScriptAction {
   public _name: string = "UseTeleportableAction";
@@ -15,11 +15,17 @@ export default class UseTeleportableAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    if ((this.type !== TeleportablesEnum.ZAAP || account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
-      (this.type !== TeleportablesEnum.ZAAPI || account.game.managers.teleportables.useZaap(this.destinationMapId))) {
+    if (
+      (this.type !== TeleportablesEnum.ZAAP ||
+        account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
+      (this.type !== TeleportablesEnum.ZAAPI ||
+        account.game.managers.teleportables.useZaap(this.destinationMapId))
+    ) {
       return ScriptAction.processingResult();
     }
-    account.scripts.stopScript(LanguageManager.trans("errorTeleportable", TeleportablesEnum[this.type]));
+    account.scripts.stopScript(
+      LanguageManager.trans("errorTeleportable", TeleportablesEnum[this.type])
+    );
     return ScriptAction.failedResult();
   }
 }

@@ -1,6 +1,6 @@
 import Account from "@/account";
-import {BoostableStats} from "@game/character/BoostableStats";
-import {remote} from "electron";
+import { BoostableStats } from "@game/character/BoostableStats";
+import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import SpellToBoostEntry from "./SpellToBoostEntry";
@@ -69,11 +69,19 @@ export default class Configuration {
   }
 
   public setConfigFilePath() {
-    const folderPath = path.join(remote.app.getPath("userData"), this.configurationsPath);
+    const folderPath = path.join(
+      remote.app.getPath("userData"),
+      this.configurationsPath
+    );
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
-    this.configFilePath = path.join(folderPath, `${this.account.accountConfig.username}_${this.account.game.character.name}.config`);
+    this.configFilePath = path.join(
+      folderPath,
+      `${this.account.accountConfig.username}_${
+        this.account.game.character.name
+      }.config`
+    );
   }
 
   public load() {
@@ -117,7 +125,7 @@ export default class Configuration {
       showSaleMessages: this.showSaleMessages,
       showSeekMessages: this.showSeekMessages,
       spellsToBoost: this.spellsToBoost,
-      statToBoost: this.statToBoost,
+      statToBoost: this.statToBoost
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
   }

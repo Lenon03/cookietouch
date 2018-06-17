@@ -4,18 +4,19 @@ import DataManager from "@/protocol/data";
 import Servers from "@/protocol/data/classes/Servers";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import Dictionary from "@/utils/Dictionary";
-import Account from "@account";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CookieMain from "@renderer/CookieMain";
-import Visibility from "material-ui-icons/Visibility";
-import VisibilityOff from "material-ui-icons/VisibilityOff";
-import Button from "material-ui/Button";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import IconButton from "material-ui/IconButton";
-import Input, { InputAdornment, InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Paper from "material-ui/Paper";
-import Select from "material-ui/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
 import * as React from "react";
 
 type style = "root" | "formControl";
@@ -140,11 +141,11 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
   }
 
   private handleChange = (prop) => (event) => {
-    this.setState({ [prop]: event.target.value });
+    this.setState({ [prop]: event.target.value } as Pick<IState, keyof IState>);
   }
 
   private handleSelectChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value } as Pick<IState, keyof IState>);
   }
 
   private handleMouseDownPassword = (event) => {

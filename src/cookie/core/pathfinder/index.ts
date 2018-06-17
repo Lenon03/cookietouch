@@ -14,7 +14,9 @@ export default class Pathfinder {
   private oldMovementSystem: boolean;
 
   constructor() {
-    this.grid = Array(this.WIDTH).fill(0).map((x) => Array(this.HEIGHT).fill(0));
+    this.grid = Array(this.WIDTH)
+      .fill(0)
+      .map(x => Array(this.HEIGHT).fill(0));
   }
 
   public setMap(map: Map) {
@@ -27,12 +29,21 @@ export default class Pathfinder {
       for (let j = 0; j < this.HEIGHT; j++) {
         this.grid[i][j] = new CellData(i, j);
         const p = MapPoint.fromCoords(i - 1, j - 1);
-        this.updateCellPath2(p === null ? null : map.cells[p.cellId], this.grid[i][j]);
+        this.updateCellPath2(
+          p === null ? null : map.cells[p.cellId],
+          this.grid[i][j]
+        );
       }
     }
   }
 
-  public getPath(source: number, target: number, occupiedCells: number[], allowDiagonal: boolean, stopNextToTarget: boolean): number[] {
+  public getPath(
+    source: number,
+    target: number,
+    occupiedCells: number[],
+    allowDiagonal: boolean,
+    stopNextToTarget: boolean
+  ): number[] {
     let c = 0;
     let candidate: CellPath = null;
     const srcPos = MapPoint.fromCellId(source);
@@ -55,7 +66,11 @@ export default class Pathfinder {
           }
           const floorDiff = Math.abs(cell.floor - srcCell.floor);
           const dist = Math.abs(i) + Math.abs(j);
-          if (bestFit === null || floorDiff < bestFloorDiff || (floorDiff <= bestFloorDiff && dist < bestDist)) {
+          if (
+            bestFit === null ||
+            floorDiff < bestFloorDiff ||
+            (floorDiff <= bestFloorDiff && dist < bestDist)
+          ) {
             bestFit = cell;
             bestDist = dist;
             bestFloorDiff = floorDiff;
@@ -63,7 +78,10 @@ export default class Pathfinder {
         }
       }
       if (bestFit !== null) {
-        return [source, MapPoint.fromCoords(bestFit.i - 1, bestFit.j - 1).cellId]; // TODO: Or - 1 ??
+        return [
+          source,
+          MapPoint.fromCoords(bestFit.i - 1, bestFit.j - 1).cellId
+        ]; // TODO: Or - 1 ??
       }
       throw new Error(`[Pathfinder] Player stuck in ${si}/${sj}`);
     }
@@ -71,9 +89,12 @@ export default class Pathfinder {
     const dj = dstPos.y + 1;
     let cellPos: MapPoint = null;
     for (const cellId of occupiedCells) {
-      if (cellId !== target) { // TODO: check this..
+      if (cellId !== target) {
+        // TODO: check this..
         cellPos = MapPoint.fromCellId(cellId);
-        this.grid[cellPos.x + 1][cellPos.y + 1].weight += this.OCCUPIED_CELL_WEIGHT;
+        this.grid[cellPos.x + 1][
+          cellPos.y + 1
+        ].weight += this.OCCUPIED_CELL_WEIGHT;
       }
     }
     let candidates = [];
@@ -134,11 +155,15 @@ export default class Pathfinder {
     }
     for (const cellId of occupiedCells) {
       cellPos = MapPoint.fromCellId(cellId);
-      this.grid[cellPos.x + 1][cellPos.y + 1].weight -= this.OCCUPIED_CELL_WEIGHT;
+      this.grid[cellPos.x + 1][
+        cellPos.y + 1
+      ].weight -= this.OCCUPIED_CELL_WEIGHT;
     }
     const shortestPath = [];
     while (closestPath !== null) {
-      shortestPath.unshift(MapPoint.fromCoords(closestPath.i - 1, closestPath.j - 1).cellId);
+      shortestPath.unshift(
+        MapPoint.fromCoords(closestPath.i - 1, closestPath.j - 1).cellId
+      );
       closestPath = closestPath.path;
     }
     return shortestPath;
@@ -177,7 +202,7 @@ export default class Pathfinder {
       prevX = coord.x;
       prevY = coord.y;
     }
-    compressedPath.push(prevCellId, (prevDirection << 12));
+    compressedPath.push(prevCellId, prevDirection << 12);
     return compressedPath;
   }
 
@@ -268,7 +293,7 @@ export default class Pathfinder {
   }
 
   private updateCellPath2(cell: Cell, cellPath: CellData) {
-    if ((cell !== null) && cell.isWalkable(false)) {
+    if (cell !== null && cell.isWalkable(false)) {
       cellPath.floor = cell.f || 0;
       cellPath.zone = cell.z || 0;
       cellPath.speed = 1 + (cell.s || 0) / 10;
@@ -286,21 +311,48 @@ export default class Pathfinder {
       return true;
     }
     if (c1.zone === c2.zone) {
-      return this.oldMovementSystem || c1.zone !== 0 || Math.abs(c1.floor - c2.floor) <= this.ELEVATION_TOLERANCE;
+      return (
+        this.oldMovementSystem ||
+        c1.zone !== 0 ||
+        Math.abs(c1.floor - c2.floor) <= this.ELEVATION_TOLERANCE
+      );
     }
     return false;
   }
 
-  private canMoveDiagonnalyTo(c1: CellData, c2: CellData, c3: CellData, c4: CellData): boolean {
-    return this.areCommunicating(c1, c2) && (this.areCommunicating(c1, c3) || this.areCommunicating(c1, c4));
+  private canMoveDiagonnalyTo(
+    c1: CellData,
+    c2: CellData,
+    c3: CellData,
+    c4: CellData
+  ): boolean {
+    return (
+      this.areCommunicating(c1, c2) &&
+      (this.areCommunicating(c1, c3) || this.areCommunicating(c1, c4))
+    );
   }
 
-  private addCandidate(c: CellData, weight: number, di: number, dj: number, candidates: CellPath[], path: CellPath) {
-    const distanceToDestination = Math.sqrt(Math.pow(di - c.i, 2) + Math.pow(dj - c.j, 2));
+  private addCandidate(
+    c: CellData,
+    weight: number,
+    di: number,
+    dj: number,
+    candidates: CellPath[],
+    path: CellPath
+  ) {
+    const distanceToDestination = Math.sqrt(
+      Math.pow(di - c.i, 2) + Math.pow(dj - c.j, 2)
+    );
     weight = weight / c.speed + c.weight;
 
     if (c.candidateRef === null) {
-      const candidateRef = new CellPath(c.i, c.j, path.w + weight, distanceToDestination, path);
+      const candidateRef = new CellPath(
+        c.i,
+        c.j,
+        path.w + weight,
+        distanceToDestination,
+        path
+      );
       candidates.push(candidateRef);
       c.candidateRef = candidateRef;
     } else {
@@ -312,7 +364,13 @@ export default class Pathfinder {
     }
   }
 
-  private addCandidates(path: CellPath, di: number, dj: number, candidates: CellPath[], allowDiagonals: boolean) {
+  private addCandidates(
+    path: CellPath,
+    di: number,
+    dj: number,
+    candidates: CellPath[],
+    allowDiagonals: boolean
+  ) {
     const i = path.i;
     const j = path.j;
     const c = this.grid[i][j];

@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {TeleportablesEnum} from "@game/managers/teleportables";
+import { TeleportablesEnum } from "@game/managers/teleportables";
 import JoinFriendAction from "../actions/global/JoinFriendAction";
 import ChangeMapAction from "../actions/map/ChangeMapAction";
 import MoveToCellAction from "../actions/map/MoveToCellAction";
@@ -41,7 +41,10 @@ export default class MapAPI {
     }
     const action = ChangeMapAction.tryParse(where);
     if (!action) {
-      this.account.logger.logWarning(LanguageManager.trans("api"), LanguageManager.trans("cantParseMap", where));
+      this.account.logger.logWarning(
+        LanguageManager.trans("api"),
+        LanguageManager.trans("cantParseMap", where)
+      );
       return false;
     }
     this.account.scripts.actionsManager.enqueueAction(action, true);
@@ -52,11 +55,16 @@ export default class MapAPI {
     if (cellId < 0 || cellId > 559) {
       return false;
     }
-    if (!this.account.game.map.data.cells[cellId].isWalkable(false) ||
-      this.account.game.map.data.cells[cellId].isObstacle()) {
+    if (
+      !this.account.game.map.data.cells[cellId].isWalkable(false) ||
+      this.account.game.map.data.cells[cellId].isObstacle()
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new MoveToCellAction(cellId), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new MoveToCellAction(cellId),
+      true
+    );
     return true;
   }
 
@@ -65,7 +73,10 @@ export default class MapAPI {
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseByIdAction(elementId, skillInstanceUid), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseByIdAction(elementId, skillInstanceUid),
+      true
+    );
     return true;
   }
 
@@ -73,11 +84,16 @@ export default class MapAPI {
     if (elementCellId < 0 || elementCellId > 559) {
       return false;
     }
-    const interactive = this.account.game.managers.interactives.getElementOnCell(elementCellId);
+    const interactive = this.account.game.managers.interactives.getElementOnCell(
+      elementCellId
+    );
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseAction(elementCellId, skillInstanceUid), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseAction(elementCellId, skillInstanceUid),
+      true
+    );
     return true;
   }
 
@@ -85,12 +101,20 @@ export default class MapAPI {
     if (doorCellId < 0 || doorCellId > 559) {
       return false;
     }
-    const interactive = this.account.game.managers.interactives.getElementOnCell(doorCellId);
+    const interactive = this.account.game.managers.interactives.getElementOnCell(
+      doorCellId
+    );
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseLockedHouseAction(doorCellId, lockCode), true);
-    this.account.scripts.actionsManager.enqueueAction(new WaitMapChangeAction(20000), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseLockedHouseAction(doorCellId, lockCode),
+      true
+    );
+    this.account.scripts.actionsManager.enqueueAction(
+      new WaitMapChangeAction(20000),
+      true
+    );
     return true;
   }
 
@@ -98,47 +122,76 @@ export default class MapAPI {
     if (elementCellId < 0 || elementCellId > 559) {
       return false;
     }
-    const lockedStorage = this.account.game.map.lockedStorages.find((ls) => ls.cellId === elementCellId);
+    const lockedStorage = this.account.game.map.lockedStorages.find(
+      ls => ls.cellId === elementCellId
+    );
     if (!lockedStorage || lockedStorage.element.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseLockedStorageAction(elementCellId, lockCode), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseLockedStorageAction(elementCellId, lockCode),
+      true
+    );
     return true;
   }
 
   public saveZaap(): boolean {
     if (!this.account.game.map.zaap) {
-      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
+      this.account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaap")
+      );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new SaveZaapAction(), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new SaveZaapAction(),
+      true
+    );
     return true;
   }
 
   public useZaap(destinationMapId: number): boolean {
     if (!this.account.game.map.zaap) {
-      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaap"));
+      this.account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaap")
+      );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseTeleportableAction(TeleportablesEnum.ZAAP, destinationMapId), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseTeleportableAction(TeleportablesEnum.ZAAP, destinationMapId),
+      true
+    );
     return true;
   }
 
   public useZaapi(destinationMapId: number): boolean {
     if (!this.account.game.map.zaapi) {
-      this.account.logger.logWarning(LanguageManager.trans("teleportablesManagers"), LanguageManager.trans("noZaapi"));
+      this.account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaapi")
+      );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseTeleportableAction(TeleportablesEnum.ZAAPI, destinationMapId), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseTeleportableAction(TeleportablesEnum.ZAAPI, destinationMapId),
+      true
+    );
     return true;
   }
 
   public waitMapChange(delay = 5000) {
-    this.account.scripts.actionsManager.enqueueAction(new WaitMapChangeAction(delay), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new WaitMapChangeAction(delay),
+      true
+    );
   }
 
   public joinFriend(name: string) {
-    this.account.scripts.actionsManager.enqueueAction(new JoinFriendAction(name), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new JoinFriendAction(name),
+      true
+    );
   }
 
   public onCell(cellId: number): boolean {

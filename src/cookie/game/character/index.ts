@@ -1,16 +1,16 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import {DataTypes} from "@/protocol/data/DataTypes";
-import {PlayerStatusEnum} from "@/protocol/enums/PlayerStatusEnum";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
+import { AccountStates } from "@account/AccountStates";
 import DataManager from "@protocol/data";
 import Breeds from "@protocol/data/classes/Breeds";
 import Spells from "@protocol/data/classes/Spells";
-import {BreedEnum} from "@protocol/enums/BreedEnum";
-import {PlayerLifeStatusEnum} from "@protocol/enums/PlayerLifeStatusEnum";
+import { BreedEnum } from "@protocol/enums/BreedEnum";
+import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
 import EntityLook from "@protocol/network/types/EntityLook";
 import LiteEvent from "@utils/LiteEvent";
-import {BoostableStats} from "./BoostableStats";
+import { BoostableStats } from "./BoostableStats";
 import CharacterStats from "./CharacterStats";
 import Inventory from "./inventory";
 import Jobs from "./jobs";
@@ -77,11 +77,13 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessageFree("EmotePlayRequestMessage", {emoteId: 1});
+    this.account.network.sendMessageFree("EmotePlayRequestMessage", {
+      emoteId: 1
+    });
   }
 
   public getSpell(id: number): SpellEntry {
-    const s = this.spells.find((f) => f.id === id);
+    const s = this.spells.find(f => f.id === id);
     if (s !== undefined) {
       return s;
     } else {
@@ -90,7 +92,7 @@ export default class Character {
   }
 
   public getSpellByName(name: string): SpellEntry {
-    const s = this.spells.find((f) => f.name === name);
+    const s = this.spells.find(f => f.name === name);
     if (s !== undefined) {
       return s;
     } else {
@@ -111,14 +113,19 @@ export default class Character {
 
     const possiblePts = this.stats.statsPoints / neededPts;
 
-    pts = (pts === 0 ? possiblePts : pts > possiblePts ? possiblePts : pts) * neededPts;
+    pts =
+      (pts === 0 ? possiblePts : pts > possiblePts ? possiblePts : pts) *
+      neededPts;
 
     this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
-      statId: stat,
+      statId: stat
     });
 
-    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostStat", pts, BoostableStats[stat]));
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostStat", pts, BoostableStats[stat])
+    );
     return true;
   }
 
@@ -160,7 +167,7 @@ export default class Character {
     }
 
     while (statsPointsLeft > 0) {
-      const neededPts = data.find((d) => baseStats >= d[0])[1]; // TODO: Replace by findLast
+      const neededPts = data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
 
       if (statsPointsLeft < neededPts) {
         break;
@@ -177,10 +184,13 @@ export default class Character {
 
     this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
-      statId: stat,
+      statId: stat
     });
 
-    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostStat", pts, BoostableStats[stat]));
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostStat", pts, BoostableStats[stat])
+    );
     return true;
   }
 
@@ -199,10 +209,13 @@ export default class Character {
 
     this.account.network.sendMessageFree("SpellUpgradeRequestMessage", {
       spellId: spell.id,
-      spellLevel: spell.level + 1,
+      spellLevel: spell.level + 1
     });
 
-    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostSpell", spell.name, spell.level + 1));
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostSpell", spell.name, spell.level + 1)
+    );
     return true;
   }
 
@@ -248,10 +261,13 @@ export default class Character {
 
     this.account.network.sendMessageFree("SpellUpgradeMessage", {
       spellId,
-      spellLevel: level,
+      spellLevel: level
     });
 
-    this.account.logger.logDebug(LanguageManager.trans("character"), LanguageManager.trans("boostSpell", spell.name, level));
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostSpell", spell.name, level)
+    );
     return true;
   }
 
@@ -262,15 +278,22 @@ export default class Character {
 
     this.account.network.sendMessageFree("PlayerStatusUpdateRequestMessage", {
       status: {
-        statusId: status,
-      },
+        statusId: status
+      }
     });
   }
 
   // TODO: skinurl
-  public getSkinUrl(mode: string, orientation: number, width: number, height: number, zoom: number): string {
+  public getSkinUrl(
+    mode: string,
+    orientation: number,
+    width: number,
+    height: number,
+    zoom: number
+  ): string {
     // let text = "http://staticns.ankama.com/dofus/renderer/look/7";
-    let text = "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
+    let text =
+      "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
     text += "b3";
     let num = 0;
     const array = `${this.look.bonesId}`.split("");
@@ -326,12 +349,14 @@ export default class Character {
         num2 = num4;
         num4 = num2 + 1;
         text += `${c3}`;
-        const flag5 = num4 >= array5.length && num5 < this.look.indexedColors.length;
+        const flag5 =
+          num4 >= array5.length && num5 < this.look.indexedColors.length;
         if (flag5) {
           text += "2";
           num4 = 0;
         } else {
-          const flag6 = num4 < array5.length && num5 <= this.look.indexedColors.length;
+          const flag6 =
+            num4 < array5.length && num5 <= this.look.indexedColors.length;
           if (flag6) {
             text += "3";
           }
@@ -370,7 +395,19 @@ export default class Character {
         text += "7";
       }
     }
-    text = text.concat("d/", mode, "/", `${orientation}`, "/", `${width}`, "_", `${height}`, "-", `${zoom}`, ".png");
+    text = text.concat(
+      "d/",
+      mode,
+      "/",
+      `${orientation}`,
+      "/",
+      `${width}`,
+      "_",
+      `${height}`,
+      "-",
+      `${zoom}`,
+      ".png"
+    );
     return text;
   }
 
@@ -387,7 +424,10 @@ export default class Character {
     this.sex = message.infos.sex;
     this.look = message.infos.entityLook;
     this.skinUrl = this.getSkinUrl("full", 1, 128, 256, 0);
-    const breedResponse = await DataManager.get<Breeds>(DataTypes.Breeds, message.infos.breed);
+    const breedResponse = await DataManager.get<Breeds>(
+      DataTypes.Breeds,
+      message.infos.breed
+    );
     this.breedData = breedResponse[0].object;
     this.status = PlayerStatusEnum.PLAYER_STATUS_AVAILABLE;
     this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
@@ -431,7 +471,7 @@ export default class Character {
     const spells = await DataManager.get<Spells>(DataTypes.Spells, ...ids);
 
     for (const sp of message.spells) {
-      const spell = spells.find((f) => f.id === sp.spellId);
+      const spell = spells.find(f => f.id === sp.spellId);
       this.spells.push(new SpellEntry(sp, spell.object));
     }
     this.onSpellsUpdated.trigger();
@@ -454,15 +494,24 @@ export default class Character {
       return;
     }
 
-    if (message.emoteId === 1 && this.account.state !== AccountStates.REGENERATING) {
+    if (
+      message.emoteId === 1 &&
+      this.account.state !== AccountStates.REGENERATING
+    ) {
       this.account.state = AccountStates.REGENERATING;
-    } else if (message.emoteId === 0 && this.account.state === AccountStates.REGENERATING) {
+    } else if (
+      message.emoteId === 0 &&
+      this.account.state === AccountStates.REGENERATING
+    ) {
       this.account.state = AccountStates.NONE;
     }
   }
 
   public UpdateLifePointsRegenBeginMessage(message: any) {
-    this.regenTimer = global.setInterval(this.regenTimerCallBack.bind(this), message.regenRate * 100);
+    this.regenTimer = global.setInterval(
+      this.regenTimerCallBack.bind(this),
+      message.regenRate * 100
+    );
   }
 
   public UpdateLifePointsRegenEndMessage(message: any) {
@@ -510,6 +559,6 @@ export default class Character {
         break;
     }
 
-    return data.find((d) => baseStats >= d[0])[1]; // TODO: Replace by findLast
+    return data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
   }
 }

@@ -1,4 +1,4 @@
-import {DataTypes} from "@/protocol/data/DataTypes";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@protocol/data";
 import Jobs from "@protocol/data/classes/Jobs";
 import Skills from "@protocol/data/classes/Skills";
@@ -6,7 +6,7 @@ import DTConstants from "@protocol/DTConstants";
 import JobDescription from "@protocol/network/types/JobDescription";
 import JobExperience from "@protocol/network/types/JobExperience";
 import SkillActionDescriptionCollect from "@protocol/network/types/SkillActionDescriptionCollect";
-import {List} from "linqts";
+import { List } from "linqts";
 import CollectSkillEntry from "./skills/CollectSkillEntry";
 
 export default class JobEntry {
@@ -26,13 +26,16 @@ export default class JobEntry {
     this.collectSkills = new List<CollectSkillEntry>();
 
     if (job.skills.length > 0) {
-      const skillId = job.skills.map((s) => s.skillId);
-      DataManager.get<Skills>(DataTypes.Skills, ...skillId).then((resp) => {
+      const skillId = job.skills.map(s => s.skillId);
+      DataManager.get<Skills>(DataTypes.Skills, ...skillId).then(resp => {
         const skillsResp = resp;
 
         for (const skill of job.skills) {
           if (skill._type === "SkillActionDescriptionCollect") {
-            const c = new CollectSkillEntry(skill as SkillActionDescriptionCollect, skillsResp.find((s) => s.id === skill.skillId).object);
+            const c = new CollectSkillEntry(
+              skill as SkillActionDescriptionCollect,
+              skillsResp.find(s => s.id === skill.skillId).object
+            );
             this.collectSkills.Add(c);
           }
         }
@@ -41,8 +44,13 @@ export default class JobEntry {
   }
 
   get experiencePercent() {
-    return this.experience === 0 ? 0 : this.experienceNextLevelFloor === 0 ? 100 :
-    (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
+    return this.experience === 0
+      ? 0
+      : this.experienceNextLevelFloor === 0
+        ? 100
+        : ((this.experience - this.experienceLevelFloor) /
+            (this.experienceNextLevelFloor - this.experienceLevelFloor)) *
+          100;
   }
 
   get iconUrl() {

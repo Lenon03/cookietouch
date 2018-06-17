@@ -1,7 +1,7 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import {Mutex} from "@utils/Semaphore";
-import {isEmpty} from "@utils/String";
-import {Anticaptcha} from "./Anticaptcha";
+import { Mutex } from "@utils/Semaphore";
+import { isEmpty } from "@utils/String";
+import { Anticaptcha } from "./Anticaptcha";
 
 const mutex = new Mutex();
 
@@ -17,7 +17,7 @@ export default class RecaptchaHandler {
           ac.websiteKey = sitekey;
 
           const task = await ac.createTaskProxyless();
-          const solution = await ac.getTaskSolution(task.taskId, 0, (res) => {
+          const solution = await ac.getTaskSolution(task.taskId, 0, res => {
             // logger.verbose("intermediate", res);
           });
           // logger.verbose(`SOLUTION`, solution);

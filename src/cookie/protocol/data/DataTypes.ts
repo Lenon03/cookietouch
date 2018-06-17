@@ -101,5 +101,5 @@ export enum DataTypes {
   Titles,
   TypeActions,
   Url,
-  WorldMaps,
+  WorldMaps
 }

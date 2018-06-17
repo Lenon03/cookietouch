@@ -1,5 +1,4 @@
 export default class Cell {
-
   public l: number;
   public f: number;
   public c: number;

@@ -1,4 +1,4 @@
-import {ChatChannelsMultiEnum} from "@/protocol/enums/ChatChannelsMultiEnum";
+import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 
 export default class FloodSentence {
   public content: string;
@@ -6,7 +6,12 @@ export default class FloodSentence {
   public onPlayerJoined: boolean;
   public onPlayerLeft: boolean;
 
-  constructor(content: string, channel: ChatChannelsMultiEnum, onPlayerJoined: boolean, onPlayerLeft: boolean) {
+  constructor(
+    content: string,
+    channel: ChatChannelsMultiEnum,
+    onPlayerJoined: boolean,
+    onPlayerLeft: boolean
+  ) {
     this.content = content;
     this.channel = channel;
     this.onPlayerJoined = onPlayerJoined;

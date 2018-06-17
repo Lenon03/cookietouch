@@ -12,7 +12,6 @@ import Server from "./server";
 import Storage from "./storage";
 
 export default class Game implements IClearable {
-
   public managers: Managers;
   public character: Character;
   public map: Map;

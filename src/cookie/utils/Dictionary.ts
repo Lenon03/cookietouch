@@ -1,11 +1,13 @@
-export default class Dictionary<T extends number | string, U> implements IterableIterator<{ key: T, value: U }> {
+export default class Dictionary<T extends number | string, U>
+  implements IterableIterator<{ key: T; value: U }> {
   private mKeys: T[] = [];
   private mValues: U[] = [];
   private mIteratorIndex: number = 0;
 
-  private undefinedKeyErrorMessage: string = "Key is either undefined, null or an empty string.";
+  private undefinedKeyErrorMessage: string =
+    "Key is either undefined, null or an empty string.";
 
-  constructor(init?: Array<{ key: T, value: U }>) {
+  constructor(init?: Array<{ key: T; value: U }>) {
     if (!init) {
       return;
     }
@@ -17,10 +19,11 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
   }
 
   public add(key: T, value: U): void {
-
     const addAction = (mkey: T, mvalue: U): void => {
       if (this.containsKey(mkey)) {
-        throw new Error("An element with the same key already exists in the dictionary.");
+        throw new Error(
+          "An element with the same key already exists in the dictionary."
+        );
       }
       (this as any)[key] = value;
       this.mKeys.push(mkey);
@@ -31,7 +34,6 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
   }
 
   public remove(key: T): boolean {
-
     const removeAction = (mkey: T): boolean => {
       if (!this.containsKey(key)) {
         return false;
@@ -45,11 +47,10 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
       return true;
     };
 
-    return (this.checkKeyAndPerformAction(removeAction, key)) as boolean;
+    return this.checkKeyAndPerformAction(removeAction, key) as boolean;
   }
 
   public getValue(key: T): U {
-
     const getValueAction = (mmkey: T): U => {
       if (!this.containsKey(mmkey)) {
         return null;
@@ -63,7 +64,6 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
   }
 
   public containsKey(key: T): boolean {
-
     const containsKeyAction = (mkey: T): boolean => {
       if (this.mKeys.indexOf(mkey) === -1) {
         return false;
@@ -75,10 +75,11 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
   }
 
   public changeValueForKey(key: T, newValue: U): void {
-
     const changeValueForKeyAction = (mkey: T, mnewValue: U): void => {
       if (!this.containsKey(mkey)) {
-        throw new Error("In the dictionary there is no element with the given key.");
+        throw new Error(
+          "In the dictionary there is no element with the given key."
+        );
       }
 
       const index = this.mKeys.indexOf(mkey);
@@ -100,34 +101,40 @@ export default class Dictionary<T extends number | string, U> implements Iterabl
     return this.mValues.length;
   }
 
-  public next(): IteratorResult<{ key: T, value: U }> {
-    if (this.mIteratorIndex >= this.count() - 1) {
+  public next(): IteratorResult<{ key: T; value: U }> {
+    if (this.mIteratorIndex > this.count() - 1) {
       this.mIteratorIndex = 0;
       return {
         done: true,
-        value: null,
+        value: null
       };
     } else {
       const current = this.mIteratorIndex;
       this.mIteratorIndex++;
       return {
         done: false,
-        value: {key: this.mKeys[current], value: this.mValues[current]},
+        value: { key: this.mKeys[current], value: this.mValues[current] }
       };
     }
   }
 
-  public [Symbol.iterator](): IterableIterator<{ key: T, value: U }> {
+  public [Symbol.iterator](): IterableIterator<{ key: T; value: U }> {
     return this;
   }
 
   private isEitherUndefinedNullOrStringEmpty(object: any): boolean {
-    return (typeof object) === "undefined" || object === null || object.toString() === "";
+    return (
+      typeof object === "undefined" ||
+      object === null ||
+      object.toString() === ""
+    );
   }
 
   private checkKeyAndPerformAction(
-    action: (key: T, value?: U) => void | U | boolean, key: T, value?: U): void | U | boolean {
-
+    action: (key: T, value?: U) => void | U | boolean,
+    key: T,
+    value?: U
+  ): void | U | boolean {
     if (this.isEitherUndefinedNullOrStringEmpty(key)) {
       throw new Error(this.undefinedKeyErrorMessage);
     }

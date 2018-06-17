@@ -1,10 +1,10 @@
 import Account from "@/account";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import LiteEvent from "@/utils/LiteEvent";
-import {isBlank} from "@/utils/String";
-import {remote} from "electron";
+import { isBlank } from "@/utils/String";
+import { remote } from "electron";
 import * as fs from "fs";
-import {List} from "linqts";
+import { List } from "linqts";
 import * as path from "path";
 
 interface IBidConfigurationJSON {
@@ -14,7 +14,6 @@ interface IBidConfigurationJSON {
 }
 
 export default class BidConfiguration {
-
   public readonly configurationsPath = "parameters/bid";
 
   public interval: number;
@@ -39,11 +38,19 @@ export default class BidConfiguration {
   }
 
   public setConfigFilePath() {
-    const folderPath = path.join(remote.app.getPath("userData"), this.configurationsPath);
+    const folderPath = path.join(
+      remote.app.getPath("userData"),
+      this.configurationsPath
+    );
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
-    this.configFilePath = path.join(folderPath, `${this.account.accountConfig.username}_${this.account.game.character.name}.config`);
+    this.configFilePath = path.join(
+      folderPath,
+      `${this.account.accountConfig.username}_${
+        this.account.game.character.name
+      }.config`
+    );
   }
 
   public load() {
@@ -63,7 +70,7 @@ export default class BidConfiguration {
     const toSave: IBidConfigurationJSON = {
       interval: this.interval,
       objectsToSell: this.objectsToSell.ToArray(),
-      scriptPath: this.scriptPath,
+      scriptPath: this.scriptPath
     };
     fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
     this.onChanged.trigger();

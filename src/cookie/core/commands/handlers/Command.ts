@@ -16,13 +16,17 @@ export default class Command<ICommandProps> {
    */
   protected parseArgs(command: string): ICommandProps {
     const parsedArgs = {};
-    const commandPayload = command.split(" ").map((word) => word.trim());
+    const commandPayload = command.split(" ").map(word => word.trim());
 
     delete commandPayload[0];
 
     this.args.forEach((arg, index) => {
       if (index + 1 === this.args.length) {
-        parsedArgs[arg] = commandPayload.join(" ").substring(commandPayload.join(" ").lastIndexOf(commandPayload[index + 1]));
+        parsedArgs[arg] = commandPayload
+          .join(" ")
+          .substring(
+            commandPayload.join(" ").lastIndexOf(commandPayload[index + 1])
+          );
       } else {
         parsedArgs[arg] = commandPayload[index + 1];
       }

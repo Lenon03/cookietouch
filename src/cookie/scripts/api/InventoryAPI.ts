@@ -1,5 +1,5 @@
 import Account from "@account";
-import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
+import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
 import DeleteItemAction from "../actions/inventory/DeleteItemAction";
 import DropItemAction from "../actions/inventory/DropItemAction";
 import EquipItemAction from "../actions/inventory/EquipItemAction";
@@ -26,7 +26,9 @@ export default class InventoryAPI {
   }
 
   public itemCount(gid: number): number {
-    return this.account.game.character.inventory.getObjectsByGid(gid).Sum((o) => o.quantity);
+    return this.account.game.character.inventory
+      .getObjectsByGid(gid)
+      .Sum(o => o.quantity);
   }
 
   public itemWeight(gid: number): number {
@@ -39,25 +41,42 @@ export default class InventoryAPI {
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseItemAction(gid, qty), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UseItemAction(gid, qty),
+      true
+    );
     return true;
   }
 
   public equipItem(gid: number): boolean {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
-    if (!item || item.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    if (
+      !item ||
+      item.position !==
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new EquipItemAction(gid), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new EquipItemAction(gid),
+      true
+    );
     return true;
   }
 
   public unEquipItem(gid: number): boolean {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
-    if (!item || item.position === CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    if (
+      !item ||
+      item.position ===
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UnEquipItemAction(gid), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new UnEquipItemAction(gid),
+      true
+    );
     return true;
   }
 
@@ -66,7 +85,10 @@ export default class InventoryAPI {
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new DropItemAction(gid, quantity), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new DropItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 
@@ -75,7 +97,10 @@ export default class InventoryAPI {
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new DeleteItemAction(gid, quantity), true);
+    this.account.scripts.actionsManager.enqueueAction(
+      new DeleteItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 }

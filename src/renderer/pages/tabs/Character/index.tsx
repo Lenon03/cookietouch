@@ -1,9 +1,10 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import AppBar from "material-ui/AppBar";
-import Paper from "material-ui/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Tabs, { Tab } from "material-ui/Tabs";
+import AppBar from "@material-ui/core/AppBar";
+import Paper from "@material-ui/core/Paper";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import * as React from "react";
 import Jobs from "./Jobs";
 import Spells from "./Spells";
@@ -19,6 +20,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     flexGrow: 1,
   },
   tab: {
+    borderCollapse: "collapse",
     height: 30,
     maxWidth: 1000,
   },

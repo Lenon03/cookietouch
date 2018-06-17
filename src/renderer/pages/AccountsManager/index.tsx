@@ -1,26 +1,16 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import ExpandMoreIcon from "material-ui-icons/ExpandMore";
-import Button from "material-ui/Button";
-import Checkbox from "material-ui/Checkbox";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "material-ui/Dialog";
-import ExpansionPanel, {
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-} from "material-ui/ExpansionPanel";
-import Grid from "material-ui/Grid";
-import Paper from "material-ui/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
-import Typography from "material-ui/Typography";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Grid from "@material-ui/core/Grid";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 import AccountsList from "./AccountsList";
 import AddAccountForm from "./AddAccountForm";
 import CharacterCreator from "./CharacterCreator";
+import PlanningConfig from "./PlanningConfig";
 
 type style = "root";
 
@@ -61,6 +51,9 @@ class AccountsManager extends React.Component<Props, {}> {
               </Grid>
               <Grid item xs={12}>
                 <CharacterCreator />
+              </Grid>
+              <Grid item xs={12}>
+                <PlanningConfig />
               </Grid>
             </Grid>
           </DialogContent>

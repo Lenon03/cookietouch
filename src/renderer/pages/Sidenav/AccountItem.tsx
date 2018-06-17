@@ -1,10 +1,12 @@
 import { AccountStates } from "@/account/AccountStates";
 import Account from "@account";
+import Avatar from "@material-ui/core/Avatar";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import CookieMain from "@renderer/CookieMain";
-import AccountCircle from "material-ui-icons/AccountCircle";
-import Avatar from "material-ui/Avatar";
-import { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
-import withStyles, { StyleRulesCallback, WithStyles } from "material-ui/styles/withStyles";
 import * as React from "react";
 
 type style = "root" | "image" | "text";

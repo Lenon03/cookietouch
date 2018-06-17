@@ -15,5 +15,5 @@ export enum SpellInabilityReasons {
   FORBIDDEN_STATE = 13,
   NOT_IN_DIAGONAL = 14,
   UNKNOWN = 15,
-  NOT_IN_RANGE = 16,
+  NOT_IN_RANGE = 16
 }

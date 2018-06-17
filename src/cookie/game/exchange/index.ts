@@ -1,11 +1,11 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@account";
-import {AccountStates} from "@account/AccountStates";
+import { AccountStates } from "@account/AccountStates";
 import ObjectEntry from "@game/character/inventory/ObjectEntry";
-import {CharacterInventoryPositionEnum} from "@protocol/enums/CharacterInventoryPositionEnum";
-import {ExchangeTypeEnum} from "@protocol/enums/ExchangeTypeEnum";
+import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
+import { ExchangeTypeEnum } from "@protocol/enums/ExchangeTypeEnum";
 import LiteEvent from "@utils/LiteEvent";
-import {sleep} from "@utils/Time";
+import { sleep } from "@utils/Time";
 
 export default class Exchange {
   public objects: ObjectEntry[];
@@ -33,11 +33,11 @@ export default class Exchange {
   }
 
   get weightPercent() {
-    return this.currentWeight / this.maxWeight * 100;
+    return (this.currentWeight / this.maxWeight) * 100;
   }
 
   get remoteWeightPercent() {
-    return this.remoteCurrentWeight / this.remoteMaxWeight * 100;
+    return (this.remoteCurrentWeight / this.remoteMaxWeight) * 100;
   }
 
   public get ExchangeRequested() {
@@ -65,14 +65,14 @@ export default class Exchange {
       return false;
     }
 
-    const player = this.account.game.map.players.find((p) => p.id === id);
+    const player = this.account.game.map.players.find(p => p.id === id);
     if (player === null) {
       return false;
     }
 
     this.account.network.sendMessageFree("ExchangePlayerRequestMessage", {
       exchangeType: ExchangeTypeEnum.PLAYER_TRADE,
-      target: id,
+      target: id
     });
 
     return true;
@@ -85,7 +85,7 @@ export default class Exchange {
 
     this.account.network.sendMessageFree("ExchangeReadyMessage", {
       ready: true,
-      step: this.step,
+      step: this.step
     });
 
     return true;
@@ -101,14 +101,22 @@ export default class Exchange {
       return false;
     }
 
-    quantity = quantity <= 0 ? obj.quantity : (quantity > obj.quantity ? obj.quantity : quantity);
+    quantity =
+      quantity <= 0
+        ? obj.quantity
+        : quantity > obj.quantity
+          ? obj.quantity
+          : quantity;
 
     this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: obj.uid,
-      quantity,
+      quantity
     });
 
-    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeAdded", quantity, obj.name));
+    this.account.logger.logInfo(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeAdded", quantity, obj.name)
+    );
     return true;
   }
 
@@ -117,19 +125,27 @@ export default class Exchange {
       return false;
     }
 
-    const obj = this.objects.find((o) => o.gid === gid);
+    const obj = this.objects.find(o => o.gid === gid);
     if (obj === undefined) {
       return false;
     }
 
-    quantity = quantity <= 0 ? obj.quantity : (quantity > obj.quantity ? obj.quantity : quantity);
+    quantity =
+      quantity <= 0
+        ? obj.quantity
+        : quantity > obj.quantity
+          ? obj.quantity
+          : quantity;
 
     this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
       objectUID: obj.uid,
-      quantity: quantity * -1,
+      quantity: quantity * -1
     });
 
-    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeRemoved", quantity, obj.name));
+    this.account.logger.logInfo(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeRemoved", quantity, obj.name)
+    );
     return true;
   }
 
@@ -138,42 +154,60 @@ export default class Exchange {
       return false;
     }
 
-    this.account.logger.logDebug(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeBeginAddAll"));
+    this.account.logger.logDebug(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeBeginAddAll")
+    );
 
-    this.account.game.character.inventory.equipments.ForEach(async (obj) => {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    this.account.game.character.inventory.equipments.ForEach(async obj => {
+      if (
+        !obj.exchangeable ||
+        obj.position !==
+          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+      ) {
         return;
       }
       this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
         objectUID: obj.uid,
-        quantity: obj.quantity,
+        quantity: obj.quantity
       });
       await sleep(600);
     });
 
-    this.account.game.character.inventory.consumables.ForEach(async (obj) => {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    this.account.game.character.inventory.consumables.ForEach(async obj => {
+      if (
+        !obj.exchangeable ||
+        obj.position !==
+          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+      ) {
         return;
       }
       this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
         objectUID: obj.uid,
-        quantity: obj.quantity,
+        quantity: obj.quantity
       });
       await sleep(600);
     });
 
-    this.account.game.character.inventory.resources.ForEach(async (obj) => {
-      if (!obj.exchangeable || obj.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    this.account.game.character.inventory.resources.ForEach(async obj => {
+      if (
+        !obj.exchangeable ||
+        obj.position !==
+          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+      ) {
         return;
       }
       this.account.network.sendMessageFree("ExchangeObjectMoveMessage", {
         objectUID: obj.uid,
-        quantity: obj.quantity,
+        quantity: obj.quantity
       });
       await sleep(600);
     });
 
-    this.account.logger.logDebug(LanguageManager.trans("exchange"), LanguageManager.trans("echangeAllAdded"));
+    this.account.logger.logDebug(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("echangeAllAdded")
+    );
     return true;
   }
 
@@ -182,12 +216,20 @@ export default class Exchange {
       return false;
     }
 
-    quantity = quantity <= 0 ? this.account.game.character.inventory.kamas
-      : (quantity > this.account.game.character.inventory.kamas ?
-        this.account.game.character.inventory.kamas : quantity);
+    quantity =
+      quantity <= 0
+        ? this.account.game.character.inventory.kamas
+        : quantity > this.account.game.character.inventory.kamas
+          ? this.account.game.character.inventory.kamas
+          : quantity;
 
-    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeAddedKamas", quantity));
-    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity});
+    this.account.logger.logInfo(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeAddedKamas", quantity)
+    );
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {
+      quantity
+    });
     return true;
   }
 
@@ -196,16 +238,28 @@ export default class Exchange {
       return false;
     }
 
-    quantity = quantity <= 0 ? this.kamas : (quantity > this.kamas ? this.kamas : quantity);
+    quantity =
+      quantity <= 0
+        ? this.kamas
+        : quantity > this.kamas
+          ? this.kamas
+          : quantity;
 
-    this.account.logger.logInfo(LanguageManager.trans("exchange"), LanguageManager.trans("exchangeRemovedKamas", quantity));
-    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {quantity: this.kamas - quantity});
+    this.account.logger.logInfo(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeRemovedKamas", quantity)
+    );
+    this.account.network.sendMessageFree("ExchangeObjectMoveKamaMessage", {
+      quantity: this.kamas - quantity
+    });
     return true;
   }
 
   public async UpdateExchangeRequestedTradeMessage(message: any) {
-    if (message.exchangeType === ExchangeTypeEnum.PLAYER_TRADE
-      && message.target === this.account.game.character.id) {
+    if (
+      message.exchangeType === ExchangeTypeEnum.PLAYER_TRADE &&
+      message.target === this.account.game.character.id
+    ) {
       this.onExchangeRequested.trigger(message.source);
     }
   }
@@ -244,33 +298,37 @@ export default class Exchange {
   }
 
   public async UpdateExchangeObjectModifiedMessage(message: any) {
-    const modifiedObj = message.remote ? this.remoteObjects.find((o) => o.uid === message.object.objectUID)
-      : this.objects.find((o) => o.uid === message.object.objectUID);
+    const modifiedObj = message.remote
+      ? this.remoteObjects.find(o => o.uid === message.object.objectUID)
+      : this.objects.find(o => o.uid === message.object.objectUID);
 
     const qtyDiff = message.object.quantity - modifiedObj.quantity;
     modifiedObj.UpdateObjectItem(message.object);
 
     if (message.remote) {
-      this.remoteCurrentWeight += (qtyDiff * modifiedObj.realWeight);
+      this.remoteCurrentWeight += qtyDiff * modifiedObj.realWeight;
     } else {
-      this.currentWeight += (qtyDiff * modifiedObj.realWeight);
+      this.currentWeight += qtyDiff * modifiedObj.realWeight;
     }
     this.step++;
     this.onExchangeContentChanged.trigger();
   }
 
   public async UpdateExchangeObjectRemovedMessage(message: any) {
-    const removedObj = message.remote ? this.remoteObjects.find((o) => o.uid === message.object.objectUID)
-      : this.objects.find((o) => o.uid === message.object.objectUID);
+    const removedObj = message.remote
+      ? this.remoteObjects.find(o => o.uid === message.object.objectUID)
+      : this.objects.find(o => o.uid === message.object.objectUID);
 
     if (message.remote) {
       this.remoteCurrentWeight -= removedObj.quantity * removedObj.realWeight;
       // Delete on the list?
-      this.remoteObjects = this.remoteObjects.filter((o) => o.uid !== removedObj.uid);
+      this.remoteObjects = this.remoteObjects.filter(
+        o => o.uid !== removedObj.uid
+      );
     } else {
       this.currentWeight -= removedObj.quantity * removedObj.realWeight;
       // Delete on the list?
-      this.objects = this.objects.filter((o) => o.uid !== removedObj.uid);
+      this.objects = this.objects.filter(o => o.uid !== removedObj.uid);
     }
 
     this.step++;

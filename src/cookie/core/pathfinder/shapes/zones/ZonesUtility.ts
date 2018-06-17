@@ -47,7 +47,6 @@ export default class ZonesUtility {
     switch (shape) {
       case "X":
       case "C":
-      case "P":
       case "Q":
       case "+":
       case "#":
@@ -109,6 +108,12 @@ export default class ZonesUtility {
         break;
     }
 
-    return new Zone(zoneShape, zoneSize, zoneMinSize, zoneEfficiencyPercent, zoneMaxEfficiency);
+    return new Zone(
+      zoneShape,
+      zoneSize,
+      zoneMinSize,
+      zoneEfficiencyPercent,
+      zoneMaxEfficiency
+    );
   }
 }

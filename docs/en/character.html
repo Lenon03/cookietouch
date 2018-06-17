@@ -1,0 +1,577 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Character · CookieTouch API</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="Eausa">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="configuration.html" />
+    
+    
+    <link rel="prev" href="bid.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="bid.html">
+            
+                <a href="bid.html">
+            
+                    
+                    BID
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="character.html">
+            
+                <a href="character.html">
+            
+                    
+                    Character
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="exchange.html">
+            
+                <a href="exchange.html">
+            
+                    
+                    Exchange
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="fight.html">
+            
+                <a href="fight.html">
+            
+                    
+                    Fight
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="gather.html">
+            
+                <a href="gather.html">
+            
+                    
+                    Gather
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="global.html">
+            
+                <a href="global.html">
+            
+                    
+                    Global
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="inventory.html">
+            
+                <a href="inventory.html">
+            
+                    
+                    Inventory
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="jobs.html">
+            
+                <a href="jobs.html">
+            
+                    
+                    Jobs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="map.html">
+            
+                <a href="map.html">
+            
+                    
+                    Map
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="mount.html">
+            
+                <a href="mount.html">
+            
+                    
+                    Mount
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="npc.html">
+            
+                <a href="npc.html">
+            
+                    
+                    NPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="paths.html">
+            
+                <a href="paths.html">
+            
+                    
+                    Paths
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" data-path="storage.html">
+            
+                <a href="storage.html">
+            
+                    
+                    Storage
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Character</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="cookietouch-api-documentation">CookieTouch API Documentation</h1>
+<p><a href="SUMMARY.md">Summary</a> | <a href="singlepage.md">Single page summary</a></p>
+<hr>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#character">Character</a><ul>
+<li><a href="#characterisalive">isAlive</a></li>
+<li><a href="#istombstone">isTombstone</a></li>
+<li><a href="#characterisphantom">isPhantom</a></li>
+<li><a href="#charactername">name</a></li>
+<li><a href="#characterlevel">level</a></li>
+<li><a href="#charactersex">sex</a></li>
+<li><a href="#characterlifepoints">lifePoints</a></li>
+<li><a href="#charactermaxlifepoints">maxLifePoints</a></li>
+<li><a href="#characterlifepointsp">lifePointsP</a></li>
+<li><a href="#characterexperience">experience</a></li>
+<li><a href="#characterenergypoints">energyPoints</a></li>
+<li><a href="#charactermaxenergypoints">maxEnergyPoints</a></li>
+<li><a href="#characterenergypointsp">energyPointsP</a></li>
+<li><a href="#characterkamas">kamas</a></li>
+<li><a href="#charactersit">sit</a></li>
+<li><a href="#characterfreesoul">freeSoul</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="character">Character</h1>
+<p>All functions related to the character.</p>
+<h2 id="characterisalive">character.isAlive</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is alive, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (character.isAlive) {
+  <span class="hljs-comment">// The character is alive.</span>
+}
+</code></pre>
+<h2 id="characteristombstone">character.isTombstone</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is a tombstone, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (character.isTombstone) {
+  <span class="hljs-comment">// The character is a tombstone.</span>
+}
+</code></pre>
+<h2 id="characterisphantom">character.isPhantom</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is a ghost, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (character.isPhantom) {
+  <span class="hljs-comment">// The character is a phantom.</span>
+}
+</code></pre>
+<h2 id="charactername">character.name</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a></li>
+</ul>
+<p>Returns the name of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.name
+</code></pre>
+<h2 id="characterlevel">character.level</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the level of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.level
+</code></pre>
+<h2 id="charactersex">character.sex</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is a male, false if it is a female.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.sex
+</code></pre>
+<h2 id="characterlifepoints">character.lifePoints</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the life points of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.lifePoints
+</code></pre>
+<h2 id="charactermaxlifepoints">character.maxLifePoints</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the maximum life points of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.maxLifePoints
+</code></pre>
+<h2 id="characterlifepointsp">character.lifePointsP</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the percentage of life of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.lifePointsP
+</code></pre>
+<h2 id="characterexperience">character.experience</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the character&apos;s experience.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.experience
+</code></pre>
+<h2 id="characterenergypoints">character.energyPoints</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the character&apos;s energy points.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.energyPoints
+</code></pre>
+<h2 id="charactermaxenergypoints">character.maxEnergyPoints</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the maximum energy points of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.maxEnergyPoints
+</code></pre>
+<h2 id="characterenergypointsp">character.energyPointsP</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the energy percentage of the character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.energyPoints
+</code></pre>
+<h2 id="characterkamas">character.kamas</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the number of kamas the character has.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.kamas
+</code></pre>
+<h2 id="charactersit">character.sit()</h2>
+<p>Allows the character to sit down.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">character.sit()
+</code></pre>
+<h2 id="characterfreesoul">character.freeSoul()</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Free the soul of the character.</p>
+<p>Returns true if the character has successfully free his soul, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (character.isTombstone) {
+  <span class="hljs-keyword">if</span> (character.freeSoul()) { <span class="hljs-comment">// If the character is a grave, then free his soul.</span>
+  <span class="hljs-comment">// The soul has been released.</span>
+  } <span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">// The soul has not been released.</span>
+  }
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="bid.html" class="navigation navigation-prev " aria-label="Previous page: BID">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="configuration.html" class="navigation navigation-next " aria-label="Next page: Configuration">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Character","level":"1.3","depth":1,"next":{"title":"Configuration","level":"1.4","depth":1,"path":"configuration.md","ref":"configuration.md","articles":[]},"previous":{"title":"BID","level":"1.2","depth":1,"path":"bid.md","ref":"bid.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Eausa","pdf.fontSize":"14","pdf.fontFamily":"Roboto","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"CookieTouch API","language":"en","gitbook":"*","description":"The CookieTouch API documentation","pdf.pageNumbers":false},"file":{"path":"character.md","mtime":"2018-05-08T17:31:15.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-17T13:00:57.037Z"},"basePath":".","book":{"language":"en"}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,603 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Map · CookieTouch API</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="Eausa">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="mount.html" />
+    
+    
+    <link rel="prev" href="jobs.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="bid.html">
+            
+                <a href="bid.html">
+            
+                    
+                    BID
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="character.html">
+            
+                <a href="character.html">
+            
+                    
+                    Character
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="exchange.html">
+            
+                <a href="exchange.html">
+            
+                    
+                    Exchange
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="fight.html">
+            
+                <a href="fight.html">
+            
+                    
+                    Fight
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="gather.html">
+            
+                <a href="gather.html">
+            
+                    
+                    Gather
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="global.html">
+            
+                <a href="global.html">
+            
+                    
+                    Global
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="inventory.html">
+            
+                <a href="inventory.html">
+            
+                    
+                    Inventory
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="jobs.html">
+            
+                <a href="jobs.html">
+            
+                    
+                    Jobs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.11" data-path="map.html">
+            
+                <a href="map.html">
+            
+                    
+                    Map
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="mount.html">
+            
+                <a href="mount.html">
+            
+                    
+                    Mount
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="npc.html">
+            
+                <a href="npc.html">
+            
+                    
+                    NPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="paths.html">
+            
+                <a href="paths.html">
+            
+                    
+                    Paths
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" data-path="storage.html">
+            
+                <a href="storage.html">
+            
+                    
+                    Storage
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Map</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="cookietouch-api-documentation">CookieTouch API Documentation</h1>
+<p><a href="SUMMARY.md">Summary</a> | <a href="singlepage.md">Single page summary</a></p>
+<hr>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#map">Map</a><ul>
+<li><a href="#changemapwhere-string">changeMap</a></li>
+<li><a href="#movetocellcellid-number">moveToCell</a></li>
+<li><a href="#usebyidelementid-number-skillinstanceuid-number">useById</a></li>
+<li><a href="#useelementcellid-number-skillinstanceuid-number">use</a></li>
+<li><a href="#uselockedhousedoorcellid-number-lockcode-string">useLockedHouse</a></li>
+<li><a href="#uselockedstorageelementcellid-number-lockcode-string">useLockedStorage</a></li>
+<li><a href="#usezaapdestinationmapid-number">useZaap</a></li>
+<li><a href="#usezaapidestinationmapid-number">useZaapi</a></li>
+<li><a href="#savezaapdestinationmapid-number">saveZaap</a></li>
+<li><a href="#waitmapchangedelay-number">waitMapChange</a></li>
+<li><a href="#joinfriendname-string">joinFriend</a></li>
+<li><a href="#oncellcellid-number">onCell</a></li>
+<li><a href="#onmapcoords-string">onMap</a></li>
+<li><a href="#currentpos">currentPos</a></li>
+<li><a href="#currentmapid">currentMapId</a></li>
+<li><a href="#area">area</a></li>
+<li><a href="#subarea">subArea</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="map">Map</h1>
+<p>All functions related to maps.</p>
+<h2 id="yieldchangemapwhere-string"><code>yield*</code>changeMap(<code>where</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to change the map. The following directions are accepted:</p>
+<ul>
+<li><code>top</code> to go up.</li>
+<li><code>bottom</code> to go down.</li>
+<li><code>right</code>to go right.</li>
+<li><code>left</code> to go left.</li>
+</ul>
+<p>Returns false if the bot could not change maps, otherwise returns true.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">yield</span>* changeMap(<span class="hljs-string">&quot;top&quot;</span>) !== <span class="hljs-literal">true</span>) { <span class="hljs-comment">// Try to go to the top map.</span>
+  <span class="hljs-keyword">yield</span>* changeMap(<span class="hljs-string">&quot;right&quot;</span>); <span class="hljs-comment">// If the top map is inaccessible, then go right.</span>
+}
+</code></pre>
+<h2 id="yieldmovetocellcellid-number"><code>yield*</code>moveToCell(<code>cellId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows to move on a cell according to the <a href="GLOSSARY.html#cellid" class="glossary-term" title="CellId&apos;s range from 0 to 559, you can display them in the CookieTouch Map tab.">cellId</a>.</p>
+<p>Returns false if the cell is unreachable, otherwise returns true.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">cellId = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span> (<span class="hljs-keyword">yield</span>* moveToCell(cellId)) {
+  cellId++; <span class="hljs-comment">// As long as the cell is unreachable add 1 to cellId.</span>
+}
+</code></pre>
+<h2 id="yieldusebyidelementid-number-skillinstanceuid-number"><code>yield*</code>useById(<code>elementId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>, <code>skillInstanceUid?</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use an action of an interactive element from its id.</p>
+<p>Returns true if the element is usable, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">TODO
+</code></pre>
+<h2 id="yielduseelementcellid-number-skillinstanceuid-number"><code>yield*</code>use(<code>elementCellId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>, <code>skillInstanceUid?</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use an action of an interactive element on a given cell.</p>
+<p>Returns true if the bot could interact with the element, otherwise return false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">TODO
+</code></pre>
+<h2 id="yielduselockedhousedoorcellid-number-lockcode-string"><code>yield*</code>useLockedHouse(<code>doorCellId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>, <code>lockCode</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use a house door protected by a code.</p>
+<p>Returns true if the bot is entered, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">yield</span>* useLockedHouse(<span class="hljs-number">239</span>, <span class="hljs-number">00000000</span>); <span class="hljs-comment">// Opens the door in cell 239 with code 00000000.</span>
+</code></pre>
+<h2 id="yielduselockedstorageelementcellid-number-lockcode-string"><code>yield*</code>useLockedStorage(<code>elementCellId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>, <code>lockCode</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use a home safe protected by a code.</p>
+<p>Returns true if the bot opened the storage, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">yield</span>* useLockedStorage(<span class="hljs-number">127</span>, <span class="hljs-number">00000000</span>); <span class="hljs-comment">// Open the storage in cell 127 with code 00000000.</span>
+</code></pre>
+<h2 id="yieldusezaapdestinationmapid-number"><code>yield*</code>useZaap(<code>destinationMapId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use a zaap.</p>
+<p>Returns true if the bot is able to use the zaap, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">TODO
+</code></pre>
+<h2 id="yieldusezaapidestinationmapid-number"><code>yield*</code>useZaapi(<code>destinationMapId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Allows you to use a zaapi.</p>
+<p>Returns true if the bot is able to use the zaapi, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">TODO
+</code></pre>
+<h2 id="yieldsavezaap"><code>yield*</code>saveZaap()</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Saves a Zaap for use as a default position of reappearance for your character.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (onMap(<span class="hljs-string">&quot;0,-2&quot;</span>)) {
+  <span class="hljs-keyword">yield</span>* saveZaap(); <span class="hljs-comment">// Saves the Zaap in &quot;0, -2&quot;.</span>
+}
+</code></pre>
+<h2 id="yieldwaitmapchangedelay-number"><code>yield*</code>waitMapChange(<code>delay?</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<p>Pauses the script until the map changes.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">yield</span>* waitMapChange(<span class="hljs-number">2000</span>); <span class="hljs-comment">// Wait 2 seconds.</span>
+</code></pre>
+<h2 id="yieldjoinfriendname-string"><code>yield*</code>joinFriend(<code>name</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a>)</h2>
+<p>Allows you to join a friend. Available only if you are on Incarnam.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">yield</span>* joinFriend(<span class="hljs-string">&quot;Eausa&quot;</span>);
+</code></pre>
+<h2 id="oncellcellid-number">onCell(<code>cellId</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is on the cell, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> cellId = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span> (!onCell(cellId)) {
+  cellId++; <span class="hljs-comment">// At the end of the loop, cellId is equal to the cell on which the character is located.</span>
+}
+<span class="hljs-keyword">const</span> characterCell = cellId;
+</code></pre>
+<h2 id="onmapcoords-string">onMap(<code>coords</code>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a>)</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type" target="_blank">boolean</a></li>
+</ul>
+<p>Returns true if the character is on the given map, otherwise returns false.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (onMap(<span class="hljs-string">&quot;-2,0&quot;</span>)) {
+  <span class="hljs-comment">// Vous etes en &quot;-2,0&quot;</span>
+}
+</code></pre>
+<h2 id="currentpos">currentPos</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a></li>
+</ul>
+<p>Returns the coordinates of the current map.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js">onMap(currentPos) <span class="hljs-comment">// Always returns true.</span>
+</code></pre>
+<h2 id="currentmapid">currentMapId</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type" target="_blank">number</a></li>
+</ul>
+<p>Returns the mapId of the current map.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (currentMapId === <span class="hljs-number">88081177</span>) { <span class="hljs-comment">// 88081177 is the external map &quot;9,2&quot;.</span>
+  <span class="hljs-keyword">yield</span>* useLockedHouse(cellId, <span class="hljs-number">00000000</span>); <span class="hljs-comment">// When the bot arrives on the map of your house, enter the house.</span>
+}
+</code></pre>
+<h2 id="area">area</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a></li>
+</ul>
+<p>Returns the name of the area.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (area === <span class="hljs-string">&quot;Astrub&quot;</span>) {
+  <span class="hljs-comment">// We are in the Astrub area.</span>
+}
+</code></pre>
+<h2 id="subarea">subArea</h2>
+<ul>
+<li>Return type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" target="_blank">string</a></li>
+</ul>
+<p>Returns the name of the subarea.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">if</span> (subArea === <span class="hljs-string">&quot;Astrub city&quot;</span>) {
+  <span class="hljs-comment">// We are inside the city of Astrub.</span>
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="jobs.html" class="navigation navigation-prev " aria-label="Previous page: Jobs">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="mount.html" class="navigation navigation-next " aria-label="Next page: Mount">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Map","level":"1.11","depth":1,"next":{"title":"Mount","level":"1.12","depth":1,"path":"mount.md","ref":"mount.md","articles":[]},"previous":{"title":"Jobs","level":"1.10","depth":1,"path":"jobs.md","ref":"jobs.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Eausa","pdf.fontSize":"14","pdf.fontFamily":"Roboto","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"CookieTouch API","language":"en","gitbook":"*","description":"The CookieTouch API documentation","pdf.pageNumbers":false},"file":{"path":"map.md","mtime":"2018-05-08T17:31:15.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-17T13:00:57.037Z"},"basePath":".","book":{"language":"en"}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

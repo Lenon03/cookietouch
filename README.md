@@ -11,12 +11,18 @@ You need **Yarn** in order to use this bot properly.
 
 [Yarn Install](https://yarnpkg.com/lang/en/docs/install/)
 
-## Installation
+# Installation
 
 ```bash
 git clone https://github.com/yovanoc/cookietouch/
 cd cookietouch && yarn
 ```
+
+## Documentation
+
+To update the documentation you just have to modify the /docs/src folder then
+in the docs folder do a `bash publish.sh`, then normally push to the master branch.
+The website is available on https://cookie-project.github.io/cookietouch/
 
 ## Dev
 
@@ -26,25 +32,25 @@ yarn dev
 
 ## Lint
 
-```bash Les erreurs de style
+```bash
 yarn lint
 ```
 
 ## Lint Fix
 
-```bash Fix les erreurs
+```bash
 yarn lint:fix
 ```
 
 ## yarn dist
 
-```bash Creer l'installateur
+```bash
 yarn dist
 ```
 
 ## yarn dist:dir
 
-```bash Creer l'ex
+```bash
 yarn dist:dir
 ```
 

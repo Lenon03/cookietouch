@@ -35,7 +35,7 @@ interface IState {
 
 type Props = IProps & WithStyles<style>;
 
-class Jobs extends React.Component<Props, {}> {
+class Jobs extends React.Component<Props, IState> {
 
   public state: IState = {
     jobs: [],

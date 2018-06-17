@@ -56,7 +56,7 @@ interface IState {
 
 type Props = IProps & WithStyles<style>;
 
-class Infos extends React.Component<Props, {}> {
+class Infos extends React.Component<Props, IState> {
 
   public readonly idleState: IState = {
     bonuspack: "",

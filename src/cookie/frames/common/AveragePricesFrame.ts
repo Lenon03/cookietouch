@@ -22,6 +22,7 @@ export default class AveragePricesFrame {
     account: Account,
     data: ObjectAveragePricesMessage
   ) {
+    /*
     const server = account.game.server.id;
     const ref = firebase.database().ref(`/averagePrices`);
 
@@ -35,5 +36,6 @@ export default class AveragePricesFrame {
       };
       ref.child(id.toString()).push(entry);
     }
+    */
   }
 }

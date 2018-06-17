@@ -28,7 +28,7 @@ export default class DataManager {
         newIds.push(id);
       }
     }
-    if (newIds.length === 0) {
+    if (newIds.length === 0 && ids.length > 0) {
       return myArray;
     }
     const params = {
@@ -44,17 +44,15 @@ export default class DataManager {
         ids: newIds
       }
     );
-    for (const item in response.data) {
-      if (response.data.hasOwnProperty(item)) {
-        const dataRes = {
-          id: parseInt(item, 10),
-          object: response.data[item]
-        } as IDataResponse<T>;
-        fs.writeFileSync(
-          this.getFilePath(DataTypes[type], dataRes.id),
-          JSON.stringify(dataRes)
-        );
-      }
+    for (const item of Object.entries(response.data)) {
+      const dataRes = {
+        id: parseInt(item["0"], 10),
+        object: item["1"]
+      } as IDataResponse<T>;
+      fs.writeFileSync(
+        this.getFilePath(DataTypes[type], dataRes.id),
+        JSON.stringify(dataRes)
+      );
     }
     this.buildData(response.data, myArray);
     return myArray;
@@ -64,14 +62,12 @@ export default class DataManager {
     json: any,
     array: Array<IDataResponse<T>>
   ) {
-    for (const item in json) {
-      if (json.hasOwnProperty(item)) {
-        const dataRes = {
-          id: parseInt(item, 10),
-          object: json[item]
-        } as IDataResponse<T>;
-        array.push(dataRes);
-      }
+    for (const item of Object.entries(json)) {
+      const dataRes = {
+        id: parseInt(item["0"], 10),
+        object: item["1"]
+      } as IDataResponse<T>;
+      array.push(dataRes);
     }
   }
 

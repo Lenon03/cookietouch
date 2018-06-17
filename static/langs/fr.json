@@ -367,7 +367,7 @@
   "infoFlood3": "Vous ne pouvez utiliser ces attributs qu'en privé:",
   "infoFloodname": "%name% : Insère le nom du joueur.",
   "infoFloodlevel": "%level% : Insère le niveau du joueur.",
-  "gathersCount": "Ressources récoltées:",
+  "gathersCount": "Nombre de récolte(s) :",
   "fightsWon": "Combats gagnées:",
   "fightsLost": "Combats perdus:",
   "fightsCount": "Nombre de combats:",

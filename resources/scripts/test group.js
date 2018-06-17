@@ -2,7 +2,7 @@ const config = {
   MAX_PODS: 90,
   MAX_MONSTERS: 4,
   FORBIDDEN_MONSTERS: [ 98 ],
-}
+};
 
 const move = [
   { map: "4,-28", path: "right|bottom", fight: true },
@@ -25,4 +25,4 @@ const move = [
   { map: "5,-24", path: "top|right|left", fight: true },
   { map: "6,-24", path: "top|right|left", fight: true },
   { map: "7,-24", path: "top|left", fight: true },
-]
+];

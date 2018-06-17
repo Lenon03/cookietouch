@@ -206,7 +206,33 @@ export default class Exchange {
 
     this.account.logger.logDebug(
       LanguageManager.trans("exchange"),
-      LanguageManager.trans("echangeAllAdded")
+      LanguageManager.trans("exchangeAllAdded")
+    );
+    return true;
+  }
+
+  public async removeAllItems(): Promise<boolean> {
+    if (this.account.state !== AccountStates.EXCHANGE) {
+      return false;
+    }
+
+    if (this.objects.length === 0) {
+      return false;
+    }
+
+    this.account.logger.logDebug(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeBeginRemoveAll")
+    );
+
+    for (const obj of this.objects) {
+      this.removeItem(obj.gid, obj.quantity);
+      await sleep(600);
+    }
+
+    this.account.logger.logDebug(
+      LanguageManager.trans("exchange"),
+      LanguageManager.trans("exchangeAllRemoved")
     );
     return true;
   }

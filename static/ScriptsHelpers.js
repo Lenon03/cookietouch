@@ -263,6 +263,10 @@ const exchange = {
   putAllItems: function* () {
     API.exchange.putAllItems()
     yield;
+  },
+  removeAllItems: function* () {
+    API.exchange.removeAllItems()
+    yield;
   }
 }
 // Bid

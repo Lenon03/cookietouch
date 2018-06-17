@@ -1,6 +1,7 @@
 import ExchangePutAllItemsAction from "@/scripts/actions/exchange/ExchangePutAllItemsAction";
 import ExchangePutItemAction from "@/scripts/actions/exchange/ExchangePutItemAction";
 import ExchangePutKamasAction from "@/scripts/actions/exchange/ExchangePutKamasAction";
+import ExchangeRemoveAllItemsAction from "@/scripts/actions/exchange/ExchangeRemoveAllItemsAction";
 import ExchangeRemoveItemAction from "@/scripts/actions/exchange/ExchangeRemoveItemAction";
 import ExchangeRemoveKamasAction from "@/scripts/actions/exchange/ExchangeRemoveKamasAction";
 import SendReadyAction from "@/scripts/actions/exchange/SendReadyAction";
@@ -53,6 +54,13 @@ export default class ExchangeAPI {
   public putAllItems() {
     this.account.scripts.actionsManager.enqueueAction(
       new ExchangePutAllItemsAction(),
+      true
+    );
+  }
+
+  public removeAllItems() {
+    this.account.scripts.actionsManager.enqueueAction(
+      new ExchangeRemoveAllItemsAction(),
       true
     );
   }

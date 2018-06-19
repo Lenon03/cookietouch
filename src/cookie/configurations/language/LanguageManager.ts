@@ -1,26 +1,39 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import { Languages } from "@/configurations/language/Languages";
 import Dictionary from "@/utils/Dictionary";
+import { staticPath } from "@/utils/staticPath";
 import * as fs from "fs";
 import * as path from "path";
 
-declare var __static: string;
+// declare var __static: string;
 
 export default class LanguageManager {
   private static langs: Dictionary<Languages, any>;
 
   public static Init() {
-    const enFile = fs.readFileSync(path.join(__static, "./langs/en.json"));
+    // const enFile = fs.readFileSync(path.join(__static, "./langs/en.json"));
+    // const en = JSON.parse(enFile.toString());
+    // const frFile = fs.readFileSync(path.join(__static, "./langs/fr.json"));
+    // const fr = JSON.parse(frFile.toString());
+    // const esFile = fs.readFileSync(path.join(__static, "./langs/es.json"));
+    // const es = JSON.parse(esFile.toString());
+    // const itFile = fs.readFileSync(path.join(__static, "./langs/it.json"));
+    // const it = JSON.parse(itFile.toString());
+    // const deFile = fs.readFileSync(path.join(__static, "./langs/de.json"));
+    // const de = JSON.parse(deFile.toString());
+    // const ptFile = fs.readFileSync(path.join(__static, "./langs/pt.json"));
+    // const pt = JSON.parse(ptFile.toString());
+    const enFile = fs.readFileSync(path.join(staticPath, "./langs/en.json"));
     const en = JSON.parse(enFile.toString());
-    const frFile = fs.readFileSync(path.join(__static, "./langs/fr.json"));
+    const frFile = fs.readFileSync(path.join(staticPath, "./langs/fr.json"));
     const fr = JSON.parse(frFile.toString());
-    const esFile = fs.readFileSync(path.join(__static, "./langs/es.json"));
+    const esFile = fs.readFileSync(path.join(staticPath, "./langs/es.json"));
     const es = JSON.parse(esFile.toString());
-    const itFile = fs.readFileSync(path.join(__static, "./langs/it.json"));
+    const itFile = fs.readFileSync(path.join(staticPath, "./langs/it.json"));
     const it = JSON.parse(itFile.toString());
-    const deFile = fs.readFileSync(path.join(__static, "./langs/de.json"));
+    const deFile = fs.readFileSync(path.join(staticPath, "./langs/de.json"));
     const de = JSON.parse(deFile.toString());
-    const ptFile = fs.readFileSync(path.join(__static, "./langs/pt.json"));
+    const ptFile = fs.readFileSync(path.join(staticPath, "./langs/pt.json"));
     const pt = JSON.parse(ptFile.toString());
 
     this.langs = new Dictionary([

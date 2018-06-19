@@ -1,4 +1,5 @@
 import { FunctionTypes } from "@/scripts/FunctionTypes";
+import { staticPath } from "@/utils/staticPath";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -50,7 +51,7 @@ export interface IFunc {
   maps: IMap[];
 }
 
-declare var __static: string;
+// declare var __static: string;
 
 export default class JsonScriptManager {
   public script: string = "";
@@ -71,7 +72,7 @@ export default class JsonScriptManager {
     this.regexYield();
     beforeDoFile();
     this.script +=
-      fs.readFileSync(path.join(__static, "./ScriptsHelpers.js")) +
+      fs.readFileSync(path.join(staticPath, "./ScriptsHelpers.js")) +
       content.toString();
     this.regexAll();
   }

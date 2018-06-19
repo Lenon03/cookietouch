@@ -17,6 +17,7 @@ type style = "root" | "table";
 const styles: StyleRulesCallback<style> = (theme) => ({
   root: {
     flexGrow: 1,
+    padding: 10,
   },
   table: {
     maxHeight: 300,

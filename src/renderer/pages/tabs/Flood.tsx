@@ -38,6 +38,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     margin: theme.spacing.unit * 2,
     maxHeight: 500,
     overflowY: "auto",
+    padding: 10,
   },
   table: {
     minWidth: 700,

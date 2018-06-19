@@ -24,7 +24,7 @@ type style = "root" | "appBar" | "tab" | "table" | "overflow"| "tablecell";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   appBar: {
-    height: 30,
+    //
   },
   overflow: {
     maxHeight: "40vh",
@@ -34,7 +34,6 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     flexGrow: 1,
   },
   tab: {
-    height: 30,
     maxWidth: 1000,
     minWidth: 30,
   },

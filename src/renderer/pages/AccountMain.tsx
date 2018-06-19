@@ -21,15 +21,14 @@ type style = "root" | "appBar" | "tab";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   appBar: {
-    height: 30,
+    //
   },
   root: {
     flexGrow: 1,
     margin: theme.spacing.unit,
   },
   tab: {
-    height: 30,
-    minWidth: 30,
+    width: "100%",
   },
 });
 

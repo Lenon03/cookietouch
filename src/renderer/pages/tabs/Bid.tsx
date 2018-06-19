@@ -40,6 +40,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     flexGrow: 1,
     maxHeight: 500,
     overflowY: "auto",
+    padding: 10,
   },
   table: {
     maxWidth: 400,

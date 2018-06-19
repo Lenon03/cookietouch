@@ -14,14 +14,13 @@ type style = "root" | "appBar" | "tab";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   appBar: {
-    height: 30,
+    //
   },
   root: {
     flexGrow: 1,
   },
   tab: {
     borderCollapse: "collapse",
-    height: 30,
     maxWidth: 1000,
   },
 });

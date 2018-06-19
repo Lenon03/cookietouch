@@ -14,9 +14,8 @@ type style = "root" | "table";
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   root: {
-    borderCollapse: "collapse",
     flexGrow: 1,
-    maxHeight: 900,
+    maxHeight: 400,
     overflowY: "auto",
     padding: 10,
   },

@@ -42,7 +42,7 @@ type style = "root" | "appBar" | "tab" | "card" | "title" | "formControl" | "tab
 
 const styles: StyleRulesCallback<style> = (theme) => ({
   appBar: {
-    height: 30,
+    //
   },
   card: {
     minWidth: 275,

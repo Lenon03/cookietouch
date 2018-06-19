@@ -1,4 +1,4 @@
-declare var __static;
+declare var __static: string;
 
 const isDevelopment = process.env.NODE_ENV === "development";
 

@@ -51,8 +51,6 @@ export interface IFunc {
   maps: IMap[];
 }
 
-// declare var __static: string;
-
 export default class JsonScriptManager {
   public script: string = "";
   private username: string;

@@ -1,9 +1,22 @@
 import Account from "@account";
-import { faBullhorn, faChartLine, faChess, faCoffee, faCogs, faMap, faMoneyBillAlt, faShoppingBag, faUser } from "@fortawesome/fontawesome-free-solid";
+import {
+  faBullhorn,
+  faChartLine,
+  faChess,
+  faCoffee,
+  faCogs,
+  faMap,
+  faMoneyBillAlt,
+  faShoppingBag,
+  faUser
+} from "@fortawesome/fontawesome-free-solid";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import * as React from "react";
@@ -19,17 +32,17 @@ import Statistics from "./tabs/Statistics";
 
 type style = "root" | "appBar" | "tab";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   appBar: {
     //
   },
   root: {
     flexGrow: 1,
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   tab: {
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
 interface IProps {
@@ -43,9 +56,8 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class AccountMain extends React.Component<Props, IState> {
-
   public state: IState = {
-    value: 0,
+    value: 0
   };
 
   public render() {
@@ -55,20 +67,43 @@ class AccountMain extends React.Component<Props, IState> {
     return (
       <Paper className={classes.root}>
         <AppBar className={classes.appBar} position="static">
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            fullWidth
-          >
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faCoffee} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faUser} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faShoppingBag} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faMap} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faChess} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faBullhorn} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faMoneyBillAlt} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faChartLine} />} />
-            <Tab className={classes.tab} icon={<FontAwesomeIcon icon={faCogs} />} />
+          <Tabs value={value} onChange={this.handleChange} fullWidth>
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faCoffee} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faUser} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faShoppingBag} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faMap} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faChess} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faBullhorn} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faMoneyBillAlt} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faChartLine} />}
+            />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon={faCogs} />}
+            />
           </Tabs>
         </AppBar>
 
@@ -115,7 +150,7 @@ class AccountMain extends React.Component<Props, IState> {
 
   private handleChange = (event, value) => {
     this.setState({ value });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(AccountMain);

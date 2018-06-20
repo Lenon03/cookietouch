@@ -15,32 +15,35 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import * as moment from "moment";
 import * as React from "react";
 
 type style = "root" | "console" | "consoleSpan" | "formControl";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   console: {
     backgroundColor: "#403f3f",
     height: "400px",
     overflowX: "hidden",
     overflowY: "visible",
     padding: 10,
-    width: "100%",
+    width: "100%"
   },
   consoleSpan: {
     display: "block",
-    position: "relative",
+    position: "relative"
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IProps {
@@ -66,7 +69,6 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Console extends React.Component<Props, IState> {
-
   public state: IState = {
     channel: ChatChannelsMultiEnum.CHANNEL_GLOBAL,
     characterConnected: false,
@@ -79,7 +81,7 @@ class Console extends React.Component<Props, IState> {
     showPartyMessages: true,
     showSaleMessages: true,
     showSeekMessages: true,
-    status: PlayerStatusEnum.PLAYER_STATUS_UNKNOWN,
+    status: PlayerStatusEnum.PLAYER_STATUS_UNKNOWN
   };
 
   private commandProcessor: CommandProcessor;
@@ -88,16 +90,23 @@ class Console extends React.Component<Props, IState> {
     super(props);
 
     this.commandProcessor = new CommandProcessor("/");
-    this.commandProcessor.registerCommandHandler("sendMessage", new SendMessageCommand());
+    this.commandProcessor.registerCommandHandler(
+      "sendMessage",
+      new SendMessageCommand()
+    );
   }
 
   public componentDidMount() {
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
     this.props.account.logger.OnLog.on(this.onMessage);
   }
 
   public componentWillUnmount() {
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
     this.props.account.logger.OnLog.off(this.onMessage);
   }
 
@@ -112,41 +121,67 @@ class Console extends React.Component<Props, IState> {
               <div id="consoleTabDiv" className={classes.console}>
                 {this.state.messages.map((m, index) => {
                   if (m.source) {
-                    return <span
+                    return (
+                      <span
+                        className={classes.consoleSpan}
+                        style={{ color: m.color }}
+                        key={index}
+                      >
+                        {`[${moment(m.time).format("LTS")}][${m.source}] ${
+                          m.content
+                        }`}
+                      </span>
+                    );
+                  }
+                  return (
+                    <span
                       className={classes.consoleSpan}
                       style={{ color: m.color }}
                       key={index}
                     >
-                      {`[${moment(m.time).format("LTS")}][${m.source}] ${m.content}`}
-                    </span>;
-                  }
-                  return <span
-                    className={classes.consoleSpan}
-                    style={{ color: m.color }}
-                    key={index}
-                  >
-                    {`[${moment(m.time).format("LTS")}] ${m.content}`}
-                  </span>;
+                      {`[${moment(m.time).format("LTS")}] ${m.content}`}
+                    </span>
+                  );
                 })}
               </div>
               <Grid item xs={3}>
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="channel">{LanguageManager.trans("channel")}</InputLabel>
+                  <InputLabel htmlFor="channel">
+                    {LanguageManager.trans("channel")}
+                  </InputLabel>
                   <Select
                     disabled={this.state.characterConnected === false}
                     value={this.state.channel}
                     onChange={this.handleChannelChange}
                     inputProps={{ id: "channel", name: "channel" }}
                   >
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_GLOBAL}>{LanguageManager.trans("global")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_GUILD}>{LanguageManager.trans("guild")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_NOOB}>{LanguageManager.trans("noob")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_PARTY}>{LanguageManager.trans("party")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_SALES}>{LanguageManager.trans("sales")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_SEEK}>{LanguageManager.trans("seek")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_ALLIANCE}>{LanguageManager.trans("alliance")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_ARENA}>{LanguageManager.trans("arena")}</MenuItem>
-                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_TEAM}>{LanguageManager.trans("team")}</MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_GLOBAL}>
+                      {LanguageManager.trans("global")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_GUILD}>
+                      {LanguageManager.trans("guild")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_NOOB}>
+                      {LanguageManager.trans("noob")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_PARTY}>
+                      {LanguageManager.trans("party")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_SALES}>
+                      {LanguageManager.trans("sales")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_SEEK}>
+                      {LanguageManager.trans("seek")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_ALLIANCE}>
+                      {LanguageManager.trans("alliance")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_ARENA}>
+                      {LanguageManager.trans("arena")}
+                    </MenuItem>
+                    <MenuItem value={ChatChannelsMultiEnum.CHANNEL_TEAM}>
+                      {LanguageManager.trans("team")}
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -168,17 +203,27 @@ class Console extends React.Component<Props, IState> {
           </Grid>
           <Grid item xs={3}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="status">{LanguageManager.trans("status")}</InputLabel>
+              <InputLabel htmlFor="status">
+                {LanguageManager.trans("status")}
+              </InputLabel>
               <Select
                 disabled={this.state.characterConnected === false}
                 value={this.state.status}
                 onChange={this.handleStatusChange}
                 inputProps={{ id: "status", name: "status" }}
               >
-                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_AFK}>{LanguageManager.trans("afk")}</MenuItem>
-                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_AVAILABLE}>{LanguageManager.trans("available")}</MenuItem>
-                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_PRIVATE}>{LanguageManager.trans("private")}</MenuItem>
-                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_SOLO}>{LanguageManager.trans("solo")}</MenuItem>
+                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_AFK}>
+                  {LanguageManager.trans("afk")}
+                </MenuItem>
+                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_AVAILABLE}>
+                  {LanguageManager.trans("available")}
+                </MenuItem>
+                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_PRIVATE}>
+                  {LanguageManager.trans("private")}
+                </MenuItem>
+                <MenuItem value={PlayerStatusEnum.PLAYER_STATUS_SOLO}>
+                  {LanguageManager.trans("solo")}
+                </MenuItem>
               </Select>
             </FormControl>
             <FormGroup>
@@ -188,11 +233,15 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showGeneralMessages}
-                    onChange={(event) => {
-                      this.setState({ showGeneralMessages: event.target.checked });
-                      this.props.account.config.showGeneralMessages = event.target.checked;
+                    onChange={event => {
+                      this.setState({
+                        showGeneralMessages: event.target.checked
+                      });
+                      this.props.account.config.showGeneralMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showGeneral")}
               />
@@ -204,11 +253,15 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showAllianceMessages}
-                    onChange={(event) => {
-                      this.setState({ showAllianceMessages: event.target.checked });
-                      this.props.account.config.showAllianceMessages = event.target.checked;
+                    onChange={event => {
+                      this.setState({
+                        showAllianceMessages: event.target.checked
+                      });
+                      this.props.account.config.showAllianceMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showAlliance")}
               />
@@ -220,11 +273,15 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showGuildMessages}
-                    onChange={(event) => {
-                      this.setState({ showGuildMessages: event.target.checked });
-                      this.props.account.config.showGuildMessages = event.target.checked;
+                    onChange={event => {
+                      this.setState({
+                        showGuildMessages: event.target.checked
+                      });
+                      this.props.account.config.showGuildMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showGuild")}
               />
@@ -236,11 +293,13 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showNoobMessages}
-                    onChange={(event) => {
+                    onChange={event => {
                       this.setState({ showNoobMessages: event.target.checked });
-                      this.props.account.config.showNoobMessages = event.target.checked;
+                      this.props.account.config.showNoobMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showNoob")}
               />
@@ -252,11 +311,15 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showPartyMessages}
-                    onChange={(event) => {
-                      this.setState({ showPartyMessages: event.target.checked });
-                      this.props.account.config.showPartyMessages = event.target.checked;
+                    onChange={event => {
+                      this.setState({
+                        showPartyMessages: event.target.checked
+                      });
+                      this.props.account.config.showPartyMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showParty")}
               />
@@ -268,11 +331,13 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showSaleMessages}
-                    onChange={(event) => {
+                    onChange={event => {
                       this.setState({ showSaleMessages: event.target.checked });
-                      this.props.account.config.showSaleMessages = event.target.checked;
+                      this.props.account.config.showSaleMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showSales")}
               />
@@ -284,11 +349,13 @@ class Console extends React.Component<Props, IState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showSeekMessages}
-                    onChange={(event) => {
+                    onChange={event => {
                       this.setState({ showSeekMessages: event.target.checked });
-                      this.props.account.config.showSeekMessages = event.target.checked;
+                      this.props.account.config.showSeekMessages =
+                        event.target.checked;
                       this.props.account.config.save();
-                    }} />
+                    }}
+                  />
                 }
                 label={LanguageManager.trans("showSeek")}
               />
@@ -312,17 +379,25 @@ class Console extends React.Component<Props, IState> {
         return;
       }
 
-      if (!this.commandProcessor.processCommand(this.state.content, this.props.account)) {
-        this.props.account.game.chat.sendMessage(this.state.content, this.state.channel);
+      if (
+        !this.commandProcessor.processCommand(
+          this.state.content,
+          this.props.account
+        )
+      ) {
+        this.props.account.game.chat.sendMessage(
+          this.state.content,
+          this.state.channel
+        );
       }
 
       this.setState({ content: "" });
     }
-  }
+  };
 
-  private handleChange = (name) => (event) => {
+  private handleChange = name => event => {
     this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
-  }
+  };
 
   private characterSelected = () => {
     this.setState({
@@ -334,18 +409,18 @@ class Console extends React.Component<Props, IState> {
       showPartyMessages: this.props.account.config.showPartyMessages,
       showSaleMessages: this.props.account.config.showSaleMessages,
       showSeekMessages: this.props.account.config.showSeekMessages,
-      status: this.props.account.game.character.status,
+      status: this.props.account.game.character.status
     });
-  }
+  };
 
-  private handleChannelChange = (event) => {
+  private handleChannelChange = event => {
     this.setState({ channel: event.target.value });
-  }
+  };
 
-  private handleStatusChange = (event) => {
+  private handleStatusChange = event => {
     this.setState({ status: event.target.value });
     this.props.account.game.character.changeStatus(this.state.status);
-  }
+  };
 
   private onMessage = (message: IMessage) => {
     const newMessages = this.state.messages;
@@ -354,13 +429,13 @@ class Console extends React.Component<Props, IState> {
       newMessages.shift();
     }
     this.setState((prevState, props) => ({
-      messages: newMessages,
+      messages: newMessages
     }));
     const div = document.getElementById("consoleTabDiv");
     if (div) {
       div.scrollTop = div.scrollHeight - div.clientHeight;
     }
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Console);

@@ -2,7 +2,10 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import JobEntry from "@/game/character/jobs/JobEntry";
 import Account from "@account";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,16 +16,16 @@ import * as React from "react";
 
 type style = "root" | "table";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   root: {
     flexGrow: 1,
     maxHeight: 400,
     overflowY: "auto",
-    padding: 10,
+    padding: 10
   },
   table: {
-    minWidth: 700,
-  },
+    minWidth: 700
+  }
 });
 
 interface IProps {
@@ -36,9 +39,8 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Jobs extends React.Component<Props, IState> {
-
   public state: IState = {
-    jobs: [],
+    jobs: []
   };
 
   public componentDidMount() {
@@ -57,7 +59,7 @@ class Jobs extends React.Component<Props, IState> {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              <TableCell />
               <TableCell numeric>ID</TableCell>
               <TableCell>{LanguageManager.trans("name")}</TableCell>
               <TableCell numeric>{LanguageManager.trans("level")}</TableCell>
@@ -75,11 +77,15 @@ class Jobs extends React.Component<Props, IState> {
                   <TableCell>{j.name}</TableCell>
                   <TableCell numeric>{j.level}</TableCell>
                   <TableCell>
-                  <Tooltip title={`${j.experience} / ${j.experienceNextLevelFloor}`}>
-                  <LinearProgress style={{ height: 16, marginLeft: "20px" }} variant="determinate"
-                    value={j.experiencePercent}
-                  />
-                </Tooltip>
+                    <Tooltip
+                      title={`${j.experience} / ${j.experienceNextLevelFloor}`}
+                    >
+                      <LinearProgress
+                        style={{ height: 16, marginLeft: "20px" }}
+                        variant="determinate"
+                        value={j.experiencePercent}
+                      />
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );
@@ -91,8 +97,10 @@ class Jobs extends React.Component<Props, IState> {
   }
 
   private jobsUpdated = () => {
-    this.setState({ jobs: this.props.account.game.character.jobs.jobs.ToArray() });
-  }
+    this.setState({
+      jobs: this.props.account.game.character.jobs.jobs.ToArray()
+    });
+  };
 }
 
 export default withStyles(styles)<IProps>(Jobs);

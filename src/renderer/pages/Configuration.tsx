@@ -12,19 +12,22 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import * as React from "react";
 
 type style = "root" | "formControl";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IProps {
@@ -41,11 +44,10 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Configuration extends React.Component<Props, IState> {
-
   public state: IState = {
     anticaptchaKey: GlobalConfiguration.anticaptchaKey,
     lang: GlobalConfiguration.lang,
-    showDebugMessages: GlobalConfiguration.showDebugMessages,
+    showDebugMessages: GlobalConfiguration.showDebugMessages
   };
 
   public render() {
@@ -61,22 +63,38 @@ class Configuration extends React.Component<Props, IState> {
           {/* <DialogTitle id="form-dialog-title"></DialogTitle> */}
           <DialogContent>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="lang-simple">{LanguageManager.trans("lang")}</InputLabel>
+              <InputLabel htmlFor="lang-simple">
+                {LanguageManager.trans("lang")}
+              </InputLabel>
               <Select
                 value={this.state.lang}
                 onChange={this.langChanged}
                 inputProps={{ id: "lang-simple", name: "lang" }}
               >
-                <MenuItem value="fr"><img src={require("../img/fr.png")} alt="fr" /></MenuItem>
-                <MenuItem value="de"><img src={require("../img/de.png")} alt="de" /></MenuItem>
-                <MenuItem value="en"><img src={require("../img/us.png")} alt="us" /></MenuItem>
-                <MenuItem value="es"><img src={require("../img/es.png")} alt="es" /></MenuItem>
-                <MenuItem value="it"><img src={require("../img/it.png")} alt="it" /></MenuItem>
-                <MenuItem value="pt"><img src={require("../img/pt.png")} alt="pt" /></MenuItem>
+                <MenuItem value="fr">
+                  <img src={require("../img/fr.png")} alt="fr" />
+                </MenuItem>
+                <MenuItem value="de">
+                  <img src={require("../img/de.png")} alt="de" />
+                </MenuItem>
+                <MenuItem value="en">
+                  <img src={require("../img/us.png")} alt="us" />
+                </MenuItem>
+                <MenuItem value="es">
+                  <img src={require("../img/es.png")} alt="es" />
+                </MenuItem>
+                <MenuItem value="it">
+                  <img src={require("../img/it.png")} alt="it" />
+                </MenuItem>
+                <MenuItem value="pt">
+                  <img src={require("../img/pt.png")} alt="pt" />
+                </MenuItem>
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="anticaptcha">{LanguageManager.trans("anticaptchaKey")}</InputLabel>
+              <InputLabel htmlFor="anticaptcha">
+                {LanguageManager.trans("anticaptchaKey")}
+              </InputLabel>
               <Input
                 autoFocus
                 id="anticaptcha"
@@ -89,14 +107,21 @@ class Configuration extends React.Component<Props, IState> {
             <FormGroup>
               <FormControlLabel
                 control={
-                  <Switch checked={this.state.showDebugMessages} onChange={this.showDebugMessagesChanged} />
+                  <Switch
+                    checked={this.state.showDebugMessages}
+                    onChange={this.showDebugMessagesChanged}
+                  />
                 }
                 label={LanguageManager.trans("showDebug")}
               />
             </FormGroup>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => closeDialog()} variant="raised" color="primary">
+            <Button
+              onClick={() => closeDialog()}
+              variant="raised"
+              color="primary"
+            >
               {LanguageManager.trans("close")}
             </Button>
           </DialogActions>
@@ -105,20 +130,20 @@ class Configuration extends React.Component<Props, IState> {
     );
   }
 
-  private anticaptchaChanged = (e) => {
+  private anticaptchaChanged = e => {
     this.setState({ anticaptchaKey: e.target.value });
     GlobalConfiguration.anticaptchaKey = e.target.value;
-  }
+  };
 
-  private langChanged = (e) => {
+  private langChanged = e => {
     this.setState({ lang: e.target.value });
     GlobalConfiguration.lang = e.target.value;
-  }
+  };
 
-  private showDebugMessagesChanged = (event) => {
+  private showDebugMessagesChanged = event => {
     this.setState({ showDebugMessages: event.target.checked });
     GlobalConfiguration.showDebugMessages = event.target.checked;
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Configuration);

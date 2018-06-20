@@ -3,7 +3,10 @@ import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import Account from "@account";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,16 +17,16 @@ import * as React from "react";
 
 type style = "root" | "table";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   root: {
     flexGrow: 1,
-    padding: 10,
+    padding: 10
   },
   table: {
     maxHeight: 300,
     minWidth: 300,
-    overflowY: "auto",
-  },
+    overflowY: "auto"
+  }
 });
 
 interface IProps {
@@ -49,7 +52,6 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Statistics extends React.Component<Props, IState> {
-
   public state: IState = {
     achievementsFinished: 0,
     averageFightTime: 0,
@@ -63,7 +65,7 @@ class Statistics extends React.Component<Props, IState> {
     objectsObtainedInFights: [],
     objectsObtainedInGathers: [],
     totalFightsTime: 0,
-    totalGathersTime: 0,
+    totalGathersTime: 0
   };
 
   public componentDidMount() {
@@ -81,78 +83,124 @@ class Statistics extends React.Component<Props, IState> {
       <div className={classes.root}>
         <Grid container spacing={8}>
           <Grid item xs={2}>
-            <Typography>{LanguageManager.trans("achievementsFinished")} {this.state.achievementsFinished}</Typography><br />
-            <Typography>{LanguageManager.trans("averageFightTime")} {this.state.averageFightTime}</Typography><br />
-            <Typography>{LanguageManager.trans("experienceGained")} {this.state.experienceGained}</Typography><br />
-            <Typography>{LanguageManager.trans("fightsCount")} {this.state.fightsCount}</Typography><br />
-            <Typography>{LanguageManager.trans("fightsLost")} {this.state.fightsLost}</Typography><br />
-            <Typography>{LanguageManager.trans("fightsWon")} {this.state.fightsWon}</Typography><br />
-            <Typography>{LanguageManager.trans("gathersCount")} {this.state.gathersCount}</Typography><br />
-            <Typography>{LanguageManager.trans("kamasGained") + ":"} {this.state.kamasGained}</Typography><br />
-            <Typography>{LanguageManager.trans("levelsGained")} {this.state.levelsGained}</Typography><br />
-            <Typography>{LanguageManager.trans("totalFightsTime")} {this.state.totalFightsTime}</Typography><br />
-            <Typography>{LanguageManager.trans("totalGathersTime")} {this.state.totalGathersTime}</Typography>
+            <Typography>
+              {LanguageManager.trans("achievementsFinished")}{" "}
+              {this.state.achievementsFinished}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("averageFightTime")}{" "}
+              {this.state.averageFightTime}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("experienceGained")}{" "}
+              {this.state.experienceGained}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("fightsCount")} {this.state.fightsCount}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("fightsLost")} {this.state.fightsLost}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("fightsWon")} {this.state.fightsWon}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("gathersCount")} {this.state.gathersCount}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("kamasGained") + ":"}{" "}
+              {this.state.kamasGained}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("levelsGained")} {this.state.levelsGained}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("totalFightsTime")}{" "}
+              {this.state.totalFightsTime}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("totalGathersTime")}{" "}
+              {this.state.totalGathersTime}
+            </Typography>
           </Grid>
           <Grid item xs={10}>
             <Grid container spacing={8}>
-            <Grid item xs={6}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell numeric>GID</TableCell>
-                  <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>%</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("quantity")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {this.state.objectsObtainedInFights.map((o, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell numeric>{o.gid}</TableCell>
-                      <TableCell>{o.name}</TableCell>
-                      <TableCell>
-                        <Typography>{o.percentage.toFixed(2)}%</Typography>
-                        <LinearProgress style={{ height: 16 }} variant="determinate"
-                          value={o.percentage}
-                        />
+              <Grid item xs={6}>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell numeric>GID</TableCell>
+                      <TableCell>{LanguageManager.trans("name")}</TableCell>
+                      <TableCell numeric>%</TableCell>
+                      <TableCell numeric>
+                        {LanguageManager.trans("quantity")}
                       </TableCell>
-                      <TableCell numeric>{o.quantity}</TableCell>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-            </Grid>
-            <Grid item xs={6}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell numeric>GID</TableCell>
-                  <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>%</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("quantity")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {this.state.objectsObtainedInGathers.map((o, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell numeric>{o.gid}</TableCell>
-                      <TableCell>{o.name}</TableCell>
-                      <TableCell>
-                        <Typography>{o.percentage.toFixed(2)}%</Typography>
-                        <LinearProgress style={{ height: 16 }} variant="determinate"
-                          value={o.percentage}
-                        />
+                  </TableHead>
+                  <TableBody>
+                    {this.state.objectsObtainedInFights.map((o, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell numeric>{o.gid}</TableCell>
+                          <TableCell>{o.name}</TableCell>
+                          <TableCell>
+                            <Typography>{o.percentage.toFixed(2)}%</Typography>
+                            <LinearProgress
+                              style={{ height: 16 }}
+                              variant="determinate"
+                              value={o.percentage}
+                            />
+                          </TableCell>
+                          <TableCell numeric>{o.quantity}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </Grid>
+              <Grid item xs={6}>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell numeric>GID</TableCell>
+                      <TableCell>{LanguageManager.trans("name")}</TableCell>
+                      <TableCell numeric>%</TableCell>
+                      <TableCell numeric>
+                        {LanguageManager.trans("quantity")}
                       </TableCell>
-                      <TableCell numeric>{o.quantity}</TableCell>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-              </Table>
-            </Grid>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.objectsObtainedInGathers.map((o, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell numeric>{o.gid}</TableCell>
+                          <TableCell>{o.name}</TableCell>
+                          <TableCell>
+                            <Typography>{o.percentage.toFixed(2)}%</Typography>
+                            <LinearProgress
+                              style={{ height: 16 }}
+                              variant="determinate"
+                              value={o.percentage}
+                            />
+                          </TableCell>
+                          <TableCell numeric>{o.quantity}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -174,9 +222,9 @@ class Statistics extends React.Component<Props, IState> {
       objectsObtainedInFights: this.props.account.statistics.objectsObtainedInFights.ToArray(),
       objectsObtainedInGathers: this.props.account.statistics.objectsObtainedInGathers.ToArray(),
       totalFightsTime: this.props.account.statistics.totalFightsTime,
-      totalGathersTime: this.props.account.statistics.totalGathersTime,
+      totalGathersTime: this.props.account.statistics.totalGathersTime
     });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Statistics);

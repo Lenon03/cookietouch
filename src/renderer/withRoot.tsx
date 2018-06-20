@@ -10,15 +10,15 @@ const theme = createMuiTheme({
       contrastText: "#FFF",
       dark: "#1de099",
       light: "#1de099",
-      main: "#1de099",
+      main: "#1de099"
     },
     secondary: {
       contrastText: "#FFF",
       dark: "#1dc8cd",
       light: "#1dc8cd",
-      main: "#1dc8cd",
-    },
-  },
+      main: "#1dc8cd"
+    }
+  }
 });
 
 // tslint:disable-next-line:variable-name

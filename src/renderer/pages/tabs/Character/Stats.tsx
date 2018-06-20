@@ -4,15 +4,23 @@ import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseC
 import Account from "@account";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 
-type style = "root" | "statsField" | "statsLogo" | "statsLabel" | "statsLabelSpan";
+type style =
+  | "root"
+  | "statsField"
+  | "statsLogo"
+  | "statsLabel"
+  | "statsLabelSpan";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   root: {
     flexGrow: 1,
-    padding: 10,
+    padding: 10
   },
   statsField: {
     // display: "flex",
@@ -25,7 +33,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     // marginLeft: 5,
   },
   statsLabelSpan: {
-    float: "right",
+    float: "right"
   },
   statsLogo: {
     // flex: "0 0 50px",
@@ -33,7 +41,7 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     //   height: 10,
     // },
     // textAlign: "center",
-  },
+  }
 });
 
 interface IProps {
@@ -63,7 +71,6 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Stats extends React.Component<Props, IState> {
-
   public state: IState = {
     actionPoints: -1,
     agility: -1,
@@ -81,16 +88,20 @@ class Stats extends React.Component<Props, IState> {
     strength: -1,
     summonableCreaturesBoost: -1,
     vitality: -1,
-    wisdom: -1,
+    wisdom: -1
   };
 
   public componentDidMount() {
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
     this.props.account.game.character.StatsUpdated.on(this.statsUpdated);
   }
 
   public componentWillUnmount() {
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
     this.props.account.game.character.StatsUpdated.off(this.statsUpdated);
   }
 
@@ -102,7 +113,9 @@ class Stats extends React.Component<Props, IState> {
         <Grid container spacing={16}>
           <Grid item xs={4}>
             <h4>{account.game.character.name}</h4>
-            <h5>{LanguageManager.trans("level")} {this.state.level}</h5>
+            <h5>
+              {LanguageManager.trans("level")} {this.state.level}
+            </h5>
             <img src={this.state.skinUrl} alt="character" />
           </Grid>
           <Grid item xs={4}>
@@ -121,21 +134,31 @@ class Stats extends React.Component<Props, IState> {
 
             <div className={classes.statsField}>
               <div className={classes.statsLogo}>
-                <img src={require("../../../img/starYellow.png")} alt="etoile_jaune" />
+                <img
+                  src={require("../../../img/starYellow.png")}
+                  alt="etoile_jaune"
+                />
               </div>
               <div className={classes.statsLabel}>
                 {LanguageManager.trans("actionPoints")}
-                <span className={classes.statsLabelSpan}>{this.state.actionPoints}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.actionPoints}
+                </span>
               </div>
             </div>
 
             <div className={classes.statsField}>
               <div className={classes.statsLogo}>
-                <img src={require("../../../img/movement.png")} alt="mouvement" />
+                <img
+                  src={require("../../../img/movement.png")}
+                  alt="mouvement"
+                />
               </div>
               <div className={classes.statsLabel}>
                 {LanguageManager.trans("movementPoints")}
-                <span className={classes.statsLabelSpan}>{this.state.movementPoints}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.movementPoints}
+                </span>
               </div>
             </div>
 
@@ -145,7 +168,9 @@ class Stats extends React.Component<Props, IState> {
               </div>
               <div className={classes.statsLabel}>
                 Initiative
-                <span className={classes.statsLabelSpan}>{this.state.initiative}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.initiative}
+                </span>
               </div>
             </div>
 
@@ -155,7 +180,9 @@ class Stats extends React.Component<Props, IState> {
               </div>
               <div className={classes.statsLabel}>
                 {LanguageManager.trans("prospecting")}
-                <span className={classes.statsLabelSpan}>{this.state.prospecting}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.prospecting}
+                </span>
               </div>
             </div>
 
@@ -165,7 +192,9 @@ class Stats extends React.Component<Props, IState> {
               </div>
               <div className={classes.statsLabel}>
                 {LanguageManager.trans("range")}
-                <span className={classes.statsLabelSpan}>{this.state.range}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.range}
+                </span>
               </div>
             </div>
 
@@ -175,13 +204,17 @@ class Stats extends React.Component<Props, IState> {
               </div>
               <div className={classes.statsLabel}>
                 {LanguageManager.trans("summons")}
-                <span className={classes.statsLabelSpan}>{this.state.summonableCreaturesBoost}</span>
+                <span className={classes.statsLabelSpan}>
+                  {this.state.summonableCreaturesBoost}
+                </span>
               </div>
             </div>
           </Grid>
           <Grid item xs={4}>
             <h4>{LanguageManager.trans("stats")}</h4>
-            <h5>{LanguageManager.trans("points")} {this.state.statsPoints}</h5>
+            <h5>
+              {LanguageManager.trans("points")} {this.state.statsPoints}
+            </h5>
 
             <div className={classes.statsField}>
               <div className={classes.statsLogo}>
@@ -191,11 +224,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("vitality")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.vitality}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.VITALITY)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.VITALITY
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -208,11 +249,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("wisdom")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.wisdom}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.WISDOM)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.WISDOM
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -225,11 +274,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("strength")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.strength}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.STRENGTH)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.STRENGTH
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -242,11 +299,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("intelligence")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.intelligence}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.INTELLIGENCE)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.INTELLIGENCE
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -259,11 +324,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("chance")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.chance}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.CHANCE)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.CHANCE
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -276,11 +349,19 @@ class Stats extends React.Component<Props, IState> {
                 {LanguageManager.trans("agility")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.agility}
-                  <Button variant="fab"
+                  <Button
+                    variant="fab"
                     mini
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() => this.props.account.game.character.boostStat(BoostableStats.AGILITY)}>+</Button>
+                    onClick={() =>
+                      this.props.account.game.character.boostStat(
+                        BoostableStats.AGILITY
+                      )
+                    }
+                  >
+                    +
+                  </Button>
                 </span>
               </div>
             </div>
@@ -293,33 +374,54 @@ class Stats extends React.Component<Props, IState> {
   private characterSelected = () => {
     this.setState({
       level: this.props.account.game.character.level,
-      skinUrl: this.props.account.game.character.skinUrl,
+      skinUrl: this.props.account.game.character.skinUrl
     });
-  }
+  };
 
   private statsUpdated = () => {
     this.setState({
-      actionPoints: this.totalStat(this.props.account.game.character.stats.actionPoints),
+      actionPoints: this.totalStat(
+        this.props.account.game.character.stats.actionPoints
+      ),
       agility: this.totalStat(this.props.account.game.character.stats.agility),
       chance: this.totalStat(this.props.account.game.character.stats.chance),
-      initiative: this.totalStat(this.props.account.game.character.stats.initiative),
-      intelligence: this.totalStat(this.props.account.game.character.stats.intelligence),
+      initiative: this.totalStat(
+        this.props.account.game.character.stats.initiative
+      ),
+      intelligence: this.totalStat(
+        this.props.account.game.character.stats.intelligence
+      ),
       level: this.props.account.game.character.level,
       lifePoints: this.props.account.game.character.stats.lifePoints,
       maxLifePoints: this.props.account.game.character.stats.maxLifePoints,
-      movementPoints: this.totalStat(this.props.account.game.character.stats.movementPoints),
-      prospecting: this.totalStat(this.props.account.game.character.stats.prospecting),
+      movementPoints: this.totalStat(
+        this.props.account.game.character.stats.movementPoints
+      ),
+      prospecting: this.totalStat(
+        this.props.account.game.character.stats.prospecting
+      ),
       range: this.totalStat(this.props.account.game.character.stats.range),
       statsPoints: this.props.account.game.character.stats.statsPoints,
-      strength: this.totalStat(this.props.account.game.character.stats.strength),
-      summonableCreaturesBoost: this.totalStat(this.props.account.game.character.stats.summonableCreaturesBoost),
-      vitality: this.totalStat(this.props.account.game.character.stats.vitality),
-      wisdom: this.totalStat(this.props.account.game.character.stats.wisdom),
+      strength: this.totalStat(
+        this.props.account.game.character.stats.strength
+      ),
+      summonableCreaturesBoost: this.totalStat(
+        this.props.account.game.character.stats.summonableCreaturesBoost
+      ),
+      vitality: this.totalStat(
+        this.props.account.game.character.stats.vitality
+      ),
+      wisdom: this.totalStat(this.props.account.game.character.stats.wisdom)
     });
-  }
+  };
 
   private totalStat(stat: CharacterBaseCharacteristic): number {
-    return stat.base + stat.objectsAndMountBonus + stat.alignGiftBonus + stat.contextModif;
+    return (
+      stat.base +
+      stat.objectsAndMountBonus +
+      stat.alignGiftBonus +
+      stat.contextModif
+    );
   }
 }
 

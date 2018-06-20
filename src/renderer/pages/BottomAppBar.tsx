@@ -1,5 +1,8 @@
 import AppBar from "@material-ui/core/AppBar";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import * as firebase from "firebase";
@@ -7,19 +10,19 @@ import * as React from "react";
 
 type style = "root" | "appbar" | "toolbar";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   appbar: {
-    background: "linear-gradient(45deg, #1dc8cd, #1de099)",
+    background: "linear-gradient(45deg, #1dc8cd, #1de099)"
   },
   root: {
     bottom: 0,
     flexGrow: 1,
     position: "absolute",
-    width: "100%",
+    width: "100%"
   },
   toolbar: {
-    minHeight: 28,
-  },
+    minHeight: 28
+  }
 });
 
 interface IState {
@@ -28,17 +31,16 @@ interface IState {
 }
 
 class BottomAppBar extends React.Component<WithStyles<style>, IState> {
-
   public state: IState = {
     totalUsers: 0,
-    usersConnected: 0,
+    usersConnected: 0
   };
 
   public componentDidMount() {
     const listRef = firebase.database().ref("status");
-    listRef.on("value", (snap) => {
+    listRef.on("value", snap => {
       let num = 0;
-      snap.forEach((x) => {
+      snap.forEach(x => {
         if (x.val().state === "online") {
           num++;
         }
@@ -46,7 +48,7 @@ class BottomAppBar extends React.Component<WithStyles<style>, IState> {
       });
       this.setState({
         totalUsers: snap.numChildren(),
-        usersConnected: num,
+        usersConnected: num
       });
     });
   }

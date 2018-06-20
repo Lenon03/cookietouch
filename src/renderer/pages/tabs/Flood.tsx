@@ -12,7 +12,10 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -26,28 +29,28 @@ import * as React from "react";
 
 type style = "root" | "table" | "formControl" | "card" | "title";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   card: {
-    minWidth: 275,
+    minWidth: 275
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
     flexGrow: 1,
     margin: theme.spacing.unit * 2,
     maxHeight: 500,
     overflowY: "auto",
-    padding: 10,
+    padding: 10
   },
   table: {
-    minWidth: 700,
+    minWidth: 700
   },
   title: {
     color: theme.palette.text.secondary,
     fontSize: 14,
-    marginBottom: 16,
-  },
+    marginBottom: 16
+  }
 });
 
 interface IProps {
@@ -74,30 +77,33 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Flood extends React.Component<Props, IState> {
-
   public state: IState = {
     addSentenceForm: {
       channel: ChatActivableChannelsEnum.CHANNEL_GLOBAL,
       content: "",
       onPlayerJoined: true,
-      onPlayerLeft: true,
+      onPlayerLeft: true
     },
     characterConnected: false,
     generalChannelInterval: -1,
     running: false,
     salesChannelInterval: -1,
     seekChannelInterval: -1,
-    sentences: [],
+    sentences: []
   };
 
   public componentDidMount() {
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
     this.props.account.extensions.flood.config.Changed.on(this.configChanged);
     this.props.account.extensions.flood.RunningChanged.on(this.runningChanged);
   }
 
   public componentWillUnmount() {
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
     this.props.account.extensions.flood.config.Changed.off(this.configChanged);
     this.props.account.extensions.flood.RunningChanged.off(this.runningChanged);
   }
@@ -119,7 +125,9 @@ class Flood extends React.Component<Props, IState> {
           variant="raised"
           color={this.state.running ? "secondary" : "primary"}
         >
-          {this.state.running ? LanguageManager.trans("pause") : LanguageManager.trans("start")}
+          {this.state.running
+            ? LanguageManager.trans("pause")
+            : LanguageManager.trans("start")}
         </Button>
         <Table className={classes.table}>
           <TableHead>
@@ -137,8 +145,16 @@ class Flood extends React.Component<Props, IState> {
                 <TableRow key={index}>
                   <TableCell>{s.content}</TableCell>
                   <TableCell>{ChatActivableChannelsEnum[s.channel]}</TableCell>
-                  <TableCell>{s.onPlayerJoined ? LanguageManager.trans("yes") : LanguageManager.trans("no")}</TableCell>
-                  <TableCell>{s.onPlayerLeft ? LanguageManager.trans("yes") : LanguageManager.trans("no")}</TableCell>
+                  <TableCell>
+                    {s.onPlayerJoined
+                      ? LanguageManager.trans("yes")
+                      : LanguageManager.trans("no")}
+                  </TableCell>
+                  <TableCell>
+                    {s.onPlayerLeft
+                      ? LanguageManager.trans("yes")
+                      : LanguageManager.trans("no")}
+                  </TableCell>
                   <TableCell>
                     <Button
                       onClick={() => this.deleteSentence(s)}
@@ -210,17 +226,29 @@ class Flood extends React.Component<Props, IState> {
                 type="text"
                 InputLabelProps={{ shrink: true }}
               />
-               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="channel">{LanguageManager.trans("channel")}</InputLabel>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="channel">
+                  {LanguageManager.trans("channel")}
+                </InputLabel>
                 <Select
                   value={this.state.addSentenceForm.channel}
                   onChange={this.handleSelectChangeForm}
                   inputProps={{ id: "channel", name: "channel" }}
                 >
-                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_GLOBAL}>{LanguageManager.trans("global")}</MenuItem>
-                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_SEEK}>{LanguageManager.trans("seek")}</MenuItem>
-                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_SALES}>{LanguageManager.trans("sales")}</MenuItem>
-                  <MenuItem value={ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE}>{LanguageManager.trans("private")}</MenuItem>
+                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_GLOBAL}>
+                    {LanguageManager.trans("global")}
+                  </MenuItem>
+                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_SEEK}>
+                    {LanguageManager.trans("seek")}
+                  </MenuItem>
+                  <MenuItem value={ChatActivableChannelsEnum.CHANNEL_SALES}>
+                    {LanguageManager.trans("sales")}
+                  </MenuItem>
+                  <MenuItem
+                    value={ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE}
+                  >
+                    {LanguageManager.trans("private")}
+                  </MenuItem>
                 </Select>
               </FormControl>
               <FormGroup>
@@ -236,35 +264,37 @@ class Flood extends React.Component<Props, IState> {
                   }
                   label={LanguageManager.trans("onPlayerJoined")}
                 />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        id="onPlayerLeft"
-                        name="onPlayerLeft"
-                        color="primary"
-                        checked={this.state.addSentenceForm.onPlayerLeft}
-                        onChange={this.handleSwitchChangeForm}
-                      />
-                    }
-                    label={LanguageManager.trans("onPlayerLeft")}
-                  />
-                </FormGroup>
-                <Button
-                  disabled={this.state.addSentenceForm.content === ""}
-                  type="submit"
-                  variant="raised"
-                  color="primary"
-                >
-                  {LanguageManager.trans("add")}
-                </Button>
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      id="onPlayerLeft"
+                      name="onPlayerLeft"
+                      color="primary"
+                      checked={this.state.addSentenceForm.onPlayerLeft}
+                      onChange={this.handleSwitchChangeForm}
+                    />
+                  }
+                  label={LanguageManager.trans("onPlayerLeft")}
+                />
+              </FormGroup>
+              <Button
+                disabled={this.state.addSentenceForm.content === ""}
+                type="submit"
+                variant="raised"
+                color="primary"
+              >
+                {LanguageManager.trans("add")}
+              </Button>
             </form>
           </Grid>
         </Grid>
         <Card className={classes.card}>
           <CardContent>
-            <Typography className={classes.title}>{LanguageManager.trans("infos")}</Typography>
+            <Typography className={classes.title}>
+              {LanguageManager.trans("infos")}
+            </Typography>
             <Typography>{LanguageManager.trans("infoFlood1")}</Typography>
             <Typography>{LanguageManager.trans("infoFlood2")}</Typography>
             <Typography>{LanguageManager.trans("infoFloodnbr")}</Typography>
@@ -278,58 +308,72 @@ class Flood extends React.Component<Props, IState> {
     );
   }
 
-  private submit = (event) => {
+  private submit = event => {
     event.preventDefault();
 
     const infos = this.state.addSentenceForm;
 
     this.props.account.extensions.flood.config.sentences.Add(
-      new FloodSentence(infos.content, infos.channel, infos.onPlayerJoined, infos.onPlayerLeft),
+      new FloodSentence(
+        infos.content,
+        infos.channel,
+        infos.onPlayerJoined,
+        infos.onPlayerLeft
+      )
     );
     this.props.account.extensions.flood.config.save();
-  }
+  };
 
   private handleSwitchChangeForm = (event, checked) => {
     const addSentenceForm = { ...this.state.addSentenceForm };
     addSentenceForm[event.target.name] = checked;
     this.setState({ addSentenceForm });
-  }
+  };
 
-  private handleSelectChangeForm = (event) => {
-    const addSentenceForm =  { ...this.state.addSentenceForm };
+  private handleSelectChangeForm = event => {
+    const addSentenceForm = { ...this.state.addSentenceForm };
     addSentenceForm[event.target.name] = event.target.value;
     this.setState({ addSentenceForm });
-  }
+  };
 
-  private handleInputChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value } as Pick<IState, keyof IState>);
-    this.props.account.extensions.flood.config[event.target.name] = event.target.value;
+  private handleInputChange = event => {
+    this.setState({ [event.target.name]: event.target.value } as Pick<
+      IState,
+      keyof IState
+    >);
+    this.props.account.extensions.flood.config[event.target.name] =
+      event.target.value;
     this.props.account.extensions.flood.config.save();
-  }
+  };
 
   private deleteSentence = (sentence: FloodSentence) => {
-    const sentences = this.state.sentences.filter((s) => s.content !== sentence.content);
+    const sentences = this.state.sentences.filter(
+      s => s.content !== sentence.content
+    );
     this.props.account.extensions.flood.config.sentences = new List(sentences);
     this.props.account.extensions.flood.config.save();
-  }
+  };
 
   private characterSelected = () => {
     this.setState({ characterConnected: true });
-  }
+  };
 
   private configChanged = () => {
     this.setState({
-      generalChannelInterval: this.props.account.extensions.flood.config.generalChannelInterval,
+      generalChannelInterval: this.props.account.extensions.flood.config
+        .generalChannelInterval,
       running: this.props.account.extensions.flood.running,
-      salesChannelInterval: this.props.account.extensions.flood.config.salesChannelInterval,
-      seekChannelInterval: this.props.account.extensions.flood.config.seekChannelInterval,
-      sentences: this.props.account.extensions.flood.config.sentences.ToArray(),
+      salesChannelInterval: this.props.account.extensions.flood.config
+        .salesChannelInterval,
+      seekChannelInterval: this.props.account.extensions.flood.config
+        .seekChannelInterval,
+      sentences: this.props.account.extensions.flood.config.sentences.ToArray()
     });
-  }
+  };
 
   private runningChanged = () => {
     this.setState({ running: this.props.account.extensions.flood.running });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Flood);

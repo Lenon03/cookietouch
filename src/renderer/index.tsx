@@ -26,15 +26,13 @@ async function init() {
   MapPoint.Init();
   InventoryHelper.Init();
 
-  console.log(getSize(path.join(
-    remote.app.getPath("userData"),
-    DTConstants.assetsVersion
-  )));
+  console.log(
+    getSize(
+      path.join(remote.app.getPath("userData"), DTConstants.assetsVersion)
+    )
+  );
 }
 
 init();
 
-ReactDOM.render(
-  <Main />,
-  document.getElementById("app"),
-);
+ReactDOM.render(<Main />, document.getElementById("app"));

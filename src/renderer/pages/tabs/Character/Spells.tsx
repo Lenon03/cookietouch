@@ -2,7 +2,10 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import SpellEntry from "@/game/character/SpellEntry";
 import Account from "@account";
 import Button from "@material-ui/core/Button";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -12,16 +15,16 @@ import * as React from "react";
 
 type style = "root" | "table";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   root: {
     flexGrow: 1,
     maxHeight: 400,
     overflowY: "auto",
-    padding: 10,
+    padding: 10
   },
   table: {
-    minWidth: 700,
-  },
+    minWidth: 700
+  }
 });
 
 interface IProps {
@@ -36,10 +39,9 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Spells extends React.Component<Props, IState> {
-
   public state: IState = {
     spells: [],
-    spellsPoints: -1,
+    spellsPoints: -1
   };
 
   public componentDidMount() {
@@ -57,11 +59,13 @@ class Spells extends React.Component<Props, IState> {
 
     return (
       <div className={classes.root}>
-        <h4>{LanguageManager.trans("spellsPoints", this.state.spellsPoints)}</h4>
+        <h4>
+          {LanguageManager.trans("spellsPoints", this.state.spellsPoints)}
+        </h4>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              <TableCell />
               <TableCell numeric>ID</TableCell>
               <TableCell>{LanguageManager.trans("name")}</TableCell>
               <TableCell numeric>{LanguageManager.trans("level")}</TableCell>
@@ -79,11 +83,18 @@ class Spells extends React.Component<Props, IState> {
                   <TableCell>{s.name}</TableCell>
                   <TableCell numeric>{s.level}</TableCell>
                   <TableCell>
-                    <Button variant="raised"
+                    <Button
+                      variant="raised"
                       size="small"
                       color="primary"
-                      disabled={this.state.spellsPoints > 0 ? this.state.spellsPoints < s.level : true}
-                      onClick={() => this.props.account.game.character.levelUpSpell(s)}
+                      disabled={
+                        this.state.spellsPoints > 0
+                          ? this.state.spellsPoints < s.level
+                          : true
+                      }
+                      onClick={() =>
+                        this.props.account.game.character.levelUpSpell(s)
+                      }
                     >
                       {LanguageManager.trans("up")}
                     </Button>
@@ -98,12 +109,14 @@ class Spells extends React.Component<Props, IState> {
   }
 
   private statsUpdated = () => {
-    this.setState({ spellsPoints: this.props.account.game.character.stats.spellsPoints });
-  }
+    this.setState({
+      spellsPoints: this.props.account.game.character.stats.spellsPoints
+    });
+  };
 
   private spellsUpdated = () => {
     this.setState({ spells: this.props.account.game.character.spells });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Spells);

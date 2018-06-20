@@ -14,7 +14,10 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -29,28 +32,28 @@ import * as React from "react";
 
 type style = "root" | "table" | "card" | "title" | "formControl";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   card: {
-    minWidth: 275,
+    minWidth: 275
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
     flexGrow: 1,
     maxHeight: 500,
     overflowY: "auto",
-    padding: 10,
+    padding: 10
   },
   table: {
     maxWidth: 400,
-    minWidth: 200,
+    minWidth: 200
   },
   title: {
     color: theme.palette.text.secondary,
     fontSize: 14,
-    marginBottom: 16,
-  },
+    marginBottom: 16
+  }
 });
 
 interface IProps {
@@ -79,14 +82,13 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Bid extends React.Component<Props, IState> {
-
   public state: IState = {
     addObjectForm: {
       basePrice: 1,
       gid: -1,
       lot: 1,
       minPrice: 1,
-      quantity: 1,
+      quantity: 1
     },
     characterConnected: false,
     interval: -1,
@@ -94,23 +96,31 @@ class Bid extends React.Component<Props, IState> {
     kamasPaidOnTaxes: -1,
     objects: [],
     running: false,
-    script: "",
+    script: ""
   };
 
   public componentDidMount() {
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
     this.props.account.extensions.bid.config.Changed.on(this.configChanged);
     this.props.account.extensions.bid.Started.on(this.started);
     this.props.account.extensions.bid.Stopped.on(this.stopped);
-    this.props.account.extensions.bid.StatisticsUpdated.on(this.statisticsUpdated);
+    this.props.account.extensions.bid.StatisticsUpdated.on(
+      this.statisticsUpdated
+    );
   }
 
   public componentWillUnmount() {
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
     this.props.account.extensions.bid.config.Changed.off(this.configChanged);
     this.props.account.extensions.bid.Started.off(this.started);
     this.props.account.extensions.bid.Stopped.off(this.stopped);
-    this.props.account.extensions.bid.StatisticsUpdated.off(this.statisticsUpdated);
+    this.props.account.extensions.bid.StatisticsUpdated.off(
+      this.statisticsUpdated
+    );
   }
 
   public render() {
@@ -152,23 +162,33 @@ class Bid extends React.Component<Props, IState> {
               type="number"
               InputLabelProps={{ shrink: true }}
             />
-            <Typography>{LanguageManager.trans("kamasGained")}: {this.state.kamasGained}</Typography><br />
-            <Typography>{LanguageManager.trans("kamasTaxes")}: {this.state.kamasPaidOnTaxes}</Typography><br />
+            <Typography>
+              {LanguageManager.trans("kamasGained")}: {this.state.kamasGained}
+            </Typography>
+            <br />
+            <Typography>
+              {LanguageManager.trans("kamasTaxes")}:{" "}
+              {this.state.kamasPaidOnTaxes}
+            </Typography>
+            <br />
             <Typography>Script: {this.state.script}</Typography>
             <Button
               size="small"
               style={{ marginLeft: "15px" }}
               onClick={() => {
-                remote.dialog.showOpenDialog({
-                  filters: [
-                    { name: "Cookie Scripts Format", extensions: ["js"] },
-                  ],
-                  properties: ["openFile"],
-                }, (filepaths) => {
-                  const filepath = filepaths[0];
-                  this.props.account.extensions.bid.config.scriptPath = filepath;
-                  this.props.account.extensions.bid.config.save();
-                });
+                remote.dialog.showOpenDialog(
+                  {
+                    filters: [
+                      { name: "Cookie Scripts Format", extensions: ["js"] }
+                    ],
+                    properties: ["openFile"]
+                  },
+                  filepaths => {
+                    const filepath = filepaths[0];
+                    this.props.account.extensions.bid.config.scriptPath = filepath;
+                    this.props.account.extensions.bid.config.save();
+                  }
+                );
               }}
               variant="raised"
               color="primary"
@@ -179,8 +199,8 @@ class Bid extends React.Component<Props, IState> {
               size="small"
               style={{ marginLeft: "15px" }}
               onClick={() => {
-                  this.props.account.extensions.bid.config.scriptPath = "";
-                  this.props.account.extensions.bid.config.save();
+                this.props.account.extensions.bid.config.scriptPath = "";
+                this.props.account.extensions.bid.config.save();
               }}
               variant="raised"
               color="primary"
@@ -189,7 +209,9 @@ class Bid extends React.Component<Props, IState> {
             </Button>
             <Card className={classes.card}>
               <CardContent>
-                <Typography className={classes.title}>{LanguageManager.trans("addItem")}</Typography>
+                <Typography className={classes.title}>
+                  {LanguageManager.trans("addItem")}
+                </Typography>
                 <form onSubmit={this.submit}>
                   <TextField
                     autoFocus
@@ -204,7 +226,9 @@ class Bid extends React.Component<Props, IState> {
                     InputLabelProps={{ shrink: true }}
                   />
                   <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="lot">{LanguageManager.trans("lot")}</InputLabel>
+                    <InputLabel htmlFor="lot">
+                      {LanguageManager.trans("lot")}
+                    </InputLabel>
                     <Select
                       value={this.state.addObjectForm.lot}
                       onChange={this.handleSelectChangeForm}
@@ -251,11 +275,7 @@ class Bid extends React.Component<Props, IState> {
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
-                  <Button
-                    type="submit"
-                    variant="raised"
-                    color="primary"
-                  >
+                  <Button type="submit" variant="raised" color="primary">
                     {LanguageManager.trans("add")}
                   </Button>
                 </form>
@@ -269,9 +289,15 @@ class Bid extends React.Component<Props, IState> {
                   <TableCell numeric>GID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
                   <TableCell numeric>{LanguageManager.trans("lot")}</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("quantity")}</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("minPrice")}</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("basePrice")}</TableCell>
+                  <TableCell numeric>
+                    {LanguageManager.trans("quantity")}
+                  </TableCell>
+                  <TableCell numeric>
+                    {LanguageManager.trans("minPrice")}
+                  </TableCell>
+                  <TableCell numeric>
+                    {LanguageManager.trans("basePrice")}
+                  </TableCell>
                   <TableCell>{LanguageManager.trans("actions")}</TableCell>
                 </TableRow>
               </TableHead>
@@ -305,7 +331,7 @@ class Bid extends React.Component<Props, IState> {
     );
   }
 
-  private submit = async (event) => {
+  private submit = async event => {
     event.preventDefault();
 
     const infos = this.state.addObjectForm;
@@ -317,56 +343,63 @@ class Bid extends React.Component<Props, IState> {
     const name = objResp[0].object.nameId;
 
     this.props.account.extensions.bid.config.objectsToSell.Add(
-      new ObjectToSellEntry(name, infos.gid, infos.lot, infos.quantity, infos.minPrice, infos.basePrice),
+      new ObjectToSellEntry(
+        name,
+        infos.gid,
+        infos.lot,
+        infos.quantity,
+        infos.minPrice,
+        infos.basePrice
+      )
     );
     this.props.account.extensions.bid.config.save();
-  }
+  };
 
-  private handleSelectChangeForm = (event) => {
+  private handleSelectChangeForm = event => {
     const addObjectForm = { ...this.state.addObjectForm };
     addObjectForm[event.target.name] = event.target.value;
     this.setState({ addObjectForm });
-  }
+  };
 
-  private handleInputChange = (event) => {
+  private handleInputChange = event => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
     this.props.account.extensions.bid.config[event.target.name] = value;
     this.props.account.extensions.bid.config.save();
-  }
+  };
 
   private deleteObject = (obj: ObjectToSellEntry) => {
-    const objects = this.state.objects.filter((o) => o.gid !== obj.gid);
+    const objects = this.state.objects.filter(o => o.gid !== obj.gid);
     this.props.account.extensions.bid.config.objectsToSell = new List(objects);
     this.props.account.extensions.bid.config.save();
-  }
+  };
 
   private characterSelected = () => {
     this.setState({ characterConnected: true });
-  }
+  };
 
   private configChanged = () => {
     this.setState({
       interval: this.props.account.extensions.bid.config.interval,
       objects: this.props.account.extensions.bid.config.objectsToSell.ToArray(),
-      script: this.props.account.extensions.bid.config.scriptPath,
+      script: this.props.account.extensions.bid.config.scriptPath
     });
-  }
+  };
 
   private started = () => {
     this.setState({ running: true });
-  }
+  };
 
   private stopped = () => {
     this.setState({ running: false });
-  }
+  };
 
   private statisticsUpdated = () => {
     this.setState({
       kamasGained: this.props.account.extensions.bid.kamasGained,
-      kamasPaidOnTaxes: this.props.account.extensions.bid.kamasPaidOnTaxes,
+      kamasPaidOnTaxes: this.props.account.extensions.bid.kamasPaidOnTaxes
     });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Bid);

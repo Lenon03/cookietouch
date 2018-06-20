@@ -8,7 +8,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputLabel from "@material-ui/core/InputLabel";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import * as React from "react";
@@ -16,13 +19,13 @@ import { signin, signup } from "../FirebaseHelpers";
 
 type style = "root" | "formControl";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IProps {
@@ -39,11 +42,10 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class LoginFormDialog extends React.Component<Props, IState> {
-
   public state: IState = {
     email: "",
     password: "",
-    showPassword: false,
+    showPassword: false
   };
 
   public render() {
@@ -73,7 +75,9 @@ class LoginFormDialog extends React.Component<Props, IState> {
               />
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="password">{LanguageManager.trans("password")}</InputLabel>
+              <InputLabel htmlFor="password">
+                {LanguageManager.trans("password")}
+              </InputLabel>
               <Input
                 id="password"
                 type={this.state.showPassword ? "text" : "password"}
@@ -86,7 +90,11 @@ class LoginFormDialog extends React.Component<Props, IState> {
                       onClick={this.handleClickShowPasssword}
                       onMouseDown={this.handleMouseDownPassword}
                     >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      {this.state.showPassword ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -106,17 +114,17 @@ class LoginFormDialog extends React.Component<Props, IState> {
     );
   }
 
-  private handleChange = (prop) => (event) => {
+  private handleChange = prop => event => {
     this.setState({ [prop]: event.target.value } as Pick<IState, keyof IState>);
-  }
+  };
 
-  private handleMouseDownPassword = (event) => {
+  private handleMouseDownPassword = event => {
     event.preventDefault();
-  }
+  };
 
   private handleClickShowPasssword = () => {
-    this.setState((prev) => ({ showPassword: !prev.showPassword }));
-  }
+    this.setState(prev => ({ showPassword: !prev.showPassword }));
+  };
 
   private signin = async () => {
     const result = await signin(this.state.email, this.state.password);
@@ -131,11 +139,11 @@ class LoginFormDialog extends React.Component<Props, IState> {
         this.props.closeDialog();
         this.setState({
           email: "",
-          password: "",
+          password: ""
         });
       }
     }
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(LoginFormDialog);

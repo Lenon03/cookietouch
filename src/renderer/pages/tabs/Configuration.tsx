@@ -16,7 +16,10 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -29,27 +32,34 @@ import * as React from "react";
 
 type style = "root" | "card" | "title" | "formControl" | "table";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   card: {
-    minWidth: 275,
+    minWidth: 275
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   table: {
-    maxWidth: 700,
+    maxWidth: 700
   },
   title: {
     color: theme.palette.text.secondary,
     fontSize: 14,
-    marginBottom: 16,
-  },
+    marginBottom: 16
+  }
 });
 
-enum SpellLevels { ONE = 1, TWO = 2, THREE = 3, FOUR = 4, FIVE = 5, SIX = 6 }
+enum SpellLevels {
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+  FOUR = 4,
+  FIVE = 5,
+  SIX = 6
+}
 
 interface IProps {
   account: Account;
@@ -74,7 +84,6 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class Configuration extends React.Component<Props, IState> {
-
   public state: IState = {
     acceptAchievements: true,
     authorizedTradesFrom: [],
@@ -88,15 +97,19 @@ class Configuration extends React.Component<Props, IState> {
     spellLevel: SpellLevels.SIX,
     spells: [],
     statToBoost: BoostableStats.NONE,
-    toAddToAuthorized: -1,
+    toAddToAuthorized: -1
   };
 
   public componentDidMount() {
-    this.props.account.game.character.CharacterSelected.on(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
   }
 
   public componentWillUnmount() {
-    this.props.account.game.character.CharacterSelected.off(this.characterSelected);
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
   }
 
   public render() {
@@ -108,22 +121,40 @@ class Configuration extends React.Component<Props, IState> {
           <Grid item xs={4}>
             <Card className={classes.card}>
               <CardContent>
-                <Typography className={classes.title}>{LanguageManager.trans("automaticIncreases")}</Typography>
+                <Typography className={classes.title}>
+                  {LanguageManager.trans("automaticIncreases")}
+                </Typography>
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="statToBoost">{LanguageManager.trans("statToBoost")}</InputLabel>
+                  <InputLabel htmlFor="statToBoost">
+                    {LanguageManager.trans("statToBoost")}
+                  </InputLabel>
                   <Select
                     disabled={this.state.characterConnected === false}
                     value={this.state.statToBoost}
                     onChange={this.handleSelectChange}
                     inputProps={{ id: "statToBoost", name: "statToBoost" }}
                   >
-                    <MenuItem value={BoostableStats.NONE}>{LanguageManager.trans("none")}</MenuItem>
-                    <MenuItem value={BoostableStats.VITALITY}>{LanguageManager.trans("vitality")}</MenuItem>
-                    <MenuItem value={BoostableStats.WISDOM}>{LanguageManager.trans("wisdom")}</MenuItem>
-                    <MenuItem value={BoostableStats.STRENGTH}>{LanguageManager.trans("strength")}</MenuItem>
-                    <MenuItem value={BoostableStats.AGILITY}>{LanguageManager.trans("agility")}</MenuItem>
-                    <MenuItem value={BoostableStats.CHANCE}>{LanguageManager.trans("chance")}</MenuItem>
-                    <MenuItem value={BoostableStats.INTELLIGENCE}>{LanguageManager.trans("intelligence")}</MenuItem>
+                    <MenuItem value={BoostableStats.NONE}>
+                      {LanguageManager.trans("none")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.VITALITY}>
+                      {LanguageManager.trans("vitality")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.WISDOM}>
+                      {LanguageManager.trans("wisdom")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.STRENGTH}>
+                      {LanguageManager.trans("strength")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.AGILITY}>
+                      {LanguageManager.trans("agility")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.CHANCE}>
+                      {LanguageManager.trans("chance")}
+                    </MenuItem>
+                    <MenuItem value={BoostableStats.INTELLIGENCE}>
+                      {LanguageManager.trans("intelligence")}
+                    </MenuItem>
                   </Select>
                 </FormControl>
                 <hr />
@@ -132,7 +163,9 @@ class Configuration extends React.Component<Props, IState> {
                     <TableRow>
                       <TableCell numeric>ID</TableCell>
                       <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric>{LanguageManager.trans("level")}</TableCell>
+                      <TableCell numeric>
+                        {LanguageManager.trans("level")}
+                      </TableCell>
                       <TableCell>{LanguageManager.trans("actions")}</TableCell>
                     </TableRow>
                   </TableHead>
@@ -140,16 +173,27 @@ class Configuration extends React.Component<Props, IState> {
                     {this.state.spells.map((s, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell style={{ maxWidth: 20 }} numeric>{s.id}</TableCell>
-                          <TableCell style={{ maxWidth: 60 }}>{s.name}</TableCell>
-                          <TableCell style={{ maxWidth: 20 }} numeric>{s.level}</TableCell>
+                          <TableCell style={{ maxWidth: 20 }} numeric>
+                            {s.id}
+                          </TableCell>
+                          <TableCell style={{ maxWidth: 60 }}>
+                            {s.name}
+                          </TableCell>
+                          <TableCell style={{ maxWidth: 20 }} numeric>
+                            {s.level}
+                          </TableCell>
                           <TableCell style={{ maxWidth: 50 }}>
                             <Button
                               disabled={this.state.characterConnected === false}
                               onClick={() => {
-                                this.props.account.config.spellsToBoost = this.props.account.config.spellsToBoost.filter((sp) => sp.id !== s.id);
+                                this.props.account.config.spellsToBoost = this.props.account.config.spellsToBoost.filter(
+                                  sp => sp.id !== s.id
+                                );
                                 this.props.account.config.save();
-                                this.setState({ spells: this.props.account.config.spellsToBoost });
+                                this.setState({
+                                  spells: this.props.account.config
+                                    .spellsToBoost
+                                });
                               }}
                               size="small"
                               variant="raised"
@@ -177,7 +221,9 @@ class Configuration extends React.Component<Props, IState> {
                   InputLabelProps={{ shrink: true }}
                 />
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="spellLevel">{LanguageManager.trans("level")}</InputLabel>
+                  <InputLabel htmlFor="spellLevel">
+                    {LanguageManager.trans("level")}
+                  </InputLabel>
                   <Select
                     disabled={this.state.characterConnected === false}
                     value={this.state.spellLevel}
@@ -207,7 +253,9 @@ class Configuration extends React.Component<Props, IState> {
           <Grid item xs={4}>
             <Card className={classes.card}>
               <CardContent>
-                <Typography className={classes.title}>{LanguageManager.trans("divers")}</Typography>
+                <Typography className={classes.title}>
+                  {LanguageManager.trans("divers")}
+                </Typography>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -217,7 +265,8 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.enableSpeedHack}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("speedhack")}
                   />
@@ -231,7 +280,8 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.autoMount}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("autoMount")}
                   />
@@ -245,7 +295,8 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.acceptAchievements}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("acceptAchievements")}
                   />
@@ -259,7 +310,8 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.disconnectUponFightsLimit}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("disconnectFightsLimit")}
                   />
@@ -273,7 +325,8 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.autoRegenAccepted}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("autoRegenObjects")}
                   />
@@ -284,7 +337,9 @@ class Configuration extends React.Component<Props, IState> {
           <Grid item xs={4}>
             <Card className={classes.card}>
               <CardContent>
-                <Typography className={classes.title}>{LanguageManager.trans("exchanges")}</Typography>
+                <Typography className={classes.title}>
+                  {LanguageManager.trans("exchanges")}
+                </Typography>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -294,13 +349,16 @@ class Configuration extends React.Component<Props, IState> {
                         disabled={this.state.characterConnected === false}
                         color="primary"
                         checked={this.state.ignoreNonAuthorizedTrades}
-                        onChange={this.handleSwitchChange} />
+                        onChange={this.handleSwitchChange}
+                      />
                     }
                     label={LanguageManager.trans("ignoreNonAuthorizedTrades")}
                   />
                 </FormGroup>
                 <hr />
-                <Typography>{LanguageManager.trans("authorizedPlayers")}</Typography>
+                <Typography>
+                  {LanguageManager.trans("authorizedPlayers")}
+                </Typography>
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
@@ -317,9 +375,14 @@ class Configuration extends React.Component<Props, IState> {
                             <Button
                               disabled={this.state.characterConnected === false}
                               onClick={() => {
-                                this.props.account.config.authorizedTradesFrom = this.props.account.config.authorizedTradesFrom.filter((s) => s !== a);
+                                this.props.account.config.authorizedTradesFrom = this.props.account.config.authorizedTradesFrom.filter(
+                                  s => s !== a
+                                );
                                 this.props.account.config.save();
-                                this.setState({ authorizedTradesFrom: this.props.account.config.authorizedTradesFrom });
+                                this.setState({
+                                  authorizedTradesFrom: this.props.account
+                                    .config.authorizedTradesFrom
+                                });
                               }}
                               size="small"
                               variant="raised"
@@ -349,9 +412,14 @@ class Configuration extends React.Component<Props, IState> {
                 <Button
                   disabled={this.state.characterConnected === false}
                   onClick={() => {
-                    this.props.account.config.authorizedTradesFrom.push(this.state.toAddToAuthorized);
+                    this.props.account.config.authorizedTradesFrom.push(
+                      this.state.toAddToAuthorized
+                    );
                     this.props.account.config.save();
-                    this.setState({ authorizedTradesFrom: this.props.account.config.authorizedTradesFrom });
+                    this.setState({
+                      authorizedTradesFrom: this.props.account.config
+                        .authorizedTradesFrom
+                    });
                   }}
                   size="small"
                   variant="raised"
@@ -374,49 +442,62 @@ class Configuration extends React.Component<Props, IState> {
       autoMount: this.props.account.config.autoMount,
       autoRegenAccepted: this.props.account.config.autoRegenAccepted,
       characterConnected: true,
-      disconnectUponFightsLimit: this.props.account.config.disconnectUponFightsLimit,
+      disconnectUponFightsLimit: this.props.account.config
+        .disconnectUponFightsLimit,
       enableSpeedHack: this.props.account.config.enableSpeedHack,
-      ignoreNonAuthorizedTrades: this.props.account.config.ignoreNonAuthorizedTrades,
+      ignoreNonAuthorizedTrades: this.props.account.config
+        .ignoreNonAuthorizedTrades,
       spells: this.props.account.config.spellsToBoost,
-      statToBoost: this.props.account.config.statToBoost,
+      statToBoost: this.props.account.config.statToBoost
     });
-  }
+  };
 
   private addSpell = async () => {
-    const resp = await DataManager.get<Spells>(DataTypes.Spells, this.state.spellId);
+    const resp = await DataManager.get<Spells>(
+      DataTypes.Spells,
+      this.state.spellId
+    );
     if (resp.length === 0) {
       return;
     }
     const name = resp[0].object.nameId;
-    const spellsAdded = this.props.account.config.spellsToBoost.map((s) => s.id);
+    const spellsAdded = this.props.account.config.spellsToBoost.map(s => s.id);
     if (spellsAdded.includes(this.state.spellId)) {
       alert(LanguageManager.trans("alreadyAddSpell"));
       return;
     }
-    const respBreeds = await DataManager.get<Breeds>(DataTypes.Breeds, this.props.account.game.character.breed);
+    const respBreeds = await DataManager.get<Breeds>(
+      DataTypes.Breeds,
+      this.props.account.game.character.breed
+    );
     const spellsIds = respBreeds[0].object.breedSpellsId;
     if (!spellsIds.includes(this.state.spellId)) {
       alert(LanguageManager.trans("spellNotBreed"));
       console.log(spellsIds, this.state.spellId);
       return;
     }
-    this.props.account.config.spellsToBoost.push(new SpellToBoostEntry(this.state.spellId, name, this.state.spellLevel));
+    this.props.account.config.spellsToBoost.push(
+      new SpellToBoostEntry(this.state.spellId, name, this.state.spellLevel)
+    );
     this.props.account.config.save();
     this.setState({ spells: this.props.account.config.spellsToBoost });
-  }
+  };
 
   private handleSwitchChange = (event, checked) => {
-    this.setState({ [event.target.name]: checked } as Pick<IState, keyof IState>);
+    this.setState({ [event.target.name]: checked } as Pick<
+      IState,
+      keyof IState
+    >);
     this.props.account.config[event.target.name] = checked;
     this.props.account.config.save();
-  }
+  };
 
-  private handleSelectChange = (event) => {
+  private handleSelectChange = event => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
     this.props.account.config[event.target.name] = value;
     this.props.account.config.save();
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(Configuration);

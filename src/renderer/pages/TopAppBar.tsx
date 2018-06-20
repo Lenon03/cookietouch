@@ -5,7 +5,10 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -19,23 +22,23 @@ import LoginFormDialog from "./LoginFormDialog";
 
 type style = "root" | "flex" | "menuButton" | "appBar";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   appBar: {
     background: "linear-gradient(45deg, #1de099, #1dc8cd)",
     left: 0,
     position: "absolute",
-    top: 0,
+    top: 0
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IProps {
@@ -53,12 +56,11 @@ interface IState {
 type Props = IProps & WithStyles<style>;
 
 class TopAppBar extends React.Component<Props, IState> {
-
   public state: IState = {
     accountsManager: false,
     anchorEl: null,
     configuration: false,
-    loginForm: false,
+    loginForm: false
   };
 
   public render() {
@@ -70,10 +72,18 @@ class TopAppBar extends React.Component<Props, IState> {
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
               <MenuIcon onClick={clickMenu} />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            >
               CookieTouch
             </Typography>
             {user ? (
@@ -81,21 +91,25 @@ class TopAppBar extends React.Component<Props, IState> {
                 <IconButton
                   aria-owns={open ? "menu-appbar" : null}
                   aria-haspopup="true"
-                  onClick={(event) => this.handleMenu(event)}
+                  onClick={event => this.handleMenu(event)}
                   color="inherit"
                 >
-                  {user && user.photoURL ? <Avatar src={user.photoURL} /> : <AccountCircle />}
+                  {user && user.photoURL ? (
+                    <Avatar src={user.photoURL} />
+                  ) : (
+                    <AccountCircle />
+                  )}
                 </IconButton>
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     horizontal: "right",
-                    vertical: "top",
+                    vertical: "top"
                   }}
                   transformOrigin={{
                     horizontal: "right",
-                    vertical: "top",
+                    vertical: "top"
                   }}
                   open={open}
                   onClose={this.handleClose}
@@ -112,24 +126,36 @@ class TopAppBar extends React.Component<Props, IState> {
                 </Menu>
               </div>
             ) : (
-                <Button color="inherit" onClick={() => this.toggleLoginForm(true)}>
-                  {LanguageManager.trans("connect")}
-                </Button>
-              )}
+              <Button
+                color="inherit"
+                onClick={() => this.toggleLoginForm(true)}
+              >
+                {LanguageManager.trans("connect")}
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
-        <LoginFormDialog dialogOpen={this.state.loginForm} closeDialog={() => {
-          this.toggleLoginForm(false);
-          this.handleClose();
-        }} />
-        <AccountsManager dialogOpen={this.state.accountsManager} closeDialog={() => {
-          this.toggleAccountsManager(false);
-          this.handleClose();
-        }} />
-        <Configuration dialogOpen={this.state.configuration} closeDialog={() => {
-          this.toggleConfiguration(false);
-          this.handleClose();
-        }} />
+        <LoginFormDialog
+          dialogOpen={this.state.loginForm}
+          closeDialog={() => {
+            this.toggleLoginForm(false);
+            this.handleClose();
+          }}
+        />
+        <AccountsManager
+          dialogOpen={this.state.accountsManager}
+          closeDialog={() => {
+            this.toggleAccountsManager(false);
+            this.handleClose();
+          }}
+        />
+        <Configuration
+          dialogOpen={this.state.configuration}
+          closeDialog={() => {
+            this.toggleConfiguration(false);
+            this.handleClose();
+          }}
+        />
       </div>
     );
   }
@@ -140,19 +166,19 @@ class TopAppBar extends React.Component<Props, IState> {
 
   private handleClose = () => {
     this.setState({ anchorEl: null });
-  }
+  };
 
   private toggleLoginForm = (open: boolean) => {
     this.setState({ loginForm: open });
-  }
+  };
 
   private toggleAccountsManager = (open: boolean) => {
     this.setState({ accountsManager: open });
-  }
+  };
 
   private toggleConfiguration = (open: boolean) => {
     this.setState({ configuration: open });
-  }
+  };
 }
 
 export default withStyles(styles)<IProps>(TopAppBar);

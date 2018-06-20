@@ -1,6 +1,9 @@
 import Account from "@/account";
 import ListRender from "@material-ui/core/List";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
 import { List } from "linqts";
 import * as React from "react";
@@ -9,10 +12,10 @@ import GroupItem from "./GroupItem";
 
 type style = "root";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IState {
@@ -20,9 +23,8 @@ interface IState {
 }
 
 class Sidenav extends React.Component<WithStyles<style>, IState> {
-
   public state: IState = {
-    connectedAccounts: CookieMain.connectedAccounts,
+    connectedAccounts: CookieMain.connectedAccounts
   };
 
   public componentDidMount() {
@@ -40,17 +42,13 @@ class Sidenav extends React.Component<WithStyles<style>, IState> {
     return (
       <div className={classes.root}>
         <ListRender component="nav">
-        {connectedAccounts.ToArray().map((a, idx) => {
-          if (a.hasGroup) {
-            return (
-              <GroupItem key={idx} group={a.group} />
-            );
-          } else {
-            return (
-              <AccountItem key={idx} account={a} />
-            );
-          }
-        })}
+          {connectedAccounts.ToArray().map((a, idx) => {
+            if (a.hasGroup) {
+              return <GroupItem key={idx} group={a.group} />;
+            } else {
+              return <AccountItem key={idx} account={a} />;
+            }
+          })}
         </ListRender>
       </div>
     );
@@ -58,7 +56,7 @@ class Sidenav extends React.Component<WithStyles<style>, IState> {
 
   private entitiesUpdated = () => {
     this.setState({ connectedAccounts: CookieMain.connectedAccounts });
-  }
+  };
 }
 
 export default withStyles(styles)<{}>(Sidenav);

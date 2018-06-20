@@ -16,7 +16,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -24,41 +27,49 @@ import CookieMain from "@renderer/CookieMain";
 import { Enumerable } from "linqts";
 import * as React from "react";
 
-type style = "root" | "heading" | "formControl" | "chips" | "chip" | "list" | "expansionpanel" | "regroupall";
+type style =
+  | "root"
+  | "heading"
+  | "formControl"
+  | "chips"
+  | "chip"
+  | "list"
+  | "expansionpanel"
+  | "regroupall";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   chip: {
-    margin: theme.spacing.unit / 4,
+    margin: theme.spacing.unit / 4
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   expansionpanel: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   formControl: {
     margin: theme.spacing.unit,
-    width: 150,
+    width: 150
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+    fontWeight: theme.typography.fontWeightRegular
   },
   list: {
     alignItems: "center",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   regroupall: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   root: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 interface IState {
@@ -69,12 +80,11 @@ interface IState {
 }
 
 class PlanningConfig extends React.Component<WithStyles<style>, IState> {
-
   public readonly state: IState = {
     accountsList: GlobalConfiguration.accountsList,
     active: false,
     planning: Enumerable.Repeat(false, 24).ToArray(),
-    selectedAccounts: [],
+    selectedAccounts: []
   };
 
   constructor(props) {
@@ -98,9 +108,9 @@ class PlanningConfig extends React.Component<WithStyles<style>, IState> {
       PaperProps: {
         style: {
           maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250,
-        },
-      },
+          width: 250
+        }
+      }
     };
 
     return (
@@ -112,64 +122,85 @@ class PlanningConfig extends React.Component<WithStyles<style>, IState> {
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-          <div className={classes.regroupall}>
-            <div className={classes.expansionpanel}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch color="primary" checked={this.state.active} onChange={this.activeChanged} />
-                  }
-                  label={LanguageManager.trans("planningActivate")}
-                />
-              </FormGroup>
+            <div className={classes.regroupall}>
+              <div className={classes.expansionpanel}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={this.state.active}
+                        onChange={this.activeChanged}
+                      />
+                    }
+                    label={LanguageManager.trans("planningActivate")}
+                  />
+                </FormGroup>
 
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="select-multiple-chip">Accounts</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedAccounts.map((a) => a.username)}
-                  onChange={this.handleChangeAccounts}
-                  input={<Input id="select-multiple-chip" />}
-                  renderValue={(selected) => (
-                    <div className={classes.chips}>
-                      {(selected as React.ReactText[]).map((value) => <Chip key={value} label={value} className={classes.chip} />)}
-                    </div>
-                  )}
-                  MenuProps={menuProps}
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="select-multiple-chip">
+                    Accounts
+                  </InputLabel>
+                  <Select
+                    multiple
+                    value={this.state.selectedAccounts.map(a => a.username)}
+                    onChange={this.handleChangeAccounts}
+                    input={<Input id="select-multiple-chip" />}
+                    renderValue={selected => (
+                      <div className={classes.chips}>
+                        {(selected as React.ReactText[]).map(value => (
+                          <Chip
+                            key={value}
+                            label={value}
+                            className={classes.chip}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    MenuProps={menuProps}
+                  >
+                    {this.state.accountsList.map((acc, idx) => (
+                      <MenuItem
+                        key={idx}
+                        value={acc.username}
+                        // style={{
+                        //   fontWeight:
+                        //     this.state.name.indexOf(name) === -1
+                        //       ? theme.typography.fontWeightRegular
+                        //       : theme.typography.fontWeightMedium,
+                        // }}
+                      >
+                        {acc.username}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  onClick={this.validate}
+                  variant="raised"
+                  color="primary"
                 >
-                  {this.state.accountsList.map((acc, idx) => (
-                    <MenuItem
-                      key={idx}
-                      value={acc.username}
-                    // style={{
-                    //   fontWeight:
-                    //     this.state.name.indexOf(name) === -1
-                    //       ? theme.typography.fontWeightRegular
-                    //       : theme.typography.fontWeightMedium,
-                    // }}
-                    >
-                      {acc.username}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <Button
-                onClick={this.validate}
-                variant="raised"
-                color="primary"
-              >
-                {LanguageManager.trans("validate")}
-              </Button>
+                  {LanguageManager.trans("validate")}
+                </Button>
+              </div>
+              <List className={classes.list} component="nav">
+                {this.state.planning.map((act, index) => (
+                  <ListItem
+                    key={index}
+                    button
+                    onClick={event => this.itemClicked(index)}
+                    style={{
+                      backgroundColor: act ? "green" : "red",
+                      height: 80,
+                      paddingLeft: 12,
+                      width: 55
+                    }}
+                  >
+                    <ListItemText primary={`${index}h`} />
+                  </ListItem>
+                ))}
+              </List>
             </div>
-            <List className={ classes.list } component="nav">
-            {this.state.planning.map((act, index) => (
-              <ListItem key={index} button onClick={(event) => this.itemClicked(index)}
-              style={ { backgroundColor: act ? "green" : "red", width: 55, height: 80, paddingLeft: 12 } }>
-                <ListItemText primary={`${index}h`} />
-              </ListItem>
-            ))}
-            </List>
-          </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
@@ -180,33 +211,37 @@ class PlanningConfig extends React.Component<WithStyles<style>, IState> {
     const planning = this.state.planning;
     planning[index] = !planning[index];
     this.setState({ planning });
-  }
+  };
 
-  private activeChanged = (event) => {
+  private activeChanged = event => {
     this.setState({ active: event.target.checked });
-  }
+  };
 
   private validate = () => {
     for (const acc of this.state.selectedAccounts) {
-      const account = GlobalConfiguration._accounts.First((a) => a.username === acc.username);
+      const account = GlobalConfiguration._accounts.First(
+        a => a.username === acc.username
+      );
       account.planificationActivated = this.state.active;
       account.planification = this.state.planning;
     }
     GlobalConfiguration.save();
     CookieMain.refreshEntities();
-  }
+  };
 
   private entitiesUpdated = () => {
     this.setState({
       accountsList: GlobalConfiguration.accountsList,
-      selectedAccounts: [],
+      selectedAccounts: []
     });
-  }
+  };
 
-  private handleChangeAccounts = (event) => {
-    const accounts = this.state.accountsList.filter((a) => event.target.value.includes(a.username));
+  private handleChangeAccounts = event => {
+    const accounts = this.state.accountsList.filter(a =>
+      event.target.value.includes(a.username)
+    );
     this.setState({ selectedAccounts: accounts });
-  }
+  };
 }
 
 export default withStyles(styles)<{}>(PlanningConfig);

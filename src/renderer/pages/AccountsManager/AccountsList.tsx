@@ -11,16 +11,19 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
 import { List as LinqList } from "linqts";
 import * as React from "react";
 
 type style = "root" | "icon";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   icon: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.main
   },
   root: {
     color: theme.palette.text.secondary,
@@ -28,8 +31,8 @@ const styles: StyleRulesCallback<style> = (theme) => ({
     margin: theme.spacing.unit,
     maxHeight: 400,
     overflowY: "auto",
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 });
 
 interface IProps {
@@ -44,10 +47,9 @@ interface IState {
 }
 
 class AccountsList extends React.Component<Props, IState> {
-
   public state: IState = {
     accountsList: GlobalConfiguration.accountsList,
-    accountsToConnect: [],
+    accountsToConnect: []
   };
 
   public componentDidMount() {
@@ -66,7 +68,8 @@ class AccountsList extends React.Component<Props, IState> {
       <Paper className={classes.root}>
         <List>
           {accountsList.map((value, idx) => (
-            <ListItem onDoubleClick={() => this.connectAccount(value)}
+            <ListItem
+              onDoubleClick={() => this.connectAccount(value)}
               key={idx}
               dense
               button
@@ -78,31 +81,42 @@ class AccountsList extends React.Component<Props, IState> {
                 disableRipple
               />
               <ListItemText primary={value.username} />
-              {this.state.accountsToConnect.indexOf(value) !== -1
-                && this.state.accountsToConnect.length > 1
-                && this.state.accountsToConnect.length <= 8 ? (
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <FontAwesomeIcon className={classes.icon} size="lg" icon={faChessQueen} onClick={() => this.connectGroup(value)} />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                ) : (
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <FontAwesomeIcon className={classes.icon} size="lg" icon={faTrash} onClick={() => {
+              {this.state.accountsToConnect.indexOf(value) !== -1 &&
+              this.state.accountsToConnect.length > 1 &&
+              this.state.accountsToConnect.length <= 8 ? (
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <FontAwesomeIcon
+                      className={classes.icon}
+                      size="lg"
+                      icon={faChessQueen}
+                      onClick={() => this.connectGroup(value)}
+                    />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              ) : (
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <FontAwesomeIcon
+                      className={classes.icon}
+                      size="lg"
+                      icon={faTrash}
+                      onClick={() => {
                         if (confirm(LanguageManager.trans("delete"))) {
                           this.removeAccount(value);
                         }
-                      }} />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                )}
+                      }}
+                    />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              )}
             </ListItem>
           ))}
         </List>
         <Button
           disabled={this.state.accountsToConnect.length < 2}
-          style={{ float: "right" }} onClick={() => this.connectSelectedAccounts()}
+          style={{ float: "right" }}
+          onClick={() => this.connectSelectedAccounts()}
           variant="raised"
           color="primary"
         >
@@ -112,7 +126,7 @@ class AccountsList extends React.Component<Props, IState> {
     );
   }
 
-  private handleToggle = (value) => () => {
+  private handleToggle = value => () => {
     const { accountsToConnect } = this.state;
     const currentIndex = accountsToConnect.indexOf(value);
     const newChecked = [...accountsToConnect];
@@ -124,33 +138,35 @@ class AccountsList extends React.Component<Props, IState> {
     }
 
     this.setState({ accountsToConnect: newChecked });
-  }
+  };
 
   private entitiesUpdated = () => {
     this.setState({
       accountsList: GlobalConfiguration.accountsList,
-      accountsToConnect: [],
+      accountsToConnect: []
     });
-  }
+  };
 
   private connectGroup = (chief: AccountConfiguration) => {
-    const members = this.state.accountsToConnect.filter((a) => a.username !== chief.username);
+    const members = this.state.accountsToConnect.filter(
+      a => a.username !== chief.username
+    );
     CookieMain.connectGroup(chief, new LinqList(members));
     this.setState({ accountsToConnect: [] });
     this.props.closeDialog();
-  }
+  };
 
   private connectAccount = (account: AccountConfiguration) => {
     CookieMain.connectAccounts(new LinqList([account]));
     this.setState({ accountsToConnect: [] });
     this.props.closeDialog();
-  }
+  };
 
   private connectSelectedAccounts = () => {
     CookieMain.connectAccounts(new LinqList(this.state.accountsToConnect));
     this.setState({ accountsToConnect: [] });
     this.props.closeDialog();
-  }
+  };
 
   private removeAccount(accountConfig: AccountConfiguration) {
     GlobalConfiguration.removeAccount(accountConfig);

@@ -13,7 +13,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
-import withStyles, { StyleRulesCallback, WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CookieMain from "@renderer/CookieMain";
@@ -21,16 +24,16 @@ import * as React from "react";
 
 type style = "root" | "formControl";
 
-const styles: StyleRulesCallback<style> = (theme) => ({
+const styles: StyleRulesCallback<style> = theme => ({
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   root: {
     color: theme.palette.text.secondary,
     flexGrow: 1,
     margin: theme.spacing.unit,
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 });
 
 interface IState {
@@ -43,19 +46,21 @@ interface IState {
 }
 
 class AddAccountForm extends React.Component<WithStyles<style>, IState> {
-
   public state: IState = {
     character: "",
     password: "",
     server: -1,
     servers: new Dictionary(),
     showPassword: false,
-    username: "",
+    username: ""
   };
 
   constructor(props) {
     super(props);
-    DataManager.get<Servers>(DataTypes.Servers, ...[401, 403, 404, 405, 406, 407]).then((data) => {
+    DataManager.get<Servers>(
+      DataTypes.Servers,
+      ...[401, 403, 404, 405, 406, 407]
+    ).then(data => {
       const servers = new Dictionary<number, string>();
       for (const server of data) {
         servers.add(server.id, server.object.nameId);
@@ -70,7 +75,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
     return (
       <Paper className={classes.root}>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="username">{LanguageManager.trans("username")}</InputLabel>
+          <InputLabel htmlFor="username">
+            {LanguageManager.trans("username")}
+          </InputLabel>
           <Input
             autoFocus
             id="username"
@@ -81,7 +88,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
           />
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="password">{LanguageManager.trans("password")}</InputLabel>
+          <InputLabel htmlFor="password">
+            {LanguageManager.trans("password")}
+          </InputLabel>
           <Input
             id="password"
             type={this.state.showPassword ? "text" : "password"}
@@ -101,7 +110,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
           />
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="server">{LanguageManager.trans("server")}</InputLabel>
+          <InputLabel htmlFor="server">
+            {LanguageManager.trans("server")}
+          </InputLabel>
           <Select
             value={this.state.server}
             onChange={this.handleSelectChange}
@@ -110,7 +121,7 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
             <MenuItem value={-1}>
               <em>{LanguageManager.trans("none")}</em>
             </MenuItem>
-            {this.state.servers.keys().map((key) => (
+            {this.state.servers.keys().map(key => (
               <MenuItem key={key} value={key}>
                 {this.state.servers.getValue(key)}
               </MenuItem>
@@ -118,7 +129,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
           </Select>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="character">{LanguageManager.trans("character")}</InputLabel>
+          <InputLabel htmlFor="character">
+            {LanguageManager.trans("character")}
+          </InputLabel>
           <Input
             autoFocus
             id="character"
@@ -129,8 +142,11 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
           />
         </FormControl>
         <Button
-          disabled={this.state.username.length === 0 || this.state.password.length === 0}
-          style={{ float: "right" }} onClick={this.addAccount}
+          disabled={
+            this.state.username.length === 0 || this.state.password.length === 0
+          }
+          style={{ float: "right" }}
+          onClick={this.addAccount}
           variant="raised"
           color="primary"
         >
@@ -140,34 +156,42 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
     );
   }
 
-  private handleChange = (prop) => (event) => {
+  private handleChange = prop => event => {
     this.setState({ [prop]: event.target.value } as Pick<IState, keyof IState>);
-  }
+  };
 
-  private handleSelectChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value } as Pick<IState, keyof IState>);
-  }
+  private handleSelectChange = event => {
+    this.setState({ [event.target.name]: event.target.value } as Pick<
+      IState,
+      keyof IState
+    >);
+  };
 
-  private handleMouseDownPassword = (event) => {
+  private handleMouseDownPassword = event => {
     event.preventDefault();
-  }
+  };
 
   private handleClickShowPasssword = () => {
-    this.setState((prev) => ({ showPassword: !prev.showPassword }));
-  }
+    this.setState(prev => ({ showPassword: !prev.showPassword }));
+  };
 
   private addAccount = () => {
     const { character, username, password, server } = this.state;
-    GlobalConfiguration.addAccountAndSave(username, password, server, character);
+    GlobalConfiguration.addAccountAndSave(
+      username,
+      password,
+      server,
+      character
+    );
     CookieMain.refreshEntities();
     this.setState({
       character: "",
       password: "",
       server: -1,
       showPassword: false,
-      username: "",
+      username: ""
     });
-  }
+  };
 }
 
 export default withStyles(styles)<{}>(AddAccountForm);

@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { getCacheSize } from "@/utils/Sizes";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -53,11 +54,14 @@ class AccountsManager extends React.Component<Props, {}> {
               <Grid item xs={5}>
                 <AddAccountForm />
               </Grid>
-              <Grid item xs={12}>
+              <Grid container spacing={0}>
                 <CharacterCreator />
               </Grid>
-              <Grid item xs={12}>
+              <Grid container spacing={0}>
                 <PlanningConfig />
+              </Grid>
+              <Grid container spacing={0}>
+                {(getCacheSize() / 1024).toFixed(2)} Ko
               </Grid>
             </Grid>
           </DialogContent>

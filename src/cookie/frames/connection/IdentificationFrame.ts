@@ -2,6 +2,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
+import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
 import Account from "@account";
 import DTConstants from "@protocol/DTConstants";
 import * as moment from "moment";
@@ -38,6 +39,11 @@ export default class IdentificationFrame {
     this.account.dispatcher.register(
       "IdentificationFailedBannedMessage",
       this.HandleIdentificationFailedBannedMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "IdentificationFailedMessage",
+      this.HandleIdentificationFailedMessage,
       this
     );
   }
@@ -109,5 +115,19 @@ export default class IdentificationFrame {
         IdentificationFailureReasonEnum[message.reason]
       } [${date.toDateString()}]`
     );
+  }
+
+  private async HandleIdentificationFailedMessage(
+    account: Account,
+    message: IdentificationFailedMessage
+  ) {
+    switch (message.reason as IdentificationFailureReasonEnum) {
+      case IdentificationFailureReasonEnum.BANNED:
+        account.logger.logError(
+          LanguageManager.trans("identificationFrame"),
+          LanguageManager.trans("accountBan")
+        );
+        break;
+    }
   }
 }

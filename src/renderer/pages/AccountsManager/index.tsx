@@ -1,6 +1,4 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { getCacheSize } from "@/utils/Sizes";
-import { staticPath } from "@/utils/staticPath";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -11,10 +9,10 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
-import { rmdirSync } from "fs";
 import * as React from "react";
 import AccountsList from "./AccountsList";
 import AddAccountForm from "./AddAccountForm";
+import CacheManager from "./CacheManager";
 import CharacterCreator from "./CharacterCreator";
 import PlanningConfig from "./PlanningConfig";
 
@@ -26,10 +24,6 @@ const styles: StyleRulesCallback<style> = theme => ({
   }
 });
 
-interface IState {
-  cacheSize: number;
-}
-
 interface IProps {
   dialogOpen: boolean;
   closeDialog: () => void;
@@ -37,19 +31,9 @@ interface IProps {
 
 type Props = IProps & WithStyles<style>;
 
-class AccountsManager extends React.Component<Props, IState> {
-  public state: IState = {
-    cacheSize: 0
-  };
-
-  public componentDidMount() {
-    console.log("OOKOKOK");
-    this.updateCacheSize();
-  }
-
+class AccountsManager extends React.Component<Props, {}> {
   public render() {
     const { classes, dialogOpen, closeDialog } = this.props;
-    const { cacheSize } = this.state;
 
     return (
       <div className={classes.root}>
@@ -70,24 +54,14 @@ class AccountsManager extends React.Component<Props, IState> {
               <Grid item xs={5}>
                 <AddAccountForm />
               </Grid>
-              <Grid container spacing={0}>
+              <Grid item xs={12}>
                 <CharacterCreator />
               </Grid>
-              <Grid container spacing={0}>
+              <Grid item xs={12}>
                 <PlanningConfig />
               </Grid>
-              <Grid container spacing={0}>
-                {(cacheSize / 1024).toFixed(2)} Ko
-                <Button
-                  color="primary"
-                  variant="raised"
-                  onClick={() => {
-                    rmdirSync(staticPath);
-                    this.updateCacheSize();
-                  }}
-                >
-                  DELETE
-                </Button>
+              <Grid item xs={12}>
+                <CacheManager />
               </Grid>
             </Grid>
           </DialogContent>
@@ -104,12 +78,6 @@ class AccountsManager extends React.Component<Props, IState> {
       </div>
     );
   }
-
-  private updateCacheSize = () => {
-    const cacheSize = getCacheSize();
-    console.log(cacheSize);
-    this.setState({ cacheSize });
-  };
 }
 
 export default withStyles(styles)<IProps>(AccountsManager);

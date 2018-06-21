@@ -1,5 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { getCacheSize } from "@/utils/Sizes";
+import { staticPath } from "@/utils/staticPath";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,6 +11,7 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
+import { rmdirSync } from "fs";
 import * as React from "react";
 import AccountsList from "./AccountsList";
 import AddAccountForm from "./AddAccountForm";
@@ -24,6 +26,10 @@ const styles: StyleRulesCallback<style> = theme => ({
   }
 });
 
+interface IState {
+  cacheSize: number;
+}
+
 interface IProps {
   dialogOpen: boolean;
   closeDialog: () => void;
@@ -31,9 +37,19 @@ interface IProps {
 
 type Props = IProps & WithStyles<style>;
 
-class AccountsManager extends React.Component<Props, {}> {
+class AccountsManager extends React.Component<Props, IState> {
+  public state: IState = {
+    cacheSize: 0
+  };
+
+  public componentDidMount() {
+    console.log("OOKOKOK");
+    this.updateCacheSize();
+  }
+
   public render() {
     const { classes, dialogOpen, closeDialog } = this.props;
+    const { cacheSize } = this.state;
 
     return (
       <div className={classes.root}>
@@ -61,7 +77,17 @@ class AccountsManager extends React.Component<Props, {}> {
                 <PlanningConfig />
               </Grid>
               <Grid container spacing={0}>
-                {(getCacheSize() / 1024).toFixed(2)} Ko
+                {(cacheSize / 1024).toFixed(2)} Ko
+                <Button
+                  color="primary"
+                  variant="raised"
+                  onClick={() => {
+                    rmdirSync(staticPath);
+                    this.updateCacheSize();
+                  }}
+                >
+                  DELETE
+                </Button>
               </Grid>
             </Grid>
           </DialogContent>
@@ -78,6 +104,12 @@ class AccountsManager extends React.Component<Props, {}> {
       </div>
     );
   }
+
+  private updateCacheSize = () => {
+    const cacheSize = getCacheSize();
+    console.log(cacheSize);
+    this.setState({ cacheSize });
+  };
 }
 
 export default withStyles(styles)<IProps>(AccountsManager);

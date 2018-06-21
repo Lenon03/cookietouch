@@ -456,7 +456,7 @@ export default class ScriptsManager {
       PlayerLifeStatusEnum.STATUS_TOMBSTONE
     ) {
       this.account.logger.logInfo(
-        LanguageManager.trans(LanguageManager.trans("scriptsManager")),
+        LanguageManager.trans("scriptsManager"),
         LanguageManager.trans("characterTombstone")
       );
       await this.account.network.sendMessageFree(
@@ -472,7 +472,7 @@ export default class ScriptsManager {
       PlayerLifeStatusEnum.STATUS_PHANTOM
     ) {
       this.account.logger.logInfo(
-        LanguageManager.trans(LanguageManager.trans("scriptsManager")),
+        LanguageManager.trans("scriptsManager"),
         LanguageManager.trans("characterPhantom")
       );
       this.currentFunctionType = FunctionTypes.PHENIX;

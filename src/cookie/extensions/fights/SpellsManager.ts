@@ -33,7 +33,7 @@ export default class SpellsManager {
     // Check if we have an AOE spell we need to cast
     if (this.spellIdToCast !== -1 && this.spellIdToCast === spell.spellId) {
       this.account.logger.logDebug(
-        LanguageManager.trans(LanguageManager.trans("spellsManager")),
+        LanguageManager.trans("spellsManager"),
         LanguageManager.trans(
           "spellLaunchTouched",
           spell.spellName,

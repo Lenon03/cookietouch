@@ -16,12 +16,14 @@ const move = [
   { map: 80219140, path: "right" },
   { map: 80219652, path: "right" },
   { map: 80220164, path: "right" },
-  { map: 80220676, custom: function* () {
-    yield* npc.npc(-2, 1)
-    if (isInDialog()) {
-      printMessage("Je parle au mec pour descendre à Astrub.")
-      yield* npc.reply(-1)
-      yield* npc.reply(-1)
-    }
-  }}
+  { map: 80220676, custom: goAstrub }
 ]
+
+function* goAstrub() {
+  yield* npc.npc(-2, 1)
+  if (isInDialog()) {
+    printMessage("Je parle au mec pour descendre à Astrub.")
+    yield* npc.reply(-1)
+    yield* npc.reply(-1)
+  }
+}

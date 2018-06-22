@@ -90,7 +90,7 @@ class Statistics extends React.Component<Props, IState> {
             <br />
             <Typography>
               {LanguageManager.trans("averageFightTime")}{" "}
-              {this.state.averageFightTime}
+              {this.formatTime(this.state.averageFightTime)}
             </Typography>
             <br />
             <Typography>
@@ -125,12 +125,12 @@ class Statistics extends React.Component<Props, IState> {
             <br />
             <Typography>
               {LanguageManager.trans("totalFightsTime")}{" "}
-              {this.state.totalFightsTime}
+              {this.formatTime(this.state.totalFightsTime)}
             </Typography>
             <br />
             <Typography>
               {LanguageManager.trans("totalGathersTime")}{" "}
-              {this.state.totalGathersTime}
+              {this.formatTime(this.state.totalGathersTime)}
             </Typography>
           </Grid>
           <Grid item xs={10}>
@@ -224,6 +224,10 @@ class Statistics extends React.Component<Props, IState> {
       totalFightsTime: this.props.account.statistics.totalFightsTime,
       totalGathersTime: this.props.account.statistics.totalGathersTime
     });
+  };
+
+  private formatTime = (num: number): string => {
+    return `${(num / 1000).toFixed(2)}s`;
   };
 }
 

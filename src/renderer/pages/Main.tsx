@@ -22,7 +22,8 @@ const styles: StyleRulesCallback<style> = theme => ({
     textAlign: "center"
   },
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingBottom: 28
   }
 });
 

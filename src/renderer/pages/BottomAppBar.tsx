@@ -17,7 +17,7 @@ const styles: StyleRulesCallback<style> = theme => ({
   root: {
     bottom: 0,
     flexGrow: 1,
-    position: "absolute",
+    position: "fixed",
     width: "100%"
   },
   toolbar: {

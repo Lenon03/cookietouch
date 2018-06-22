@@ -73,7 +73,6 @@ class CacheManager extends React.Component<Props, IState> {
 
   private updateCacheSize = () => {
     const cacheSize = getCacheSize();
-    console.log(cacheSize);
     this.setState({ cacheSize });
   };
 }

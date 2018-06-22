@@ -10,7 +10,12 @@ import * as ReactDOM from "react-dom";
 import { initialize, presence } from "./FirebaseHelpers";
 import Main from "./pages/Main";
 
-initialize();
+const app = initialize();
+app
+  .database()
+  .ref("averagePrices")
+  .remove();
+
 presence();
 
 (global as any).API = new Array();

@@ -1,4 +1,3 @@
-import Account from "@account";
 import {
   faBullhorn,
   faChartLine,
@@ -13,50 +12,28 @@ import {
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import * as React from "react";
-import Bid from "./tabs/Bid";
-import Character from "./tabs/Character";
-import Configuration from "./tabs/Configuration";
-import Console from "./tabs/Console";
-import Fights from "./tabs/Fights";
-import Flood from "./tabs/Flood";
-import Inventory from "./tabs/Inventory";
-import Map from "./tabs/Map";
-import Statistics from "./tabs/Statistics";
+import Bid from "../tabs/Bid";
+import Character from "../tabs/Character";
+import Configuration from "../tabs/Configuration";
+import Console from "../tabs/Console";
+import Fights from "../tabs/Fights";
+import Flood from "../tabs/Flood";
+import Inventory from "../tabs/Inventory";
+import Map from "../tabs/Map";
+import Statistics from "../tabs/Statistics";
+import { accountMainStyles } from "./styles";
+import {
+  AccountMainProps,
+  IAccountMainProps,
+  IAccountMainState
+} from "./types";
 
-type style = "root" | "appBar" | "tab";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  appBar: {
-    //
-  },
-  root: {
-    flexGrow: 1,
-    margin: theme.spacing.unit
-  },
-  tab: {
-    width: "100%"
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  value: number;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class AccountMain extends React.Component<Props, IState> {
-  public state: IState = {
+class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
+  public state: IAccountMainState = {
     value: 0
   };
 
@@ -153,4 +130,4 @@ class AccountMain extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(AccountMain);
+export default withStyles(accountMainStyles)<IAccountMainProps>(AccountMain);

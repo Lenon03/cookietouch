@@ -28,6 +28,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { remote } from "electron";
 import { List } from "linqts";
+import { basename } from "path";
 import * as React from "react";
 
 type style = "root" | "table" | "card" | "title" | "formControl";
@@ -382,7 +383,10 @@ class Bid extends React.Component<Props, IState> {
     this.setState({
       interval: this.props.account.extensions.bid.config.interval,
       objects: this.props.account.extensions.bid.config.objectsToSell.ToArray(),
-      script: this.props.account.extensions.bid.config.scriptPath
+      script: basename(
+        this.props.account.extensions.bid.config.scriptPath,
+        ".js"
+      )
     });
   };
 

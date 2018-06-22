@@ -1,5 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
+import Account from "@/account";
 
 export default class QueueFrame {
   private account: Account;

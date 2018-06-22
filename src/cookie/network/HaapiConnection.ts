@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { HaapiErrorReasons, IHaapi } from "@/network/IHaapi";
-import DTConstants from "@protocol/DTConstants";
+import DTConstants from "@/protocol/DTConstants";
 import axios from "axios";
 
 export default class HaapiConnection {

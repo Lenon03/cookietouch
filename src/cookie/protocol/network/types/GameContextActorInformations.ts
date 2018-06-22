@@ -1,6 +1,6 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import Type from "./Type";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Type from "@/protocol/network/types/Type";
 
 export default class GameContextActorInformations extends Type {
   public contextualId: number;

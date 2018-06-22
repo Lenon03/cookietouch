@@ -1,4 +1,4 @@
-import ExchangeCraftResultMessage from "./ExchangeCraftResultMessage";
+import ExchangeCraftResultMessage from "@/protocol/network/messages/ExchangeCraftResultMessage";
 
 export default class ExchangeCraftResultWithObjectIdMessage extends ExchangeCraftResultMessage {
   public objectGenericId: number;

@@ -1,7 +1,7 @@
-import Account from "@account";
-import NpcAction from "../actions/npcs/NpcAction";
-import NpcBankAction from "../actions/npcs/NpcBankAction";
-import ReplyAction from "../actions/npcs/ReplyAction";
+import Account from "@/account";
+import NpcAction from "@/scripts/actions/npcs/NpcAction";
+import NpcBankAction from "@/scripts/actions/npcs/NpcBankAction";
+import ReplyAction from "@/scripts/actions/npcs/ReplyAction";
 
 export default class NpcAPI {
   private account: Account;

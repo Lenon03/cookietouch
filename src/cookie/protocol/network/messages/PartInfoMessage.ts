@@ -1,5 +1,5 @@
-import ContentPart from "@protocol/network/types/ContentPart";
-import Message from "./Message";
+import ContentPart from "@/protocol/network/types/ContentPart";
+import Message from "@/protocol/network/messages/Message";
 
 export default class PartInfoMessage extends Message {
   public part: ContentPart;

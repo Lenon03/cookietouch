@@ -1,5 +1,5 @@
-import PartyMemberGeoPosition from "@protocol/network/types/PartyMemberGeoPosition";
-import AbstractPartyMessage from "./AbstractPartyMessage";
+import PartyMemberGeoPosition from "@/protocol/network/types/PartyMemberGeoPosition";
+import AbstractPartyMessage from "@/protocol/network/messages/AbstractPartyMessage";
 
 export default class PartyLocateMembersMessage extends AbstractPartyMessage {
   public geopositions: PartyMemberGeoPosition[];

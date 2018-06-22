@@ -1,6 +1,6 @@
-import Account from "@account";
-import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class MoveToCellAction extends ScriptAction {
   public _name: string = "MoveToCellAction";

@@ -1,5 +1,5 @@
-import ObjectItemNotInContainer from "@protocol/network/types/ObjectItemNotInContainer";
-import ExchangeCraftResultWithObjectDescMessage from "./ExchangeCraftResultWithObjectDescMessage";
+import ObjectItemNotInContainer from "@/protocol/network/types/ObjectItemNotInContainer";
+import ExchangeCraftResultWithObjectDescMessage from "@/protocol/network/messages/ExchangeCraftResultWithObjectDescMessage";
 
 export default class ExchangeCraftResultMagicWithObjectDescMessage extends ExchangeCraftResultWithObjectDescMessage {
   public magicPoolStatus: number;

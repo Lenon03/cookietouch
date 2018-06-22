@@ -1,5 +1,5 @@
-import GameFightFighterLightInformations from "@protocol/network/types/GameFightFighterLightInformations";
-import Message from "./Message";
+import GameFightFighterLightInformations from "@/protocol/network/types/GameFightFighterLightInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class MapRunningFightDetailsMessage extends Message {
   public attackers: GameFightFighterLightInformations[];

@@ -1,4 +1,4 @@
-import AbstractFightTeamInformations from "./AbstractFightTeamInformations";
+import AbstractFightTeamInformations from "@/protocol/network/types/AbstractFightTeamInformations";
 
 export default class FightTeamLightInformations extends AbstractFightTeamInformations {
 

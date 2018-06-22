@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import JobEntry from "@/game/character/jobs/JobEntry";
-import Account from "@account";
+import Account from "@/account";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles, {
   StyleRulesCallback,

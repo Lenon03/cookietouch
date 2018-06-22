@@ -1,4 +1,4 @@
-import GameRolePlayDelayedActionMessage from "./GameRolePlayDelayedActionMessage";
+import GameRolePlayDelayedActionMessage from "@/protocol/network/messages/GameRolePlayDelayedActionMessage";
 
 export default class GameRolePlayDelayedObjectUseMessage extends GameRolePlayDelayedActionMessage {
   public objectGID: number;

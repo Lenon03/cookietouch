@@ -1,5 +1,5 @@
-import ObjectEffect from "./ObjectEffect";
-import Type from "./Type";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
+import Type from "@/protocol/network/types/Type";
 
 export default class BidExchangerObjectInfo extends Type {
   public effects: ObjectEffect[];

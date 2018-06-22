@@ -1,13 +1,13 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import StorageGetAllItemsAction from "../actions/storage/StorageGetAllItemsAction";
-import StorageGetExistingItemsAction from "../actions/storage/StorageGetExistingItemsAction";
-import StorageGetItemAction from "../actions/storage/StorageGetItemAction";
-import StorageGetKamasAction from "../actions/storage/StorageGetKamasAction";
-import StoragePutAllItemsAction from "../actions/storage/StoragePutAllItemsAction";
-import StoragePutExistingItemsAction from "../actions/storage/StoragePutExistingItemsAction";
-import StoragePutItemAction from "../actions/storage/StoragePutItemAction";
-import StoragePutKamasAction from "../actions/storage/StoragePutKamasAction";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import StorageGetAllItemsAction from "@/scripts/actions/storage/StorageGetAllItemsAction";
+import StorageGetExistingItemsAction from "@/scripts/actions/storage/StorageGetExistingItemsAction";
+import StorageGetItemAction from "@/scripts/actions/storage/StorageGetItemAction";
+import StorageGetKamasAction from "@/scripts/actions/storage/StorageGetKamasAction";
+import StoragePutAllItemsAction from "@/scripts/actions/storage/StoragePutAllItemsAction";
+import StoragePutExistingItemsAction from "@/scripts/actions/storage/StoragePutExistingItemsAction";
+import StoragePutItemAction from "@/scripts/actions/storage/StoragePutItemAction";
+import StoragePutKamasAction from "@/scripts/actions/storage/StoragePutKamasAction";
 
 export default class StorageAPI {
   private account: Account;

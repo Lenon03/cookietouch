@@ -1,7 +1,7 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import { Mutex } from "@utils/Semaphore";
-import { isEmpty } from "@utils/String";
-import { Anticaptcha } from "./Anticaptcha";
+import { Mutex } from "@/utils/Semaphore";
+import { isEmpty } from "@/utils/String";
+import { Anticaptcha } from "@/core/Anticaptcha";
 
 const mutex = new Mutex();
 

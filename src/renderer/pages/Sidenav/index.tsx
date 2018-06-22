@@ -7,8 +7,8 @@ import withStyles, {
 import CookieMain from "@renderer/CookieMain";
 import { List } from "linqts";
 import * as React from "react";
-import AccountItem from "./AccountItem";
-import GroupItem from "./GroupItem";
+import AccountItem from "@renderer/pages/Sidenav/AccountItem";
+import GroupItem from "@renderer/pages/Sidenav/GroupItem";
 
 type style = "root";
 

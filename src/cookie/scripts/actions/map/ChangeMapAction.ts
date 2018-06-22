@@ -1,10 +1,10 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
-import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
-import { getRandomInt } from "@utils/Random";
-import { capitalize } from "@utils/String";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
+import { getRandomInt } from "@/utils/Random";
+import { capitalize } from "@/utils/String";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class ChangeMapAction extends ScriptAction {
   private static REGEX_SPECIFIC = /(top|haut|right|droite|bottom|bas|left|gauche)\((\d{1,3})\)/;

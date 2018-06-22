@@ -1,4 +1,4 @@
-import ExchangeObjectMoveMessage from "./ExchangeObjectMoveMessage";
+import ExchangeObjectMoveMessage from "@/protocol/network/messages/ExchangeObjectMoveMessage";
 
 export default class ExchangeObjectMovePricedMessage extends ExchangeObjectMoveMessage {
   public price: number;

@@ -1,6 +1,6 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayActorInformations from "./GameRolePlayActorInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
 
 export default class GameRolePlayNpcInformations extends GameRolePlayActorInformations {
   public npcId: number;

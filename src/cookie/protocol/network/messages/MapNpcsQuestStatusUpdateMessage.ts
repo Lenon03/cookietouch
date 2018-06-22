@@ -1,5 +1,5 @@
-import GameRolePlayNpcQuestFlag from "@protocol/network/types/GameRolePlayNpcQuestFlag";
-import Message from "./Message";
+import GameRolePlayNpcQuestFlag from "@/protocol/network/types/GameRolePlayNpcQuestFlag";
+import Message from "@/protocol/network/messages/Message";
 
 export default class MapNpcsQuestStatusUpdateMessage extends Message {
   public npcsIdsWithQuest: number[];

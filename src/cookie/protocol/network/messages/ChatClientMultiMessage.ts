@@ -1,4 +1,4 @@
-import ChatAbstractClientMessage from "./ChatAbstractClientMessage";
+import ChatAbstractClientMessage from "@/protocol/network/messages/ChatAbstractClientMessage";
 
 export default class ChatClientMultiMessage extends ChatAbstractClientMessage {
   public channel: number;

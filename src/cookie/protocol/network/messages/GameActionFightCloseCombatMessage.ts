@@ -1,4 +1,4 @@
-import AbstractGameActionFightTargetedAbilityMessage from "./AbstractGameActionFightTargetedAbilityMessage";
+import AbstractGameActionFightTargetedAbilityMessage from "@/protocol/network/messages/AbstractGameActionFightTargetedAbilityMessage";
 
 export default class GameActionFightCloseCombatMessage extends AbstractGameActionFightTargetedAbilityMessage {
   public weaponGenericId: number;

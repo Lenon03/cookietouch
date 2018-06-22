@@ -1,5 +1,5 @@
-import Account from "@account";
-import FightAction from "../actions/fight/FightAction";
+import Account from "@/account";
+import FightAction from "@/scripts/actions/fight/FightAction";
 
 export default class FightAPI {
   private account: Account;

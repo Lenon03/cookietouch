@@ -1,5 +1,5 @@
-import EntityLook from "./EntityLook";
-import MonsterInGroupLightInformations from "./MonsterInGroupLightInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInGroupLightInformations";
 
 export default class MonsterInGroupInformations extends MonsterInGroupLightInformations {
   public look: EntityLook;

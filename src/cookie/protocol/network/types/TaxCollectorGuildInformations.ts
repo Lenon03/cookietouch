@@ -1,5 +1,5 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import TaxCollectorComplementaryInformations from "./TaxCollectorComplementaryInformations";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxCollectorComplementaryInformations";
 
 export default class TaxCollectorGuildInformations extends TaxCollectorComplementaryInformations {
   public guild: BasicGuildInformations;

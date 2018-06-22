@@ -1,10 +1,10 @@
-import Account from "@account";
-import Map from "@game/map";
-import IClearable from "@utils/IClearable";
-import GathersManager from "./gathers";
-import InteractivesManager from "./interactives";
-import MovementsManager from "./movements";
-import TeleportablesManager from "./teleportables";
+import Account from "@/account";
+import Map from "@/game/map";
+import IClearable from "@/utils/IClearable";
+import GathersManager from "@/game/managers/gathers";
+import InteractivesManager from "@/game/managers/interactives";
+import MovementsManager from "@/game/managers/movements";
+import TeleportablesManager from "@/game/managers/teleportables";
 
 export default class Managers implements IClearable {
   public movements: MovementsManager;

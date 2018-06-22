@@ -1,5 +1,5 @@
-import CharacterBaseInformations from "@protocol/network/types/CharacterBaseInformations";
-import Message from "./Message";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class CharacterSelectedSuccessMessage extends Message {
   public infos: CharacterBaseInformations;

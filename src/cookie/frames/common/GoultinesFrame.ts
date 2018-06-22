@@ -1,5 +1,5 @@
 import MoneyGoultinesAmountSuccess from "@/protocol/network/messages/moneyGoultinesAmountSuccess";
-import Account from "@account";
+import Account from "@/account";
 
 export default class GoultinesFrame {
   private account: Account;

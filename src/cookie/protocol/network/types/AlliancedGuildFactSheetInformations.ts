@@ -1,6 +1,6 @@
-import BasicNamedAllianceInformations from "./BasicNamedAllianceInformations";
-import GuildEmblem from "./GuildEmblem";
-import GuildInformations from "./GuildInformations";
+import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedAllianceInformations";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
 
 export default class AlliancedGuildFactSheetInformations extends GuildInformations {
 

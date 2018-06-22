@@ -1,4 +1,4 @@
-import ActorAlignmentInformations from "./ActorAlignmentInformations";
+import ActorAlignmentInformations from "@/protocol/network/types/ActorAlignmentInformations";
 
 export default class ActorExtendedAlignmentInformations extends ActorAlignmentInformations {
 

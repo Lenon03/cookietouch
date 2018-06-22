@@ -4,12 +4,12 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import firebase from "firebase";
 import * as React from "react";
-import { bottomAppBarStyles } from "./styles";
+import { bottomAppBarStyles } from "@renderer/pages/BottomAppBar/styles";
 import {
   BottomAppBarProps,
   IBottomAppBarProps,
   IBottomAppBarState
-} from "./types";
+} from "@renderer/pages/BottomAppBar/types";
 
 class BottomAppBar extends React.Component<
   BottomAppBarProps,

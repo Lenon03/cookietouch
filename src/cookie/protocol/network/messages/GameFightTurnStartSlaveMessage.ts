@@ -1,4 +1,4 @@
-import GameFightTurnStartMessage from "./GameFightTurnStartMessage";
+import GameFightTurnStartMessage from "@/protocol/network/messages/GameFightTurnStartMessage";
 
 export default class GameFightTurnStartSlaveMessage extends GameFightTurnStartMessage {
   public idSummoner: number;

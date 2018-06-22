@@ -1,5 +1,5 @@
-import GameContextActorInformations from "@protocol/network/types/GameContextActorInformations";
-import Message from "./Message";
+import GameContextActorInformations from "@/protocol/network/types/GameContextActorInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GameFightRefreshFighterMessage extends Message {
   public informations: GameContextActorInformations;

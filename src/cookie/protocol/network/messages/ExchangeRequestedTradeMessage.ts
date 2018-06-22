@@ -1,4 +1,4 @@
-import ExchangeRequestedMessage from "./ExchangeRequestedMessage";
+import ExchangeRequestedMessage from "@/protocol/network/messages/ExchangeRequestedMessage";
 
 export default class ExchangeRequestedTradeMessage extends ExchangeRequestedMessage {
   public source: number;

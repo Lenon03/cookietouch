@@ -1,5 +1,5 @@
-import GuildInformations from "./GuildInformations";
-import PaddockAbandonnedInformations from "./PaddockAbandonnedInformations";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
+import PaddockAbandonnedInformations from "@/protocol/network/types/PaddockAbandonnedInformations";
 
 export default class PaddockPrivateInformations extends PaddockAbandonnedInformations {
   public guildInfo: GuildInformations;

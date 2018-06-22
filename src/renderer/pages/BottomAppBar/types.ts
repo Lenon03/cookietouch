@@ -1,5 +1,5 @@
 import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { BottomAppBarStyle } from "./styles";
+import { BottomAppBarStyle } from "@renderer/pages/BottomAppBar/styles";
 
 export interface IBottomAppBarProps {
   //

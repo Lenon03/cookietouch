@@ -1,5 +1,5 @@
-import ObjectItemInformationWithQuantity from "./ObjectItemInformationWithQuantity";
-import Type from "./Type";
+import ObjectItemInformationWithQuantity from "@/protocol/network/types/ObjectItemInformationWithQuantity";
+import Type from "@/protocol/network/types/Type";
 
 export default class StartupActionAddObject extends Type {
   public items: ObjectItemInformationWithQuantity[];

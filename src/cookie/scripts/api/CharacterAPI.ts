@@ -1,5 +1,5 @@
-import Account from "@account";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
+import Account from "@/account";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 
 export default class CharacterAPI {
   private account: Account;

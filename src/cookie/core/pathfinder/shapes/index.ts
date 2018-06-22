@@ -1,10 +1,10 @@
 import MapPoint from "@/core/pathfinder/MapPoint";
-import SpellLevels from "@protocol/data/classes/SpellLevels";
-import Map from "@protocol/data/map";
-import { union } from "@utils/Arrays";
-import Shaper from "./zones/Shaper";
-import Zone from "./zones/Zone";
-import ZonesUtility from "./zones/ZonesUtility";
+import SpellLevels from "@/protocol/data/classes/SpellLevels";
+import Map from "@/protocol/data/map";
+import { union } from "@/utils/Arrays";
+import Shaper from "@/core/pathfinder/shapes/zones/Shaper";
+import Zone from "@/core/pathfinder/shapes/zones/Zone";
+import ZonesUtility from "@/core/pathfinder/shapes/zones/ZonesUtility";
 
 export default class SpellShapes {
   public static getSpellRange(

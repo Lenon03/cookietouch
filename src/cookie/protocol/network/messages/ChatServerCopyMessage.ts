@@ -1,4 +1,4 @@
-import ChatAbstractServerMessage from "./ChatAbstractServerMessage";
+import ChatAbstractServerMessage from "@/protocol/network/messages/ChatAbstractServerMessage";
 
 export default class ChatServerCopyMessage extends ChatAbstractServerMessage {
   public receiverId: number;

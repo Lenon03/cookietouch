@@ -1,4 +1,4 @@
-import PlayerStatus from "./PlayerStatus";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class PlayerStatusExtended extends PlayerStatus {
   public message: string;

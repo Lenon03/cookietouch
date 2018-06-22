@@ -1,5 +1,5 @@
-import EntityLook from "./EntityLook";
-import PartyCompanionBaseInformations from "./PartyCompanionBaseInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import PartyCompanionBaseInformations from "@/protocol/network/types/PartyCompanionBaseInformations";
 
 export default class PartyCompanionMemberInformations extends PartyCompanionBaseInformations {
   public initiative: number;

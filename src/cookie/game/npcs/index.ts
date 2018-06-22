@@ -1,7 +1,7 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import NpcEntry from "@game/map/entities/NpcEntry";
-import LiteEvent from "@utils/LiteEvent";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import NpcEntry from "@/game/map/entities/NpcEntry";
+import LiteEvent from "@/utils/LiteEvent";
 
 export default class Npcs {
   public possibleReplies: number[] = [];

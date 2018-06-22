@@ -1,6 +1,5 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { Languages } from "@/configurations/language/Languages";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,39 +11,21 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import * as React from "react";
+import { configurationStyles } from "@renderer/pages/Configuration/styles";
+import {
+  ConfigurationProps,
+  IConfigurationProps,
+  IConfigurationState
+} from "@renderer/pages/Configuration/types";
 
-type style = "root" | "formControl";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  dialogOpen: boolean;
-  closeDialog: () => void;
-}
-
-interface IState {
-  anticaptchaKey: string;
-  lang: Languages;
-  showDebugMessages: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Configuration extends React.Component<Props, IState> {
-  public state: IState = {
+class Configuration extends React.Component<
+  ConfigurationProps,
+  IConfigurationState
+> {
+  public state: IConfigurationState = {
     anticaptchaKey: GlobalConfiguration.anticaptchaKey,
     lang: GlobalConfiguration.lang,
     showDebugMessages: GlobalConfiguration.showDebugMessages
@@ -146,4 +127,6 @@ class Configuration extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Configuration);
+export default withStyles(configurationStyles)<IConfigurationProps>(
+  Configuration
+);

@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
-import Account from "@account";
+import Account from "@/account";
 
 export default class CharacterFrame {
   private account: Account;

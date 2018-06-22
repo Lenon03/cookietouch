@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayActorInformations from "./GameRolePlayActorInformations";
-import GroupMonsterStaticInformations from "./GroupMonsterStaticInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
+import GroupMonsterStaticInformations from "@/protocol/network/types/GroupMonsterStaticInformations";
 
 export default class GameRolePlayGroupMonsterInformations extends GameRolePlayActorInformations {
   public staticInfos: GroupMonsterStaticInformations;

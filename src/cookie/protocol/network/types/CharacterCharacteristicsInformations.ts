@@ -1,7 +1,7 @@
-import ActorExtendedAlignmentInformations from "./ActorExtendedAlignmentInformations";
-import CharacterBaseCharacteristic from "./CharacterBaseCharacteristic";
-import CharacterSpellModification from "./CharacterSpellModification";
-import Type from "./Type";
+import ActorExtendedAlignmentInformations from "@/protocol/network/types/ActorExtendedAlignmentInformations";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
+import CharacterSpellModification from "@/protocol/network/types/CharacterSpellModification";
+import Type from "@/protocol/network/types/Type";
 
 export default class CharacterCharacteristicsInformations extends Type {
 

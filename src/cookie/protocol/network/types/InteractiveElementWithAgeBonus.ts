@@ -1,5 +1,5 @@
-import InteractiveElement from "./InteractiveElement";
-import InteractiveElementSkill from "./InteractiveElementSkill";
+import InteractiveElement from "@/protocol/network/types/InteractiveElement";
+import InteractiveElementSkill from "@/protocol/network/types/InteractiveElementSkill";
 
 export default class InteractiveElementWithAgeBonus extends InteractiveElement {
   public ageBonus: number;

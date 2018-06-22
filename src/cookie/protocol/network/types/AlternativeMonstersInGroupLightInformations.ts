@@ -1,5 +1,5 @@
-import MonsterInGroupLightInformations from "./MonsterInGroupLightInformations";
-import Type from "./Type";
+import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInGroupLightInformations";
+import Type from "@/protocol/network/types/Type";
 
 export default class AlternativeMonstersInGroupLightInformations extends Type {
 

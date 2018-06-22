@@ -1,5 +1,5 @@
-import MountClientData from "@protocol/network/types/MountClientData";
-import ExchangeStartOkMountWithOutPaddockMessage from "./ExchangeStartOkMountWithOutPaddockMessage";
+import MountClientData from "@/protocol/network/types/MountClientData";
+import ExchangeStartOkMountWithOutPaddockMessage from "@/protocol/network/messages/ExchangeStartOkMountWithOutPaddockMessage";
 
 export default class ExchangeStartOkMountMessage extends ExchangeStartOkMountWithOutPaddockMessage {
   public paddockedMountsDescription: MountClientData[];

@@ -1,6 +1,6 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import { sleep } from "@/utils/Time";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class DelayAction extends ScriptAction {
   public _name: string = "DelayAction";

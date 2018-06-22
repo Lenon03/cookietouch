@@ -1,5 +1,5 @@
-import ObjectEffect from "@protocol/network/types/ObjectEffect";
-import Message from "./Message";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
+import Message from "@/protocol/network/messages/Message";
 
 export default class SetUpdateMessage extends Message {
   public setObjects: number[];

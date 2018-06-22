@@ -1,4 +1,4 @@
-import EmotePlayAbstractMessage from "./EmotePlayAbstractMessage";
+import EmotePlayAbstractMessage from "@/protocol/network/messages/EmotePlayAbstractMessage";
 
 export default class EmotePlayMassiveMessage extends EmotePlayAbstractMessage {
   public actorIds: number[];

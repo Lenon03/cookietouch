@@ -1,4 +1,4 @@
-import ChatSmileyMessage from "./ChatSmileyMessage";
+import ChatSmileyMessage from "@/protocol/network/messages/ChatSmileyMessage";
 
 export default class LocalizedChatSmileyMessage extends ChatSmileyMessage {
   public cellId: number;

@@ -1,4 +1,4 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ShortcutBarAddErrorMessage extends Message {
   public error: number;

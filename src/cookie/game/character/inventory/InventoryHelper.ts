@@ -1,5 +1,5 @@
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import Dictionary from "@utils/Dictionary";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import Dictionary from "@/utils/Dictionary";
 
 export enum ObjectTypes {
   EQUIPMENT,

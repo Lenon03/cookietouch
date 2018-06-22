@@ -1,7 +1,7 @@
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
+import Account from "@/account";
 import { faKorvue } from "@fortawesome/fontawesome-free-brands";
 import {
   faBolt,

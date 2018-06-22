@@ -1,4 +1,4 @@
-import TaxCollectorComplementaryInformations from "./TaxCollectorComplementaryInformations";
+import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxCollectorComplementaryInformations";
 
 export default class TaxCollectorLootInformations extends TaxCollectorComplementaryInformations {
   public kamas: number;

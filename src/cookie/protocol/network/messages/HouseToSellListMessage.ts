@@ -1,5 +1,5 @@
-import HouseInformationsForSell from "@protocol/network/types/HouseInformationsForSell";
-import Message from "./Message";
+import HouseInformationsForSell from "@/protocol/network/types/HouseInformationsForSell";
+import Message from "@/protocol/network/messages/Message";
 
 export default class HouseToSellListMessage extends Message {
   public houseList: HouseInformationsForSell[];

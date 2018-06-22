@@ -1,5 +1,5 @@
-import SubEntity from "./SubEntity";
-import Type from "./Type";
+import SubEntity from "@/protocol/network/types/SubEntity";
+import Type from "@/protocol/network/types/Type";
 
 export default class EntityLook extends Type {
   public skins: number[];

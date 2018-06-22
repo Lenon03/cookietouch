@@ -1,4 +1,4 @@
-import Item from "./Item";
+import Item from "@/protocol/network/types/Item";
 
 export default class ObjectItemQuantity extends Item {
 

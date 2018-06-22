@@ -1,4 +1,4 @@
-import ObjectErrorMessage from "./ObjectErrorMessage";
+import ObjectErrorMessage from "@/protocol/network/messages/ObjectErrorMessage";
 
 export default class MimicryObjectErrorMessage extends ObjectErrorMessage {
   public preview: boolean;

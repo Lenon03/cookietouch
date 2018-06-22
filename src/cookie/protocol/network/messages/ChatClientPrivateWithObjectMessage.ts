@@ -1,5 +1,5 @@
-import ObjectItem from "@protocol/network/types/ObjectItem";
-import ChatClientPrivateMessage from "./ChatClientPrivateMessage";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
+import ChatClientPrivateMessage from "@/protocol/network/messages/ChatClientPrivateMessage";
 
 export default class ChatClientPrivateWithObjectMessage extends ChatClientPrivateMessage {
   public objects: ObjectItem[];

@@ -1,5 +1,5 @@
-import FightLoot from "./FightLoot";
-import Type from "./Type";
+import FightLoot from "@/protocol/network/types/FightLoot";
+import Type from "@/protocol/network/types/Type";
 
 export default class FightResultListEntry extends Type {
 

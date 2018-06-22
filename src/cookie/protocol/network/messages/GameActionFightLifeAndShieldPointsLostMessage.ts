@@ -1,4 +1,4 @@
-import GameActionFightLifePointsLostMessage from "./GameActionFightLifePointsLostMessage";
+import GameActionFightLifePointsLostMessage from "@/protocol/network/messages/GameActionFightLifePointsLostMessage";
 
 export default class GameActionFightLifeAndShieldPointsLostMessage extends GameActionFightLifePointsLostMessage {
   public shieldLoss: number;

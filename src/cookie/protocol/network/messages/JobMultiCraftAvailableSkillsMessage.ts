@@ -1,4 +1,4 @@
-import JobAllowMultiCraftRequestMessage from "./JobAllowMultiCraftRequestMessage";
+import JobAllowMultiCraftRequestMessage from "@/protocol/network/messages/JobAllowMultiCraftRequestMessage";
 
 export default class JobMultiCraftAvailableSkillsMessage extends JobAllowMultiCraftRequestMessage {
   public skills: number[];

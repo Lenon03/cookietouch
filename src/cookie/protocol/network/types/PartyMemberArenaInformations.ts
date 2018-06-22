@@ -1,7 +1,7 @@
-import EntityLook from "./EntityLook";
-import PartyCompanionMemberInformations from "./PartyCompanionMemberInformations";
-import PartyMemberInformations from "./PartyMemberInformations";
-import PlayerStatus from "./PlayerStatus";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import PartyCompanionMemberInformations from "@/protocol/network/types/PartyCompanionMemberInformations";
+import PartyMemberInformations from "@/protocol/network/types/PartyMemberInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class PartyMemberArenaInformations extends PartyMemberInformations {
   public rank: number;

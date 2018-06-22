@@ -1,15 +1,15 @@
-import Account from "@account";
-import IClearable from "@utils/IClearable";
-import Bid from "./bid";
-import Character from "./character";
-import Chat from "./chat";
-import Exchange from "./exchange";
-import Fight from "./fight";
-import Managers from "./managers";
-import Map from "./map";
-import Npcs from "./npcs";
-import Server from "./server";
-import Storage from "./storage";
+import Account from "@/account";
+import IClearable from "@/utils/IClearable";
+import Bid from "@/game/bid";
+import Character from "@/game/character";
+import Chat from "@/game/chat";
+import Exchange from "@/game/exchange";
+import Fight from "@/game/fight";
+import Managers from "@/game/managers";
+import Map from "@/game/map";
+import Npcs from "@/game/npcs";
+import Server from "@/game/server";
+import Storage from "@/game/storage";
 
 export default class Game implements IClearable {
   public managers: Managers;

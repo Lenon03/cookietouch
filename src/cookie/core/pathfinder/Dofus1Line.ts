@@ -1,5 +1,5 @@
-import Map from "@protocol/data/map";
-import MapPoint from "./MapPoint";
+import Map from "@/protocol/data/map";
+import MapPoint from "@/core/pathfinder/MapPoint";
 
 export default class Dofus1Line {
   public static isLineObstructed(

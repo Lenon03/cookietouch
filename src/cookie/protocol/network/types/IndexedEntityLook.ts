@@ -1,5 +1,5 @@
-import EntityLook from "./EntityLook";
-import Type from "./Type";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Type from "@/protocol/network/types/Type";
 
 export default class IndexedEntityLook extends Type {
   public look: EntityLook;

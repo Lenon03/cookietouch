@@ -1,11 +1,11 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import ObjectEntry from "@game/character/inventory/ObjectEntry";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import { ExchangeTypeEnum } from "@protocol/enums/ExchangeTypeEnum";
-import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import ObjectEntry from "@/game/character/inventory/ObjectEntry";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import { ExchangeTypeEnum } from "@/protocol/enums/ExchangeTypeEnum";
+import LiteEvent from "@/utils/LiteEvent";
+import { sleep } from "@/utils/Time";
 
 export default class Exchange {
   public objects: ObjectEntry[];

@@ -1,5 +1,5 @@
-import ObjectEffect from "./ObjectEffect";
-import ObjectItemMinimalInformation from "./ObjectItemMinimalInformation";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
+import ObjectItemMinimalInformation from "@/protocol/network/types/ObjectItemMinimalInformation";
 
 export default class ObjectItemInformationWithQuantity extends ObjectItemMinimalInformation {
 

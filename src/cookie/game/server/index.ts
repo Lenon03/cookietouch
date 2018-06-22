@@ -1,9 +1,9 @@
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@account";
-import DataManager from "@protocol/data";
-import Servers from "@protocol/data/classes/Servers";
-import CharacterBaseInformations from "@protocol/network/types/CharacterBaseInformations";
-import LiteEvent from "@utils/LiteEvent";
+import Account from "@/account";
+import DataManager from "@/protocol/data";
+import Servers from "@/protocol/data/classes/Servers";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
+import LiteEvent from "@/utils/LiteEvent";
 
 export default class Server {
   public id: number;

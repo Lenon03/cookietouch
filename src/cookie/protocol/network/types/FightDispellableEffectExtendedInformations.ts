@@ -1,5 +1,5 @@
-import AbstractFightDispellableEffect from "./AbstractFightDispellableEffect";
-import Type from "./Type";
+import AbstractFightDispellableEffect from "@/protocol/network/types/AbstractFightDispellableEffect";
+import Type from "@/protocol/network/types/Type";
 
 export default class FightDispellableEffectExtendedInformations extends Type {
 

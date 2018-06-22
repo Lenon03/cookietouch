@@ -1,6 +1,6 @@
-import GameRolePlayGroupMonsterInformations from "@protocol/network/types/GameRolePlayGroupMonsterInformations";
-import MonsterEntry from "./MonsterEntry";
-import MovableEntity from "./MovableEntity";
+import GameRolePlayGroupMonsterInformations from "@/protocol/network/types/GameRolePlayGroupMonsterInformations";
+import MonsterEntry from "@/game/map/entities/MonsterEntry";
+import MovableEntity from "@/game/map/entities/MovableEntity";
 
 export default class MonstersGroupEntry extends MovableEntity {
   public id: number;

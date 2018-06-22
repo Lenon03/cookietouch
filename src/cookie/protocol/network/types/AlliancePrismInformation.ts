@@ -1,5 +1,5 @@
-import AllianceInformations from "./AllianceInformations";
-import PrismInformation from "./PrismInformation";
+import AllianceInformations from "@/protocol/network/types/AllianceInformations";
+import PrismInformation from "@/protocol/network/types/PrismInformation";
 
 export default class AlliancePrismInformation extends PrismInformation {
 

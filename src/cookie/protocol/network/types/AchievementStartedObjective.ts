@@ -1,4 +1,4 @@
-import AchievementObjective from "./AchievementObjective";
+import AchievementObjective from "@/protocol/network/types/AchievementObjective";
 
 export default class AchievementStartedObjective extends AchievementObjective {
 

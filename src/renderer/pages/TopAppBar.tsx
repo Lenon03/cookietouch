@@ -15,10 +15,10 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import firebase from "firebase";
 import * as React from "react";
-import { signout } from "../FirebaseHelpers";
-import AccountsManager from "./AccountsManager/index";
-import Configuration from "./Configuration";
-import LoginFormDialog from "./LoginFormDialog";
+import { signout } from "@renderer/FirebaseHelpers";
+import AccountsManager from "@renderer/pages/AccountsManager";
+import Configuration from "@renderer/pages/Configuration";
+import LoginFormDialog from "@renderer/pages/LoginFormDialog";
 
 type style = "root" | "flex" | "menuButton" | "appBar";
 

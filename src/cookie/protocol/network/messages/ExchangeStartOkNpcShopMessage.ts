@@ -1,5 +1,5 @@
-import ObjectItemToSellInNpcShop from "@protocol/network/types/ObjectItemToSellInNpcShop";
-import Message from "./Message";
+import ObjectItemToSellInNpcShop from "@/protocol/network/types/ObjectItemToSellInNpcShop";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ExchangeStartOkNpcShopMessage extends Message {
   public objectsInfos: ObjectItemToSellInNpcShop[];

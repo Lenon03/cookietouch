@@ -1,6 +1,6 @@
-import TaxCollectorFightersInformation from "@protocol/network/types/TaxCollectorFightersInformation";
-import TaxCollectorInformations from "@protocol/network/types/TaxCollectorInformations";
-import Message from "./Message";
+import TaxCollectorFightersInformation from "@/protocol/network/types/TaxCollectorFightersInformation";
+import TaxCollectorInformations from "@/protocol/network/types/TaxCollectorInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class TaxCollectorListMessage extends Message {
   public informations: TaxCollectorInformations[];

@@ -1,5 +1,5 @@
-import CharacterMinimalPlusLookInformations from "./CharacterMinimalPlusLookInformations";
-import Type from "./Type";
+import CharacterMinimalPlusLookInformations from "@/protocol/network/types/CharacterMinimalPlusLookInformations";
+import Type from "@/protocol/network/types/Type";
 
 export default class TaxCollectorFightersInformation extends Type {
   public allyCharactersInformations: CharacterMinimalPlusLookInformations[];

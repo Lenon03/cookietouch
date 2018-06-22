@@ -1,4 +1,4 @@
-import CharacterReplayRequestMessage from "./CharacterReplayRequestMessage";
+import CharacterReplayRequestMessage from "@/protocol/network/messages/CharacterReplayRequestMessage";
 
 export default class CharacterReplayWithRecolorRequestMessage extends CharacterReplayRequestMessage {
   public indexedColor: number[];

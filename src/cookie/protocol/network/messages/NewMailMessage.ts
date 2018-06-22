@@ -1,4 +1,4 @@
-import MailStatusMessage from "./MailStatusMessage";
+import MailStatusMessage from "@/protocol/network/messages/MailStatusMessage";
 
 export default class NewMailMessage extends MailStatusMessage {
   public sendersAccountId: number[];

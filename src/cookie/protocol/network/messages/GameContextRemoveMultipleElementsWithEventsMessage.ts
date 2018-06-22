@@ -1,4 +1,4 @@
-import GameContextRemoveMultipleElementsMessage from "./GameContextRemoveMultipleElementsMessage";
+import GameContextRemoveMultipleElementsMessage from "@/protocol/network/messages/GameContextRemoveMultipleElementsMessage";
 
 export default class GameContextRemoveMultipleElementsWithEventsMessage
   extends GameContextRemoveMultipleElementsMessage {

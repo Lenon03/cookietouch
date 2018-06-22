@@ -1,4 +1,4 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
 
 export default class InventoryPresetUseMessage extends Message {
   public presetId: number;

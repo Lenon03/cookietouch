@@ -1,5 +1,5 @@
-import CharacterBaseCharacteristic from "./CharacterBaseCharacteristic";
-import Type from "./Type";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
+import Type from "@/protocol/network/types/Type";
 
 export default class CharacterSpellModification extends Type {
 

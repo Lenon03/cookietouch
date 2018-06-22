@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameContextActorInformations from "./GameContextActorInformations";
-import GameFightMinimalStats from "./GameFightMinimalStats";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameContextActorInformations from "@/protocol/network/types/GameContextActorInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
 
 export default class GameFightFighterInformations extends GameContextActorInformations {
   public teamId: number;

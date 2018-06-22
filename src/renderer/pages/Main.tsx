@@ -6,10 +6,10 @@ import withStyles, {
 } from "@material-ui/core/styles/withStyles";
 import * as firebase from "firebase";
 import * as React from "react";
-import withRoot from "../withRoot";
-import BottomAppBar from "./BottomAppBar";
-import MainContent from "./MainContent";
-import TopAppBar from "./TopAppBar";
+import withRoot from "@renderer/withRoot";
+import BottomAppBar from "@renderer/pages/BottomAppBar";
+import MainContent from "@renderer/pages/MainContent";
+import TopAppBar from "@renderer/pages/TopAppBar";
 
 type style = "root" | "paper";
 

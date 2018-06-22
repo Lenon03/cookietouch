@@ -1,4 +1,4 @@
-import DisplayNumericalValueMessage from "./DisplayNumericalValueMessage";
+import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNumericalValueMessage";
 
 export default class DisplayNumericalValueWithAgeBonusMessage extends DisplayNumericalValueMessage {
   public valueOfBonus: number;

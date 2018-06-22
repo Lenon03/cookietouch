@@ -1,6 +1,6 @@
 import Account from "@/account";
-import Command from "./Command";
-import ICommand from "./ICommand";
+import Command from "@/core/commands/handlers/Command";
+import ICommand from "@/core/commands/handlers/ICommand";
 
 /**
  * Send an ingame message (second arg) to player (first arg).

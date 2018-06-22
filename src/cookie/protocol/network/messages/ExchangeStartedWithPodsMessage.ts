@@ -1,4 +1,4 @@
-import ExchangeStartedMessage from "./ExchangeStartedMessage";
+import ExchangeStartedMessage from "@/protocol/network/messages/ExchangeStartedMessage";
 
 export default class ExchangeStartedWithPodsMessage extends ExchangeStartedMessage {
   public firstCharacterId: number;

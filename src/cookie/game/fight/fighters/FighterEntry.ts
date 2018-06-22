@@ -1,19 +1,19 @@
 import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
 import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
-import { TeamEnum } from "@protocol/enums/TeamEnum";
-import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
-import GameActionFightLifePointsGainMessage from "@protocol/network/messages/GameActionFightLifePointsGainMessage";
-import GameActionFightLifePointsLostMessage from "@protocol/network/messages/GameActionFightLifePointsLostMessage";
-import GameActionFightPointsVariationMessage from "@protocol/network/messages/GameActionFightPointsVariationMessage";
-import GameActionFightSlideMessage from "@protocol/network/messages/GameActionFightSlideMessage";
-import GameActionFightTeleportOnSameMapMessage from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
-import GameFightTurnEndMessage from "@protocol/network/messages/GameFightTurnEndMessage";
-import GameMapMovementMessage from "@protocol/network/messages/GameMapMovementMessage";
-import CharacterCharacteristicsInformations from "@protocol/network/types/CharacterCharacteristicsInformations";
-import FightTemporaryBoostEffect from "@protocol/network/types/FightTemporaryBoostEffect";
-import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
-import GameFightMinimalStats from "@protocol/network/types/GameFightMinimalStats";
-import IdentifiedEntityDispositionInformations from "@protocol/network/types/IdentifiedEntityDispositionInformations";
+import { TeamEnum } from "@/protocol/enums/TeamEnum";
+import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
+import GameActionFightLifePointsGainMessage from "@/protocol/network/messages/GameActionFightLifePointsGainMessage";
+import GameActionFightLifePointsLostMessage from "@/protocol/network/messages/GameActionFightLifePointsLostMessage";
+import GameActionFightPointsVariationMessage from "@/protocol/network/messages/GameActionFightPointsVariationMessage";
+import GameActionFightSlideMessage from "@/protocol/network/messages/GameActionFightSlideMessage";
+import GameActionFightTeleportOnSameMapMessage from "@/protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
+import GameFightTurnEndMessage from "@/protocol/network/messages/GameFightTurnEndMessage";
+import GameMapMovementMessage from "@/protocol/network/messages/GameMapMovementMessage";
+import CharacterCharacteristicsInformations from "@/protocol/network/types/CharacterCharacteristicsInformations";
+import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBoostEffect";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
+import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 
 export default class FighterEntry {
   public contextualId: number;

@@ -1,5 +1,5 @@
-import HouseInformationsForGuild from "@protocol/network/types/HouseInformationsForGuild";
-import Message from "./Message";
+import HouseInformationsForGuild from "@/protocol/network/types/HouseInformationsForGuild";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GuildHousesInformationMessage extends Message {
   public housesInformations: HouseInformationsForGuild[];

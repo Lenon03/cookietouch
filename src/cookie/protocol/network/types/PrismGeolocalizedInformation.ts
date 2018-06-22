@@ -1,5 +1,5 @@
-import PrismInformation from "./PrismInformation";
-import Type from "./Type";
+import PrismInformation from "@/protocol/network/types/PrismInformation";
+import Type from "@/protocol/network/types/Type";
 
 export default class PrismGeolocalizedInformation extends Type {
 

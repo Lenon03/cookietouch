@@ -1,5 +1,5 @@
-import ObjectItemQuantity from "@protocol/network/types/ObjectItemQuantity";
-import Message from "./Message";
+import ObjectItemQuantity from "@/protocol/network/types/ObjectItemQuantity";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ExchangeGuildTaxCollectorGetMessage extends Message {
   public objectsInfos: ObjectItemQuantity[];

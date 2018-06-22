@@ -1,5 +1,5 @@
-import AllianceInformations from "@protocol/network/types/AllianceInformations";
-import Message from "./Message";
+import AllianceInformations from "@/protocol/network/types/AllianceInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class AllianceJoinedMessage extends Message {
   public allianceInfo: AllianceInformations;

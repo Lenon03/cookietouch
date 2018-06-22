@@ -1,4 +1,4 @@
-import PartyFollowMemberRequestMessage from "./PartyFollowMemberRequestMessage";
+import PartyFollowMemberRequestMessage from "@/protocol/network/messages/PartyFollowMemberRequestMessage";
 
 export default class PartyFollowThisMemberRequestMessage extends PartyFollowMemberRequestMessage {
   public enabled: boolean;

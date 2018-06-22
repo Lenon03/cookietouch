@@ -1,4 +1,4 @@
-import AbstractPartyMessage from "./AbstractPartyMessage";
+import AbstractPartyMessage from "@/protocol/network/messages/AbstractPartyMessage";
 
 export default class PartyKickRequestMessage extends AbstractPartyMessage {
   public playerId: number;

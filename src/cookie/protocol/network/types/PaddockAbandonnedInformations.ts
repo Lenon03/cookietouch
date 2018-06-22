@@ -1,4 +1,4 @@
-import PaddockBuyableInformations from "./PaddockBuyableInformations";
+import PaddockBuyableInformations from "@/protocol/network/types/PaddockBuyableInformations";
 
 export default class PaddockAbandonnedInformations extends PaddockBuyableInformations {
   public guildId: number;

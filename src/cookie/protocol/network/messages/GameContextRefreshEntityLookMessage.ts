@@ -1,5 +1,5 @@
-import EntityLook from "@protocol/network/types/EntityLook";
-import Message from "./Message";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GameContextRefreshEntityLookMessage extends Message {
   public id: number;

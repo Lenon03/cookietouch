@@ -1,16 +1,16 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import { TeleportablesEnum } from "@game/managers/teleportables";
-import JoinFriendAction from "../actions/global/JoinFriendAction";
-import ChangeMapAction from "../actions/map/ChangeMapAction";
-import MoveToCellAction from "../actions/map/MoveToCellAction";
-import SaveZaapAction from "../actions/map/SaveZaapAction";
-import UseAction from "../actions/map/UseAction";
-import UseByIdAction from "../actions/map/UseByIdAction";
-import UseLockedHouseAction from "../actions/map/UseLockedHouseAction";
-import UseLockedStorageAction from "../actions/map/UseLockedStorageAction";
-import UseTeleportableAction from "../actions/map/UseTeleportableAction";
-import WaitMapChangeAction from "../actions/map/WaitMapChangeAction";
+import Account from "@/account";
+import { TeleportablesEnum } from "@/game/managers/teleportables";
+import JoinFriendAction from "@/scripts/actions/global/JoinFriendAction";
+import ChangeMapAction from "@/scripts/actions/map/ChangeMapAction";
+import MoveToCellAction from "@/scripts/actions/map/MoveToCellAction";
+import SaveZaapAction from "@/scripts/actions/map/SaveZaapAction";
+import UseAction from "@/scripts/actions/map/UseAction";
+import UseByIdAction from "@/scripts/actions/map/UseByIdAction";
+import UseLockedHouseAction from "@/scripts/actions/map/UseLockedHouseAction";
+import UseLockedStorageAction from "@/scripts/actions/map/UseLockedStorageAction";
+import UseTeleportableAction from "@/scripts/actions/map/UseTeleportableAction";
+import WaitMapChangeAction from "@/scripts/actions/map/WaitMapChangeAction";
 
 export default class MapAPI {
   private account: Account;

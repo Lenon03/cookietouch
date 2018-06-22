@@ -1,8 +1,8 @@
-import ActorAlignmentInformations from "./ActorAlignmentInformations";
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayHumanoidInformations from "./GameRolePlayHumanoidInformations";
-import HumanInformations from "./HumanInformations";
+import ActorAlignmentInformations from "@/protocol/network/types/ActorAlignmentInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayHumanoidInformations from "@/protocol/network/types/GameRolePlayHumanoidInformations";
+import HumanInformations from "@/protocol/network/types/HumanInformations";
 
 export default class GameRolePlayCharacterInformations extends GameRolePlayHumanoidInformations {
   public alignmentInfos: ActorAlignmentInformations;

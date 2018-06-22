@@ -1,5 +1,5 @@
-import GameRolePlayNpcQuestFlag from "./GameRolePlayNpcQuestFlag";
-import Type from "./Type";
+import GameRolePlayNpcQuestFlag from "@/protocol/network/types/GameRolePlayNpcQuestFlag";
+import Type from "@/protocol/network/types/Type";
 
 export default class GameRolePlayNpcWithQuestInformations extends Type {
   public contextualId: number;

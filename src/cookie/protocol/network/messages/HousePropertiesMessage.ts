@@ -1,5 +1,5 @@
-import HouseInformations from "@protocol/network/types/HouseInformations";
-import Message from "./Message";
+import HouseInformations from "@/protocol/network/types/HouseInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class HousePropertiesMessage extends Message {
   public properties: HouseInformations;

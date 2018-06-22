@@ -1,4 +1,4 @@
-import CharacterLevelUpMessage from "./CharacterLevelUpMessage";
+import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
 
 export default class CharacterLevelUpInformationMessage extends CharacterLevelUpMessage {
   public name: string;

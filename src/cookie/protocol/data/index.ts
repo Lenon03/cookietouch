@@ -3,9 +3,9 @@ import axios from "axios";
 import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import DTConstants from "../DTConstants";
-import Data from "./Data";
-import { DataTypes } from "./DataTypes";
+import DTConstants from "@/protocol/DTConstants";
+import Data from "@/protocol/data/Data";
+import { DataTypes } from "@/protocol/data/DataTypes";
 
 export interface IDataResponse<T> {
   id: number;

@@ -1,4 +1,4 @@
-import CharacterSelectionMessage from "./CharacterSelectionMessage";
+import CharacterSelectionMessage from "@/protocol/network/messages/CharacterSelectionMessage";
 
 export default class CharacterSelectionWithRecolorMessage extends CharacterSelectionMessage {
   public indexedColor: number[];

@@ -1,6 +1,6 @@
-import CharacterMinimalPlusLookInformations from "./CharacterMinimalPlusLookInformations";
-import ProtectedEntityWaitingForHelpInfo from "./ProtectedEntityWaitingForHelpInfo";
-import Type from "./Type";
+import CharacterMinimalPlusLookInformations from "@/protocol/network/types/CharacterMinimalPlusLookInformations";
+import ProtectedEntityWaitingForHelpInfo from "@/protocol/network/types/ProtectedEntityWaitingForHelpInfo";
+import Type from "@/protocol/network/types/Type";
 
 export default class PrismFightersInformation extends Type {
 

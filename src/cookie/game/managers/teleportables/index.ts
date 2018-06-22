@@ -1,9 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import MapGame from "@game/map";
-import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
-import InteractivesManager from "../interactives";
+import Account from "@/account";
+import MapGame from "@/game/map";
+import LiteEvent from "@/utils/LiteEvent";
+import { sleep } from "@/utils/Time";
+import InteractivesManager from "@/game/managers/interactives";
 
 export enum TeleportablesEnum {
   ZAAP,

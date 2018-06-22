@@ -1,12 +1,12 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Message from "@/protocol/network/messages/Message";
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import DTConstants from "@protocol/DTConstants";
-import IClearable from "@utils/IClearable";
-import LiteEvent from "@utils/LiteEvent";
-import { NetworkPhases } from "./NetworkPhases";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import DTConstants from "@/protocol/DTConstants";
+import IClearable from "@/utils/IClearable";
+import LiteEvent from "@/utils/LiteEvent";
+import { NetworkPhases } from "@/network/NetworkPhases";
 
 const Primus = require("./primus"); // tslint:disable-line
 

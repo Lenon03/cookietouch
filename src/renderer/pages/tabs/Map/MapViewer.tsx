@@ -16,7 +16,7 @@ import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import Point from "@/utils/Point";
 import { sleep } from "@/utils/Time";
-import Account from "@account";
+import Account from "@/account";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
@@ -27,7 +27,7 @@ import withStyles, {
 import Switch from "@material-ui/core/Switch";
 import { List } from "linqts";
 import * as React from "react";
-import MapViewerCell from "./MapViewerCell";
+import MapViewerCell from "@renderer/pages/tabs/Map/MapViewerCell";
 
 type style = "root";
 

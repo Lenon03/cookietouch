@@ -1,5 +1,5 @@
-import Achievement from "@protocol/network/types/Achievement";
-import Message from "./Message";
+import Achievement from "@/protocol/network/types/Achievement";
+import Message from "@/protocol/network/messages/Message";
 
 export default class AchievementDetailedListMessage extends Message {
   public startedAchievements: Achievement[];

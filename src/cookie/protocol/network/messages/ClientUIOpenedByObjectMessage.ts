@@ -1,4 +1,4 @@
-import ClientUIOpenedMessage from "./ClientUIOpenedMessage";
+import ClientUIOpenedMessage from "@/protocol/network/messages/ClientUIOpenedMessage";
 
 export default class ClientUIOpenedByObjectMessage extends ClientUIOpenedMessage {
   public uid: number;

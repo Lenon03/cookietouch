@@ -1,4 +1,4 @@
-import FightTemporaryBoostEffect from "./FightTemporaryBoostEffect";
+import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBoostEffect";
 
 export default class FightTemporaryBoostStateEffect extends FightTemporaryBoostEffect {
   public stateId: number;

@@ -1,6 +1,6 @@
-import CharacterMinimalInformations from "@protocol/network/types/CharacterMinimalInformations";
-import GuildFactSheetInformations from "@protocol/network/types/GuildFactSheetInformations";
-import Message from "./Message";
+import CharacterMinimalInformations from "@/protocol/network/types/CharacterMinimalInformations";
+import GuildFactSheetInformations from "@/protocol/network/types/GuildFactSheetInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GuildFactsMessage extends Message {
   public members: CharacterMinimalInformations[];

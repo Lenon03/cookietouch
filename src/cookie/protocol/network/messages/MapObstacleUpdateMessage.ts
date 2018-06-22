@@ -1,5 +1,5 @@
-import MapObstacle from "@protocol/network/types/MapObstacle";
-import Message from "./Message";
+import MapObstacle from "@/protocol/network/types/MapObstacle";
+import Message from "@/protocol/network/messages/Message";
 
 export default class MapObstacleUpdateMessage extends Message {
   public obstacles: MapObstacle[];

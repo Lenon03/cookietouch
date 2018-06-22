@@ -1,4 +1,4 @@
-import MapCoordinatesAndId from "./MapCoordinatesAndId";
+import MapCoordinatesAndId from "@/protocol/network/types/MapCoordinatesAndId";
 
 export default class MapCoordinatesExtended extends MapCoordinatesAndId {
   public subAreaId: number;

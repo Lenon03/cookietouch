@@ -6,7 +6,7 @@ import ExchangeRemoveItemAction from "@/scripts/actions/exchange/ExchangeRemoveI
 import ExchangeRemoveKamasAction from "@/scripts/actions/exchange/ExchangeRemoveKamasAction";
 import SendReadyAction from "@/scripts/actions/exchange/SendReadyAction";
 import StartExchangeAction from "@/scripts/actions/exchange/StartExchangeAction";
-import Account from "@account";
+import Account from "@/account";
 
 export default class ExchangeAPI {
   private account: Account;

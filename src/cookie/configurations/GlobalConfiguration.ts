@@ -7,7 +7,7 @@ import { remote } from "electron";
 import * as fs from "fs";
 import { List } from "linqts";
 import * as path from "path";
-import CookieMain from "renderer/CookieMain";
+import CookieMain from "@renderer/CookieMain";
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;

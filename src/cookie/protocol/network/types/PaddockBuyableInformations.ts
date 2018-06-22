@@ -1,4 +1,4 @@
-import PaddockInformations from "./PaddockInformations";
+import PaddockInformations from "@/protocol/network/types/PaddockInformations";
 
 export default class PaddockBuyableInformations extends PaddockInformations {
   public price: number;

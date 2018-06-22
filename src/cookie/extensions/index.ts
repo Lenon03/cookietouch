@@ -1,10 +1,10 @@
 import BidExtension from "@/extensions/bid/BidExtension";
 import FloodExtension from "@/extensions/flood/FloodExtension";
-import Account from "@account";
-import IClearable from "@utils/IClearable";
-import CharacterCreatorExtension from "./characterCreator/CharacterCreatorExtension";
-import RolePlayExtension from "./exchanges/RolePlayExtension";
-import FightsExtension from "./fights/FightsExtension";
+import Account from "@/account";
+import IClearable from "@/utils/IClearable";
+import CharacterCreatorExtension from "@/extensions/characterCreator/CharacterCreatorExtension";
+import RolePlayExtension from "@/extensions/exchanges/RolePlayExtension";
+import FightsExtension from "@/extensions/fights/FightsExtension";
 
 export default class Extensions implements IClearable {
   public roleplay: RolePlayExtension;

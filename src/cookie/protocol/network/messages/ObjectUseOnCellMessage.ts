@@ -1,4 +1,4 @@
-import ObjectUseMessage from "./ObjectUseMessage";
+import ObjectUseMessage from "@/protocol/network/messages/ObjectUseMessage";
 
 export default class ObjectUseOnCellMessage extends ObjectUseMessage {
   public cells: number;

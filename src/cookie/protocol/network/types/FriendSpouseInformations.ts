@@ -1,6 +1,6 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import EntityLook from "./EntityLook";
-import Type from "./Type";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Type from "@/protocol/network/types/Type";
 
 export default class FriendSpouseInformations extends Type {
   public spouseAccountId: number;

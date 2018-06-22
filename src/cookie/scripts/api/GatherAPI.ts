@@ -1,5 +1,5 @@
-import Account from "@account";
-import GatherAction from "../actions/gather/GatherAction";
+import Account from "@/account";
+import GatherAction from "@/scripts/actions/gather/GatherAction";
 
 export default class GatherAPI {
   private account: Account;

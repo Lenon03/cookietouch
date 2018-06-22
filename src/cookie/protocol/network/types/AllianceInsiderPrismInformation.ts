@@ -1,4 +1,4 @@
-import PrismInformation from "./PrismInformation";
+import PrismInformation from "@/protocol/network/types/PrismInformation";
 
 export default class AllianceInsiderPrismInformation extends PrismInformation {
 

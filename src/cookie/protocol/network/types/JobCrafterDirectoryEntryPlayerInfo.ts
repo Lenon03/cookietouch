@@ -1,5 +1,5 @@
-import PlayerStatus from "./PlayerStatus";
-import Type from "./Type";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
+import Type from "@/protocol/network/types/Type";
 
 export default class JobCrafterDirectoryEntryPlayerInfo extends Type {
 

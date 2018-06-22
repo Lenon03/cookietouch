@@ -1,4 +1,4 @@
-import IgnoredInformations from "./IgnoredInformations";
+import IgnoredInformations from "@/protocol/network/types/IgnoredInformations";
 
 export default class IgnoredOnlineInformations extends IgnoredInformations {
   public playerId: number;

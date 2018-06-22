@@ -34,7 +34,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
 import * as React from "react";
-import ColorPicker from "./ColorPicker";
+import ColorPicker from "@renderer/pages/AccountsManager/ColorPicker";
 
 type style = "root" | "heading" | "formControl" | "icon" | "chip" | "chips";
 

@@ -1,4 +1,4 @@
-import AlignmentSubAreaUpdateMessage from "./AlignmentSubAreaUpdateMessage";
+import AlignmentSubAreaUpdateMessage from "@/protocol/network/messages/AlignmentSubAreaUpdateMessage";
 
 export default class AlignmentSubAreaUpdateExtendedMessage extends AlignmentSubAreaUpdateMessage {
   public worldX: number;

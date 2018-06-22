@@ -1,4 +1,4 @@
-import BasicAllianceInformations from "./BasicAllianceInformations";
+import BasicAllianceInformations from "@/protocol/network/types/BasicAllianceInformations";
 
 export default class BasicNamedAllianceInformations extends BasicAllianceInformations {
 

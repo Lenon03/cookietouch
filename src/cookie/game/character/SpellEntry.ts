@@ -1,9 +1,9 @@
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import DataManager from "@protocol/data";
-import Spells from "@protocol/data/classes/Spells";
-import DTConstants from "@protocol/DTConstants";
-import SpellItem from "@protocol/network/types/SpellItem";
+import DataManager from "@/protocol/data";
+import Spells from "@/protocol/data/classes/Spells";
+import DTConstants from "@/protocol/DTConstants";
+import SpellItem from "@/protocol/network/types/SpellItem";
 
 export default class SpellEntry {
   public id: number;

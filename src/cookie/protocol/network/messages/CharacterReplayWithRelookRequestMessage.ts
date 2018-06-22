@@ -1,4 +1,4 @@
-import CharacterReplayRequestMessage from "./CharacterReplayRequestMessage";
+import CharacterReplayRequestMessage from "@/protocol/network/messages/CharacterReplayRequestMessage";
 
 export default class CharacterReplayWithRelookRequestMessage extends CharacterReplayRequestMessage {
   public cosmeticId: number;

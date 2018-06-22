@@ -1,4 +1,4 @@
-import GameFightFighterLightInformations from "./GameFightFighterLightInformations";
+import GameFightFighterLightInformations from "@/protocol/network/types/GameFightFighterLightInformations";
 
 export default class GameFightFighterNamedLightInformations extends GameFightFighterLightInformations {
   public name: string;

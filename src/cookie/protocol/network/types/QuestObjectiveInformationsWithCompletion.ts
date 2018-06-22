@@ -1,4 +1,4 @@
-import QuestObjectiveInformations from "./QuestObjectiveInformations";
+import QuestObjectiveInformations from "@/protocol/network/types/QuestObjectiveInformations";
 
 export default class QuestObjectiveInformationsWithCompletion extends QuestObjectiveInformations {
   public curCompletion: number;

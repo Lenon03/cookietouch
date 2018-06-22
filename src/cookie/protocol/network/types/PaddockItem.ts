@@ -1,5 +1,5 @@
-import ItemDurability from "./ItemDurability";
-import ObjectItemInRolePlay from "./ObjectItemInRolePlay";
+import ItemDurability from "@/protocol/network/types/ItemDurability";
+import ObjectItemInRolePlay from "@/protocol/network/types/ObjectItemInRolePlay";
 
 export default class PaddockItem extends ObjectItemInRolePlay {
   public durability: ItemDurability;

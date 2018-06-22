@@ -1,6 +1,6 @@
-import Account from "@account";
-import SetRatioAction from "../actions/mount/SetRatioAction";
-import ToggleRidingAction from "../actions/mount/ToggleRidingAction";
+import Account from "@/account";
+import SetRatioAction from "@/scripts/actions/mount/SetRatioAction";
+import ToggleRidingAction from "@/scripts/actions/mount/ToggleRidingAction";
 
 export default class MountAPI {
   private account: Account;

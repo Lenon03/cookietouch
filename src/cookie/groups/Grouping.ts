@@ -1,10 +1,10 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import { MapChangeDirections } from "@game/managers/movements/MapChangeDirections";
-import { Deferred, IDeferred } from "@utils/Deferred";
-import { sleep } from "@utils/Time";
+import Account from "@/account";
+import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
+import { Deferred, IDeferred } from "@/utils/Deferred";
+import { sleep } from "@/utils/Time";
 import { List } from "linqts";
-import Group from "./Group";
+import Group from "@/groups/Group";
 
 export default class Grouping {
   private _group: Group;

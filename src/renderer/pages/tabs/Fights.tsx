@@ -7,7 +7,7 @@ import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellR
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
 import SpellEntry from "@/game/character/SpellEntry";
-import Account from "@account";
+import Account from "@/account";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";

@@ -1,11 +1,11 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import BuyItemAction from "../actions/bid/BuyItemAction";
-import EditItemInSalePriceAction from "../actions/bid/EditItemInSalePriceAction";
-import RemoveItemInSaleAction from "../actions/bid/RemoveItemInSaleAction";
-import SellItemAction from "../actions/bid/SellItemAction";
-import StartBuyingAction from "../actions/bid/StartBuyingAction";
-import StartSellingAction from "../actions/bid/StartSellingAction";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import BuyItemAction from "@/scripts/actions/bid/BuyItemAction";
+import EditItemInSalePriceAction from "@/scripts/actions/bid/EditItemInSalePriceAction";
+import RemoveItemInSaleAction from "@/scripts/actions/bid/RemoveItemInSaleAction";
+import SellItemAction from "@/scripts/actions/bid/SellItemAction";
+import StartBuyingAction from "@/scripts/actions/bid/StartBuyingAction";
+import StartSellingAction from "@/scripts/actions/bid/StartSellingAction";
 
 export interface IObjectInSale {
   gid: number;

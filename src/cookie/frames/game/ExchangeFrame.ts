@@ -1,5 +1,5 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
+import Account from "@/account";
+import { sleep } from "@/utils/Time";
 
 export default class ExchangeFrame {
   private account: Account;

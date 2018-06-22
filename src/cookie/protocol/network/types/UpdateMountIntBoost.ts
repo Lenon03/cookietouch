@@ -1,4 +1,4 @@
-import UpdateMountBoost from "./UpdateMountBoost";
+import UpdateMountBoost from "@/protocol/network/types/UpdateMountBoost";
 
 export default class UpdateMountIntBoost extends UpdateMountBoost {
   public value: number;

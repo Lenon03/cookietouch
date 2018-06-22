@@ -1,7 +1,7 @@
-import Dictionary from "@utils/Dictionary";
-import { AtlasLayout } from "./AtlasLayout";
-import Cell from "./Cell";
-import GraphicalElement from "./GraphicalElement";
+import Dictionary from "@/utils/Dictionary";
+import { AtlasLayout } from "@/protocol/data/map/AtlasLayout";
+import Cell from "@/protocol/data/map/Cell";
+import GraphicalElement from "@/protocol/data/map/GraphicalElement";
 
 export default class Map {
   public id: number;

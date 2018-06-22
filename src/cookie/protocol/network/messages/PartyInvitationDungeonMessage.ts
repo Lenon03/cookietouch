@@ -1,4 +1,4 @@
-import PartyInvitationMessage from "./PartyInvitationMessage";
+import PartyInvitationMessage from "@/protocol/network/messages/PartyInvitationMessage";
 
 export default class PartyInvitationDungeonMessage extends PartyInvitationMessage {
   public dungeonId: number;

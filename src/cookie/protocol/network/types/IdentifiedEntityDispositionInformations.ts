@@ -1,4 +1,4 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
 
 export default class IdentifiedEntityDispositionInformations extends EntityDispositionInformations {
   public id: number;

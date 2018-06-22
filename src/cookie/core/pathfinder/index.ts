@@ -1,8 +1,8 @@
-import Map from "@protocol/data/map";
-import Cell from "@protocol/data/map/Cell";
-import CellData from "./CellData";
-import CellPath from "./CellPath";
-import MapPoint from "./MapPoint";
+import Map from "@/protocol/data/map";
+import Cell from "@/protocol/data/map/Cell";
+import CellData from "@/core/pathfinder/CellData";
+import CellPath from "@/core/pathfinder/CellPath";
+import MapPoint from "@/core/pathfinder/MapPoint";
 
 export default class Pathfinder {
   private readonly OCCUPIED_CELL_WEIGHT = 10;

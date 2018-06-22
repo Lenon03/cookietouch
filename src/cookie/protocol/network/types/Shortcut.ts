@@ -1,4 +1,4 @@
-import Type from "./Type";
+import Type from "@/protocol/network/types/Type";
 
 export default class Shortcut extends Type {
   public slot: number;

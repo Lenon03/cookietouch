@@ -1,4 +1,4 @@
-import GameActionFightDispellMessage from "./GameActionFightDispellMessage";
+import GameActionFightDispellMessage from "@/protocol/network/messages/GameActionFightDispellMessage";
 
 export default class GameActionFightDispellEffectMessage extends GameActionFightDispellMessage {
   public boostUID: number;

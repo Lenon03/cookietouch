@@ -1,4 +1,4 @@
-import ExchangeRequestMessage from "./ExchangeRequestMessage";
+import ExchangeRequestMessage from "@/protocol/network/messages/ExchangeRequestMessage";
 
 export default class ExchangePlayerMultiCraftRequestMessage extends ExchangeRequestMessage {
   public target: number;

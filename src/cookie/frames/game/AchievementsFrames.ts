@@ -1,8 +1,8 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@account";
-import DataManager from "@protocol/data";
-import Achievements from "@protocol/data/classes/Achievements";
+import Account from "@/account";
+import DataManager from "@/protocol/data";
+import Achievements from "@/protocol/data/classes/Achievements";
 
 export default class AchievementsFrame {
   private account: Account;

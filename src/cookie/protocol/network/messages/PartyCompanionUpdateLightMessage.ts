@@ -1,4 +1,4 @@
-import PartyUpdateLightMessage from "./PartyUpdateLightMessage";
+import PartyUpdateLightMessage from "@/protocol/network/messages/PartyUpdateLightMessage";
 
 export default class PartyCompanionUpdateLightMessage extends PartyUpdateLightMessage {
   public indexId: number;

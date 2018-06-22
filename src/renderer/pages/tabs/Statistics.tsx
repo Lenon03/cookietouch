@@ -1,6 +1,6 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
-import Account from "@account";
+import Account from "@/account";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles, {

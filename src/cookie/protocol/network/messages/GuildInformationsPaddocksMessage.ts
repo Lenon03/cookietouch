@@ -1,5 +1,5 @@
-import PaddockContentInformations from "@protocol/network/types/PaddockContentInformations";
-import Message from "./Message";
+import PaddockContentInformations from "@/protocol/network/types/PaddockContentInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GuildInformationsPaddocksMessage extends Message {
   public paddocksInformations: PaddockContentInformations[];

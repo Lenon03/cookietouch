@@ -1,5 +1,5 @@
-import { SpellResistances } from "./enums/SpellResistances";
-import { SpellTargets } from "./enums/SpellTargets";
+import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
+import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 
 export default class Spell {
   public spellId: number;

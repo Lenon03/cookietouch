@@ -1,4 +1,4 @@
-import ChatServerMessage from "./ChatServerMessage";
+import ChatServerMessage from "@/protocol/network/messages/ChatServerMessage";
 
 export default class ChatAdminServerMessage extends ChatServerMessage {
   constructor(channel = 0, content = "", timestamp = 0, fingerprint = "",

@@ -1,4 +1,4 @@
-import ExchangeStartOkCraftMessage from "./ExchangeStartOkCraftMessage";
+import ExchangeStartOkCraftMessage from "@/protocol/network/messages/ExchangeStartOkCraftMessage";
 
 export default class ExchangeStartOkCraftWithInformationMessage extends ExchangeStartOkCraftMessage {
   public nbCase: number;

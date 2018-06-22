@@ -1,4 +1,4 @@
-import PartyMemberRemoveMessage from "./PartyMemberRemoveMessage";
+import PartyMemberRemoveMessage from "@/protocol/network/messages/PartyMemberRemoveMessage";
 
 export default class PartyMemberEjectedMessage extends PartyMemberRemoveMessage {
   public kickerId: number;

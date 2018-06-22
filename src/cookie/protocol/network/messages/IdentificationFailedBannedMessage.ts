@@ -1,4 +1,4 @@
-import IdentificationFailedMessage from "./IdentificationFailedMessage";
+import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
 
 export default class IdentificationFailedBannedMessage extends IdentificationFailedMessage {
   public banEndDate: number;

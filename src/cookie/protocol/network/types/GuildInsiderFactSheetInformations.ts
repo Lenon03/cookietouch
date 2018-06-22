@@ -1,5 +1,5 @@
-import GuildEmblem from "./GuildEmblem";
-import GuildFactSheetInformations from "./GuildFactSheetInformations";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
+import GuildFactSheetInformations from "@/protocol/network/types/GuildFactSheetInformations";
 
 export default class GuildInsiderFactSheetInformations extends GuildFactSheetInformations {
   public leaderName: string;

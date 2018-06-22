@@ -1,4 +1,4 @@
-import ContactLookRequestMessage from "./ContactLookRequestMessage";
+import ContactLookRequestMessage from "@/protocol/network/messages/ContactLookRequestMessage";
 
 export default class ContactLookRequestByIdMessage extends ContactLookRequestMessage {
   public playerId: number;

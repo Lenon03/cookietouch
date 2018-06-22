@@ -1,4 +1,4 @@
-import GuildVersatileInformations from "./GuildVersatileInformations";
+import GuildVersatileInformations from "@/protocol/network/types/GuildVersatileInformations";
 
 export default class GuildInAllianceVersatileInformations extends GuildVersatileInformations {
   public allianceId: number;

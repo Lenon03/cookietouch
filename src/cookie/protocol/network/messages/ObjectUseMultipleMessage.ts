@@ -1,4 +1,4 @@
-import ObjectUseMessage from "./ObjectUseMessage";
+import ObjectUseMessage from "@/protocol/network/messages/ObjectUseMessage";
 
 export default class ObjectUseMultipleMessage extends ObjectUseMessage {
   public quantity: number;

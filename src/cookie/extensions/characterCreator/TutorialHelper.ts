@@ -1,8 +1,8 @@
 import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
-import { BreedEnum } from "@protocol/enums/BreedEnum";
-import Dictionary from "@utils/Dictionary";
+import { BreedEnum } from "@/protocol/enums/BreedEnum";
+import Dictionary from "@/utils/Dictionary";
 import { List } from "linqts";
 
 export default class TutorialHelper {

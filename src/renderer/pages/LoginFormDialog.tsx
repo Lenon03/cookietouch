@@ -15,7 +15,7 @@ import withStyles, {
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import * as React from "react";
-import { signin, signup } from "../FirebaseHelpers";
+import { signin, signup } from "@renderer/FirebaseHelpers";
 
 type style = "root" | "formControl";
 

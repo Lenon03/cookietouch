@@ -1,4 +1,4 @@
-import InteractiveElementEntry from "./InteractiveElementEntry";
+import InteractiveElementEntry from "@/game/map/interactives/InteractiveElementEntry";
 
 export default class ElementInCellEntry {
   public element: InteractiveElementEntry;

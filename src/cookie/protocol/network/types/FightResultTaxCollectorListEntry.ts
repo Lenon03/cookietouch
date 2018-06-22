@@ -1,6 +1,6 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import FightLoot from "./FightLoot";
-import FightResultFighterListEntry from "./FightResultFighterListEntry";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import FightLoot from "@/protocol/network/types/FightLoot";
+import FightResultFighterListEntry from "@/protocol/network/types/FightResultFighterListEntry";
 
 export default class FightResultTaxCollectorListEntry extends FightResultFighterListEntry {
 

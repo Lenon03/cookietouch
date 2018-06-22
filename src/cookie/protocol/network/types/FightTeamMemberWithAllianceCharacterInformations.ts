@@ -1,5 +1,5 @@
-import BasicAllianceInformations from "./BasicAllianceInformations";
-import FightTeamMemberCharacterInformations from "./FightTeamMemberCharacterInformations";
+import BasicAllianceInformations from "@/protocol/network/types/BasicAllianceInformations";
+import FightTeamMemberCharacterInformations from "@/protocol/network/types/FightTeamMemberCharacterInformations";
 
 export default class FightTeamMemberWithAllianceCharacterInformations extends FightTeamMemberCharacterInformations {
 

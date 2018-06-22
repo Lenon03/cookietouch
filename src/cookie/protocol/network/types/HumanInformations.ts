@@ -1,6 +1,6 @@
-import ActorRestrictionsInformations from "./ActorRestrictionsInformations";
-import HumanOption from "./HumanOption";
-import Type from "./Type";
+import ActorRestrictionsInformations from "@/protocol/network/types/ActorRestrictionsInformations";
+import HumanOption from "@/protocol/network/types/HumanOption";
+import Type from "@/protocol/network/types/Type";
 
 export default class HumanInformations extends Type {
   public options: HumanOption[];

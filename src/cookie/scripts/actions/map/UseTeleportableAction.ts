@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import { TeleportablesEnum } from "@game/managers/teleportables";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import { TeleportablesEnum } from "@/game/managers/teleportables";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class UseTeleportableAction extends ScriptAction {
   public _name: string = "UseTeleportableAction";

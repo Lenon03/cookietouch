@@ -1,4 +1,4 @@
-import Type from "./Type";
+import Type from "@/protocol/network/types/Type";
 
 export default class MapCoordinates extends Type {
   public worldX: number;

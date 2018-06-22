@@ -1,4 +1,4 @@
-import CellPath from "./CellPath";
+import CellPath from "@/core/pathfinder/CellPath";
 
 export default class CellData {
   public i: number;

@@ -1,6 +1,6 @@
-import JobCrafterDirectoryEntryJobInfo from "./JobCrafterDirectoryEntryJobInfo";
-import JobCrafterDirectoryEntryPlayerInfo from "./JobCrafterDirectoryEntryPlayerInfo";
-import Type from "./Type";
+import JobCrafterDirectoryEntryJobInfo from "@/protocol/network/types/JobCrafterDirectoryEntryJobInfo";
+import JobCrafterDirectoryEntryPlayerInfo from "@/protocol/network/types/JobCrafterDirectoryEntryPlayerInfo";
+import Type from "@/protocol/network/types/Type";
 
 export default class JobCrafterDirectoryListEntry extends Type {
 

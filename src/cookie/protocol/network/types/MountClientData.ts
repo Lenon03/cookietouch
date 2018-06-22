@@ -1,5 +1,5 @@
-import ObjectEffectInteger from "./ObjectEffectInteger";
-import Type from "./Type";
+import ObjectEffectInteger from "@/protocol/network/types/ObjectEffectInteger";
+import Type from "@/protocol/network/types/Type";
 
 export default class MountClientData extends Type {
   public ancestor: number[];

@@ -1,5 +1,5 @@
 import Account from "@/account";
-import ICommand from "./handlers/ICommand";
+import ICommand from "@/core/commands/handlers/ICommand";
 
 /**
  * Handle command string to call asigned command class & pass account.

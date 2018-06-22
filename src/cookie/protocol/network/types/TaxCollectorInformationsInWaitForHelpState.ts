@@ -1,7 +1,7 @@
-import AdditionalTaxCollectorInformations from "./AdditionalTaxCollectorInformations";
-import EntityLook from "./EntityLook";
-import ProtectedEntityWaitingForHelpInfo from "./ProtectedEntityWaitingForHelpInfo";
-import TaxCollectorInformations from "./TaxCollectorInformations";
+import AdditionalTaxCollectorInformations from "@/protocol/network/types/AdditionalTaxCollectorInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import ProtectedEntityWaitingForHelpInfo from "@/protocol/network/types/ProtectedEntityWaitingForHelpInfo";
+import TaxCollectorInformations from "@/protocol/network/types/TaxCollectorInformations";
 
 export default class TaxCollectorInformationsInWaitForHelpState extends TaxCollectorInformations {
   public waitingForHelpInfo: ProtectedEntityWaitingForHelpInfo;

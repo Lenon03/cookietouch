@@ -1,7 +1,7 @@
-import AdditionalTaxCollectorInformations from "./AdditionalTaxCollectorInformations";
-import EntityLook from "./EntityLook";
-import TaxCollectorComplementaryInformations from "./TaxCollectorComplementaryInformations";
-import Type from "./Type";
+import AdditionalTaxCollectorInformations from "@/protocol/network/types/AdditionalTaxCollectorInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxCollectorComplementaryInformations";
+import Type from "@/protocol/network/types/Type";
 
 export default class TaxCollectorInformations extends Type {
   public complements: TaxCollectorComplementaryInformations[];

@@ -1,5 +1,5 @@
-import AllianceInformations from "./AllianceInformations";
-import HumanOption from "./HumanOption";
+import AllianceInformations from "@/protocol/network/types/AllianceInformations";
+import HumanOption from "@/protocol/network/types/HumanOption";
 
 export default class HumanOptionAlliance extends HumanOption {
   public allianceInformations: AllianceInformations;

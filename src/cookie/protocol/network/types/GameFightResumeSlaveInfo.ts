@@ -1,5 +1,5 @@
-import GameFightSpellCooldown from "./GameFightSpellCooldown";
-import Type from "./Type";
+import GameFightSpellCooldown from "@/protocol/network/types/GameFightSpellCooldown";
+import Type from "@/protocol/network/types/Type";
 
 export default class GameFightResumeSlaveInfo extends Type {
   public spellCooldowns: GameFightSpellCooldown[];

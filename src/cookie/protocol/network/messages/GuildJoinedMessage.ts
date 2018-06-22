@@ -1,5 +1,5 @@
-import GuildInformations from "@protocol/network/types/GuildInformations";
-import Message from "./Message";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GuildJoinedMessage extends Message {
   public guildInfo: GuildInformations;

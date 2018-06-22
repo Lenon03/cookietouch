@@ -1,5 +1,5 @@
-import JobCrafterDirectoryListEntry from "@protocol/network/types/JobCrafterDirectoryListEntry";
-import Message from "./Message";
+import JobCrafterDirectoryListEntry from "@/protocol/network/types/JobCrafterDirectoryListEntry";
+import Message from "@/protocol/network/messages/Message";
 
 export default class JobCrafterDirectoryAddMessage extends Message {
   public listEntry: JobCrafterDirectoryListEntry;

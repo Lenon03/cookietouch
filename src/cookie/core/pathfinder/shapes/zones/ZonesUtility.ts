@@ -1,4 +1,4 @@
-import Zone from "./Zone";
+import Zone from "@/core/pathfinder/shapes/zones/Zone";
 
 export default class ZonesUtility {
   /*

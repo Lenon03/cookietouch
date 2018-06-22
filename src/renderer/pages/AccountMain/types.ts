@@ -1,6 +1,6 @@
-import Account from "@account";
+import Account from "@/account";
 import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { AccountMainStyle } from "./styles";
+import { AccountMainStyle } from "@renderer/pages/AccountMain/styles";
 
 export interface IAccountMainProps {
   account: Account;

@@ -1,4 +1,4 @@
-import Type from "./Type";
+import Type from "@/protocol/network/types/Type";
 
 export default class TrustCertificate extends Type {
   public id: number;

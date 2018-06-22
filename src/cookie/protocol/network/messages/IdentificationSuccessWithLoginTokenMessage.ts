@@ -1,4 +1,4 @@
-import IdentificationSuccessMessage from "./IdentificationSuccessMessage";
+import IdentificationSuccessMessage from "@/protocol/network/messages/IdentificationSuccessMessage";
 
 export default class IdentificationSuccessWithLoginTokenMessage extends IdentificationSuccessMessage {
   public loginToken: string;

@@ -1,5 +1,5 @@
-import GuildInformations from "./GuildInformations";
-import Type from "./Type";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
+import Type from "@/protocol/network/types/Type";
 
 export default class TaxCollectorStaticInformations extends Type {
   public firstNameId: number;

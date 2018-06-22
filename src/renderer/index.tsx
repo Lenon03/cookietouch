@@ -7,8 +7,8 @@ import DTConstants from "@/protocol/DTConstants";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 // import "typeface-roboto";
-import { initialize, presence } from "./FirebaseHelpers";
-import Main from "./pages/Main";
+import { initialize, presence } from "@renderer/FirebaseHelpers";
+import Main from "@renderer/pages/Main";
 
 const app = initialize();
 app

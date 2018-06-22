@@ -1,4 +1,4 @@
-import AchievementFinishedMessage from "./AchievementFinishedMessage";
+import AchievementFinishedMessage from "@/protocol/network/messages/AchievementFinishedMessage";
 
 export default class AchievementFinishedInformationMessage extends AchievementFinishedMessage {
   public name: string;

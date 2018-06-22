@@ -1,4 +1,4 @@
-import GameFightFighterLightInformations from "./GameFightFighterLightInformations";
+import GameFightFighterLightInformations from "@/protocol/network/types/GameFightFighterLightInformations";
 
 export default class GameFightFighterCompanionLightInformations extends GameFightFighterLightInformations {
   public companionId: number;

@@ -1,5 +1,5 @@
-import AccountHouseInformations from "@protocol/network/types/AccountHouseInformations";
-import Message from "./Message";
+import AccountHouseInformations from "@/protocol/network/types/AccountHouseInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class AccountHouseMessage extends Message {
   public houses: AccountHouseInformations[];

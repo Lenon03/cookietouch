@@ -1,4 +1,4 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class EmblemSymbols extends Data {
   public skinId: number;

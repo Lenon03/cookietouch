@@ -1,7 +1,7 @@
-import EntityLook from "./EntityLook";
-import PartyCompanionBaseInformations from "./PartyCompanionBaseInformations";
-import PlayerStatus from "./PlayerStatus";
-import Type from "./Type";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import PartyCompanionBaseInformations from "@/protocol/network/types/PartyCompanionBaseInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
+import Type from "@/protocol/network/types/Type";
 
 export default class PartyGuestInformations extends Type {
   public companions: PartyCompanionBaseInformations[];

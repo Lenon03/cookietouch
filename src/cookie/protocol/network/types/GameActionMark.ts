@@ -1,5 +1,5 @@
-import GameActionMarkedCell from "./GameActionMarkedCell";
-import Type from "./Type";
+import GameActionMarkedCell from "@/protocol/network/types/GameActionMarkedCell";
+import Type from "@/protocol/network/types/Type";
 
 export default class GameActionMark extends Type {
   public cells: GameActionMarkedCell[];

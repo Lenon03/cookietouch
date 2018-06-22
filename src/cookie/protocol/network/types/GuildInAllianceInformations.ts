@@ -1,5 +1,5 @@
-import GuildEmblem from "./GuildEmblem";
-import GuildInformations from "./GuildInformations";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
 
 export default class GuildInAllianceInformations extends GuildInformations {
   public guildLevel: number;

@@ -1,5 +1,5 @@
-import EntityLook from "@protocol/network/types/EntityLook";
-import AbstractGameActionMessage from "./AbstractGameActionMessage";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import AbstractGameActionMessage from "@/protocol/network/messages/AbstractGameActionMessage";
 
 export default class GameActionFightChangeLookMessage extends AbstractGameActionMessage {
   public targetId: number;

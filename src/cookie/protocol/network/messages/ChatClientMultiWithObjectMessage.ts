@@ -1,5 +1,5 @@
-import ObjectItem from "@protocol/network/types/ObjectItem";
-import ChatClientMultiMessage from "./ChatClientMultiMessage";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
+import ChatClientMultiMessage from "@/protocol/network/messages/ChatClientMultiMessage";
 
 export default class ChatClientMultiWithObjectMessage extends ChatClientMultiMessage {
   public objects: ObjectItem[];

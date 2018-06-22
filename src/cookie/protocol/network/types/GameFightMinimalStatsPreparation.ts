@@ -1,4 +1,4 @@
-import GameFightMinimalStats from "./GameFightMinimalStats";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
 
 export default class GameFightMinimalStatsPreparation extends GameFightMinimalStats {
   public initiative: number;

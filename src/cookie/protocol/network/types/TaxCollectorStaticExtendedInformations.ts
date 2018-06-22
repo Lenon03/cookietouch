@@ -1,6 +1,6 @@
-import AllianceInformations from "./AllianceInformations";
-import GuildInformations from "./GuildInformations";
-import TaxCollectorStaticInformations from "./TaxCollectorStaticInformations";
+import AllianceInformations from "@/protocol/network/types/AllianceInformations";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
+import TaxCollectorStaticInformations from "@/protocol/network/types/TaxCollectorStaticInformations";
 
 export default class TaxCollectorStaticExtendedInformations extends TaxCollectorStaticInformations {
   public allianceIdentity: AllianceInformations;

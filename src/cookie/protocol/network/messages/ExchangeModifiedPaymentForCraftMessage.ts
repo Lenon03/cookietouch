@@ -1,5 +1,5 @@
-import ObjectItemNotInContainer from "@protocol/network/types/ObjectItemNotInContainer";
-import Message from "./Message";
+import ObjectItemNotInContainer from "@/protocol/network/types/ObjectItemNotInContainer";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ExchangeModifiedPaymentForCraftMessage extends Message {
   public onlySuccess: boolean;

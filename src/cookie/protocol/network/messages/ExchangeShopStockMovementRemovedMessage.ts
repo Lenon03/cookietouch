@@ -1,4 +1,4 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ExchangeShopStockMovementRemovedMessage extends Message {
   public objectId: number;

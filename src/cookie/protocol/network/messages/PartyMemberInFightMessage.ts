@@ -1,5 +1,5 @@
-import MapCoordinatesExtended from "@protocol/network/types/MapCoordinatesExtended";
-import AbstractPartyMessage from "./AbstractPartyMessage";
+import MapCoordinatesExtended from "@/protocol/network/types/MapCoordinatesExtended";
+import AbstractPartyMessage from "@/protocol/network/messages/AbstractPartyMessage";
 
 export default class PartyMemberInFightMessage extends AbstractPartyMessage {
   public reason: number;

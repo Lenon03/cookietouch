@@ -1,4 +1,4 @@
-import IdentificationMessage from "./IdentificationMessage";
+import IdentificationMessage from "@/protocol/network/messages/IdentificationMessage";
 
 export default class IdentificationAccountForceMessage extends IdentificationMessage {
   public forcedAccountLogin: string;

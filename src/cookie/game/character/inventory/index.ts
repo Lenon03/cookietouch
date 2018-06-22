@@ -2,15 +2,15 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
-import Account from "@account";
-import DataManager from "@protocol/data";
-import Items from "@protocol/data/classes/Items";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import Dictionary from "@utils/Dictionary";
-import LiteEvent from "@utils/LiteEvent";
+import Account from "@/account";
+import DataManager from "@/protocol/data";
+import Items from "@/protocol/data/classes/Items";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import Dictionary from "@/utils/Dictionary";
+import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
-import InventoryHelper, { ObjectTypes } from "./InventoryHelper";
-import ObjectEntry from "./ObjectEntry";
+import InventoryHelper, { ObjectTypes } from "@/game/character/inventory/InventoryHelper";
+import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 
 export default class Inventory {
   public kamas: number;

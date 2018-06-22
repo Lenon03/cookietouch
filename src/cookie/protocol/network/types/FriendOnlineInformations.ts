@@ -1,6 +1,6 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import FriendInformations from "./FriendInformations";
-import PlayerStatus from "./PlayerStatus";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import FriendInformations from "@/protocol/network/types/FriendInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class FriendOnlineInformations extends FriendInformations {
   public playerId: number;

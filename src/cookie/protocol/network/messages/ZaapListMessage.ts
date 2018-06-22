@@ -1,4 +1,4 @@
-import TeleportDestinationsListMessage from "./TeleportDestinationsListMessage";
+import TeleportDestinationsListMessage from "@/protocol/network/messages/TeleportDestinationsListMessage";
 
 export default class ZaapListMessage extends TeleportDestinationsListMessage {
   public spawnMapId: number;

@@ -1,5 +1,5 @@
-import PresetItem from "./PresetItem";
-import Type from "./Type";
+import PresetItem from "@/protocol/network/types/PresetItem";
+import Type from "@/protocol/network/types/Type";
 
 export default class Preset extends Type {
   public objects: PresetItem[];

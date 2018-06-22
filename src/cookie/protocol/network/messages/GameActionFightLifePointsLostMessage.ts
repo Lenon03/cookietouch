@@ -1,4 +1,4 @@
-import AbstractGameActionMessage from "./AbstractGameActionMessage";
+import AbstractGameActionMessage from "@/protocol/network/messages/AbstractGameActionMessage";
 
 export default class GameActionFightLifePointsLostMessage extends AbstractGameActionMessage {
   public targetId: number;

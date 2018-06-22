@@ -1,7 +1,7 @@
-import EntityLook from "@protocol/network/types/EntityLook";
-import JobCrafterDirectoryEntryJobInfo from "@protocol/network/types/JobCrafterDirectoryEntryJobInfo";
-import JobCrafterDirectoryEntryPlayerInfo from "@protocol/network/types/JobCrafterDirectoryEntryPlayerInfo";
-import Message from "./Message";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import JobCrafterDirectoryEntryJobInfo from "@/protocol/network/types/JobCrafterDirectoryEntryJobInfo";
+import JobCrafterDirectoryEntryPlayerInfo from "@/protocol/network/types/JobCrafterDirectoryEntryPlayerInfo";
+import Message from "@/protocol/network/messages/Message";
 
 export default class JobCrafterDirectoryEntryMessage extends Message {
   public jobInfoList: JobCrafterDirectoryEntryJobInfo[];

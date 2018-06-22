@@ -1,5 +1,5 @@
-import CharacterMinimalInformations from "./CharacterMinimalInformations";
-import EntityLook from "./EntityLook";
+import CharacterMinimalInformations from "@/protocol/network/types/CharacterMinimalInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
 
 export default class CharacterMinimalPlusLookInformations extends CharacterMinimalInformations {
 

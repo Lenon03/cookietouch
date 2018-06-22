@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayActorInformations from "./GameRolePlayActorInformations";
-import PrismInformation from "./PrismInformation";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
+import PrismInformation from "@/protocol/network/types/PrismInformation";
 
 export default class GameRolePlayPrismInformations extends GameRolePlayActorInformations {
   public prism: PrismInformation;

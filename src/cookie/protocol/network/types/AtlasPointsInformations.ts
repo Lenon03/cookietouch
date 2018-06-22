@@ -1,5 +1,5 @@
-import MapCoordinatesExtended from "./MapCoordinatesExtended";
-import Type from "./Type";
+import MapCoordinatesExtended from "@/protocol/network/types/MapCoordinatesExtended";
+import Type from "@/protocol/network/types/Type";
 
 export default class AtlasPointsInformations extends Type {
 

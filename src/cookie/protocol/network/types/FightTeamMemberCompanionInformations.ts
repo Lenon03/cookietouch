@@ -1,4 +1,4 @@
-import FightTeamMemberInformations from "./FightTeamMemberInformations";
+import FightTeamMemberInformations from "@/protocol/network/types/FightTeamMemberInformations";
 
 export default class FightTeamMemberCompanionInformations extends FightTeamMemberInformations {
 

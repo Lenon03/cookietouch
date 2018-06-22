@@ -1,4 +1,4 @@
-import ExchangeBidPriceMessage from "./ExchangeBidPriceMessage";
+import ExchangeBidPriceMessage from "@/protocol/network/messages/ExchangeBidPriceMessage";
 
 export default class ExchangeBidPriceForSellerMessage extends ExchangeBidPriceMessage {
   public minimalPrices: number[];

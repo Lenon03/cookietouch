@@ -1,13 +1,13 @@
 import { DataTypes } from "@/protocol/data/DataTypes";
-import DataManager from "@protocol/data";
-import Jobs from "@protocol/data/classes/Jobs";
-import Skills from "@protocol/data/classes/Skills";
-import DTConstants from "@protocol/DTConstants";
-import JobDescription from "@protocol/network/types/JobDescription";
-import JobExperience from "@protocol/network/types/JobExperience";
-import SkillActionDescriptionCollect from "@protocol/network/types/SkillActionDescriptionCollect";
+import DataManager from "@/protocol/data";
+import Jobs from "@/protocol/data/classes/Jobs";
+import Skills from "@/protocol/data/classes/Skills";
+import DTConstants from "@/protocol/DTConstants";
+import JobDescription from "@/protocol/network/types/JobDescription";
+import JobExperience from "@/protocol/network/types/JobExperience";
+import SkillActionDescriptionCollect from "@/protocol/network/types/SkillActionDescriptionCollect";
 import { List } from "linqts";
-import CollectSkillEntry from "./skills/CollectSkillEntry";
+import CollectSkillEntry from "@/game/character/jobs/skills/CollectSkillEntry";
 
 export default class JobEntry {
   public id: number;

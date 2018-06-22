@@ -1,5 +1,5 @@
-import MountInformationsForPaddock from "./MountInformationsForPaddock";
-import PaddockInformations from "./PaddockInformations";
+import MountInformationsForPaddock from "@/protocol/network/types/MountInformationsForPaddock";
+import PaddockInformations from "@/protocol/network/types/PaddockInformations";
 
 export default class PaddockContentInformations extends PaddockInformations {
   public mountsInformations: MountInformationsForPaddock[];

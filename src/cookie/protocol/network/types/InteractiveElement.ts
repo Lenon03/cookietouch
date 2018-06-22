@@ -1,5 +1,5 @@
-import InteractiveElementSkill from "./InteractiveElementSkill";
-import Type from "./Type";
+import InteractiveElementSkill from "@/protocol/network/types/InteractiveElementSkill";
+import Type from "@/protocol/network/types/Type";
 
 export default class InteractiveElement extends Type {
   public enabledSkills: InteractiveElementSkill[];

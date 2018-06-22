@@ -1,4 +1,4 @@
-import Dictionary from "@utils/Dictionary";
+import Dictionary from "@/utils/Dictionary";
 
 export default class FightPath {
   public reachable: number[];

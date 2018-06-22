@@ -1,4 +1,4 @@
-import ExchangeCraftResultWithObjectIdMessage from "./ExchangeCraftResultWithObjectIdMessage";
+import ExchangeCraftResultWithObjectIdMessage from "@/protocol/network/messages/ExchangeCraftResultWithObjectIdMessage";
 
 export default class ExchangeCraftInformationObjectMessage extends ExchangeCraftResultWithObjectIdMessage {
   public playerId: number;

@@ -1,4 +1,4 @@
-import MapCoordinates from "./MapCoordinates";
+import MapCoordinates from "@/protocol/network/types/MapCoordinates";
 
 export default class MapCoordinatesAndId extends MapCoordinates {
   public mapId: number;

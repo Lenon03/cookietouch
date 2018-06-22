@@ -1,6 +1,6 @@
-import CharacterCharacteristicsInformations from "@protocol/network/types/CharacterCharacteristicsInformations";
-import SpellItem from "@protocol/network/types/SpellItem";
-import Message from "./Message";
+import CharacterCharacteristicsInformations from "@/protocol/network/types/CharacterCharacteristicsInformations";
+import SpellItem from "@/protocol/network/types/SpellItem";
+import Message from "@/protocol/network/messages/Message";
 
 export default class SlaveSwitchContextMessage extends Message {
   public slaveSpells: SpellItem[];

@@ -1,4 +1,4 @@
-import AbstractContactInformations from "./AbstractContactInformations";
+import AbstractContactInformations from "@/protocol/network/types/AbstractContactInformations";
 
 export default class FriendInformations extends AbstractContactInformations {
   public playerState: number;

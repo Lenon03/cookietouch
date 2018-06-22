@@ -1,4 +1,4 @@
-import SkillActionDescription from "./SkillActionDescription";
+import SkillActionDescription from "@/protocol/network/types/SkillActionDescription";
 
 export default class SkillActionDescriptionTimed extends SkillActionDescription {
 

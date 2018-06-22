@@ -1,5 +1,5 @@
 import ObjectAveragePricesMessage from "@/protocol/network/messages/ObjectAveragePricesMessage";
-import Account from "@account";
+import Account from "@/account";
 import * as firebase from "firebase";
 
 export default class AveragePricesFrame {

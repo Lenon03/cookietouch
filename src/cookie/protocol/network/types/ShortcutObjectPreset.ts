@@ -1,4 +1,4 @@
-import ShortcutObject from "./ShortcutObject";
+import ShortcutObject from "@/protocol/network/types/ShortcutObject";
 
 export default class ShortcutObjectPreset extends ShortcutObject {
   public presetId: number;

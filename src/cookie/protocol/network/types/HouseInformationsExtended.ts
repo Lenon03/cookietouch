@@ -1,5 +1,5 @@
-import GuildInformations from "./GuildInformations";
-import HouseInformations from "./HouseInformations";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
+import HouseInformations from "@/protocol/network/types/HouseInformations";
 
 export default class HouseInformationsExtended extends HouseInformations {
   public guildInfo: GuildInformations;

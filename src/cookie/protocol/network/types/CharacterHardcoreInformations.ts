@@ -1,5 +1,5 @@
-import CharacterBaseInformations from "./CharacterBaseInformations";
-import EntityLook from "./EntityLook";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
 
 export default class CharacterHardcoreInformations extends CharacterBaseInformations {
 

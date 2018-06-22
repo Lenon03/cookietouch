@@ -1,4 +1,4 @@
-import { sleep } from "@utils/Time";
+import { sleep } from "@/utils/Time";
 import axios from "axios";
 
 const connectionTimeout = 20;

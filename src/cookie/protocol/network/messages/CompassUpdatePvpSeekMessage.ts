@@ -1,5 +1,5 @@
-import MapCoordinates from "@protocol/network/types/MapCoordinates";
-import CompassUpdateMessage from "./CompassUpdateMessage";
+import MapCoordinates from "@/protocol/network/types/MapCoordinates";
+import CompassUpdateMessage from "@/protocol/network/messages/CompassUpdateMessage";
 
 export default class CompassUpdatePvpSeekMessage extends CompassUpdateMessage {
   public memberId: number;

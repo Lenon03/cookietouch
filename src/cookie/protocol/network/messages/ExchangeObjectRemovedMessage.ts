@@ -1,4 +1,4 @@
-import ExchangeObjectMessage from "./ExchangeObjectMessage";
+import ExchangeObjectMessage from "@/protocol/network/messages/ExchangeObjectMessage";
 
 export default class ExchangeObjectRemovedMessage extends ExchangeObjectMessage {
   public objectUID: number;

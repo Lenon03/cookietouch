@@ -1,5 +1,5 @@
-import GameRolePlayActorInformations from "@protocol/network/types/GameRolePlayActorInformations";
-import GameRolePlayShowActorMessage from "./GameRolePlayShowActorMessage";
+import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
+import GameRolePlayShowActorMessage from "@/protocol/network/messages/GameRolePlayShowActorMessage";
 
 export default class GameRolePlayShowActorWithEventMessage extends GameRolePlayShowActorMessage {
   public actorEventId: number;

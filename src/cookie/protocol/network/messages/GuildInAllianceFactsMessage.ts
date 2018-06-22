@@ -1,7 +1,7 @@
-import BasicNamedAllianceInformations from "@protocol/network/types/BasicNamedAllianceInformations";
-import CharacterMinimalInformations from "@protocol/network/types/CharacterMinimalInformations";
-import GuildFactSheetInformations from "@protocol/network/types/GuildFactSheetInformations";
-import GuildFactsMessage from "./GuildFactsMessage";
+import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedAllianceInformations";
+import CharacterMinimalInformations from "@/protocol/network/types/CharacterMinimalInformations";
+import GuildFactSheetInformations from "@/protocol/network/types/GuildFactSheetInformations";
+import GuildFactsMessage from "@/protocol/network/messages/GuildFactsMessage";
 
 export default class GuildInAllianceFactsMessage extends GuildFactsMessage {
   public allianceInfos: BasicNamedAllianceInformations;

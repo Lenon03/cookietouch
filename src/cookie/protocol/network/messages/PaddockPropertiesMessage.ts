@@ -1,5 +1,5 @@
-import PaddockInformations from "@protocol/network/types/PaddockInformations";
-import Message from "./Message";
+import PaddockInformations from "@/protocol/network/types/PaddockInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class PaddockPropertiesMessage extends Message {
   public properties: PaddockInformations;

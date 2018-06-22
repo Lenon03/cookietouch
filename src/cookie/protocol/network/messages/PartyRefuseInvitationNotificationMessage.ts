@@ -1,4 +1,4 @@
-import AbstractPartyEventMessage from "./AbstractPartyEventMessage";
+import AbstractPartyEventMessage from "@/protocol/network/messages/AbstractPartyEventMessage";
 
 export default class PartyRefuseInvitationNotificationMessage extends AbstractPartyEventMessage {
   public guestId: number;

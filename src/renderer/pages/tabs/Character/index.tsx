@@ -1,5 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
+import Account from "@/account";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
 import withStyles, {
@@ -9,9 +9,9 @@ import withStyles, {
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import * as React from "react";
-import Jobs from "./Jobs";
-import Spells from "./Spells";
-import Stats from "./Stats";
+import Jobs from "@renderer/pages/tabs/Character/Jobs";
+import Spells from "@renderer/pages/tabs/Character/Spells";
+import Stats from "@renderer/pages/tabs/Character/Stats";
 
 type style = "root" | "appBar" | "tab";
 

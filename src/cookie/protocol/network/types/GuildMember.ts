@@ -1,5 +1,5 @@
-import CharacterMinimalInformations from "./CharacterMinimalInformations";
-import PlayerStatus from "./PlayerStatus";
+import CharacterMinimalInformations from "@/protocol/network/types/CharacterMinimalInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class GuildMember extends CharacterMinimalInformations {
   public breed: number;

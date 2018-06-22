@@ -1,5 +1,5 @@
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
-import Dictionary from "@utils/Dictionary";
+import Dictionary from "@/utils/Dictionary";
 
 export default class RangeNodeEntry {
   public fromCellId: number;

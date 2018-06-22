@@ -1,4 +1,4 @@
-import FightPath from "./FightPath";
+import FightPath from "@/core/pathfinder/fights/FightPath";
 
 export default class MoveNode {
   public ap: number;

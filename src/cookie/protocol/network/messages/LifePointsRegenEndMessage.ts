@@ -1,4 +1,4 @@
-import UpdateLifePointsMessage from "./UpdateLifePointsMessage";
+import UpdateLifePointsMessage from "@/protocol/network/messages/UpdateLifePointsMessage";
 
 export default class LifePointsRegenEndMessage extends UpdateLifePointsMessage {
   public lifePointsGained: number;

@@ -1,6 +1,6 @@
-import AbstractGameActionMessage from "./AbstractGameActionMessage";
+import AbstractGameActionMessage from "@/protocol/network/messages/AbstractGameActionMessage";
 
-import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
 
 export default class GameActionFightSummonMessage extends AbstractGameActionMessage {
   public summon: GameFightFighterInformations;

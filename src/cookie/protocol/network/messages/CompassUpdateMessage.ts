@@ -1,5 +1,5 @@
-import MapCoordinates from "@protocol/network/types/MapCoordinates";
-import Message from "./Message";
+import MapCoordinates from "@/protocol/network/types/MapCoordinates";
+import Message from "@/protocol/network/messages/Message";
 
 export default class CompassUpdateMessage extends Message {
   public type: number;

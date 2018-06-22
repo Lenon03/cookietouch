@@ -1,5 +1,5 @@
 import { AccountStates } from "@/account/AccountStates";
-import Account from "@account";
+import Account from "@/account";
 import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";

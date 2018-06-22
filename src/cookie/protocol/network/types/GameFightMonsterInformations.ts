@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameFightAIInformations from "./GameFightAIInformations";
-import GameFightMinimalStats from "./GameFightMinimalStats";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameFightAIInformations from "@/protocol/network/types/GameFightAIInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
 
 export default class GameFightMonsterInformations extends GameFightAIInformations {
   public creatureGenericId: number;

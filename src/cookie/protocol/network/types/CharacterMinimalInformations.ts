@@ -1,4 +1,4 @@
-import AbstractCharacterInformation from "./AbstractCharacterInformation";
+import AbstractCharacterInformation from "@/protocol/network/types/AbstractCharacterInformation";
 
 export default class CharacterMinimalInformations extends AbstractCharacterInformation {
 

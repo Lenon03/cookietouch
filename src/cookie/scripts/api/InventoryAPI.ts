@@ -1,10 +1,10 @@
-import Account from "@account";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import DeleteItemAction from "../actions/inventory/DeleteItemAction";
-import DropItemAction from "../actions/inventory/DropItemAction";
-import EquipItemAction from "../actions/inventory/EquipItemAction";
-import UnEquipItemAction from "../actions/inventory/UnEquipItemAction";
-import UseItemAction from "../actions/inventory/UseItemAction";
+import Account from "@/account";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import DeleteItemAction from "@/scripts/actions/inventory/DeleteItemAction";
+import DropItemAction from "@/scripts/actions/inventory/DropItemAction";
+import EquipItemAction from "@/scripts/actions/inventory/EquipItemAction";
+import UnEquipItemAction from "@/scripts/actions/inventory/UnEquipItemAction";
+import UseItemAction from "@/scripts/actions/inventory/UseItemAction";
 
 export default class InventoryAPI {
   private account: Account;

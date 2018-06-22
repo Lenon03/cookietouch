@@ -1,4 +1,4 @@
-import GuildFightJoinRequestMessage from "./GuildFightJoinRequestMessage";
+import GuildFightJoinRequestMessage from "@/protocol/network/messages/GuildFightJoinRequestMessage";
 
 export default class GuildFightTakePlaceRequestMessage extends GuildFightJoinRequestMessage {
   public replacedCharacterId: number;

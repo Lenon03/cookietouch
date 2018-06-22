@@ -1,5 +1,5 @@
-import JobCrafterDirectorySettings from "@protocol/network/types/JobCrafterDirectorySettings";
-import Message from "./Message";
+import JobCrafterDirectorySettings from "@/protocol/network/types/JobCrafterDirectorySettings";
+import Message from "@/protocol/network/messages/Message";
 
 export default class JobCrafterDirectoryDefineSettingsMessage extends Message {
   public settings: JobCrafterDirectorySettings;

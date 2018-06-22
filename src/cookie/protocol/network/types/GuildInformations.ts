@@ -1,5 +1,5 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import GuildEmblem from "./GuildEmblem";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
 
 export default class GuildInformations extends BasicGuildInformations {
 

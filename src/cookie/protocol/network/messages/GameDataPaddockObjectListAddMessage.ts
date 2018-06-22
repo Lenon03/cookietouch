@@ -1,5 +1,5 @@
-import PaddockItem from "@protocol/network/types/PaddockItem";
-import Message from "./Message";
+import PaddockItem from "@/protocol/network/types/PaddockItem";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GameDataPaddockObjectListAddMessage extends Message {
   public paddockItemDescription: PaddockItem[];

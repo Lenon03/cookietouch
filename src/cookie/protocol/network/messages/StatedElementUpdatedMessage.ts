@@ -1,5 +1,5 @@
-import StatedElement from "@protocol/network/types/StatedElement";
-import Message from "./Message";
+import StatedElement from "@/protocol/network/types/StatedElement";
+import Message from "@/protocol/network/messages/Message";
 
 export default class StatedElementUpdatedMessage extends Message {
   public statedElement: StatedElement;

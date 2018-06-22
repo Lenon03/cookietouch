@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayActorInformations from "./GameRolePlayActorInformations";
-import TaxCollectorStaticInformations from "./TaxCollectorStaticInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
+import TaxCollectorStaticInformations from "@/protocol/network/types/TaxCollectorStaticInformations";
 
 export default class GameRolePlayTaxCollectorInformations extends GameRolePlayActorInformations {
   public identification: TaxCollectorStaticInformations;

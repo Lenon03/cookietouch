@@ -1,12 +1,12 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import ObjectEntry from "@game/character/inventory/ObjectEntry";
-import DataManager from "@protocol/data";
-import Items from "@protocol/data/classes/Items";
-import { DialogTypeEnum } from "@protocol/enums/DialogTypeEnum";
-import LiteEvent from "@utils/LiteEvent";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import ObjectEntry from "@/game/character/inventory/ObjectEntry";
+import DataManager from "@/protocol/data";
+import Items from "@/protocol/data/classes/Items";
+import { DialogTypeEnum } from "@/protocol/enums/DialogTypeEnum";
+import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
 export default class Storage {

@@ -1,4 +1,4 @@
-import ServerSessionConstant from "./ServerSessionConstant";
+import ServerSessionConstant from "@/protocol/network/types/ServerSessionConstant";
 
 export default class ServerSessionConstantInteger extends ServerSessionConstant {
   public value: number;

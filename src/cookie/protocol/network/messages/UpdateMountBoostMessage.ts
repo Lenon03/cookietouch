@@ -1,5 +1,5 @@
-import UpdateMountBoost from "@protocol/network/types/UpdateMountBoost";
-import Message from "./Message";
+import UpdateMountBoost from "@/protocol/network/types/UpdateMountBoost";
+import Message from "@/protocol/network/messages/Message";
 
 export default class UpdateMountBoostMessage extends Message {
   public boostToUpdateList: UpdateMountBoost[];

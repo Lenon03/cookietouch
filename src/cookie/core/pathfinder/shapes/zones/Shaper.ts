@@ -1,6 +1,6 @@
 import MapPoint from "@/core/pathfinder/MapPoint";
-import Dictionary from "@utils/Dictionary";
-import ShaperEntry from "./ShaperEntry";
+import Dictionary from "@/utils/Dictionary";
+import ShaperEntry from "@/core/pathfinder/shapes/zones/ShaperEntry";
 
 export default class Shaper {
   public static shaperMap = new Dictionary<string, ShaperEntry>([

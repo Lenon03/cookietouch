@@ -1,7 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import GameRolePlayPlayerFightFriendlyRequestedMessage from "@protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
-import { sleep } from "@utils/Time";
+import Account from "@/account";
+import GameRolePlayPlayerFightFriendlyRequestedMessage from "@/protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
+import { sleep } from "@/utils/Time";
 
 export default class RolePlayExtension {
   private account: Account;

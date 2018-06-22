@@ -1,5 +1,5 @@
-import CharacterMinimalPlusLookInformations from "@protocol/network/types/CharacterMinimalPlusLookInformations";
-import Message from "./Message";
+import CharacterMinimalPlusLookInformations from "@/protocol/network/types/CharacterMinimalPlusLookInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class PrismFightAttackerAddMessage extends Message {
   public subAreaId: number;

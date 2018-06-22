@@ -1,5 +1,5 @@
-import GameActionMark from "@protocol/network/types/GameActionMark";
-import AbstractGameActionMessage from "./AbstractGameActionMessage";
+import GameActionMark from "@/protocol/network/types/GameActionMark";
+import AbstractGameActionMessage from "@/protocol/network/messages/AbstractGameActionMessage";
 
 export default class GameActionFightMarkCellsMessage extends AbstractGameActionMessage {
   public mark: GameActionMark;

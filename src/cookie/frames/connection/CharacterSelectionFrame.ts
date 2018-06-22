@@ -1,8 +1,8 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@account";
-import CharactersListMessage from "@protocol/network/messages/CharactersListMessage";
-import { randomString } from "@utils/Random";
-import { isBlank } from "@utils/String";
+import Account from "@/account";
+import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
+import { randomString } from "@/utils/Random";
+import { isBlank } from "@/utils/String";
 
 export default class CharacterSelectionFrame {
   private account: Account;

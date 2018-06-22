@@ -25,19 +25,19 @@ import GatherFlag from "@/scripts/flags/GatherFlag";
 import NpcBankFlag from "@/scripts/flags/NpcBankFlag";
 import PhenixFlag from "@/scripts/flags/PhenixFlag";
 import { sleep } from "@/utils/Time";
-import Account from "@account";
-import LiteEvent from "@utils/LiteEvent";
-import { isEmpty } from "@utils/String";
+import Account from "@/account";
+import LiteEvent from "@/utils/LiteEvent";
+import { isEmpty } from "@/utils/String";
 import * as fs from "fs";
 import { List } from "linqts";
 import * as path from "path";
-import API from "./api";
-import { IFlag, IFlagType } from "./flags/IFlag";
-import { FunctionTypes } from "./FunctionTypes";
+import API from "@/scripts/api";
+import { IFlag, IFlagType } from "@/scripts/flags/IFlag";
+import { FunctionTypes } from "@/scripts/FunctionTypes";
 import ActionsManager, {
   IActionsManagerEventData
-} from "./managers/ActionsManager";
-import JsonScriptManager, { IMap } from "./managers/JsonScriptManager";
+} from "@/scripts/managers/ActionsManager";
+import JsonScriptManager, { IMap } from "@/scripts/managers/JsonScriptManager";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;

@@ -1,6 +1,6 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import EntityLook from "./EntityLook";
-import FriendSpouseInformations from "./FriendSpouseInformations";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import FriendSpouseInformations from "@/protocol/network/types/FriendSpouseInformations";
 
 export default class FriendSpouseOnlineInformations extends FriendSpouseInformations {
   public mapId: number;

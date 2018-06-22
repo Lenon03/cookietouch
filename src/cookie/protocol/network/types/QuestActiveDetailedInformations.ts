@@ -1,5 +1,5 @@
-import QuestActiveInformations from "./QuestActiveInformations";
-import QuestObjectiveInformations from "./QuestObjectiveInformations";
+import QuestActiveInformations from "@/protocol/network/types/QuestActiveInformations";
+import QuestObjectiveInformations from "@/protocol/network/types/QuestObjectiveInformations";
 
 export default class QuestActiveDetailedInformations extends QuestActiveInformations {
   public objectives: QuestObjectiveInformations[];

@@ -1,5 +1,5 @@
-import FightTeamInformations from "@protocol/network/types/FightTeamInformations";
-import Message from "./Message";
+import FightTeamInformations from "@/protocol/network/types/FightTeamInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GameFightUpdateTeamMessage extends Message {
   public fightId: number;

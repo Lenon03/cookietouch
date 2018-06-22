@@ -1,4 +1,4 @@
-import InteractiveElementSkill from "./InteractiveElementSkill";
+import InteractiveElementSkill from "@/protocol/network/types/InteractiveElementSkill";
 
 export default class InteractiveElementNamedSkill extends InteractiveElementSkill {
   public nameId: number;

@@ -1,4 +1,4 @@
-import AbstractFightDispellableEffect from "./AbstractFightDispellableEffect";
+import AbstractFightDispellableEffect from "@/protocol/network/types/AbstractFightDispellableEffect";
 
 export default class FightTriggeredEffect extends AbstractFightDispellableEffect {
   public param1: number;

@@ -1,6 +1,6 @@
-import AchievementObjective from "./AchievementObjective";
-import AchievementStartedObjective from "./AchievementStartedObjective";
-import Type from "./Type";
+import AchievementObjective from "@/protocol/network/types/AchievementObjective";
+import AchievementStartedObjective from "@/protocol/network/types/AchievementStartedObjective";
+import Type from "@/protocol/network/types/Type";
 
 export default class Achievement extends Type {
 

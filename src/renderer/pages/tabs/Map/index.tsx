@@ -1,10 +1,10 @@
-import Account from "@account";
+import Account from "@/account";
 import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
-import MapViewer from "./MapViewer";
+import MapViewer from "@renderer/pages/tabs/Map/MapViewer";
 
 type style = "root";
 

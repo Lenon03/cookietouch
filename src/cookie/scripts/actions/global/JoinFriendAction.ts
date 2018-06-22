@@ -1,5 +1,5 @@
-import Account from "@account";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class JoinFriendAction extends ScriptAction {
   public _name: string = "JoinFriendAction";

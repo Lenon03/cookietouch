@@ -1,4 +1,4 @@
-import Version from "./Version";
+import Version from "@/protocol/network/types/Version";
 
 export default class VersionExtended extends Version {
   public install: number;

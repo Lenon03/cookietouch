@@ -1,5 +1,5 @@
-import ObjectItemToSellInHumanVendorShop from "@protocol/network/types/ObjectItemToSellInHumanVendorShop";
-import Message from "./Message";
+import ObjectItemToSellInHumanVendorShop from "@/protocol/network/types/ObjectItemToSellInHumanVendorShop";
+import Message from "@/protocol/network/messages/Message";
 
 export default class ExchangeStartOkHumanVendorMessage extends Message {
   public objectsInfos: ObjectItemToSellInHumanVendorShop[];

@@ -1,7 +1,7 @@
-import CharacterBaseInformations from "./CharacterBaseInformations";
-import EntityLook from "./EntityLook";
-import PartyCompanionMemberInformations from "./PartyCompanionMemberInformations";
-import PlayerStatus from "./PlayerStatus";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import PartyCompanionMemberInformations from "@/protocol/network/types/PartyCompanionMemberInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class PartyMemberInformations extends CharacterBaseInformations {
   public companions: PartyCompanionMemberInformations[];

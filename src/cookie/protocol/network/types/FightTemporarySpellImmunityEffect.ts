@@ -1,4 +1,4 @@
-import AbstractFightDispellableEffect from "./AbstractFightDispellableEffect";
+import AbstractFightDispellableEffect from "@/protocol/network/types/AbstractFightDispellableEffect";
 
 export default class FightTemporarySpellImmunityEffect extends AbstractFightDispellableEffect {
   public immuneSpellId: number;

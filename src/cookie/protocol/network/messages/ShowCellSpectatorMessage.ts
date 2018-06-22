@@ -1,4 +1,4 @@
-import ShowCellMessage from "./ShowCellMessage";
+import ShowCellMessage from "@/protocol/network/messages/ShowCellMessage";
 
 export default class ShowCellSpectatorMessage extends ShowCellMessage {
   public playerName: string;

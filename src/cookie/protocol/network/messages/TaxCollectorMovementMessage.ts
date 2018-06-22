@@ -1,5 +1,5 @@
-import TaxCollectorBasicInformations from "@protocol/network/types/TaxCollectorBasicInformations";
-import Message from "./Message";
+import TaxCollectorBasicInformations from "@/protocol/network/types/TaxCollectorBasicInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class TaxCollectorMovementMessage extends Message {
   public hireOrFire: boolean;

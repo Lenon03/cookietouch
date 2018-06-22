@@ -1,5 +1,5 @@
-import SpellItem from "@protocol/network/types/SpellItem";
-import Message from "./Message";
+import SpellItem from "@/protocol/network/types/SpellItem";
+import Message from "@/protocol/network/messages/Message";
 
 export default class SpellListMessage extends Message {
   public spells: SpellItem[];

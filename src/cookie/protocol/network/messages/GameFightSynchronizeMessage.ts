@@ -1,5 +1,5 @@
-import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
-import Message from "./Message";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
+import Message from "@/protocol/network/messages/Message";
 
 export default class GameFightSynchronizeMessage extends Message {
   public fighters: GameFightFighterInformations[];

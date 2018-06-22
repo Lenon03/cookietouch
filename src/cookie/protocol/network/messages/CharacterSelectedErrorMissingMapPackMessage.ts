@@ -1,4 +1,4 @@
-import CharacterSelectedErrorMessage from "./CharacterSelectedErrorMessage";
+import CharacterSelectedErrorMessage from "@/protocol/network/messages/CharacterSelectedErrorMessage";
 
 export default class CharacterSelectedErrorMissingMapPackMessage extends CharacterSelectedErrorMessage {
   public subAreaId: number;

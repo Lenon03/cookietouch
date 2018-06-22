@@ -1,4 +1,4 @@
-import HumanOption from "./HumanOption";
+import HumanOption from "@/protocol/network/types/HumanOption";
 
 export default class HumanOptionObjectUse extends HumanOption {
   public delayTypeId: number;

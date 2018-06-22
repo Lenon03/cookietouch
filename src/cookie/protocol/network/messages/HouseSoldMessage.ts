@@ -1,4 +1,4 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
 
 export default class HouseSoldMessage extends Message {
   public houseId: number;

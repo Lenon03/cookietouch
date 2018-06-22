@@ -1,6 +1,6 @@
-import CharacterBaseInformations from "./CharacterBaseInformations";
-import EntityLook from "./EntityLook";
-import PartyCompanionBaseInformations from "./PartyCompanionBaseInformations";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import PartyCompanionBaseInformations from "@/protocol/network/types/PartyCompanionBaseInformations";
 
 export default class PartyInvitationMemberInformations extends CharacterBaseInformations {
   public companions: PartyCompanionBaseInformations[];

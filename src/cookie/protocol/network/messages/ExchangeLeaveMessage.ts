@@ -1,4 +1,4 @@
-import LeaveDialogMessage from "./LeaveDialogMessage";
+import LeaveDialogMessage from "@/protocol/network/messages/LeaveDialogMessage";
 
 export default class ExchangeLeaveMessage extends LeaveDialogMessage {
   public success: boolean;

@@ -1,7 +1,7 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayMerchantInformations from "./GameRolePlayMerchantInformations";
-import GuildInformations from "./GuildInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayMerchantInformations from "@/protocol/network/types/GameRolePlayMerchantInformations";
+import GuildInformations from "@/protocol/network/types/GuildInformations";
 
 export default class GameRolePlayMerchantWithGuildInformations extends GameRolePlayMerchantInformations {
   public guildInformations: GuildInformations;

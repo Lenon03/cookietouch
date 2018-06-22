@@ -1,6 +1,6 @@
-import FightOptionsInformations from "./FightOptionsInformations";
-import FightTeamLightInformations from "./FightTeamLightInformations";
-import Type from "./Type";
+import FightOptionsInformations from "@/protocol/network/types/FightOptionsInformations";
+import FightTeamLightInformations from "@/protocol/network/types/FightTeamLightInformations";
+import Type from "@/protocol/network/types/Type";
 
 export default class FightExternalInformations extends Type {
 

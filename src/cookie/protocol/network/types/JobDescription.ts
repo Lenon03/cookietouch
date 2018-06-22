@@ -1,5 +1,5 @@
-import SkillActionDescription from "./SkillActionDescription";
-import Type from "./Type";
+import SkillActionDescription from "@/protocol/network/types/SkillActionDescription";
+import Type from "@/protocol/network/types/Type";
 
 export default class JobDescription extends Type {
 

@@ -3,11 +3,11 @@ import AccountConfiguration from "@/configurations/accounts/AccountConfiguration
 import { Languages } from "@/configurations/language/Languages";
 import Group from "@/groups/Group";
 import Crypto from "@/utils/Crypto";
+import CookieMain from "@renderer/CookieMain";
 import { remote } from "electron";
 import * as fs from "fs";
 import { List } from "linqts";
 import * as path from "path";
-import CookieMain from "@renderer/CookieMain";
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;

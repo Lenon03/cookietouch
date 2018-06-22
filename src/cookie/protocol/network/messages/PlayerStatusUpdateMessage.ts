@@ -1,5 +1,5 @@
-import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 import Message from "@/protocol/network/messages/Message";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
 export default class PlayerStatusUpdateMessage extends Message {
   public accountId: number;

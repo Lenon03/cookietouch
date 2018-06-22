@@ -1,6 +1,6 @@
+import Message from "@/protocol/network/messages/Message";
 import PrismSubAreaInformation from "@/protocol/network/types/PrismSubAreaInformation";
 import VillageConquestPrismInformation from "@/protocol/network/types/VillageConquestPrismInformation";
-import Message from "@/protocol/network/messages/Message";
 
 export default class PrismWorldInformationMessage extends Message {
   public subAreasInformation: PrismSubAreaInformation[];

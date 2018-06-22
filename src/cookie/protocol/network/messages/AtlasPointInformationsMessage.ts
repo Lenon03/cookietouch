@@ -1,5 +1,5 @@
-import AtlasPointsInformations from "@/protocol/network/types/AtlasPointsInformations";
 import Message from "@/protocol/network/messages/Message";
+import AtlasPointsInformations from "@/protocol/network/types/AtlasPointsInformations";
 
 export default class AtlasPointInformationsMessage extends Message {
   public type: AtlasPointsInformations;

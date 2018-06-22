@@ -1,5 +1,5 @@
-import CharacterMinimalPlusLookAndGradeInformations from "@/protocol/network/types/CharacterMinimalPlusLookAndGradeInformations";
 import Message from "@/protocol/network/messages/Message";
+import CharacterMinimalPlusLookAndGradeInformations from "@/protocol/network/types/CharacterMinimalPlusLookAndGradeInformations";
 
 export default class PrismFightDefendersStateMessage extends Message {
   public mainFighters: CharacterMinimalPlusLookAndGradeInformations[];

@@ -13,13 +13,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
-import * as React from "react";
 import { configurationStyles } from "@renderer/pages/Configuration/styles";
 import {
   ConfigurationProps,
   IConfigurationProps,
   IConfigurationState
 } from "@renderer/pages/Configuration/types";
+import * as React from "react";
 
 class Configuration extends React.Component<
   ConfigurationProps,
@@ -53,22 +53,22 @@ class Configuration extends React.Component<
                 inputProps={{ id: "lang-simple", name: "lang" }}
               >
                 <MenuItem value="fr">
-                  <img src={require("../img/fr.png")} alt="fr" />
+                  <img src={require("../../img/fr.png")} alt="fr" />
                 </MenuItem>
                 <MenuItem value="de">
-                  <img src={require("../img/de.png")} alt="de" />
+                  <img src={require("../../img/de.png")} alt="de" />
                 </MenuItem>
                 <MenuItem value="en">
-                  <img src={require("../img/us.png")} alt="us" />
+                  <img src={require("../../img/us.png")} alt="us" />
                 </MenuItem>
                 <MenuItem value="es">
-                  <img src={require("../img/es.png")} alt="es" />
+                  <img src={require("../../img/es.png")} alt="es" />
                 </MenuItem>
                 <MenuItem value="it">
-                  <img src={require("../img/it.png")} alt="it" />
+                  <img src={require("../../img/it.png")} alt="it" />
                 </MenuItem>
                 <MenuItem value="pt">
-                  <img src={require("../img/pt.png")} alt="pt" />
+                  <img src={require("../../img/pt.png")} alt="pt" />
                 </MenuItem>
               </Select>
             </FormControl>

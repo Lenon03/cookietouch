@@ -1,6 +1,6 @@
+import Message from "@/protocol/network/messages/Message";
 import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 import TaxCollectorBasicInformations from "@/protocol/network/types/TaxCollectorBasicInformations";
-import Message from "@/protocol/network/messages/Message";
 
 export default class TaxCollectorAttackedResultMessage extends Message {
   public deadOrAlive: boolean;

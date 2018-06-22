@@ -1,15 +1,15 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Paper from "@material-ui/core/Paper";
 import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
-import * as React from "react";
 import AccountMain from "@renderer/pages/AccountMain";
-import Infos from "@renderer/pages/Infos/Infos";
+import Infos from "@renderer/pages/Infos";
 import Sidenav from "@renderer/pages/Sidenav";
+import * as React from "react";
 
 type style = "root" | "sidenav" | "main" | "paper";
 

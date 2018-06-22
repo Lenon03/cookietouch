@@ -1,6 +1,6 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import { ExchangeTypeEnum } from "@/protocol/enums/ExchangeTypeEnum";

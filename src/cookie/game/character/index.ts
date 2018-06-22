@@ -1,21 +1,21 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
-import DataManager from "@/protocol/data";
-import Breeds from "@/protocol/data/classes/Breeds";
-import Spells from "@/protocol/data/classes/Spells";
-import { BreedEnum } from "@/protocol/enums/BreedEnum";
-import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
-import EntityLook from "@/protocol/network/types/EntityLook";
-import LiteEvent from "@/utils/LiteEvent";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterStats from "@/game/character/CharacterStats";
 import Inventory from "@/game/character/inventory";
 import Jobs from "@/game/character/jobs";
 import Mount from "@/game/character/mount";
 import SpellEntry from "@/game/character/SpellEntry";
+import DataManager from "@/protocol/data";
+import Breeds from "@/protocol/data/classes/Breeds";
+import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import { BreedEnum } from "@/protocol/enums/BreedEnum";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
+import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import LiteEvent from "@/utils/LiteEvent";
 
 export default class Character {
   public breedData: Breeds;

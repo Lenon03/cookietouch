@@ -1,9 +1,9 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import { ChannelColors } from "@/core/logger/ChannelColors";
+import { LogType } from "@/core/logger/LogType";
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
 import * as moment from "moment";
-import { ChannelColors } from "@/core/logger/ChannelColors";
-import { LogType } from "@/core/logger/LogType";
 
 export interface IMessage {
   source?: string;

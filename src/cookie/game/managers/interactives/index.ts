@@ -1,10 +1,10 @@
 import Account from "@/account";
+import MovementsManager from "@/game/managers/movements";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import InteractiveElementEntry from "@/game/map/interactives/InteractiveElementEntry";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
-import MovementsManager from "@/game/managers/movements";
-import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 
 export default class InteractivesManager implements IClearable {
   private _account: Account;

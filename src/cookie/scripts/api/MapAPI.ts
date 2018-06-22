@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { TeleportablesEnum } from "@/game/managers/teleportables";
 import JoinFriendAction from "@/scripts/actions/global/JoinFriendAction";
 import ChangeMapAction from "@/scripts/actions/map/ChangeMapAction";

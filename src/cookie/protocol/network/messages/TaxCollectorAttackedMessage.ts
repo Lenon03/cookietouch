@@ -1,5 +1,5 @@
-import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 import Message from "@/protocol/network/messages/Message";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 
 export default class TaxCollectorAttackedMessage extends Message {
   public firstNameId: number;

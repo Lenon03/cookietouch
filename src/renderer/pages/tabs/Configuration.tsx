@@ -1,3 +1,4 @@
+import Account from "@/account";
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
@@ -5,7 +6,6 @@ import DataManager from "@/protocol/data";
 import Breeds from "@/protocol/data/classes/Breeds";
 import Spells from "@/protocol/data/classes/Spells";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@/account";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

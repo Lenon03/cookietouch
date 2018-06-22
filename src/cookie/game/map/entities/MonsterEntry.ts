@@ -1,7 +1,7 @@
+import DataManager from "@/protocol/data";
 import Monsters from "@/protocol/data/classes/Monsters";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
-import DataManager from "@/protocol/data";
 import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInGroupLightInformations";
 
 export default class MonsterEntry {

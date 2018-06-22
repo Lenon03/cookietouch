@@ -4,12 +4,12 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
-import * as firebase from "firebase";
-import * as React from "react";
-import withRoot from "@renderer/withRoot";
 import BottomAppBar from "@renderer/pages/BottomAppBar";
 import MainContent from "@renderer/pages/MainContent";
 import TopAppBar from "@renderer/pages/TopAppBar";
+import withRoot from "@renderer/withRoot";
+import firebase from "firebase";
+import * as React from "react";
 
 type style = "root" | "paper";
 

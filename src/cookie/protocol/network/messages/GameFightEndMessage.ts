@@ -1,5 +1,5 @@
-import FightResultListEntry from "@/protocol/network/types/FightResultListEntry";
 import Message from "@/protocol/network/messages/Message";
+import FightResultListEntry from "@/protocol/network/types/FightResultListEntry";
 
 export default class GameFightEndMessage extends Message {
   public results: FightResultListEntry[];

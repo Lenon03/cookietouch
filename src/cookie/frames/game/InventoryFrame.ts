@@ -1,5 +1,5 @@
-import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNumericalValueMessage";
 import Account from "@/account";
+import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNumericalValueMessage";
 
 export default class InventoryFrame {
   private account: Account;

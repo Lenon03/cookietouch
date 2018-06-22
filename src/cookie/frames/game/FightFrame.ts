@@ -1,7 +1,7 @@
-import GlobalConfiguration from "@/configurations/GlobalConfiguration";
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import FighterStatsListMessage from "@/protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@/protocol/network/messages/GameActionFightDispellableEffectMessage";

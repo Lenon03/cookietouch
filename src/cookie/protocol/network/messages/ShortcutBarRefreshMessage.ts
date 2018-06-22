@@ -1,5 +1,5 @@
-import Shortcut from "@/protocol/network/types/Shortcut";
 import Message from "@/protocol/network/messages/Message";
+import Shortcut from "@/protocol/network/types/Shortcut";
 
 export default class ShortcutBarRefreshMessage extends Message {
   public barType: number;

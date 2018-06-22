@@ -1,5 +1,5 @@
-import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 import Message from "@/protocol/network/messages/Message";
+import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 
 export default class GameEntityDispositionMessage extends Message {
   public disposition: IdentifiedEntityDispositionInformations;

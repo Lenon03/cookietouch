@@ -1,5 +1,5 @@
-import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
 import Message from "@/protocol/network/messages/Message";
+import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
 
 export default class ExchangeShopStockStartedMessage extends Message {
   public objectsInfos: ObjectItemToSell[];

@@ -1,5 +1,5 @@
-import CharacterMinimalPlusLookInformations from "@/protocol/network/types/CharacterMinimalPlusLookInformations";
 import Message from "@/protocol/network/messages/Message";
+import CharacterMinimalPlusLookInformations from "@/protocol/network/types/CharacterMinimalPlusLookInformations";
 
 export default class GuildFightPlayersHelpersJoinMessage extends Message {
   public fightId: number;

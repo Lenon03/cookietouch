@@ -1,20 +1,20 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import FightsPathfinder from "@/core/pathfinder/fights";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@/account";
-import FighterEntry from "@/game/fight/fighters/FighterEntry";
-import { SpellInabilityReasons } from "@/game/fight/SpellInabilityReasons";
-import DataManager from "@/protocol/data";
-import SpellLevels from "@/protocol/data/classes/SpellLevels";
-import Spells from "@/protocol/data/classes/Spells";
-import Dictionary from "@/utils/Dictionary";
 import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
 import RangeNodeEntry from "@/extensions/fights/RangeNodeEntry";
 import { SpellCastingResults } from "@/extensions/fights/SpellCastingResults";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import { SpellInabilityReasons } from "@/game/fight/SpellInabilityReasons";
+import DataManager from "@/protocol/data";
+import SpellLevels from "@/protocol/data/classes/SpellLevels";
+import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import Dictionary from "@/utils/Dictionary";
 
 export default class SpellsManager {
   private account: Account;

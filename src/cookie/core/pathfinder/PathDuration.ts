@@ -1,6 +1,6 @@
-import Dictionary from "@/utils/Dictionary";
 import AnimDuration from "@/core/pathfinder/AnimDuration";
 import MapPoint from "@/core/pathfinder/MapPoint";
+import Dictionary from "@/utils/Dictionary";
 
 enum AnimDurationTypes {
   MOUNTED,

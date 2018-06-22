@@ -5,10 +5,10 @@ import withStyles, {
   WithStyles
 } from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
-import { List } from "linqts";
-import * as React from "react";
 import AccountItem from "@renderer/pages/Sidenav/AccountItem";
 import GroupItem from "@renderer/pages/Sidenav/GroupItem";
+import { List } from "linqts";
+import * as React from "react";
 
 type style = "root";
 

@@ -1,7 +1,7 @@
+import Account from "@/account";
 import FightsPathfinder from "@/core/pathfinder/fights";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import Account from "@/account";
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 
 export default class FightsUtility {

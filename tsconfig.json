@@ -9,13 +9,7 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],
-      "@account": ["cookie/account"],
-      "@account/*": ["cookie/account/*"],
-      "@game/*": ["cookie/game/*"],
-      "@protocol/*": ["cookie/protocol/*"],
-      "@utils/*": ["cookie/utils/*"],
       "@logger": ["cookie/core/logger"],
-      "@logger/*": ["cookie/core/logger/*"],
       "@renderer/*": ["renderer/*"]
     }
   }

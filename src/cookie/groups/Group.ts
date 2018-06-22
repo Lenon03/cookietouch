@@ -1,14 +1,14 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
-import IEntity from "@/utils/IEntity";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import Grouping from "@/groups/Grouping";
 import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
+import FightAction from "@/scripts/actions/fight/FightAction";
+import ScriptAction from "@/scripts/actions/ScriptAction";
+import IEntity from "@/utils/IEntity";
 import ResetEvent, { IToken } from "@/utils/ResetEvent";
 import { sleep } from "@/utils/Time";
 import { List } from "linqts";
-import FightAction from "@/scripts/actions/fight/FightAction";
-import ScriptAction from "@/scripts/actions/ScriptAction";
-import Grouping from "@/groups/Grouping";
 
 export interface IAccountGroup {
   account: Account;

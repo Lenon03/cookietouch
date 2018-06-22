@@ -1,10 +1,19 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@/account";
+import TutorialHelper from "@/extensions/characterCreator/TutorialHelper";
+import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
+import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
+import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
+import FightsConfiguration from "@/extensions/fights/configuration/FightsConfiguration";
+import Spell from "@/extensions/fights/configuration/Spell";
+import { SpellCastingResults } from "@/extensions/fights/SpellCastingResults";
+import SpellsManager from "@/extensions/fights/SpellsManager";
+import FightsUtility from "@/extensions/fights/utility/FightsUtility";
 import DataManager from "@/protocol/data";
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { FightOptionsEnum } from "@/protocol/enums/FightOptionsEnum";
 import { SequenceTypeEnum } from "@/protocol/enums/SequenceTypeEnum";
 import { TeamEnum } from "@/protocol/enums/TeamEnum";
@@ -16,15 +25,6 @@ import SequenceEndMessage from "@/protocol/network/messages/SequenceEndMessage";
 import IClearable from "@/utils/IClearable";
 import { sleep } from "@/utils/Time";
 import { List } from "linqts";
-import TutorialHelper from "@/extensions/characterCreator/TutorialHelper";
-import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
-import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
-import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
-import FightsConfiguration from "@/extensions/fights/configuration/FightsConfiguration";
-import Spell from "@/extensions/fights/configuration/Spell";
-import { SpellCastingResults } from "@/extensions/fights/SpellCastingResults";
-import SpellsManager from "@/extensions/fights/SpellsManager";
-import FightsUtility from "@/extensions/fights/utility/FightsUtility";
 
 export default class FightsExtension implements IClearable {
   public config: FightsConfiguration;

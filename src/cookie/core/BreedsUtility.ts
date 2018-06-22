@@ -1,6 +1,6 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@/protocol/data";
 import Breeds from "@/protocol/data/classes/Breeds";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import { Enumerable, List } from "linqts";

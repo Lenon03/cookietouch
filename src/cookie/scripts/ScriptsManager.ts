@@ -1,3 +1,4 @@
+import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
@@ -17,27 +18,26 @@ import StorageGetKamasAction from "@/scripts/actions/storage/StorageGetKamasActi
 import StoragePutAllItemsAction from "@/scripts/actions/storage/StoragePutAllItemsAction";
 import StoragePutItemAction from "@/scripts/actions/storage/StoragePutItemAction";
 import StoragePutKamasAction from "@/scripts/actions/storage/StoragePutKamasAction";
+import API from "@/scripts/api";
 import ChangeMapFlag from "@/scripts/flags/ChangeMapFlag";
 import CustomFlag from "@/scripts/flags/CustomFlag";
 import DoorFlag from "@/scripts/flags/DoorFlag";
 import FightFlag from "@/scripts/flags/FightFlag";
 import GatherFlag from "@/scripts/flags/GatherFlag";
+import { IFlag, IFlagType } from "@/scripts/flags/IFlag";
 import NpcBankFlag from "@/scripts/flags/NpcBankFlag";
 import PhenixFlag from "@/scripts/flags/PhenixFlag";
-import { sleep } from "@/utils/Time";
-import Account from "@/account";
-import LiteEvent from "@/utils/LiteEvent";
-import { isEmpty } from "@/utils/String";
-import * as fs from "fs";
-import { List } from "linqts";
-import * as path from "path";
-import API from "@/scripts/api";
-import { IFlag, IFlagType } from "@/scripts/flags/IFlag";
 import { FunctionTypes } from "@/scripts/FunctionTypes";
 import ActionsManager, {
   IActionsManagerEventData
 } from "@/scripts/managers/ActionsManager";
 import JsonScriptManager, { IMap } from "@/scripts/managers/JsonScriptManager";
+import LiteEvent from "@/utils/LiteEvent";
+import { isEmpty } from "@/utils/String";
+import { sleep } from "@/utils/Time";
+import * as fs from "fs";
+import { List } from "linqts";
+import * as path from "path";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;

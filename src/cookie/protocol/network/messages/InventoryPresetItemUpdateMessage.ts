@@ -1,5 +1,5 @@
-import PresetItem from "@/protocol/network/types/PresetItem";
 import Message from "@/protocol/network/messages/Message";
+import PresetItem from "@/protocol/network/types/PresetItem";
 
 export default class InventoryPresetItemUpdateMessage extends Message {
   public presetId: number;

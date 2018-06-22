@@ -1,5 +1,5 @@
-import PaddockInformationsForSell from "@/protocol/network/types/PaddockInformationsForSell";
 import Message from "@/protocol/network/messages/Message";
+import PaddockInformationsForSell from "@/protocol/network/types/PaddockInformationsForSell";
 
 export default class PaddockToSellListMessage extends Message {
   public paddockList: PaddockInformationsForSell[];

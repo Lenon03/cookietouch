@@ -1,5 +1,5 @@
-import QuestActiveInformations from "@/protocol/network/types/QuestActiveInformations";
 import Message from "@/protocol/network/messages/Message";
+import QuestActiveInformations from "@/protocol/network/types/QuestActiveInformations";
 
 export default class QuestListMessage extends Message {
   public finishedQuestsIds: number[];

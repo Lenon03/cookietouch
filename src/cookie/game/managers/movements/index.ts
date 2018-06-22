@@ -1,17 +1,17 @@
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
-import Account from "@/account";
-import { AccountStates } from "@/account/AccountStates";
+import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import MapGame from "@/game/map";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { getRandomInt } from "@/utils/Random";
 import { sleep } from "@/utils/Time";
 import { Enumerable, List } from "linqts";
-import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
-import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 
 export default class MovementsManager implements IClearable {
   private readonly onMovementFinished = new LiteEvent<boolean>();

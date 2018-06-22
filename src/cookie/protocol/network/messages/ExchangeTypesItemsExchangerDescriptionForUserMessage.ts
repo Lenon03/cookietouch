@@ -1,5 +1,5 @@
-import BidExchangerObjectInfo from "@/protocol/network/types/BidExchangerObjectInfo";
 import Message from "@/protocol/network/messages/Message";
+import BidExchangerObjectInfo from "@/protocol/network/types/BidExchangerObjectInfo";
 
 export default class ExchangeTypesItemsExchangerDescriptionForUserMessage extends Message {
   public itemTypeDescriptions: BidExchangerObjectInfo[];

@@ -1,5 +1,5 @@
-import EntityLook from "@/protocol/network/types/EntityLook";
 import Message from "@/protocol/network/messages/Message";
+import EntityLook from "@/protocol/network/types/EntityLook";
 
 export default class ContactLookMessage extends Message {
   public requestId: number;

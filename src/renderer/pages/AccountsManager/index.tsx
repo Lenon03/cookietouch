@@ -9,12 +9,12 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
-import * as React from "react";
 import AccountsList from "@renderer/pages/AccountsManager/AccountsList";
 import AddAccountForm from "@renderer/pages/AccountsManager/AddAccountForm";
 import CacheManager from "@renderer/pages/AccountsManager/CacheManager";
 import CharacterCreator from "@renderer/pages/AccountsManager/CharacterCreator";
 import PlanningConfig from "@renderer/pages/AccountsManager/PlanningConfig";
+import * as React from "react";
 
 type style = "root";
 

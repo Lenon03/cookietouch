@@ -1,15 +1,15 @@
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import Account from "@/account";
-import { AccountStates } from "@/account/AccountStates";
+import MovementsManager from "@/game/managers/movements";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import MapGame from "@/game/map";
 import InteractiveElementEntry from "@/game/map/interactives/InteractiveElementEntry";
 import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
-import MovementsManager from "@/game/managers/movements";
 
 export enum GatherResults {
   GATHERED,

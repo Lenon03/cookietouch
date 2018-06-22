@@ -1,5 +1,5 @@
-import AchievementRewardable from "@/protocol/network/types/AchievementRewardable";
 import Message from "@/protocol/network/messages/Message";
+import AchievementRewardable from "@/protocol/network/types/AchievementRewardable";
 
 export default class AchievementListMessage extends Message {
   public finishedAchievementsIds: number[];

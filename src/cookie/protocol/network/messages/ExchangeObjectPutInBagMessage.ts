@@ -1,5 +1,5 @@
-import ObjectItem from "@/protocol/network/types/ObjectItem";
 import ExchangeObjectMessage from "@/protocol/network/messages/ExchangeObjectMessage";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
 
 export default class ExchangeObjectPutInBagMessage extends ExchangeObjectMessage {
   public objectPublic: ObjectItem;

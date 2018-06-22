@@ -1,11 +1,12 @@
+import Account from "@/account";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@/account";
+import TutorialHelper from "@/extensions/characterCreator/TutorialHelper";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import DataManager from "@/protocol/data";
 import Breeds from "@/protocol/data/classes/Breeds";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { CharacterCreationResultEnum } from "@/protocol/enums/CharacterCreationResultEnum";
 import CharacterCreationResultMessage from "@/protocol/network/messages/CharacterCreationResultMessage";
 import CharacterNameSuggestionSuccessMessage from "@/protocol/network/messages/CharacterNameSuggestionSuccessMessage";
@@ -24,7 +25,6 @@ import IClearable from "@/utils/IClearable";
 import { getRandomInt } from "@/utils/Random";
 import { sleep } from "@/utils/Time";
 import { List } from "linqts";
-import TutorialHelper from "@/extensions/characterCreator/TutorialHelper";
 
 export default class CharacterCreatorExtension implements IClearable {
   private account: Account;

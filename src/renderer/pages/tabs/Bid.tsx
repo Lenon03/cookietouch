@@ -1,9 +1,9 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Account from "@/account";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

@@ -1,5 +1,5 @@
-import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 import TaxCollectorDialogQuestionBasicMessage from "@/protocol/network/messages/TaxCollectorDialogQuestionBasicMessage";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 
 export default class TaxCollectorDialogQuestionExtendedMessage extends TaxCollectorDialogQuestionBasicMessage {
   public maxPods: number;

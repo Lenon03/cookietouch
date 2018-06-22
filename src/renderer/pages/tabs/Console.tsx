@@ -1,3 +1,4 @@
+import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import CommandProcessor from "@/core/commands/CommandProcessor";
@@ -5,7 +6,6 @@ import SendMessageCommand from "@/core/commands/handlers/SendMessageCommand";
 import { IMessage } from "@/core/logger";
 import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
-import Account from "@/account";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";

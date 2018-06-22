@@ -1,10 +1,10 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { DialogTypeEnum } from "@/protocol/enums/DialogTypeEnum";
 import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";

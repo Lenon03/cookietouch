@@ -1,11 +1,11 @@
+import Account from "@/account";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { NetworkPhases } from "@/network/NetworkPhases";
-import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
-import { sleep } from "@/utils/Time";
-import Account from "@/account";
 import { ServerStatusEnum } from "@/protocol/enums/ServerStatusEnum";
 import ServersListMessage from "@/protocol/network/messages/ServersListMessage";
+import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
+import { sleep } from "@/utils/Time";
 
 export default class ServerSelectionFrame {
   private account: Account;

@@ -1,3 +1,4 @@
+import Account from "@/account";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import FighterEntry from "@/game/fight/fighters/FighterEntry";
 import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
@@ -16,7 +17,6 @@ import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import Point from "@/utils/Point";
 import { sleep } from "@/utils/Time";
-import Account from "@/account";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
@@ -25,9 +25,9 @@ import withStyles, {
   WithStyles
 } from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
+import MapViewerCell from "@renderer/pages/tabs/Map/MapViewerCell";
 import { List } from "linqts";
 import * as React from "react";
-import MapViewerCell from "@renderer/pages/tabs/Map/MapViewerCell";
 
 type style = "root";
 

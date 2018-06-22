@@ -1,6 +1,6 @@
+import AbstractPartyMessage from "@/protocol/network/messages/AbstractPartyMessage";
 import PartyGuestInformations from "@/protocol/network/types/PartyGuestInformations";
 import PartyMemberInformations from "@/protocol/network/types/PartyMemberInformations";
-import AbstractPartyMessage from "@/protocol/network/messages/AbstractPartyMessage";
 
 export default class PartyJoinMessage extends AbstractPartyMessage {
   public members: PartyMemberInformations[];

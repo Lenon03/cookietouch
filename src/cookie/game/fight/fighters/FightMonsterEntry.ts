@@ -1,9 +1,9 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
 import DataManager from "@/protocol/data";
 import Monsters from "@/protocol/data/classes/Monsters";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
 import GameFightMonsterInformations from "@/protocol/network/types/GameFightMonsterInformations";
-import FighterEntry from "@/game/fight/fighters/FighterEntry";
 
 export default class FightMonsterEntry extends FighterEntry {
   public name: string;

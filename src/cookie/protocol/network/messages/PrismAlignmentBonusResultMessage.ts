@@ -1,5 +1,5 @@
-import AlignmentBonusInformations from "@/protocol/network/types/AlignmentBonusInformations";
 import Message from "@/protocol/network/messages/Message";
+import AlignmentBonusInformations from "@/protocol/network/types/AlignmentBonusInformations";
 
 export default class PrismAlignmentBonusResultMessage extends Message {
   public alignmentBonus: AlignmentBonusInformations;

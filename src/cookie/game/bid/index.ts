@@ -1,9 +1,9 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
-import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { ExchangeErrorEnum } from "@/protocol/enums/ExchangeErrorEnum";
 import BidExchangerObjectInfo from "@/protocol/network/types/BidExchangerObjectInfo";
 import ObjectItemToSellInBid from "@/protocol/network/types/ObjectItemToSellInBid";

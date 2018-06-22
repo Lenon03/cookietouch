@@ -1,5 +1,5 @@
-import ObjectItem from "@/protocol/network/types/ObjectItem";
 import Message from "@/protocol/network/messages/Message";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
 
 export default class ObjectAddedMessage extends Message {
   public objectItem: ObjectItem;

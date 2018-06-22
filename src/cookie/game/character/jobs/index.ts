@@ -1,11 +1,11 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@/account";
+import JobEntry from "@/game/character/jobs/JobEntry";
 import DataManager from "@/protocol/data";
 import Jobs from "@/protocol/data/classes/Jobs";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import { List } from "linqts";
-import JobEntry from "@/game/character/jobs/JobEntry";
 
 export default class Job {
   public jobs: List<JobEntry>;

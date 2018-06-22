@@ -1,12 +1,12 @@
+import FightPath from "@/core/pathfinder/fights/FightPath";
+import MoveNode from "@/core/pathfinder/fights/MoveNode";
+import PathNode from "@/core/pathfinder/fights/PathNode";
+import MapPoint from "@/core/pathfinder/MapPoint";
 import FightGame from "@/game/fight";
 import FighterEntry from "@/game/fight/fighters/FighterEntry";
 import Map from "@/protocol/data/map";
 import { GameActionFightInvisibilityStateEnum } from "@/protocol/enums/GameActionFightInvisibilityStateEnum";
 import Dictionary from "@/utils/Dictionary";
-import MapPoint from "@/core/pathfinder/MapPoint";
-import FightPath from "@/core/pathfinder/fights/FightPath";
-import MoveNode from "@/core/pathfinder/fights/MoveNode";
-import PathNode from "@/core/pathfinder/fights/PathNode";
 
 export default class FightsPathfinder {
   public static getPath(

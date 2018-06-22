@@ -1,6 +1,6 @@
+import Message from "@/protocol/network/messages/Message";
 import AllianceFactSheetInformations from "@/protocol/network/types/AllianceFactSheetInformations";
 import GuildInAllianceInformations from "@/protocol/network/types/GuildInAllianceInformations";
-import Message from "@/protocol/network/messages/Message";
 
 export default class AllianceFactsMessage extends Message {
   public guilds: GuildInAllianceInformations[];

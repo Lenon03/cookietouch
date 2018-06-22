@@ -1,10 +1,10 @@
+import Message from "@/protocol/network/messages/Message";
 import FightCommonInformations from "@/protocol/network/types/FightCommonInformations";
 import GameRolePlayActorInformations from "@/protocol/network/types/GameRolePlayActorInformations";
 import HouseInformations from "@/protocol/network/types/HouseInformations";
 import InteractiveElement from "@/protocol/network/types/InteractiveElement";
 import MapObstacle from "@/protocol/network/types/MapObstacle";
 import StatedElement from "@/protocol/network/types/StatedElement";
-import Message from "@/protocol/network/messages/Message";
 
 export default class MapComplementaryInformationsDataMessage extends Message {
   public houses: HouseInformations[];

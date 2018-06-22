@@ -1,6 +1,6 @@
+import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import Group from "@/groups/Group";
-import Account from "@/account";
 import Avatar from "@material-ui/core/Avatar";
 import Collapse from "@material-ui/core/Collapse";
 import List from "@material-ui/core/List";

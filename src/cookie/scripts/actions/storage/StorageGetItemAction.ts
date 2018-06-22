@@ -1,6 +1,6 @@
 import Account from "@/account";
-import { sleep } from "@/utils/Time";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import { sleep } from "@/utils/Time";
 
 export default class StorageGetItemAction extends ScriptAction {
   public _name: string = "StorageGetItemAction";

@@ -1,14 +1,17 @@
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
-import { DataTypes } from "@/protocol/data/DataTypes";
-import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
-import Account from "@/account";
-import { AccountStates } from "@/account/AccountStates";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
+import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
+import { SpellInabilityReasons } from "@/game/fight/SpellInabilityReasons";
 import DataManager from "@/protocol/data";
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import { FightOptionsEnum } from "@/protocol/enums/FightOptionsEnum";
 import { FightTypeEnum } from "@/protocol/enums/FightTypeEnum";
 import { GameActionFightInvisibilityStateEnum } from "@/protocol/enums/GameActionFightInvisibilityStateEnum";
@@ -37,6 +40,7 @@ import GameFightTurnStartMessage from "@/protocol/network/messages/GameFightTurn
 import GameFightUpdateTeamMessage from "@/protocol/network/messages/GameFightUpdateTeamMessage";
 import GameMapMovementMessage from "@/protocol/network/messages/GameMapMovementMessage";
 import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBoostEffect";
 import FightTemporaryBoostStateEffect from "@/protocol/network/types/FightTemporaryBoostStateEffect";
 import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
@@ -45,10 +49,6 @@ import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
-import FighterEntry from "@/game/fight/fighters/FighterEntry";
-import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
-import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
-import { SpellInabilityReasons } from "@/game/fight/SpellInabilityReasons";
 
 export default class Fight implements IClearable {
   public type: FightTypeEnum;

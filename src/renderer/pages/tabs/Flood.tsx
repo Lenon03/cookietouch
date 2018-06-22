@@ -1,7 +1,7 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
-import Account from "@/account";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

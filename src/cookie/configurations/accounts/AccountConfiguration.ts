@@ -1,5 +1,5 @@
-import { Enumerable } from "linqts";
 import CharacterCreation from "@/configurations/accounts/CharacterCreation";
+import { Enumerable } from "linqts";
 
 export default class AccountConfiguration {
   public username: string;

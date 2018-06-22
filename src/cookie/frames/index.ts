@@ -1,6 +1,6 @@
+import Account from "@/account";
 import AveragePricesFrame from "@/frames/common/AveragePricesFrame";
 import GoultinesFrame from "@/frames/common/GoultinesFrame";
-import Account from "@/account";
 import QueueFrame from "@/frames/common/QueueFrame";
 import SecurityFrame from "@/frames/common/SecurityFrame";
 import CharacterSelectionFrame from "@/frames/connection/CharacterSelectionFrame";

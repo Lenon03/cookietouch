@@ -1,6 +1,6 @@
+import Message from "@/protocol/network/messages/Message";
 import AllianceInformations from "@/protocol/network/types/AllianceInformations";
 import BasicAllianceInformations from "@/protocol/network/types/BasicAllianceInformations";
-import Message from "@/protocol/network/messages/Message";
 
 export default class KohUpdateMessage extends Message {
   public alliances: AllianceInformations[];

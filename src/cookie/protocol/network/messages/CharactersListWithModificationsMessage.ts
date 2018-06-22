@@ -1,7 +1,7 @@
+import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
 import CharacterToRecolorInformation from "@/protocol/network/types/CharacterToRecolorInformation";
 import CharacterToRelookInformation from "@/protocol/network/types/CharacterToRelookInformation";
-import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 
 export default class CharactersListWithModificationsMessage extends CharactersListMessage {
   public charactersToRecolor: CharacterToRecolorInformation[];

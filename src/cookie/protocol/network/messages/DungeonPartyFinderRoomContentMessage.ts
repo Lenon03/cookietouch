@@ -1,5 +1,5 @@
-import DungeonPartyFinderPlayer from "@/protocol/network/types/DungeonPartyFinderPlayer";
 import Message from "@/protocol/network/messages/Message";
+import DungeonPartyFinderPlayer from "@/protocol/network/types/DungeonPartyFinderPlayer";
 
 export default class DungeonPartyFinderRoomContentMessage extends Message {
   public players: DungeonPartyFinderPlayer[];

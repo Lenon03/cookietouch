@@ -33,8 +33,8 @@ import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
-import * as React from "react";
 import ColorPicker from "@renderer/pages/AccountsManager/ColorPicker";
+import * as React from "react";
 
 type style = "root" | "heading" | "formControl" | "icon" | "chip" | "chips";
 

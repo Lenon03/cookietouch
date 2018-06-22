@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 
 export default class SecurityFrame {
   private account: Account;

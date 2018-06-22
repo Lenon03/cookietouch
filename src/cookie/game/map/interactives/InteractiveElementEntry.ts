@@ -1,5 +1,5 @@
-import InteractiveElement from "@/protocol/network/types/InteractiveElement";
 import SkillEntry from "@/game/map/interactives/skills/SkillEntry";
+import InteractiveElement from "@/protocol/network/types/InteractiveElement";
 
 export default class InteractiveElementEntry {
   public id: number;

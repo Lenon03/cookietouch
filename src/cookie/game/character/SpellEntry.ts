@@ -1,7 +1,7 @@
-import SpellLevels from "@/protocol/data/classes/SpellLevels";
-import { DataTypes } from "@/protocol/data/DataTypes";
 import DataManager from "@/protocol/data";
+import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
 import SpellItem from "@/protocol/network/types/SpellItem";
 

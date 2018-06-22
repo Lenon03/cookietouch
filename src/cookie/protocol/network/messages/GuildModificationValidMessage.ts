@@ -1,5 +1,5 @@
-import GuildEmblem from "@/protocol/network/types/GuildEmblem";
 import Message from "@/protocol/network/messages/Message";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
 
 export default class GuildModificationValidMessage extends Message {
   public guildName: string;

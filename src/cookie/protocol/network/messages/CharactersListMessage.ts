@@ -1,5 +1,5 @@
-import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
 import BasicCharactersListMessage from "@/protocol/network/messages/BasicCharactersListMessage";
+import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
 
 export default class CharactersListMessage extends BasicCharactersListMessage {
   public hasStartupActions: boolean;

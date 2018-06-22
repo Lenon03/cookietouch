@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 

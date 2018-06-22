@@ -1,5 +1,5 @@
-import axios from "axios";
 import { IDofusTouchConfig } from "@/protocol/IDofusTouchConfig";
+import axios from "axios";
 
 export default class DTConstants {
   public static readonly MAIN_URL = "https://proxyconnection.touch.dofus.com";

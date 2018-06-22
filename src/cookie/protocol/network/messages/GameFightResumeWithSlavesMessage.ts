@@ -1,8 +1,8 @@
+import GameFightResumeMessage from "@/protocol/network/messages/GameFightResumeMessage";
 import FightDispellableEffectExtendedInformations from "@/protocol/network/types/FightDispellableEffectExtendedInformations";
 import GameActionMark from "@/protocol/network/types/GameActionMark";
 import GameFightResumeSlaveInfo from "@/protocol/network/types/GameFightResumeSlaveInfo";
 import GameFightSpellCooldown from "@/protocol/network/types/GameFightSpellCooldown";
-import GameFightResumeMessage from "@/protocol/network/messages/GameFightResumeMessage";
 
 export default class GameFightResumeWithSlavesMessage extends GameFightResumeMessage {
   public slavesInfo: GameFightResumeSlaveInfo[];

@@ -1,6 +1,6 @@
+import TaxCollectorDialogQuestionExtendedMessage from "@/protocol/network/messages/TaxCollectorDialogQuestionExtendedMessage";
 import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
 import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedAllianceInformations";
-import TaxCollectorDialogQuestionExtendedMessage from "@/protocol/network/messages/TaxCollectorDialogQuestionExtendedMessage";
 
 export default class AllianceTaxCollectorDialogQuestionExtendedMessage
   extends TaxCollectorDialogQuestionExtendedMessage {

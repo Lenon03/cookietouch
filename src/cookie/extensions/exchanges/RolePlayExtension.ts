@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import GameRolePlayPlayerFightFriendlyRequestedMessage from "@/protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
 import { sleep } from "@/utils/Time";
 

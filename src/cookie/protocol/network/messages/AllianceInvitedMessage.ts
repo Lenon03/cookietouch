@@ -1,5 +1,5 @@
-import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedAllianceInformations";
 import Message from "@/protocol/network/messages/Message";
+import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedAllianceInformations";
 
 export default class AllianceInvitedMessage extends Message {
   public recruterId: number;

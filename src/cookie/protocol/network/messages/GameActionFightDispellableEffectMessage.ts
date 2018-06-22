@@ -1,5 +1,5 @@
-import AbstractFightDispellableEffect from "@/protocol/network/types/AbstractFightDispellableEffect";
 import AbstractGameActionMessage from "@/protocol/network/messages/AbstractGameActionMessage";
+import AbstractFightDispellableEffect from "@/protocol/network/types/AbstractFightDispellableEffect";
 
 export default class GameActionFightDispellableEffectMessage extends AbstractGameActionMessage {
   public effect: AbstractFightDispellableEffect;

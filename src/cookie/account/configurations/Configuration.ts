@@ -1,9 +1,9 @@
 import Account from "@/account";
+import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 
 interface IConfigurationJSON {
   showGeneralMessages: boolean;

@@ -1,5 +1,5 @@
-import PartyGuestInformations from "@/protocol/network/types/PartyGuestInformations";
 import AbstractPartyEventMessage from "@/protocol/network/messages/AbstractPartyEventMessage";
+import PartyGuestInformations from "@/protocol/network/types/PartyGuestInformations";
 
 export default class PartyNewGuestMessage extends AbstractPartyEventMessage {
   public guest: PartyGuestInformations;

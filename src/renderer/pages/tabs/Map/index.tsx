@@ -3,8 +3,8 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles
 } from "@material-ui/core/styles/withStyles";
-import * as React from "react";
 import MapViewer from "@renderer/pages/tabs/Map/MapViewer";
+import * as React from "react";
 
 type style = "root";
 

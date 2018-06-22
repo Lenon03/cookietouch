@@ -15,7 +15,12 @@ import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import * as React from "react";
+import { accountMainStyles } from "@renderer/pages/AccountMain/styles";
+import {
+  AccountMainProps,
+  IAccountMainProps,
+  IAccountMainState
+} from "@renderer/pages/AccountMain/types";
 import Bid from "@renderer/pages/tabs/Bid";
 import Character from "@renderer/pages/tabs/Character";
 import Configuration from "@renderer/pages/tabs/Configuration";
@@ -25,12 +30,7 @@ import Flood from "@renderer/pages/tabs/Flood";
 import Inventory from "@renderer/pages/tabs/Inventory";
 import Map from "@renderer/pages/tabs/Map";
 import Statistics from "@renderer/pages/tabs/Statistics";
-import { accountMainStyles } from "@renderer/pages/AccountMain/styles";
-import {
-  AccountMainProps,
-  IAccountMainProps,
-  IAccountMainState
-} from "@renderer/pages/AccountMain/types";
+import * as React from "react";
 
 class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
   public state: IAccountMainState = {

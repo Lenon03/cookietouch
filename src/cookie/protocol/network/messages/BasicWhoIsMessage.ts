@@ -1,5 +1,5 @@
-import AbstractSocialGroupInfos from "@/protocol/network/types/AbstractSocialGroupInfos";
 import Message from "@/protocol/network/messages/Message";
+import AbstractSocialGroupInfos from "@/protocol/network/types/AbstractSocialGroupInfos";
 
 export default class BasicWhoIsMessage extends Message {
   public socialGroups: AbstractSocialGroupInfos[];

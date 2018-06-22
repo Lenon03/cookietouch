@@ -1,10 +1,10 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { NetworkPhases } from "@/network/NetworkPhases";
+import DTConstants from "@/protocol/DTConstants";
 import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
 import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
-import Account from "@/account";
-import DTConstants from "@/protocol/DTConstants";
 import * as moment from "moment";
 
 export default class IdentificationFrame {

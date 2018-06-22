@@ -1,7 +1,7 @@
+import Message from "@/protocol/network/messages/Message";
 import AllianceFactSheetInformations from "@/protocol/network/types/AllianceFactSheetInformations";
 import GuildInsiderFactSheetInformations from "@/protocol/network/types/GuildInsiderFactSheetInformations";
 import PrismSubareaEmptyInfo from "@/protocol/network/types/PrismSubareaEmptyInfo";
-import Message from "@/protocol/network/messages/Message";
 
 export default class AllianceInsiderInfoMessage extends Message {
   public guilds: GuildInsiderFactSheetInformations[];

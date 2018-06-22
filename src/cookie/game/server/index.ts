@@ -1,7 +1,7 @@
-import { DataTypes } from "@/protocol/data/DataTypes";
 import Account from "@/account";
 import DataManager from "@/protocol/data";
 import Servers from "@/protocol/data/classes/Servers";
+import { DataTypes } from "@/protocol/data/DataTypes";
 import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInformations";
 import LiteEvent from "@/utils/LiteEvent";
 

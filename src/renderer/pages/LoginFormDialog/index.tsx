@@ -8,41 +8,23 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputLabel from "@material-ui/core/InputLabel";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import * as React from "react";
 import { signin, signup } from "@renderer/FirebaseHelpers";
+import * as React from "react";
+import { loginFormDialogStyles } from "./styles";
+import {
+  ILoginFormDialogProps,
+  ILoginFormDialogState,
+  LoginFormDialogProps
+} from "./types";
 
-type style = "root" | "formControl";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  dialogOpen: boolean;
-  closeDialog: () => void;
-}
-
-interface IState {
-  email: string;
-  password: string;
-  showPassword: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class LoginFormDialog extends React.Component<Props, IState> {
-  public state: IState = {
+class LoginFormDialog extends React.Component<
+  LoginFormDialogProps,
+  ILoginFormDialogState
+> {
+  public state: ILoginFormDialogState = {
     email: "",
     password: "",
     showPassword: false
@@ -115,7 +97,10 @@ class LoginFormDialog extends React.Component<Props, IState> {
   }
 
   private handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value } as Pick<IState, keyof IState>);
+    this.setState({ [prop]: event.target.value } as Pick<
+      ILoginFormDialogState,
+      keyof ILoginFormDialogState
+    >);
   };
 
   private handleMouseDownPassword = event => {
@@ -146,4 +131,6 @@ class LoginFormDialog extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(LoginFormDialog);
+export default withStyles(loginFormDialogStyles)<ILoginFormDialogProps>(
+  LoginFormDialog
+);

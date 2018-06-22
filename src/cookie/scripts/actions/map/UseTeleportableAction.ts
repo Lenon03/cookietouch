@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import { TeleportablesEnum } from "@/game/managers/teleportables";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 

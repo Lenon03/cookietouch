@@ -1,13 +1,13 @@
 import Account from "@/account";
+import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
 import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
+import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
+import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
+import Spell from "@/extensions/fights/configuration/Spell";
 import LiteEvent from "@/utils/LiteEvent";
 import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
-import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
-import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
-import Spell from "@/extensions/fights/configuration/Spell";
 
 interface IFightsConfigurationJSON {
   approachWhenNoSpellCasted: boolean;

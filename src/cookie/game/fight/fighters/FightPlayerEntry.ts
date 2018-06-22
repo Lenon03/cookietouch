@@ -1,7 +1,7 @@
-import GameFightMutantInformations from "@/protocol/network/types/GameFightMutantInformations";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
 import GameFightCharacterInformations from "@/protocol/network/types/GameFightCharacterInformations";
 import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
-import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import GameFightMutantInformations from "@/protocol/network/types/GameFightMutantInformations";
 
 export default class FightPlayerEntry extends FighterEntry {
   public name: string;

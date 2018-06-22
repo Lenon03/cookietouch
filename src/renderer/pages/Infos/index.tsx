@@ -1,7 +1,6 @@
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import Account from "@/account";
 import { faKorvue } from "@fortawesome/fontawesome-free-brands";
 import {
   faBolt,
@@ -15,58 +14,20 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Paper from "@material-ui/core/Paper";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import CookieMain from "@renderer/CookieMain";
+import { infosStyles } from "@renderer/pages/Infos/styles";
+import {
+  IInfosProps,
+  IInfosState,
+  InfosProps
+} from "@renderer/pages/Infos/types";
 import { remote } from "electron";
 import * as React from "react";
 
-type style = "root" | "paper" | "icon";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  icon: {
-    color: theme.palette.primary.main
-  },
-  paper: {
-    color: theme.palette.text.secondary,
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit * 2
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  energyPoints: number;
-  energyPointsMax: number;
-  experience: number;
-  experienceMax: number;
-  experiencePercent: number;
-  kamas: number;
-  lifePoints: number;
-  lifePointsMax: number;
-  position: string;
-  scriptLoaded: boolean;
-  scriptName: string;
-  status: AccountStates;
-  weight: number;
-  weightMax: number;
-  goultines: number;
-  bonuspack: string;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Infos extends React.Component<Props, IState> {
-  public readonly idleState: IState = {
+class Infos extends React.Component<InfosProps, IInfosState> {
+  public readonly idleState: IInfosState = {
     bonuspack: "",
     energyPoints: -1,
     energyPointsMax: -1,
@@ -85,7 +46,7 @@ class Infos extends React.Component<Props, IState> {
     weightMax: -1
   };
 
-  public state: IState = this.idleState;
+  public state: IInfosState = this.idleState;
 
   public componentDidMount() {
     this.props.account.game.character.StatsUpdated.on(this.statsUpdated);
@@ -438,4 +399,4 @@ class Infos extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Infos);
+export default withStyles(infosStyles)<IInfosProps>(Infos);

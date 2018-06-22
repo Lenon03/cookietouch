@@ -1,5 +1,5 @@
-import ObjectItemNotInContainer from "@/protocol/network/types/ObjectItemNotInContainer";
 import ExchangeCraftResultMessage from "@/protocol/network/messages/ExchangeCraftResultMessage";
+import ObjectItemNotInContainer from "@/protocol/network/types/ObjectItemNotInContainer";
 
 export default class ExchangeCraftResultWithObjectDescMessage extends ExchangeCraftResultMessage {
   public objectInfo: ObjectItemNotInContainer;

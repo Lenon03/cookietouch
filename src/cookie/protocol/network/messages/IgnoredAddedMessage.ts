@@ -1,5 +1,5 @@
-import IgnoredInformations from "@/protocol/network/types/IgnoredInformations";
 import Message from "@/protocol/network/messages/Message";
+import IgnoredInformations from "@/protocol/network/types/IgnoredInformations";
 
 export default class IgnoredAddedMessage extends Message {
   public ignoreAdded: IgnoredInformations;

@@ -1,11 +1,11 @@
+import Map from "@/protocol/data/map";
 import { GraphicSizes } from "@/protocol/data/map/AtlasLayout";
+import Cell from "@/protocol/data/map/Cell";
 import DTConstants from "@/protocol/DTConstants";
 import axios from "axios";
 import { remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import Cell from "@/protocol/data/map/Cell";
-import Map from "@/protocol/data/map";
 
 export default class MapsManager {
   public static async getMap(mapId: number): Promise<Map> {

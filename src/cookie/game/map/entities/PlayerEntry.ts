@@ -1,6 +1,6 @@
-import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
-import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRolePlayCharacterInformations";
 import MovableEntity from "@/game/map/entities/MovableEntity";
+import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRolePlayCharacterInformations";
+import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
 
 export default class PlayerEntry extends MovableEntity {
   public id: number;

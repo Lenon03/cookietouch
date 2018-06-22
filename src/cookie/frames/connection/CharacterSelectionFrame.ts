@@ -1,5 +1,5 @@
-import LanguageManager from "@/configurations/language/LanguageManager";
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 import { randomString } from "@/utils/Random";
 import { isBlank } from "@/utils/String";

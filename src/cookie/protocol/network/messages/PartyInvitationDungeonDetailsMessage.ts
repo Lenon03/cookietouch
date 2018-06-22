@@ -1,6 +1,6 @@
+import PartyInvitationDetailsMessage from "@/protocol/network/messages/PartyInvitationDetailsMessage";
 import PartyGuestInformations from "@/protocol/network/types/PartyGuestInformations";
 import PartyInvitationMemberInformations from "@/protocol/network/types/PartyInvitationMemberInformations";
-import PartyInvitationDetailsMessage from "@/protocol/network/messages/PartyInvitationDetailsMessage";
 
 export default class PartyInvitationDungeonDetailsMessage extends PartyInvitationDetailsMessage {
   public playersDungeonReady: boolean[];

@@ -1,7 +1,7 @@
+import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
-import Account from "@/account";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import withStyles, {

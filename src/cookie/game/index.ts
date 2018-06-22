@@ -1,5 +1,4 @@
 import Account from "@/account";
-import IClearable from "@/utils/IClearable";
 import Bid from "@/game/bid";
 import Character from "@/game/character";
 import Chat from "@/game/chat";
@@ -10,6 +9,7 @@ import Map from "@/game/map";
 import Npcs from "@/game/npcs";
 import Server from "@/game/server";
 import Storage from "@/game/storage";
+import IClearable from "@/utils/IClearable";
 
 export default class Game implements IClearable {
   public managers: Managers;

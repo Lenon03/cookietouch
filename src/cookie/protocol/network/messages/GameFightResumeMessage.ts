@@ -1,7 +1,7 @@
+import GameFightSpectateMessage from "@/protocol/network/messages/GameFightSpectateMessage";
 import FightDispellableEffectExtendedInformations from "@/protocol/network/types/FightDispellableEffectExtendedInformations";
 import GameActionMark from "@/protocol/network/types/GameActionMark";
 import GameFightSpellCooldown from "@/protocol/network/types/GameFightSpellCooldown";
-import GameFightSpectateMessage from "@/protocol/network/messages/GameFightSpectateMessage";
 
 export default class GameFightResumeMessage extends GameFightSpectateMessage {
   public spellCooldowns: GameFightSpellCooldown[];

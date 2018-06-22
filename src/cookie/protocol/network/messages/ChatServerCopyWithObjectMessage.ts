@@ -1,5 +1,5 @@
-import ObjectItem from "@/protocol/network/types/ObjectItem";
 import ChatServerCopyMessage from "@/protocol/network/messages/ChatServerCopyMessage";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
 
 export default class ChatServerCopyWithObjectMessage extends ChatServerCopyMessage {
   public objects: ObjectItem[];

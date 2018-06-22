@@ -1,39 +1,17 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Paper from "@material-ui/core/Paper";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import BottomAppBar from "@renderer/pages/BottomAppBar";
+import { mainStyles } from "@renderer/pages/Main/styles";
+import { IMainProps, IMainState, MainProps } from "@renderer/pages/Main/types";
 import MainContent from "@renderer/pages/MainContent";
 import TopAppBar from "@renderer/pages/TopAppBar";
 import withRoot from "@renderer/withRoot";
 import firebase from "firebase";
 import * as React from "react";
 
-type style = "root" | "paper";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  paper: {
-    color: theme.palette.text.secondary,
-    margin: theme.spacing.unit,
-    marginTop: 120,
-    padding: theme.spacing.unit * 2,
-    textAlign: "center"
-  },
-  root: {
-    flexGrow: 1,
-    paddingBottom: 28
-  }
-});
-
-interface IState {
-  sidenavStatus: number;
-  user: firebase.User;
-}
-
-class Main extends React.Component<WithStyles<style>, IState> {
-  public state: IState = {
+class Main extends React.Component<MainProps, IMainState> {
+  public state: IMainState = {
     sidenavStatus: 0,
     user: null
   };
@@ -76,4 +54,4 @@ class Main extends React.Component<WithStyles<style>, IState> {
   };
 }
 
-export default withRoot(withStyles(styles)<{}>(Main));
+export default withRoot(withStyles(mainStyles)<IMainProps>(Main));

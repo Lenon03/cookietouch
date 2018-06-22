@@ -5,10 +5,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -17,46 +14,16 @@ import { signout } from "@renderer/FirebaseHelpers";
 import AccountsManager from "@renderer/pages/AccountsManager";
 import Configuration from "@renderer/pages/Configuration";
 import LoginFormDialog from "@renderer/pages/LoginFormDialog";
-import firebase from "firebase";
+import { topAppBarStyles } from "@renderer/pages/TopAppBar/styles";
+import {
+  ITopAppBarProps,
+  ITopAppBarState,
+  TopAppBarProps
+} from "@renderer/pages/TopAppBar/types";
 import * as React from "react";
 
-type style = "root" | "flex" | "menuButton" | "appBar";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  appBar: {
-    background: "linear-gradient(45deg, #1de099, #1dc8cd)",
-    left: 0,
-    position: "absolute",
-    top: 0
-  },
-  flex: {
-    flex: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  clickMenu: () => void;
-  user?: firebase.User;
-}
-
-interface IState {
-  anchorEl: any;
-  loginForm: boolean;
-  accountsManager: boolean;
-  configuration: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class TopAppBar extends React.Component<Props, IState> {
-  public state: IState = {
+class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
+  public state: ITopAppBarState = {
     accountsManager: false,
     anchorEl: null,
     configuration: false,
@@ -181,4 +148,4 @@ class TopAppBar extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(TopAppBar);
+export default withStyles(topAppBarStyles)<ITopAppBarProps>(TopAppBar);

@@ -1,15 +1,15 @@
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { faKorvue } from "@fortawesome/fontawesome-free-brands";
+import { faKorvue } from "@fortawesome/free-brands-svg-icons";
 import {
   faBolt,
   faBriefcase,
   faGem,
   faHeart,
   faStar
-} from "@fortawesome/fontawesome-free-solid";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";

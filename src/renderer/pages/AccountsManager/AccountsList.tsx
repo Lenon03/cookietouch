@@ -1,8 +1,8 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { faChessQueen, faTrash } from "@fortawesome/fontawesome-free-solid";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { faChessQueen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
@@ -85,27 +85,27 @@ class AccountsList extends React.Component<Props, IState> {
               this.state.accountsToConnect.length > 1 &&
               this.state.accountsToConnect.length <= 8 ? (
                 <ListItemSecondaryAction>
-                  <IconButton>
+                  <IconButton onClick={() => this.connectGroup(value)}>
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
                       icon={faChessQueen}
-                      onClick={() => this.connectGroup(value)}
                     />
                   </IconButton>
                 </ListItemSecondaryAction>
               ) : (
                 <ListItemSecondaryAction>
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      if (confirm(LanguageManager.trans("delete"))) {
+                        this.removeAccount(value);
+                      }
+                    }}
+                  >
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
                       icon={faTrash}
-                      onClick={() => {
-                        if (confirm(LanguageManager.trans("delete"))) {
-                          this.removeAccount(value);
-                        }
-                      }}
                     />
                   </IconButton>
                 </ListItemSecondaryAction>

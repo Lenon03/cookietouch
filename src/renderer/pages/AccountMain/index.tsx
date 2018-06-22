@@ -8,8 +8,8 @@ import {
   faMoneyBillAlt,
   faShoppingBag,
   faUser
-} from "@fortawesome/fontawesome-free-solid";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";

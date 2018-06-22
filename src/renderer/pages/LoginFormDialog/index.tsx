@@ -12,13 +12,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { signin, signup } from "@renderer/FirebaseHelpers";
-import * as React from "react";
-import { loginFormDialogStyles } from "./styles";
+import { loginFormDialogStyles } from "@renderer/pages/LoginFormDialog/styles";
 import {
   ILoginFormDialogProps,
   ILoginFormDialogState,
   LoginFormDialogProps
-} from "./types";
+} from "@renderer/pages/LoginFormDialog/types";
+import * as React from "react";
 
 class LoginFormDialog extends React.Component<
   LoginFormDialogProps,

@@ -1,6 +1,7 @@
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { faKickstarterK } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -271,7 +272,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
-                icon="korvue"
+                icon={faKickstarterK}
               />{" "}
               {this.state.kamas}
             </Grid>

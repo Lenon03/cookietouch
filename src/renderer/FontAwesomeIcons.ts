@@ -1,5 +1,5 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faKorvue } from "@fortawesome/free-brands-svg-icons";
+import { faKickstarterK } from "@fortawesome/free-brands-svg-icons";
 import {
   faBolt,
   faBriefcase,
@@ -35,10 +35,10 @@ library.add(
   faUser,
   faVenus,
   faMars,
-  faKorvue,
   faBolt,
   faBriefcase,
   faGem,
   faHeart,
-  faStar
+  faStar,
+  faKickstarterK
 );

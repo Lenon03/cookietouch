@@ -34,6 +34,7 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
       <Paper className={classes.root}>
         <AppBar className={classes.appBar} position="static">
           <Tabs
+            className={classes.tabs}
             value={value}
             onChange={this.handleChange}
             fullWidth

@@ -1,6 +1,6 @@
 import { StyleRulesCallback } from "@material-ui/core/styles/withStyles";
 
-export type AccountMainStyle = "root" | "appBar" | "tab";
+export type AccountMainStyle = "root" | "appBar" | "tabs" | "tab";
 
 export const accountMainStyles: StyleRulesCallback<
   AccountMainStyle
@@ -13,6 +13,9 @@ export const accountMainStyles: StyleRulesCallback<
     margin: theme.spacing.unit
   },
   tab: {
-    width: "100%"
+    //
+  },
+  tabs: {
+    //
   }
 });

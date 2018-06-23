@@ -1,77 +1,22 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { characterStatsTabStyles } from "@renderer/pages/tabs/Character/Stats/styles";
+import {
+  CharacterStatsTabProps,
+  ICharacterStatsTabProps,
+  ICharacterStatsTabState
+} from "@renderer/pages/tabs/Character/Stats/types";
 import * as React from "react";
 
-type style =
-  | "root"
-  | "statsField"
-  | "statsLogo"
-  | "statsLabel"
-  | "statsLabelSpan";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: 10
-  },
-  statsField: {
-    // display: "flex",
-    // fontSize: 14,
-    // lineHeight: 30,
-    // marginBottom: 8,
-  },
-  statsLabel: {
-    // flex: 1,
-    // marginLeft: 5,
-  },
-  statsLabelSpan: {
-    float: "right"
-  },
-  statsLogo: {
-    // flex: "0 0 50px",
-    // img: {
-    //   height: 10,
-    // },
-    // textAlign: "center",
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  level: number;
-  skinUrl: string;
-  lifePoints: number;
-  maxLifePoints: number;
-  actionPoints: number;
-  movementPoints: number;
-  initiative: number;
-  prospecting: number;
-  range: number;
-  summonableCreaturesBoost: number;
-  vitality: number;
-  wisdom: number;
-  strength: number;
-  intelligence: number;
-  chance: number;
-  agility: number;
-  statsPoints: number;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Stats extends React.Component<Props, IState> {
-  public state: IState = {
+class Stats extends React.Component<
+  CharacterStatsTabProps,
+  ICharacterStatsTabState
+> {
+  public state: ICharacterStatsTabState = {
     actionPoints: -1,
     agility: -1,
     chance: -1,
@@ -120,11 +65,11 @@ class Stats extends React.Component<Props, IState> {
           </Grid>
           <Grid item xs={4}>
             <h4>{LanguageManager.trans("summary")}</h4>
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/heart.png")} alt="coeur" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/heart.png")} alt="coeur" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("healthPoints")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.lifePoints} / {this.state.maxLifePoints}
@@ -132,14 +77,14 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
+            <div>
+              <div>
                 <img
-                  src={require("../../../img/starYellow.png")}
+                  src={require("@renderer/img/starYellow.png")}
                   alt="etoile_jaune"
                 />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("actionPoints")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.actionPoints}
@@ -147,14 +92,14 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
+            <div>
+              <div>
                 <img
-                  src={require("../../../img/movement.png")}
+                  src={require("@renderer/img/movement.png")}
                   alt="mouvement"
                 />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("movementPoints")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.movementPoints}
@@ -162,11 +107,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/initiative.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/initiative.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 Initiative
                 <span className={classes.statsLabelSpan}>
                   {this.state.initiative}
@@ -174,11 +119,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/prospecting.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/prospecting.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("prospecting")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.prospecting}
@@ -186,11 +131,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/range.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/range.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("range")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.range}
@@ -198,11 +143,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/summon.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/summon.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("summons")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.summonableCreaturesBoost}
@@ -216,11 +161,11 @@ class Stats extends React.Component<Props, IState> {
               {LanguageManager.trans("points")} {this.state.statsPoints}
             </h5>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/vitality.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/vitality.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("vitality")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.vitality}
@@ -241,11 +186,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/wisdom.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/wisdom.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("wisdom")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.wisdom}
@@ -266,11 +211,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/strength.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/strength.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("strength")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.strength}
@@ -291,11 +236,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/intelligence.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/intelligence.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("intelligence")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.intelligence}
@@ -316,11 +261,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/chance.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/chance.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("chance")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.chance}
@@ -341,11 +286,11 @@ class Stats extends React.Component<Props, IState> {
               </div>
             </div>
 
-            <div className={classes.statsField}>
-              <div className={classes.statsLogo}>
-                <img src={require("../../../img/agility.png")} alt="" />
+            <div>
+              <div>
+                <img src={require("@renderer/img/agility.png")} alt="" />
               </div>
-              <div className={classes.statsLabel}>
+              <div>
                 {LanguageManager.trans("agility")}
                 <span className={classes.statsLabelSpan}>
                   {this.state.agility}
@@ -425,4 +370,6 @@ class Stats extends React.Component<Props, IState> {
   }
 }
 
-export default withStyles(styles)<IProps>(Stats);
+export default withStyles(characterStatsTabStyles)<ICharacterStatsTabProps>(
+  Stats
+);

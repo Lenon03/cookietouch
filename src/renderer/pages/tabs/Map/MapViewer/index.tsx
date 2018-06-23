@@ -20,37 +20,19 @@ import { sleep } from "@/utils/Time";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
+import { mapViewerStyles } from "@renderer/pages/tabs/Map/MapViewer/styles";
+import {
+  IMapViewerProps,
+  IMapViewerState,
+  MapViewerProps
+} from "@renderer/pages/tabs/Map/MapViewer/types";
 import MapViewerCell from "@renderer/pages/tabs/Map/MapViewerCell";
 import { List } from "linqts";
 import * as React from "react";
 
-type style = "root";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  path: number[];
-  selectedCellId: number;
-  showCellIds: boolean;
-  showReal: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class MapViewer extends React.Component<Props, IState> {
+class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   public cells: List<MapViewerCell>;
 
   private readonly walkableCellBrush = new Color(145, 145, 148);
@@ -67,7 +49,7 @@ class MapViewer extends React.Component<Props, IState> {
   private readonly phenixImage = "7521.png";
   private readonly lockedStorageImage = "12367.png";
 
-  constructor(props: Props) {
+  constructor(props: MapViewerProps) {
     super(props);
 
     this.state = {
@@ -777,4 +759,4 @@ class MapViewer extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(MapViewer);
+export default withStyles(mapViewerStyles)<IMapViewerProps>(MapViewer);

@@ -4,7 +4,7 @@ const config = {
   MAX_PODS: 90,
   ELEMENTS_TO_GATHER: [ 71, 74, 75, 76, 77, 78, 80, 79, 81, 100, 136, 132 ],
   OPEN_BAGS: true
-}
+};
 
 const move= [
 	{ map : "1,-21", path : "bottom" },

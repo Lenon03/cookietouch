@@ -33,7 +33,13 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
     return (
       <Paper className={classes.root}>
         <AppBar className={classes.appBar} position="static">
-          <Tabs value={value} onChange={this.handleChange} fullWidth>
+          <Tabs
+            value={value}
+            onChange={this.handleChange}
+            fullWidth
+            scrollable
+            scrollButtons="auto"
+          >
             <Tab
               className={classes.tab}
               icon={<FontAwesomeIcon icon="coffee" />}

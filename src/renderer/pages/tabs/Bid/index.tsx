@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import DataManager from "@/protocol/data";
@@ -14,10 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -26,64 +22,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { bidTabStyles } from "@renderer/pages/tabs/Bid/styles";
+import {
+  BidTabProps,
+  IBidTabProps,
+  IBidTabState
+} from "@renderer/pages/tabs/Bid/types";
 import { remote } from "electron";
 import { List } from "linqts";
 import { basename } from "path";
 import * as React from "react";
 
-type style = "root" | "table" | "card" | "title" | "formControl";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  card: {
-    minWidth: 275
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1,
-    maxHeight: 500,
-    overflowY: "auto",
-    padding: 10
-  },
-  table: {
-    maxWidth: 400,
-    minWidth: 200
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-    marginBottom: 16
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IAddObjectForm {
-  gid: number;
-  lot: number;
-  quantity: number;
-  minPrice: number;
-  basePrice: number;
-}
-
-interface IState {
-  addObjectForm: IAddObjectForm;
-  characterConnected: boolean;
-  kamasGained: number;
-  kamasPaidOnTaxes: number;
-  interval: number;
-  objects: ObjectToSellEntry[];
-  running: boolean;
-  script: string;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Bid extends React.Component<Props, IState> {
-  public state: IState = {
+class Bid extends React.Component<BidTabProps, IBidTabState> {
+  public state: IBidTabState = {
     addObjectForm: {
       basePrice: 1,
       gid: -1,
@@ -364,7 +315,10 @@ class Bid extends React.Component<Props, IState> {
 
   private handleInputChange = event => {
     const value = parseInt(event.target.value, 10);
-    this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
+    this.setState({ [event.target.name]: value } as Pick<
+      IBidTabState,
+      keyof IBidTabState
+    >);
     this.props.account.extensions.bid.config[event.target.name] = value;
     this.props.account.extensions.bid.config.save();
   };
@@ -406,4 +360,4 @@ class Bid extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Bid);
+export default withStyles(bidTabStyles)<IBidTabProps>(Bid);

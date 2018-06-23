@@ -1,58 +1,26 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
+import { statisticsTabStyles } from "@renderer/pages/tabs/Statistics/styles";
+import {
+  IStatisticsTabProps,
+  IStatisticsTabState,
+  StatisticsTabProps
+} from "@renderer/pages/tabs/Statistics/types";
 import * as React from "react";
 
-type style = "root" | "table";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: 10
-  },
-  table: {
-    maxHeight: 300,
-    minWidth: 300,
-    overflowY: "auto"
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  objectsObtainedInFights: ObjectObtainedEntry[];
-  objectsObtainedInGathers: ObjectObtainedEntry[];
-  achievementsFinished: number;
-  averageFightTime: number;
-  experienceGained: number;
-  fightsCount: number;
-  fightsLost: number;
-  fightsWon: number;
-  gathersCount: number;
-  kamasGained: number;
-  levelsGained: number;
-  totalFightsTime: number;
-  totalGathersTime: number;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Statistics extends React.Component<Props, IState> {
-  public state: IState = {
+class Statistics extends React.Component<
+  StatisticsTabProps,
+  IStatisticsTabState
+> {
+  public state: IStatisticsTabState = {
     achievementsFinished: 0,
     averageFightTime: 0,
     experienceGained: 0,
@@ -231,4 +199,4 @@ class Statistics extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Statistics);
+export default withStyles(statisticsTabStyles)<IStatisticsTabProps>(Statistics);

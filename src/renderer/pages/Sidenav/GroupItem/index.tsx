@@ -1,54 +1,26 @@
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
-import Group from "@/groups/Group";
 import Avatar from "@material-ui/core/Avatar";
 import Collapse from "@material-ui/core/Collapse";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
+import { groupItemStyles } from "@renderer/pages/Sidenav/GroupItem/styles";
+import {
+  GroupItemProps,
+  IGroupItemProps,
+  IGroupItemState
+} from "@renderer/pages/Sidenav/GroupItem/types";
 import * as React from "react";
 
-type style = "root" | "nested" | "image" | "text";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  image: {
-    color: theme.palette.primary.main,
-    height: 30,
-    width: 30
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4
-  },
-  root: {
-    flexGrow: 1
-  },
-  text: {
-    color: theme.palette.primary.main,
-    fontWeight: "bold"
-  }
-});
-
-interface IProps {
-  group: Group;
-}
-
-interface IState {
-  open: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class GroupItem extends React.Component<Props, IState> {
-  public state: IState = {
+class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
+  public state: IGroupItemState = {
     open: false
   };
 
@@ -132,4 +104,4 @@ class GroupItem extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(GroupItem);
+export default withStyles(groupItemStyles)<IGroupItemProps>(GroupItem);

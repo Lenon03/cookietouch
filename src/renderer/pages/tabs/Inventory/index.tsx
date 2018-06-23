@@ -9,10 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -21,62 +18,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tabs from "@material-ui/core/Tabs";
 import TextField from "@material-ui/core/TextField";
+import { inventoryTabStyles } from "@renderer/pages/tabs/Inventory/styles";
+import {
+  DeleteDropUseChoice,
+  IInventoryTabProps,
+  IInventoryTabState,
+  InventoryTabProps
+} from "@renderer/pages/tabs/Inventory/types";
 import * as React from "react";
 
-type style = "root" | "appBar" | "tab" | "table" | "overflow" | "tablecell";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  appBar: {
-    //
-  },
-  overflow: {
-    maxHeight: "40vh",
-    overflowY: "auto"
-  },
-  root: {
-    flexGrow: 1
-  },
-  tab: {
-    maxWidth: 1000,
-    minWidth: 30
-  },
-  table: {
-    minWidth: 700,
-    textAlign: "center",
-    verticalAlign: "middle"
-  },
-  tablecell: {
-    textAlign: "center",
-    verticalAlign: "middle"
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  value: number;
-  deleteDropUseChoice: DeleteDropUseChoice;
-  consumables: ObjectEntry[];
-  equipments: ObjectEntry[];
-  quantity: number;
-  questObjects: ObjectEntry[];
-  object: ObjectEntry;
-  resources: ObjectEntry[];
-  modal: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-enum DeleteDropUseChoice {
-  Delete,
-  Drop,
-  Use
-}
-
-class Inventory extends React.Component<Props, IState> {
-  public state: IState = {
+class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
+  public state: IInventoryTabState = {
     consumables: [],
     deleteDropUseChoice: DeleteDropUseChoice.Delete,
     equipments: [],
@@ -444,7 +396,10 @@ class Inventory extends React.Component<Props, IState> {
   };
 
   private handleQuantityChange = name => event => {
-    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
+    this.setState({ [name]: event.target.value } as Pick<
+      IInventoryTabState,
+      keyof IInventoryTabState
+    >);
   };
 
   private equipUnEquipItem = (obj: ObjectEntry) => {
@@ -491,4 +446,4 @@ class Inventory extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Inventory);
+export default withStyles(inventoryTabStyles)<IInventoryTabProps>(Inventory);

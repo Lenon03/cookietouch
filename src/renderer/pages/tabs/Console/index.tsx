@@ -1,5 +1,3 @@
-import Account from "@/account";
-import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import CommandProcessor from "@/core/commands/CommandProcessor";
 import SendMessageCommand from "@/core/commands/handlers/SendMessageCommand";
@@ -15,61 +13,19 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
-import * as moment from "moment";
+import { consoleTabStyles } from "@renderer/pages/tabs/Console/styles";
+import {
+  ConsoleTabProps,
+  IConsoleTabProps,
+  IConsoleTabState
+} from "@renderer/pages/tabs/Console/types";
+import moment from "moment";
 import * as React from "react";
 
-type style = "root" | "console" | "consoleSpan" | "formControl";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  console: {
-    backgroundColor: "#403f3f",
-    height: "400px",
-    overflowX: "hidden",
-    overflowY: "visible",
-    padding: 10,
-    width: "100%"
-  },
-  consoleSpan: {
-    display: "block",
-    position: "relative"
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  account: Account;
-  max?: number;
-}
-
-interface IState {
-  messages: IMessage[];
-  channel: ChatChannelsMultiEnum;
-  content: string;
-  characterConnected: boolean;
-  status: PlayerStatusEnum;
-  showGeneralMessages: boolean;
-  showPartyMessages: boolean;
-  showGuildMessages: boolean;
-  showAllianceMessages: boolean;
-  showSaleMessages: boolean;
-  showSeekMessages: boolean;
-  showNoobMessages: boolean;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Console extends React.Component<Props, IState> {
-  public state: IState = {
+class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
+  public state: IConsoleTabState = {
     channel: ChatChannelsMultiEnum.CHANNEL_GLOBAL,
     characterConnected: false,
     content: "",
@@ -396,7 +352,10 @@ class Console extends React.Component<Props, IState> {
   };
 
   private handleChange = name => event => {
-    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
+    this.setState({ [name]: event.target.value } as Pick<
+      IConsoleTabState,
+      keyof IConsoleTabState
+    >);
   };
 
   private characterSelected = () => {
@@ -438,4 +397,4 @@ class Console extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Console);
+export default withStyles(consoleTabStyles)<IConsoleTabProps>(Console);

@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums/BlockSpectatorScenarios";
 import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
@@ -7,7 +6,6 @@ import { FightTactics } from "@/extensions/fights/configuration/enums/FightTacti
 import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
-import SpellEntry from "@/game/character/SpellEntry";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -15,7 +13,6 @@ import CardContent from "@material-ui/core/CardContent";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import List from "@material-ui/core/List";
@@ -25,10 +22,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Tab from "@material-ui/core/Tab";
 import Table from "@material-ui/core/Table";
@@ -39,109 +33,16 @@ import TableRow from "@material-ui/core/TableRow";
 import Tabs from "@material-ui/core/Tabs";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { fightsTabStyles } from "@renderer/pages/tabs/Fights/styles";
+import {
+  FightsTabProps,
+  IFightsTabProps,
+  IFightsTabState
+} from "@renderer/pages/tabs/Fights/types";
 import * as React from "react";
 
-type style =
-  | "root"
-  | "appBar"
-  | "tab"
-  | "card"
-  | "title"
-  | "formControl"
-  | "table"
-  | "paper"
-  | "modal"
-  | "overflow";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  appBar: {
-    //
-  },
-  card: {
-    minWidth: 275
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  modal: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    position: "absolute",
-    width: theme.spacing.unit * 50
-  },
-  overflow: {
-    maxHeight: 400,
-    overflowY: "auto"
-  },
-  paper: {
-    color: theme.palette.text.secondary,
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit * 2
-  },
-  root: {
-    flexGrow: 1
-  },
-  tab: {
-    height: 30,
-    maxWidth: 1000
-  },
-  table: {
-    minWidth: 700
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-    marginBottom: 16
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IAddSpellForm {
-  spellId: number;
-  target: SpellTargets;
-  turns: number;
-  relaunchs: number;
-  targetHp: number;
-  characterHp: number;
-  resistance: SpellResistances;
-  resistanceValue: number;
-  distanceToClosestMonster: number;
-  handToHand: boolean;
-  aoe: boolean;
-  carefulAoe: boolean;
-  avoidAllies: boolean;
-}
-
-interface IState {
-  activeTab: number;
-  addSpellForm: IAddSpellForm;
-  approachWhenNoSpellCasted: boolean;
-  baseApproachAllMonsters: boolean;
-  blockSpectatorScenario: BlockSpectatorScenarios;
-  characterConnected: boolean;
-  characterSpells: SpellEntry[];
-  startPlacement: FightStartPlacement;
-  ignoreSummonedEnemies: boolean;
-  lockFight: boolean;
-  maxCells: number;
-  modalInfos: boolean;
-  monsterToApproach: number;
-  regenEnd: number;
-  regenStart: number;
-  spellToApproach: number;
-  tactic: FightTactics;
-  spells: Spell[];
-  fightSpeed: FightSpeeds;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Fights extends React.Component<Props, IState> {
-  public state: IState = {
+class Fights extends React.Component<FightsTabProps, IFightsTabState> {
+  public state: IFightsTabState = {
     activeTab: 0,
     addSpellForm: {
       aoe: false,
@@ -876,8 +777,8 @@ class Fights extends React.Component<Props, IState> {
 
   private handleSwitchChange = (event, checked) => {
     this.setState({ [event.target.name]: checked } as Pick<
-      IState,
-      keyof IState
+      IFightsTabState,
+      keyof IFightsTabState
     >);
     this.props.account.extensions.fights.config[event.target.name] = checked;
     this.props.account.extensions.fights.config.save();
@@ -897,8 +798,8 @@ class Fights extends React.Component<Props, IState> {
 
   private handleSelectChange = event => {
     this.setState({ [event.target.name]: event.target.value } as Pick<
-      IState,
-      keyof IState
+      IFightsTabState,
+      keyof IFightsTabState
     >);
     this.props.account.extensions.fights.config[event.target.name] =
       event.target.value;
@@ -949,4 +850,4 @@ class Fights extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Fights);
+export default withStyles(fightsTabStyles)<IFightsTabProps>(Fights);

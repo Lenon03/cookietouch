@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import FloodSentence from "@/extensions/flood/FloodSentence";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
@@ -12,10 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -24,60 +20,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { floodTabStyles } from "@renderer/pages/tabs/Flood/styles";
+import {
+  FloodTabProps,
+  IFloodTabProps,
+  IFloodTabState
+} from "@renderer/pages/tabs/Flood/types";
 import { List } from "linqts";
 import * as React from "react";
 
-type style = "root" | "table" | "formControl" | "card" | "title";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  card: {
-    minWidth: 275
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1,
-    margin: theme.spacing.unit * 2,
-    maxHeight: 500,
-    overflowY: "auto",
-    padding: 10
-  },
-  table: {
-    minWidth: 700
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-    marginBottom: 16
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-interface IAddSentenceForm {
-  content: string;
-  channel: number;
-  onPlayerJoined: boolean;
-  onPlayerLeft: boolean;
-}
-
-interface IState {
-  addSentenceForm: IAddSentenceForm;
-  characterConnected: boolean;
-  generalChannelInterval: number;
-  running: boolean;
-  salesChannelInterval: number;
-  seekChannelInterval: number;
-  sentences: FloodSentence[];
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Flood extends React.Component<Props, IState> {
-  public state: IState = {
+class Flood extends React.Component<FloodTabProps, IFloodTabState> {
+  public state: IFloodTabState = {
     addSentenceForm: {
       channel: ChatActivableChannelsEnum.CHANNEL_GLOBAL,
       content: "",
@@ -338,8 +291,8 @@ class Flood extends React.Component<Props, IState> {
 
   private handleInputChange = event => {
     this.setState({ [event.target.name]: event.target.value } as Pick<
-      IState,
-      keyof IState
+      IFloodTabState,
+      keyof IFloodTabState
     >);
     this.props.account.extensions.flood.config[event.target.name] =
       event.target.value;
@@ -376,4 +329,4 @@ class Flood extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<IProps>(Flood);
+export default withStyles(floodTabStyles)<IFloodTabProps>(Flood);

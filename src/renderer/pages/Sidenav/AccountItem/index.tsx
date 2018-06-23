@@ -4,38 +4,18 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CookieMain from "@renderer/CookieMain";
+import { accountItemStyles } from "@renderer/pages/Sidenav/AccountItem/styles";
+import {
+  AccountItemProps,
+  IAccountItemProps,
+  IAccountItemState
+} from "@renderer/pages/Sidenav/AccountItem/types";
 import * as React from "react";
 
-type style = "root" | "image" | "text";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  image: {
-    color: theme.palette.primary.main,
-    height: 30,
-    width: 30
-  },
-  root: {
-    flexGrow: 1
-  },
-  text: {
-    color: theme.palette.primary.main,
-    fontWeight: "bold"
-  }
-});
-
-interface IProps {
-  account: Account;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class AccountItem extends React.Component<Props, {}> {
+class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
   public render() {
     const { account, classes } = this.props;
 
@@ -69,4 +49,4 @@ class AccountItem extends React.Component<Props, {}> {
   };
 }
 
-export default withStyles(styles)<IProps>(AccountItem);
+export default withStyles(accountItemStyles)<IAccountItemProps>(AccountItem);

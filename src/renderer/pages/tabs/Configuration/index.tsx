@@ -1,4 +1,3 @@
-import Account from "@/account";
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
@@ -16,10 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -28,63 +24,20 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { configurationTabStyles } from "@renderer/pages/tabs/Configuration/styles";
+import {
+  ConfigurationTabProps,
+  IConfigurationTabProps,
+  IConfigurationTabState,
+  SpellLevels
+} from "@renderer/pages/tabs/Configuration/types";
 import * as React from "react";
 
-type style = "root" | "card" | "title" | "formControl" | "table";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  card: {
-    minWidth: 275
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1
-  },
-  table: {
-    maxWidth: 700
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-    marginBottom: 16
-  }
-});
-
-enum SpellLevels {
-  ONE = 1,
-  TWO = 2,
-  THREE = 3,
-  FOUR = 4,
-  FIVE = 5,
-  SIX = 6
-}
-
-interface IProps {
-  account: Account;
-}
-
-interface IState {
-  acceptAchievements: boolean;
-  authorizedTradesFrom: number[];
-  autoRegenAccepted: boolean;
-  autoMount: boolean;
-  characterConnected: boolean;
-  disconnectUponFightsLimit: boolean;
-  enableSpeedHack: boolean;
-  ignoreNonAuthorizedTrades: boolean;
-  spellId: number;
-  spellLevel: SpellLevels;
-  spells: SpellToBoostEntry[];
-  statToBoost: BoostableStats;
-  toAddToAuthorized: number;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class Configuration extends React.Component<Props, IState> {
-  public state: IState = {
+class Configuration extends React.Component<
+  ConfigurationTabProps,
+  IConfigurationTabState
+> {
+  public state: IConfigurationTabState = {
     acceptAchievements: true,
     authorizedTradesFrom: [],
     autoMount: true,
@@ -485,8 +438,8 @@ class Configuration extends React.Component<Props, IState> {
 
   private handleSwitchChange = (event, checked) => {
     this.setState({ [event.target.name]: checked } as Pick<
-      IState,
-      keyof IState
+      IConfigurationTabState,
+      keyof IConfigurationTabState
     >);
     this.props.account.config[event.target.name] = checked;
     this.props.account.config.save();
@@ -494,10 +447,15 @@ class Configuration extends React.Component<Props, IState> {
 
   private handleSelectChange = event => {
     const value = parseInt(event.target.value, 10);
-    this.setState({ [event.target.name]: value } as Pick<IState, keyof IState>);
+    this.setState({ [event.target.name]: value } as Pick<
+      IConfigurationTabState,
+      keyof IConfigurationTabState
+    >);
     this.props.account.config[event.target.name] = value;
     this.props.account.config.save();
   };
 }
 
-export default withStyles(styles)<IProps>(Configuration);
+export default withStyles(configurationTabStyles)<IConfigurationTabProps>(
+  Configuration
+);

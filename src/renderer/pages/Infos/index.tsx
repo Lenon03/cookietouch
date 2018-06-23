@@ -1,14 +1,6 @@
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { faKorvue } from "@fortawesome/free-brands-svg-icons";
-import {
-  faBolt,
-  faBriefcase,
-  faGem,
-  faHeart,
-  faStar
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -190,7 +182,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
-                icon={faHeart}
+                icon="heart"
               />
               {(this.state.lifePoints !== -1
                 ? (this.state.lifePoints / this.state.lifePointsMax) * 100
@@ -214,7 +206,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
-                icon={faBriefcase}
+                icon="briefcase"
               />
               {(this.state.weight !== -1
                 ? (this.state.weight / this.state.weightMax) * 100
@@ -233,11 +225,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Tooltip>
             </Grid>
             <Grid item xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon={faStar}
-              />
+              <FontAwesomeIcon className={classes.icon} size="lg" icon="star" />
               {(this.state.experiencePercent !== -1
                 ? this.state.experiencePercent
                 : 0
@@ -257,11 +245,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Tooltip>
             </Grid>
             <Grid item xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon={faBolt}
-              />
+              <FontAwesomeIcon className={classes.icon} size="lg" icon="bolt" />
               {(this.state.energyPoints !== -1
                 ? (this.state.energyPoints / this.state.energyPointsMax) * 100
                 : 0
@@ -287,16 +271,12 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
-                icon={faKorvue}
+                icon="korvue"
               />{" "}
               {this.state.kamas}
             </Grid>
             <Grid item xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon={faGem}
-              />{" "}
+              <FontAwesomeIcon className={classes.icon} size="lg" icon="gem" />{" "}
               {this.state.goultines}
             </Grid>
           </Grid>

@@ -9,30 +9,22 @@ import withStyles, {
   WithStyles
 } from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
+import { cacheManagerStyles } from "@renderer/pages/AccountsManager/CacheManager/styles";
+import {
+  CacheManagerProps,
+  ICacheManagerProps,
+  ICacheManagerState
+} from "@renderer/pages/AccountsManager/CacheManager/types";
 import { remote } from "electron";
 import { mkdirSync } from "fs";
 import { join } from "path";
 import * as React from "react";
 
-type style = "root" | "paper";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  paper: {
-    padding: 16
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IState {
-  cacheSize: number;
-}
-
-type Props = WithStyles<style>;
-
-class CacheManager extends React.Component<Props, IState> {
-  public readonly state: IState = {
+class CacheManager extends React.Component<
+  CacheManagerProps,
+  ICacheManagerState
+> {
+  public readonly state: ICacheManagerState = {
     cacheSize: 0
   };
 
@@ -77,4 +69,4 @@ class CacheManager extends React.Component<Props, IState> {
   };
 }
 
-export default withStyles(styles)<{}>(CacheManager);
+export default withStyles(cacheManagerStyles)<ICacheManagerProps>(CacheManager);

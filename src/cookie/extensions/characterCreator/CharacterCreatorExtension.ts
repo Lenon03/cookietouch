@@ -9,6 +9,7 @@ import Breeds from "@/protocol/data/classes/Breeds";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import { CharacterCreationResultEnum } from "@/protocol/enums/CharacterCreationResultEnum";
 import CharacterCreationResultMessage from "@/protocol/network/messages/CharacterCreationResultMessage";
+import CharacterNameSuggestionFailureMessage from "@/protocol/network/messages/CharacterNameSuggestionFailureMessage";
 import CharacterNameSuggestionSuccessMessage from "@/protocol/network/messages/CharacterNameSuggestionSuccessMessage";
 import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 import GameActionFightSpellCastMessage from "@/protocol/network/messages/GameActionFightSpellCastMessage";
@@ -129,6 +130,18 @@ export default class CharacterCreatorExtension implements IClearable {
     message: CharacterNameSuggestionSuccessMessage
   ) {
     this.name.resolve(message.suggestion);
+  }
+
+  public async UpdateCharacterNameSuggestionFailureMessage(
+    message: CharacterNameSuggestionFailureMessage
+  ) {
+    this.account.logger.logError(
+      LanguageManager.trans("characterCreator"),
+      LanguageManager.trans("errorNameSuggestion", message.reason)
+    );
+    this.account.network.sendMessageFree(
+      "CharacterNameSuggestionRequestMessage"
+    );
   }
 
   public async UpdateCharacterCreationResultMessage(

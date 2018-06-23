@@ -6,9 +6,10 @@ import InventoryHelper from "@/game/character/inventory/InventoryHelper";
 import DTConstants from "@/protocol/DTConstants";
 // import "typeface-roboto";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
+import "@renderer/FontAwesomeIcons";
 import Main from "@renderer/pages/Main";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { render } from "react-dom";
 
 const app = initialize();
 app
@@ -31,4 +32,4 @@ async function init() {
 
 init();
 
-ReactDOM.render(<Main />, document.getElementById("app"));
+render(<Main />, document.getElementById("app"));

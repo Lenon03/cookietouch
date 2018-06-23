@@ -1,5 +1,6 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import CharacterNameSuggestionFailureMessage from "@/protocol/network/messages/CharacterNameSuggestionFailureMessage";
 import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 import { randomString } from "@/utils/Random";
 import { isBlank } from "@/utils/String";
@@ -21,6 +22,11 @@ export default class CharacterSelectionFrame {
     this.account.dispatcher.register(
       "CharacterNameSuggestionSuccessMessage",
       this.HandleCharacterNameSuggestionSuccessMessage,
+      this
+    );
+    this.account.dispatcher.register(
+      "CharacterNameSuggestionFailureMessage",
+      this.HandleCharacterNameSuggestionFailureMessage,
       this
     );
     this.account.dispatcher.register(
@@ -92,6 +98,15 @@ export default class CharacterSelectionFrame {
     message: any
   ) {
     account.extensions.characterCreation.UpdateCharacterNameSuggestionSuccessMessage(
+      message
+    );
+  }
+
+  private async HandleCharacterNameSuggestionFailureMessage(
+    account: Account,
+    message: CharacterNameSuggestionFailureMessage
+  ) {
+    account.extensions.characterCreation.UpdateCharacterNameSuggestionFailureMessage(
       message
     );
   }

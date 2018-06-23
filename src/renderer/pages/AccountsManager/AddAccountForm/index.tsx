@@ -3,7 +3,6 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import DataManager from "@/protocol/data";
 import Servers from "@/protocol/data/classes/Servers";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Dictionary from "@/utils/Dictionary";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
@@ -13,44 +12,27 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CookieMain from "@renderer/CookieMain";
+import { addAccountFormStyles } from "@renderer/pages/AccountsManager/AddAccountForm/styles";
+import {
+  AddAccountFormProps,
+  IAddAccountFormProps,
+  IAddAccountFormState
+} from "@renderer/pages/AccountsManager/AddAccountForm/types";
 import * as React from "react";
 
-type style = "root" | "formControl";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    color: theme.palette.text.secondary,
-    flexGrow: 1,
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit * 2
-  }
-});
-
-interface IState {
-  character: string;
-  username: string;
-  password: string;
-  server: number;
-  servers: Dictionary<number, string>;
-  showPassword: boolean;
-}
-
-class AddAccountForm extends React.Component<WithStyles<style>, IState> {
-  public state: IState = {
+class AddAccountForm extends React.Component<
+  AddAccountFormProps,
+  IAddAccountFormState
+> {
+  public state: IAddAccountFormState = {
     character: "",
     password: "",
     server: -1,
-    servers: new Dictionary(),
+    servers: new Map<number, string>(),
     showPassword: false,
     username: ""
   };
@@ -61,9 +43,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
       DataTypes.Servers,
       ...[401, 403, 404, 405, 406, 407]
     ).then(data => {
-      const servers = new Dictionary<number, string>();
+      const servers = new Map<number, string>();
       for (const server of data) {
-        servers.add(server.id, server.object.nameId);
+        servers.set(server.id, server.object.nameId);
       }
       this.setState({ servers });
     });
@@ -121,9 +103,9 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
             <MenuItem value={-1}>
               <em>{LanguageManager.trans("none")}</em>
             </MenuItem>
-            {this.state.servers.keys().map(key => (
+            {Array.from(this.state.servers.keys()).map(key => (
               <MenuItem key={key} value={key}>
-                {this.state.servers.getValue(key)}
+                {this.state.servers.get(key)}
               </MenuItem>
             ))}
           </Select>
@@ -157,13 +139,16 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
   }
 
   private handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value } as Pick<IState, keyof IState>);
+    this.setState({ [prop]: event.target.value } as Pick<
+      IAddAccountFormState,
+      keyof IAddAccountFormState
+    >);
   };
 
   private handleSelectChange = event => {
     this.setState({ [event.target.name]: event.target.value } as Pick<
-      IState,
-      keyof IState
+      IAddAccountFormState,
+      keyof IAddAccountFormState
     >);
   };
 
@@ -194,4 +179,6 @@ class AddAccountForm extends React.Component<WithStyles<style>, IState> {
   };
 }
 
-export default withStyles(styles)<{}>(AddAccountForm);
+export default withStyles(addAccountFormStyles)<IAddAccountFormProps>(
+  AddAccountForm
+);

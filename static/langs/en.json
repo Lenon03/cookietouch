@@ -392,7 +392,7 @@
   "water": "Water",
   "wind": "Wind",
   "howManyDrop": "How many you want to drop?",
-  "howManyUse":  "How many you want to use?",
+  "howManyUse": "How many you want to use?",
   "howManyDelete": "How many you want to delete?",
   "accountsManager": "Accounts Manager",
   "warmup": "Warm up",
@@ -442,5 +442,6 @@
   "nosubscriber": "You don't have Bonus Pack",
   "subscriber": "Your Bonus Pack ends ?",
   "planningConfig": "Planning",
-  "planningActivate": "Activate/Deactivate"
+  "planningActivate": "Activate/Deactivate",
+  "errorNameSuggestion": "Error (?) during the name generation, trying again!"
 }

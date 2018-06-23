@@ -7,9 +7,7 @@ import DataManager from "@/protocol/data";
 import Servers from "@/protocol/data/classes/Servers";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import Color from "@/utils/Color";
-import Dictionary from "@/utils/Dictionary";
 import { getRandomInt } from "@/utils/Random";
-import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -25,64 +23,25 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
+import { characterCreatorStyles } from "@renderer/pages/AccountsManager/CharacterCreator/styles";
+import {
+  CharacterCreatorProps,
+  ICharacterCreatorProps,
+  ICharacterCreatorState
+} from "@renderer/pages/AccountsManager/CharacterCreator/types";
 import ColorPicker from "@renderer/pages/AccountsManager/ColorPicker";
 import * as React from "react";
 
-type style = "root" | "heading" | "formControl" | "icon" | "chip" | "chips";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  chip: {
-    margin: theme.spacing.unit / 4
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  icon: {
-    color: theme.palette.primary.main,
-    // color: "#015357",
-    marginRight: 8
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IState {
-  breed: number;
-  color1: string;
-  color2: string;
-  color3: string;
-  color4: string;
-  color5: string;
-  create: boolean;
-  tutorial: boolean;
-  head: number;
-  name: string;
-  server: number;
-  servers: Dictionary<number, string>;
-  sex: number;
-  accountsList: AccountConfiguration[];
-  selectedAccounts: AccountConfiguration[];
-}
-
-class CharacterCreator extends React.Component<WithStyles<style>, IState> {
-  public state: IState = {
+class CharacterCreator extends React.Component<
+  CharacterCreatorProps,
+  ICharacterCreatorState
+> {
+  public state: ICharacterCreatorState = {
     accountsList: GlobalConfiguration.accountsList,
     breed: -1,
     color1: "#000000",
@@ -95,7 +54,7 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
     name: "",
     selectedAccounts: [],
     server: -1,
-    servers: new Dictionary(),
+    servers: new Map<number, string>(),
     sex: -1,
     tutorial: true
   };
@@ -106,9 +65,9 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
       DataTypes.Servers,
       ...[401, 403, 404, 405, 406, 407]
     ).then(data => {
-      const servers = new Dictionary<number, string>();
+      const servers = new Map<number, string>();
       for (const server of data) {
-        servers.add(server.id, server.object.nameId);
+        servers.set(server.id, server.object.nameId);
       }
       this.setState({ servers });
     });
@@ -223,9 +182,9 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
                 <MenuItem value={-1}>
                   <em>{LanguageManager.trans("random")}</em>
                 </MenuItem>
-                {this.state.servers.keys().map(key => (
+                {Array.from(this.state.servers.keys()).map(key => (
                   <MenuItem key={key} value={key}>
-                    {this.state.servers.getValue(key)}
+                    {this.state.servers.get(key)}
                   </MenuItem>
                 ))}
               </Select>
@@ -265,7 +224,7 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
                   <FontAwesomeIcon
                     className={classes.icon}
                     size="lg"
-                    icon={faMars}
+                    icon="venus"
                   />{" "}
                   {LanguageManager.trans("male")}
                 </MenuItem>
@@ -273,7 +232,7 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
                   <FontAwesomeIcon
                     className={classes.icon}
                     size="lg"
-                    icon={faVenus}
+                    icon="mars"
                   />{" "}
                   {LanguageManager.trans("female")}
                 </MenuItem>
@@ -419,7 +378,10 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
   };
 
   private handleChangeColor = name => color => {
-    this.setState({ [name]: color.hex } as Pick<IState, keyof IState>);
+    this.setState({ [name]: color.hex } as Pick<
+      ICharacterCreatorState,
+      keyof ICharacterCreatorState
+    >);
   };
 
   private tutorialChanged = event => {
@@ -432,7 +394,10 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
 
   private handleSelectChange = event => {
     this.setState(
-      { [event.target.name]: event.target.value } as Pick<IState, keyof IState>,
+      { [event.target.name]: event.target.value } as Pick<
+        ICharacterCreatorState,
+        keyof ICharacterCreatorState
+      >,
       () => {
         this.refreshColors();
       }
@@ -440,7 +405,10 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
   };
 
   private handleChange = name => event => {
-    this.setState({ [name]: event.target.value } as Pick<IState, keyof IState>);
+    this.setState({ [name]: event.target.value } as Pick<
+      ICharacterCreatorState,
+      keyof ICharacterCreatorState
+    >);
   };
 
   private handleChangeAccounts = event => {
@@ -487,4 +455,6 @@ class CharacterCreator extends React.Component<WithStyles<style>, IState> {
   };
 }
 
-export default withStyles(styles)<{}>(CharacterCreator);
+export default withStyles(characterCreatorStyles)<ICharacterCreatorProps>(
+  CharacterCreator
+);

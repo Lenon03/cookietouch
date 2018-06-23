@@ -1,7 +1,6 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import { faChessQueen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -11,43 +10,22 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
+import { accountsListStyles } from "@renderer/pages/AccountsManager/AccountsList/styles";
+import {
+  AccountsListProps,
+  IAccountsListProps,
+  IAccountsListState
+} from "@renderer/pages/AccountsManager/AccountsList/types";
 import { List as LinqList } from "linqts";
 import * as React from "react";
 
-type style = "root" | "icon";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  icon: {
-    color: theme.palette.primary.main
-  },
-  root: {
-    color: theme.palette.text.secondary,
-    flexGrow: 1,
-    margin: theme.spacing.unit,
-    maxHeight: 400,
-    overflowY: "auto",
-    padding: theme.spacing.unit * 2
-  }
-});
-
-interface IProps {
-  closeDialog: () => void;
-}
-
-type Props = IProps & WithStyles<style>;
-
-interface IState {
-  accountsList: AccountConfiguration[];
-  accountsToConnect: AccountConfiguration[];
-}
-
-class AccountsList extends React.Component<Props, IState> {
-  public state: IState = {
+class AccountsList extends React.Component<
+  AccountsListProps,
+  IAccountsListState
+> {
+  public state: IAccountsListState = {
     accountsList: GlobalConfiguration.accountsList,
     accountsToConnect: []
   };
@@ -89,7 +67,7 @@ class AccountsList extends React.Component<Props, IState> {
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
-                      icon={faChessQueen}
+                      icon="chess-queen"
                     />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -105,7 +83,7 @@ class AccountsList extends React.Component<Props, IState> {
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
-                      icon={faTrash}
+                      icon="trash"
                     />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -175,4 +153,4 @@ class AccountsList extends React.Component<Props, IState> {
   }
 }
 
-export default withStyles(styles)<IProps>(AccountsList);
+export default withStyles(accountsListStyles)<IAccountsListProps>(AccountsList);

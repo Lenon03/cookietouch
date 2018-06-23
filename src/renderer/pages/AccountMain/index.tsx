@@ -1,14 +1,3 @@
-import {
-  faBullhorn,
-  faChartLine,
-  faChess,
-  faCoffee,
-  faCogs,
-  faMap,
-  faMoneyBillAlt,
-  faShoppingBag,
-  faUser
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
@@ -47,39 +36,39 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
           <Tabs value={value} onChange={this.handleChange} fullWidth>
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faCoffee} />}
+              icon={<FontAwesomeIcon icon="coffee" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faUser} />}
+              icon={<FontAwesomeIcon icon="user" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faShoppingBag} />}
+              icon={<FontAwesomeIcon icon="shopping-bag" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faMap} />}
+              icon={<FontAwesomeIcon icon="map" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faChess} />}
+              icon={<FontAwesomeIcon icon="chess" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faBullhorn} />}
+              icon={<FontAwesomeIcon icon="bullhorn" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faMoneyBillAlt} />}
+              icon={<FontAwesomeIcon icon="money-bill-alt" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faChartLine} />}
+              icon={<FontAwesomeIcon icon="chart-line" />}
             />
             <Tab
               className={classes.tab}
-              icon={<FontAwesomeIcon icon={faCogs} />}
+              icon={<FontAwesomeIcon icon="cogs" />}
             />
           </Tabs>
         </AppBar>

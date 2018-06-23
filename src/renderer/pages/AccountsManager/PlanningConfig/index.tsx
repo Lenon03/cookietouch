@@ -1,4 +1,3 @@
-import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Button from "@material-ui/core/Button";
@@ -16,71 +15,27 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
+import { planningConfigStyles } from "@renderer/pages/AccountsManager/PlanningConfig/styles";
+import {
+  IPlanningConfigProps,
+  IPlanningConfigState,
+  PlanningConfigProps
+} from "@renderer/pages/AccountsManager/PlanningConfig/types";
 import { Enumerable } from "linqts";
 import * as React from "react";
 
-type style =
-  | "root"
-  | "heading"
-  | "formControl"
-  | "chips"
-  | "chip"
-  | "list"
-  | "expansionpanel"
-  | "regroupall";
+interface IState {}
 
-const styles: StyleRulesCallback<style> = theme => ({
-  chip: {
-    margin: theme.spacing.unit / 4
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  expansionpanel: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    width: 150
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  list: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row"
-  },
-  regroupall: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IState {
-  accountsList: AccountConfiguration[];
-  active: boolean;
-  planning: boolean[];
-  selectedAccounts: AccountConfiguration[];
-}
-
-class PlanningConfig extends React.Component<WithStyles<style>, IState> {
-  public readonly state: IState = {
+class PlanningConfig extends React.Component<
+  PlanningConfigProps,
+  IPlanningConfigState
+> {
+  public readonly state: IPlanningConfigState = {
     accountsList: GlobalConfiguration.accountsList,
     active: false,
     planning: Enumerable.Repeat(false, 24).ToArray(),
@@ -244,4 +199,6 @@ class PlanningConfig extends React.Component<WithStyles<style>, IState> {
   };
 }
 
-export default withStyles(styles)<{}>(PlanningConfig);
+export default withStyles(planningConfigStyles)<IPlanningConfigProps>(
+  PlanningConfig
+);

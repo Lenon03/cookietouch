@@ -5,33 +5,24 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import AccountsList from "@renderer/pages/AccountsManager/AccountsList";
 import AddAccountForm from "@renderer/pages/AccountsManager/AddAccountForm";
 import CacheManager from "@renderer/pages/AccountsManager/CacheManager";
 import CharacterCreator from "@renderer/pages/AccountsManager/CharacterCreator";
 import PlanningConfig from "@renderer/pages/AccountsManager/PlanningConfig";
+import { accountsManagerStyles } from "@renderer/pages/AccountsManager/styles";
+import {
+  AccountsManagerProps,
+  IAccountsManagerProps,
+  IAccountsManagerState
+} from "@renderer/pages/AccountsManager/types";
 import * as React from "react";
 
-type style = "root";
-
-const styles: StyleRulesCallback<style> = theme => ({
-  root: {
-    flexGrow: 1
-  }
-});
-
-interface IProps {
-  dialogOpen: boolean;
-  closeDialog: () => void;
-}
-
-type Props = IProps & WithStyles<style>;
-
-class AccountsManager extends React.Component<Props, {}> {
+class AccountsManager extends React.Component<
+  AccountsManagerProps,
+  IAccountsManagerState
+> {
   public render() {
     const { classes, dialogOpen, closeDialog } = this.props;
 
@@ -80,4 +71,6 @@ class AccountsManager extends React.Component<Props, {}> {
   }
 }
 
-export default withStyles(styles)<IProps>(AccountsManager);
+export default withStyles(accountsManagerStyles)<IAccountsManagerProps>(
+  AccountsManager
+);

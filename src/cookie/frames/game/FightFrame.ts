@@ -34,7 +34,7 @@ import GameMapNoMovementMessage from "@/protocol/network/messages/GameMapNoMovem
 import SequenceEndMessage from "@/protocol/network/messages/SequenceEndMessage";
 import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
 import { sleep } from "@/utils/Time";
-import * as moment from "moment";
+import moment from "moment";
 
 export default class FightFrame {
   private account: Account;

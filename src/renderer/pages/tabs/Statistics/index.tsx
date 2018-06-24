@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { displayTime } from "@/utils/Time";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -58,7 +59,7 @@ class Statistics extends React.Component<
             <br />
             <Typography>
               {LanguageManager.trans("averageFightTime")}{" "}
-              {this.formatTime(this.state.averageFightTime)}
+              {displayTime(this.state.averageFightTime)}
             </Typography>
             <br />
             <Typography>
@@ -93,12 +94,12 @@ class Statistics extends React.Component<
             <br />
             <Typography>
               {LanguageManager.trans("totalFightsTime")}{" "}
-              {this.formatTime(this.state.totalFightsTime)}
+              {displayTime(this.state.totalFightsTime)}
             </Typography>
             <br />
             <Typography>
               {LanguageManager.trans("totalGathersTime")}{" "}
-              {this.formatTime(this.state.totalGathersTime)}
+              {displayTime(this.state.totalGathersTime)}
             </Typography>
           </Grid>
           <Grid item xs={10}>
@@ -192,10 +193,6 @@ class Statistics extends React.Component<
       totalFightsTime: this.props.account.statistics.totalFightsTime,
       totalGathersTime: this.props.account.statistics.totalGathersTime
     });
-  };
-
-  private formatTime = (num: number): string => {
-    return `${(num / 1000).toFixed(2)}s`;
   };
 }
 

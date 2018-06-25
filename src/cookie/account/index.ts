@@ -179,11 +179,7 @@ export default class Account implements IEntity {
       try {
         response = await RecaptchaHandler.getResponse(sitekey);
       } catch (error) {
-        this.logger.logError(
-          "reCaptcha",
-          "No idle workers are available at the moment, please try a bit later"
-        );
-        await this.handleRecaptcha(sitekey); // TODO: Really ?
+        this.logger.logError("reCaptcha", error.message);
         return;
       }
 

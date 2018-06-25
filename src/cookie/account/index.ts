@@ -193,7 +193,7 @@ export default class Account implements IEntity {
         this._wasScriptRunning = false;
         this.logger.logError(
           "reCaptcha",
-          "You have to enter a Anticaptcha key in order to bypass recaptcha."
+          "You have to enter a Anticaptcha key or to have some funds in it in order to bypass recaptcha."
         );
         this.onRecaptchaResolved.trigger({ account: this, success: false });
       } else {

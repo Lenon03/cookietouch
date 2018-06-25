@@ -203,7 +203,7 @@ export default class Account implements IEntity {
           `Recaptcha solved in ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds.`
         );
 
-        await this.network.send("recaptchaResponse", response);
+        this.network.send("recaptchaResponse", response);
 
         if (this.state === AccountStates.RECAPTCHA) {
           this.state = AccountStates.NONE;

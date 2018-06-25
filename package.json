@@ -1,6 +1,6 @@
 {
   "name": "cookietouch",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "description": "DofusTouch Bot with Electron React/TypeScript",
   "main": "dist/main/main.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "@types/react-dom": "^16.0.5",
     "awesome-typescript-loader": "^5.2.0",
     "electron": "^2.0.3",
-    "electron-builder": "^20.15.1",
+    "electron-builder": "^20.16.0",
     "electron-webpack": "^2.1.2",
     "electron-webpack-ts": "^2.0.2",
     "node-sass": "^4.9.0",

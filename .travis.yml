@@ -46,6 +46,3 @@ before_cache:
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
-env:
-  global:
-    secure: WJIUvckXKxcEVvPl8pc5rTXDOIf/uIqJxPKoWaV9QhTTAco2sOoYlUCfnP781GJKE5sZc7F3tBUKflipBjIkEIrh0mN0EidOnTC+1ura7wEPbgQbCdSmDckT3AIWhAD9miZPy/3AyuXCtFkW06WHMmTGk5WGYFuzWrfkKI+wL2IachOg9r8I733G8y8WcaefonErhcz87+silAAPZEunoBqJ7FhUjJgQW/o44yGZmw2XgEQmyWl4eXTKIi08Jz5miukEjEzt6jm+GcPf+xiVJpK+OYawUQBjeoC8uYVgjx3+6C2cJy26bGmVKior0etCsq6guuZ2C0QfTHtHMgFXxdo1n214qoK9M/yPodGYR8gl9qyx93UwWuHcOb4sqP0eT41U/n3GTvPxtnxUrnXA6ImzqGe27iBx42ri+ohJes5ApWo4m/wC4syIHDPViINZAX3A1KR0Geo0eehk3zCjAKjo5evUS8XkOQII5ociYrkoQg5vg8n0fUGdP2gtjkQnNwIbK+YoK0vDtspDbTqpXJ11zX1NOLpuIWev9j7a+N9X81EpCRyNIsY/ErAXoGgIawIKtIHVrNgBHpT17mt9mOH4IndFdD6X7sn+FCcos0kJQIeEYmqjmDFY5XaZwH0e5WYDrLDgqIGWyXdDpK1u6xhXeizOZqeAEG+OA/1dowQ=

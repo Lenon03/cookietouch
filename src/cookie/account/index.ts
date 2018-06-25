@@ -20,7 +20,7 @@ import Dispatcher from "@/utils/Dispatcher";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";
-import { sleep, displayTime } from "@/utils/Time";
+import { displayTime, sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
 import * as moment from "moment";
 

@@ -1,8 +1,9 @@
 <a href="#"><img src="https://image.ibb.co/j8rmqJ/icon.png" align="left" height="80" width="80"></a>
+
 <center>
 	<h1>
-    CookieTouch <a href="https://travis-ci.org/yovanoc/cookietouch">
-    <img src="https://travis-ci.org/yovanoc/cookietouch.svg?branch=master">
+    CookieTouch <a href="https://travis-ci.org/cookie-project/cookietouch">
+    <img src="https://travis-ci.org/cookie-project/cookietouch.svg?branch=master">
   </a>
   </h1>
 </center>

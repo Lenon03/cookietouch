@@ -35,8 +35,6 @@
     "repo": "cookietouch-releases",
     "owner": "cookie-project",
     "vPrefixedTagName": true,
-    "host": "github.com",
-    "protocol": "https",
     "private": false,
     "releaseType": "draft"
   },

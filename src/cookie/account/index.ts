@@ -20,7 +20,7 @@ import Dispatcher from "@/utils/Dispatcher";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";
-import { sleep } from "@/utils/Time";
+import { sleep, displayTime } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
 import * as moment from "moment";
 
@@ -171,17 +171,12 @@ export default class Account implements IEntity {
     this._wasScriptRunning = this._wasScriptRunning || this.scripts.enabled;
     this.scripts.stopScript();
     this.onRecaptchaReceived.trigger(this);
-    try {
-      const NS_PER_SEC = 1e9;
-      const time = process.hrtime();
 
-      let response: string;
-      try {
-        response = await RecaptchaHandler.getResponse(sitekey);
-      } catch (error) {
-        this.logger.logError("reCaptcha", error.message);
-        return;
-      }
+    const NS_PER_SEC = 1e9;
+    const time = process.hrtime();
+
+    try {
+      const response = await RecaptchaHandler.getResponse(sitekey);
 
       // If the response is null, it's because the user didn't enter an anti-captcha key
       if (response === null) {
@@ -196,7 +191,9 @@ export default class Account implements IEntity {
         const diff = process.hrtime(time);
         this.logger.logInfo(
           "reCaptcha",
-          `Recaptcha solved in ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds.`
+          `Recaptcha solved in ${displayTime(
+            (diff[0] * NS_PER_SEC + diff[1]) / 1000000
+          )}.`
         );
 
         this.network.send("recaptchaResponse", response);
@@ -221,7 +218,7 @@ export default class Account implements IEntity {
         }
       }
     } catch (error) {
-      this.logger.logError("reCaptcha", error);
+      this.logger.logError("reCaptcha", error.message);
       if (tries < 3) {
         this.logger.logError("reCaptcha", `Attempt #${++tries} in 10 seconds.`);
         await this.handleRecaptcha(sitekey, tries);

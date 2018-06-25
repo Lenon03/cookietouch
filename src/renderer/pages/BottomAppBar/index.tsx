@@ -1,3 +1,4 @@
+import LanguageManager from "@/configurations/language/LanguageManager";
 import AppBar from "@material-ui/core/AppBar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -46,7 +47,11 @@ class BottomAppBar extends React.Component<
         <AppBar className={classes.appbar} position="sticky">
           <Toolbar className={classes.toolbar}>
             <Typography variant="subheading" color="inherit">
-              {usersConnected} / {totalUsers} users connected.
+              {LanguageManager.trans(
+                "usersConnected",
+                usersConnected,
+                totalUsers
+              )}
             </Typography>
           </Toolbar>
         </AppBar>

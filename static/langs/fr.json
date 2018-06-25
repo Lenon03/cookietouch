@@ -443,5 +443,10 @@
   "subscriber": "Votre Bonus Pack se termine le ?",
   "planningConfig": "Planification",
   "planningActivate": "Activer/Désactiver",
-  "errorNameSuggestion": "Erreur (?) pendant la demande de nom aléatoire, nouvel essai !"
+  "errorNameSuggestion": "Erreur (?) pendant la demande de nom aléatoire, nouvel essai !",
+  "anticaptcha-no-key": "Vous devez entrer une clé anticaptcha afin de résoudre les captchas.",
+  "anticaptcha-no-balance": "Vous n'avez pas assez de fonds sur votre compte anticaptcha.",
+  "recaptcha-solved": "Recaptcha résolu (?)",
+  "recaptcha-attempt": "Essai #? dans quelques secondes.",
+  "usersConnected": "?/? utilisateurs connectés"
 }

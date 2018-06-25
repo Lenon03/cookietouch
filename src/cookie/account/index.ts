@@ -172,28 +172,29 @@ export default class Account implements IEntity {
     this.scripts.stopScript();
     this.onRecaptchaReceived.trigger(this);
 
-    const NS_PER_SEC = 1e9;
-    const time = process.hrtime();
-
     try {
+      const NS_PER_SEC = 1e9;
+      const time = process.hrtime();
+      this.logger.logDebug("reCaptcha", "Getting response...");
       const response = await RecaptchaHandler.getResponse(sitekey);
+      this.logger.logDebug("reCaptcha", "Got response!");
 
-      // If the response is null, it's because the user didn't enter an anti-captcha key
-      if (response === null) {
+      if (response === "no-balance" || response === "no-key") {
         // We shouldn't leave this true
         this._wasScriptRunning = false;
         this.logger.logError(
           "reCaptcha",
-          "You have to enter a Anticaptcha key or to have some funds in it in order to bypass recaptcha."
+          LanguageManager.trans(`anticaptcha-${response}`)
         );
         this.onRecaptchaResolved.trigger({ account: this, success: false });
       } else {
         const diff = process.hrtime(time);
         this.logger.logInfo(
           "reCaptcha",
-          `Recaptcha solved in ${displayTime(
-            (diff[0] * NS_PER_SEC + diff[1]) / 1000000
-          )}.`
+          LanguageManager.trans(
+            "recaptcha-solved",
+            displayTime((diff[0] * NS_PER_SEC + diff[1]) / 1000000)
+          )
         );
 
         this.network.send("recaptchaResponse", response);
@@ -220,7 +221,10 @@ export default class Account implements IEntity {
     } catch (error) {
       this.logger.logError("reCaptcha", error.message);
       if (tries < 3) {
-        this.logger.logError("reCaptcha", `Attempt #${++tries} in 10 seconds.`);
+        this.logger.logError(
+          "reCaptcha",
+          LanguageManager.trans("recaptcha-attempt", ++tries)
+        );
         await this.handleRecaptcha(sitekey, tries);
       }
     }

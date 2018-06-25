@@ -443,5 +443,10 @@
   "subscriber": "Your Bonus Pack ends ?",
   "planningConfig": "Planning",
   "planningActivate": "Activate/Deactivate",
-  "errorNameSuggestion": "Error (?) during the name generation, trying again!"
+  "errorNameSuggestion": "Error (?) during the name generation, trying again!",
+  "anticaptcha-no-key": "You have to enter a Anticaptcha key in order to bypass recaptcha.",
+  "anticaptcha-no-balance": "You don't have funds in your anticaptcha account.",
+  "recaptcha-solved": "Recaptcha solved (?)",
+  "recaptcha-attempt": "Attempt #? in few seconds.",
+  "usersConnected": "?/? users connected"
 }

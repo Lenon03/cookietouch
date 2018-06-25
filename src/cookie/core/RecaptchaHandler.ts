@@ -13,7 +13,7 @@ export default class RecaptchaHandler {
         const ac = new AntiCaptcha(GlobalConfiguration.anticaptchaKey);
         if (await !ac.isBalanceGreaterThan(0)) {
           release();
-          return null;
+          return "no-balance";
         } else {
           const taskId = await ac.createTask(
             "https://proxyconnection.touch.dofus.com/recaptcha",
@@ -21,6 +21,7 @@ export default class RecaptchaHandler {
           );
 
           const response = await ac.getTaskResult(taskId);
+          release();
           return response.solution.gRecaptchaResponse;
         }
       } catch (error) {
@@ -28,6 +29,6 @@ export default class RecaptchaHandler {
       }
     }
     release();
-    return null;
+    return "no-key";
   }
 }

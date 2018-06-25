@@ -337,10 +337,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     this.setState({
       interval: this.props.account.extensions.bid.config.interval,
       objects: this.props.account.extensions.bid.config.objectsToSell.ToArray(),
-      script: basename(
-        this.props.account.extensions.bid.config.scriptPath,
-        ".js"
-      )
+      script:
+        this.props.account.extensions.bid.config.scriptPath &&
+        basename(this.props.account.extensions.bid.config.scriptPath, ".js")
     });
   };
 

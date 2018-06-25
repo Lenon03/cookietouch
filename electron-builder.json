@@ -37,7 +37,7 @@
     "vPrefixedTagName": true,
     "host": "github.com",
     "protocol": "https",
-    "private": true,
+    "private": false,
     "releaseType": "draft"
   },
   "generateUpdatesFilesForAllChannels": true

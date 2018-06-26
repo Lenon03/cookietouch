@@ -33,7 +33,5 @@
     "bucket": "cookietouch"
   },
   "generateUpdatesFilesForAllChannels": true,
-  "buildDependenciesFromSource": true,
-  "nodeGypRebuild": true,
   "npmRebuild": true
 }

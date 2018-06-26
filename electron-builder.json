@@ -1,5 +1,6 @@
 {
   "appId": "me.devchris.cookietouch",
+  "productName": "CookieTouch",
   "mac": {
     "category": "public.app-category.games"
   },
@@ -29,6 +30,7 @@
     "allowToChangeInstallationDirectory": true
   },
   "publish": {
+    "allowPrerelease": true,
     "provider": "github",
     "repo": "cookietouch-releases",
     "owner": "cookie-project",
@@ -36,6 +38,5 @@
     "private": false,
     "releaseType": "draft"
   },
-  "allowPrerelease": true,
   "generateUpdatesFilesForAllChannels": true
 }

@@ -17,8 +17,10 @@
   "bidSellItem": "Sold ? ? (price: ?).",
   "salesEnded": "Sales session ended.",
   "bidError": "Error in Bid Extension: ?",
-  "bidLowered": "The price of ? ? is 1 kamas in bid. It cannot be lowered anymore.",
-  "bidExceeded": "The price of ? ? exceeded the minimum price (price in bid: ?, minimum price: ?)",
+  "bidLowered":
+    "The price of ? ? is 1 kamas in bid. It cannot be lowered anymore.",
+  "bidExceeded":
+    "The price of ? ? exceeded the minimum price (price in bid: ?, minimum price: ?)",
   "bidNextSession": "Next session is in ?minutes.",
   "characterCreator": "CharacterCreator",
   "nameGenerate": "Generated character name: ?",
@@ -47,7 +49,8 @@
   "connectedAuth": "Connected to the authentication server.",
   "serverSelection": "ServerSelection",
   "cantSelectServer": "Can't select this server.",
-  "serverBackup": "The server ? is in backup, the bot will select it once it is available.",
+  "serverBackup":
+    "The server ? is in backup, the bot will select it once it is available.",
   "serverSelected": "Selection du serveur ?",
   "serverOnline": "? is now online. Let's go!",
   "characterFrame": "CharacterFrame",
@@ -69,7 +72,8 @@
   "hpLoss": "? -?HP?",
   "fightBegin": "The fight begins!",
   "bid": "Bid",
-  "bidNoKamas": "You do not have enough kamas to buy ? lots of the item ?. You need ? kamas.",
+  "bidNoKamas":
+    "You do not have enough kamas to buy ? lots of the item ?. You need ? kamas.",
   "bidSale": "You put on sale ? ? for ? kamas.",
   "inventory": "Inventory",
   "objectEquipped": "You equipped ?",
@@ -121,10 +125,13 @@
   "storageRemoved": "You removed ? ? from the storage.",
   "storageKamasAdded": "You added ? kamas in the storage.",
   "storageKamasRemoved": "You removed ? kamas from the storage.",
-  "storageAllAdded": "You added all the items in your inventory to the storage.",
-  "storageAllRemoved": "You have recovered all items from your storage in your inventory.",
+  "storageAllAdded":
+    "You added all the items in your inventory to the storage.",
+  "storageAllRemoved":
+    "You have recovered all items from your storage in your inventory.",
   "storageAddExistings": "All items already in your storage have been added.",
-  "storageRemoveExistings": "All items already in your inventory have been recovered from the storage.",
+  "storageRemoveExistings":
+    "All items already in your inventory have been recovered from the storage.",
   "group": "Group",
   "finishedActions": "I finished my actions.",
   "grouping": "Grouping",
@@ -147,8 +154,10 @@
   "primusClosed": "Connection closed",
   "primusDestroyed": "Connection destroyed",
   "scripts": "Scripts",
-  "movingToGroup": "Moving towards a group of monsters (cell: ?, monsters: ?, level: ?)",
-  "movingToGroupBlocked": "The path towards the group of monsters is probably blocked.",
+  "movingToGroup":
+    "Moving towards a group of monsters (cell: ?, monsters: ?, level: ?)",
+  "movingToGroupBlocked":
+    "The path towards the group of monsters is probably blocked.",
   "movingToGroupFailed": "Movement towards a group of monsters failed.",
   "gatherError": "Error during gather",
   "changeMapSpecificFailed": "Impossible to change map (direction: ?, cell: ?)",
@@ -166,10 +175,12 @@
   "waiting": "waiting...",
   "waitMapChangeTimeout": "WaitMapChange timed out.",
   "waited": "waited",
-  "errorNpc": "Error during a conversation with an NPC (npcId: ?, actionIndex: ?)",
+  "errorNpc":
+    "Error during a conversation with an NPC (npcId: ?, actionIndex: ?)",
   "errorBankNpc": "Error during a conversation with a bank NPC",
   "errorReplyNpc": "Error while sending a reply (id: ?)",
-  "errorAutoRegen": "Warning, you don't have anymore required items for AUTO_REGEN",
+  "errorAutoRegen":
+    "Warning, you don't have anymore required items for AUTO_REGEN",
   "api": "API",
   "cantParseMap": "Can't parse changeMap. (?)",
   "waitedMs": "Waited ?ms",
@@ -180,7 +191,8 @@
   "currentAction": "Current action: ?.",
   "actionDone": "? DONE.",
   "actionFailed": "? FAILED.",
-  "errorLaunchFight": "Error when launching a fight, the group may have moved or was stolen.",
+  "errorLaunchFight":
+    "Error when launching a fight, the group may have moved or was stolen.",
   "fightNumber": "Fight #?",
   "gatherNumber": "Gather #?",
   "gatherFailed": "Gather failed",
@@ -189,9 +201,11 @@
   "timedOut": "Timed out.",
   "script": "Script",
   "cantStartMultipleScript": "Can't start multiple script a the same time",
-  "scriptErrorFormat": "Script doesn't exist or it is not the correct format file.",
+  "scriptErrorFormat":
+    "Script doesn't exist or it is not the correct format file.",
   "scriptLoaded": "Script ? loaded.",
-  "errorLaunchScriptBusy": "You can't launch the script. At least one member is busy.",
+  "errorLaunchScriptBusy":
+    "You can't launch the script. At least one member is busy.",
   "scriptStarted": "Script started.",
   "scriptStopped": "Script stopped.",
   "scriptStoppedReason": "Script stopped. (?)",
@@ -201,7 +215,8 @@
   "mapNothingToDo": "Nothing to do on this map.",
   "nothingToDo": "Nothing to do anymore.",
   "characterTombstone": "Your character is a tombstone, let's free it.",
-  "characterPhantom": "Your character is a phantom, let's check your phenix config.",
+  "characterPhantom":
+    "Your character is a phantom, let's check your phenix config.",
   "hpToGetBack": "You have ?HP to get back. Estimated time: ? seconds.",
   "regenEnded": "Regeneration ended.",
   "bagsOpen": "? bag(s) open.",
@@ -209,11 +224,15 @@
   "maxPodsReached": "MAX_PODS reached, switching to bank function.",
   "autoDeleteStarted": "AUTO_DELETE session started.",
   "autoDeleteEnded": "AUTO_DELETE session ended.",
-  "characterNoMorePhantom": "The character isn't a phantom anymore, switching to move function.",
-  "characterNoMoreFullWeight": "The character isn't full weight anymore, switching to move function.",
+  "characterNoMorePhantom":
+    "The character isn't a phantom anymore, switching to move function.",
+  "characterNoMoreFullWeight":
+    "The character isn't full weight anymore, switching to move function.",
   "noResource": "No resource.",
-  "gathersListEmpty": "List of resources to gather is empty (check ELEMENTS_TO_GATHER or your jobs)",
-  "maxFightsPerMap": "The maximum number of fight (?) has been reached in this map.",
+  "gathersListEmpty":
+    "List of resources to gather is empty (check ELEMENTS_TO_GATHER or your jobs)",
+  "maxFightsPerMap":
+    "The maximum number of fight (?) has been reached in this map.",
   "noMonstersGroup": "No group of monsters.",
   "noPhenixOnCell": "There is no phenix on cell ?",
   "noDoorOnCell": "There is no door on cell ?",
@@ -292,7 +311,8 @@
   "spellError": "Spell Error",
   "endTurnMove": "(End Turn) Move to  cell ?",
   "passingTurn": "We're passing our turn.",
-  "playerKicked": "A player who doesn't belong to your group tried to join your fight. He has been kicked.",
+  "playerKicked":
+    "A player who doesn't belong to your group tried to join your fight. He has been kicked.",
   "planification": "Planification",
   "username": "Account name",
   "password": "Password",
@@ -325,15 +345,23 @@
   "dontTouchAllies": "Don't touch allies",
   "spellInfo": "Spell: The spell to cast",
   "targetInfo": "Target: Enemy, ally, self or empty cell",
-  "turnsInfo": "Turns: The number of turns to wait after each cast (1 = cast all turns)",
+  "turnsInfo":
+    "Turns: The number of turns to wait after each cast (1 = cast all turns)",
   "castPerTurnInfo": "Cast per turn: Number of cast per turn",
-  "targetLifeInfo": "Target's life: Cast the spell on the target only if his health points are inferior or equal to this number, in percentage",
-  "characterLifeInfo": "Character's life: Cast the spell on the target only if your health points are inferior or equal to this number, in percentage",
-  "resistanceInfo": "Resistance: Cast the spell only if the choosen target's resistance is inferior or equal to the value (in percentage)",
-  "meleeInfo": "Melee: Cast a spell only if your character is in melee with an enemy (or many)",
-  "hitManyPossibleInfo": "Hit as many enemies as possible: If this spell is an area attack, check this box allows you to hit as many enemies as possible",
-  "dontTouchAlliesInfo": "Don't touch allies: For all zone spells, indicate whether you can touch your allies or not",
-  "dontTouchSelfInfo": "Don't touch yourself: For all zone spells, indicates whether you can touch your character or not",
+  "targetLifeInfo":
+    "Target's life: Cast the spell on the target only if his health points are inferior or equal to this number, in percentage",
+  "characterLifeInfo":
+    "Character's life: Cast the spell on the target only if your health points are inferior or equal to this number, in percentage",
+  "resistanceInfo":
+    "Resistance: Cast the spell only if the choosen target's resistance is inferior or equal to the value (in percentage)",
+  "meleeInfo":
+    "Melee: Cast a spell only if your character is in melee with an enemy (or many)",
+  "hitManyPossibleInfo":
+    "Hit as many enemies as possible: If this spell is an area attack, check this box allows you to hit as many enemies as possible",
+  "dontTouchAlliesInfo":
+    "Don't touch allies: For all zone spells, indicate whether you can touch your allies or not",
+  "dontTouchSelfInfo":
+    "Don't touch yourself: For all zone spells, indicates whether you can touch your character or not",
   "targetResistance": "Target's resistance",
   "targetLife": "Target life",
   "selfLife": "Self life",
@@ -351,18 +379,22 @@
   "seekChannelInterval": "Seek channel interval",
   "salesChannelInterval": "Sales channel interval",
   "approachMonster": "Approach the monster",
-  "monsterToApproachInfo": "Put the monster ID you want to approach at the beginning of the fight, if the monster is not in combat this option will be ignored.",
+  "monsterToApproachInfo":
+    "Put the monster ID you want to approach at the beginning of the fight, if the monster is not in combat this option will be ignored.",
   "spellToApproach": "Approach to cast the spell",
-  "spellToApproachInfo": "The character will try to approach to cast the chosen spell. If he can not he will place himself normally.",
+  "spellToApproachInfo":
+    "The character will try to approach to cast the chosen spell. If he can not he will place himself normally.",
   "blockSpectator": "Block spectator mode",
   "lockFight": "Lock fight",
   "maxCells": "Approach if you are over",
   "maxCells2": "cells of the nearest enemy.",
   "approachWhenNoSpellCasted": "Approach if no spells were cast",
-  "baseApproachAllMonsters": "Base on all monsters when you want to approach (Aggressive Tactics)",
+  "baseApproachAllMonsters":
+    "Base on all monsters when you want to approach (Aggressive Tactics)",
   "ignoreSummonedEnemies": "Ignore invocations",
   "content": "Content",
-  "infoFlood1": "On each channel, only one sentence is chosen randomly to be sent.",
+  "infoFlood1":
+    "On each channel, only one sentence is chosen randomly to be sent.",
   "infoFlood2": "You can use these attributes for all channels:",
   "infoFloodnbr": "%nbr% : Inserts a random number.",
   "infoFloodsmiley": "%smiley% : Inserts a random smiley.",
@@ -444,9 +476,16 @@
   "planningConfig": "Planning",
   "planningActivate": "Activate/Deactivate",
   "errorNameSuggestion": "Error (?) during the name generation, trying again!",
-  "anticaptcha-no-key": "You have to enter a Anticaptcha key in order to bypass recaptcha.",
+  "anticaptcha-no-key":
+    "You have to enter a Anticaptcha key in order to bypass recaptcha.",
   "anticaptcha-no-balance": "You don't have funds in your anticaptcha account.",
   "recaptcha-solved": "Recaptcha solved (?)",
   "recaptcha-attempt": "Attempt #? in few seconds.",
-  "usersConnected": "?/? users connected"
+  "usersConnected": "?/? users connected",
+  "newVersionDownloaded": "A new version (?) of ? has been downloaded",
+  "installRelaunch": "Install and Relaunch",
+  "later": "Later",
+  "releaseAvailable":
+    "? ? is now available. It will be installed the next time you restart the application.",
+  "releaseNotes": "\n\nRelease notes:\n?"
 }

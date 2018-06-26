@@ -17,8 +17,10 @@
   "bidSellItem": "Vendu ? ? (Prix: ?).",
   "salesEnded": "Session de vente terminé.",
   "bidError": "Erreur dans l'extension HDV: ?",
-  "bidLowered": "Le prix de ? ? est à 1 kamas dans l'HDV. Impossible de mettre moins.",
-  "bidExceeded": "Le prix de ? ? dépasse le prix minimum (Prix dans l'HDV: ?, Prix Minimum: ?)",
+  "bidLowered":
+    "Le prix de ? ? est à 1 kamas dans l'HDV. Impossible de mettre moins.",
+  "bidExceeded":
+    "Le prix de ? ? dépasse le prix minimum (Prix dans l'HDV: ?, Prix Minimum: ?)",
   "bidNextSession": "Nouvelle session de vente dans ? minutes.",
   "characterCreator": "Créateur de personnages",
   "nameGenerate": "Nom de personnage généré: ?",
@@ -47,7 +49,8 @@
   "connectedAuth": "Connecté au serveur d'authentification",
   "serverSelection": "ServerSelection",
   "cantSelectServer": "Impossible de selectionner ce serveur",
-  "serverBackup": "Le serveur ? est en sauvegarde. Le bot se connectera automatiquement dessus une fois disponible.",
+  "serverBackup":
+    "Le serveur ? est en sauvegarde. Le bot se connectera automatiquement dessus une fois disponible.",
   "serverSelected": "Selection du serveur ?",
   "serverOnline": "? est maintenant en ligne. Let's go!",
   "characterFrame": "CharacterFrame",
@@ -69,7 +72,8 @@
   "hpLoss": "? -?PDV?",
   "fightBegin": "Le combat commence!",
   "bid": "HDV",
-  "bidNoKamas": "Vous n'avez pas assez de kamas pour acheter ? lots de l'objet ?. Il vous faut ? kamas",
+  "bidNoKamas":
+    "Vous n'avez pas assez de kamas pour acheter ? lots de l'objet ?. Il vous faut ? kamas",
   "bidSale": "Vous avez mis en vente ? ? pour ? kamas.",
   "inventory": "Inventaire",
   "objectEquipped": "Vous avez équipé ?",
@@ -83,9 +87,11 @@
   "exchange": "Echange",
   "exchangeAdded": "Vous avez ajouté ? ? à l'échange.",
   "exchangeRemoved": "Vous avez retiré ? ? de l'échange.",
-  "exchangeBeginAddAll": "On commence à ajouter tous les objets dans l'échange...",
+  "exchangeBeginAddAll":
+    "On commence à ajouter tous les objets dans l'échange...",
   "exchangeAllAdded": "Tous les objets ont été ajouté à l'échange...",
-  "exchangeBeginRemoveAll": "On commence à enlever tous les objets de l'échange...",
+  "exchangeBeginRemoveAll":
+    "On commence à enlever tous les objets de l'échange...",
   "exchangeAllRemoved": "Tous les objets ont été enlevé de l'échange...",
   "exchangeAddedKamas": "Vous avez ajouté ? kamas à l'échange.",
   "exchangeRemovedKamas": "Vous avez retiré ? kamas de l'échange.",
@@ -121,10 +127,14 @@
   "storageRemoved": "Vous avez retiré ? ? du coffre.",
   "storageKamasAdded": "Vous avez ajouté ? kamas dans le coffre.",
   "storageKamasRemoved": "Vous avez retiré ? kamas du coffre.",
-  "storageAllAdded": "Vous avez ajouté tous les objets de votre inventaire dans le coffre.",
-  "storageAllRemoved": "Vous avez recupéré tous les objets de votre coffre dans votre inventaire",
-  "storageAddExistings": "Tous les objets déjà présent dans votre coffre y ont été ajoutés.",
-  "storageRemoveExistings": "Tous les objets déjà présent dans votre inventaire ont été récupéré du coffre.",
+  "storageAllAdded":
+    "Vous avez ajouté tous les objets de votre inventaire dans le coffre.",
+  "storageAllRemoved":
+    "Vous avez recupéré tous les objets de votre coffre dans votre inventaire",
+  "storageAddExistings":
+    "Tous les objets déjà présent dans votre coffre y ont été ajoutés.",
+  "storageRemoveExistings":
+    "Tous les objets déjà présent dans votre inventaire ont été récupéré du coffre.",
   "group": "Groupe",
   "finishedActions": "J'ai fini mes actions.",
   "grouping": "Grouping",
@@ -147,29 +157,37 @@
   "primusClosed": "Connexion fermée",
   "primusDestroyed": "Connexion détruite",
   "scripts": "Scripts",
-  "movingToGroup": "Déplacement devant un groupe de monstres (cellule: ?, monstres: ?, niveau: ?)",
-  "movingToGroupBlocked": "Le chemin devant le group de monstres est probablement bloqué.",
+  "movingToGroup":
+    "Déplacement devant un groupe de monstres (cellule: ?, monstres: ?, niveau: ?)",
+  "movingToGroupBlocked":
+    "Le chemin devant le group de monstres est probablement bloqué.",
   "movingToGroupFailed": "Déplacement devant le groupe de monstres échoué.",
   "gatherError": "Erreur durant la récolte",
-  "changeMapSpecificFailed": "Impossible de changer de map (direction: ?, cellule: ?)",
+  "changeMapSpecificFailed":
+    "Impossible de changer de map (direction: ?, cellule: ?)",
   "changeMapSpecific": "Changement de map (direction: ?, cellule: ?)",
   "changeMapDirectionFailed": "Impossible de changer de map (direction: ?)",
   "changeMapDirection": "Changement de map (direction: ?)",
   "changeMapCellFailed": "Déplacement sur la cellule ? échoué (resultat: ?)",
   "changeMapCell": "Déplacement sur la cellule ?",
-  "errorInteractiveCell": "Erreur pendant l'utilisation d'un objet interactif (cellule: ?)",
-  "errorInteractive": "Erreur pendant l'utilisation d'un objet interactif (id: ?)",
-  "errorLockedDoor": "Erreur pendant l'utilisation d'une porte de maison à code.",
+  "errorInteractiveCell":
+    "Erreur pendant l'utilisation d'un objet interactif (cellule: ?)",
+  "errorInteractive":
+    "Erreur pendant l'utilisation d'un objet interactif (id: ?)",
+  "errorLockedDoor":
+    "Erreur pendant l'utilisation d'une porte de maison à code.",
   "errorLockedStorage": "Erreur pendant l'utilisation d'un coffre à code.",
   "errorTeleportable": "Erreur pendant l'utilisation d'un ?",
   "waitMapChangeAction": "WaitMapChangeAction",
   "waiting": "Attente...",
   "waitMapChangeTimeout": "WaitMapChange timed out.",
   "waited": "Attente terminé.",
-  "errorNpc": "Erreur lors d'une conversation avec un PNJ (npcId: ?, actionIndex: ?)",
+  "errorNpc":
+    "Erreur lors d'une conversation avec un PNJ (npcId: ?, actionIndex: ?)",
   "errorBankNpc": "Erreur lors d'une conversation avec un PNJ de banque",
   "errorReplyNpc": "Erreur lors de l'envoi d'une réponse (id: ?)",
-  "errorAutoRegen": "Attention, vous n'avez plus d'éléments requis pour: AUTO_REGEN",
+  "errorAutoRegen":
+    "Attention, vous n'avez plus d'éléments requis pour: AUTO_REGEN",
   "api": "API",
   "cantParseMap": "Can't parse changeMap. (?)",
   "waitedMs": "Attente de ?ms",
@@ -180,7 +198,8 @@
   "currentAction": "Action en cours: ?.",
   "actionDone": "? TERMINÉ.",
   "actionFailed": "? ÉCHOUÉ.",
-  "errorLaunchFight": "Erreur durant le lancement du combat. Le groupe de monstres a été volé ou à bougé",
+  "errorLaunchFight":
+    "Erreur durant le lancement du combat. Le groupe de monstres a été volé ou à bougé",
   "fightNumber": "Combat #?",
   "gatherNumber": "Récolte #?",
   "gatherFailed": "Récolte échouée",
@@ -188,10 +207,13 @@
   "cantUseTeleportable": "Impossible d'utiliser ?",
   "timedOut": "Fin du temps. (Timed out.)",
   "script": "Script",
-  "cantStartMultipleScript": "Impossible de démarrer plusieurs scripts en même temps",
-  "scriptErrorFormat": "Le script n'existe pas ou n'est pas le bon format de fichier.",
+  "cantStartMultipleScript":
+    "Impossible de démarrer plusieurs scripts en même temps",
+  "scriptErrorFormat":
+    "Le script n'existe pas ou n'est pas le bon format de fichier.",
   "scriptLoaded": "Script ? chargé.",
-  "errorLaunchScriptBusy": "Vous ne pouvez pas lancer le script. Au moins un membre est occupé.",
+  "errorLaunchScriptBusy":
+    "Vous ne pouvez pas lancer le script. Au moins un membre est occupé.",
   "scriptStarted": "Script commencé.",
   "scriptStopped": "Script arrêté.",
   "scriptStoppedReason": "Script arrêté. (?)",
@@ -201,7 +223,8 @@
   "mapNothingToDo": "Rien à faire sur cette carte.",
   "nothingToDo": "Rien à faire.",
   "characterTombstone": "Ton personnage est une pierre tombale, libérons-le.",
-  "characterPhantom": "Votre personnage est un fantôme, vérifiez votre configuration de phoenix.",
+  "characterPhantom":
+    "Votre personnage est un fantôme, vérifiez votre configuration de phoenix.",
   "hpToGetBack": "Vous avez ?PV à récupérer. Temps estimé: ? secondes.",
   "regenEnded": "Régénération terminée.",
   "bagsOpen": "? sac(s) ouvert(s).",
@@ -209,11 +232,15 @@
   "maxPodsReached": "MAX_PODS atteint, passage à la fonction de banque.",
   "autoDeleteStarted": "La session AUTO_DELETE a démarré.",
   "autoDeleteEnded": "La session AUTO_DELETE est terminée.",
-  "characterNoMorePhantom": "Le personnage n'est plus un fantôme, passage à la fonction de déplacement.",
-  "characterNoMoreFullWeight": "Le personnage n'est plus plein, passage à la fonction de déplacement.",
+  "characterNoMorePhantom":
+    "Le personnage n'est plus un fantôme, passage à la fonction de déplacement.",
+  "characterNoMoreFullWeight":
+    "Le personnage n'est plus plein, passage à la fonction de déplacement.",
   "noResource": "Aucune ressource.",
-  "gathersListEmpty": "La liste des ressources à rassembler est vide (vérifier ELEMENTS_TO_GATHER ou votre métier)",
-  "maxFightsPerMap": "Le nombre maximum de combat (?) a été atteint sur cette carte.",
+  "gathersListEmpty":
+    "La liste des ressources à rassembler est vide (vérifier ELEMENTS_TO_GATHER ou votre métier)",
+  "maxFightsPerMap":
+    "Le nombre maximum de combat (?) a été atteint sur cette carte.",
   "noMonstersGroup": "Aucun groupe de monstres.",
   "noPhenixOnCell": "Il n'y a pas de phénix sur la cellule ?",
   "noDoorOnCell": "Il n'y a pas de porte sur la cellule ?",
@@ -265,7 +292,8 @@
   "intelligence": "Intelligence",
   "level": "Niveau",
   "alreadyAddSpell": "Vous avez déjà ajouté ce sort.",
-  "spellNotBreed": "Vous ne pouvez pas ajouter un sort qui ne correspond pas à votre classe.",
+  "spellNotBreed":
+    "Vous ne pouvez pas ajouter un sort qui ne correspond pas à votre classe.",
   "divers": "Divers",
   "speedhack": "SpeedHack",
   "autoMount": "Monter automatique sur la monture",
@@ -292,7 +320,8 @@
   "spellError": "Sort échoué",
   "endTurnMove": "(Fin de tour) On bouge vers la cellule ?",
   "passingTurn": "On passe notre tour.",
-  "playerKicked": "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé.",
+  "playerKicked":
+    "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé.",
   "planification": "Planification",
   "username": "Nom de compte",
   "password": "Mot de passe",
@@ -325,15 +354,23 @@
   "dontTouchAllies": "Ne pas toucher les alliés",
   "spellInfo": "Sort: Le sort à lancer",
   "targetInfo": "Cible: Ennemi, allié, sois-même ou case vide",
-  "turnsInfo": "Tours: Le nombre de tours à attendre après chaque relance (1 = lancer tous les tours)",
+  "turnsInfo":
+    "Tours: Le nombre de tours à attendre après chaque relance (1 = lancer tous les tours)",
   "castPerTurnInfo": "Relances: Le nombre de relances par tour",
-  "targetLifeInfo": "Vie de la cible: Lance le sort sur la cible seulement si ses points de vie sont inferieurs ou égaux à ce nombre, en pourcentage",
-  "characterLifeInfo": "Vie du personnage: Lance le sort sur la cible seulement si nos points de vie sont inferieurs ou égaux à ce nombre, en pourcentage",
-  "resistanceInfo": "Résistance: Lance le sort uniquement si la resistance choisie de la cible est inférieure ou égale à la valeur (en pourcentage)",
-  "meleeInfo": "Corps à corps: Lance le sort uniquement si notre personnage est en corps à corps avec un ennemi (ou plusieurs)",
-  "hitManyPossibleInfo": "Toucher le plus d'ennemis possible: Si ce sort est une attaque en zone, cocher cette case permet de toucher le plus d'ennemis possible",
-  "dontTouchAlliesInfo": "Ne pas toucher les alliés: Pour tous sorts de zones, indique si on permet de toucher nos alliés ou pas",
-  "dontTouchSelfInfo": "Ne pas se toucher: Pour tous sorts de zones, indique si on permet de toucher son personnage ou pas",
+  "targetLifeInfo":
+    "Vie de la cible: Lance le sort sur la cible seulement si ses points de vie sont inferieurs ou égaux à ce nombre, en pourcentage",
+  "characterLifeInfo":
+    "Vie du personnage: Lance le sort sur la cible seulement si nos points de vie sont inferieurs ou égaux à ce nombre, en pourcentage",
+  "resistanceInfo":
+    "Résistance: Lance le sort uniquement si la resistance choisie de la cible est inférieure ou égale à la valeur (en pourcentage)",
+  "meleeInfo":
+    "Corps à corps: Lance le sort uniquement si notre personnage est en corps à corps avec un ennemi (ou plusieurs)",
+  "hitManyPossibleInfo":
+    "Toucher le plus d'ennemis possible: Si ce sort est une attaque en zone, cocher cette case permet de toucher le plus d'ennemis possible",
+  "dontTouchAlliesInfo":
+    "Ne pas toucher les alliés: Pour tous sorts de zones, indique si on permet de toucher nos alliés ou pas",
+  "dontTouchSelfInfo":
+    "Ne pas se toucher: Pour tous sorts de zones, indique si on permet de toucher son personnage ou pas",
   "targetResistance": "Resistance de la cible",
   "targetLife": "Vie de la cible",
   "selfLife": "Vie du personnage",
@@ -351,18 +388,22 @@
   "seekChannelInterval": "Intervalle canal recrutement",
   "salesChannelInterval": "Intervalle canal commerce",
   "approachMonster": "Approcher vers le monstre",
-  "monsterToApproachInfo": "Mettez l'ID du monstre que vous voulez approcher au début du combat, si le monstre n'est pas dans le combat l'option sera ignorée.",
+  "monsterToApproachInfo":
+    "Mettez l'ID du monstre que vous voulez approcher au début du combat, si le monstre n'est pas dans le combat l'option sera ignorée.",
   "spellToApproach": "S'approcher pour lancer le sort",
-  "spellToApproachInfo": "Le personnage essayera de s'approcher pour lancer le sort choisit. S'il ne peut pas il se placera normalement.",
+  "spellToApproachInfo":
+    "Le personnage essayera de s'approcher pour lancer le sort choisit. S'il ne peut pas il se placera normalement.",
   "blockSpectator": "Bloquer le mode spectateur",
   "lockFight": "Bloquer le combat",
   "maxCells": "Approcher si vous êtes à plus de",
   "maxCells2": "cases de l'ennemi le plus proche.",
   "approachWhenNoSpellCasted": "Approcher si aucun sorts n'a été lancé",
-  "baseApproachAllMonsters": "Se baser sur tous les monstres quand on veut s'approcher (Tactique aggressive)",
+  "baseApproachAllMonsters":
+    "Se baser sur tous les monstres quand on veut s'approcher (Tactique aggressive)",
   "ignoreSummonedEnemies": "Ignorer les invocations",
   "content": "Contenu",
-  "infoFlood1": "Sur chaque canal, seulement 1 phrase est choisie aléatoirement pour être envoyée.",
+  "infoFlood1":
+    "Sur chaque canal, seulement 1 phrase est choisie aléatoirement pour être envoyée.",
   "infoFlood2": "Vous pouvez utiliser ces attributs pour tous les canaux:",
   "infoFloodnbr": "%nbr% : Insère un nombre aléatoire.",
   "infoFloodsmiley": "%smiley% : Insère un smiley aléatoire.",
@@ -438,15 +479,25 @@
   "placementCell": "On se place sur la cellule ?",
   "placementCellSpell": "(Sort) On se place sur la cellule ?",
   "placementCellMonster": "(Monstre) On se place sur la cellule ?",
-  "noMonsterToApproach": "Le monstre à approcher ne se trouve pas dans ce combat.",
+  "noMonsterToApproach":
+    "Le monstre à approcher ne se trouve pas dans ce combat.",
   "nosubscriber": "Vous n'avez pas de Bonus Pack",
   "subscriber": "Votre Bonus Pack se termine le ?",
   "planningConfig": "Planification",
   "planningActivate": "Activer/Désactiver",
-  "errorNameSuggestion": "Erreur (?) pendant la demande de nom aléatoire, nouvel essai !",
-  "anticaptcha-no-key": "Vous devez entrer une clé anticaptcha afin de résoudre les captchas.",
-  "anticaptcha-no-balance": "Vous n'avez pas assez de fonds sur votre compte anticaptcha.",
+  "errorNameSuggestion":
+    "Erreur (?) pendant la demande de nom aléatoire, nouvel essai !",
+  "anticaptcha-no-key":
+    "Vous devez entrer une clé anticaptcha afin de résoudre les captchas.",
+  "anticaptcha-no-balance":
+    "Vous n'avez pas assez de fonds sur votre compte anticaptcha.",
   "recaptcha-solved": "Recaptcha résolu (?)",
   "recaptcha-attempt": "Essai #? dans quelques secondes.",
-  "usersConnected": "?/? utilisateurs connectés"
+  "usersConnected": "?/? utilisateurs connectés",
+  "newVersionDownloaded": "Une nouvelle version (?) de ? a été téléchargé.",
+  "installRelaunch": "Installer et relancer",
+  "later": "Plus tard",
+  "releaseAvailable":
+    "? ? est maintenant disponible. Seras installé la prochaine fois que vous redémarrerez l'application.",
+  "releaseNotes": "\n\nNotes de mise à jour:\n?"
 }

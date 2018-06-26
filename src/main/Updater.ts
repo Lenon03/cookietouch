@@ -6,7 +6,7 @@ autoUpdater.logger = log;
 (autoUpdater.logger as any).transports.file.level = "info";
 
 export function appUpdater() {
-  autoUpdater.channel = "alpha";
+  // autoUpdater.channel = "alpha";
   autoUpdater.on("error", err => log.info(err));
   autoUpdater.on("checking-for-update", () => log.info("checking-for-update"));
   autoUpdater.on("update-available", () => log.info("update-available"));

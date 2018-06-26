@@ -4,7 +4,8 @@
     "category": "public.app-category.games"
   },
   "dmg": {
-    "contents": [{
+    "contents": [
+      {
         "x": 110,
         "y": 150
       },
@@ -17,10 +18,7 @@
     ]
   },
   "linux": {
-    "target": [
-      "AppImage",
-      "deb"
-    ]
+    "target": ["AppImage", "deb"]
   },
   "win": {
     "target": "nsis",
@@ -36,7 +34,8 @@
     "owner": "cookie-project",
     "vPrefixedTagName": true,
     "private": false,
-    "releaseType": "prerelease"
+    "releaseType": "draft"
   },
+  "allowPrerelease": true,
   "generateUpdatesFilesForAllChannels": true
 }

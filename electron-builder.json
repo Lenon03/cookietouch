@@ -5,8 +5,7 @@
     "category": "public.app-category.games"
   },
   "dmg": {
-    "contents": [
-      {
+    "contents": [{
         "x": 110,
         "y": 150
       },
@@ -33,5 +32,7 @@
     "provider": "s3",
     "bucket": "cookietouch"
   },
-  "generateUpdatesFilesForAllChannels": true
+  "generateUpdatesFilesForAllChannels": true,
+  "buildDependenciesFromSource": true,
+  "nodeGypRebuild": true
 }

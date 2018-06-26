@@ -1,5 +1,6 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { isEmpty } from "@/utils/String";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -13,12 +14,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
+import Typography from "@material-ui/core/Typography";
 import { configurationStyles } from "@renderer/pages/Configuration/styles";
 import {
   ConfigurationProps,
   IConfigurationProps,
   IConfigurationState
 } from "@renderer/pages/Configuration/types";
+import { AntiCaptcha } from "anticaptcha";
 import * as React from "react";
 
 class Configuration extends React.Component<
@@ -26,10 +29,15 @@ class Configuration extends React.Component<
   IConfigurationState
 > {
   public state: IConfigurationState = {
+    anticaptchaBalance: -1,
     anticaptchaKey: GlobalConfiguration.anticaptchaKey,
     lang: GlobalConfiguration.lang,
     showDebugMessages: GlobalConfiguration.showDebugMessages
   };
+
+  public componentDidMount() {
+    this.updateAnticaptchaBalance();
+  }
 
   public render() {
     const { classes, dialogOpen, closeDialog } = this.props;
@@ -84,6 +92,14 @@ class Configuration extends React.Component<
                 onChange={this.anticaptchaChanged}
                 fullWidth
               />
+              <Typography>Balance: {this.state.anticaptchaBalance}</Typography>
+              <Button
+                variant="raised"
+                color="primary"
+                onClick={this.updateAnticaptchaBalance}
+              >
+                {LanguageManager.trans("update")}
+              </Button>
             </FormControl>
             <FormGroup>
               <FormControlLabel
@@ -124,6 +140,16 @@ class Configuration extends React.Component<
   private showDebugMessagesChanged = event => {
     this.setState({ showDebugMessages: event.target.checked });
     GlobalConfiguration.showDebugMessages = event.target.checked;
+  };
+
+  private updateAnticaptchaBalance = async () => {
+    const key = GlobalConfiguration.anticaptchaKey;
+    if (isEmpty(key)) {
+      return;
+    }
+    const ac = new AntiCaptcha(key);
+    const b = await ac.getBalance();
+    this.setState({ anticaptchaBalance: b });
   };
 }
 

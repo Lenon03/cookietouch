@@ -9,6 +9,7 @@ export interface IConfigurationProps {
 
 export interface IConfigurationState {
   anticaptchaKey: string;
+  anticaptchaBalance: number;
   lang: Languages;
   showDebugMessages: boolean;
 }

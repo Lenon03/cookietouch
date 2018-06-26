@@ -95,6 +95,7 @@ class Configuration extends React.Component<
               <Typography>Balance: {this.state.anticaptchaBalance}</Typography>
               <Button
                 variant="raised"
+                size="small"
                 color="primary"
                 onClick={this.updateAnticaptchaBalance}
               >

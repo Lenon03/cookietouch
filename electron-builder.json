@@ -34,5 +34,6 @@
   },
   "generateUpdatesFilesForAllChannels": true,
   "buildDependenciesFromSource": true,
-  "nodeGypRebuild": true
+  "nodeGypRebuild": true,
+  "npmRebuild": true
 }

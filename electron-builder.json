@@ -30,13 +30,8 @@
     "allowToChangeInstallationDirectory": true
   },
   "publish": {
-    "allowPrerelease": true,
-    "provider": "github",
-    "repo": "cookietouch-releases",
-    "owner": "cookie-project",
-    "vPrefixedTagName": true,
-    "private": false,
-    "releaseType": "draft"
+    "provider": "s3",
+    "bucket": "cookietouch"
   },
   "generateUpdatesFilesForAllChannels": true
 }

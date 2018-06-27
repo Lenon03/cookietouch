@@ -52,12 +52,12 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   constructor(props: MapViewerProps) {
     super(props);
 
-    this.state = {
+    this.setState({
       path: [],
       selectedCellId: -1,
       showCellIds: false,
       showReal: false
-    };
+    });
 
     this.initCells();
   }

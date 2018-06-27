@@ -10,7 +10,7 @@
     "dev": "electron-webpack dev",
     "lint": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' -t stylish",
     "lint:fix": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' -t stylish --fix",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "lint:check": "tslint-config-prettier-check ./tslint.json",
     "postinstall": "electron-builder install-app-deps",
     "release": "yarn compile && build"
   },

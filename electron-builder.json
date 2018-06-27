@@ -33,6 +33,5 @@
     "provider": "s3",
     "bucket": "cookietouch"
   },
-  "generateUpdatesFilesForAllChannels": true,
-  "npmSkipBuildFromSource": true
+  "generateUpdatesFilesForAllChannels": true
 }

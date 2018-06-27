@@ -5,7 +5,8 @@
     "category": "public.app-category.games"
   },
   "dmg": {
-    "contents": [{
+    "contents": [
+      {
         "x": 110,
         "y": 150
       },
@@ -33,5 +34,5 @@
     "bucket": "cookietouch"
   },
   "generateUpdatesFilesForAllChannels": true,
-  "buildDependenciesFromSource": true
+  "npmSkipBuildFromSource": true
 }

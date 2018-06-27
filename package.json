@@ -38,8 +38,8 @@
     "@types/react-dom": "^16.0.5",
     "awesome-typescript-loader": "^5.2.0",
     "electron": "^2.0.3",
-    "electron-builder": "^20.16.4",
-    "electron-publisher-s3": "^20.16.0",
+    "electron-builder": "^20.17.0",
+    "electron-publisher-s3": "^20.17.0",
     "electron-webpack": "^2.1.2",
     "electron-webpack-ts": "^2.0.2",
     "node-sass": "^4.9.0",
@@ -47,7 +47,7 @@
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-loader": "^3.6.0",
-    "webpack": "^4.12.1",
+    "webpack": "^4.12.2",
     "webpack-build-notifier": "^0.1.27"
   },
   "dependencies": {
@@ -60,7 +60,7 @@
     "@material-ui/icons": "^1.1.0",
     "anticaptcha": "^1.0.4",
     "axios": "^0.18.0",
-    "electron-log": "^2.2.15",
+    "electron-log": "^2.2.16",
     "electron-updater": "^2.22.1",
     "firebase": "^5.1.0",
     "linqts": "^1.11.0",

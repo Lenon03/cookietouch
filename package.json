@@ -34,11 +34,11 @@
   "homepage": "https://github.com/cookie-project/cookietouch#readme",
   "devDependencies": {
     "@types/node": "^10.5.0",
-    "@types/react": "^16.4.3",
+    "@types/react": "^16.4.4",
     "@types/react-dom": "^16.0.5",
     "awesome-typescript-loader": "^5.2.0",
     "electron": "^3.0.0-beta.1",
-    "electron-builder": "^20.17.0",
+    "electron-builder": "^20.17.1",
     "electron-publisher-s3": "^20.17.0",
     "electron-webpack": "^2.1.2",
     "electron-webpack-ts": "^2.0.2",

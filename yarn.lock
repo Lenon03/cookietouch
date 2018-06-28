@@ -785,9 +785,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/react@^16.4.3":
-  version "16.4.3"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.3.tgz#c7009925dd9a7a2e1c2ef05c653f37005706dec8"
+"@types/react@^16.4.4":
+  version "16.4.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.4.tgz#ffaa339e41346a7c65ddc914779ae43fa522a39a"
   dependencies:
     csstype "^2.2.0"
 
@@ -3303,7 +3303,37 @@ ejs@^2.5.9, ejs@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
-electron-builder-lib@20.17.0, electron-builder-lib@~20.17.0:
+electron-builder-lib@20.17.1:
+  version "20.17.1"
+  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.17.1.tgz#1de60ec1ba54c49f3670e6d3ef825bbc05c233b4"
+  dependencies:
+    "7zip-bin" "~4.0.2"
+    app-builder-bin "1.9.16"
+    async-exit-hook "^2.0.1"
+    bluebird-lst "^1.0.5"
+    builder-util "5.12.0"
+    builder-util-runtime "4.3.0"
+    chromium-pickle-js "^0.2.0"
+    debug "^3.1.0"
+    ejs "^2.6.1"
+    electron-osx-sign "0.4.10"
+    electron-publish "20.17.0"
+    fs-extra-p "^4.6.1"
+    hosted-git-info "^2.6.1"
+    is-ci "^1.1.0"
+    isbinaryfile "^3.0.2"
+    js-yaml "^3.12.0"
+    lazy-val "^1.0.3"
+    minimatch "^3.0.4"
+    normalize-package-data "^2.4.0"
+    plist "^3.0.1"
+    read-config-file "3.0.2"
+    sanitize-filename "^1.6.1"
+    semver "^5.5.0"
+    stream-json "^1.0.3"
+    temp-file "^3.1.3"
+
+electron-builder-lib@~20.17.0:
   version "20.17.0"
   resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.17.0.tgz#33e21d224d72963589f54ec3e1b0fafea0b70412"
   dependencies:
@@ -3333,16 +3363,16 @@ electron-builder-lib@20.17.0, electron-builder-lib@~20.17.0:
     stream-json "^1.0.3"
     temp-file "^3.1.3"
 
-electron-builder@^20.17.0:
-  version "20.17.0"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.17.0.tgz#2363d5107fe2576cdcab7b63fa2335857550cd3e"
+electron-builder@^20.17.1:
+  version "20.17.1"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.17.1.tgz#53bc653502b0fa34653487e1dc4df7dbf25a6fe8"
   dependencies:
     bluebird-lst "^1.0.5"
     builder-util "5.12.0"
     builder-util-runtime "4.3.0"
     chalk "^2.4.1"
     dmg-builder "4.11.3"
-    electron-builder-lib "20.17.0"
+    electron-builder-lib "20.17.1"
     electron-download-tf "4.3.4"
     fs-extra-p "^4.6.1"
     is-ci "^1.1.0"

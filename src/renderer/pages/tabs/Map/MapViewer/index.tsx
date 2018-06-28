@@ -35,6 +35,13 @@ import * as React from "react";
 class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   public cells: List<MapViewerCell>;
 
+  public state: IMapViewerState = {
+    path: [],
+    selectedCellId: -1,
+    showCellIds: false,
+    showReal: false
+  };
+
   private readonly walkableCellBrush = new Color(145, 145, 148);
   private readonly losCellBrush = new Color(77, 77, 77);
   private readonly obstacleCellBrush = new Color(45, 45, 48);
@@ -51,14 +58,6 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
 
   constructor(props: MapViewerProps) {
     super(props);
-
-    this.state = {
-      path: [],
-      selectedCellId: -1,
-      showCellIds: false,
-      showReal: false
-    };
-
     this.initCells();
   }
 

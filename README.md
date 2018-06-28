@@ -24,36 +24,6 @@ cd cookietouch && yarn
 The documentation is available on https://cookie-project.github.io/cookietouch/
 To update the documentation you just have to modify the /docs/ folder.
 
-## Dev
-
-```bash En mod Dev
-yarn dev
-```
-
-## Lint
-
-```bash
-yarn lint
-```
-
-## Lint Fix
-
-```bash
-yarn lint:fix
-```
-
-## yarn dist
-
-```bash
-yarn dist
-```
-
-## yarn dist:dir
-
-```bash
-yarn dist:dir
-```
-
 ## Socials Links
 
 - [Discord](https://discord.gg/swU74Fm)

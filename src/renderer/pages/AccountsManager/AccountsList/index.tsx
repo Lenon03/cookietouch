@@ -47,7 +47,7 @@ class AccountsList extends React.Component<
         <List>
           {accountsList.map((value, idx) => (
             <ListItem
-              onDoubleClick={() => this.connectAccount(value)}
+              onDoubleClick={this.connectAccount(value)}
               key={idx}
               dense={true}
               button={true}
@@ -63,7 +63,7 @@ class AccountsList extends React.Component<
               this.state.accountsToConnect.length > 1 &&
               this.state.accountsToConnect.length <= 8 ? (
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => this.connectGroup(value)}>
+                  <IconButton onClick={this.connectGroup(value)}>
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
@@ -73,13 +73,7 @@ class AccountsList extends React.Component<
                 </ListItemSecondaryAction>
               ) : (
                 <ListItemSecondaryAction>
-                  <IconButton
-                    onClick={() => {
-                      if (confirm(LanguageManager.trans("delete"))) {
-                        this.removeAccount(value);
-                      }
-                    }}
-                  >
+                  <IconButton onClick={this.removeAccount(value)}>
                     <FontAwesomeIcon
                       className={classes.icon}
                       size="lg"
@@ -94,7 +88,7 @@ class AccountsList extends React.Component<
         <Button
           disabled={this.state.accountsToConnect.length < 2}
           style={{ float: "right" }}
-          onClick={() => this.connectSelectedAccounts()}
+          onClick={this.connectSelectedAccounts}
           variant="raised"
           color="primary"
         >
@@ -125,7 +119,9 @@ class AccountsList extends React.Component<
     });
   };
 
-  private connectGroup = (chief: AccountConfiguration) => {
+  private connectGroup = (chief: AccountConfiguration) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     const members = this.state.accountsToConnect.filter(
       a => a.username !== chief.username
     );
@@ -134,7 +130,9 @@ class AccountsList extends React.Component<
     this.props.closeDialog();
   };
 
-  private connectAccount = (account: AccountConfiguration) => {
+  private connectAccount = (account: AccountConfiguration) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     CookieMain.connectAccounts(new LinqList([account]));
     this.setState({ accountsToConnect: [] });
     this.props.closeDialog();
@@ -146,11 +144,16 @@ class AccountsList extends React.Component<
     this.props.closeDialog();
   };
 
-  private removeAccount(accountConfig: AccountConfiguration) {
+  private removeAccount = (accountConfig: AccountConfiguration) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    if (!confirm(LanguageManager.trans("delete"))) {
+      return;
+    }
     GlobalConfiguration.removeAccount(accountConfig);
     GlobalConfiguration.save();
     this.setState({ accountsList: GlobalConfiguration.accountsList });
-  }
+  };
 }
 
 export default withStyles(accountsListStyles)<IAccountsListProps>(AccountsList);

@@ -189,14 +189,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showGeneralMessages}
-                    onChange={event => {
-                      this.setState({
-                        showGeneralMessages: event.target.checked
-                      });
-                      this.props.account.config.showGeneralMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showGeneralMessages}
                   />
                 }
                 label={LanguageManager.trans("showGeneral")}
@@ -209,14 +202,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showAllianceMessages}
-                    onChange={event => {
-                      this.setState({
-                        showAllianceMessages: event.target.checked
-                      });
-                      this.props.account.config.showAllianceMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showAllianceMessages}
                   />
                 }
                 label={LanguageManager.trans("showAlliance")}
@@ -229,14 +215,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showGuildMessages}
-                    onChange={event => {
-                      this.setState({
-                        showGuildMessages: event.target.checked
-                      });
-                      this.props.account.config.showGuildMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showGuildMessages}
                   />
                 }
                 label={LanguageManager.trans("showGuild")}
@@ -249,12 +228,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showNoobMessages}
-                    onChange={event => {
-                      this.setState({ showNoobMessages: event.target.checked });
-                      this.props.account.config.showNoobMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showNoobMessages}
                   />
                 }
                 label={LanguageManager.trans("showNoob")}
@@ -267,14 +241,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showPartyMessages}
-                    onChange={event => {
-                      this.setState({
-                        showPartyMessages: event.target.checked
-                      });
-                      this.props.account.config.showPartyMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showPartyMessages}
                   />
                 }
                 label={LanguageManager.trans("showParty")}
@@ -287,12 +254,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showSaleMessages}
-                    onChange={event => {
-                      this.setState({ showSaleMessages: event.target.checked });
-                      this.props.account.config.showSaleMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showSaleMessages}
                   />
                 }
                 label={LanguageManager.trans("showSales")}
@@ -305,19 +267,14 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     color="primary"
                     disabled={this.state.characterConnected === false}
                     checked={this.state.showSeekMessages}
-                    onChange={event => {
-                      this.setState({ showSeekMessages: event.target.checked });
-                      this.props.account.config.showSeekMessages =
-                        event.target.checked;
-                      this.props.account.config.save();
-                    }}
+                    onChange={this.showSeekMessages}
                   />
                 }
                 label={LanguageManager.trans("showSeek")}
               />
             </FormGroup>
             <Button
-              onClick={() => this.setState({ messages: [] })}
+              onClick={this.clearConsole}
               variant="raised"
               color="primary"
             >
@@ -349,6 +306,10 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
 
       this.setState({ content: "" });
     }
+  };
+
+  private clearConsole = () => {
+    this.setState({ messages: [] });
   };
 
   private handleChange = name => event => {
@@ -394,6 +355,60 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     if (div) {
       div.scrollTop = div.scrollHeight - div.clientHeight;
     }
+  };
+
+  private showGeneralMessages = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({
+      showGeneralMessages: event.target.checked
+    });
+    this.props.account.config.showGeneralMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showAllianceMessages = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({
+      showAllianceMessages: event.target.checked
+    });
+    this.props.account.config.showAllianceMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showGuildMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      showGuildMessages: event.target.checked
+    });
+    this.props.account.config.showGuildMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showNoobMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ showNoobMessages: event.target.checked });
+    this.props.account.config.showNoobMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showPartyMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      showPartyMessages: event.target.checked
+    });
+    this.props.account.config.showPartyMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showSaleMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ showSaleMessages: event.target.checked });
+    this.props.account.config.showSaleMessages = event.target.checked;
+    this.props.account.config.save();
+  };
+
+  private showSeekMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ showSeekMessages: event.target.checked });
+    this.props.account.config.showSeekMessages = event.target.checked;
+    this.props.account.config.save();
   };
 }
 

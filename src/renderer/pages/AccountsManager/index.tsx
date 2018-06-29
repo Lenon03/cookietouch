@@ -30,7 +30,7 @@ class AccountsManager extends React.Component<
       <div className={classes.root}>
         <Dialog
           open={dialogOpen}
-          onClose={() => closeDialog()}
+          onClose={closeDialog}
           aria-labelledby="form-dialog-title"
           fullScreen={true}
         >
@@ -40,7 +40,7 @@ class AccountsManager extends React.Component<
           <DialogContent>
             <Grid container={true} spacing={0}>
               <Grid item={true} xs={7}>
-                <AccountsList closeDialog={() => closeDialog()} />
+                <AccountsList closeDialog={closeDialog} />
               </Grid>
               <Grid item={true} xs={5}>
                 <AddAccountForm />
@@ -57,11 +57,7 @@ class AccountsManager extends React.Component<
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={() => closeDialog()}
-              variant="raised"
-              color="primary"
-            >
+            <Button onClick={closeDialog} variant="raised" color="primary">
               {LanguageManager.trans("close")}
             </Button>
           </DialogActions>

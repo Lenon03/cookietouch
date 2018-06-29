@@ -46,7 +46,7 @@ class Configuration extends React.Component<
       <div className={classes.root}>
         <Dialog
           open={dialogOpen}
-          onClose={() => closeDialog()}
+          onClose={closeDialog}
           aria-labelledby="form-dialog-title"
         >
           {/* <DialogTitle id="form-dialog-title"></DialogTitle> */}
@@ -115,11 +115,7 @@ class Configuration extends React.Component<
             </FormGroup>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={() => closeDialog()}
-              variant="raised"
-              color="primary"
-            >
+            <Button onClick={closeDialog} variant="raised" color="primary">
               {LanguageManager.trans("close")}
             </Button>
           </DialogActions>

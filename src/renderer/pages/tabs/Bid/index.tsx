@@ -89,13 +89,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                     disabled={this.state.characterConnected === false}
                     color="primary"
                     checked={this.state.running}
-                    onChange={(event, checked) => {
-                      if (this.state.running) {
-                        this.props.account.extensions.bid.stop();
-                      } else {
-                        this.props.account.extensions.bid.start();
-                      }
-                    }}
+                    onChange={this.bidStartStop}
                   />
                 }
                 label={LanguageManager.trans("active")}
@@ -127,21 +121,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             <Button
               size="small"
               style={{ marginLeft: "15px" }}
-              onClick={() => {
-                remote.dialog.showOpenDialog(
-                  {
-                    filters: [
-                      { name: "Cookie Scripts Format", extensions: ["js"] }
-                    ],
-                    properties: ["openFile"]
-                  },
-                  filepaths => {
-                    const filepath = filepaths[0];
-                    this.props.account.extensions.bid.config.scriptPath = filepath;
-                    this.props.account.extensions.bid.config.save();
-                  }
-                );
-              }}
+              onClick={this.openDialog}
               variant="raised"
               color="primary"
             >
@@ -150,10 +130,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             <Button
               size="small"
               style={{ marginLeft: "15px" }}
-              onClick={() => {
-                this.props.account.extensions.bid.config.scriptPath = "";
-                this.props.account.extensions.bid.config.save();
-              }}
+              onClick={this.removeScriptPath}
               variant="raised"
               color="primary"
             >
@@ -240,7 +217,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                 <TableRow>
                   <TableCell numeric={true}>GID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric={true}>{LanguageManager.trans("lot")}</TableCell>
+                  <TableCell numeric={true}>
+                    {LanguageManager.trans("lot")}
+                  </TableCell>
                   <TableCell numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
@@ -265,7 +244,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                       <TableCell>{o.basePrice}</TableCell>
                       <TableCell>
                         <Button
-                          onClick={() => this.deleteObject(o)}
+                          onClick={this.deleteObject(o)}
                           variant="raised"
                           color="primary"
                         >
@@ -282,6 +261,33 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       </div>
     );
   }
+
+  private bidStartStop = (event: React.ChangeEvent, changed: boolean) => {
+    if (this.state.running) {
+      this.props.account.extensions.bid.stop();
+    } else {
+      this.props.account.extensions.bid.start();
+    }
+  };
+
+  private openDialog = () => {
+    remote.dialog.showOpenDialog(
+      {
+        filters: [{ name: "Cookie Scripts Format", extensions: ["js"] }],
+        properties: ["openFile"]
+      },
+      filepaths => {
+        const filepath = filepaths[0];
+        this.props.account.extensions.bid.config.scriptPath = filepath;
+        this.props.account.extensions.bid.config.save();
+      }
+    );
+  };
+
+  private removeScriptPath = () => {
+    this.props.account.extensions.bid.config.scriptPath = "";
+    this.props.account.extensions.bid.config.save();
+  };
 
   private submit = async event => {
     event.preventDefault();
@@ -323,7 +329,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     this.props.account.extensions.bid.config.save();
   };
 
-  private deleteObject = (obj: ObjectToSellEntry) => {
+  private deleteObject = (obj: ObjectToSellEntry) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     const objects = this.state.objects.filter(o => o.gid !== obj.gid);
     this.props.account.extensions.bid.config.objectsToSell = new List(objects);
     this.props.account.extensions.bid.config.save();

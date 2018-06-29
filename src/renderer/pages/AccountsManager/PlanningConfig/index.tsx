@@ -101,17 +101,7 @@ class PlanningConfig extends React.Component<
                     value={this.state.selectedAccounts.map(a => a.username)}
                     onChange={this.handleChangeAccounts}
                     input={<Input id="select-multiple-chip" />}
-                    renderValue={selected => (
-                      <div className={classes.chips}>
-                        {(selected as React.ReactText[]).map(value => (
-                          <Chip
-                            key={value}
-                            label={value}
-                            className={classes.chip}
-                          />
-                        ))}
-                      </div>
-                    )}
+                    renderValue={this.renderSelect}
                     MenuProps={menuProps}
                   >
                     {this.state.accountsList.map((acc, idx) => (
@@ -143,7 +133,7 @@ class PlanningConfig extends React.Component<
                   <ListItem
                     key={index}
                     button={true}
-                    onClick={event => this.itemClicked(index)}
+                    onClick={this.itemClicked(index)}
                     style={{
                       backgroundColor: act ? "green" : "red",
                       height: 80,
@@ -162,7 +152,9 @@ class PlanningConfig extends React.Component<
     );
   }
 
-  private itemClicked = (index: number) => {
+  private itemClicked = (index: number) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     const planning = this.state.planning;
     planning[index] = !planning[index];
     this.setState({ planning });
@@ -196,6 +188,16 @@ class PlanningConfig extends React.Component<
       event.target.value.includes(a.username)
     );
     this.setState({ selectedAccounts: accounts });
+  };
+
+  private renderSelect = (selected: React.ReactText[]): React.ReactNode => {
+    return (
+      <div className={this.props.classes.chips}>
+        {selected.map(value => (
+          <Chip key={value} label={value} className={this.props.classes.chip} />
+        ))}
+      </div>
+    );
   };
 }
 

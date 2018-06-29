@@ -31,10 +31,7 @@ class Main extends React.Component<MainProps, IMainState> {
 
     return (
       <div className={classes.root}>
-        <TopAppBar
-          user={this.state.user}
-          clickMenu={this.toggleDrawer.bind(this)}
-        />
+        <TopAppBar user={this.state.user} clickMenu={this.toggleDrawer} />
         {this.state.user ? (
           <MainContent sidenavStatus={this.state.sidenavStatus} />
         ) : (

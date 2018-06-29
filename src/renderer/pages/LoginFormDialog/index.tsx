@@ -37,7 +37,7 @@ class LoginFormDialog extends React.Component<
       <div className={classes.root}>
         <Dialog
           open={dialogOpen}
-          onClose={() => closeDialog()}
+          onClose={closeDialog}
           aria-labelledby="form-dialog-title"
         >
           {/* <DialogTitle id="form-dialog-title"></DialogTitle> */}
@@ -84,7 +84,7 @@ class LoginFormDialog extends React.Component<
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => closeDialog()} color="primary">
+            <Button onClick={closeDialog} color="primary">
               {LanguageManager.trans("cancel")}
             </Button>
             <Button onClick={this.signin} color="primary">

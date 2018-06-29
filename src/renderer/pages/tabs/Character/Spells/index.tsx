@@ -1,5 +1,6 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import SpellEntry from "@/game/character/SpellEntry";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
@@ -48,7 +49,9 @@ class Spells extends React.Component<
               <TableCell />
               <TableCell numeric={true}>ID</TableCell>
               <TableCell>{LanguageManager.trans("name")}</TableCell>
-              <TableCell numeric={true}>{LanguageManager.trans("level")}</TableCell>
+              <TableCell numeric={true}>
+                {LanguageManager.trans("level")}
+              </TableCell>
               <TableCell>{LanguageManager.trans("up")}</TableCell>
             </TableRow>
           </TableHead>
@@ -72,9 +75,7 @@ class Spells extends React.Component<
                           ? this.state.spellsPoints < s.level
                           : true
                       }
-                      onClick={() =>
-                        this.props.account.game.character.levelUpSpell(s)
-                      }
+                      onClick={this.levelUpSpell(s)}
                     >
                       {LanguageManager.trans("up")}
                     </Button>
@@ -87,6 +88,10 @@ class Spells extends React.Component<
       </div>
     );
   }
+
+  private levelUpSpell = (spell: SpellEntry) => () => {
+    this.props.account.game.character.levelUpSpell(spell);
+  };
 
   private statsUpdated = () => {
     this.setState({

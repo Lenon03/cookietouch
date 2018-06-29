@@ -29,13 +29,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem
-          button={true}
-          onClick={() => {
-            this.handleClick();
-            this.changeAccount(group.chief);
-          }}
-        >
+        <ListItem button={true} onClick={this.handleClick}>
           <ListItemIcon>
             {group.chief.state === AccountStates.NONE ? (
               <Avatar
@@ -68,7 +62,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
               <ListItem
                 button={true}
                 className={classes.nested}
-                onClick={() => this.changeAccount(m)}
+                onClick={this.changeAccount(m)}
               >
                 <ListItemIcon>
                   {m.state === AccountStates.NONE ? (
@@ -96,10 +90,17 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
   }
 
   private handleClick = () => {
-    this.setState(prev => ({ open: !prev.open }));
+    this.setState(
+      prev => ({ open: !prev.open }),
+      () => {
+        this.changeAccount(this.props.group.chief);
+      }
+    );
   };
 
-  private changeAccount = (account: Account) => {
+  private changeAccount = (account: Account) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     CookieMain.selectedAccount = account;
   };
 }

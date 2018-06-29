@@ -131,7 +131,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.equipUnEquipItem(e)}
+                          onClick={this.equipUnEquipItem(e)}
                         >
                           {e.position !==
                           CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
@@ -142,7 +142,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.dropItem(e)}
+                          onClick={this.dropItem(e)}
                         >
                           {LanguageManager.trans("drop")}
                         </Button>
@@ -150,7 +150,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.deleteItem(e)}
+                          onClick={this.deleteItem(e)}
                         >
                           {LanguageManager.trans("delete")}
                         </Button>
@@ -194,7 +194,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.useObject(c)}
+                          onClick={this.useObject(c)}
                         >
                           {LanguageManager.trans("use")}
                         </Button>
@@ -202,7 +202,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.dropItem(c)}
+                          onClick={this.dropItem(c)}
                         >
                           {LanguageManager.trans("drop")}
                         </Button>
@@ -210,7 +210,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.deleteItem(c)}
+                          onClick={this.deleteItem(c)}
                         >
                           {LanguageManager.trans("delete")}
                         </Button>
@@ -254,7 +254,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.dropItem(r)}
+                          onClick={this.dropItem(r)}
                         >
                           {LanguageManager.trans("drop")}
                         </Button>
@@ -262,7 +262,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           variant="raised"
                           size="small"
                           color="primary"
-                          onClick={() => this.deleteItem(r)}
+                          onClick={this.deleteItem(r)}
                         >
                           {LanguageManager.trans("delete")}
                         </Button>
@@ -402,7 +402,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     >);
   };
 
-  private equipUnEquipItem = (obj: ObjectEntry) => {
+  private equipUnEquipItem = (obj: ObjectEntry) => () => {
     if (
       obj.position !==
       CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
@@ -413,7 +413,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     }
   };
 
-  private dropItem = (obj: ObjectEntry) => {
+  private dropItem = (obj: ObjectEntry) => () => {
     this.setState({
       deleteDropUseChoice: DeleteDropUseChoice.Drop,
       object: obj
@@ -421,7 +421,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     this.toggleModal();
   };
 
-  private deleteItem = (obj: ObjectEntry) => {
+  private deleteItem = (obj: ObjectEntry) => () => {
     this.setState({
       deleteDropUseChoice: DeleteDropUseChoice.Delete,
       object: obj
@@ -437,7 +437,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     });
   };
 
-  private useObject = (obj: ObjectEntry) => {
+  private useObject = (obj: ObjectEntry) => () => {
     this.setState({
       deleteDropUseChoice: DeleteDropUseChoice.Use,
       object: obj

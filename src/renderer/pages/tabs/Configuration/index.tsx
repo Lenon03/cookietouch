@@ -138,16 +138,7 @@ class Configuration extends React.Component<
                           <TableCell style={{ maxWidth: 50 }}>
                             <Button
                               disabled={this.state.characterConnected === false}
-                              onClick={() => {
-                                this.props.account.config.spellsToBoost = this.props.account.config.spellsToBoost.filter(
-                                  sp => sp.id !== s.id
-                                );
-                                this.props.account.config.save();
-                                this.setState({
-                                  spells: this.props.account.config
-                                    .spellsToBoost
-                                });
-                              }}
+                              onClick={this.removeSpell(s)}
                               size="small"
                               variant="raised"
                               color="primary"
@@ -327,16 +318,7 @@ class Configuration extends React.Component<
                           <TableCell>
                             <Button
                               disabled={this.state.characterConnected === false}
-                              onClick={() => {
-                                this.props.account.config.authorizedTradesFrom = this.props.account.config.authorizedTradesFrom.filter(
-                                  s => s !== a
-                                );
-                                this.props.account.config.save();
-                                this.setState({
-                                  authorizedTradesFrom: this.props.account
-                                    .config.authorizedTradesFrom
-                                });
-                              }}
+                              onClick={this.removeAuthorized(a)}
                               size="small"
                               variant="raised"
                               color="primary"
@@ -364,16 +346,7 @@ class Configuration extends React.Component<
                 />
                 <Button
                   disabled={this.state.characterConnected === false}
-                  onClick={() => {
-                    this.props.account.config.authorizedTradesFrom.push(
-                      this.state.toAddToAuthorized
-                    );
-                    this.props.account.config.save();
-                    this.setState({
-                      authorizedTradesFrom: this.props.account.config
-                        .authorizedTradesFrom
-                    });
-                  }}
+                  onClick={this.addAuthorized}
                   size="small"
                   variant="raised"
                   color="primary"
@@ -387,6 +360,36 @@ class Configuration extends React.Component<
       </div>
     );
   }
+
+  private removeSpell = (s: SpellToBoostEntry) => () => {
+    this.props.account.config.spellsToBoost = this.props.account.config.spellsToBoost.filter(
+      sp => sp.id !== s.id
+    );
+    this.props.account.config.save();
+    this.setState({
+      spells: this.props.account.config.spellsToBoost
+    });
+  };
+
+  private removeAuthorized = (a: number) => () => {
+    this.props.account.config.authorizedTradesFrom = this.props.account.config.authorizedTradesFrom.filter(
+      s => s !== a
+    );
+    this.props.account.config.save();
+    this.setState({
+      authorizedTradesFrom: this.props.account.config.authorizedTradesFrom
+    });
+  };
+
+  private addAuthorized = () => {
+    this.props.account.config.authorizedTradesFrom.push(
+      this.state.toAddToAuthorized
+    );
+    this.props.account.config.save();
+    this.setState({
+      authorizedTradesFrom: this.props.account.config.authorizedTradesFrom
+    });
+  };
 
   private characterSelected = () => {
     this.setState({

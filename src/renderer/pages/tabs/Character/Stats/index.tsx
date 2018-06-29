@@ -174,11 +174,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.VITALITY
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.VITALITY)}
                   >
                     +
                   </Button>
@@ -199,11 +195,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.WISDOM
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.WISDOM)}
                   >
                     +
                   </Button>
@@ -224,11 +216,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.STRENGTH
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.STRENGTH)}
                   >
                     +
                   </Button>
@@ -249,11 +237,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.INTELLIGENCE
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.INTELLIGENCE)}
                   >
                     +
                   </Button>
@@ -274,11 +258,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.CHANCE
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.CHANCE)}
                   >
                     +
                   </Button>
@@ -299,11 +279,7 @@ class Stats extends React.Component<
                     mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
-                    onClick={() =>
-                      this.props.account.game.character.boostStat(
-                        BoostableStats.AGILITY
-                      )
-                    }
+                    onClick={this.boostStat(BoostableStats.AGILITY)}
                   >
                     +
                   </Button>
@@ -321,6 +297,10 @@ class Stats extends React.Component<
       level: this.props.account.game.character.level,
       skinUrl: this.props.account.game.character.skinUrl
     });
+  };
+
+  private boostStat = (stat: BoostableStats) => () => {
+    this.props.account.game.character.boostStat(stat);
   };
 
   private statsUpdated = () => {

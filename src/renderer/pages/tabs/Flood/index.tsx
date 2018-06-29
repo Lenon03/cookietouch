@@ -68,13 +68,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
       <div className={classes.root}>
         <Button
           disabled={this.state.characterConnected === false}
-          onClick={() => {
-            if (this.state.running) {
-              this.props.account.extensions.flood.stop();
-            } else {
-              this.props.account.extensions.flood.start();
-            }
-          }}
+          onClick={this.startStopFlood}
           variant="raised"
           color={this.state.running ? "secondary" : "primary"}
         >
@@ -110,7 +104,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
                   </TableCell>
                   <TableCell>
                     <Button
-                      onClick={() => this.deleteSentence(s)}
+                      onClick={this.deleteSentence(s)}
                       variant="raised"
                       color="primary"
                     >
@@ -299,7 +293,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
     this.props.account.extensions.flood.config.save();
   };
 
-  private deleteSentence = (sentence: FloodSentence) => {
+  private deleteSentence = (sentence: FloodSentence) => () => {
     const sentences = this.state.sentences.filter(
       s => s.content !== sentence.content
     );
@@ -326,6 +320,14 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
 
   private runningChanged = () => {
     this.setState({ running: this.props.account.extensions.flood.running });
+  };
+
+  private startStopFlood = () => {
+    if (this.state.running) {
+      this.props.account.extensions.flood.stop();
+    } else {
+      this.props.account.extensions.flood.start();
+    }
   };
 }
 

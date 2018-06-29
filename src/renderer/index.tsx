@@ -35,17 +35,3 @@ async function init() {
 init();
 
 render(<Main />, document.getElementById("app"));
-
-function getCoords(mapId: number): { x: number; y: number } {
-  let x = (mapId & 0x3fe00) >> 9;
-  if ((x & 0x100) === 0x100) {
-    x = -(x & 0xff);
-  }
-  let y = mapId & 0x01ff;
-  if ((y & 0x100) === 0x100) {
-    y = -(y & 0xff);
-  }
-  return { x, y };
-}
-
-console.log(getCoords(88212247));

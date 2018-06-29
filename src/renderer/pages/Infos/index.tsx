@@ -86,14 +86,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               <Button
                 size="small"
                 variant="raised"
-                onClick={() => {
-                  if (this.props.account.network.connected) {
-                    this.stop();
-                    this.props.account.planificationTimer.stop();
-                  } else {
-                    this.start();
-                  }
-                }}
+                onClick={this.startStop}
                 color="primary"
               >
                 {this.props.account.network.connected
@@ -109,20 +102,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 style={{
                   marginLeft: "15px"
                 }}
-                onClick={() => {
-                  remote.dialog.showOpenDialog(
-                    {
-                      filters: [
-                        { name: "Cookie Scripts Format", extensions: ["js"] }
-                      ],
-                      properties: ["openFile"]
-                    },
-                    filepaths => {
-                      const filepath = filepaths[0];
-                      this.props.account.scripts.fromFile(filepath);
-                    }
-                  );
-                }}
+                onClick={this.openDialog}
                 color="primary"
               >
                 {LanguageManager.trans("load")}
@@ -286,6 +266,28 @@ class Infos extends React.Component<InfosProps, IInfosState> {
       </div>
     );
   }
+
+  private startStop = () => {
+    if (this.props.account.network.connected) {
+      this.stop();
+      this.props.account.planificationTimer.stop();
+    } else {
+      this.start();
+    }
+  };
+
+  private openDialog = () => {
+    remote.dialog.showOpenDialog(
+      {
+        filters: [{ name: "Cookie Scripts Format", extensions: ["js"] }],
+        properties: ["openFile"]
+      },
+      filepaths => {
+        const filepath = filepaths[0];
+        this.props.account.scripts.fromFile(filepath);
+      }
+    );
+  };
 
   private launchScript = () => {
     this.props.account.scripts.startScript();

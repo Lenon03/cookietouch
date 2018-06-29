@@ -46,15 +46,7 @@ class CacheManager extends React.Component<
             color="primary"
             variant="raised"
             disabled={!DTConstants.assetsVersion}
-            onClick={() => {
-              const path = join(
-                remote.app.getPath("userData"),
-                DTConstants.assetsVersion
-              );
-              deleteFolderRecursive(path);
-              mkdirSync(path);
-              this.updateCacheSize();
-            }}
+            onClick={this.deleteCache}
           >
             {LanguageManager.trans("delete")}
           </Button>
@@ -66,6 +58,16 @@ class CacheManager extends React.Component<
   private updateCacheSize = () => {
     const cacheSize = getCacheSize();
     this.setState({ cacheSize });
+  };
+
+  private deleteCache = (event: React.MouseEvent<HTMLElement>) => {
+    const path = join(
+      remote.app.getPath("userData"),
+      DTConstants.assetsVersion
+    );
+    deleteFolderRecursive(path);
+    mkdirSync(path);
+    this.updateCacheSize();
   };
 }
 

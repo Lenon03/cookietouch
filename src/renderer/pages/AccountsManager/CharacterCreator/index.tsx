@@ -123,17 +123,7 @@ class CharacterCreator extends React.Component<
                 value={this.state.selectedAccounts.map(a => a.username)}
                 onChange={this.handleChangeAccounts}
                 input={<Input id="select-multiple-chip" />}
-                renderValue={selected => (
-                  <div className={classes.chips}>
-                    {(selected as React.ReactText[]).map(value => (
-                      <Chip
-                        key={value}
-                        label={value}
-                        className={classes.chip}
-                      />
-                    ))}
-                  </div>
-                )}
+                renderValue={this.renderSelect}
                 MenuProps={menuProps}
               >
                 {this.state.accountsList.map((acc, idx) => (
@@ -452,6 +442,16 @@ class CharacterCreator extends React.Component<
     ];
 
     return crea;
+  };
+
+  private renderSelect = (selected: React.ReactText[]): React.ReactNode => {
+    return (
+      <div className={this.props.classes.chips}>
+        {selected.map(value => (
+          <Chip key={value} label={value} className={this.props.classes.chip} />
+        ))}
+      </div>
+    );
   };
 }
 

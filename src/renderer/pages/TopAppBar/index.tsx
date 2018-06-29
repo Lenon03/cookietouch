@@ -58,7 +58,7 @@ class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
                 <IconButton
                   aria-owns={open ? "menu-appbar" : null}
                   aria-haspopup="true"
-                  onClick={event => this.handleMenu(event)}
+                  onClick={this.handleMenu}
                   color="inherit"
                 >
                   {user && user.photoURL ? (
@@ -81,22 +81,19 @@ class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={() => this.toggleAccountsManager(true)}>
+                  <MenuItem onClick={this.toggleAccountsManager(true)}>
                     {LanguageManager.trans("accountsManager")}
                   </MenuItem>
-                  <MenuItem onClick={() => this.toggleConfiguration(true)}>
+                  <MenuItem onClick={this.toggleConfiguration(true)}>
                     Configuration
                   </MenuItem>
-                  <MenuItem onClick={() => signout()}>
+                  <MenuItem onClick={this.signout}>
                     {LanguageManager.trans("disconnect")}
                   </MenuItem>
                 </Menu>
               </div>
             ) : (
-              <Button
-                color="inherit"
-                onClick={() => this.toggleLoginForm(true)}
-              >
+              <Button color="inherit" onClick={this.toggleLoginForm(true)}>
                 {LanguageManager.trans("connect")}
               </Button>
             )}
@@ -104,46 +101,56 @@ class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
         </AppBar>
         <LoginFormDialog
           dialogOpen={this.state.loginForm}
-          closeDialog={() => {
-            this.toggleLoginForm(false);
-            this.handleClose();
-          }}
+          closeDialog={this.closeDialogLogin}
         />
         <AccountsManager
           dialogOpen={this.state.accountsManager}
-          closeDialog={() => {
-            this.toggleAccountsManager(false);
-            this.handleClose();
-          }}
+          closeDialog={this.closeDialogAccountsManager}
         />
         <Configuration
           dialogOpen={this.state.configuration}
-          closeDialog={() => {
-            this.toggleConfiguration(false);
-            this.handleClose();
-          }}
+          closeDialog={this.closeDialogConfiguration}
         />
       </div>
     );
   }
 
-  private handleMenu(event) {
+  private signout = () => {
+    signout();
+  };
+
+  private closeDialogLogin = () => {
+    this.toggleLoginForm(false)();
+    this.handleClose();
+  };
+
+  private closeDialogAccountsManager = () => {
+    this.toggleAccountsManager(false)();
+    this.handleClose();
+  };
+
+  private closeDialogConfiguration = () => {
+    this.toggleConfiguration(false)();
+    this.handleClose();
+  };
+
+  private handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     this.setState({ anchorEl: event.currentTarget });
-  }
+  };
 
   private handleClose = () => {
     this.setState({ anchorEl: null });
   };
 
-  private toggleLoginForm = (open: boolean) => {
+  private toggleLoginForm = (open: boolean) => () => {
     this.setState({ loginForm: open });
   };
 
-  private toggleAccountsManager = (open: boolean) => {
+  private toggleAccountsManager = (open: boolean) => () => {
     this.setState({ accountsManager: open });
   };
 
-  private toggleConfiguration = (open: boolean) => {
+  private toggleConfiguration = (open: boolean) => () => {
     this.setState({ configuration: open });
   };
 }

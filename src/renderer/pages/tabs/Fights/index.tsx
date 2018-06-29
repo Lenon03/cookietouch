@@ -383,7 +383,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                 <TableCell numeric={true}>ID</TableCell>
                 <TableCell>{LanguageManager.trans("name")}</TableCell>
                 <TableCell>{LanguageManager.trans("target")}</TableCell>
-                <TableCell numeric={true}>{LanguageManager.trans("turns")}</TableCell>
+                <TableCell numeric={true}>
+                  {LanguageManager.trans("turns")}
+                </TableCell>
                 <TableCell numeric={true}>
                   {LanguageManager.trans("relaunchs")}
                 </TableCell>
@@ -414,12 +416,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     <TableCell>
                       <Button
                         disabled={this.state.characterConnected === false}
-                        onClick={() => {
-                          this.props.account.extensions.fights.config.spells = this.state.spells.filter(
-                            sp => sp.spellId !== s.spellId
-                          );
-                          this.props.account.extensions.fights.config.save();
-                        }}
+                        onClick={this.removeSpell(s)}
                         size="small"
                         variant="raised"
                         color="primary"
@@ -438,7 +435,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                 {LanguageManager.trans("addSpell")}
               </Typography>
               <Button
-                onClick={() => this.setState({ modalInfos: true })}
+                onClick={this.openInfos}
                 variant="raised"
                 color="secondary"
               >
@@ -847,6 +844,17 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
         this.setState({ addSpellForm });
       }
     );
+  };
+
+  private removeSpell = (s: Spell) => () => {
+    this.props.account.extensions.fights.config.spells = this.state.spells.filter(
+      sp => sp.spellId !== s.spellId
+    );
+    this.props.account.extensions.fights.config.save();
+  };
+
+  private openInfos = () => {
+    this.setState({ modalInfos: true });
   };
 }
 

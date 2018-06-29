@@ -56,15 +56,21 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   private readonly phenixImage = "7521.png";
   private readonly lockedStorageImage = "12367.png";
 
+  private canvasRef: React.RefObject<HTMLCanvasElement>;
+
   constructor(props: MapViewerProps) {
     super(props);
+    this.canvasRef = React.createRef();
     this.initCells();
   }
 
   public componentDidMount() {
-    const c = this.refs.canvas as HTMLCanvasElement;
-    c.addEventListener("click", this.onMouseClick, false);
-    c.addEventListener("mousemove", this.onMouseMove, false);
+    this.canvasRef.current.addEventListener("click", this.onMouseClick, false);
+    this.canvasRef.current.addEventListener(
+      "mousemove",
+      this.onMouseMove,
+      false
+    );
 
     this.props.account.game.map.MapChanged.on(this.refreshMapViewer);
     this.props.account.game.map.EntitiesUpdated.on(this.refreshMapViewer);
@@ -84,9 +90,16 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   }
 
   public componentWillUnmount() {
-    const c = this.refs.canvas as HTMLCanvasElement;
-    c.removeEventListener("click", this.onMouseClick, false);
-    c.removeEventListener("mousemove", this.onMouseMove, false);
+    this.canvasRef.current.removeEventListener(
+      "click",
+      this.onMouseClick,
+      false
+    );
+    this.canvasRef.current.removeEventListener(
+      "mousemove",
+      this.onMouseMove,
+      false
+    );
 
     this.props.account.game.map.MapChanged.off(this.refreshMapViewer);
     this.props.account.game.map.EntitiesUpdated.off(this.refreshMapViewer);
@@ -136,7 +149,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             <div id="tooltip" />
             <canvas
               id="mapStatus"
-              ref="canvas"
+              ref={this.canvasRef}
               width={DTConstants.TILE_WIDTH * (DTConstants.MAP_WIDTH + 0.5)}
               height={DTConstants.TILE_HEIGHT * (DTConstants.MAP_HEIGHT + 0.5)}
             />
@@ -148,11 +161,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
                   <Switch
                     color="primary"
                     checked={this.state.showCellIds}
-                    onChange={event => {
-                      this.setState({ showCellIds: event.target.checked }, () =>
-                        this.buildMap()
-                      );
-                    }}
+                    onChange={this.toggleShowCellIds}
                   />
                 }
                 label="Cells ID"
@@ -164,11 +173,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
                   <Switch
                     color="primary"
                     checked={this.state.showReal}
-                    onChange={event => {
-                      this.setState({ showReal: event.target.checked }, () =>
-                        this.buildMap()
-                      );
-                    }}
+                    onChange={this.toggleShowReal}
                   />
                 }
                 label="Real MAP"
@@ -344,7 +349,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
     };
   };
   private buildMap = () => {
-    const c = this.refs.canvas as HTMLCanvasElement;
+    const c = this.canvasRef.current;
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
     if (this.state.showReal) {
@@ -441,7 +446,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   };
   private onMouseMove = event => {
     const pos = new Point(event.offsetX, event.offsetY);
-    const c = this.refs.canvas as HTMLCanvasElement;
+    const c = this.canvasRef.current;
     const ctx = c.getContext("2d");
     for (let cellId = 0; cellId < this.cells.Count(); cellId++) {
       const cell = this.cells.ElementAt(cellId);
@@ -755,6 +760,14 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       ctx.lineTo(p.mid.x, p.mid.y);
     }
     ctx.stroke();
+  };
+
+  private toggleShowCellIds = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ showCellIds: event.target.checked }, () => this.buildMap());
+  };
+
+  private toggleShowReal = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ showReal: event.target.checked }, () => this.buildMap());
   };
 }
 

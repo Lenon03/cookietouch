@@ -8,7 +8,7 @@ export interface ITopAppBarProps {
 }
 
 export interface ITopAppBarState {
-  anchorEl: any;
+  anchorEl: EventTarget & HTMLElement;
   loginForm: boolean;
   accountsManager: boolean;
   configuration: boolean;

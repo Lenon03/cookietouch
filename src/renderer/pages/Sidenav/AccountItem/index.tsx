@@ -21,7 +21,7 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem button={true} onClick={() => this.changeAccount(account)}>
+        <ListItem button={true} onClick={this.changeAccount(account)}>
           <ListItemIcon>
             {account.state === AccountStates.NONE ? (
               <Avatar
@@ -44,7 +44,9 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
     );
   }
 
-  private changeAccount = (account: Account) => {
+  private changeAccount = (account: Account) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     CookieMain.selectedAccount = account;
   };
 }

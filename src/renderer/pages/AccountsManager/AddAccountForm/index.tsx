@@ -61,12 +61,12 @@ class AddAccountForm extends React.Component<
             {LanguageManager.trans("username")}
           </InputLabel>
           <Input
-            autoFocus
+            autoFocus={true}
             id="username"
             type="text"
             value={this.state.username}
             onChange={this.handleChange("username")}
-            fullWidth
+            fullWidth={true}
           />
         </FormControl>
         <FormControl className={classes.formControl}>
@@ -78,7 +78,7 @@ class AddAccountForm extends React.Component<
             type={this.state.showPassword ? "text" : "password"}
             value={this.state.password}
             onChange={this.handleChange("password")}
-            fullWidth
+            fullWidth={true}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -115,12 +115,12 @@ class AddAccountForm extends React.Component<
             {LanguageManager.trans("character")}
           </InputLabel>
           <Input
-            autoFocus
+            autoFocus={true}
             id="character"
             type="text"
             value={this.state.character}
             onChange={this.handleChange("character")}
-            fullWidth
+            fullWidth={true}
           />
         </FormControl>
         <Button

@@ -70,8 +70,8 @@ class Configuration extends React.Component<
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={4}>
+        <Grid container={true} spacing={8}>
+          <Grid item={true} xs={4}>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title}>
@@ -114,9 +114,9 @@ class Configuration extends React.Component<
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell numeric>ID</TableCell>
+                      <TableCell numeric={true}>ID</TableCell>
                       <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric={true}>
                         {LanguageManager.trans("level")}
                       </TableCell>
                       <TableCell>{LanguageManager.trans("actions")}</TableCell>
@@ -126,13 +126,13 @@ class Configuration extends React.Component<
                     {this.state.spells.map((s, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell style={{ maxWidth: 20 }} numeric>
+                          <TableCell style={{ maxWidth: 20 }} numeric={true}>
                             {s.id}
                           </TableCell>
                           <TableCell style={{ maxWidth: 60 }}>
                             {s.name}
                           </TableCell>
-                          <TableCell style={{ maxWidth: 20 }} numeric>
+                          <TableCell style={{ maxWidth: 20 }} numeric={true}>
                             {s.level}
                           </TableCell>
                           <TableCell style={{ maxWidth: 50 }}>
@@ -162,13 +162,13 @@ class Configuration extends React.Component<
                 </Table>
                 <TextField
                   disabled={this.state.characterConnected === false}
-                  autoFocus
+                  autoFocus={true}
                   margin="dense"
                   id="spellId"
                   name="spellId"
                   label={LanguageManager.trans("spell")}
                   value={this.state.spellId}
-                  fullWidth
+                  fullWidth={true}
                   onChange={this.handleSelectChange}
                   type="number"
                   InputLabelProps={{ shrink: true }}
@@ -203,7 +203,7 @@ class Configuration extends React.Component<
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item={true} xs={4}>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title}>
@@ -287,7 +287,7 @@ class Configuration extends React.Component<
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item={true} xs={4}>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title}>
@@ -315,7 +315,7 @@ class Configuration extends React.Component<
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell numeric>ID</TableCell>
+                      <TableCell numeric={true}>ID</TableCell>
                       <TableCell>{LanguageManager.trans("actions")}</TableCell>
                     </TableRow>
                   </TableHead>
@@ -323,7 +323,7 @@ class Configuration extends React.Component<
                     {this.state.authorizedTradesFrom.map((a, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell numeric>{a}</TableCell>
+                          <TableCell numeric={true}>{a}</TableCell>
                           <TableCell>
                             <Button
                               disabled={this.state.characterConnected === false}
@@ -351,13 +351,13 @@ class Configuration extends React.Component<
                 </Table>
                 <TextField
                   disabled={this.state.characterConnected === false}
-                  autoFocus
+                  autoFocus={true}
                   margin="dense"
                   id="toAddToAuthorized"
                   name="toAddToAuthorized"
                   label="ID"
                   value={this.state.toAddToAuthorized}
-                  fullWidth
+                  fullWidth={true}
                   onChange={this.handleSelectChange}
                   type="number"
                   InputLabelProps={{ shrink: true }}

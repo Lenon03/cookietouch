@@ -48,12 +48,12 @@ class LoginFormDialog extends React.Component<
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="email">Email</InputLabel>
               <Input
-                autoFocus
+                autoFocus={true}
                 id="email"
                 type="email"
                 value={this.state.email}
                 onChange={this.handleChange("email")}
-                fullWidth
+                fullWidth={true}
               />
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -65,7 +65,7 @@ class LoginFormDialog extends React.Component<
                 type={this.state.showPassword ? "text" : "password"}
                 value={this.state.password}
                 onChange={this.handleChange("password")}
-                fullWidth
+                fullWidth={true}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

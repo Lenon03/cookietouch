@@ -49,14 +49,14 @@ class AccountsList extends React.Component<
             <ListItem
               onDoubleClick={() => this.connectAccount(value)}
               key={idx}
-              dense
-              button
+              dense={true}
+              button={true}
               onClick={this.handleToggle(value)}
             >
               <Checkbox
                 checked={this.state.accountsToConnect.indexOf(value) !== -1}
                 tabIndex={-1}
-                disableRipple
+                disableRipple={true}
               />
               <ListItemText primary={value.username} />
               {this.state.accountsToConnect.indexOf(value) !== -1 &&

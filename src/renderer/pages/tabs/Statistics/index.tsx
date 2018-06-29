@@ -50,8 +50,8 @@ class Statistics extends React.Component<
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={2}>
+        <Grid container={true} spacing={8}>
+          <Grid item={true} xs={2}>
             <Typography>
               {LanguageManager.trans("achievementsFinished")}{" "}
               {this.state.achievementsFinished}
@@ -102,16 +102,16 @@ class Statistics extends React.Component<
               {displayTime(this.state.totalGathersTime)}
             </Typography>
           </Grid>
-          <Grid item xs={10}>
-            <Grid container spacing={8}>
-              <Grid item xs={6}>
+          <Grid item={true} xs={10}>
+            <Grid container={true} spacing={8}>
+              <Grid item={true} xs={6}>
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell numeric>GID</TableCell>
+                      <TableCell numeric={true}>GID</TableCell>
                       <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric>%</TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric={true}>%</TableCell>
+                      <TableCell numeric={true}>
                         {LanguageManager.trans("quantity")}
                       </TableCell>
                     </TableRow>
@@ -120,7 +120,7 @@ class Statistics extends React.Component<
                     {this.state.objectsObtainedInFights.map((o, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell numeric>{o.gid}</TableCell>
+                          <TableCell numeric={true}>{o.gid}</TableCell>
                           <TableCell>{o.name}</TableCell>
                           <TableCell>
                             <Typography>{o.percentage.toFixed(2)}%</Typography>
@@ -130,21 +130,21 @@ class Statistics extends React.Component<
                               value={o.percentage}
                             />
                           </TableCell>
-                          <TableCell numeric>{o.quantity}</TableCell>
+                          <TableCell numeric={true}>{o.quantity}</TableCell>
                         </TableRow>
                       );
                     })}
                   </TableBody>
                 </Table>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item={true} xs={6}>
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell numeric>GID</TableCell>
+                      <TableCell numeric={true}>GID</TableCell>
                       <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric>%</TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric={true}>%</TableCell>
+                      <TableCell numeric={true}>
                         {LanguageManager.trans("quantity")}
                       </TableCell>
                     </TableRow>
@@ -153,7 +153,7 @@ class Statistics extends React.Component<
                     {this.state.objectsObtainedInGathers.map((o, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell numeric>{o.gid}</TableCell>
+                          <TableCell numeric={true}>{o.gid}</TableCell>
                           <TableCell>{o.name}</TableCell>
                           <TableCell>
                             <Typography>{o.percentage.toFixed(2)}%</Typography>
@@ -163,7 +163,7 @@ class Statistics extends React.Component<
                               value={o.percentage}
                             />
                           </TableCell>
-                          <TableCell numeric>{o.quantity}</TableCell>
+                          <TableCell numeric={true}>{o.quantity}</TableCell>
                         </TableRow>
                       );
                     })}

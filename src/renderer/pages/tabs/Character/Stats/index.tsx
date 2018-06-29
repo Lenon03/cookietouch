@@ -55,15 +55,15 @@ class Stats extends React.Component<
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={16}>
-          <Grid item xs={4}>
+        <Grid container={true} spacing={16}>
+          <Grid item={true} xs={4}>
             <h4>{account.game.character.name}</h4>
             <h5>
               {LanguageManager.trans("level")} {this.state.level}
             </h5>
             <img src={this.state.skinUrl} alt="character" />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item={true} xs={4}>
             <h4>{LanguageManager.trans("summary")}</h4>
             <div>
               <div>
@@ -155,7 +155,7 @@ class Stats extends React.Component<
               </div>
             </div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item={true} xs={4}>
             <h4>{LanguageManager.trans("stats")}</h4>
             <h5>
               {LanguageManager.trans("points")} {this.state.statsPoints}
@@ -171,7 +171,7 @@ class Stats extends React.Component<
                   {this.state.vitality}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>
@@ -196,7 +196,7 @@ class Stats extends React.Component<
                   {this.state.wisdom}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>
@@ -221,7 +221,7 @@ class Stats extends React.Component<
                   {this.state.strength}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>
@@ -246,7 +246,7 @@ class Stats extends React.Component<
                   {this.state.intelligence}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>
@@ -271,7 +271,7 @@ class Stats extends React.Component<
                   {this.state.chance}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>
@@ -296,7 +296,7 @@ class Stats extends React.Component<
                   {this.state.agility}
                   <Button
                     variant="fab"
-                    mini
+                    mini={true}
                     color="primary"
                     disabled={this.state.statsPoints <= 0}
                     onClick={() =>

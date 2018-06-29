@@ -119,7 +119,7 @@ class CharacterCreator extends React.Component<
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="select-multiple-chip">Accounts</InputLabel>
               <Select
-                multiple
+                multiple={true}
                 value={this.state.selectedAccounts.map(a => a.username)}
                 onChange={this.handleChangeAccounts}
                 input={<Input id="select-multiple-chip" />}
@@ -160,7 +160,7 @@ class CharacterCreator extends React.Component<
                 {LanguageManager.trans("name")}
               </InputLabel>
               <Input
-                autoFocus
+                autoFocus={true}
                 id="username"
                 type="text"
                 value={this.state.name}

@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -41,9 +40,11 @@ class Jobs extends React.Component<
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell numeric>ID</TableCell>
+              <TableCell numeric={true}>ID</TableCell>
               <TableCell>{LanguageManager.trans("name")}</TableCell>
-              <TableCell numeric>{LanguageManager.trans("level")}</TableCell>
+              <TableCell numeric={true}>
+                {LanguageManager.trans("level")}
+              </TableCell>
               <TableCell>XP</TableCell>
             </TableRow>
           </TableHead>
@@ -54,9 +55,9 @@ class Jobs extends React.Component<
                   <TableCell>
                     <img width="40" height="40" src={j.iconUrl} alt={j.name} />
                   </TableCell>
-                  <TableCell numeric>{j.id}</TableCell>
+                  <TableCell numeric={true}>{j.id}</TableCell>
                   <TableCell>{j.name}</TableCell>
-                  <TableCell numeric>{j.level}</TableCell>
+                  <TableCell numeric={true}>{j.level}</TableCell>
                   <TableCell>
                     <Tooltip
                       title={`${j.experience} / ${j.experienceNextLevelFloor}`}

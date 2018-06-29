@@ -76,8 +76,8 @@ class Infos extends React.Component<InfosProps, IInfosState> {
       <div className={classes.root}>
         {/* <Paper className={classes.paper}> */}
         <Paper className={classes.paper}>
-          <Grid container spacing={0}>
-            <Grid item xs={2}>
+          <Grid container={true} spacing={0}>
+            <Grid item={true} xs={2}>
               {/* <Switch
                 checked={this.props.account.network.connected}
                 onChange={() => { this.props.account.network.connected ? this.stop() : this.start(); }}
@@ -101,7 +101,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   : LanguageManager.trans("connect")}
               </Button>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item={true} xs={9}>
               Script: {this.state.scriptName}
               <Button
                 size="small"
@@ -146,7 +146,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 {LanguageManager.trans("pause")}
               </Button>
             </Grid>
-            <Grid item xs={1}>
+            <Grid item={true} xs={1}>
               <Button
                 disabled={
                   this.props.account.hasGroup &&
@@ -163,14 +163,14 @@ class Infos extends React.Component<InfosProps, IInfosState> {
           </Grid>
         </Paper>
         <Paper className={classes.paper}>
-          <Grid container spacing={0}>
-            <Grid item xs={4}>
+          <Grid container={true} spacing={0}>
+            <Grid item={true} xs={4}>
               {this.state.position}
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
               {this.state.bonuspack}
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
               <span style={{ float: "right" }}>
                 Status: {AccountStates[this.state.status]}
               </span>
@@ -178,8 +178,8 @@ class Infos extends React.Component<InfosProps, IInfosState> {
           </Grid>
         </Paper>
         <Paper className={classes.paper}>
-          <Grid container spacing={8}>
-            <Grid item xs={2}>
+          <Grid container={true} spacing={8}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
@@ -203,7 +203,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 />
               </Tooltip>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
@@ -225,7 +225,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 />
               </Tooltip>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon className={classes.icon} size="lg" icon="star" />
               {(this.state.experiencePercent !== -1
                 ? this.state.experiencePercent
@@ -245,7 +245,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 />
               </Tooltip>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon className={classes.icon} size="lg" icon="bolt" />
               {(this.state.energyPoints !== -1
                 ? (this.state.energyPoints / this.state.energyPointsMax) * 100
@@ -268,7 +268,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                 />
               </Tooltip>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon
                 className={classes.icon}
                 size="lg"
@@ -276,7 +276,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               />{" "}
               {this.state.kamas}
             </Grid>
-            <Grid item xs={2}>
+            <Grid item={true} xs={2}>
               <FontAwesomeIcon className={classes.icon} size="lg" icon="gem" />{" "}
               {this.state.goultines}
             </Grid>

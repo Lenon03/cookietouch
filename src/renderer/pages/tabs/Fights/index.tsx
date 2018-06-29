@@ -109,7 +109,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
           <Tabs
             value={this.state.activeTab}
             onChange={this.handleChange}
-            fullWidth
+            fullWidth={true}
           >
             <Tab
               className={classes.tab}
@@ -123,8 +123,8 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
         </AppBar>
 
         <div style={{ display: this.state.activeTab !== 0 ? "none" : "" }}>
-          <Grid container spacing={8}>
-            <Grid item xs={4}>
+          <Grid container={true} spacing={8}>
+            <Grid item={true} xs={4}>
               <Card className={classes.card}>
                 <CardContent>
                   <Typography className={classes.title}>
@@ -156,28 +156,28 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                   </FormControl>
                   <TextField
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="monsterToApproach"
                     name="monsterToApproach"
                     label={LanguageManager.trans("approachMonster")}
                     helperText={LanguageManager.trans("monsterToApproachInfo")}
                     value={this.state.monsterToApproach}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
                   <TextField
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="spellToApproach"
                     name="spellToApproach"
                     label={LanguageManager.trans("spellToApproach")}
                     helperText={LanguageManager.trans("spellToApproachInfo")}
                     value={this.state.spellToApproach}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
@@ -226,7 +226,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
               <Card className={classes.card}>
                 <CardContent>
                   <Typography className={classes.title}>
@@ -276,14 +276,14 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                   </FormControl>
                   <TextField
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="maxCells"
                     name="maxCells"
                     label={LanguageManager.trans("maxCells")}
                     helperText={LanguageManager.trans("maxCells2")}
                     value={this.state.maxCells}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
@@ -336,7 +336,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
               <Card className={classes.card}>
                 <CardContent>
                   <Typography className={classes.title}>
@@ -344,26 +344,26 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                   </Typography>
                   <TextField
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="regenStart"
                     name="regenStart"
                     label={LanguageManager.trans("minimum")}
                     value={this.state.regenStart}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
                   <TextField
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="regenEnd"
                     name="regenEnd"
                     label={LanguageManager.trans("maximum")}
                     value={this.state.regenEnd}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
@@ -380,11 +380,11 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell numeric>ID</TableCell>
+                <TableCell numeric={true}>ID</TableCell>
                 <TableCell>{LanguageManager.trans("name")}</TableCell>
                 <TableCell>{LanguageManager.trans("target")}</TableCell>
-                <TableCell numeric>{LanguageManager.trans("turns")}</TableCell>
-                <TableCell numeric>
+                <TableCell numeric={true}>{LanguageManager.trans("turns")}</TableCell>
+                <TableCell numeric={true}>
                   {LanguageManager.trans("relaunchs")}
                 </TableCell>
                 <TableCell>CAC</TableCell>
@@ -396,11 +396,11 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
               {this.state.spells.map((s, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableCell numeric>{s.spellId}</TableCell>
+                    <TableCell numeric={true}>{s.spellId}</TableCell>
                     <TableCell>{s.spellName}</TableCell>
                     <TableCell>{SpellTargets[s.target]}</TableCell>
-                    <TableCell numeric>{s.turns}</TableCell>
-                    <TableCell numeric>{s.relaunchs}</TableCell>
+                    <TableCell numeric={true}>{s.turns}</TableCell>
+                    <TableCell numeric={true}>{s.relaunchs}</TableCell>
                     <TableCell>
                       {s.handToHand
                         ? LanguageManager.trans("yes")
@@ -445,8 +445,8 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                 {LanguageManager.trans("infos")}
               </Button>
               <form onSubmit={this.submit}>
-                <Grid container spacing={8}>
-                  <Grid item xs={6}>
+                <Grid container={true} spacing={8}>
+                  <Grid item={true} xs={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="spellId">
                         {LanguageManager.trans("spell")}
@@ -490,58 +490,58 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     </FormControl>
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="turns"
                       name="turns"
                       label={LanguageManager.trans("turns")}
                       value={this.state.addSpellForm.turns}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="relaunchs"
                       name="relaunchs"
                       label={LanguageManager.trans("relaunchs")}
                       value={this.state.addSpellForm.relaunchs}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="targetHp"
                       name="targetHp"
                       label={`${LanguageManager.trans("targetLife")} <=`}
                       value={this.state.addSpellForm.targetHp}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="characterHp"
                       name="characterHp"
                       label={`${LanguageManager.trans("selfLife")} <=`}
                       value={this.state.addSpellForm.characterHp}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item={true} xs={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="resistance">
                         {LanguageManager.trans("resistance")}
@@ -571,26 +571,26 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     </FormControl>
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="resistanceValue"
                       name="resistanceValue"
                       label={`${LanguageManager.trans("targetResistance")} <=`}
                       value={this.state.addSpellForm.resistanceValue}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                       disabled={this.state.characterConnected === false}
-                      autoFocus
+                      autoFocus={true}
                       margin="dense"
                       id="distanceToClosestMonster"
                       name="distanceToClosestMonster"
                       label={`${LanguageManager.trans("maxDistance")} <=`}
                       value={this.state.addSpellForm.distanceToClosestMonster}
-                      fullWidth
+                      fullWidth={true}
                       onChange={this.handleSelectChangeForm}
                       type="number"
                       InputLabelProps={{ shrink: true }}
@@ -672,7 +672,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
         </div>
         <Modal open={this.state.modalInfos} onClose={this.handleClose}>
           <div style={this.getModalStyle()} className={classes.modal}>
-            <List dense>
+            <List dense={true}>
               <ListItem>
                 <ListItemText primary={LanguageManager.trans("spellInfo")} />
               </ListItem>

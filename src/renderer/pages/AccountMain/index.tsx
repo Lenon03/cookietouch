@@ -37,8 +37,8 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
             className={classes.tabs}
             value={value}
             onChange={this.handleChange}
-            fullWidth
-            scrollable
+            fullWidth={true}
+            scrollable={true}
             scrollButtons="auto"
           >
             <Tab

@@ -1,16 +1,14 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:latest",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
     "no-console": false,
     "no-eval": false,
     "no-bitwise": false,
     "variable-name": [
-      true, "ban-keywords",
+      true,
+      "ban-keywords",
       "check-format",
       "allow-leading-underscore",
       "allow-snake-case"

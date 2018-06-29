@@ -28,7 +28,7 @@ class Character extends React.Component<CharacterTabProps, ICharacterTabState> {
     return (
       <Paper className={classes.root}>
         <AppBar className={classes.appBar} position="static">
-          <Tabs value={value} onChange={this.handleChange} fullWidth>
+          <Tabs value={value} onChange={this.handleChange} fullWidth={true}>
             <Tab
               className={classes.tab}
               label={LanguageManager.trans("stats")}

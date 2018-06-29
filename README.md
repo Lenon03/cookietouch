@@ -2,8 +2,16 @@
 
 <center>
 	<h1>
-    CookieTouch <a href="https://travis-ci.org/cookie-project/cookietouch">
-    <img src="https://travis-ci.org/cookie-project/cookietouch.svg?branch=master">
+    CookieTouch
+    <a href="https://travis-ci.org/cookie-project/cookietouch">
+      <img src="https://travis-ci.org/cookie-project/cookietouch.svg?branch=master" alt="Travis">
+    </a>
+		<a href="https://github.com/prettier/prettier">
+      <img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="Prettier">
+    </a>
+    <a href="https://github.styleci.io/repos/101233419">
+      <img src="https://github.styleci.io/repos/101233419/shield?branch=master"	alt="StyleCI">
+    </a>
   </a>
   </h1>
 </center>

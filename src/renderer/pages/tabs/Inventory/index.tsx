@@ -59,7 +59,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="static">
-          <Tabs value={value} onChange={this.handleChange} fullWidth>
+          <Tabs value={value} onChange={this.handleChange} fullWidth={true}>
             <Tab
               className={classes.tab}
               label={LanguageManager.trans("equipments")}
@@ -85,13 +85,13 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.tablecell} />
-                  <TableCell className={classes.tablecell} numeric>
+                  <TableCell className={classes.tablecell} numeric={true}>
                     ID
                   </TableCell>
                   <TableCell className={classes.tablecell}>
                     {LanguageManager.trans("name")}
                   </TableCell>
-                  <TableCell className={classes.tablecell} numeric>
+                  <TableCell className={classes.tablecell} numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
                   <TableCell className={classes.tablecell}>
@@ -114,13 +114,13 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           alt={e.name}
                         />
                       </TableCell>
-                      <TableCell className={classes.tablecell} numeric>
+                      <TableCell className={classes.tablecell} numeric={true}>
                         {e.gid}
                       </TableCell>
                       <TableCell className={classes.tablecell}>
                         {e.name}
                       </TableCell>
-                      <TableCell className={classes.tablecell} numeric>
+                      <TableCell className={classes.tablecell} numeric={true}>
                         {e.quantity}
                       </TableCell>
                       <TableCell className={classes.tablecell}>
@@ -166,9 +166,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
               <TableHead>
                 <TableRow>
                   <TableCell />
-                  <TableCell numeric>ID</TableCell>
+                  <TableCell numeric={true}>ID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
                   <TableCell>{LanguageManager.trans("actions")}</TableCell>
@@ -186,9 +186,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           alt={c.name}
                         />
                       </TableCell>
-                      <TableCell numeric>{c.gid}</TableCell>
+                      <TableCell numeric={true}>{c.gid}</TableCell>
                       <TableCell>{c.name}</TableCell>
-                      <TableCell numeric>{c.quantity}</TableCell>
+                      <TableCell numeric={true}>{c.quantity}</TableCell>
                       <TableCell>
                         <Button
                           variant="raised"
@@ -226,9 +226,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
               <TableHead>
                 <TableRow>
                   <TableCell />
-                  <TableCell numeric>ID</TableCell>
+                  <TableCell numeric={true}>ID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
                   <TableCell>{LanguageManager.trans("actions")}</TableCell>
@@ -246,9 +246,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           alt={r.name}
                         />
                       </TableCell>
-                      <TableCell numeric>{r.gid}</TableCell>
+                      <TableCell numeric={true}>{r.gid}</TableCell>
                       <TableCell>{r.name}</TableCell>
-                      <TableCell numeric>{r.quantity}</TableCell>
+                      <TableCell numeric={true}>{r.quantity}</TableCell>
                       <TableCell>
                         <Button
                           variant="raised"
@@ -278,9 +278,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
               <TableHead>
                 <TableRow>
                   <TableCell />
-                  <TableCell numeric>ID</TableCell>
+                  <TableCell numeric={true}>ID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
                 </TableRow>
@@ -297,9 +297,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                           alt={q.name}
                         />
                       </TableCell>
-                      <TableCell numeric>{q.gid}</TableCell>
+                      <TableCell numeric={true}>{q.gid}</TableCell>
                       <TableCell>{q.name}</TableCell>
-                      <TableCell numeric>{q.quantity}</TableCell>
+                      <TableCell numeric={true}>{q.quantity}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -329,12 +329,12 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
                   : LanguageManager.trans("howManyUse")}
             </DialogContentText>
             <TextField
-              autoFocus
+              autoFocus={true}
               margin="dense"
               id="number"
               label="Number"
               value={this.state.quantity}
-              fullWidth
+              fullWidth={true}
               onChange={this.handleQuantityChange("quantity")}
               type="number"
               InputLabelProps={{ shrink: true }}

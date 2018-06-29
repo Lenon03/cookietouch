@@ -97,7 +97,7 @@ class PlanningConfig extends React.Component<
                     Accounts
                   </InputLabel>
                   <Select
-                    multiple
+                    multiple={true}
                     value={this.state.selectedAccounts.map(a => a.username)}
                     onChange={this.handleChangeAccounts}
                     input={<Input id="select-multiple-chip" />}
@@ -142,7 +142,7 @@ class PlanningConfig extends React.Component<
                 {this.state.planning.map((act, index) => (
                   <ListItem
                     key={index}
-                    button
+                    button={true}
                     onClick={event => this.itemClicked(index)}
                     style={{
                       backgroundColor: act ? "green" : "red",

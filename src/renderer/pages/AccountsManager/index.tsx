@@ -32,26 +32,26 @@ class AccountsManager extends React.Component<
           open={dialogOpen}
           onClose={() => closeDialog()}
           aria-labelledby="form-dialog-title"
-          fullScreen
+          fullScreen={true}
         >
           <DialogTitle id="form-dialog-title">
             {LanguageManager.trans("accountsManager")}
           </DialogTitle>
           <DialogContent>
-            <Grid container spacing={0}>
-              <Grid item xs={7}>
+            <Grid container={true} spacing={0}>
+              <Grid item={true} xs={7}>
                 <AccountsList closeDialog={() => closeDialog()} />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item={true} xs={5}>
                 <AddAccountForm />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item={true} xs={12}>
                 <CharacterCreator />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item={true} xs={12}>
                 <PlanningConfig />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item={true} xs={12}>
                 <CacheManager />
               </Grid>
             </Grid>

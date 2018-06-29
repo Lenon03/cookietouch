@@ -110,8 +110,8 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={10}>
+        <Grid container={true} spacing={8}>
+          <Grid item={true} xs={10}>
             <img style={{ display: "none" }} id="mapimg" />
             {this.props.account.game.map.data
               ? this.props.account.game.map.data.midgroundLayer
@@ -141,7 +141,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
               height={DTConstants.TILE_HEIGHT * (DTConstants.MAP_HEIGHT + 0.5)}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item={true} xs={2}>
             <FormGroup>
               <FormControlLabel
                 control={

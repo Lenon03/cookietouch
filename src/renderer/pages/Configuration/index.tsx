@@ -85,12 +85,12 @@ class Configuration extends React.Component<
                 {LanguageManager.trans("anticaptchaKey")}
               </InputLabel>
               <Input
-                autoFocus
+                autoFocus={true}
                 id="anticaptcha"
                 type="text"
                 value={this.state.anticaptchaKey}
                 onChange={this.anticaptchaChanged}
-                fullWidth
+                fullWidth={true}
               />
               <Typography>Balance: {this.state.anticaptchaBalance}</Typography>
               <Button

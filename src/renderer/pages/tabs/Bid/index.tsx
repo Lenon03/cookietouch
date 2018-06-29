@@ -80,8 +80,8 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={4}>
+        <Grid container={true} spacing={8}>
+          <Grid item={true} xs={4}>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -103,13 +103,13 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             </FormGroup>
             <TextField
               disabled={this.state.characterConnected === false}
-              autoFocus
+              autoFocus={true}
               margin="dense"
               id="interval"
               name="interval"
               label={LanguageManager.trans("interval")}
               value={this.state.interval}
-              fullWidth
+              fullWidth={true}
               onChange={this.handleInputChange}
               type="number"
               InputLabelProps={{ shrink: true }}
@@ -166,13 +166,13 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                 </Typography>
                 <form onSubmit={this.submit}>
                   <TextField
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="gid"
                     name="gid"
                     label="GID"
                     value={this.state.addObjectForm.gid}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChangeForm}
                     type="number"
                     InputLabelProps={{ shrink: true }}
@@ -192,37 +192,37 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                     </Select>
                   </FormControl>
                   <TextField
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="quantity"
                     name="quantity"
                     label={LanguageManager.trans("quantity")}
                     value={this.state.addObjectForm.quantity}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChangeForm}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
                   <TextField
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="minPrice"
                     name="minPrice"
                     label={LanguageManager.trans("minPrice")}
                     value={this.state.addObjectForm.minPrice}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChangeForm}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
                   <TextField
-                    autoFocus
+                    autoFocus={true}
                     margin="dense"
                     id="basePrice"
                     name="basePrice"
                     label={LanguageManager.trans("basePrice")}
                     value={this.state.addObjectForm.basePrice}
-                    fullWidth
+                    fullWidth={true}
                     onChange={this.handleSelectChangeForm}
                     type="number"
                     InputLabelProps={{ shrink: true }}
@@ -234,20 +234,20 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item={true} xs={8}>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell numeric>GID</TableCell>
+                  <TableCell numeric={true}>GID</TableCell>
                   <TableCell>{LanguageManager.trans("name")}</TableCell>
-                  <TableCell numeric>{LanguageManager.trans("lot")}</TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>{LanguageManager.trans("lot")}</TableCell>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("quantity")}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("minPrice")}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric={true}>
                     {LanguageManager.trans("basePrice")}
                   </TableCell>
                   <TableCell>{LanguageManager.trans("actions")}</TableCell>

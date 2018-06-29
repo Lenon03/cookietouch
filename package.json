@@ -8,8 +8,8 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir",
     "dev": "electron-webpack dev",
-    "lint": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' -t stylish",
-    "lint:fix": "tslint -c tslint.json 'src/**/*.tsx' 'src/**/*.ts' -t stylish --fix",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish",
+    "lint:fix": "yarn lint --fix",
     "lint:check": "tslint-config-prettier-check ./tslint.json",
     "postinstall": "electron-builder install-app-deps",
     "release": "yarn compile && build"
@@ -33,8 +33,8 @@
   },
   "homepage": "https://github.com/cookie-project/cookietouch#readme",
   "devDependencies": {
-    "@types/node": "^10.5.0",
-    "@types/react": "^16.4.4",
+    "@types/node": "^10.5.1",
+    "@types/react": "^16.4.5",
     "@types/react-dom": "^16.0.5",
     "awesome-typescript-loader": "^5.2.0",
     "electron": "^3.0.0-beta.1",
@@ -47,7 +47,8 @@
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-loader": "^3.6.0",
-    "webpack": "^4.13.0",
+    "tslint-react": "^3.6.0",
+    "webpack": "^4.14.0",
     "webpack-build-notifier": "^0.1.27"
   },
   "dependencies": {
@@ -62,7 +63,7 @@
     "axios": "^0.18.0",
     "electron-log": "^2.2.16",
     "electron-updater": "^2.23.3",
-    "firebase": "^5.1.0",
+    "firebase": "^5.2.0",
     "linqts": "^1.11.0",
     "lodash": "^4.17.10",
     "material-design-icons": "^3.0.1",

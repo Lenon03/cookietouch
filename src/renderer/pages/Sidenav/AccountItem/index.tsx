@@ -21,7 +21,7 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem button onClick={() => this.changeAccount(account)}>
+        <ListItem button={true} onClick={() => this.changeAccount(account)}>
           <ListItemIcon>
             {account.state === AccountStates.NONE ? (
               <Avatar
@@ -32,7 +32,7 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
             )}
           </ListItemIcon>
           <ListItemText
-            inset
+            inset={true}
             primary={
               <span className={classes.text}>
                 {account.accountConfig.username}

@@ -30,7 +30,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
     return (
       <div className={classes.root}>
         <ListItem
-          button
+          button={true}
           onClick={() => {
             this.handleClick();
             this.changeAccount(group.chief);
@@ -52,7 +52,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
             )}
           </ListItemIcon>
           <ListItemText
-            inset
+            inset={true}
             primary={
               <span className={classes.text}>
                 {group.chief.accountConfig.username}
@@ -62,11 +62,11 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
           {this.state.open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
-        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+        <Collapse in={this.state.open} timeout="auto" unmountOnExit={true}>
           {group.members.ToArray().map((m, idx) => (
-            <List key={idx} component="div" disablePadding>
+            <List key={idx} component="div" disablePadding={true}>
               <ListItem
-                button
+                button={true}
                 className={classes.nested}
                 onClick={() => this.changeAccount(m)}
               >
@@ -80,7 +80,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  inset
+                  inset={true}
                   primary={
                     <span className={classes.text}>
                       {m.accountConfig.username}

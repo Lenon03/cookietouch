@@ -122,60 +122,60 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
             })}
           </TableBody>
         </Table>
-        <Grid container spacing={8}>
-          <Grid item xs={2}>
+        <Grid container={true} spacing={8}>
+          <Grid item={true} xs={2}>
             <TextField
               disabled={this.state.characterConnected === false}
-              autoFocus
+              autoFocus={true}
               margin="dense"
               id="generalChannelInterval"
               name="generalChannelInterval"
               label={LanguageManager.trans("generalChannelInterval")}
               value={this.state.generalChannelInterval}
-              fullWidth
+              fullWidth={true}
               onChange={this.handleInputChange}
               type="number"
               InputLabelProps={{ shrink: true }}
             />
             <TextField
               disabled={this.state.characterConnected === false}
-              autoFocus
+              autoFocus={true}
               margin="dense"
               id="seekChannelInterval"
               name="seekChannelInterval"
               label={LanguageManager.trans("seekChannelInterval")}
               value={this.state.seekChannelInterval}
-              fullWidth
+              fullWidth={true}
               onChange={this.handleInputChange}
               type="number"
               InputLabelProps={{ shrink: true }}
             />
             <TextField
               disabled={this.state.characterConnected === false}
-              autoFocus
+              autoFocus={true}
               margin="dense"
               id="salesChannelInterval"
               name="salesChannelInterval"
               label={LanguageManager.trans("salesChannelInterval")}
               value={this.state.salesChannelInterval}
-              fullWidth
+              fullWidth={true}
               onChange={this.handleInputChange}
               type="number"
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item={true} xs={10}>
             <form onSubmit={this.submit}>
               <TextField
                 disabled={this.state.characterConnected === false}
-                autoFocus
+                autoFocus={true}
                 margin="dense"
                 id="content"
                 name="content"
                 onChange={this.handleSelectChangeForm}
                 value={this.state.addSentenceForm.content}
                 label={LanguageManager.trans("content")}
-                fullWidth
+                fullWidth={true}
                 type="text"
                 InputLabelProps={{ shrink: true }}
               />

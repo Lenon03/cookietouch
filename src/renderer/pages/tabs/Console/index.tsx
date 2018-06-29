@@ -71,9 +71,9 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={0}>
-          <Grid item xs={9}>
-            <Grid container spacing={0}>
+        <Grid container={true} spacing={0}>
+          <Grid item={true} xs={9}>
+            <Grid container={true} spacing={0}>
               <div id="consoleTabDiv" className={classes.console}>
                 {this.state.messages.map((m, index) => {
                   if (m.source) {
@@ -100,7 +100,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                   );
                 })}
               </div>
-              <Grid item xs={3}>
+              <Grid item={true} xs={3}>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="channel">
                     {LanguageManager.trans("channel")}
@@ -141,12 +141,12 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item={true} xs={9}>
                 <FormControl className={classes.formControl}>
                   {/* <InputLabel htmlFor="content">{LanguageManager.trans("name")}</InputLabel> */}
                   <Input
                     disabled={this.state.characterConnected === false}
-                    autoFocus
+                    autoFocus={true}
                     id="content"
                     type="text"
                     value={this.state.content}
@@ -157,7 +157,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item={true} xs={3}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="status">
                 {LanguageManager.trans("status")}

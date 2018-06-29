@@ -41,9 +41,9 @@ function createMainWindow() {
     ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`
     : `file://${__dirname}/index.html`;
 
-  if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
+  // if (isDevelopment) {
+  window.webContents.openDevTools();
+  // }
 
   window.loadURL(url);
 

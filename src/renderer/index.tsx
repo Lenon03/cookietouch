@@ -29,7 +29,6 @@ async function init() {
   await DTConstants.Init();
   await BreedsUtility.Init();
   MapPoint.Init();
-  InventoryHelper.Init();
 }
 
 init();

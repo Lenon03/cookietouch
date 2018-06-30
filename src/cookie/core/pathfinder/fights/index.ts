@@ -4,37 +4,36 @@ import PathNode from "@/core/pathfinder/fights/PathNode";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import FightGame from "@/game/fight";
 import FighterEntry from "@/game/fight/fighters/FighterEntry";
-import Map from "@/protocol/data/map";
+import MapData from "@/protocol/data/map";
 import { GameActionFightInvisibilityStateEnum } from "@/protocol/enums/GameActionFightInvisibilityStateEnum";
-import Dictionary from "@/utils/Dictionary";
 
 export default class FightsPathfinder {
   public static getPath(
     source: number,
     target: number,
-    zone: Dictionary<number, MoveNode>
+    zone: Map<number, MoveNode>
   ): FightPath {
-    if (!zone.containsKey(target)) {
+    if (!zone.has(target)) {
       return null;
     }
 
     let current = target;
     const reachable: number[] = [];
     const unreachable: number[] = [];
-    const reachableMap = new Dictionary<number, number>();
-    const unreachableMap = new Dictionary<number, number>();
+    const reachableMap = new Map<number, number>();
+    const unreachableMap = new Map<number, number>();
     let ap = 0;
     let mp = 0;
     let distance = 0;
 
     while (current !== source) {
-      const cell = zone.getValue(current);
+      const cell = zone.get(current);
       if (cell.reachable) {
         reachable.unshift(current);
-        reachableMap.add(current, distance);
+        reachableMap.set(current, distance);
       } else {
         unreachable.unshift(current);
-        unreachableMap.add(current, distance);
+        unreachableMap.set(current, distance);
       }
 
       mp += cell.mp;
@@ -55,10 +54,10 @@ export default class FightsPathfinder {
 
   public static getReachableZone(
     fight: FightGame,
-    map: Map,
+    map: MapData,
     currentCellId: number
-  ): Dictionary<number, MoveNode> {
-    const zone = new Dictionary<number, MoveNode>();
+  ): Map<number, MoveNode> {
+    const zone = new Map<number, MoveNode>();
 
     if (fight.playedFighter.movementPoints <= 0) {
       return zone;
@@ -66,7 +65,7 @@ export default class FightsPathfinder {
 
     const maxDistance = fight.playedFighter.movementPoints;
     const opened: PathNode[] = [];
-    const closed = new Dictionary<number, PathNode>();
+    const closed = new Map<number, PathNode>();
 
     let node = new PathNode(
       currentCellId,
@@ -77,7 +76,7 @@ export default class FightsPathfinder {
       1
     );
     opened.push(node);
-    closed.add(currentCellId, node); // TODO: No changeValueForKey
+    closed.set(currentCellId, node); // TODO: No changeValueForKey
 
     while (opened.length > 0) {
       const current = opened.pop();
@@ -121,8 +120,8 @@ export default class FightsPathfinder {
       // TODO: Handle Marked cells
 
       for (const neighbour of neighbours) {
-        if (closed.containsKey(neighbour.cellId)) {
-          const previous = closed.getValue(neighbour.cellId);
+        if (closed.has(neighbour.cellId)) {
+          const previous = closed.get(neighbour.cellId);
           if (previous.availableMp > availableMp) {
             continue;
           }
@@ -137,18 +136,10 @@ export default class FightsPathfinder {
         if (!map.cells[neighbour.cellId].isWalkable(true)) {
           continue;
         }
-        if (zone.containsKey(neighbour.cellId)) {
-          // TODO: Check if it's right
-          zone.changeValueForKey(
-            neighbour.cellId,
-            new MoveNode(test.apCost, test.mpCost, cellId, reachable)
-          );
-        } else {
-          zone.add(
-            neighbour.cellId,
-            new MoveNode(test.apCost, test.mpCost, cellId, reachable)
-          );
-        }
+        zone.set(
+          neighbour.cellId,
+          new MoveNode(test.apCost, test.mpCost, cellId, reachable)
+        );
         node = new PathNode(
           neighbour.cellId,
           availableAp,
@@ -157,12 +148,7 @@ export default class FightsPathfinder {
           tackleMp,
           distance
         );
-        if (closed.containsKey(neighbour.cellId)) {
-          // TODO: Check if it's right
-          closed.changeValueForKey(neighbour.cellId, node);
-        } else {
-          closed.add(neighbour.cellId, node);
-        }
+        closed.set(neighbour.cellId, node);
 
         if (current.distance < maxDistance) {
           opened.push(node);
@@ -171,9 +157,9 @@ export default class FightsPathfinder {
     }
 
     for (const cellKey of zone.keys()) {
-      const elem = zone.getValue(cellKey);
+      const elem = zone.get(cellKey);
       elem.path = this.getPath(currentCellId, cellKey, zone);
-      zone.changeValueForKey(cellKey, elem);
+      zone.set(cellKey, elem);
     }
 
     return zone;

@@ -1,12 +1,11 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import { Languages } from "@/configurations/language/Languages";
-import Dictionary from "@/utils/Dictionary";
 import { staticPath } from "@/utils/staticPath";
 import * as fs from "fs";
 import * as path from "path";
 
 export default class LanguageManager {
-  private static langs: Dictionary<Languages, any>;
+  private static langs: Map<Languages, any>;
 
   public static Init() {
     const enFile = fs.readFileSync(path.join(staticPath, "./langs/en.json"));
@@ -22,21 +21,21 @@ export default class LanguageManager {
     const ptFile = fs.readFileSync(path.join(staticPath, "./langs/pt.json"));
     const pt = JSON.parse(ptFile.toString());
 
-    this.langs = new Dictionary([
-      { key: Languages.FRENCH, value: fr },
-      { key: Languages.ENGLISH, value: en },
-      { key: Languages.DEUTSCH, value: de },
-      { key: Languages.ITALIAN, value: it },
-      { key: Languages.PORTUGUESE, value: pt },
-      { key: Languages.SPANISH, value: es }
+    this.langs = new Map([
+      [Languages.FRENCH, fr],
+      [Languages.ENGLISH, en],
+      [Languages.DEUTSCH, de],
+      [Languages.ITALIAN, it],
+      [Languages.PORTUGUESE, pt],
+      [Languages.SPANISH, es]
     ]);
   }
 
   public static trans(key: string, ...params: any[]): string {
     const lang = GlobalConfiguration.lang;
-    let value = this.langs.getValue(lang)[key] as string;
+    let value = this.langs.get(lang)[key] as string;
     if (!value) {
-      value = this.langs.getValue(Languages.ENGLISH)[key] as string;
+      value = this.langs.get(Languages.ENGLISH)[key] as string;
       if (!value) {
         return "<empty>";
       }

@@ -19,12 +19,11 @@ import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRole
 import GameRolePlayGroupMonsterInformations from "@/protocol/network/types/GameRolePlayGroupMonsterInformations";
 import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
 import GameRolePlayNpcInformations from "@/protocol/network/types/GameRolePlayNpcInformations";
-import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 
-export default class Map implements IClearable {
+export default class MapGame implements IClearable {
   private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
   private static readonly doorTypeIds = [-1, 128, 168, 16];
 
@@ -38,14 +37,14 @@ export default class Map implements IClearable {
   public blacklistedMonsters: number[] = [];
   public zaap: ElementInCellEntry = null;
   public zaapi: ElementInCellEntry = null;
-  private _players = new Dictionary<number, PlayerEntry>();
-  private _npcs = new Dictionary<number, NpcEntry>();
-  private _monstersGroups = new Dictionary<number, MonstersGroupEntry>();
-  private _interactives = new Dictionary<number, InteractiveElementEntry>();
-  private _doors = new Dictionary<number, ElementInCellEntry>();
-  private _statedElements = new Dictionary<number, StatedElementEntry>();
-  private _phenixs = new Dictionary<number, ElementInCellEntry>();
-  private _lockedStorages = new Dictionary<number, ElementInCellEntry>();
+  private _players = new Map<number, PlayerEntry>();
+  private _npcs = new Map<number, NpcEntry>();
+  private _monstersGroups = new Map<number, MonstersGroupEntry>();
+  private _interactives = new Map<number, InteractiveElementEntry>();
+  private _doors = new Map<number, ElementInCellEntry>();
+  private _statedElements = new Map<number, StatedElementEntry>();
+  private _phenixs = new Map<number, ElementInCellEntry>();
+  private _lockedStorages = new Map<number, ElementInCellEntry>();
   private readonly onMapChanged = new LiteEvent<void>();
   private readonly onMapLoaded = new LiteEvent<void>();
   private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
@@ -110,35 +109,35 @@ export default class Map implements IClearable {
   }
 
   get players() {
-    return this._players.values();
+    return Array.from(this._players.values());
   }
 
   get npcs() {
-    return this._npcs.values();
+    return Array.from(this._npcs.values());
   }
 
   get monstersGroups() {
-    return this._monstersGroups.values();
+    return Array.from(this._monstersGroups.values());
   }
 
   get interactives() {
-    return this._interactives.values();
+    return Array.from(this._interactives.values());
   }
 
   get doors() {
-    return this._doors.values();
+    return Array.from(this._doors.values());
   }
 
   get statedElements() {
-    return this._statedElements.values();
+    return Array.from(this._statedElements.values());
   }
 
   get phenixs() {
-    return this._phenixs.values();
+    return Array.from(this._phenixs.values());
   }
 
   get lockedStorages() {
-    return this._lockedStorages.values();
+    return Array.from(this._lockedStorages.values());
   }
 
   public clear() {
@@ -176,11 +175,15 @@ export default class Map implements IClearable {
   }
 
   public getStatedElement(elementId: number) {
-    return this._statedElements.getValue(elementId);
+    return this._statedElements.has(elementId)
+      ? this._statedElements.get(elementId)
+      : null;
   }
 
   public getInteractiveElement(elementId: number) {
-    return this._interactives.getValue(elementId);
+    return this._interactives.has(elementId)
+      ? this._interactives.get(elementId)
+      : null;
   }
 
   public canFight(
@@ -271,7 +274,7 @@ export default class Map implements IClearable {
       return this.playedCharacter;
     }
 
-    return this._players.getValue(id);
+    return this._players.has(id) ? this._players.get(id) : null;
   }
 
   public async UpdateMapComplementaryInformationsDataMessage(
@@ -308,14 +311,14 @@ export default class Map implements IClearable {
       LanguageManager.trans("gotMapInfos", this.currentPosition, stop - start)
     );
 
-    this._players = new Dictionary<number, PlayerEntry>();
-    this._npcs = new Dictionary<number, NpcEntry>();
-    this._monstersGroups = new Dictionary<number, MonstersGroupEntry>();
-    this._interactives = new Dictionary<number, InteractiveElementEntry>();
-    this._doors = new Dictionary<number, ElementInCellEntry>();
-    this._statedElements = new Dictionary<number, StatedElementEntry>();
-    this._phenixs = new Dictionary<number, ElementInCellEntry>();
-    this._lockedStorages = new Dictionary<number, ElementInCellEntry>();
+    this._players = new Map<number, PlayerEntry>();
+    this._npcs = new Map<number, NpcEntry>();
+    this._monstersGroups = new Map<number, MonstersGroupEntry>();
+    this._interactives = new Map<number, InteractiveElementEntry>();
+    this._doors = new Map<number, ElementInCellEntry>();
+    this._statedElements = new Map<number, StatedElementEntry>();
+    this._phenixs = new Map<number, ElementInCellEntry>();
+    this._lockedStorages = new Map<number, ElementInCellEntry>();
     this.teleportableCells = [];
     this.blacklistedMonsters = [];
     this.zaap = null;
@@ -327,24 +330,24 @@ export default class Map implements IClearable {
         if (parsed.contextualId === this.account.game.character.id) {
           this.playedCharacter = new PlayerEntry(parsed);
         } else {
-          this._players.add(parsed.contextualId, new PlayerEntry(parsed));
+          this._players.set(parsed.contextualId, new PlayerEntry(parsed));
         }
       } else if (actor._type === "GameRolePlayMutantInformations") {
         const parsed = actor as GameRolePlayMutantInformations;
         if (parsed.contextualId === this.account.game.character.id) {
           this.playedCharacter = new PlayerEntry(parsed);
         } else {
-          this._players.add(parsed.contextualId, new PlayerEntry(parsed));
+          this._players.set(parsed.contextualId, new PlayerEntry(parsed));
         }
       } else if (
         actor._type === "GameRolePlayNpcInformations" ||
         actor._type === "GameRolePlayNpcWithQuestInformations"
       ) {
         const parsed = actor as GameRolePlayNpcInformations;
-        this._npcs.add(actor.contextualId, new NpcEntry(parsed));
+        this._npcs.set(actor.contextualId, new NpcEntry(parsed));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
         const parsed = actor as GameRolePlayGroupMonsterInformations;
-        this._monstersGroups.add(
+        this._monstersGroups.set(
           actor.contextualId,
           new MonstersGroupEntry(parsed)
         );
@@ -352,24 +355,24 @@ export default class Map implements IClearable {
     }
 
     for (const interactive of message.interactiveElements) {
-      this._interactives.add(
+      this._interactives.set(
         interactive.elementId,
         new InteractiveElementEntry(interactive)
       );
     }
     for (const stated of message.statedElements) {
-      this._statedElements.add(
+      this._statedElements.set(
         stated.elementId,
         new StatedElementEntry(stated)
       );
     }
 
     // Doors
-    for (const kvp of this.data.midgroundLayer) {
-      for (const graph of kvp.value) {
+    for (const kvp of this.data.midgroundLayer.entries()) {
+      for (const graph of kvp["1"]) {
         // Check for teleportable cells
         if (graph.g === 21000) {
-          this.teleportableCells.push(kvp.key);
+          this.teleportableCells.push(kvp["0"]);
         } else {
           // Check for other usable interactives (like doors)
           const interactive = this.getInteractiveElement(graph.id);
@@ -381,9 +384,9 @@ export default class Map implements IClearable {
           // Check if this element is a phenix
           // (a phenix doesn't have skills that's why we check here)
           if (graph.g === 7521) {
-            this._phenixs.add(
+            this._phenixs.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp.key)
+              new ElementInCellEntry(interactive, kvp["0"])
             );
           }
 
@@ -393,23 +396,23 @@ export default class Map implements IClearable {
 
           // Zaap
           if (graph.g === 15363 || graph.g === 38003) {
-            this.zaap = new ElementInCellEntry(interactive, kvp.key);
+            this.zaap = new ElementInCellEntry(interactive, kvp["0"]);
           } else if (graph.g === 15004 || graph.g === 9541) {
             // Zaapi
-            this.zaapi = new ElementInCellEntry(interactive, kvp.key);
+            this.zaapi = new ElementInCellEntry(interactive, kvp["0"]);
           } else if (graph.g === 12367) {
             // Locked Storages
-            this._lockedStorages.add(
+            this._lockedStorages.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp.key)
+              new ElementInCellEntry(interactive, kvp["0"])
             );
           } else if (
-            Map.doorTypeIds.includes(interactive.elementTypeId) &&
-            Map.doorSkillIds.includes(interactive.enabledSkills[0].id)
+            MapGame.doorTypeIds.includes(interactive.elementTypeId) &&
+            MapGame.doorSkillIds.includes(interactive.enabledSkills[0].id)
           ) {
-            this._doors.add(
+            this._doors.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp.key)
+              new ElementInCellEntry(interactive, kvp["0"])
             );
           }
         }
@@ -440,26 +443,21 @@ export default class Map implements IClearable {
   public async UpdateGameRolePlayShowActorMessage(message: any) {
     if (message.informations._type === "GameRolePlayCharacterInformations") {
       const pe = new PlayerEntry(message.informations);
-      if (this._players.containsKey(pe.id)) {
-        this._players.remove(pe.id);
-        this._players.add(pe.id, pe);
-      } else {
-        this._players.add(pe.id, pe);
-      }
+      this._players.set(pe.id, pe);
       this.onEntitiesUpdated.trigger();
       this.onPlayerJoined.trigger(pe);
     } else if (
       message.informations._type === "GameRolePlayMutantInformations"
     ) {
       const pe = new PlayerEntry(message.informations);
-      this._players.add(pe.id, pe);
+      this._players.set(pe.id, pe);
       this.onPlayerJoined.trigger(pe);
       this.onEntitiesUpdated.trigger();
     } else if (
       message.informations._type === "GameRolePlayGroupMonsterInformations"
     ) {
       const mge = new MonstersGroupEntry(message.informations);
-      this._monstersGroups.add(message.informations.contextualId, mge);
+      this._monstersGroups.set(message.informations.contextualId, mge);
       this.onEntitiesUpdated.trigger();
     }
   }
@@ -485,7 +483,7 @@ export default class Map implements IClearable {
         this.onEntitiesUpdated.trigger();
       }
     } else {
-      const mg = this._monstersGroups.getValue(message.actorId);
+      const mg = this._monstersGroups.get(message.actorId);
 
       if (mg) {
         mg.UpdateGameMapMovementMessage(message);
@@ -495,8 +493,8 @@ export default class Map implements IClearable {
   }
 
   public async UpdateInteractiveElementUpdatedMessage(message: any) {
-    if (this._interactives.remove(message.interactiveElement.elementId)) {
-      this._interactives.add(
+    if (this._interactives.delete(message.interactiveElement.elementId)) {
+      this._interactives.set(
         message.interactiveElement.elementId,
         new InteractiveElementEntry(message.interactiveElement)
       );
@@ -506,10 +504,10 @@ export default class Map implements IClearable {
   }
 
   public async UpdateInteractiveMapUpdateMessage(message: any) {
-    this._interactives = new Dictionary<number, InteractiveElementEntry>();
+    this._interactives = new Map<number, InteractiveElementEntry>();
 
     for (const inter of message.interactiveElements) {
-      this._interactives.add(
+      this._interactives.set(
         inter.elementId,
         new InteractiveElementEntry(inter)
       );
@@ -519,8 +517,8 @@ export default class Map implements IClearable {
   }
 
   public async UpdateStatedElementUpdatedMessage(message: any) {
-    if (this._statedElements.remove(message.statedElement.elementId)) {
-      this._statedElements.add(
+    if (this._statedElements.delete(message.statedElement.elementId)) {
+      this._statedElements.set(
         message.statedElement.elementId,
         new StatedElementEntry(message.statedElement)
       );
@@ -530,10 +528,10 @@ export default class Map implements IClearable {
   }
 
   public async UpdateStatedMapUpdateMessage(message: any) {
-    this._statedElements = new Dictionary<number, StatedElementEntry>();
+    this._statedElements = new Map<number, StatedElementEntry>();
 
     for (const stated of message.statedElements) {
-      this._statedElements.add(
+      this._statedElements.set(
         stated.elementId,
         new StatedElementEntry(stated)
       );
@@ -549,10 +547,10 @@ export default class Map implements IClearable {
   private removeEntity(id: number) {
     const p = this.getPlayer(id);
     if (p !== null) {
-      this._players.remove(id);
+      this._players.delete(id);
       this.onPlayerLeft.trigger(p);
       this.onEntitiesUpdated.trigger();
-    } else if (this._monstersGroups.remove(id)) {
+    } else if (this._monstersGroups.delete(id)) {
       this.onEntitiesUpdated.trigger();
     }
   }

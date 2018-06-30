@@ -2,7 +2,6 @@ import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellR
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
 import { BreedEnum } from "@/protocol/enums/BreedEnum";
-import Dictionary from "@/utils/Dictionary";
 import { List } from "linqts";
 
 export default class TutorialHelper {
@@ -15,10 +14,10 @@ export default class TutorialHelper {
   public static firstEquipItem = 10785;
   public static secondEquipItems = [10784, 10794, 10797, 10799, 10800];
 
-  public static baseSpells = new Dictionary<BreedEnum, List<Spell>>([
-    {
-      key: BreedEnum.Feca,
-      value: new List<Spell>([
+  public static baseSpells = new Map<BreedEnum, List<Spell>>([
+    [
+      BreedEnum.Feca,
+      new List<Spell>([
         new Spell(
           3,
           "Attaque Naturelle",
@@ -36,10 +35,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Osamodas,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Osamodas,
+      new List<Spell>([
         new Spell(
           21,
           "Griffe Spectrale",
@@ -57,10 +56,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Enutrof,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Enutrof,
+      new List<Spell>([
         new Spell(
           43,
           "Lancer de Pelle",
@@ -78,10 +77,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Sram,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Sram,
+      new List<Spell>([
         new Spell(
           61,
           "Sournoiserie",
@@ -99,10 +98,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Xelor,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Xelor,
+      new List<Spell>([
         new Spell(
           83,
           "Aiguille",
@@ -120,10 +119,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Ecaflip,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Ecaflip,
+      new List<Spell>([
         new Spell(
           102,
           "Pile ou Face",
@@ -141,10 +140,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Eniripsa,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Eniripsa,
+      new List<Spell>([
         new Spell(
           125,
           "Mot Interdit",
@@ -162,10 +161,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Iop,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Iop,
+      new List<Spell>([
         new Spell(
           141,
           "Pression",
@@ -183,10 +182,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Cra,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Cra,
+      new List<Spell>([
         new Spell(
           161,
           "Flèche Magique",
@@ -204,10 +203,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Sadida,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Sadida,
+      new List<Spell>([
         new Spell(
           183,
           "Ronce",
@@ -225,10 +224,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Sacrieur,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Sacrieur,
+      new List<Spell>([
         new Spell(
           432,
           "Pied du Sacrieur",
@@ -246,10 +245,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Pandawa,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Pandawa,
+      new List<Spell>([
         new Spell(
           686,
           "Picole",
@@ -283,10 +282,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Roublard,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Roublard,
+      new List<Spell>([
         new Spell(
           2808,
           "Explobombe",
@@ -304,10 +303,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Zobal,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Zobal,
+      new List<Spell>([
         new Spell(
           2881,
           "Martelo",
@@ -325,10 +324,10 @@ export default class TutorialHelper {
           false
         )
       ])
-    },
-    {
-      key: BreedEnum.Steamer,
-      value: new List<Spell>([
+    ],
+    [
+      BreedEnum.Steamer,
+      new List<Spell>([
         new Spell(
           3210,
           "Ancrage",
@@ -346,6 +345,6 @@ export default class TutorialHelper {
           false
         )
       ])
-    }
+    ]
   ]);
 }

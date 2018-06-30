@@ -1,5 +1,3 @@
-import Dictionary from "@/utils/Dictionary";
-
 export class GraphicSizes {
   public sx: number;
   public sy: number;
@@ -10,5 +8,5 @@ export class GraphicSizes {
 export class AtlasLayout {
   public width: number;
   public height: number;
-  public graphicsPositions = new Dictionary<number, GraphicSizes>();
+  public graphicsPositions = new Map<number, GraphicSizes>();
 }

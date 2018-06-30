@@ -1,6 +1,5 @@
 import AnimDuration from "@/core/pathfinder/AnimDuration";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import Dictionary from "@/utils/Dictionary";
 
 enum AnimDurationTypes {
   MOUNTED,
@@ -11,15 +10,12 @@ enum AnimDurationTypes {
 }
 
 export default class PathDuration {
-  private static animDurations = new Dictionary<
-    AnimDurationTypes,
-    AnimDuration
-  >([
-    { key: AnimDurationTypes.MOUNTED, value: new AnimDuration(135, 200, 120) },
-    { key: AnimDurationTypes.PARABLE, value: new AnimDuration(400, 500, 450) },
-    { key: AnimDurationTypes.RUNNING, value: new AnimDuration(170, 255, 150) },
-    { key: AnimDurationTypes.WALKING, value: new AnimDuration(480, 510, 425) },
-    { key: AnimDurationTypes.SLIDE, value: new AnimDuration(57, 85, 50) }
+  private static animDurations = new Map<AnimDurationTypes, AnimDuration>([
+    [AnimDurationTypes.MOUNTED, new AnimDuration(135, 200, 120)],
+    [AnimDurationTypes.PARABLE, new AnimDuration(400, 500, 450)],
+    [AnimDurationTypes.RUNNING, new AnimDuration(170, 255, 150)],
+    [AnimDurationTypes.WALKING, new AnimDuration(480, 510, 425)],
+    [AnimDurationTypes.SLIDE, new AnimDuration(57, 85, 50)]
   ]);
 
   public static calculate(
@@ -37,14 +33,14 @@ export default class PathDuration {
     let motionScheme: AnimDuration;
 
     if (slide) {
-      motionScheme = this.animDurations.getValue(AnimDurationTypes.SLIDE);
+      motionScheme = this.animDurations.get(AnimDurationTypes.SLIDE);
     } else if (riding) {
-      motionScheme = this.animDurations.getValue(AnimDurationTypes.MOUNTED);
+      motionScheme = this.animDurations.get(AnimDurationTypes.MOUNTED);
     } else {
       motionScheme =
         path.length > 3
-          ? this.animDurations.getValue(AnimDurationTypes.RUNNING)
-          : this.animDurations.getValue(AnimDurationTypes.WALKING);
+          ? this.animDurations.get(AnimDurationTypes.RUNNING)
+          : this.animDurations.get(AnimDurationTypes.WALKING);
     }
 
     let prevX = -1;

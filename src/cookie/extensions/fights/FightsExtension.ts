@@ -49,7 +49,7 @@ export default class FightsExtension implements IClearable {
 
   get spells() {
     return this.account.extensions.characterCreation.isDoingTutorial
-      ? TutorialHelper.baseSpells.getValue(this.account.game.character.breed)
+      ? TutorialHelper.baseSpells.get(this.account.game.character.breed)
       : new List(this.config.spells);
   }
 
@@ -300,7 +300,7 @@ export default class FightsExtension implements IClearable {
       if (node !== null) {
         this.account.logger.logDebug(
           LanguageManager.trans("fightsExtension"),
-          LanguageManager.trans("endTurnMove", node.key)
+          LanguageManager.trans("endTurnMove", node["0"])
         );
         this._endTurn = true;
         await this.account.game.managers.movements.moveToCellInFight(node);

@@ -4,7 +4,6 @@ import BidConfiguration from "@/extensions/bid/BidConfiguration";
 import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
 import ExchangeBidHouseItemAddOkMessage from "@/protocol/network/messages/ExchangeBidHouseItemAddOkMessage";
 import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
-import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
@@ -19,7 +18,7 @@ export default class BidExtension implements IClearable {
   private timer: TimerWrapper;
   private enabled: boolean = false;
   private waiting: boolean = false;
-  private pricesInBid: Dictionary<number, number[]>;
+  private pricesInBid: Map<number, number[]>;
   private readonly onStarted = new LiteEvent<void>();
   private readonly onStopped = new LiteEvent<void>();
   private readonly onStatisticsUpdated = new LiteEvent<void>();
@@ -120,14 +119,14 @@ export default class BidExtension implements IClearable {
     }
     await sleep(400);
     // Get all the prices and save them
-    this.pricesInBid = new Dictionary<number, number[]>();
+    this.pricesInBid = new Map<number, number[]>();
     const gids = this.config.objectsToSell
       .Select(o => o.gid)
       .Distinct()
       .ToArray();
     for (const gid of gids) {
       const prices = await this.account.game.bid.getItemPrices(gid);
-      this.pricesInBid.add(gid, prices);
+      this.pricesInBid.set(gid, prices);
       await sleep(800);
     }
     // Close the bidbuyer
@@ -169,7 +168,7 @@ export default class BidExtension implements IClearable {
         o => o.objectGID === objToSell.gid && o.quantity === objToSell.lot
       );
       // Get the price in bid of this specific ObjectToSell
-      const priceInBid = this.pricesInBid.getValue(objToSell.gid)[
+      const priceInBid = this.pricesInBid.get(objToSell.gid)[
         this.lotToIndex(objToSell.lot)
       ];
       // This will hold the price that should our objects have (either modified or added)

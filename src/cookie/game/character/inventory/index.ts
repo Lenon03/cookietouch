@@ -1,6 +1,8 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import InventoryHelper, { ObjectTypes } from "@/game/character/inventory/InventoryHelper";
+import InventoryHelper, {
+  ObjectTypes
+} from "@/game/character/inventory/InventoryHelper";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
@@ -8,7 +10,6 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
-import Dictionary from "@/utils/Dictionary";
 import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
@@ -19,7 +20,7 @@ export default class Inventory {
 
   private account: Account;
   private _fallbackMaxWeight: number;
-  private _objects = new Dictionary<number, ObjectEntry>();
+  private _objects = new Map<number, ObjectEntry>();
   private readonly onInventoryUpdated = new LiteEvent<boolean>();
   private readonly onObjectGained = new LiteEvent<number>();
   private readonly onObjectEquipped = new LiteEvent<number>();
@@ -29,7 +30,7 @@ export default class Inventory {
   }
 
   get objects() {
-    return new List(this._objects.values());
+    return new List(Array.from(this._objects.values()));
   }
 
   get equipments() {
@@ -253,7 +254,7 @@ export default class Inventory {
   }
 
   public async UpdateInventoryContentMessage(message: InventoryContentMessage) {
-    this._objects = new Dictionary<number, ObjectEntry>();
+    this._objects = new Map<number, ObjectEntry>();
     this.kamas = message.kamas;
 
     const items = await DataManager.get<Items>(
@@ -263,14 +264,14 @@ export default class Inventory {
     for (const obj of message.objects) {
       const e = items.find(f => f.id === obj.objectGID).object;
       const entry = new ObjectEntry(obj, e ? e : undefined);
-      this._objects.add(obj.objectUID, entry);
+      this._objects.set(obj.objectUID, entry);
     }
     this.onInventoryUpdated.trigger(true);
   }
 
   public async UpdateObjectAddedMessage(message: any) {
     const obj = new ObjectEntry(message.object);
-    this._objects.add(message.object.objectUID, obj);
+    this._objects.set(message.object.objectUID, obj);
     this.onObjectGained.trigger(obj.gid);
     this.onInventoryUpdated.trigger(true);
   }
@@ -284,26 +285,26 @@ export default class Inventory {
     for (const obj of message.object) {
       const e = items.find(f => f.id === obj.objectGID).object;
       const entry = new ObjectEntry(obj, e ? e : null);
-      this._objects.add(obj.objectUID, entry);
+      this._objects.set(obj.objectUID, entry);
     }
 
     this.onInventoryUpdated.trigger(true);
   }
 
   public async UpdateObjectDeletedMessage(message: any) {
-    this._objects.remove(message.objectUID);
+    this._objects.delete(message.objectUID);
     this.onInventoryUpdated.trigger(true);
   }
 
   public async UpdateObjectsDeletedMessage(message: any) {
     for (const uid of message.objectUID) {
-      this._objects.remove(uid);
+      this._objects.delete(uid);
     }
     this.onInventoryUpdated.trigger(true);
   }
 
   public async UpdateObjectModifiedMessage(message: any) {
-    const obj = this._objects.getValue(message.object.objectUID);
+    const obj = this._objects.get(message.object.objectUID);
     if (obj !== undefined) {
       obj.UpdateObjectItem(message.object);
     }
@@ -311,7 +312,7 @@ export default class Inventory {
   }
 
   public async UpdateObjectMovementMessage(message: any) {
-    const obj = this._objects.getValue(message.objectUID);
+    const obj = this._objects.get(message.objectUID);
     if (obj !== undefined) {
       obj.UpdateObjectMovementMessage(message);
 
@@ -326,7 +327,7 @@ export default class Inventory {
   }
 
   public async UpdateObjectQuantityMessage(message: any) {
-    const obj = this._objects.getValue(message.objectUID);
+    const obj = this._objects.get(message.objectUID);
     if (obj !== undefined) {
       obj.UpdateQuantity(message.quantity);
       this.onObjectGained.trigger(obj.gid);
@@ -336,7 +337,7 @@ export default class Inventory {
 
   public async UpdateObjectsQuantityMessage(message: any) {
     for (const o of message.objectsUIDAndQty) {
-      const obj = this._objects.getValue(o.objectUID);
+      const obj = this._objects.get(o.objectUID);
       if (obj !== undefined) {
         obj.UpdateQuantity(message.quantity);
         this.onObjectGained.trigger(obj.gid);

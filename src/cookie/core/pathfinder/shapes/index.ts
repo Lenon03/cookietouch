@@ -44,7 +44,7 @@ export default class SpellShapes {
     const zone = [];
 
     const effect = this.getZoneEffect(spellLevel);
-    const shaper = Shaper.shaperMap.getValue(effect.zoneShape);
+    const shaper = Shaper.shaperMap.get(effect.zoneShape);
 
     if (shaper === null) {
       zone.push(MapPoint.fromCellId(targetCellId));

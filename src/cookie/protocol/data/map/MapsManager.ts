@@ -56,7 +56,7 @@ export default class MapsManager {
         for (let i = 0; i < values.length; i++) {
           values[i] = { id: parseInt(key, 10), ...values[i] };
         }
-        map.midgroundLayer.add(parseInt(key, 10), values);
+        map.midgroundLayer.set(parseInt(key, 10), values);
       }
     }
     map.atlasLayout.width = json.atlasLayout.width;
@@ -64,7 +64,7 @@ export default class MapsManager {
     for (const key in json.atlasLayout.graphicsPositions) {
       if (json.atlasLayout.graphicsPositions.hasOwnProperty(key)) {
         const gs = json.atlasLayout.graphicsPositions[key] as GraphicSizes;
-        map.atlasLayout.graphicsPositions.add(parseInt(key, 10), gs);
+        map.atlasLayout.graphicsPositions.set(parseInt(key, 10), gs);
       }
     }
 

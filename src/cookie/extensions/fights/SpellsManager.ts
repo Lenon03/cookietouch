@@ -14,7 +14,6 @@ import DataManager from "@/protocol/data";
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import Spells from "@/protocol/data/classes/Spells";
 import { DataTypes } from "@/protocol/data/DataTypes";
-import Dictionary from "@/utils/Dictionary";
 
 export default class SpellsManager {
   private account: Account;
@@ -125,7 +124,7 @@ export default class SpellsManager {
       spell,
       spellLevel
     );
-    if (entry.touchedEnemiesByCell.count() > 0) {
+    if (entry.touchedEnemiesByCell.size > 0) {
       entries.push(entry);
     }
 
@@ -133,20 +132,20 @@ export default class SpellsManager {
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
-    )) {
-      if (!kvp.value.reachable) {
+    ).entries()) {
+      if (!kvp["1"].reachable) {
         continue;
       }
-      if (kvp.value.ap > 0 || kvp.value.mp > 0) {
+      if (kvp["1"].ap > 0 || kvp["1"].mp > 0) {
         continue;
       }
       entry = await this.getRangeNodeEntry(
-        kvp.key,
-        kvp.value,
+        kvp["0"],
+        kvp["1"],
         spell,
         spellLevel
       );
-      if (entry.touchedEnemiesByCell.count() > 0) {
+      if (entry.touchedEnemiesByCell.size > 0) {
         entries.push(entry);
       }
     }
@@ -155,12 +154,12 @@ export default class SpellsManager {
     // If we need to move, try to move with te lowest amount of mps (with the same number of touched enemies of course)
     let cellId = -1;
     let fromCellId = -1;
-    let node: { key: number; value: MoveNode } = null;
+    let node: [number, MoveNode] = null;
     let touchedEnemies = 0;
     let usedMps = 99;
 
     for (const t of entries) {
-      for (const kvp of t.touchedEnemiesByCell) {
+      for (const kvp of t.touchedEnemiesByCell.entries()) {
         // Check hand to hand
         if (
           spell.handToHand &&
@@ -173,28 +172,28 @@ export default class SpellsManager {
           (await this.account.game.fight.canLaunchSpellOnTarget(
             spell.spellId,
             t.fromCellId,
-            kvp.key
+            kvp["0"]
           )) !== SpellInabilityReasons.NONE
         ) {
           continue;
         }
 
         // >= in case a cell uses less mp
-        if (kvp.value < touchedEnemies) {
+        if (kvp["1"] < touchedEnemies) {
           continue;
         }
         if (
-          kvp.value <= touchedEnemies &&
-          (kvp.value !== touchedEnemies || t.mpUsed > usedMps)
+          kvp["1"] <= touchedEnemies &&
+          (kvp["1"] !== touchedEnemies || t.mpUsed > usedMps)
         ) {
           continue;
         }
-        touchedEnemies = kvp.value;
-        cellId = kvp.key;
+        touchedEnemies = kvp["1"];
+        cellId = kvp["0"];
         fromCellId = t.fromCellId;
         usedMps = t.mpUsed;
         if (t.node !== null) {
-          node = { key: fromCellId, value: t.node };
+          node = [fromCellId, t.node];
         }
       }
     }
@@ -237,7 +236,7 @@ export default class SpellsManager {
     spellLevel: SpellLevels
   ): Promise<RangeNodeEntry> {
     // Calculate touched enemies for every cell in spell range
-    const touchedEnemiesByCell = new Dictionary<number, number>();
+    const touchedEnemiesByCell = new Map<number, number>();
     const range = this.account.game.fight.getSpellRange(fromCellId, spellLevel);
 
     for (const t of range) {
@@ -248,7 +247,7 @@ export default class SpellsManager {
         spellLevel
       );
       if (tec > 0) {
-        touchedEnemiesByCell.add(t, tec);
+        touchedEnemiesByCell.set(t, tec);
       }
     }
     return new RangeNodeEntry(fromCellId, touchedEnemiesByCell, node);
@@ -338,27 +337,27 @@ export default class SpellsManager {
     target: FighterEntry
   ): Promise<SpellCastingResults> {
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
-    let node: { key: number; value: MoveNode } = null;
+    let node: [number, MoveNode] = null;
     let pmUsed = 99;
 
     for (const kvp of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
-    )) {
-      if (!kvp.value.reachable) {
+    ).entries()) {
+      if (!kvp["1"].reachable) {
         continue;
       }
 
       // Only choose the safe paths
-      if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
+      if (kvp["1"].path.ap > 0 || kvp["1"].path.mp > 0) {
         continue;
       }
 
       if (
         spell.handToHand &&
-        MapPoint.fromCellId(kvp.key).distanceToCell(
-          MapPoint.fromCellId(kvp.key)
+        MapPoint.fromCellId(kvp["0"]).distanceToCell(
+          MapPoint.fromCellId(kvp["0"])
         )
       ) {
         continue;
@@ -367,23 +366,23 @@ export default class SpellsManager {
       if (
         (await this.account.game.fight.canLaunchSpellOnTarget(
           spell.spellId,
-          kvp.key,
+          kvp["0"],
           target.cellId
         )) !== SpellInabilityReasons.NONE
       ) {
         continue;
       }
 
-      if (kvp.value.path.reachable.length <= pmUsed) {
+      if (kvp["1"].path.reachable.length <= pmUsed) {
         node = kvp;
-        pmUsed = kvp.value.path.reachable.length;
+        pmUsed = kvp["1"].path.reachable.length;
       }
     }
 
     if (node !== null) {
       this.account.logger.logDebug(
         LanguageManager.trans("spellsManager"),
-        LanguageManager.trans("moveToCast", node.key, spell.spellName)
+        LanguageManager.trans("moveToCast", node["0"], spell.spellName)
       );
       await this.account.game.managers.movements.moveToCellInFight(node);
       return SpellCastingResults.MOVED;
@@ -456,39 +455,39 @@ export default class SpellsManager {
     spellLevel: SpellLevels
   ): Promise<SpellCastingResults> {
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
-    let node: { key: number; value: MoveNode } = null;
+    let node: [number, MoveNode] = null;
     let pmUsed = 99;
     for (const kvp of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
-    )) {
-      if (!kvp.value.reachable) {
+    ).entries()) {
+      if (!kvp["1"].reachable) {
         continue;
       }
       // Only choose the safe paths
-      if (kvp.value.path.ap > 0 || kvp.value.path.mp > 0) {
+      if (kvp["1"].path.ap > 0 || kvp["1"].path.mp > 0) {
         continue;
       }
       // if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId())) {
       //   continue;
       // }
-      const range = this.account.game.fight.getSpellRange(kvp.key, spellLevel);
+      const range = this.account.game.fight.getSpellRange(kvp["0"], spellLevel);
       for (const t of range) {
         if (
           (await this.account.game.fight.canLaunchSpellOnTarget(
             spell.spellId,
-            kvp.key,
+            kvp["0"],
             t
           )) !== SpellInabilityReasons.NONE
         ) {
           continue;
         }
-        if (kvp.value.path.reachable.length >= pmUsed) {
+        if (kvp["1"].path.reachable.length >= pmUsed) {
           continue;
         }
         node = kvp;
-        pmUsed = kvp.value.path.reachable.length;
+        pmUsed = kvp["1"].path.reachable.length;
       }
     }
     if (node !== null) {

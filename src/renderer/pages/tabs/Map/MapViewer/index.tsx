@@ -127,24 +127,24 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
           <Grid item={true} xs={10}>
             <img style={{ display: "none" }} id="mapimg" />
             {this.props.account.game.map.data
-              ? this.props.account.game.map.data.midgroundLayer
-                  .keys()
-                  .map((cellId, index) =>
-                    this.props.account.game.map.data.midgroundLayer
-                      .getValue(cellId)
-                      .map(
-                        (g, index2) =>
-                          g.g ? (
-                            <img
-                              key={`${index}-${index2}`}
-                              style={{ display: "none" }}
-                              id={`g-${cellId}-${g.g}`}
-                            />
-                          ) : (
-                            ""
-                          )
-                      )
-                  )
+              ? Array.from(
+                  this.props.account.game.map.data.midgroundLayer.keys()
+                ).map((cellId, index) =>
+                  this.props.account.game.map.data.midgroundLayer
+                    .get(cellId)
+                    .map(
+                      (g, index2) =>
+                        g.g ? (
+                          <img
+                            key={`${index}-${index2}`}
+                            style={{ display: "none" }}
+                            id={`g-${cellId}-${g.g}`}
+                          />
+                        ) : (
+                          ""
+                        )
+                    )
+                )
               : ""}
             <div id="tooltip" />
             <canvas
@@ -389,9 +389,9 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       }
       if (
         this.state.showReal &&
-        this.props.account.game.map.data.midgroundLayer.containsKey(i)
+        this.props.account.game.map.data.midgroundLayer.has(i)
       ) {
-        const gs = this.props.account.game.map.data.midgroundLayer.getValue(i);
+        const gs = this.props.account.game.map.data.midgroundLayer.get(i);
         for (const g of gs) {
           if (g.g) {
             const img2 = document.getElementById(

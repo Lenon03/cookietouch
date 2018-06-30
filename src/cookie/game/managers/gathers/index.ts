@@ -7,7 +7,6 @@ import MovementsManager from "@/game/managers/movements";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
 import MapGame from "@/game/map";
 import InteractiveElementEntry from "@/game/map/interactives/InteractiveElementEntry";
-import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 
@@ -66,7 +65,7 @@ export default class GathersManager implements IClearable {
   }
 
   public canGather(...resourcesIds: number[]): boolean {
-    return this.getUsableElements(...resourcesIds).count() > 0;
+    return this.getUsableElements(...resourcesIds).size > 0;
   }
 
   public cancelGather() {
@@ -96,8 +95,8 @@ export default class GathersManager implements IClearable {
 
   private getUsableElements(
     ...resourcesIds: number[]
-  ): Dictionary<number, InteractiveElementEntry> {
-    const usableElements = new Dictionary<number, InteractiveElementEntry>();
+  ): Map<number, InteractiveElementEntry> {
+    const usableElements = new Map<number, InteractiveElementEntry>();
     const hasFishingRod = this.account.game.character.inventory.hasFishingRod;
     const weaponRange = this.account.game.character.inventory.weaponRange;
 
@@ -152,21 +151,18 @@ export default class GathersManager implements IClearable {
         ) {
           continue;
         }
-        usableElements.add(statedElement.cellId, interactive);
+        usableElements.set(statedElement.cellId, interactive);
       }
     }
     return usableElements;
   }
 
-  private moveToElement(element: {
-    key: number;
-    value: InteractiveElementEntry;
-  }): boolean {
-    this.elementToGather = element.value;
+  private moveToElement(element: [number, InteractiveElementEntry]): boolean {
+    this.elementToGather = element["1"];
 
     // Assuming there is no way statedElem will be null
     switch (
-      this.account.game.managers.movements.moveToCell(element.key, true)
+      this.account.game.managers.movements.moveToCell(element["0"], true)
     ) {
       case MovementRequestResults.MOVED: {
         return true;

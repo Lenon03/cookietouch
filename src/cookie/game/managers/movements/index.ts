@@ -115,23 +115,21 @@ export default class MovementsManager implements IClearable {
     return MovementRequestResults.MOVED;
   }
 
-  public async moveToCellInFight(
-    node: { key: number; value: MoveNode } = null
-  ) {
+  public async moveToCellInFight(node: [number, MoveNode] = null) {
     if (this.account.state !== AccountStates.FIGHTING) {
       return;
     }
 
-    if (node === null || node.value.path.reachable.length === 0) {
+    if (node === null || node["1"].path.reachable.length === 0) {
       return;
     }
 
-    if (node.key === this.account.game.fight.playedFighter.cellId) {
+    if (node["0"] === this.account.game.fight.playedFighter.cellId) {
       return;
     }
 
     // Insert the current cellId
-    node.value.path.reachable.unshift(
+    node["1"].path.reachable.unshift(
       this.account.game.fight.playedFighter.cellId
     );
 
@@ -139,7 +137,7 @@ export default class MovementsManager implements IClearable {
       "GameMapMovementRequestMessage",
       {
         // keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
-        keyMovements: node.value.path.reachable, // TODO: Or the compressed one?
+        keyMovements: node["1"].path.reachable, // TODO: Or the compressed one?
         mapId: this.account.game.map.id
       }
     );
@@ -369,10 +367,7 @@ export default class MovementsManager implements IClearable {
       keyMovements: this.currentPath, // TODO: Or the compressed one?
       mapId: this.account.game.map.id
     });
-    const pathString = new List(this.currentPath).Aggregate(
-      (c, n) => `${c},${n}`,
-      ""
-    );
+    const pathString = this.currentPath.join(",");
     this.account.logger.logDebug(
       LanguageManager.trans("movementsManager"),
       LanguageManager.trans("showPath", pathString)

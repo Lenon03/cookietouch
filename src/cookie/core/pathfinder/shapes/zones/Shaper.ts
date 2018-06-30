@@ -1,43 +1,27 @@
 import MapPoint from "@/core/pathfinder/MapPoint";
 import ShaperEntry from "@/core/pathfinder/shapes/zones/ShaperEntry";
-import Dictionary from "@/utils/Dictionary";
 
 export default class Shaper {
-  public static shaperMap = new Dictionary<string, ShaperEntry>([
-    { key: "P", value: null },
-    { key: "A", value: null },
-    { key: "D", value: null },
-    { key: "X", value: new ShaperEntry(Shaper.shapeCross, false, false) },
-    { key: "L", value: new ShaperEntry(Shaper.shapeLine, true, false) },
-    {
-      key: "T",
-      value: new ShaperEntry(Shaper.shapePerpendicular, true, false)
-    },
-    { key: "C", value: new ShaperEntry(Shaper.shapeRing, false, false) },
-    {
-      key: "O",
-      value: new ShaperEntry(Shaper.shapeCirclePerimeter, false, false)
-    },
-    { key: "+", value: new ShaperEntry(Shaper.shapeStar, false, false) },
-    { key: "G", value: new ShaperEntry(Shaper.shapeSquare, false, false) },
-    { key: "V", value: new ShaperEntry(Shaper.shapeCone, true, false) },
-    { key: "W", value: new ShaperEntry(Shaper.shapeCones, false, false) },
-    { key: "/", value: new ShaperEntry(Shaper.shapeLine, true, false) },
-    {
-      key: "-",
-      value: new ShaperEntry(Shaper.shapePerpendicular, true, false)
-    },
-    { key: "U", value: new ShaperEntry(Shaper.shapeHalfcircle, true, false) },
-    { key: "Q", value: new ShaperEntry(Shaper.shapeCross, false, true) },
-    { key: "#", value: new ShaperEntry(Shaper.shapeStar, false, true) },
-    {
-      key: "*",
-      value: new ShaperEntry(Shaper.shapeCrossAndStar, false, false)
-    },
-    {
-      key: "I",
-      value: new ShaperEntry(Shaper.shapeInvertedCircle, false, false)
-    }
+  public static shaperMap = new Map<string, ShaperEntry>([
+    ["P", null],
+    ["A", null],
+    ["D", null],
+    ["X", new ShaperEntry(Shaper.shapeCross, false, false)],
+    ["L", new ShaperEntry(Shaper.shapeLine, true, false)],
+    ["T", new ShaperEntry(Shaper.shapePerpendicular, true, false)],
+    ["C", new ShaperEntry(Shaper.shapeRing, false, false)],
+    ["O", new ShaperEntry(Shaper.shapeCirclePerimeter, false, false)],
+    ["+", new ShaperEntry(Shaper.shapeStar, false, false)],
+    ["G", new ShaperEntry(Shaper.shapeSquare, false, false)],
+    ["V", new ShaperEntry(Shaper.shapeCone, true, false)],
+    ["W", new ShaperEntry(Shaper.shapeCones, false, false)],
+    ["/", new ShaperEntry(Shaper.shapeLine, true, false)],
+    ["-", new ShaperEntry(Shaper.shapePerpendicular, true, false)],
+    ["U", new ShaperEntry(Shaper.shapeHalfcircle, true, false)],
+    ["Q", new ShaperEntry(Shaper.shapeCross, false, true)],
+    ["#", new ShaperEntry(Shaper.shapeStar, false, true)],
+    ["*", new ShaperEntry(Shaper.shapeCrossAndStar, false, false)],
+    ["I", new ShaperEntry(Shaper.shapeInvertedCircle, false, false)]
   ]);
 
   public static shapeRing(

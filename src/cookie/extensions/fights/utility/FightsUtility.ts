@@ -32,8 +32,8 @@ export default class FightsUtility {
   public getNearestOrFarthestEndMoveNode(
     nearest: boolean,
     basedOnAllMonsters = true
-  ): { key: number; value: MoveNode } {
-    let node: { key: number; value: MoveNode } = null;
+  ): [number, MoveNode] {
+    let node: [number, MoveNode] = null;
     let totalDistances = -1;
     let distance = -1;
 
@@ -52,13 +52,13 @@ export default class FightsUtility {
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
-    )) {
-      if (!kvp.value.reachable) {
+    ).entries()) {
+      if (!kvp["1"].reachable) {
         continue;
       }
       const tempTotalDistances = basedOnAllMonsters
-        ? this.getTotalDistancesFromEnemies(kvp.key)
-        : MapPoint.fromCellId(kvp.key).distanceToCell(
+        ? this.getTotalDistancesFromEnemies(kvp["0"])
+        : MapPoint.fromCellId(kvp["0"]).distanceToCell(
             MapPoint.fromCellId(
               this.account.game.fight.getNearestEnemy().cellId
             )
@@ -71,11 +71,11 @@ export default class FightsUtility {
         if (nearest) {
           node = kvp;
           totalDistances = tempTotalDistances;
-        } else if (kvp.value.path.reachable.length >= distance) {
+        } else if (kvp["1"].path.reachable.length >= distance) {
           // If we need to give the farthest cell, we might as well give the one that uses the most available MP
           node = kvp;
           totalDistances = tempTotalDistances;
-          distance = kvp.value.path.reachable.length;
+          distance = kvp["1"].path.reachable.length;
         }
       }
     }

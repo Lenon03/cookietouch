@@ -45,7 +45,6 @@ import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBo
 import FightTemporaryBoostStateEffect from "@/protocol/network/types/FightTemporaryBoostStateEffect";
 import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
 import GameFightMonsterInformations from "@/protocol/network/types/GameFightMonsterInformations";
-import Dictionary from "@/utils/Dictionary";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
@@ -61,16 +60,13 @@ export default class Fight implements IClearable {
   public positionsForDefenders = new List<number>();
   public fightId: number;
   private account: Account;
-  private _allies: Dictionary<number, FighterEntry>;
-  private _enemies: Dictionary<number, FighterEntry>;
-  private _fighters: Dictionary<number, FighterEntry>;
-  private _effectsDurations: Dictionary<number, number>;
-  private _spellsIntervals: Dictionary<number, number>;
-  private _totalSpellLaunches: Dictionary<number, number>;
-  private _totalSpellLaunchesInCells: Dictionary<
-    number,
-    Dictionary<number, number>
-  >;
+  private _allies: Map<number, FighterEntry>;
+  private _enemies: Map<number, FighterEntry>;
+  private _fighters: Map<number, FighterEntry>;
+  private _effectsDurations: Map<number, number>;
+  private _spellsIntervals: Map<number, number>;
+  private _totalSpellLaunches: Map<number, number>;
+  private _totalSpellLaunchesInCells: Map<number, Map<number, number>>;
   private readonly onFightJoined = new LiteEvent<void>();
   private readonly onFightIDReceived = new LiteEvent<void>();
   private readonly onFightStarted = new LiteEvent<void>();
@@ -86,21 +82,18 @@ export default class Fight implements IClearable {
   constructor(account: Account) {
     this.account = account;
 
-    this._allies = new Dictionary<number, FighterEntry>();
-    this._effectsDurations = new Dictionary<number, number>();
-    this._enemies = new Dictionary<number, FighterEntry>();
-    this._fighters = new Dictionary<number, FighterEntry>();
-    this._spellsIntervals = new Dictionary<number, number>();
-    this._totalSpellLaunches = new Dictionary<number, number>();
-    this._totalSpellLaunchesInCells = new Dictionary<
-      number,
-      Dictionary<number, number>
-    >();
+    this._allies = new Map<number, FighterEntry>();
+    this._effectsDurations = new Map<number, number>();
+    this._enemies = new Map<number, FighterEntry>();
+    this._fighters = new Map<number, FighterEntry>();
+    this._spellsIntervals = new Map<number, number>();
+    this._totalSpellLaunches = new Map<number, number>();
+    this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
     this.options = [];
   }
 
   get monsters() {
-    return this._enemies.values().map(a => a as FightMonsterEntry);
+    return Array.from(this._enemies.values()).map(a => a as FightMonsterEntry);
   }
 
   get invocationsCount() {
@@ -154,22 +147,20 @@ export default class Fight implements IClearable {
   }
 
   get allies() {
-    return this._allies.values().filter(a => a.alive);
+    return Array.from(this._allies.values()).filter(a => a.alive);
   }
 
   get enemies() {
-    return this._enemies
-      .values()
-      .filter(
-        e =>
-          e.alive &&
-          e.stats.invisibilityState !==
-            GameActionFightInvisibilityStateEnum.INVISIBLE
-      );
+    return Array.from(this._enemies.values()).filter(
+      e =>
+        e.alive &&
+        e.stats.invisibilityState !==
+          GameActionFightInvisibilityStateEnum.INVISIBLE
+    );
   }
 
   get fighters() {
-    return this._fighters.values().filter(a => a.alive);
+    return Array.from(this._fighters.values()).filter(a => a.alive);
   }
 
   public get FightJoined() {
@@ -217,16 +208,13 @@ export default class Fight implements IClearable {
   }
 
   public clear() {
-    this._allies = new Dictionary<number, FighterEntry>();
-    this._effectsDurations = new Dictionary<number, number>();
-    this._enemies = new Dictionary<number, FighterEntry>();
-    this._fighters = new Dictionary<number, FighterEntry>();
-    this._spellsIntervals = new Dictionary<number, number>();
-    this._totalSpellLaunches = new Dictionary<number, number>();
-    this._totalSpellLaunchesInCells = new Dictionary<
-      number,
-      Dictionary<number, number>
-    >();
+    this._allies = new Map<number, FighterEntry>();
+    this._effectsDurations = new Map<number, number>();
+    this._enemies = new Map<number, FighterEntry>();
+    this._fighters = new Map<number, FighterEntry>();
+    this._spellsIntervals = new Map<number, number>();
+    this._totalSpellLaunches = new Map<number, number>();
+    this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
 
     this.isFightStarted = false;
     this.options = [];
@@ -272,7 +260,7 @@ export default class Fight implements IClearable {
   }
 
   public hasState(stateId: number): boolean {
-    return this._effectsDurations.containsKey(stateId);
+    return this._effectsDurations.has(stateId);
   }
 
   public getFighter(id: number): FighterEntry {
@@ -280,7 +268,7 @@ export default class Fight implements IClearable {
       return this.playedFighter;
     }
 
-    return this._fighters.getValue(id);
+    return this._fighters.get(id);
   }
 
   public getFighterInCell(cellId: number): FighterEntry {
@@ -438,13 +426,13 @@ export default class Fight implements IClearable {
 
     if (
       spellLevel.maxCastPerTurn > 0 &&
-      this._totalSpellLaunches.containsKey(spellId) &&
-      this._totalSpellLaunches.getValue(spellId) >= spellLevel.maxCastPerTurn
+      this._totalSpellLaunches.has(spellId) &&
+      this._totalSpellLaunches.get(spellId) >= spellLevel.maxCastPerTurn
     ) {
       return SpellInabilityReasons.TOO_MANY_LAUNCHES;
     }
 
-    if (this._spellsIntervals.containsKey(spellId)) {
+    if (this._spellsIntervals.has(spellId)) {
       return SpellInabilityReasons.COOLDOWN;
     }
 
@@ -467,14 +455,14 @@ export default class Fight implements IClearable {
     }
 
     const tmp = spellLevel.statesRequired.filter(
-      s => !this._effectsDurations.containsKey(s)
+      s => !this._effectsDurations.has(s)
     );
     if (tmp !== undefined && tmp.length > 0) {
       return SpellInabilityReasons.REQUIRED_STATE;
     }
 
     const tmp2 = spellLevel.statesForbidden.filter(s =>
-      this._effectsDurations.containsKey(s)
+      this._effectsDurations.has(s)
     );
     if (tmp2 !== undefined && tmp2.length > 0) {
       return SpellInabilityReasons.FORBIDDEN_STATE;
@@ -506,13 +494,10 @@ export default class Fight implements IClearable {
 
     if (
       spellLevel.maxCastPerTarget > 0 &&
-      this._totalSpellLaunchesInCells.containsKey(spellId) &&
-      this._totalSpellLaunchesInCells
-        .getValue(spellId)
-        .containsKey(targetCellId) &&
-      this._totalSpellLaunchesInCells
-        .getValue(spellId)
-        .getValue(targetCellId) >= spellLevel.maxCastPerTarget
+      this._totalSpellLaunchesInCells.has(spellId) &&
+      this._totalSpellLaunchesInCells.get(spellId).has(targetCellId) &&
+      this._totalSpellLaunchesInCells.get(spellId).get(targetCellId) >=
+        spellLevel.maxCastPerTarget
     ) {
       return SpellInabilityReasons.TOO_MANY_LAUNCHES_ON_CELL;
     }
@@ -781,11 +766,11 @@ export default class Fight implements IClearable {
     } else {
       const f = this.getFighter(message.charId);
       if (f !== null) {
-        this._fighters.remove(f.contextualId);
+        this._fighters.delete(f.contextualId);
         if (this.allies.includes(f)) {
-          this._allies.remove(f.contextualId);
+          this._allies.delete(f.contextualId);
         } else if (this.enemies.includes(f)) {
-          this._enemies.remove(f.contextualId);
+          this._enemies.delete(f.contextualId);
         }
       }
     }
@@ -810,29 +795,28 @@ export default class Fight implements IClearable {
     }
     if (fighter === this.playedFighter) {
       this.isOurTurn = false;
-      this._totalSpellLaunches = new Dictionary<number, number>();
-      this._totalSpellLaunchesInCells = new Dictionary<
-        number,
-        Dictionary<number, number>
-      >();
+      this._totalSpellLaunches = new Map<number, number>();
+      this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
 
       // Effects
-      for (let i = this._effectsDurations.count() - 1; i >= 0; i--) {
-        const key = this._effectsDurations.keys()[i];
-        const actualValue = this._effectsDurations.getValue(key);
-        this._effectsDurations.changeValueForKey(key, actualValue - 1);
+      const effectsKeys = Array.from(this._effectsDurations.keys()).reverse();
+      for (const key of effectsKeys) {
+        const actualValue = this._effectsDurations.get(key);
+        this._effectsDurations.set(key, actualValue - 1);
         if (actualValue - 1 === 0) {
-          this._effectsDurations.remove(key);
+          this._effectsDurations.delete(key);
         }
       }
 
       // Spells
-      for (let i = this._spellsIntervals.count() - 1; i >= 0; i--) {
-        const key = this._spellsIntervals.keys()[i];
-        const actualValue = this._spellsIntervals.getValue(key);
-        this._spellsIntervals.changeValueForKey(key, actualValue - 1);
+      const spellsIntervalsKeys = Array.from(
+        this._spellsIntervals.keys()
+      ).reverse();
+      for (const key of spellsIntervalsKeys) {
+        const actualValue = this._spellsIntervals.get(key);
+        this._spellsIntervals.set(key, actualValue - 1);
         if (actualValue - 1 === 0) {
-          this._spellsIntervals.remove(key);
+          this._spellsIntervals.delete(key);
         }
       }
 
@@ -848,8 +832,8 @@ export default class Fight implements IClearable {
       const effect = message.effect as FightTemporaryBoostStateEffect;
       if (this.playedFighter) {
         if (effect.targetId === this.playedFighter.contextualId) {
-          if (this._effectsDurations.containsKey(effect.stateId)) {
-            this._effectsDurations.remove(effect.stateId);
+          if (this._effectsDurations.has(effect.stateId)) {
+            this._effectsDurations.delete(effect.stateId);
             this.account.logger.logWarning(
               LanguageManager.trans("fight"),
               LanguageManager.trans(
@@ -858,7 +842,7 @@ export default class Fight implements IClearable {
                 effect.turnDuration
               )
             );
-            this._effectsDurations.add(effect.stateId, effect.turnDuration);
+            this._effectsDurations.set(effect.stateId, effect.turnDuration);
           }
         }
       }
@@ -899,40 +883,38 @@ export default class Fight implements IClearable {
 
       if (
         spellLevel.minCastInterval > 0 &&
-        !this._spellsIntervals.containsKey(spell.id)
+        !this._spellsIntervals.has(spell.id)
       ) {
-        this._spellsIntervals.add(spell.id, spellLevel.minCastInterval);
+        this._spellsIntervals.set(spell.id, spellLevel.minCastInterval);
       }
 
-      if (!this._totalSpellLaunches.containsKey(spell.id)) {
-        this._totalSpellLaunches.add(spell.id, 0);
+      if (!this._totalSpellLaunches.has(spell.id)) {
+        this._totalSpellLaunches.set(spell.id, 0);
       }
-      this._totalSpellLaunches.changeValueForKey(
+      this._totalSpellLaunches.set(
         spell.id,
-        this._totalSpellLaunches.getValue(spell.id) + 1
+        this._totalSpellLaunches.get(spell.id) + 1
       );
 
-      if (this._totalSpellLaunchesInCells.containsKey(spell.id)) {
+      if (this._totalSpellLaunchesInCells.has(spell.id)) {
         if (
           !this._totalSpellLaunchesInCells
-            .getValue(spell.id)
-            .containsKey(message.destinationCellId)
+            .get(spell.id)
+            .has(message.destinationCellId)
         ) {
           this._totalSpellLaunchesInCells
-            .getValue(spell.id)
-            .add(message.destinationCellId, 0);
+            .get(spell.id)
+            .set(message.destinationCellId, 0);
         }
-        const value = this._totalSpellLaunchesInCells.getValue(spell.id);
-        value.changeValueForKey(
+        const value = this._totalSpellLaunchesInCells.get(spell.id);
+        value.set(
           message.destinationCellId,
-          value.getValue(message.destinationCellId) + 1
+          value.get(message.destinationCellId) + 1
         );
       } else {
-        this._totalSpellLaunchesInCells.add(
+        this._totalSpellLaunchesInCells.set(
           spell.id,
-          new Dictionary<number, number>([
-            { key: message.destinationCellId, value: 1 }
-          ])
+          new Map<number, number>([[message.destinationCellId, 1]])
         );
       }
     }
@@ -951,16 +933,16 @@ export default class Fight implements IClearable {
 
     for (const fighter of this.fighters) {
       if (
-        this._allies.containsKey(fighter.contextualId) ||
-        this._enemies.containsKey(fighter.contextualId)
+        this._allies.has(fighter.contextualId) ||
+        this._enemies.has(fighter.contextualId)
       ) {
         continue;
       }
 
       if (fighter.team === this.playedFighter.team) {
-        this._allies.add(fighter.contextualId, fighter);
+        this._allies.set(fighter.contextualId, fighter);
       } else {
-        this._enemies.add(fighter.contextualId, fighter);
+        this._enemies.set(fighter.contextualId, fighter);
       }
     }
   }
@@ -970,9 +952,9 @@ export default class Fight implements IClearable {
       infos._type === "GameFightCharacterInformations" ||
       infos._type === "GameFightMutantInformations"
     ) {
-      this._fighters.add(infos.contextualId, new FightPlayerEntry(infos));
+      this._fighters.set(infos.contextualId, new FightPlayerEntry(infos));
     } else if (infos._type === "GameFightMonsterInformations") {
-      this._fighters.add(
+      this._fighters.set(
         infos.contextualId,
         new FightMonsterEntry(infos as GameFightMonsterInformations, infos)
       );

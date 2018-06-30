@@ -1,9 +1,8 @@
 import { AtlasLayout } from "@/protocol/data/map/AtlasLayout";
 import Cell from "@/protocol/data/map/Cell";
 import GraphicalElement from "@/protocol/data/map/GraphicalElement";
-import Dictionary from "@/utils/Dictionary";
 
-export default class Map {
+export default class {
   public id: number;
   public topNeighbourId: number;
   public bottomNeighbourId: number;
@@ -11,7 +10,7 @@ export default class Map {
   public rightNeighbourId: number;
   public shadowBonusOnEntities: number;
   public cells: Cell[] = [];
-  public midgroundLayer = new Dictionary<number, GraphicalElement[]>();
+  public midgroundLayer = new Map<number, GraphicalElement[]>();
   public atlasLayout = new AtlasLayout();
 
   constructor(

@@ -1,14 +1,13 @@
 import MoveNode from "@/core/pathfinder/fights/MoveNode";
-import Dictionary from "@/utils/Dictionary";
 
 export default class RangeNodeEntry {
   public fromCellId: number;
-  public touchedEnemiesByCell: Dictionary<number, number>;
+  public touchedEnemiesByCell: Map<number, number>;
   public node: MoveNode;
 
   constructor(
     fromCellId: number,
-    touchedEnemiesByCell: Dictionary<number, number>,
+    touchedEnemiesByCell: Map<number, number>,
     node: MoveNode
   ) {
     this.fromCellId = fromCellId;

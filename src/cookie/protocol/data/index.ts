@@ -72,10 +72,11 @@ export default class DataManager {
   }
 
   private static getFilePath(type: string, id: number): string {
-    let folderPath = path.join(
-      remote.app.getPath("userData"),
-      DTConstants.assetsVersion
-    );
+    let folderPath = path.join(remote.app.getPath("userData"), "assets");
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
+    folderPath = path.join(folderPath, DTConstants.assetsVersion);
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }

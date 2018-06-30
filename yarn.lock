@@ -785,9 +785,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/react@^16.4.5":
-  version "16.4.5"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.5.tgz#98a00fdd2c512ed5d7399d3f2660ce9d6152bce6"
+"@types/react@^16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
   dependencies:
     csstype "^2.2.0"
 
@@ -7108,7 +7108,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:

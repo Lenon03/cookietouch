@@ -1,4 +1,3 @@
-import DTConstants from "@/protocol/DTConstants";
 import { remote } from "electron";
 import * as fs from "fs";
 import { flatten } from "lodash";
@@ -38,5 +37,4 @@ export function getSize(path: string): number {
 }
 
 export const getCacheSize = () =>
-  DTConstants.assetsVersion &&
-  getSize(join(remote.app.getPath("userData"), DTConstants.assetsVersion));
+  getSize(join(remote.app.getPath("userData"), "assets"));

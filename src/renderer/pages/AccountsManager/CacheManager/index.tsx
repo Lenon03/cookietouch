@@ -1,13 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
-import DTConstants from "@/protocol/DTConstants";
 import { deleteFolderRecursive } from "@/utils/rmdir";
 import { getCacheSize } from "@/utils/Sizes";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles
-} from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import { cacheManagerStyles } from "@renderer/pages/AccountsManager/CacheManager/styles";
 import {
@@ -45,7 +41,7 @@ class CacheManager extends React.Component<
           <Button
             color="primary"
             variant="raised"
-            disabled={!DTConstants.assetsVersion}
+            disabled={cacheSize === 0}
             onClick={this.deleteCache}
           >
             {LanguageManager.trans("delete")}
@@ -61,10 +57,7 @@ class CacheManager extends React.Component<
   };
 
   private deleteCache = (event: React.MouseEvent<HTMLElement>) => {
-    const path = join(
-      remote.app.getPath("userData"),
-      DTConstants.assetsVersion
-    );
+    const path = join(remote.app.getPath("userData"), "assets");
     deleteFolderRecursive(path);
     mkdirSync(path);
     this.updateCacheSize();

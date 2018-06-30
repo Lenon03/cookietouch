@@ -2,6 +2,7 @@ import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import FighterStatsListMessage from "@/protocol/network/messages/FighterStatsListMessage";
 import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightDispellableEffectMessage from "@/protocol/network/messages/GameActionFightDispellableEffectMessage";
@@ -36,166 +37,159 @@ import TextInformationMessage from "@/protocol/network/messages/TextInformationM
 import { sleep } from "@/utils/Time";
 import moment from "moment";
 
-export default class FightFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class FightFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "GameMapMovementMessage",
       this.HandleGameMapMovementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameMapNoMovementMessage",
       this.HandleGameMapNoMovementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightNoSpellCastMessage",
       this.HandleGameActionFightNoSpellCastMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightPlacementPossiblePositionsMessage",
       this.HandleGameFightPlacementPossiblePositionsMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SequenceEndMessage",
       this.HandleSequenceEndMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightTurnReadyRequestMessage",
       this.HandleGameFightTurnReadyRequestMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightShowFighterRandomStaticPoseMessage",
       this.HandleGameFightShowFighterRandomStaticPoseMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightNewRoundMessage",
       this.HandleGameFightNewRoundMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightSpellCastMessage",
       this.HandleGameActionFightSpellCastMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightEndMessage",
       this.HandleGameFightEndMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightDispellableEffectMessage",
       this.HandleGameActionFightDispellableEffectMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightTurnEndMessage",
       this.HandleGameFightTurnEndMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightTurnStartMessage",
       this.HandleGameFightTurnStartMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightLeaveMessage",
       this.HandleGameFightLeaveMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightLifePointsGainMessage",
       this.HandleGameActionFightLifePointsGainMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightLifePointsLostMessage",
       this.HandleGameActionFightLifePointsLostMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightSummonMessage",
       this.HandleGameActionFightSummonMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightSlideMessage",
       this.HandleGameActionFightSlideMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightTeleportOnSameMapMessage",
       this.HandleGameActionFightTeleportOnSameMapMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightDeathMessage",
       this.HandleGameActionFightDeathMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameActionFightPointsVariationMessage",
       this.HandleGameActionFightPointsVariationMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "FighterStatsListMessage",
       this.HandleFighterStatsListMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightSynchronizeMessage",
       this.HandleGameFightSynchronizeMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameEntitiesDispositionMessage",
       this.HandleGameEntitiesDispositionMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightOptionStateUpdateMessage",
       this.HandleGameFightOptionStateUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightUpdateTeamMessage",
       this.HandleGameFightUpdateTeamMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightShowFighterMessage",
       this.HandleGameFightShowFighterMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "TextInformationMessage",
       this.HandleTextInformationMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightStartMessage",
       this.HandleGameFightStartMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightStartingMessage",
       this.HandleGameFightStartingMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameFightJoinMessage",
       this.HandleGameFightJoinMessage,
       this

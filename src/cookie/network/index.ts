@@ -2,11 +2,15 @@ import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
+import RegisteredMessage from "@/network/RegisteredMessage";
 import DTConstants from "@/protocol/DTConstants";
 import Message from "@/protocol/network/messages/Message";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
+import { randomString } from "@/utils/Random";
+import { contentTracing } from "electron";
 
 const Primus = require("./primus"); // tslint:disable-line
 
@@ -26,9 +30,25 @@ export default class Network implements IClearable {
     data: any;
   }>();
 
+  private _registeredMessages: Map<string, RegisteredMessage>;
+
   constructor(account: Account) {
     this.account = account;
     this._phase = NetworkPhases.NONE;
+    this._registeredMessages = new Map();
+  }
+
+  public registerMessage(
+    name: string,
+    action: (account: Account, message: any) => void
+  ): string {
+    const id = randomString(16);
+    this._registeredMessages.set(id, new RegisteredMessage(name, action));
+    return id;
+  }
+
+  public unregisterMessage(id: string): boolean {
+    return this._registeredMessages.delete(id);
   }
 
   get phase() {
@@ -123,7 +143,7 @@ export default class Network implements IClearable {
 
     console.log("Sent", msg);
     this.onMessageSent.trigger({ type: msgName, data });
-    this.account.dispatcher.emit(msgName, this.account, data);
+    Frames.dispatcher.emit(msgName, this.account, data);
     this.socket.write(msg);
   }
 
@@ -168,7 +188,13 @@ export default class Network implements IClearable {
     this.socket.on("data", (data: any) => {
       console.log("Received", data);
       this.onMessageReceived.trigger({ type: data._messageType, data });
-      this.account.dispatcher.emit(data._messageType, this.account, data);
+      Frames.dispatcher.emit(data._messageType, this.account, data);
+      for (const rm of this._registeredMessages.entries()) {
+        if (rm["0"] !== data._messageType) {
+          continue;
+        }
+        rm["1"].action(this.account, data);
+      }
     });
 
     this.socket.on("error", (err: Error) => {

@@ -22,7 +22,7 @@ import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";
 import { displayTime, sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
-import * as moment from "moment";
+import moment from "moment";
 
 export default class Account implements IEntity {
   public accountConfig: AccountConfiguration;
@@ -30,7 +30,6 @@ export default class Account implements IEntity {
   public data: AccountData;
   public network: Network;
   public haapi: HaapiConnection;
-  public dispatcher: Dispatcher;
   public framesData: FramesData;
   public logger: Logger;
   public config: Configuration;
@@ -58,12 +57,10 @@ export default class Account implements IEntity {
     this.config = new Configuration(this);
     this.framesData = new FramesData();
     this.state = AccountStates.DISCONNECTED;
-    this.dispatcher = new Dispatcher();
     this.haapi = new HaapiConnection();
     this.network = new Network(this);
     this.game = new Game(this);
     this.scripts = new ScriptsManager(this);
-    this.frames = new Frames(this);
     this.extensions = new Extensions(this);
     this.statistics = new StatisticsManager(this);
     this.planificationTimer = new TimerWrapper(

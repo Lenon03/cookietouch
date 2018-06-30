@@ -1,6 +1,7 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { ChannelColors } from "@/core/logger/ChannelColors";
+import Frames, { IFrame } from "@/frames";
 import { ChatActivableChannelsEnum } from "@/protocol/enums/ChatActivableChannelsEnum";
 import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { ChatErrorEnum } from "@/protocol/enums/ChatErrorEnum";
@@ -8,46 +9,39 @@ import { ObjectErrorEnum } from "@/protocol/enums/ObjectErrorEnum";
 import { TextInformationTypeEnum } from "@/protocol/enums/TextInformationTypeEnum";
 import ChatServerWithObjectMessage from "@/protocol/network/messages/ChatServerWithObjectMessage";
 
-export default class ChatFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class ChatFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ObjectErrorMessage",
       this.HandleObjectErrorMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ChatServerWithObjectMessage",
       this.HandleChatServerWithObjectMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ChatErrorMessage",
       this.HandleChatErrorMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ChatServerMessage",
       this.HandleChatServerMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SystemMessageDisplayMessage",
       this.HandleSystemMessageDisplayMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "TextInformationMessage",
       this.HandleTextInformationMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ChatServerCopyMessage",
       this.HandleChatServerCopyMessage,
       this
@@ -66,17 +60,17 @@ export default class ChatFrame {
     message: ChatServerWithObjectMessage
   ) {
     // TODO: message.objects = objects in message
-    await this.HandleChatServerMessage(account, message);
+    this.HandleChatServerMessage(account, message);
   }
 
   private async HandleChatErrorMessage(account: Account, message: any) {
     if (typeof message.reason === "number") {
-      this.account.logger.logError(
+      account.logger.logError(
         LanguageManager.trans("chatFrame"),
         ChatErrorEnum[message.reason]
       );
     } else {
-      this.account.logger.logDebug(
+      account.logger.logDebug(
         LanguageManager.trans("chatFrame"),
         message.reason
       );
@@ -94,10 +88,10 @@ export default class ChatFrame {
         account.logger.logError(LanguageManager.trans("chatFrame"), text);
         break;
       case TextInformationTypeEnum.TEXT_INFORMATION_MESSAGE:
-        this.account.logger.logInfo(LanguageManager.trans("chatFrame"), text);
+        account.logger.logInfo(LanguageManager.trans("chatFrame"), text);
         break;
       default:
-        this.account.logger.logDofus(LanguageManager.trans("chatFrame"), text);
+        account.logger.logDofus(LanguageManager.trans("chatFrame"), text);
         break;
     }
   }
@@ -106,10 +100,7 @@ export default class ChatFrame {
     account: Account,
     message: any
   ) {
-    this.account.logger.logError(
-      LanguageManager.trans("chatFrame"),
-      message.text
-    );
+    account.logger.logError(LanguageManager.trans("chatFrame"), message.text);
   }
 
   private async HandleChatServerMessage(account: Account, message: any) {
@@ -119,7 +110,7 @@ export default class ChatFrame {
 
     switch (message.channel) {
       case ChatChannelsMultiEnum.CHANNEL_ADMIN: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("admin"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.ADMIN
@@ -127,7 +118,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_ALLIANCE: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("alliance"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.NOOB
@@ -135,7 +126,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_GLOBAL: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("global"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.GLOBAL
@@ -143,7 +134,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_GUILD: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("guild"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.GUILD
@@ -151,7 +142,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_PARTY: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("party"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.PARTY
@@ -159,7 +150,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_SALES: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("sales"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.SALES
@@ -167,7 +158,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_SEEK: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("seek"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.SEEK
@@ -175,7 +166,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_NOOB: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("noob"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.NOOB
@@ -183,7 +174,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_TEAM: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("team"),
           `${message.senderName}: ${message.content}`,
           ChannelColors.TEAM
@@ -191,7 +182,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.PSEUDO_CHANNEL_PRIVATE: {
-        this.account.logger.log(
+        account.logger.log(
           LanguageManager.trans("messageFrom", message.senderName),
           message.content,
           ChannelColors.PRIVATE
@@ -199,7 +190,7 @@ export default class ChatFrame {
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_ADS: {
-        this.account.logger.log(
+        account.logger.log(
           message.senderName,
           message.content,
           ChannelColors.ADS
@@ -211,7 +202,7 @@ export default class ChatFrame {
 
   private async HandleChatServerCopyMessage(account: Account, message: any) {
     if (message.channel === ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE) {
-      this.account.logger.log(
+      account.logger.log(
         `à ${message.receiverName}`,
         message.content,
         ChannelColors.PRIVATE

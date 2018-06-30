@@ -1,52 +1,46 @@
 import Account from "@/account";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import { ServerStatusEnum } from "@/protocol/enums/ServerStatusEnum";
 import ServersListMessage from "@/protocol/network/messages/ServersListMessage";
 import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
 import { sleep } from "@/utils/Time";
 
-export default class ServerSelectionFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class ServerSelectionFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ServersListMessage",
       this.HandleServersListMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ServerStatusUpdateMessage",
       this.HandleServerStatusUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SelectedServerDataMessage",
       this.HandleSelectedServerDataMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "serverDisconnecting",
       this.HandleserverDisconnecting,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "HelloGameMessage",
       this.HandleHelloGameMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "AuthenticationTicketAcceptedMessage",
       this.HandleAuthenticationTicketAcceptedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "AuthenticationTicketRefusedMessage",
       this.HandleAuthenticationTicketRefusedMessage,
       this

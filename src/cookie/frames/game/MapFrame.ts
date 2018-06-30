@@ -1,81 +1,75 @@
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import Frames, { IFrame } from "@/frames";
 
-export default class MapFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class MapFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "CurrentMapMessage",
       this.HandleCurrentMapMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MapComplementaryInformationsDataMessage",
       this.HandleMapComplementaryInformationsDataMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MapComplementaryInformationsDataInHouseMessage",
       this.HandleMapComplementaryInformationsDataInHouseMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MapComplementaryInformationsWithCoordsMessage",
       this.HandleMapComplementaryInformationsWithCoordsMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StatedMapUpdateMessage",
       this.HandleStatedMapUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "InteractiveMapUpdateMessage",
       this.HandleInteractiveMapUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StatedElementUpdatedMessage",
       this.HandleStatedElementUpdatedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "InteractiveElementUpdatedMessage",
       this.HandleInteractiveElementUpdatedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameMapMovementMessage",
       this.HandleGameMapMovementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameMapNoMovementMessage",
       this.HandleGameMapNoMovementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameContextRemoveElementMessage",
       this.HandleGameContextRemoveElementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "TeleportOnSameMapMessage",
       this.HandleTeleportOnSameMapMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameContextRemoveMultipleElementMessage",
       this.HandleGameContextRemoveMultipleElementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameRolePlayShowActorMessage",
       this.HandleGameRolePlayShowActorMessage,
       this

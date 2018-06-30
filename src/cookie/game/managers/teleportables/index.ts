@@ -24,15 +24,13 @@ export default class TeleportablesManager {
   ) {
     this._account = account;
     this._teleportable = TeleportablesEnum.NONE;
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "ZaapListMessage",
-      this.HandleZaapListMessage,
-      this
+      this.handleZaapListMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "TeleportDestinationsListMessage",
-      this.HandleTeleportDestinationsListMessage,
-      this
+      this.handleTeleportDestinationsListMessage
     );
     map.MapChanged.on(success => this.mapChanged);
     interactives.UseFinished.on(success => this.interactivesUseFinished);
@@ -141,7 +139,7 @@ export default class TeleportablesManager {
     this.onUseFinished.trigger(success);
   }
 
-  private async HandleZaapListMessage(account: Account, message: any) {
+  private handleZaapListMessage = async (account: Account, message: any) => {
     await sleep(1000);
 
     if (
@@ -160,12 +158,12 @@ export default class TeleportablesManager {
       mapId: this._destinationMapId,
       teleporterType: this._teleportable
     });
-  }
+  };
 
-  private async HandleTeleportDestinationsListMessage(
+  private handleTeleportDestinationsListMessage = async (
     account: Account,
     message: any
-  ) {
+  ) => {
     await sleep(1000);
 
     if (
@@ -184,7 +182,7 @@ export default class TeleportablesManager {
       mapId: this._destinationMapId,
       teleporterType: this._teleportable
     });
-  }
+  };
 
   private mapChanged = (success: boolean) => {
     if (

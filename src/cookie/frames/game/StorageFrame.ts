@@ -1,50 +1,44 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 
-export default class StorageFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class StorageFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ExchangeStartedWithStorageMessage",
       this.HandleExchangeStartedWithStorageMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageInventoryContentMessage",
       this.HandleStorageInventoryContentMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageKamasUpdateMessage",
       this.HandleStorageKamasUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageObjectUpdateMessage",
       this.HandleStorageObjectUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageObjectRemoveMessage",
       this.HandleStorageObjectRemoveMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageObjectsUpdateMessage",
       this.HandleStorageObjectsUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "StorageObjectsRemoveMessage",
       this.HandleStorageObjectsRemoveMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeLeaveMessage",
       this.HandleExchangeLeaveMessage,
       this

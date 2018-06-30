@@ -1,29 +1,23 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import DataManager from "@/protocol/data";
 import Achievements from "@/protocol/data/classes/Achievements";
 import { DataTypes } from "@/protocol/data/DataTypes";
 
-export default class AchievementsFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class AchievementsFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "AchievementRewardSuccessMessage",
       this.HandleAchievementRewardSuccessMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "AchievementFinishedMessage",
       this.HandleAchievementFinishedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "AchievementListMessage",
       this.HandleAchievementListMessage,
       this

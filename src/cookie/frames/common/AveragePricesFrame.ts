@@ -1,17 +1,11 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 import ObjectAveragePricesMessage from "@/protocol/network/messages/ObjectAveragePricesMessage";
-import * as firebase from "firebase";
+import firebase from "firebase";
 
-export default class AveragePricesFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class AveragePricesFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ObjectAveragePricesMessage",
       this.HandleObjectAveragePricesMessage,
       this

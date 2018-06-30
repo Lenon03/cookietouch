@@ -1,47 +1,41 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import DTConstants from "@/protocol/DTConstants";
 import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
 import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
-import * as moment from "moment";
+import moment from "moment";
 
-export default class IdentificationFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class IdentificationFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "HelloConnectMessage",
       this.HandleHelloConnectMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "assetsVersionChecked",
       this.HandleassetsVersionChecked,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ConnectionFailedMessage",
       this.HandleConnectionFailedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "IdentificationSuccessMessage",
       this.HandleIdentificationSuccessMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "IdentificationFailedBannedMessage",
       this.HandleIdentificationFailedBannedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "IdentificationFailedMessage",
       this.HandleIdentificationFailedMessage,
       this
@@ -53,7 +47,7 @@ export default class IdentificationFrame {
     account.framesData.key = message.key;
     account.framesData.salt = message.salt;
 
-    this.account.logger.logDebug(
+    account.logger.logDebug(
       LanguageManager.trans("identificationFrame"),
       LanguageManager.trans("connectedAuth")
     );

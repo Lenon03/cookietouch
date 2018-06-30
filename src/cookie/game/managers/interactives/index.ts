@@ -26,35 +26,29 @@ export default class InteractivesManager implements IClearable {
         this.isUseFinished(false);
       }
     });
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "InteractiveUsedMessage",
-      this.HandleInteractiveUsedMessage,
-      this
+      this.handleInteractiveUsedMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "InteractiveUseErrorMessage",
-      this.HandleInteractiveUseErrorMessage,
-      this
+      this.handleInteractiveUseErrorMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "LockableShowCodeDialogMessage",
-      this.HandleLockableShowCodeDialogMessage,
-      this
+      this.handleLockableShowCodeDialogMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "LockableCodeResultMessage",
-      this.HandleLockableCodeResultMessage,
-      this
+      this.handleLockableCodeResultMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "LockableStateUpdateHouseDoorMessage",
-      this.HandleLockableStateUpdateHouseDoorMessage,
-      this
+      this.handleLockableStateUpdateHouseDoorMessage
     );
-    this._account.dispatcher.register(
+    this._account.network.registerMessage(
       "LockableStateUpdateStorageMessage",
-      this.HandleLockableStateUpdateStorageMessage,
-      this
+      this.handleLockableStateUpdateStorageMessage
     );
   }
 
@@ -230,7 +224,7 @@ export default class InteractivesManager implements IClearable {
     this.onUseFinished.trigger(success);
   }
 
-  private async HandleInteractiveUsedMessage(account: Account, message: any) {
+  private handleInteractiveUsedMessage = (account: Account, message: any) => {
     if (
       this._interactiveToUse === null ||
       message.entityId !== this._account.game.character.id
@@ -242,23 +236,23 @@ export default class InteractivesManager implements IClearable {
     if (this._lockCode === null) {
       this.isUseFinished(true);
     }
-  }
+  };
 
-  private async HandleInteractiveUseErrorMessage(
+  private handleInteractiveUseErrorMessage = (
     account: Account,
     message: any
-  ) {
+  ) => {
     if (this._interactiveToUse === null) {
       return;
     }
 
     this.isUseFinished(false);
-  }
+  };
 
-  private async HandleLockableShowCodeDialogMessage(
+  private handleLockableShowCodeDialogMessage = async (
     account: Account,
     message: any
-  ) {
+  ) => {
     await sleep(1000);
 
     if (this._interactiveToUse === null || this._lockCode === null) {
@@ -268,12 +262,12 @@ export default class InteractivesManager implements IClearable {
     await account.network.sendMessageFree("LockableUseCodeMessage", {
       code: this._lockCode.padEnd(8, "_")
     });
-  }
+  };
 
-  private async HandleLockableCodeResultMessage(
+  private handleLockableCodeResultMessage = (
     account: Account,
     message: any
-  ) {
+  ) => {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }
@@ -283,12 +277,12 @@ export default class InteractivesManager implements IClearable {
     }
 
     this.isUseFinished(false);
-  }
+  };
 
-  private async HandleLockableStateUpdateHouseDoorMessage(
+  private handleLockableStateUpdateHouseDoorMessage = (
     account: Account,
     message: any
-  ) {
+  ) => {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }
@@ -296,12 +290,12 @@ export default class InteractivesManager implements IClearable {
     if (!message.locked) {
       this.isUseFinished(true);
     }
-  }
+  };
 
-  private async HandleLockableStateUpdateStorageMessage(
+  private handleLockableStateUpdateStorageMessage = (
     account: Account,
     message: any
-  ) {
+  ) => {
     if (this._interactiveToUse === null || this._lockCode === null) {
       return;
     }
@@ -309,5 +303,5 @@ export default class InteractivesManager implements IClearable {
     if (!message.locked && message.elementId === this._interactiveToUse.id) {
       this.isUseFinished(true);
     }
-  }
+  };
 }

@@ -33,20 +33,17 @@ export default class GathersManager implements IClearable {
     this.pathfinder = new Pathfinder();
     movements.MovementFinished.on(this.onMovementFinished);
     map.MapChanged.on(this.mapChanged);
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "InteractiveUsedMessage",
-      this.HandleInteractiveUsedMessage,
-      this
+      this.handleInteractiveUsedMessage
     );
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "InteractiveUseEndedMessage",
-      this.HandleInteractiveUseEndedMessage,
-      this
+      this.handleInteractiveUseEndedMessage
     );
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "InteractiveUseErrorMessage",
-      this.HandleInteractiveUseErrorMessage,
-      this
+      this.handleInteractiveUseErrorMessage
     );
   }
 
@@ -215,7 +212,10 @@ export default class GathersManager implements IClearable {
     }
   };
 
-  private async HandleInteractiveUsedMessage(account: Account, message: any) {
+  private handleInteractiveUsedMessage = async (
+    account: Account,
+    message: any
+  ) => {
     if (
       this.elementToGather === null ||
       this.elementToGather.id !== message.elemId
@@ -229,21 +229,21 @@ export default class GathersManager implements IClearable {
       this.account.state = AccountStates.GATHERING;
       this.onGatherStarted.trigger();
     }
-  }
+  };
 
-  private async HandleInteractiveUseEndedMessage(
+  private handleInteractiveUseEndedMessage = async (
     account: Account,
     message: any
-  ) {
+  ) => {
     this.account.state = AccountStates.NONE;
     this.isGatherFinished(GatherResults.GATHERED);
-  }
+  };
 
-  private async HandleInteractiveUseErrorMessage(
+  private handleInteractiveUseErrorMessage = async (
     account: Account,
     message: any
-  ) {
+  ) => {
     this.blacklistedElements.push(this.elementToGather.id);
     this.isGatherFinished(GatherResults.BLACKLISTED);
-  }
+  };
 }

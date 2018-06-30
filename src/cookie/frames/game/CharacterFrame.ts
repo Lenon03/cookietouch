@@ -1,97 +1,91 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
 
-export default class CharacterFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class CharacterFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "EmotePlayMessage",
       this.HandleEmotePlayMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterExperienceGainMessage",
       this.HandleCharacterExperienceGainMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterStatsListMessage",
       this.HandleCharacterStatsListMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterLevelUpMessage",
       this.HandleCharacterLevelUpMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "UpdateLifePointsMessage",
       this.HandleUpdateLifePointsMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameRolePlayPlayerLifeStatusMessage",
       this.HandleGameRolePlayPlayerLifeStatusMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "PlayerStatusUpdateMessage",
       this.HandlePlayerStatusUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "LifePointsRegenBeginMessage",
       this.HandleLifePointsRegenBeginMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "LifePointsRegenEndMessage",
       this.HandleLifePointsRegenEndMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SpellListMessage",
       this.HandleSpellListMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SpellUpgradeSuccessMessage",
       this.HandleSpellUpgradeSuccessMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "JobDescriptionMessage",
       this.HandleJobDescriptionMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "JobExperienceMultiUpdateMessage",
       this.HandleJobExperienceMultiUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "JobExperienceUpdateMessage",
       this.HandleJobExperienceUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MountXpRatioMessage",
       this.HandleMountXpRatioMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MountRidingMessage",
       this.HandleMountRidingMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "MountSetMessage",
       this.HandleMountSetMessage,
       this
@@ -108,7 +102,7 @@ export default class CharacterFrame {
   ) {
     account.statistics.UpdateCharacterExperienceGainMessage(message);
     account.game.character.stats.UpdateCharacterExperienceGainMessage(message);
-    this.account.logger.logDebug(
+    account.logger.logDebug(
       LanguageManager.trans("characterFrame"),
       LanguageManager.trans("experienceGain", message.experienceCharacter)
     );
@@ -124,7 +118,7 @@ export default class CharacterFrame {
   private async HandleCharacterLevelUpMessage(account: Account, message: any) {
     account.statistics.UpdateCharacterLevelUpMessage(message);
     account.game.character.UpdateCharacterLevelUpMessage(message);
-    this.account.logger.logDebug(
+    account.logger.logDebug(
       LanguageManager.trans("characterFrame"),
       LanguageManager.trans("levelUp")
     );
@@ -162,7 +156,7 @@ export default class CharacterFrame {
     account.game.character.UpdateLifePointsRegenEndMessage(message);
 
     if (message.lifePointsGained > 0) {
-      this.account.logger.logDebug(
+      account.logger.logDebug(
         LanguageManager.trans("characterFrame"),
         LanguageManager.trans("lifePointsGained", message.lifePointsGained)
       );

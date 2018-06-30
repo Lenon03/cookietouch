@@ -1,41 +1,35 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 
-export default class SecurityFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class SecurityFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "RecaptchaRequestMessage",
       this.HandleRecaptchaRequestMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "SequenceNumberRequestMessage",
       this.HandleSequenceNumberRequestMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "BasicLatencyStatsRequestMessage",
       this.HandleBasicLatencyStatsRequestMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "TextInformationMessage",
       this.HandleTextInformationMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "AccountLoggingKickedMessage",
       this.HandleAccountLoggingKickedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "_ErrorPopupMessage",
       this.Handle_ErrorPopupMessage,
       this
@@ -74,24 +68,24 @@ export default class SecurityFrame {
 
   private async HandleTextInformationMessage(account: Account, data: any) {
     if (data.msgId === 245) {
-      this.account.logger.logDebug(
+      account.logger.logDebug(
         LanguageManager.trans("securityFrame"),
         LanguageManager.trans("dailyFightsLimit")
       );
-      if (this.account.config.disconnectUponFightsLimit) {
-        this.account.stop();
+      if (account.config.disconnectUponFightsLimit) {
+        account.stop();
       }
     }
   }
 
   private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
-    this.account.logger.logDebug(
+    account.logger.logDebug(
       LanguageManager.trans("securityFrame"),
       LanguageManager.trans("kickedTime", data.days, data.hours, data.minutes)
     );
   }
 
   private async Handle_ErrorPopupMessage(account: Account, data: any) {
-    this.account.logger.logError(data.title, data.text);
+    account.logger.logError(data.title, data.text);
   }
 }

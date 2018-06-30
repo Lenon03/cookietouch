@@ -1,50 +1,44 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import CharacterNameSuggestionFailureMessage from "@/protocol/network/messages/CharacterNameSuggestionFailureMessage";
 import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
 import { randomString } from "@/utils/Random";
 import { isBlank } from "@/utils/String";
 
-export default class CharacterSelectionFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class CharacterSelectionFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "CharactersListMessage",
       this.HandleCharactersListMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterNameSuggestionSuccessMessage",
       this.HandleCharacterNameSuggestionSuccessMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterNameSuggestionFailureMessage",
       this.HandleCharacterNameSuggestionFailureMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterCreationResultMessage",
       this.HandleCharacterCreationResultMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterSelectedSuccessMessage",
       this.HandleCharacterSelectedSuccessMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "CharacterSelectedForceMessage",
       this.HandleCharacterSelectedForceMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "GameContextCreateMessage",
       this.HandleGameContextCreateMessage,
       this

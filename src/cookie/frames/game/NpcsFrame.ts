@@ -1,25 +1,19 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 
-export default class NpcsFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class NpcsFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "NpcDialogCreationMessage",
       this.HandleNpcDialogCreationMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "NpcDialogQuestionMessage",
       this.HandleNpcDialogQuestionMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "LeaveDialogMessage",
       this.HandleLeaveDialogMessage,
       this

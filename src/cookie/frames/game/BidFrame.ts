@@ -1,35 +1,29 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 
-export default class BidFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class BidFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ExchangeStartedBidBuyerMessage",
       this.HandleExchangeStartedBidBuyerMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeTypesItemsExchangerDescriptionForUserMessage",
       this.HandleExchangeTypesItemsExchangerDescriptionForUserMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeStartedBidSellerMessage",
       this.HandleExchangeStartedBidSellerMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeErrorMessage",
       this.HandleExchangeErrorMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeLeaveMessage",
       this.HandleExchangeLeaveMessage,
       this

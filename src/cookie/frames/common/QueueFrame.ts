@@ -1,21 +1,15 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 
-export default class QueueFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class QueueFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "QueueStatusMessage",
       this.HandleQueueStatusMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "LoginQueueStatusMessage",
       this.HandleLoginQueueStatusMessage,
       this
@@ -23,14 +17,14 @@ export default class QueueFrame {
   }
 
   private async HandleQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus(
+    account.logger.logDofus(
       "GameQueue",
       LanguageManager.trans("queueMessage", data.position, data.total)
     );
   }
 
   private async HandleLoginQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus(
+    account.logger.logDofus(
       "LoginQueue",
       LanguageManager.trans("queueMessage", data.position, data.total)
     );

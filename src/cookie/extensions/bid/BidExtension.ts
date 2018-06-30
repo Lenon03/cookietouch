@@ -31,15 +31,13 @@ export default class BidExtension implements IClearable {
     this.account.game.bid.StartedBuying.on(this.startedBuying);
     this.account.game.bid.StartedSelling.on(this.startedSelling);
     this.account.scripts.ScriptStopped.on(this.onScriptStopped);
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "ExchangeBidHouseItemAddOkMessage",
-      this.HandleExchangeBidHouseItemAddOkMessage,
-      this
+      this.handleExchangeBidHouseItemAddOkMessage
     );
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "TextInformationMessage",
-      this.HandleTextInformationMessage,
-      this
+      this.handleTextInformationMessage
     );
   }
 
@@ -324,23 +322,23 @@ export default class BidExtension implements IClearable {
     this.timer.change(this.config.interval * 60000);
   }
 
-  private async HandleExchangeBidHouseItemAddOkMessage(
+  private handleExchangeBidHouseItemAddOkMessage = async (
     account: Account,
     message: ExchangeBidHouseItemAddOkMessage
-  ) {
+  ) => {
     this.kamasPaidOnTaxes += Math.max(
       ...[1, Math.round((message.itemInfo.objectPrice * 3) / 100)]
     );
     this.onStatisticsUpdated.trigger();
-  }
+  };
 
-  private async HandleTextInformationMessage(
+  private handleTextInformationMessage = async (
     account: Account,
     message: TextInformationMessage
-  ) {
+  ) => {
     if (message.msgId === 65 && message.parameters.length > 0) {
       this.kamasGained += parseInt(message.parameters[0], 10);
       this.onStatisticsUpdated.trigger();
     }
-  }
+  };
 }

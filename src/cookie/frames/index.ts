@@ -1,4 +1,3 @@
-import Account from "@/account";
 import AveragePricesFrame from "@/frames/common/AveragePricesFrame";
 import GoultinesFrame from "@/frames/common/GoultinesFrame";
 import QueueFrame from "@/frames/common/QueueFrame";
@@ -17,45 +16,39 @@ import MapFrame from "@/frames/game/MapFrame";
 import NpcsFrame from "@/frames/game/NpcsFrame";
 import QuestsFrame from "@/frames/game/QuestsFrame";
 import StorageFrame from "@/frames/game/StorageFrame";
+import Dispatcher from "@/utils/Dispatcher";
+
+export interface IFrame {
+  register: () => void;
+}
 
 export default class Frames {
-  private chat: ChatFrame;
-  private queue: QueueFrame;
-  private security: SecurityFrame;
-  private characterSelection: CharacterSelectionFrame;
-  private identification: IdentificationFrame;
-  private serverSelection: ServerSelectionFrame;
-  private map: MapFrame;
-  private character: CharacterFrame;
-  private inventory: InventoryFrame;
-  private achievements: AchievementsFrame;
-  private bid: BidFrame;
-  private exchange: ExchangeFrame;
-  private npcs: NpcsFrame;
-  private quests: QuestsFrame;
-  private storage: StorageFrame;
-  private fight: FightFrame;
-  private averagePrices: AveragePricesFrame;
-  private goultines: GoultinesFrame;
+  public static dispatcher: Dispatcher = new Dispatcher();
 
-  constructor(account: Account) {
-    this.achievements = new AchievementsFrame(account);
-    this.bid = new BidFrame(account);
-    this.chat = new ChatFrame(account);
-    this.queue = new QueueFrame(account);
-    this.security = new SecurityFrame(account);
-    this.characterSelection = new CharacterSelectionFrame(account);
-    this.identification = new IdentificationFrame(account);
-    this.serverSelection = new ServerSelectionFrame(account);
-    this.character = new CharacterFrame(account);
-    this.map = new MapFrame(account);
-    this.inventory = new InventoryFrame(account);
-    this.exchange = new ExchangeFrame(account);
-    this.npcs = new NpcsFrame(account);
-    this.quests = new QuestsFrame(account);
-    this.storage = new StorageFrame(account);
-    this.fight = new FightFrame(account);
-    this.averagePrices = new AveragePricesFrame(account);
-    this.goultines = new GoultinesFrame(account);
+  private static frames: IFrame[] = [
+    new ChatFrame(),
+    new QueueFrame(),
+    new SecurityFrame(),
+    new CharacterSelectionFrame(),
+    new IdentificationFrame(),
+    new ServerSelectionFrame(),
+    new MapFrame(),
+    new CharacterFrame(),
+    new InventoryFrame(),
+    new AchievementsFrame(),
+    new BidFrame(),
+    new ExchangeFrame(),
+    new NpcsFrame(),
+    new QuestsFrame(),
+    new StorageFrame(),
+    new FightFrame(),
+    new AveragePricesFrame(),
+    new GoultinesFrame()
+  ];
+
+  public static Init() {
+    for (const f of this.frames) {
+      f.register();
+    }
   }
 }

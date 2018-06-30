@@ -1,16 +1,10 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 import MoneyGoultinesAmountSuccess from "@/protocol/network/messages/moneyGoultinesAmountSuccess";
 
-export default class GoultinesFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class GoultinesFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "moneyGoultinesAmountSuccess",
       this.HandlemoneyGoultinesAmountSuccess,
       this

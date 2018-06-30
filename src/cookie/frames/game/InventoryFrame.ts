@@ -1,71 +1,65 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 import DisplayNumericalValueMessage from "@/protocol/network/messages/DisplayNumericalValueMessage";
 
-export default class InventoryFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class InventoryFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "KamasUpdateMessage",
       this.HandleKamasUpdateMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "InventoryWeightMessage",
       this.HandleInventoryWeightMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectsQuantityMessage",
       this.HandleObjectsQuantityMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectQuantityMessage",
       this.HandleObjectQuantityMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectMovementMessage",
       this.HandleObjectMovementMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectModifiedMessage",
       this.HandleObjectModifiedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectsDeletedMessage",
       this.HandleObjectsDeletedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectDeletedMessage",
       this.HandleObjectDeletedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectsAddedMessage",
       this.HandleObjectsAddedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ObjectAddedMessage",
       this.HandleObjectAddedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "InventoryContentMessage",
       this.HandleInventoryContentMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "DisplayNumericalValueMessage",
       this.HandleDisplayNumericalValueMessage,
       this

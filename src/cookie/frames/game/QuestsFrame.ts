@@ -1,30 +1,24 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 
-export default class QuestsFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class QuestsFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "QuestStartedMessage",
       this.HandleQuestStartedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "QuestStepInfoMessage",
       this.HandleQuestStepInfoMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "QuestStepValidatedMessage",
       this.HandleQuestStepValidatedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "QuestValidatedMessage",
       this.HandleQuestValidatedMessage,
       this

@@ -1,51 +1,45 @@
 import Account from "@/account";
+import Frames, { IFrame } from "@/frames";
 import { sleep } from "@/utils/Time";
 
-export default class ExchangeFrame {
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
-  }
-
-  private register() {
-    this.account.dispatcher.register(
+export default class ExchangeFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
       "ExchangeRequestedTradeMessage",
       this.HandleExchangeRequestedTradeMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeStartedWithPodsMessage",
       this.HandleExchangeStartedWithPodsMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeObjectAddedMessage",
       this.HandleExchangeObjectAddedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeObjectModifiedMessage",
       this.HandleExchangeObjectModifiedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeObjectRemovedMessage",
       this.HandleExchangeObjectRemovedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeKamaModifiedMessage",
       this.HandleExchangeKamaModifiedMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeIsReadyMessage",
       this.HandleExchangeIsReadyMessage,
       this
     );
-    this.account.dispatcher.register(
+    Frames.dispatcher.register(
       "ExchangeLeaveMessage",
       this.HandleExchangeLeaveMessage,
       this

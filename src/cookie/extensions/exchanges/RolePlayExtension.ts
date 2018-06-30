@@ -14,10 +14,9 @@ export default class RolePlayExtension {
     );
     this.account.game.exchange.RemoteReady.on(() => this.remoteReady());
 
-    this.account.dispatcher.register(
+    this.account.network.registerMessage(
       "GameRolePlayPlayerFightFriendlyRequestedMessage",
-      this.HandleGameRolePlayPlayerFightFriendlyRequestedMessage,
-      this
+      this.handleGameRolePlayPlayerFightFriendlyRequestedMessage
     );
   }
 
@@ -53,10 +52,10 @@ export default class RolePlayExtension {
     this.account.game.exchange.sendReady();
   }
 
-  private async HandleGameRolePlayPlayerFightFriendlyRequestedMessage(
+  private handleGameRolePlayPlayerFightFriendlyRequestedMessage = async (
     account: Account,
     message: GameRolePlayPlayerFightFriendlyRequestedMessage
-  ) {
+  ) => {
     if (message.targetId !== account.game.character.id) {
       return;
     }
@@ -82,5 +81,5 @@ export default class RolePlayExtension {
         LanguageManager.trans("playerIgnored", player.name)
       );
     }
-  }
+  };
 }

@@ -2,7 +2,7 @@ import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import BreedsUtility from "@/core/BreedsUtility";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import InventoryHelper from "@/game/character/inventory/InventoryHelper";
+import Frames from "@/frames";
 import DTConstants from "@/protocol/DTConstants";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
@@ -23,14 +23,15 @@ presence();
 
 (global as any).API = new Array();
 
-async function init() {
+async function main() {
   GlobalConfiguration.load();
   LanguageManager.Init();
   await DTConstants.Init();
   await BreedsUtility.Init();
   MapPoint.Init();
+  Frames.Init();
+
+  render(<Main />, document.getElementById("app"));
 }
 
-init();
-
-render(<Main />, document.getElementById("app"));
+main();

@@ -44,7 +44,6 @@ export default class Account implements IEntity {
     account: Account;
     success: boolean;
   }>();
-  private frames: Frames;
   private _wasScriptRunning = false;
   private _wasScriptEnabled = false;
   private _state: AccountStates;
@@ -152,6 +151,10 @@ export default class Account implements IEntity {
   }
 
   public stop() {
+    this.config.removeListeners();
+    this.extensions.bid.config.removeListeners();
+    this.extensions.fights.config.removeListeners();
+    this.extensions.flood.config.removeListeners();
     this.network.close();
   }
 

@@ -54,12 +54,14 @@ class Configuration extends React.Component<
   };
 
   public componentDidMount() {
+    this.props.account.config.Updated.on(this.configUpdated);
     this.props.account.game.character.CharacterSelected.on(
       this.characterSelected
     );
   }
 
   public componentWillUnmount() {
+    this.props.account.config.Updated.off(this.configUpdated);
     this.props.account.game.character.CharacterSelected.off(
       this.characterSelected
     );
@@ -456,6 +458,22 @@ class Configuration extends React.Component<
     >);
     this.props.account.config[event.target.name] = value;
     this.props.account.config.save();
+  };
+
+  private configUpdated = () => {
+    this.setState({
+      acceptAchievements: this.props.account.config.acceptAchievements,
+      authorizedTradesFrom: this.props.account.config.authorizedTradesFrom,
+      autoMount: this.props.account.config.autoMount,
+      autoRegenAccepted: this.props.account.config.autoRegenAccepted,
+      disconnectUponFightsLimit: this.props.account.config
+        .disconnectUponFightsLimit,
+      enableSpeedHack: this.props.account.config.enableSpeedHack,
+      ignoreNonAuthorizedTrades: this.props.account.config
+        .ignoreNonAuthorizedTrades,
+      spells: this.props.account.config.spellsToBoost,
+      statToBoost: this.props.account.config.statToBoost
+    });
   };
 }
 

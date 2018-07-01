@@ -18,6 +18,12 @@ export default class BidConfiguration {
   public scriptPath: string;
   public objectsToSell: List<ObjectToSellEntry>;
   private account: Account;
+
+  private authChangedUnsuscribe: firebase.Unsubscribe;
+  private stopDataSnapshot: () => void;
+
+  private globalDoc: firebase.firestore.DocumentReference;
+
   private readonly onChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -26,6 +32,15 @@ export default class BidConfiguration {
     this.scriptPath = "";
     this.objectsToSell = new List();
   }
+
+  public removeListeners = () => {
+    if (this.authChangedUnsuscribe) {
+      this.authChangedUnsuscribe();
+    }
+    if (this.stopDataSnapshot) {
+      this.stopDataSnapshot();
+    }
+  };
 
   get isScriptPathValid(): boolean {
     return !isBlank(this.scriptPath);
@@ -36,30 +51,30 @@ export default class BidConfiguration {
   }
 
   public async load() {
-    const user = firebase.auth().currentUser;
-    if (!user) {
+    this.authChangedUnsuscribe = firebase
+      .auth()
+      .onAuthStateChanged(async user => {
+        if (!user) {
+          return;
+        }
+        this.globalDoc = firebase
+          .firestore()
+          .doc(
+            `users/${user.uid}/config/accounts/${
+              this.account.accountConfig.username
+            }/characters/${this.account.game.character.name}/bid`
+          );
+
+        this.stopDataSnapshot = this.globalDoc.onSnapshot(snapshot => {
+          this.updateFields(snapshot);
+        });
+      });
+
+    if (!this.globalDoc) {
       return;
     }
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/bid`
-      );
-
-    const data = await globalDoc.get();
-    if (!data.exists) {
-      return;
-    }
-    const json = data.data() as IBidConfigurationJSON;
-
-    this.interval = json.interval;
-    this.scriptPath = json.scriptPath;
-    this.objectsToSell = new List(
-      json.objectsToSell.map(o => ObjectToSellEntry.fromJSON(o))
-    );
-    this.onChanged.trigger();
+    const data = await this.globalDoc.get();
+    this.updateFields(data);
   }
 
   public async save() {
@@ -68,16 +83,19 @@ export default class BidConfiguration {
       objectsToSell: this.objectsToSell.ToArray().map(o => o.toJSON()),
       scriptPath: this.scriptPath
     };
-    const user = firebase.auth().currentUser;
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/bid`
-      );
+    await this.globalDoc.set(toSave);
+  }
 
-    await globalDoc.set(toSave);
+  private updateFields(snapshot: firebase.firestore.DocumentSnapshot) {
+    if (!snapshot.exists) {
+      return;
+    }
+    const json = snapshot.data() as IBidConfigurationJSON;
+    this.interval = json.interval;
+    this.scriptPath = json.scriptPath;
+    this.objectsToSell = new List(
+      json.objectsToSell.map(o => ObjectToSellEntry.fromJSON(o))
+    );
     this.onChanged.trigger();
   }
 }

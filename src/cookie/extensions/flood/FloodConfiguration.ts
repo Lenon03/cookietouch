@@ -19,6 +19,11 @@ export default class FloodConfiguration {
   public generalChannelInterval: number;
   public sentences: List<FloodSentence>;
 
+  private authChangedUnsuscribe: firebase.Unsubscribe;
+  private stopDataSnapshot: () => void;
+
+  private globalDoc: firebase.firestore.DocumentReference;
+
   private account: Account;
   private readonly onChanged = new LiteEvent<void>();
 
@@ -34,31 +39,40 @@ export default class FloodConfiguration {
     return this.onChanged.expose();
   }
 
-  public async load() {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      return;
+  public removeListeners = () => {
+    if (this.authChangedUnsuscribe) {
+      this.authChangedUnsuscribe();
     }
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/flood`
-      );
+    if (this.stopDataSnapshot) {
+      this.stopDataSnapshot();
+    }
+  };
 
-    const data = await globalDoc.get();
-    if (!data.exists) {
+  public async load() {
+    this.authChangedUnsuscribe = firebase
+      .auth()
+      .onAuthStateChanged(async user => {
+        if (!user) {
+          return;
+        }
+        this.globalDoc = firebase
+          .firestore()
+          .doc(
+            `users/${user.uid}/config/accounts/${
+              this.account.accountConfig.username
+            }/characters/${this.account.game.character.name}/flood`
+          );
+
+        this.stopDataSnapshot = this.globalDoc.onSnapshot(snapshot => {
+          this.updateFields(snapshot);
+        });
+      });
+
+    if (!this.globalDoc) {
       return;
     }
-    const json = data.data() as IFloodConfigurationJSON;
-    this.seekChannelInterval = json.seekChannelInterval;
-    this.salesChannelInterval = json.salesChannelInterval;
-    this.generalChannelInterval = json.generalChannelInterval;
-    this.sentences = new List(
-      json.sentences.map(o => FloodSentence.fromJSON(o))
-    );
-    this.onChanged.trigger();
+    const data = await this.globalDoc.get();
+    this.updateFields(data);
   }
 
   public async save() {
@@ -68,17 +82,20 @@ export default class FloodConfiguration {
       seekChannelInterval: this.seekChannelInterval,
       sentences: this.sentences.ToArray().map(o => o.toJSON())
     };
+    await this.globalDoc.set(toSave);
+  }
 
-    const user = firebase.auth().currentUser;
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/flood`
-      );
-
-    await globalDoc.set(toSave);
+  private updateFields(snapshot: firebase.firestore.DocumentSnapshot) {
+    if (!snapshot.exists) {
+      return;
+    }
+    const json = snapshot.data() as IFloodConfigurationJSON;
+    this.seekChannelInterval = json.seekChannelInterval;
+    this.salesChannelInterval = json.salesChannelInterval;
+    this.generalChannelInterval = json.generalChannelInterval;
+    this.sentences = new List(
+      json.sentences.map(o => FloodSentence.fromJSON(o))
+    );
     this.onChanged.trigger();
   }
 }

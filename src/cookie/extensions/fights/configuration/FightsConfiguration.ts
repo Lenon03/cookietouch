@@ -39,6 +39,11 @@ export default class FightsConfiguration {
   public tactic: FightTactics;
   public spells: Spell[];
   public fightSpeed: FightSpeeds;
+
+  private authChangedUnsuscribe: firebase.Unsubscribe;
+  private stopDataSnapshot: () => void;
+
+  private globalDoc: firebase.firestore.DocumentReference;
   private readonly onChanged = new LiteEvent<void>();
   private account: Account;
 
@@ -61,43 +66,44 @@ export default class FightsConfiguration {
     this.fightSpeed = FightSpeeds.NORMAL;
   }
 
+  public removeListeners = () => {
+    if (this.authChangedUnsuscribe) {
+      this.authChangedUnsuscribe();
+    }
+    if (this.stopDataSnapshot) {
+      this.stopDataSnapshot();
+    }
+  };
+
   public get Changed() {
     return this.onChanged.expose();
   }
 
   public async load() {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      return;
-    }
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/fights`
-      );
+    this.authChangedUnsuscribe = firebase
+      .auth()
+      .onAuthStateChanged(async user => {
+        if (!user) {
+          return;
+        }
+        this.globalDoc = firebase
+          .firestore()
+          .doc(
+            `users/${user.uid}/config/accounts/${
+              this.account.accountConfig.username
+            }/characters/${this.account.game.character.name}/fights`
+          );
 
-    const data = await globalDoc.get();
-    if (!data.exists) {
+        this.stopDataSnapshot = this.globalDoc.onSnapshot(snapshot => {
+          this.updateFields(snapshot);
+        });
+      });
+
+    if (!this.globalDoc) {
       return;
     }
-    const json = data.data() as IFightsConfigurationJSON;
-    this.approachWhenNoSpellCasted = json.approachWhenNoSpellCasted;
-    this.baseApproachAllMonsters = json.baseApproachAllMonsters;
-    this.blockSpectatorScenario = json.blockSpectatorScenario;
-    this.fightSpeed = json.fightSpeed;
-    this.ignoreSummonedEnemies = json.ignoreSummonedEnemies;
-    this.lockFight = json.lockFight;
-    this.maxCells = json.maxCells;
-    this.monsterToApproach = json.monsterToApproach;
-    this.regenEnd = json.regenEnd;
-    this.regenStart = json.regenStart;
-    this.spellToApproach = json.spellToApproach;
-    this.spells = json.spells.map(s => Spell.fromJSON(s));
-    this.startPlacement = json.startPlacement;
-    this.tactic = json.tactic;
-    this.onChanged.trigger();
+    const data = await this.globalDoc.get();
+    this.updateFields(data);
   }
 
   public async save() {
@@ -117,18 +123,28 @@ export default class FightsConfiguration {
       startPlacement: this.startPlacement,
       tactic: this.tactic
     };
+    await this.globalDoc.set(toSave);
+  }
 
-    const user = firebase.auth().currentUser;
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/fights`
-      );
-
-    await globalDoc.set(toSave);
-
+  private updateFields(snapshot: firebase.firestore.DocumentSnapshot) {
+    if (!snapshot.exists) {
+      return;
+    }
+    const json = snapshot.data() as IFightsConfigurationJSON;
+    this.approachWhenNoSpellCasted = json.approachWhenNoSpellCasted;
+    this.baseApproachAllMonsters = json.baseApproachAllMonsters;
+    this.blockSpectatorScenario = json.blockSpectatorScenario;
+    this.fightSpeed = json.fightSpeed;
+    this.ignoreSummonedEnemies = json.ignoreSummonedEnemies;
+    this.lockFight = json.lockFight;
+    this.maxCells = json.maxCells;
+    this.monsterToApproach = json.monsterToApproach;
+    this.regenEnd = json.regenEnd;
+    this.regenStart = json.regenStart;
+    this.spellToApproach = json.spellToApproach;
+    this.spells = json.spells.map(s => Spell.fromJSON(s));
+    this.startPlacement = json.startPlacement;
+    this.tactic = json.tactic;
     this.onChanged.trigger();
   }
 }

@@ -24,13 +24,11 @@ interface IGlobalConfigurationJSON {
 }
 
 export default class GlobalConfiguration {
-  public static globalDoc: firebase.firestore.DocumentReference;
-
   public static Init() {
     let initialized = false;
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
-        GlobalConfiguration.globalDoc = firebase.firestore().doc("NULL");
+        return;
       }
       GlobalConfiguration.globalDoc = firebase
         .firestore()
@@ -54,6 +52,8 @@ export default class GlobalConfiguration {
   public static showDebugMessages = false;
 
   public static updatesChannel: UpdatesChannel = UpdatesChannel.LATEST;
+
+  private static globalDoc: firebase.firestore.DocumentReference;
 
   public static get accountsList(): AccountConfiguration[] {
     let list = new List<AccountConfiguration>(
@@ -114,9 +114,6 @@ export default class GlobalConfiguration {
       return;
     }
     const data = await GlobalConfiguration.globalDoc.get();
-    if (!data.exists) {
-      return;
-    }
     this.updateFields(data);
   }
 

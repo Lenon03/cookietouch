@@ -53,6 +53,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
   }
 
   public componentDidMount() {
+    this.props.account.config.Updated.on(this.configUpdated);
     this.props.account.game.character.CharacterSelected.on(
       this.characterSelected
     );
@@ -60,6 +61,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
   }
 
   public componentWillUnmount() {
+    this.props.account.config.Updated.off(this.configUpdated);
     this.props.account.game.character.CharacterSelected.off(
       this.characterSelected
     );
@@ -419,6 +421,18 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     this.setState({ showSeekMessages: event.target.checked });
     this.props.account.config.showSeekMessages = event.target.checked;
     await this.props.account.config.save();
+  };
+
+  private configUpdated = () => {
+    this.setState({
+      showAllianceMessages: this.props.account.config.showAllianceMessages,
+      showGeneralMessages: this.props.account.config.showGeneralMessages,
+      showGuildMessages: this.props.account.config.showGuildMessages,
+      showNoobMessages: this.props.account.config.showNoobMessages,
+      showPartyMessages: this.props.account.config.showPartyMessages,
+      showSaleMessages: this.props.account.config.showSaleMessages,
+      showSeekMessages: this.props.account.config.showSeekMessages
+    });
   };
 }
 

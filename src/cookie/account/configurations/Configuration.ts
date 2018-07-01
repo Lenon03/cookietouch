@@ -3,6 +3,7 @@ import SpellToBoostEntry, {
   ISpellToBoostEntry
 } from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
+import LiteEvent, { ILiteEvent } from "@/utils/LiteEvent";
 import firebase from "firebase";
 
 interface IConfigurationJSON {
@@ -42,6 +43,17 @@ export default class Configuration {
   public authorizedTradesFrom: number[];
   public enableSpeedHack: boolean;
 
+  private authChangedUnsuscribe: firebase.Unsubscribe;
+  private stopDataSnapshot: () => void;
+
+  private globalDoc: firebase.firestore.DocumentReference;
+
+  private readonly onUpdated = new LiteEvent<void>();
+
+  public get Updated(): ILiteEvent<void> {
+    return this.onUpdated.expose();
+  }
+
   private account: Account;
 
   constructor(account: Account) {
@@ -65,42 +77,40 @@ export default class Configuration {
     this.enableSpeedHack = false;
   }
 
-  public async load() {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      return;
+  public removeListeners = () => {
+    if (this.authChangedUnsuscribe) {
+      this.authChangedUnsuscribe();
     }
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/global`
-      );
+    if (this.stopDataSnapshot) {
+      this.stopDataSnapshot();
+    }
+  };
 
-    const data = await globalDoc.get();
-    if (!data.exists) {
+  public async load() {
+    this.authChangedUnsuscribe = firebase
+      .auth()
+      .onAuthStateChanged(async user => {
+        if (!user) {
+          return;
+        }
+        this.globalDoc = firebase
+          .firestore()
+          .doc(
+            `users/${user.uid}/config/accounts/${
+              this.account.accountConfig.username
+            }/characters/${this.account.game.character.name}/global`
+          );
+
+        this.stopDataSnapshot = this.globalDoc.onSnapshot(snapshot => {
+          this.updateFields(snapshot);
+        });
+      });
+
+    if (!this.globalDoc) {
       return;
     }
-    const json = data.data() as IConfigurationJSON;
-    this.acceptAchievements = json.acceptAchievements;
-    this.autoMount = json.autoMount;
-    this.authorizedTradesFrom = json.authorizedTradesFrom;
-    this.autoRegenAccepted = json.autoRegenAccepted;
-    this.disconnectUponFightsLimit = json.disconnectUponFightsLimit;
-    this.enableSpeedHack = json.enableSpeedHack;
-    this.ignoreNonAuthorizedTrades = json.ignoreNonAuthorizedTrades;
-    this.showAllianceMessages = json.showAllianceMessages;
-    this.showGeneralMessages = json.showGeneralMessages;
-    this.showGuildMessages = json.showGuildMessages;
-    this.showNoobMessages = json.showNoobMessages;
-    this.showPartyMessages = json.showPartyMessages;
-    this.showSaleMessages = json.showSaleMessages;
-    this.showSeekMessages = json.showSeekMessages;
-    this.spellsToBoost = json.spellsToBoost.map(o =>
-      SpellToBoostEntry.fromJSON(o)
-    );
-    this.statToBoost = json.statToBoost;
+    const data = await this.globalDoc.get();
+    this.updateFields(data);
   }
 
   public async save() {
@@ -122,15 +132,33 @@ export default class Configuration {
       spellsToBoost: this.spellsToBoost.map(o => o.toJSON()),
       statToBoost: this.statToBoost
     };
-    const user = firebase.auth().currentUser;
-    const globalDoc = firebase
-      .firestore()
-      .doc(
-        `users/${user.uid}/config/accounts/${
-          this.account.accountConfig.username
-        }/characters/${this.account.game.character.name}/global`
-      );
 
-    await globalDoc.set(toSave);
+    await this.globalDoc.set(toSave);
+  }
+
+  private updateFields(snapshot: firebase.firestore.DocumentSnapshot) {
+    if (!snapshot.exists) {
+      return;
+    }
+    const json = snapshot.data() as IConfigurationJSON;
+    this.acceptAchievements = json.acceptAchievements;
+    this.autoMount = json.autoMount;
+    this.authorizedTradesFrom = json.authorizedTradesFrom;
+    this.autoRegenAccepted = json.autoRegenAccepted;
+    this.disconnectUponFightsLimit = json.disconnectUponFightsLimit;
+    this.enableSpeedHack = json.enableSpeedHack;
+    this.ignoreNonAuthorizedTrades = json.ignoreNonAuthorizedTrades;
+    this.showAllianceMessages = json.showAllianceMessages;
+    this.showGeneralMessages = json.showGeneralMessages;
+    this.showGuildMessages = json.showGuildMessages;
+    this.showNoobMessages = json.showNoobMessages;
+    this.showPartyMessages = json.showPartyMessages;
+    this.showSaleMessages = json.showSaleMessages;
+    this.showSeekMessages = json.showSeekMessages;
+    this.spellsToBoost = json.spellsToBoost.map(o =>
+      SpellToBoostEntry.fromJSON(o)
+    );
+    this.statToBoost = json.statToBoost;
+    this.onUpdated.trigger();
   }
 }

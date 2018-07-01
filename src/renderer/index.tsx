@@ -18,21 +18,15 @@ import "./main.scss";
 let updated = false;
 
 const app = initialize();
-app
-  .database()
-  .ref("averagePrices")
-  .remove();
 
 presence();
 
 (global as any).API = new Array();
 
-firebase.auth().onAuthStateChanged(async user => {
-  if (!user) {
-    return;
-  }
+const authUnsub = firebase.auth().onAuthStateChanged(async user => {
   if (!updated) {
     updated = true;
+    authUnsub();
     GlobalConfiguration.Init();
     await GlobalConfiguration.load();
     main();

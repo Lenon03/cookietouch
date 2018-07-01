@@ -8,6 +8,7 @@ import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
 import Main from "@renderer/pages/Main";
 import { ipcRenderer, remote } from "electron";
+import firebase from "firebase";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
@@ -24,8 +25,14 @@ presence();
 
 (global as any).API = new Array();
 
-async function main() {
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) {
+    return;
+  }
   GlobalConfiguration.load();
+});
+
+async function main() {
   LanguageManager.Init();
   await DTConstants.Init();
   await BreedsUtility.Init();

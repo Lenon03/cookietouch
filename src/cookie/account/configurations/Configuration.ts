@@ -1,9 +1,7 @@
 import Account from "@/account";
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
-import { remote } from "electron";
-import * as fs from "fs";
-import * as path from "path";
+import firebase from "firebase";
 
 interface IConfigurationJSON {
   showGeneralMessages: boolean;
@@ -25,8 +23,6 @@ interface IConfigurationJSON {
 }
 
 export default class Configuration {
-  public readonly configurationsPath = "parameters";
-
   public showGeneralMessages: boolean;
   public showPartyMessages: boolean;
   public showGuildMessages: boolean;
@@ -45,7 +41,6 @@ export default class Configuration {
   public enableSpeedHack: boolean;
 
   private account: Account;
-  private configFilePath = "";
 
   constructor(account: Account) {
     this.account = account;
@@ -68,28 +63,24 @@ export default class Configuration {
     this.enableSpeedHack = false;
   }
 
-  public setConfigFilePath() {
-    const folderPath = path.join(
-      remote.app.getPath("userData"),
-      this.configurationsPath
-    );
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    this.configFilePath = path.join(
-      folderPath,
-      `${this.account.accountConfig.username}_${
-        this.account.game.character.name
-      }.config`
-    );
-  }
-
-  public load() {
-    if (!fs.existsSync(this.configFilePath)) {
+  public async load() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
       return;
     }
-    const data = fs.readFileSync(this.configFilePath);
-    const json = JSON.parse(data.toString()) as IConfigurationJSON;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/global`
+      );
+
+    const data = await globalDoc.get();
+    if (!data.exists) {
+      return;
+    }
+    const json = data.data() as IConfigurationJSON;
     this.acceptAchievements = json.acceptAchievements;
     this.autoMount = json.autoMount;
     this.authorizedTradesFrom = json.authorizedTradesFrom;
@@ -108,7 +99,7 @@ export default class Configuration {
     this.statToBoost = json.statToBoost;
   }
 
-  public save() {
+  public async save() {
     const toSave: IConfigurationJSON = {
       acceptAchievements: this.acceptAchievements,
       authorizedTradesFrom: this.authorizedTradesFrom,
@@ -127,6 +118,15 @@ export default class Configuration {
       spellsToBoost: this.spellsToBoost,
       statToBoost: this.statToBoost
     };
-    fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+    const user = firebase.auth().currentUser;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/global`
+      );
+
+    await globalDoc.set(toSave);
   }
 }

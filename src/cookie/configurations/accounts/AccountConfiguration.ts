@@ -1,7 +1,19 @@
-import CharacterCreation from "@/configurations/accounts/CharacterCreation";
+import CharacterCreation, {
+  ICharacterCreation
+} from "@/configurations/accounts/CharacterCreation";
 import { Enumerable } from "linqts";
 
-export default class AccountConfiguration {
+export interface IAccountConfiguration {
+  username: string;
+  password: string;
+  server: number;
+  character: string;
+  characterCreation: ICharacterCreation;
+  planificationActivated: boolean;
+  planification: boolean[];
+}
+
+export default class AccountConfiguration implements IAccountConfiguration {
   public username: string;
   public password: string;
   public server: number;
@@ -18,5 +30,32 @@ export default class AccountConfiguration {
     this.characterCreation = new CharacterCreation();
     this.planificationActivated = false;
     this.planification = Enumerable.Repeat(true, 24).ToArray();
+  }
+
+  public toJSON(): IAccountConfiguration {
+    return Object.assign({}, this, {
+      characterCreation: this.characterCreation.toJSON()
+    });
+  }
+
+  public static fromJSON(
+    json: IAccountConfiguration | string
+  ): AccountConfiguration {
+    if (typeof json === "string") {
+      return JSON.parse(json, AccountConfiguration.reviver);
+    } else {
+      const accountConfiguration = Object.create(
+        AccountConfiguration.prototype
+      );
+      return {
+        ...accountConfiguration,
+        ...json,
+        ...CharacterCreation.fromJSON(json.characterCreation)
+      };
+    }
+  }
+
+  public static reviver(key: string, value: string): any {
+    return key === "" ? AccountConfiguration.fromJSON(value) : value;
   }
 }

@@ -724,7 +724,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     );
   }
 
-  private submit = event => {
+  private submit = async event => {
     event.preventDefault();
 
     const infos = this.state.addSpellForm;
@@ -750,7 +750,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     );
 
     this.props.account.extensions.fights.config.spells.push(spell);
-    this.props.account.extensions.fights.config.save();
+    await this.props.account.extensions.fights.config.save();
   };
 
   private getModalStyle = () => {
@@ -772,13 +772,13 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ activeTab: value });
   };
 
-  private handleSwitchChange = (event, checked) => {
+  private handleSwitchChange = async (event, checked) => {
     this.setState({ [event.target.name]: checked } as Pick<
       IFightsTabState,
       keyof IFightsTabState
     >);
     this.props.account.extensions.fights.config[event.target.name] = checked;
-    this.props.account.extensions.fights.config.save();
+    await this.props.account.extensions.fights.config.save();
   };
 
   private handleSwitchChangeForm = (event, checked) => {
@@ -793,14 +793,14 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ addSpellForm });
   };
 
-  private handleSelectChange = event => {
+  private handleSelectChange = async event => {
     this.setState({ [event.target.name]: event.target.value } as Pick<
       IFightsTabState,
       keyof IFightsTabState
     >);
     this.props.account.extensions.fights.config[event.target.name] =
       event.target.value;
-    this.props.account.extensions.fights.config.save();
+    await this.props.account.extensions.fights.config.save();
   };
 
   private configChanged = () => {
@@ -846,11 +846,11 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     );
   };
 
-  private removeSpell = (s: Spell) => () => {
+  private removeSpell = (s: Spell) => async () => {
     this.props.account.extensions.fights.config.spells = this.state.spells.filter(
       sp => sp.spellId !== s.spellId
     );
-    this.props.account.extensions.fights.config.save();
+    await this.props.account.extensions.fights.config.save();
   };
 
   private openInfos = () => {

@@ -5,9 +5,7 @@ import { FightStartPlacement } from "@/extensions/fights/configuration/enums/Fig
 import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
 import Spell from "@/extensions/fights/configuration/Spell";
 import LiteEvent from "@/utils/LiteEvent";
-import { remote } from "electron";
-import * as fs from "fs";
-import * as path from "path";
+import firebase from "firebase";
 
 interface IFightsConfigurationJSON {
   approachWhenNoSpellCasted: boolean;
@@ -27,8 +25,6 @@ interface IFightsConfigurationJSON {
 }
 
 export default class FightsConfiguration {
-  public readonly configurationsPath = "parameters/fights";
-
   public approachWhenNoSpellCasted: boolean;
   public baseApproachAllMonsters: boolean;
   public blockSpectatorScenario: BlockSpectatorScenarios;
@@ -45,7 +41,6 @@ export default class FightsConfiguration {
   public fightSpeed: FightSpeeds;
   private readonly onChanged = new LiteEvent<void>();
   private account: Account;
-  private configFilePath = "";
 
   constructor(account: Account) {
     this.account = account;
@@ -70,29 +65,24 @@ export default class FightsConfiguration {
     return this.onChanged.expose();
   }
 
-  public setConfigFilePath() {
-    const folderPath = path.join(
-      remote.app.getPath("userData"),
-      this.configurationsPath
-    );
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    this.configFilePath = path.join(
-      folderPath,
-      `${this.account.accountConfig.username}_${
-        this.account.game.character.name
-      }.config`
-    );
-  }
-
-  public load() {
-    if (!fs.existsSync(this.configFilePath)) {
-      this.save();
+  public async load() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
       return;
     }
-    const data = fs.readFileSync(this.configFilePath);
-    const json = JSON.parse(data.toString()) as IFightsConfigurationJSON;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/fights`
+      );
+
+    const data = await globalDoc.get();
+    if (!data.exists) {
+      return;
+    }
+    const json = data.data() as IFightsConfigurationJSON;
     this.approachWhenNoSpellCasted = json.approachWhenNoSpellCasted;
     this.baseApproachAllMonsters = json.baseApproachAllMonsters;
     this.blockSpectatorScenario = json.blockSpectatorScenario;
@@ -110,7 +100,7 @@ export default class FightsConfiguration {
     this.onChanged.trigger();
   }
 
-  public save() {
+  public async save() {
     const toSave: IFightsConfigurationJSON = {
       approachWhenNoSpellCasted: this.approachWhenNoSpellCasted,
       baseApproachAllMonsters: this.baseApproachAllMonsters,
@@ -127,7 +117,18 @@ export default class FightsConfiguration {
       startPlacement: this.startPlacement,
       tactic: this.tactic
     };
-    fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+
+    const user = firebase.auth().currentUser;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/fights`
+      );
+
+    await globalDoc.set(toSave);
+
     this.onChanged.trigger();
   }
 }

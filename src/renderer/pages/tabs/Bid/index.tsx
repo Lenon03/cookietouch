@@ -276,17 +276,17 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
         filters: [{ name: "Cookie Scripts Format", extensions: ["js"] }],
         properties: ["openFile"]
       },
-      filepaths => {
+      async filepaths => {
         const filepath = filepaths[0];
         this.props.account.extensions.bid.config.scriptPath = filepath;
-        this.props.account.extensions.bid.config.save();
+        await this.props.account.extensions.bid.config.save();
       }
     );
   };
 
-  private removeScriptPath = () => {
+  private removeScriptPath = async () => {
     this.props.account.extensions.bid.config.scriptPath = "";
-    this.props.account.extensions.bid.config.save();
+    await this.props.account.extensions.bid.config.save();
   };
 
   private submit = async event => {
@@ -310,7 +310,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
         infos.basePrice
       )
     );
-    this.props.account.extensions.bid.config.save();
+    await this.props.account.extensions.bid.config.save();
   };
 
   private handleSelectChangeForm = event => {
@@ -319,22 +319,22 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     this.setState({ addObjectForm });
   };
 
-  private handleInputChange = event => {
+  private handleInputChange = async event => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<
       IBidTabState,
       keyof IBidTabState
     >);
     this.props.account.extensions.bid.config[event.target.name] = value;
-    this.props.account.extensions.bid.config.save();
+    await this.props.account.extensions.bid.config.save();
   };
 
-  private deleteObject = (obj: ObjectToSellEntry) => (
+  private deleteObject = (obj: ObjectToSellEntry) => async (
     event: React.MouseEvent<HTMLElement>
   ) => {
     const objects = this.state.objects.filter(o => o.gid !== obj.gid);
     this.props.account.extensions.bid.config.objectsToSell = new List(objects);
-    this.props.account.extensions.bid.config.save();
+    await this.props.account.extensions.bid.config.save();
   };
 
   private characterSelected = () => {

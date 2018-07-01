@@ -1,28 +1,25 @@
 import Account from "@/account";
-import FloodSentence from "@/extensions/flood/FloodSentence";
+import FloodSentence, {
+  IFloodSentence
+} from "@/extensions/flood/FloodSentence";
 import LiteEvent from "@/utils/LiteEvent";
-import { remote } from "electron";
-import * as fs from "fs";
+import firebase from "firebase";
 import { List } from "linqts";
-import * as path from "path";
 
 interface IFloodConfigurationJSON {
   seekChannelInterval: number;
   salesChannelInterval: number;
   generalChannelInterval: number;
-  sentences: FloodSentence[];
+  sentences: IFloodSentence[];
 }
 
 export default class FloodConfiguration {
-  public readonly configurationsPath = "parameters/flood";
-
   public seekChannelInterval: number;
   public salesChannelInterval: number;
   public generalChannelInterval: number;
   public sentences: List<FloodSentence>;
 
   private account: Account;
-  private configFilePath = "";
   private readonly onChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -37,44 +34,51 @@ export default class FloodConfiguration {
     return this.onChanged.expose();
   }
 
-  public setConfigFilePath() {
-    const folderPath = path.join(
-      remote.app.getPath("userData"),
-      this.configurationsPath
-    );
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    this.configFilePath = path.join(
-      folderPath,
-      `${this.account.accountConfig.username}_${
-        this.account.game.character.name
-      }.config`
-    );
-  }
-
-  public load() {
-    if (!fs.existsSync(this.configFilePath)) {
-      this.save();
+  public async load() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
       return;
     }
-    const data = fs.readFileSync(this.configFilePath);
-    const json = JSON.parse(data.toString()) as IFloodConfigurationJSON;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/flood`
+      );
+
+    const data = await globalDoc.get();
+    if (!data.exists) {
+      return;
+    }
+    const json = data.data() as IFloodConfigurationJSON;
     this.seekChannelInterval = json.seekChannelInterval;
     this.salesChannelInterval = json.salesChannelInterval;
     this.generalChannelInterval = json.generalChannelInterval;
-    this.sentences = new List(json.sentences);
+    this.sentences = new List(
+      json.sentences.map(o => FloodSentence.fromJSON(o))
+    );
     this.onChanged.trigger();
   }
 
-  public save() {
+  public async save() {
     const toSave: IFloodConfigurationJSON = {
       generalChannelInterval: this.generalChannelInterval,
       salesChannelInterval: this.salesChannelInterval,
       seekChannelInterval: this.seekChannelInterval,
-      sentences: this.sentences.ToArray()
+      sentences: this.sentences.ToArray().map(o => o.toJSON())
     };
-    fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+
+    const user = firebase.auth().currentUser;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/flood`
+      );
+
+    await globalDoc.set(toSave);
     this.onChanged.trigger();
   }
 }

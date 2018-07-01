@@ -16,7 +16,6 @@ import { NetworkPhases } from "@/network/NetworkPhases";
 import DTConstants from "@/protocol/DTConstants";
 import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
-import Dispatcher from "@/utils/Dispatcher";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";

@@ -1,31 +1,29 @@
 import Account from "@/account";
-import ObjectToSellEntry from "@/extensions/bid/ObjectToSellEntry";
+import ObjectToSellEntry, {
+  IObjectToSellEntry
+} from "@/extensions/bid/ObjectToSellEntry";
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
-import { remote } from "electron";
-import * as fs from "fs";
+import firebase from "firebase";
 import { List } from "linqts";
-import * as path from "path";
 
 interface IBidConfigurationJSON {
   interval: number;
   scriptPath: string;
-  objectsToSell: ObjectToSellEntry[];
+  objectsToSell: IObjectToSellEntry[];
 }
 
 export default class BidConfiguration {
-  public readonly configurationsPath = "parameters/bid";
-
   public interval: number;
   public scriptPath: string;
   public objectsToSell: List<ObjectToSellEntry>;
   private account: Account;
-  private configFilePath = "";
   private readonly onChanged = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
     this.interval = 10;
+    this.scriptPath = "";
     this.objectsToSell = new List();
   }
 
@@ -37,42 +35,49 @@ export default class BidConfiguration {
     return this.onChanged.expose();
   }
 
-  public setConfigFilePath() {
-    const folderPath = path.join(
-      remote.app.getPath("userData"),
-      this.configurationsPath
-    );
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    this.configFilePath = path.join(
-      folderPath,
-      `${this.account.accountConfig.username}_${
-        this.account.game.character.name
-      }.config`
-    );
-  }
-
-  public load() {
-    if (!fs.existsSync(this.configFilePath)) {
-      this.save();
+  public async load() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
       return;
     }
-    const data = fs.readFileSync(this.configFilePath);
-    const json = JSON.parse(data.toString()) as IBidConfigurationJSON;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/bid`
+      );
+
+    const data = await globalDoc.get();
+    if (!data.exists) {
+      return;
+    }
+    const json = data.data() as IBidConfigurationJSON;
+
     this.interval = json.interval;
     this.scriptPath = json.scriptPath;
-    this.objectsToSell = new List(json.objectsToSell);
+    this.objectsToSell = new List(
+      json.objectsToSell.map(o => ObjectToSellEntry.fromJSON(o))
+    );
     this.onChanged.trigger();
   }
 
-  public save() {
+  public async save() {
     const toSave: IBidConfigurationJSON = {
       interval: this.interval,
-      objectsToSell: this.objectsToSell.ToArray(),
+      objectsToSell: this.objectsToSell.ToArray().map(o => o.toJSON()),
       scriptPath: this.scriptPath
     };
-    fs.writeFileSync(this.configFilePath, JSON.stringify(toSave));
+    const user = firebase.auth().currentUser;
+    const globalDoc = firebase
+      .firestore()
+      .doc(
+        `users/${user.uid}/config/accounts/${
+          this.account.accountConfig.username
+        }/characters/${this.account.game.character.name}/bid`
+      );
+
+    await globalDoc.set(toSave);
     this.onChanged.trigger();
   }
 }

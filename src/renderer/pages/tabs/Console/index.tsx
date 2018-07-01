@@ -357,58 +357,68 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     }
   };
 
-  private showGeneralMessages = (
+  private showGeneralMessages = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     this.setState({
       showGeneralMessages: event.target.checked
     });
     this.props.account.config.showGeneralMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showAllianceMessages = (
+  private showAllianceMessages = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     this.setState({
       showAllianceMessages: event.target.checked
     });
     this.props.account.config.showAllianceMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showGuildMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private showGuildMessages = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     this.setState({
       showGuildMessages: event.target.checked
     });
     this.props.account.config.showGuildMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showNoobMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private showNoobMessages = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     this.setState({ showNoobMessages: event.target.checked });
     this.props.account.config.showNoobMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showPartyMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private showPartyMessages = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     this.setState({
       showPartyMessages: event.target.checked
     });
     this.props.account.config.showPartyMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showSaleMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private showSaleMessages = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     this.setState({ showSaleMessages: event.target.checked });
     this.props.account.config.showSaleMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 
-  private showSeekMessages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private showSeekMessages = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     this.setState({ showSeekMessages: event.target.checked });
     this.props.account.config.showSeekMessages = event.target.checked;
-    this.props.account.config.save();
+    await this.props.account.config.save();
   };
 }
 

@@ -7,7 +7,6 @@ import { List } from "linqts";
 export default class TutorialHelper {
   public static questTutorialId = 489;
   public static mapIdFirst = 81002496;
-  // public static mapIdSecondBeforeFight = 81003520;
   public static mapIdSecondAfterFight = 81003522;
   public static mapIdThirdBeforeFight = 81004544;
   public static mapIdThirdAfterFight = 81004546;

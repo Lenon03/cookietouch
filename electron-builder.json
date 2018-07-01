@@ -18,7 +18,7 @@
     ]
   },
   "linux": {
-    "target": ["AppImage", "deb"]
+    "target": ["AppImage"]
   },
   "win": {
     "target": "nsis",

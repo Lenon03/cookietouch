@@ -1,28 +1,23 @@
 import Account from "@/account";
-import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
+import AccountConfiguration, {
+  IAccountConfiguration
+} from "@/configurations/accounts/AccountConfiguration";
 import { Languages } from "@/configurations/language/Languages";
 import Group from "@/groups/Group";
-import Crypto from "@/utils/Crypto";
 import CookieMain from "@renderer/CookieMain";
-import { remote } from "electron";
-import * as fs from "fs";
+import firebase from "firebase";
 import { List } from "linqts";
-import * as path from "path";
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;
   lang: Languages;
-  accounts: AccountConfiguration[];
+  accounts: IAccountConfiguration[];
   showDebugMessages: boolean;
 }
 
 export default class GlobalConfiguration {
   // TODO: Put this private and fix validate method on CharacterCreator
   public static _accounts = new List<AccountConfiguration>();
-  private static configPath = path.join(
-    remote.app.getPath("userData"),
-    "config.cookie"
-  );
 
   public static get accountsList(): AccountConfiguration[] {
     let list = new List<AccountConfiguration>(
@@ -105,27 +100,43 @@ export default class GlobalConfiguration {
     return this._accounts.FirstOrDefault(a => a.username === username);
   }
 
-  public static load() {
-    if (!fs.existsSync(this.configPath)) {
+  public static async load() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
       return;
     }
-    const data = fs.readFileSync(this.configPath);
-    const decrypted = Crypto.decrypt(data.toString(), "c0oKïeT0uCh");
-    const json = JSON.parse(decrypted) as IGlobalConfigurationJSON;
-    this._accounts = new List(json.accounts);
+    const globalDoc = firebase
+      .firestore()
+      .doc(`users/${user.uid}/config/global`);
+
+    const data = await globalDoc.get();
+    if (!data.exists) {
+      return;
+    }
+    const json = data.data() as IGlobalConfigurationJSON;
+
+    this._accounts = new List(
+      json.accounts.map(o => AccountConfiguration.fromJSON(o))
+    );
     this._anticaptchaKey = json.anticaptchaKey;
     this._lang = json.lang;
     this._showDebugMessages = json.showDebugMessages;
   }
 
-  public static save() {
+  public static async save() {
     const toSave: IGlobalConfigurationJSON = {
-      accounts: this._accounts.ToArray(),
+      accounts: this._accounts.ToArray().map(o => o.toJSON()),
       anticaptchaKey: this._anticaptchaKey,
       lang: this._lang,
       showDebugMessages: this._showDebugMessages
     };
-    const crypted = Crypto.encrypt(JSON.stringify(toSave), "c0oKïeT0uCh");
-    fs.writeFileSync(this.configPath, crypted);
+
+    const user = firebase.auth().currentUser;
+    console.log(toSave);
+    const globalDoc = firebase
+      .firestore()
+      .doc(`users/${user.uid}/config/global`);
+
+    await globalDoc.set(toSave);
   }
 }

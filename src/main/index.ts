@@ -1,7 +1,17 @@
-import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  MenuItemConstructorOptions
+} from "electron";
 import { appUpdater } from "./updater";
 
-const template: any[] = [];
+const template: MenuItemConstructorOptions[] = [
+  {
+    label: app.getVersion()
+  }
+];
 if (process.platform === "darwin") {
   // OS X
   const name = app.getName();

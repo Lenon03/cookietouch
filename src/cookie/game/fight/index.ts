@@ -268,7 +268,7 @@ export default class Fight implements IClearable {
       return this.playedFighter;
     }
 
-    return this._fighters.get(id);
+    return this._fighters.has(id) ? this._fighters.get(id) : null;
   }
 
   public getFighterInCell(cellId: number): FighterEntry {

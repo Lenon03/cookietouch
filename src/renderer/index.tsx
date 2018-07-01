@@ -44,26 +44,20 @@ async function getChannel(): Promise<string> {
   let channel = "latest";
   const user = app.auth().currentUser;
   if (user) {
-    const snapshot = await app
+    const doc = app
       .firestore()
       .collection("users")
       .doc(user.uid)
       .collection("config")
-      .doc("updates")
-      .get();
+      .doc("updates");
+    const snapshot = await doc.get();
 
     if (snapshot.exists) {
       channel = snapshot.data().channel;
     } else {
-      app
-        .firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("config")
-        .doc("updates")
-        .set({
-          channel: "latest"
-        });
+      doc.set({
+        channel: "latest"
+      });
     }
   }
   return channel;

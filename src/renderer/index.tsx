@@ -46,6 +46,7 @@ async function getChannel(): Promise<string> {
   if (user) {
     const snapshot = await app
       .firestore()
+      .collection("users")
       .doc(user.uid)
       .collection("config")
       .doc("updates")
@@ -56,6 +57,7 @@ async function getChannel(): Promise<string> {
     } else {
       app
         .firestore()
+        .collection("users")
         .doc(user.uid)
         .collection("config")
         .doc("updates")

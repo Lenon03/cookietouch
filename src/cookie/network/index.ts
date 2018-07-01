@@ -189,11 +189,11 @@ export default class Network implements IClearable {
       console.log("Received", data);
       this.onMessageReceived.trigger({ type: data._messageType, data });
       Frames.dispatcher.emit(data._messageType, this.account, data);
-      for (const rm of this._registeredMessages.entries()) {
-        if (rm["0"] !== data._messageType) {
+      for (const rm of this._registeredMessages.values()) {
+        if (rm.name !== data._messageType) {
           continue;
         }
-        rm["1"].action(this.account, data);
+        rm.action(this.account, data);
       }
     });
 

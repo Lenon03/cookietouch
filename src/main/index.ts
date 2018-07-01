@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Menu } from "electron";
-import { appUpdater } from "./Updater";
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import { appUpdater } from "./updater";
 
 const template: any[] = [];
 if (process.platform === "darwin") {
@@ -74,10 +74,12 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
-  if (!isDevelopment) {
-    appUpdater();
-  }
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();
+  if (!isDevelopment) {
+    ipcMain.on("ask-update", (event, channel: string) =>
+      appUpdater(mainWindow, channel)
+    );
+  }
 });

@@ -7,6 +7,7 @@ import DTConstants from "@/protocol/DTConstants";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
 import Main from "@renderer/pages/Main";
+import { ipcRenderer, remote } from "electron";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
@@ -31,7 +32,61 @@ async function main() {
   MapPoint.Init();
   Frames.Init();
 
+  const channel = await getChannel();
+  ipcRenderer.send("ask-update", channel);
+
   render(<Main />, document.getElementById("app"));
 }
 
 main();
+
+async function getChannel(): Promise<string> {
+  let channel = "latest";
+  const user = app.auth().currentUser;
+  if (user) {
+    const snapshot = await app
+      .firestore()
+      .doc(user.uid)
+      .collection("config")
+      .doc("updates")
+      .get();
+
+    if (snapshot.exists) {
+      channel = snapshot.data().channel;
+    } else {
+      app
+        .firestore()
+        .doc(user.uid)
+        .collection("config")
+        .doc("updates")
+        .set({
+          channel: "latest"
+        });
+    }
+  }
+  return channel;
+}
+
+ipcRenderer.on("go-update", (event, info) => {
+  const message = LanguageManager.trans("releaseAvailable", info.version);
+  remote.dialog.showMessageBox(
+    {
+      buttons: [
+        LanguageManager.trans("installRelaunch"),
+        LanguageManager.trans("later")
+      ],
+      defaultId: 0,
+      detail: message,
+      message: LanguageManager.trans(
+        "newVersionDownloaded",
+        remote.app.getName()
+      ),
+      type: "question"
+    },
+    response => {
+      if (response === 0) {
+        setTimeout(() => remote.autoUpdater.quitAndInstall(), 1);
+      }
+    }
+  );
+});

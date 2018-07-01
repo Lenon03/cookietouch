@@ -10,7 +10,12 @@ export function initialize() {
     storageBucket: "cookietouch-52c0c.appspot.com"
   };
 
-  return firebase.initializeApp(config);
+  const app = firebase.initializeApp(config);
+
+  const settings = { timestampsInSnapshots: true };
+  app.firestore().settings(settings);
+
+  return app;
 }
 
 export async function signin(
@@ -43,8 +48,11 @@ export async function signup(
 
 export function presence() {
   firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+      return;
+    }
     // Fetch the current user's ID from Firebase Authentication.
-    const uid = firebase.auth().currentUser.uid;
+    const uid = user.uid;
 
     // Create a reference to this user's specific status node.
     // This is where we will store data about being online/offline.

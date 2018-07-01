@@ -449,10 +449,10 @@
   "recaptcha-solved": "Recaptcha résolu (?)",
   "recaptcha-attempt": "Essai #? dans quelques secondes.",
   "usersConnected": "?/? utilisateurs connectés",
-  "newVersionDownloaded": "Une nouvelle version (?) de ? a été téléchargé.",
+  "newVersionDownloaded": "Une nouvelle version de ? a été téléchargé.",
   "installRelaunch": "Installer et relancer",
   "later": "Plus tard",
-  "releaseAvailable": "? ? est maintenant disponible. Seras installé la prochaine fois que vous redémarrerez l'application.",
+  "releaseAvailable": "La version ? est maintenant disponible. L'application seras installé la prochaine fois que vous redémarrerez l'application.",
   "releaseNotes": "\n\nNotes de mise à jour:\n?",
   "update": "Mettre à jour"
 }

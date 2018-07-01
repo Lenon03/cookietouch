@@ -27,8 +27,9 @@ export default class CharacterCreation implements ICharacterCreation {
     if (typeof json === "string") {
       return JSON.parse(json, CharacterCreation.reviver);
     } else {
-      const characterCreation = Object.create(CharacterCreation.prototype);
-      return { ...characterCreation, ...json };
+      const obj = Object.create(CharacterCreation.prototype);
+      // tslint:disable-next-line:prefer-object-spread
+      return Object.assign(obj, json, {});
     }
   }
 

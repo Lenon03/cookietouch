@@ -71,7 +71,7 @@ export default class CharacterCreatorExtension implements IClearable {
       // Set the create to false so that we don't create a character each time we connect
       // TODO: Check this when we pass _accounts back to private
       // this.account.accountConfig.characterCreation.create = false;
-      GlobalConfiguration._accounts.First(
+      GlobalConfiguration._accounts.find(
         a => a.username === this.account.accountConfig.username
       ).characterCreation.create = false;
       GlobalConfiguration.save();

@@ -3,7 +3,7 @@ import { BlockSpectatorScenarios } from "@/extensions/fights/configuration/enums
 import { FightSpeeds } from "@/extensions/fights/configuration/enums/FightSpeeds";
 import { FightStartPlacement } from "@/extensions/fights/configuration/enums/FightStartPlacement";
 import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
-import Spell from "@/extensions/fights/configuration/Spell";
+import Spell, { ISpell } from "@/extensions/fights/configuration/Spell";
 import LiteEvent from "@/utils/LiteEvent";
 import firebase from "firebase";
 
@@ -20,7 +20,7 @@ interface IFightsConfigurationJSON {
   regenStart: number;
   spellToApproach: number;
   tactic: FightTactics;
-  spells: Spell[];
+  spells: ISpell[];
   fightSpeed: FightSpeeds;
 }
 
@@ -94,7 +94,7 @@ export default class FightsConfiguration {
     this.regenEnd = json.regenEnd;
     this.regenStart = json.regenStart;
     this.spellToApproach = json.spellToApproach;
-    this.spells = json.spells;
+    this.spells = json.spells.map(s => Spell.fromJSON(s));
     this.startPlacement = json.startPlacement;
     this.tactic = json.tactic;
     this.onChanged.trigger();
@@ -113,7 +113,7 @@ export default class FightsConfiguration {
       regenEnd: this.regenEnd,
       regenStart: this.regenStart,
       spellToApproach: this.spellToApproach,
-      spells: this.spells,
+      spells: this.spells.map(s => s.toJSON()),
       startPlacement: this.startPlacement,
       tactic: this.tactic
     };

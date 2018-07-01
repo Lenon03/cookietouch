@@ -33,11 +33,9 @@ export default class FloodSentence implements IFloodSentence {
     if (typeof json === "string") {
       return JSON.parse(json, FloodSentence.reviver);
     } else {
-      const accountConfiguration = Object.create(FloodSentence.prototype);
-      return {
-        ...accountConfiguration,
-        ...json
-      };
+      const flood = Object.create(FloodSentence.prototype);
+      // tslint:disable-next-line:prefer-object-spread
+      return Object.assign(flood, json, {});
     }
   }
 

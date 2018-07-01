@@ -1,3 +1,9 @@
+export interface ISpellToBoostEntry {
+  id: number;
+  name: string;
+  level: number;
+}
+
 export default class SpellToBoostEntry {
   public id: number;
   public name: string;
@@ -7,5 +13,23 @@ export default class SpellToBoostEntry {
     this.id = spellId;
     this.name = name;
     this.level = level;
+  }
+
+  public toJSON(): ISpellToBoostEntry {
+    return Object.assign({}, this, {});
+  }
+
+  public static fromJSON(json: ISpellToBoostEntry | string): SpellToBoostEntry {
+    if (typeof json === "string") {
+      return JSON.parse(json, SpellToBoostEntry.reviver);
+    } else {
+      const spell = Object.create(SpellToBoostEntry.prototype);
+      // tslint:disable-next-line:prefer-object-spread
+      return Object.assign(spell, json, {});
+    }
+  }
+
+  public static reviver(key: string, value: string): any {
+    return key === "" ? SpellToBoostEntry.fromJSON(value) : value;
   }
 }

@@ -1,5 +1,7 @@
 import Account from "@/account";
-import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
+import SpellToBoostEntry, {
+  ISpellToBoostEntry
+} from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import firebase from "firebase";
 
@@ -16,7 +18,7 @@ interface IConfigurationJSON {
   statToBoost: BoostableStats;
   ignoreNonAuthorizedTrades: boolean;
   disconnectUponFightsLimit: boolean;
-  spellsToBoost: SpellToBoostEntry[];
+  spellsToBoost: ISpellToBoostEntry[];
   autoMount: boolean;
   authorizedTradesFrom: number[];
   enableSpeedHack: boolean;
@@ -95,7 +97,9 @@ export default class Configuration {
     this.showPartyMessages = json.showPartyMessages;
     this.showSaleMessages = json.showSaleMessages;
     this.showSeekMessages = json.showSeekMessages;
-    this.spellsToBoost = json.spellsToBoost;
+    this.spellsToBoost = json.spellsToBoost.map(o =>
+      SpellToBoostEntry.fromJSON(o)
+    );
     this.statToBoost = json.statToBoost;
   }
 
@@ -115,7 +119,7 @@ export default class Configuration {
       showPartyMessages: this.showPartyMessages,
       showSaleMessages: this.showSaleMessages,
       showSeekMessages: this.showSeekMessages,
-      spellsToBoost: this.spellsToBoost,
+      spellsToBoost: this.spellsToBoost.map(o => o.toJSON()),
       statToBoost: this.statToBoost
     };
     const user = firebase.auth().currentUser;

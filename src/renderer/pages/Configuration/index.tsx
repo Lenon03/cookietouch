@@ -1,4 +1,6 @@
-import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import GlobalConfiguration, {
+  UpdatesChannel
+} from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { isEmpty } from "@/utils/String";
 import Button from "@material-ui/core/Button";
@@ -32,11 +34,17 @@ class Configuration extends React.Component<
     anticaptchaBalance: -1,
     anticaptchaKey: GlobalConfiguration.anticaptchaKey,
     lang: GlobalConfiguration.lang,
-    showDebugMessages: GlobalConfiguration.showDebugMessages
+    showDebugMessages: GlobalConfiguration.showDebugMessages,
+    updatesChannel: GlobalConfiguration.updatesChannel
   };
 
   public componentDidMount() {
+    GlobalConfiguration.Updated.on(this.globalConfigurationUpdated);
     this.updateAnticaptchaBalance();
+  }
+
+  public componentWillUnmount() {
+    GlobalConfiguration.Updated.off(this.globalConfigurationUpdated);
   }
 
   public render() {
@@ -113,6 +121,20 @@ class Configuration extends React.Component<
                 label={LanguageManager.trans("showDebug")}
               />
             </FormGroup>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="updates-simple">
+                {LanguageManager.trans("update")}
+              </InputLabel>
+              <Select
+                value={this.state.updatesChannel}
+                onChange={this.updatesChannelChanged}
+                inputProps={{ id: "updates-simple", name: "updates" }}
+              >
+                <MenuItem value={UpdatesChannel.LATEST}>LATEST</MenuItem>
+                <MenuItem value={UpdatesChannel.BETA}>BETA</MenuItem>
+                <MenuItem value={UpdatesChannel.ALPHA}>ALPHA</MenuItem>
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={closeDialog} variant="raised" color="primary">
@@ -127,16 +149,25 @@ class Configuration extends React.Component<
   private anticaptchaChanged = e => {
     this.setState({ anticaptchaKey: e.target.value });
     GlobalConfiguration.anticaptchaKey = e.target.value;
+    GlobalConfiguration.save();
   };
 
   private langChanged = e => {
     this.setState({ lang: e.target.value });
     GlobalConfiguration.lang = e.target.value;
+    GlobalConfiguration.save();
+  };
+
+  private updatesChannelChanged = e => {
+    this.setState({ updatesChannel: e.target.value });
+    GlobalConfiguration.updatesChannel = e.target.value;
+    GlobalConfiguration.save();
   };
 
   private showDebugMessagesChanged = event => {
     this.setState({ showDebugMessages: event.target.checked });
     GlobalConfiguration.showDebugMessages = event.target.checked;
+    GlobalConfiguration.save();
   };
 
   private updateAnticaptchaBalance = async () => {
@@ -147,6 +178,15 @@ class Configuration extends React.Component<
     const ac = new AntiCaptcha(key);
     const b = await ac.getBalance();
     this.setState({ anticaptchaBalance: b });
+  };
+
+  private globalConfigurationUpdated = () => {
+    this.setState({
+      anticaptchaKey: GlobalConfiguration.anticaptchaKey,
+      lang: GlobalConfiguration.lang,
+      showDebugMessages: GlobalConfiguration.showDebugMessages,
+      updatesChannel: GlobalConfiguration.updatesChannel
+    });
   };
 }
 

@@ -1,6 +1,25 @@
 import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellResistances";
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 
+export interface ISpell {
+  spellId: number;
+  spellName: string;
+  target: SpellTargets;
+  turns: number;
+  lastTurn: number;
+  relaunchs: number;
+  remainingRelaunchs: number;
+  targetHp: number;
+  characterHp: number;
+  resistance: SpellResistances;
+  resistanceValue: number;
+  distanceToClosestMonster: number;
+  handToHand: boolean;
+  aoe: boolean;
+  carefulAoe: boolean;
+  avoidAllies: boolean;
+}
+
 export default class Spell {
   public spellId: number;
   public spellName: string;
@@ -49,5 +68,23 @@ export default class Spell {
     this.aoe = aoe;
     this.carefulAoe = carefulAoe;
     this.avoidAllies = avoidAllies;
+  }
+
+  public toJSON(): ISpell {
+    return Object.assign({}, this, {});
+  }
+
+  public static fromJSON(json: ISpell | string): Spell {
+    if (typeof json === "string") {
+      return JSON.parse(json, Spell.reviver);
+    } else {
+      const spell = Object.create(Spell.prototype);
+      // tslint:disable-next-line:prefer-object-spread
+      return Object.assign(spell, json, {});
+    }
+  }
+
+  public static reviver(key: string, value: string): any {
+    return key === "" ? Spell.fromJSON(value) : value;
   }
 }

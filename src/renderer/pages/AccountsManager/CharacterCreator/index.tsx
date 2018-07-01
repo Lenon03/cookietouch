@@ -411,7 +411,7 @@ class CharacterCreator extends React.Component<
   private validate = () => {
     const crea = this.getCharacterCreation();
     for (const acc of this.state.selectedAccounts) {
-      GlobalConfiguration._accounts.First(
+      GlobalConfiguration._accounts.find(
         a => a.username === acc.username
       ).characterCreation = crea;
     }

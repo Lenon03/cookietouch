@@ -166,7 +166,7 @@ class PlanningConfig extends React.Component<
 
   private validate = () => {
     for (const acc of this.state.selectedAccounts) {
-      const account = GlobalConfiguration._accounts.First(
+      const account = GlobalConfiguration._accounts.find(
         a => a.username === acc.username
       );
       account.planificationActivated = this.state.active;

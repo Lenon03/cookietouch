@@ -15,6 +15,8 @@ import { render } from "react-dom";
 import "typeface-roboto/index.css";
 import "./main.scss";
 
+let updated = false;
+
 const app = initialize();
 app
   .database()
@@ -25,11 +27,17 @@ presence();
 
 (global as any).API = new Array();
 
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(async user => {
   if (!user) {
     return;
   }
-  GlobalConfiguration.load();
+  if (!updated) {
+    updated = true;
+    GlobalConfiguration.Init();
+    await GlobalConfiguration.load();
+    main();
+    ipcRenderer.send("ask-update", GlobalConfiguration.updatesChannel);
+  }
 });
 
 async function main() {
@@ -39,35 +47,7 @@ async function main() {
   MapPoint.Init();
   Frames.Init();
 
-  const channel = await getChannel();
-  ipcRenderer.send("ask-update", channel);
-
   render(<Main />, document.getElementById("app"));
-}
-
-main();
-
-async function getChannel(): Promise<string> {
-  let channel = "latest";
-  const user = app.auth().currentUser;
-  if (user) {
-    const doc = app
-      .firestore()
-      .collection("users")
-      .doc(user.uid)
-      .collection("config")
-      .doc("updates");
-    const snapshot = await doc.get();
-
-    if (snapshot.exists) {
-      channel = snapshot.data().channel;
-    } else {
-      doc.set({
-        channel: "latest"
-      });
-    }
-  }
-  return channel;
 }
 
 ipcRenderer.on("go-update", (event, info) => {

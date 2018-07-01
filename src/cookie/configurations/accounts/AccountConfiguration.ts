@@ -47,11 +47,11 @@ export default class AccountConfiguration implements IAccountConfiguration {
       const accountConfiguration = Object.create(
         AccountConfiguration.prototype
       );
-      return {
-        ...accountConfiguration,
-        ...json,
-        ...CharacterCreation.fromJSON(json.characterCreation)
-      };
+      // tslint:disable-next-line:prefer-object-spread
+      const test = Object.assign(accountConfiguration, json, {
+        characterCreation: CharacterCreation.fromJSON(json.characterCreation)
+      });
+      return test;
     }
   }
 

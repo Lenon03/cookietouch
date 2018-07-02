@@ -736,8 +736,8 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
       infos.spellId,
       name,
       infos.target,
-      Number(infos.turns),
-      Number(infos.relaunchs),
+      infos.turns,
+      infos.relaunchs,
       infos.targetHp,
       infos.characterHp,
       infos.resistance,
@@ -788,8 +788,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
   };
 
   private handleSelectChangeForm = event => {
+    const v = parseInt(event.target.value, 10);
     const addSpellForm = { ...this.state.addSpellForm };
-    addSpellForm[event.target.name] = event.target.value;
+    addSpellForm[event.target.name] = v;
     this.setState({ addSpellForm });
   };
 

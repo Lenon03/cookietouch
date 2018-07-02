@@ -21,7 +21,15 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem button={true} onClick={this.changeAccount(account)}>
+        <ListItem
+          button={true}
+          onClick={this.changeAccount(account)}
+          style={{
+            backgroundColor:
+              CookieMain.selectedAccount.accountConfig.username ===
+                account.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+          }}
+        >
           <ListItemIcon>
             {account.state === AccountStates.NONE ? (
               <Avatar

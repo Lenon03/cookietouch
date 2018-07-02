@@ -29,7 +29,15 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem button={true} onClick={this.changeAccount(group.chief)}>
+        <ListItem
+          button={true}
+          onClick={this.changeAccount(group.chief)}
+          style={{
+            backgroundColor:
+              CookieMain.selectedAccount.accountConfig.username ===
+                group.chief.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+          }}
+        >
           <ListItemIcon>
             {group.chief.state === AccountStates.NONE ? (
               <Avatar
@@ -65,6 +73,11 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
                 button={true}
                 className={classes.nested}
                 onClick={this.changeAccount(m)}
+                style={{
+                  backgroundColor:
+                    CookieMain.selectedAccount.accountConfig.username ===
+                      m.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+                }}
               >
                 <ListItemIcon>
                   {m.state === AccountStates.NONE ? (

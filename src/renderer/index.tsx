@@ -8,33 +8,29 @@ import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
 import Main from "@renderer/pages/Main";
 import { ipcRenderer, remote } from "electron";
-import firebase from "firebase";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
 import "typeface-roboto/index.css";
 import "./main.scss";
 
-let updated = false;
+render(<h1>LOADING...</h1>, document.getElementById("app"));
 
-const app = initialize();
-
+initialize();
 presence();
 
 (global as any).API = new Array();
 
-const authUnsub = firebase.auth().onAuthStateChanged(async user => {
-  if (!updated) {
-    updated = true;
-    authUnsub();
-    GlobalConfiguration.Init();
-    await GlobalConfiguration.load();
-    main();
-    ipcRenderer.send("ask-update", GlobalConfiguration.updatesChannel);
-  }
-});
+const onGlobalConfigChanged = () => {
+  ipcRenderer.send("ask-update", GlobalConfiguration.updatesChannel);
+  GlobalConfiguration.Updated.off(onGlobalConfigChanged);
+};
+
+GlobalConfiguration.Updated.on(onGlobalConfigChanged);
 
 async function main() {
+  GlobalConfiguration.Init();
+  await GlobalConfiguration.load();
   LanguageManager.Init();
   await DTConstants.Init();
   await BreedsUtility.Init();
@@ -43,6 +39,8 @@ async function main() {
 
   render(<Main />, document.getElementById("app"));
 }
+
+main();
 
 ipcRenderer.on("go-update", (event, info) => {
   const message = LanguageManager.trans("releaseAvailable", info.version);

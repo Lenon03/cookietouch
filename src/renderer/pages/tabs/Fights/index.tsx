@@ -736,8 +736,8 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
       infos.spellId,
       name,
       infos.target,
-      infos.turns,
-      infos.relaunchs,
+      Number(infos.turns),
+      Number(infos.relaunchs),
       infos.targetHp,
       infos.characterHp,
       infos.resistance,
@@ -794,12 +794,12 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
   };
 
   private handleSelectChange = async event => {
-    this.setState({ [event.target.name]: event.target.value } as Pick<
+    const v = parseInt(event.target.value, 10);
+    this.setState({ [event.target.name]: v } as Pick<
       IFightsTabState,
       keyof IFightsTabState
     >);
-    this.props.account.extensions.fights.config[event.target.name] =
-      event.target.value;
+    this.props.account.extensions.fights.config[event.target.name] = v;
     await this.props.account.extensions.fights.config.save();
   };
 

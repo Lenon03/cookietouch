@@ -29,7 +29,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
 
     return (
       <div className={classes.root}>
-        <ListItem button={true} onClick={this.handleClick}>
+        <ListItem button={true} onClick={this.changeAccount(group.chief)}>
           <ListItemIcon>
             {group.chief.state === AccountStates.NONE ? (
               <Avatar
@@ -53,7 +53,9 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
               </span>
             }
           />
-          {this.state.open ? <ExpandLess /> : <ExpandMore />}
+          <div onClick={this.handleClick}>
+            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+          </div>
         </ListItem>
 
         <Collapse in={this.state.open} timeout="auto" unmountOnExit={true}>
@@ -90,12 +92,7 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
   }
 
   private handleClick = () => {
-    this.setState(
-      prev => ({ open: !prev.open }),
-      () => {
-        this.changeAccount(this.props.group.chief);
-      }
-    );
+    this.setState(prev => ({ open: !prev.open }));
   };
 
   private changeAccount = (account: Account) => (

@@ -4,7 +4,7 @@ export type TopAppBarStyle = "root" | "flex" | "menuButton" | "appBar";
 
 export const topAppBarStyles: StyleRulesCallback<TopAppBarStyle> = theme => ({
   appBar: {
-    background: "linear-gradient(45deg, #1de099, #1dc8cd)",
+    background: theme.palette.primary.main,
     left: 0,
     position: "absolute",
     top: 0

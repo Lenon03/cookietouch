@@ -6,7 +6,7 @@ export const bottomAppBarStyles: StyleRulesCallback<
   BottomAppBarStyle
 > = theme => ({
   appbar: {
-    background: "linear-gradient(45deg, #1dc8cd, #1de099)"
+    background: theme.palette.primary.main
   },
   root: {
     bottom: 0,

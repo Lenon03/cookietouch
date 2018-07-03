@@ -73,7 +73,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
 
     return (
       <div className={classes.root}>
-        <Grid container={true} spacing={0}>
+        <Grid container={true} spacing={24}>
           <Grid item={true} xs={9}>
             <Grid container={true} spacing={0}>
               <div id="consoleTabDiv" className={classes.console}>

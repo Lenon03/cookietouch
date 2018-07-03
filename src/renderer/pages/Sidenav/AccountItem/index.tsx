@@ -1,5 +1,6 @@
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
+import { ListItemSecondaryAction } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -26,12 +27,14 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
           onClick={this.changeAccount(account)}
           style={{
             backgroundColor:
+              CookieMain.selectedAccount &&
               CookieMain.selectedAccount.accountConfig.username ===
-                account.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+                account.accountConfig.username &&
+              "rgba(180, 180, 180, 0.2)"
           }}
         >
           <ListItemIcon>
-            {account.state === AccountStates.NONE ? (
+            {account.state !== AccountStates.NONE ? (
               <Avatar
                 src={account.game.character.getSkinUrl("face", 1, 120, 120, 1)}
               />
@@ -47,6 +50,15 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
               </span>
             }
           />
+          <ListItemSecondaryAction>
+            <img
+              width={16}
+              height={16}
+              src={require(`@renderer/img/circle_${this.parseState(
+                account.state
+              )}.png`)}
+            />
+          </ListItemSecondaryAction>
         </ListItem>
       </div>
     );
@@ -57,6 +69,14 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
   ) => {
     CookieMain.selectedAccount = account;
   };
+
+  private parseState(state: AccountStates): string {
+    return state === AccountStates.DISCONNECTED
+      ? "red"
+      : state === AccountStates.CONNECTING
+        ? "orange"
+        : "green";
+  }
 }
 
 export default withStyles(accountItemStyles)<IAccountItemProps>(AccountItem);

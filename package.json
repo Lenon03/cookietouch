@@ -11,6 +11,8 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish",
     "lint:fix": "yarn lint --fix",
     "lint:check": "tslint-config-prettier-check ./tslint.json",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
     "postinstall": "electron-builder install-app-deps",
     "release": "yarn compile && build"
   },
@@ -37,7 +39,8 @@
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.5",
     "awesome-typescript-loader": "^5.2.0",
-    "electron": "^2.0.3",
+    "docz": "^0.5.1",
+    "electron": "^2.0.4",
     "electron-builder": "^20.19.0",
     "electron-webpack": "^2.1.2",
     "electron-webpack-ts": "^2.0.2",

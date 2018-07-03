@@ -164,7 +164,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     helperText={LanguageManager.trans("monsterToApproachInfo")}
                     value={this.state.monsterToApproach}
                     fullWidth={true}
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleInputChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
@@ -178,7 +178,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     helperText={LanguageManager.trans("spellToApproachInfo")}
                     value={this.state.spellToApproach}
                     fullWidth={true}
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleInputChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
@@ -284,7 +284,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     helperText={LanguageManager.trans("maxCells2")}
                     value={this.state.maxCells}
                     fullWidth={true}
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleInputChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
@@ -351,7 +351,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     label={LanguageManager.trans("minimum")}
                     value={this.state.regenStart}
                     fullWidth={true}
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleInputChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
@@ -364,7 +364,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     label={LanguageManager.trans("maximum")}
                     value={this.state.regenEnd}
                     fullWidth={true}
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleInputChange}
                     type="number"
                     InputLabelProps={{ shrink: true }}
                   />
@@ -794,12 +794,22 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ addSpellForm });
   };
 
-  private handleSelectChange = async event => {
-    const v = parseInt(event.target.value, 10);
-    this.setState({ [event.target.name]: v } as Pick<
-      IFightsTabState,
-      keyof IFightsTabState
-    >);
+  private handleInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const v: any = parseInt(event.target.value, 10);
+    const k = event.target.name as keyof IFightsTabState;
+    this.setState({ [k]: v } as Pick<IFightsTabState, keyof IFightsTabState>);
+    this.props.account.extensions.fights.config[event.target.name] = v;
+    await this.props.account.extensions.fights.config.save();
+  };
+
+  private handleSelectChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const v: any = parseInt(event.target.value, 10);
+    const k = event.target.name as keyof IFightsTabState;
+    this.setState({ [k]: v } as Pick<IFightsTabState, keyof IFightsTabState>);
     this.props.account.extensions.fights.config[event.target.name] = v;
     await this.props.account.extensions.fights.config.save();
   };

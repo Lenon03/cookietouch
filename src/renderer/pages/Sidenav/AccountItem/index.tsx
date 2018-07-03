@@ -34,7 +34,7 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
           }}
         >
           <ListItemIcon>
-            {account.state !== AccountStates.NONE ? (
+            {account.state === AccountStates.NONE ? (
               <Avatar
                 src={account.game.character.getSkinUrl("face", 1, 120, 120, 1)}
               />

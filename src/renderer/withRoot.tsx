@@ -16,6 +16,12 @@ const theme = createMuiTheme({
       light: "#1dc8cd",
       main: "#1dc8cd"
     }
+  },
+  spacing: {
+    unit: 4
+  },
+  typography: {
+    fontSize: 13
   }
 });
 

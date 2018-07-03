@@ -10,7 +10,6 @@ import Message from "@/protocol/network/messages/Message";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";
-import { contentTracing } from "electron";
 
 const Primus = require("./primus"); // tslint:disable-line
 
@@ -20,7 +19,6 @@ export default class Network implements IClearable {
   private socket: any;
   private sessionId: string;
   private server: any;
-  private access: string;
   private _phase: NetworkPhases;
   private readonly onPhaseChanged = new LiteEvent<NetworkPhases>();
   private readonly onDisconnected = new LiteEvent<void>();
@@ -79,7 +77,6 @@ export default class Network implements IClearable {
   public clear() {
     this.sessionId = null;
     this.server = null;
-    this.access = null;
   }
 
   public connect(sessionId: string, url: string) {

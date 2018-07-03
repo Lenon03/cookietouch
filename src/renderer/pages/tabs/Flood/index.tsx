@@ -284,12 +284,12 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
   };
 
   private handleInputChange = event => {
-    this.setState({ [event.target.name]: event.target.value } as Pick<
+    const v = parseInt(event.target.value, 10);
+    this.setState({ [event.target.name]: v } as Pick<
       IFloodTabState,
       keyof IFloodTabState
     >);
-    this.props.account.extensions.flood.config[event.target.name] =
-      event.target.value;
+    this.props.account.extensions.flood.config[event.target.name] = v;
     this.props.account.extensions.flood.config.save();
   };
 

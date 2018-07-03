@@ -314,8 +314,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
   };
 
   private handleSelectChangeForm = event => {
+    const v = parseInt(event.target.value, 10);
     const addObjectForm = { ...this.state.addObjectForm };
-    addObjectForm[event.target.name] = event.target.value;
+    addObjectForm[event.target.name] = v;
     this.setState({ addObjectForm });
   };
 

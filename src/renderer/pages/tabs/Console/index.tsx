@@ -340,8 +340,9 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
   };
 
   private handleStatusChange = event => {
-    this.setState({ status: event.target.value });
-    this.props.account.game.character.changeStatus(this.state.status);
+    const status = parseInt(event.target.value, 10);
+    this.setState({ status });
+    this.props.account.game.character.changeStatus(status);
   };
 
   private onMessage = (message: IMessage) => {

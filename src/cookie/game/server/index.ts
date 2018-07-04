@@ -10,11 +10,10 @@ export default class Server {
   public name: string;
   public characters: CharacterBaseInformations[] = [];
 
-  private account: Account;
   private readonly onServerSelected = new LiteEvent<void>();
 
   constructor(account: Account) {
-    this.account = account;
+    //
   }
 
   public get ServerSelected() {

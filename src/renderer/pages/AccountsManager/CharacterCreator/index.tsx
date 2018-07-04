@@ -1,4 +1,3 @@
-import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import CharacterCreation from "@/configurations/accounts/CharacterCreation";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";

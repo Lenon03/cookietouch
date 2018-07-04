@@ -1,7 +1,6 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
 import ObjectAveragePricesMessage from "@/protocol/network/messages/ObjectAveragePricesMessage";
-import firebase from "firebase";
 
 export default class AveragePricesFrame implements IFrame {
   public register() {

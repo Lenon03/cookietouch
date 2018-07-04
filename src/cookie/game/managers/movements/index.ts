@@ -11,7 +11,7 @@ import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { getRandomInt } from "@/utils/Random";
 import { sleep } from "@/utils/Time";
-import { Enumerable, List } from "linqts";
+import { Enumerable } from "linqts";
 
 export default class MovementsManager implements IClearable {
   private readonly onMovementFinished = new LiteEvent<boolean>();

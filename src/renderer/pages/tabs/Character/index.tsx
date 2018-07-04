@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";

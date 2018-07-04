@@ -1,4 +1,3 @@
-import Account from "@/account";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import FighterEntry from "@/game/fight/fighters/FighterEntry";
 import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
@@ -446,8 +445,6 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   };
   private onMouseMove = event => {
     const pos = new Point(event.offsetX, event.offsetY);
-    const c = this.canvasRef.current;
-    const ctx = c.getContext("2d");
     for (let cellId = 0; cellId < this.cells.Count(); cellId++) {
       const cell = this.cells.ElementAt(cellId);
       if (cell.IsPointInside(pos)) {

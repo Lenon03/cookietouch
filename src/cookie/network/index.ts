@@ -6,7 +6,6 @@ import Frames from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import RegisteredMessage from "@/network/RegisteredMessage";
 import DTConstants from "@/protocol/DTConstants";
-import Message from "@/protocol/network/messages/Message";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";

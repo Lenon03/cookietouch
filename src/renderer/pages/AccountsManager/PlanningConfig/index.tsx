@@ -29,8 +29,6 @@ import {
 import { Enumerable } from "linqts";
 import * as React from "react";
 
-interface IState {}
-
 class PlanningConfig extends React.Component<
   PlanningConfigProps,
   IPlanningConfigState

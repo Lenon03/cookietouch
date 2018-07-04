@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import SpellEntry from "@/game/character/SpellEntry";
 import Button from "@material-ui/core/Button";

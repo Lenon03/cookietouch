@@ -6,7 +6,6 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Logger from "@/core/logger";
 import RecaptchaHandler from "@/core/RecaptchaHandler";
 import Extensions from "@/extensions";
-import Frames from "@/frames";
 import FramesData from "@/frames/FramesData";
 import Game from "@/game";
 import Group from "@/groups/Group";

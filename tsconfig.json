@@ -5,7 +5,6 @@
     "removeComments": true,
     "jsx": "react",
     "strict": false,
-    "noUnusedLocals": false,
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],

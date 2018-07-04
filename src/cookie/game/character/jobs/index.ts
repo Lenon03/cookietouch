@@ -10,12 +10,10 @@ import { List } from "linqts";
 export default class Job {
   public jobs: List<JobEntry>;
 
-  private account: Account;
   private _jobsInitialized: boolean;
   private readonly onJobsUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
-    this.account = account;
     this.jobs = new List<JobEntry>();
   }
 
@@ -45,7 +43,7 @@ export default class Job {
 
     const jobsData = await DataManager.get<Jobs>(
       DataTypes.Jobs,
-      ...message.jobsDescription.map((f: any) => f.jobId)
+      ...message.jobsDescription.map(f => f.jobId)
     );
 
     for (const job of message.jobsDescription) {

@@ -1,4 +1,3 @@
-import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";

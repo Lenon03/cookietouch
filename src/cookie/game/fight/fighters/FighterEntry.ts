@@ -1,5 +1,3 @@
-import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
-import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
 import { TeamEnum } from "@/protocol/enums/TeamEnum";
 import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
 import GameActionFightLifePointsGainMessage from "@/protocol/network/messages/GameActionFightLifePointsGainMessage";

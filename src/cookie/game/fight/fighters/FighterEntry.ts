@@ -15,7 +15,7 @@ import GameFightFighterInformations from "@/protocol/network/types/GameFightFigh
 import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
 import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 
-export default class FighterEntry {
+export default abstract class FighterEntry {
   public contextualId: number;
   public alive: boolean;
   public cellId: number;
@@ -25,20 +25,11 @@ export default class FighterEntry {
   public maxLifePoints: number;
   public actionPoints: number;
   public movementPoints: number;
+  public name: string;
 
   constructor(infos: GameFightFighterInformations) {
     this.UpdateGameFightFighterInformations(infos);
   }
-
-  /*get name(): string {
-    // TODO: Check if its right
-    if (this instanceof FightMonsterEntry) {
-      return this.name;
-    } else if (this instanceof FightPlayerEntry) {
-      return this.name;
-    }
-    return "";
-  }*/
 
   get lifePercent() {
     return (this.lifePoints / this.maxLifePoints) * 100;

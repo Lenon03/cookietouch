@@ -486,7 +486,6 @@ export default class ScriptsManager {
       return;
     }
 
-    // TODO: Get this from autoRegen in script?
     const minLife = this.scriptManager.config.AUTO_REGEN.minLife
       ? this.scriptManager.config.AUTO_REGEN.minLife
       : 0;

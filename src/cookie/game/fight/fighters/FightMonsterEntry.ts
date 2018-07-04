@@ -6,7 +6,6 @@ import GameFightFighterInformations from "@/protocol/network/types/GameFightFigh
 import GameFightMonsterInformations from "@/protocol/network/types/GameFightMonsterInformations";
 
 export default class FightMonsterEntry extends FighterEntry {
-  public name: string;
   public creatureGenericId: number;
   public level: number;
   public isBoss: boolean;

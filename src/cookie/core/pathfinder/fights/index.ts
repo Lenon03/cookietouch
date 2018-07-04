@@ -76,7 +76,7 @@ export default class FightsPathfinder {
       1
     );
     opened.push(node);
-    closed.set(currentCellId, node); // TODO: No changeValueForKey
+    closed.set(currentCellId, node);
 
     while (opened.length > 0) {
       const current = opened.pop();

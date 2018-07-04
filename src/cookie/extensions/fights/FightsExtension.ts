@@ -389,11 +389,13 @@ export default class FightsExtension implements IClearable {
       this.config.spellToApproach
     );
     const spell = spellResp[0].object;
+    const spellCharacter = this.account.game.character.getSpell(spell.id);
+    if (!spellCharacter) {
+      return false;
+    }
     const spellLevelResp = await DataManager.get<SpellLevels>(
       DataTypes.SpellLevels,
-      spell.spellLevels[
-        this.account.game.character.getSpell(spell.id).level - 1
-      ]
+      spell.spellLevels[spellCharacter.level - 1]
     );
     const spellLevel = spellLevelResp[0].object;
 

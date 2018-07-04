@@ -136,8 +136,7 @@ export default class MovementsManager implements IClearable {
     await this.account.network.sendMessageFree(
       "GameMapMovementRequestMessage",
       {
-        // keyMovements: this.pathfinder.compressPath(node.value.path.reachable),
-        keyMovements: node["1"].path.reachable, // TODO: Or the compressed one?
+        keyMovements: this.pathfinder.compressPath(node["1"].path.reachable),
         mapId: this.account.game.map.id
       }
     );
@@ -363,8 +362,7 @@ export default class MovementsManager implements IClearable {
 
   private sendMoveMessage() {
     this.account.network.sendMessageFree("GameMapMovementRequestMessage", {
-      // keyMovements: this.pathfinder.compressPath(this.currentPath),
-      keyMovements: this.currentPath, // TODO: Or the compressed one?
+      keyMovements: this.pathfinder.compressPath(this.currentPath),
       mapId: this.account.game.map.id
     });
     const pathString = this.currentPath.join(",");

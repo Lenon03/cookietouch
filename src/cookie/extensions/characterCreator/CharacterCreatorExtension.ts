@@ -83,10 +83,10 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     let name = this.account.accountConfig.characterCreation.name;
     let max = 0;
-    BreedsUtility.breeds.ForEach(b => (b.id > max ? (max = b.id) : b)); // TODO: check this...
+    BreedsUtility.breeds.ForEach(b => (b.id > max ? (max = b.id) : b));
     const breed =
       this.account.accountConfig.characterCreation.breed === -1
-        ? getRandomInt(1, max)
+        ? getRandomInt(1, max + 1)
         : this.account.accountConfig.characterCreation.breed;
     const sex =
       (this.account.accountConfig.characterCreation.sex === -1

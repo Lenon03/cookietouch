@@ -314,10 +314,10 @@ export default class SpellsManager {
           LanguageManager.trans(
             "spellCasted",
             spell.spellName,
-            (target as any).name,
+            target.name,
             target.cellId
           )
-        ); // TODO: fix name
+        );
         await this.account.game.fight.launchSpell(spell.spellId, target.cellId);
         return SpellCastingResults.CASTED;
       }

@@ -344,8 +344,8 @@ export default class FightFrame implements IFrame {
     const fighter = account.game.fight.getFighter(message.targetId);
     account.logger.logInfo(
       LanguageManager.trans("fightFrame"),
-      LanguageManager.trans("hpGained", (fighter as any).name, message.delta)
-    ); // TODO: fix name
+      LanguageManager.trans("hpGained", fighter.name, message.delta)
+    );
   }
 
   private async HandleGameActionFightLifePointsLostMessage(
@@ -358,13 +358,8 @@ export default class FightFrame implements IFrame {
       const tmp = fighter.lifePoints === 0 ? " (mort)." : ".";
       account.logger.logInfo(
         LanguageManager.trans("fightFrame"),
-        LanguageManager.trans(
-          "hpLoss",
-          (fighter as any).name,
-          message.loss,
-          tmp
-        )
-      ); // TODO: fix name
+        LanguageManager.trans("hpLoss", fighter.name, message.loss, tmp)
+      );
     }
   }
 

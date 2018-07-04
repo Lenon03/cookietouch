@@ -80,8 +80,8 @@ export default class Pathfinder {
       if (bestFit !== null) {
         return [
           source,
-          MapPoint.fromCoords(bestFit.i - 1, bestFit.j - 1).cellId
-        ]; // TODO: Or - 1 ??
+          MapPoint.fromCoords(bestFit.i + 1, bestFit.j + 1).cellId
+        ];
       }
       throw new Error(`[Pathfinder] Player stuck in ${si}/${sj}`);
     }
@@ -89,13 +89,10 @@ export default class Pathfinder {
     const dj = dstPos.y + 1;
     let cellPos: MapPoint = null;
     for (const cellId of occupiedCells) {
-      if (cellId !== target) {
-        // TODO: check this..
-        cellPos = MapPoint.fromCellId(cellId);
-        this.grid[cellPos.x + 1][
-          cellPos.y + 1
-        ].weight += this.OCCUPIED_CELL_WEIGHT;
-      }
+      cellPos = MapPoint.fromCellId(cellId);
+      this.grid[cellPos.x + 1][
+        cellPos.y + 1
+      ].weight += this.OCCUPIED_CELL_WEIGHT;
     }
     let candidates = [];
     const selections = [];
@@ -202,7 +199,7 @@ export default class Pathfinder {
       prevX = coord.x;
       prevY = coord.y;
     }
-    compressedPath.push(prevCellId, prevDirection << 12);
+    compressedPath.push(prevCellId + (prevDirection << 12));
     return compressedPath;
   }
 

@@ -6,9 +6,7 @@ export interface ISpell {
   spellName: string;
   target: SpellTargets;
   turns: number;
-  lastTurn: number;
   relaunchs: number;
-  remainingRelaunchs: number;
   targetHp: number;
   characterHp: number;
   resistance: SpellResistances;

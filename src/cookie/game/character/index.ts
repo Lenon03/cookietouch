@@ -283,7 +283,6 @@ export default class Character {
     });
   }
 
-  // TODO: skinurl
   public getSkinUrl(
     mode: string,
     orientation: number,

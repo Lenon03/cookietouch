@@ -29,7 +29,7 @@ cd cookietouch && yarn
 
 ## Documentation
 
-The documentation is available on https://cookie-project.github.io/cookietouch/
+The documentation is available on https://docs.cookietouch.com/
 To update the documentation you just have to modify the /docs/ folder.
 
 ## Socials Links

@@ -1,11 +1,20 @@
 import {
   app,
   BrowserWindow,
+  crashReporter,
   ipcMain,
   Menu,
   MenuItemConstructorOptions
 } from "electron";
 import { appUpdater } from "./updater";
+
+crashReporter.start({
+  companyName: "DevChris",
+  ignoreSystemCrashHandler: true,
+  productName: "CookieTouch",
+  submitURL:
+    "https://sentry.io/api/1237788/minidump?sentry_key=c2de150c591046829235a291351779b7"
+});
 
 const template: MenuItemConstructorOptions[] = [
   {
@@ -40,9 +49,6 @@ let mainWindow: BrowserWindow;
 function createMainWindow() {
   const window = new BrowserWindow({
     show: false
-    // webPreferences: {
-    //   webSecurity: false,
-    // },
   });
   window.maximize();
   window.show();

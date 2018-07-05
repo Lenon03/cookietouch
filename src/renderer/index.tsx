@@ -7,7 +7,7 @@ import DTConstants from "@/protocol/DTConstants";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
 import Main from "@renderer/pages/Main";
-import { ipcRenderer, remote } from "electron";
+import { crashReporter, ipcRenderer, remote } from "electron";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
@@ -15,6 +15,14 @@ import "typeface-roboto/index.css";
 import "./main.scss";
 
 render(<h1>LOADING...</h1>, document.getElementById("app"));
+
+crashReporter.start({
+  companyName: "DevChris",
+  ignoreSystemCrashHandler: true,
+  productName: "CookieTouch",
+  submitURL:
+    "https://sentry.io/api/1237788/minidump?sentry_key=c2de150c591046829235a291351779b7"
+});
 
 initialize();
 presence();

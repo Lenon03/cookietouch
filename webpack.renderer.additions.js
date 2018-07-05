@@ -1,7 +1,6 @@
 const {
   TsConfigPathsPlugin
 } = require('awesome-typescript-loader');
-const webpack = require('webpack');
 
 module.exports = {
   resolve: {
@@ -21,9 +20,4 @@ module.exports = {
       exclude: /node_modules/
     }]
   }
-  // devServer: {
-  //   headers: {
-  //     'Access-Control-Allow-Origin': '*'
-  //   }
-  // }
 }

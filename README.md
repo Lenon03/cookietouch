@@ -34,4 +34,4 @@ To update the documentation you just have to modify the /docs/ folder.
 
 ## Socials Links
 
-- [Discord](https://discord.gg/swU74Fm)
+- [Discord](https://discord.gg/R7HsTnD)

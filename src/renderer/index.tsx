@@ -11,10 +11,14 @@ import { crashReporter, ipcRenderer, remote } from "electron";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
+import Loader from "react-loader-spinner";
 import "typeface-roboto/index.css";
 import "./main.scss";
 
-render(<h1>LOADING...</h1>, document.getElementById("app"));
+render(
+  <Loader type="ThreeDots" color="#6B331C" height="300" width="300" />,
+  document.getElementById("app")
+);
 
 crashReporter.start({
   companyName: "DevChris",

@@ -1,12 +1,11 @@
 const config = {
-  MAX_PODS: 90
+  MAX_PODS: 100 - ((300 / inventory.podsMax) * 100),
 }
 
 const move = [
-  {
-    map: "6,-21",
-    custom: function* () {
-      printMessage(`J'ai ${inventory.pods} pods !!!`)
-    }
-  }
+  { map: 80218115, custom: myCustom }
 ]
+
+function* myCustom() {
+  printMessage(`J'ai ${inventory.pods} pods !!!`)
+}

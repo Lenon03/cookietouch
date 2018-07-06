@@ -51,7 +51,10 @@ async function main() {
 main();
 
 ipcRenderer.on("go-update", (event, info) => {
-  const message = LanguageManager.trans("releaseAvailable", info.version);
+  let message = LanguageManager.trans("releaseAvailable", info.version);
+  if (info.releaseNotes) {
+    message += LanguageManager.trans("releaseNotes", info.releaseNotes);
+  }
   remote.dialog.showMessageBox(
     {
       buttons: [

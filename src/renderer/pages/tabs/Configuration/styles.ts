@@ -9,22 +9,24 @@ export type ConfigurationTabStyle =
 
 export const configurationTabStyles: StyleRulesCallback<
   ConfigurationTabStyle
-> = theme => ({
-  card: {
-    minWidth: 275
-  },
-  formControl: {
-    margin: theme.spacing.unit
-  },
-  root: {
-    flexGrow: 1
-  },
-  table: {
-    maxWidth: 700
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-    marginBottom: 16
-  }
-});
+  > = theme => ({
+    card: {
+      margin: 20,
+      minWidth: 275
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      width: "100%"
+    },
+    root: {
+      flexGrow: 1
+    },
+    table: {
+      maxWidth: 700
+    },
+    title: {
+      color: theme.palette.text.secondary,
+      fontSize: 14,
+      marginBottom: 16
+    }
+  });

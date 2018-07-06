@@ -75,7 +75,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
       <div className={classes.root}>
         <Grid container={true} spacing={24}>
           <Grid item={true} xs={9}>
-            <Grid container={true} spacing={0}>
+            <Grid container={true} spacing={16}>
               <div id="consoleTabDiv" className={classes.console}>
                 {this.state.messages.map((m, index) => {
                   if (m.source) {
@@ -87,7 +87,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                       >
                         {`[${moment(m.time).format("LTS")}][${m.source}] ${
                           m.content
-                        }`}
+                          }`}
                       </span>
                     );
                   }
@@ -146,7 +146,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
               <Grid item={true} xs={9}>
                 <FormControl className={classes.formControl}>
                   {/* <InputLabel htmlFor="content">{LanguageManager.trans("name")}</InputLabel> */}
-                  <Input
+                  <Input className={classes.inputConsoleChat}
                     disabled={this.state.characterConnected === false}
                     autoFocus={true}
                     id="content"
@@ -154,13 +154,14 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                     value={this.state.content}
                     onChange={this.handleChange("content")}
                     onKeyDown={this.inputKeyDown}
+                    fullWidth={true}
                   />
                 </FormControl>
               </Grid>
             </Grid>
           </Grid>
           <Grid item={true} xs={3}>
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.status}>
               <InputLabel htmlFor="status">
                 {LanguageManager.trans("status")}
               </InputLabel>
@@ -275,7 +276,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                 label={LanguageManager.trans("showSeek")}
               />
             </FormGroup>
-            <Button
+            <Button className={classes.cleanConsole}
               onClick={this.clearConsole}
               variant="raised"
               color="primary"
@@ -318,7 +319,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     this.setState({ [name]: event.target.value } as Pick<
       IConsoleTabState,
       keyof IConsoleTabState
-    >);
+      >);
   };
 
   private characterSelected = () => {

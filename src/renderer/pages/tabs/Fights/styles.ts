@@ -9,43 +9,43 @@ export type FightsTabStyle =
   | "formControl"
   | "table"
   | "paper"
-  | "modal"
-  | "overflow";
+  | "overflow"
+  | "selectBlockSpectator";
 
 export const fightsTabStyles: StyleRulesCallback<FightsTabStyle> = theme => ({
   appBar: {
     //
   },
   card: {
+    margin: 20,
     minWidth: 275
   },
   formControl: {
-    margin: theme.spacing.unit
-  },
-  modal: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    position: "absolute",
-    width: theme.spacing.unit * 50
+    margin: theme.spacing.unit,
+    width: "100%"
   },
   overflow: {
-    maxHeight: 400,
+    maxHeight: 1200,
     overflowY: "auto"
   },
   paper: {
     color: theme.palette.text.secondary,
     margin: theme.spacing.unit,
+    minHeight: 800,
     padding: theme.spacing.unit * 2
   },
   root: {
     flexGrow: 1
+  },
+  selectBlockSpectator: {
+    marginTop: 50,
   },
   tab: {
     height: 30,
     maxWidth: 1000
   },
   table: {
+    heigth: "100%",
     minWidth: 700
   },
   title: {

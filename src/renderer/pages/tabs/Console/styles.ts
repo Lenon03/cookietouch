@@ -4,12 +4,20 @@ export type ConsoleTabStyle =
   | "root"
   | "console"
   | "consoleSpan"
-  | "formControl";
+  | "formControl"
+  | "inputConsoleChat"
+  | "status"
+  | "cleanConsole";
 
 export const consoleTabStyles: StyleRulesCallback<ConsoleTabStyle> = theme => ({
+  cleanConsole: {
+    width: "97%"
+  },
   console: {
     backgroundColor: "#403f3f",
     height: "400px",
+    marginLeft: 20,
+    marginTop: 20,
     overflowX: "hidden",
     overflowY: "visible",
     padding: 10,
@@ -20,9 +28,17 @@ export const consoleTabStyles: StyleRulesCallback<ConsoleTabStyle> = theme => ({
     position: "relative"
   },
   formControl: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    marginLeft: 20,
+    width: "100%"
+  },
+  inputConsoleChat: {
+    marginTop: 16
   },
   root: {
     flexGrow: 1
+  },
+  status: {
+    marginTop: 10
   }
 });

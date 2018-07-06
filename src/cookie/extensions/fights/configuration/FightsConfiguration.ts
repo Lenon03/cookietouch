@@ -60,7 +60,7 @@ export default class FightsConfiguration {
     this.maxCells = 12;
     this.approachWhenNoSpellCasted = false;
     this.baseApproachAllMonsters = false;
-    this.regenStart = 0;
+    this.regenStart = 80;
     this.regenEnd = 100;
     this.spells = [];
     this.fightSpeed = FightSpeeds.NORMAL;

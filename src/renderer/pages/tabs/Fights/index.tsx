@@ -32,6 +32,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tabs from "@material-ui/core/Tabs";
 import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { fightsTabStyles } from "@renderer/pages/tabs/Fights/styles";
 import {
@@ -154,39 +155,41 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       </MenuItem>
                     </Select>
                   </FormControl>
-                  <TextField
-                    disabled={this.state.characterConnected === false}
-                    autoFocus={true}
-                    margin="dense"
-                    id="monsterToApproach"
-                    name="monsterToApproach"
-                    label={LanguageManager.trans("approachMonster")}
-                    helperText={LanguageManager.trans("monsterToApproachInfo")}
-                    value={this.state.monsterToApproach}
-                    fullWidth={true}
-                    onChange={this.handleInputChange}
-                    type="number"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <TextField
-                    disabled={this.state.characterConnected === false}
-                    autoFocus={true}
-                    margin="dense"
-                    id="spellToApproach"
-                    name="spellToApproach"
-                    label={LanguageManager.trans("spellToApproach")}
-                    helperText={LanguageManager.trans("spellToApproachInfo")}
-                    value={this.state.spellToApproach}
-                    fullWidth={true}
-                    onChange={this.handleInputChange}
-                    type="number"
-                    InputLabelProps={{ shrink: true }}
-                  />
+                  <Tooltip title={`${LanguageManager.trans("monsterToApproachInfo")}`}>
+                    <TextField
+                      disabled={this.state.characterConnected === false}
+                      autoFocus={true}
+                      margin="dense"
+                      id="monsterToApproach"
+                      name="monsterToApproach"
+                      label={LanguageManager.trans("approachMonster")}
+                      value={this.state.monsterToApproach}
+                      fullWidth={true}
+                      onChange={this.handleInputChange}
+                      type="number"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={`${LanguageManager.trans("spellToApproachInfo")}`}>
+                    <TextField
+                      disabled={this.state.characterConnected === false}
+                      autoFocus={true}
+                      margin="dense"
+                      id="spellToApproach"
+                      name="spellToApproach"
+                      label={LanguageManager.trans("spellToApproach")}
+                      value={this.state.spellToApproach}
+                      fullWidth={true}
+                      onChange={this.handleInputChange}
+                      type="number"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Tooltip>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="blockSpectatorScenario">
                       {LanguageManager.trans("blockSpectator")}
                     </InputLabel>
-                    <Select
+                    <Select className={classes.selectBlockSpectator}
                       disabled={this.state.characterConnected === false}
                       value={this.state.blockSpectatorScenario}
                       onChange={this.handleSelectChange}
@@ -342,32 +345,36 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                   <Typography className={classes.title}>
                     {LanguageManager.trans("regeneration")}
                   </Typography>
-                  <TextField
-                    disabled={this.state.characterConnected === false}
-                    autoFocus={true}
-                    margin="dense"
-                    id="regenStart"
-                    name="regenStart"
-                    label={LanguageManager.trans("minimum")}
-                    value={this.state.regenStart}
-                    fullWidth={true}
-                    onChange={this.handleInputChange}
-                    type="number"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <TextField
-                    disabled={this.state.characterConnected === false}
-                    autoFocus={true}
-                    margin="dense"
-                    id="regenEnd"
-                    name="regenEnd"
-                    label={LanguageManager.trans("maximum")}
-                    value={this.state.regenEnd}
-                    fullWidth={true}
-                    onChange={this.handleInputChange}
-                    type="number"
-                    InputLabelProps={{ shrink: true }}
-                  />
+                  <Tooltip title={`${LanguageManager.trans("regenInfosMinimum")}`}>
+                    <TextField
+                      disabled={this.state.characterConnected === false}
+                      autoFocus={true}
+                      margin="dense"
+                      id="regenStart"
+                      name="regenStart"
+                      label={LanguageManager.trans("minimum")}
+                      value={this.state.regenStart}
+                      fullWidth={true}
+                      onChange={this.handleInputChange}
+                      type="number"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={`${LanguageManager.trans("regenInfosMaximum")}`}>
+                    <TextField
+                      disabled={this.state.characterConnected === false}
+                      autoFocus={true}
+                      margin="dense"
+                      id="regenEnd"
+                      name="regenEnd"
+                      label={LanguageManager.trans("maximum")}
+                      value={this.state.regenEnd}
+                      fullWidth={true}
+                      onChange={this.handleInputChange}
+                      type="number"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Tooltip>
                 </CardContent>
               </Card>
             </Grid>
@@ -434,13 +441,6 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
               <Typography className={classes.title}>
                 {LanguageManager.trans("addSpell")}
               </Typography>
-              <Button
-                onClick={this.openInfos}
-                variant="raised"
-                color="secondary"
-              >
-                {LanguageManager.trans("infos")}
-              </Button>
               <form onSubmit={this.submit}>
                 <Grid container={true} spacing={8}>
                   <Grid item={true} xs={6}>
@@ -485,100 +485,112 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                         </MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField
-                      disabled={this.state.characterConnected === false}
-                      autoFocus={true}
-                      margin="dense"
-                      id="turns"
-                      name="turns"
-                      label={LanguageManager.trans("turns")}
-                      value={this.state.addSpellForm.turns}
-                      fullWidth={true}
-                      onChange={this.handleSelectChangeForm}
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                      disabled={this.state.characterConnected === false}
-                      autoFocus={true}
-                      margin="dense"
-                      id="relaunchs"
-                      name="relaunchs"
-                      label={LanguageManager.trans("relaunchs")}
-                      value={this.state.addSpellForm.relaunchs}
-                      fullWidth={true}
-                      onChange={this.handleSelectChangeForm}
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                      disabled={this.state.characterConnected === false}
-                      autoFocus={true}
-                      margin="dense"
-                      id="targetHp"
-                      name="targetHp"
-                      label={`${LanguageManager.trans("targetLife")} <=`}
-                      value={this.state.addSpellForm.targetHp}
-                      fullWidth={true}
-                      onChange={this.handleSelectChangeForm}
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                      disabled={this.state.characterConnected === false}
-                      autoFocus={true}
-                      margin="dense"
-                      id="characterHp"
-                      name="characterHp"
-                      label={`${LanguageManager.trans("selfLife")} <=`}
-                      value={this.state.addSpellForm.characterHp}
-                      fullWidth={true}
-                      onChange={this.handleSelectChangeForm}
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                    />
+                    <Tooltip title={`${LanguageManager.trans("turnsInfo")}`}>
+                      <TextField
+                        disabled={this.state.characterConnected === false}
+                        autoFocus={true}
+                        margin="dense"
+                        id="turns"
+                        name="turns"
+                        label={LanguageManager.trans("turns")}
+                        value={this.state.addSpellForm.turns}
+                        fullWidth={true}
+                        onChange={this.handleSelectChangeForm}
+                        type="number"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Tooltip>
+                    <Tooltip title={`${LanguageManager.trans("castPerTurnInfo")}`}>
+                      <TextField
+                        disabled={this.state.characterConnected === false}
+                        autoFocus={true}
+                        margin="dense"
+                        id="relaunchs"
+                        name="relaunchs"
+                        label={LanguageManager.trans("relaunchs")}
+                        value={this.state.addSpellForm.relaunchs}
+                        fullWidth={true}
+                        onChange={this.handleSelectChangeForm}
+                        type="number"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Tooltip>
+                    <Tooltip title={`${LanguageManager.trans("targetLifeInfo")}`}>
+                      <TextField
+                        disabled={this.state.characterConnected === false}
+                        autoFocus={true}
+                        margin="dense"
+                        id="targetHp"
+                        name="targetHp"
+                        label={`${LanguageManager.trans("targetLife")} <=`}
+                        value={this.state.addSpellForm.targetHp}
+                        fullWidth={true}
+                        onChange={this.handleSelectChangeForm}
+                        type="number"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Tooltip>
+                    <Tooltip title={`${LanguageManager.trans("characterLifeInfo")}`}>
+                      <TextField
+                        disabled={this.state.characterConnected === false}
+                        autoFocus={true}
+                        margin="dense"
+                        id="characterHp"
+                        name="characterHp"
+                        label={`${LanguageManager.trans("selfLife")} <=`}
+                        value={this.state.addSpellForm.characterHp}
+                        fullWidth={true}
+                        onChange={this.handleSelectChangeForm}
+                        type="number"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Tooltip>
                   </Grid>
                   <Grid item={true} xs={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="resistance">
                         {LanguageManager.trans("resistance")}
                       </InputLabel>
-                      <Select
-                        disabled={this.state.characterConnected === false}
-                        value={this.state.addSpellForm.resistance}
-                        onChange={this.handleSelectChangeForm}
-                        inputProps={{ id: "resistance", name: "resistance" }}
-                      >
-                        <MenuItem value={SpellResistances.EARTH}>
-                          {LanguageManager.trans("earth")}
-                        </MenuItem>
-                        <MenuItem value={SpellResistances.FIRE}>
-                          {LanguageManager.trans("fire")}
-                        </MenuItem>
-                        <MenuItem value={SpellResistances.NEUTRAL}>
-                          {LanguageManager.trans("neutral")}
-                        </MenuItem>
-                        <MenuItem value={SpellResistances.WATER}>
-                          {LanguageManager.trans("water")}
-                        </MenuItem>
-                        <MenuItem value={SpellResistances.WIND}>
-                          {LanguageManager.trans("wind")}
-                        </MenuItem>
-                      </Select>
+                      <Tooltip title={`${LanguageManager.trans("resistanceInfo")}`}>
+                        <Select
+                          disabled={this.state.characterConnected === false}
+                          value={this.state.addSpellForm.resistance}
+                          onChange={this.handleSelectChangeForm}
+                          inputProps={{ id: "resistance", name: "resistance" }}
+                        >
+                          <MenuItem value={SpellResistances.EARTH}>
+                            {LanguageManager.trans("earth")}
+                          </MenuItem>
+                          <MenuItem value={SpellResistances.FIRE}>
+                            {LanguageManager.trans("fire")}
+                          </MenuItem>
+                          <MenuItem value={SpellResistances.NEUTRAL}>
+                            {LanguageManager.trans("neutral")}
+                          </MenuItem>
+                          <MenuItem value={SpellResistances.WATER}>
+                            {LanguageManager.trans("water")}
+                          </MenuItem>
+                          <MenuItem value={SpellResistances.WIND}>
+                            {LanguageManager.trans("wind")}
+                          </MenuItem>
+                        </Select>
+                      </Tooltip>
                     </FormControl>
-                    <TextField
-                      disabled={this.state.characterConnected === false}
-                      autoFocus={true}
-                      margin="dense"
-                      id="resistanceValue"
-                      name="resistanceValue"
-                      label={`${LanguageManager.trans("targetResistance")} <=`}
-                      value={this.state.addSpellForm.resistanceValue}
-                      fullWidth={true}
-                      onChange={this.handleSelectChangeForm}
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                    />
+                    <Tooltip title={`${LanguageManager.trans("resistanceInfo")}`}>
+                      <TextField
+                        disabled={this.state.characterConnected === false}
+                        autoFocus={true}
+                        margin="dense"
+                        id="resistanceValue"
+                        name="resistanceValue"
+                        label={`${LanguageManager.trans("targetResistance")} <=`}
+                        value={this.state.addSpellForm.resistanceValue}
+                        fullWidth={true}
+                        onChange={this.handleSelectChangeForm}
+                        type="number"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Tooltip>
                     <TextField
                       disabled={this.state.characterConnected === false}
                       autoFocus={true}
@@ -593,70 +605,78 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       InputLabelProps={{ shrink: true }}
                     />
                     <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            id="handToHand"
-                            name="handToHand"
-                            disabled={this.state.characterConnected === false}
-                            color="primary"
-                            checked={this.state.addSpellForm.handToHand}
-                            onChange={this.handleSwitchChangeForm}
-                          />
-                        }
-                        label={LanguageManager.trans("melee")}
-                      />
+                      <Tooltip title={`${LanguageManager.trans("meleeInfo")}`}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              id="handToHand"
+                              name="handToHand"
+                              disabled={this.state.characterConnected === false}
+                              color="primary"
+                              checked={this.state.addSpellForm.handToHand}
+                              onChange={this.handleSwitchChangeForm}
+                            />
+                          }
+                          label={LanguageManager.trans("melee")}
+                        />
+                      </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            id="aoe"
-                            name="aoe"
-                            disabled={this.state.characterConnected === false}
-                            color="primary"
-                            checked={this.state.addSpellForm.aoe}
-                            onChange={this.handleSwitchChangeForm}
-                          />
-                        }
-                        label={LanguageManager.trans("hitManyPossible")}
-                      />
+                      <Tooltip title={`${LanguageManager.trans("hitManyPossibleInfo")}`}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              id="aoe"
+                              name="aoe"
+                              disabled={this.state.characterConnected === false}
+                              color="primary"
+                              checked={this.state.addSpellForm.aoe}
+                              onChange={this.handleSwitchChangeForm}
+                            />
+                          }
+                          label={LanguageManager.trans("hitManyPossible")}
+                        />
+                      </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            id="carefulAoe"
-                            name="carefulAoe"
-                            disabled={
-                              this.state.characterConnected === false ||
-                              this.state.addSpellForm.aoe === false
-                            }
-                            color="primary"
-                            checked={this.state.addSpellForm.carefulAoe}
-                            onChange={this.handleSwitchChangeForm}
-                          />
-                        }
-                        label={LanguageManager.trans("dontTouchSelf")}
-                      />
+                      <Tooltip title={`${LanguageManager.trans("dontTouchSelfInfo")}`}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              id="carefulAoe"
+                              name="carefulAoe"
+                              disabled={
+                                this.state.characterConnected === false ||
+                                this.state.addSpellForm.aoe === false
+                              }
+                              color="primary"
+                              checked={this.state.addSpellForm.carefulAoe}
+                              onChange={this.handleSwitchChangeForm}
+                            />
+                          }
+                          label={LanguageManager.trans("dontTouchSelf")}
+                        />
+                      </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            id="avoidAllies"
-                            name="avoidAllies"
-                            disabled={
-                              this.state.characterConnected === false ||
-                              this.state.addSpellForm.aoe === false
-                            }
-                            color="primary"
-                            checked={this.state.addSpellForm.avoidAllies}
-                            onChange={this.handleSwitchChangeForm}
-                          />
-                        }
-                        label={LanguageManager.trans("dontTouchAllies")}
-                      />
+                      <Tooltip title={`${LanguageManager.trans("dontTouchAlliesInfo")}`}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              id="avoidAllies"
+                              name="avoidAllies"
+                              disabled={
+                                this.state.characterConnected === false ||
+                                this.state.addSpellForm.aoe === false
+                              }
+                              color="primary"
+                              checked={this.state.addSpellForm.avoidAllies}
+                              onChange={this.handleSwitchChangeForm}
+                            />
+                          }
+                          label={LanguageManager.trans("dontTouchAllies")}
+                        />
+                      </Tooltip>
                     </FormGroup>
                     <Button type="submit" variant="raised" color="primary">
                       {LanguageManager.trans("add")}
@@ -667,59 +687,6 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
             </CardContent>
           </Card>
         </div>
-        <Modal open={this.state.modalInfos} onClose={this.handleClose}>
-          <div style={this.getModalStyle()} className={classes.modal}>
-            <List dense={true}>
-              <ListItem>
-                <ListItemText primary={LanguageManager.trans("spellInfo")} />
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={LanguageManager.trans("targetInfo")} />
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={LanguageManager.trans("turnsInfo")} />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("castPerTurnInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("targetLifeInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("characterLifeInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("resistanceInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={LanguageManager.trans("meleeInfo")} />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("hitManyPossibleInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("dontTouchSelfInfo")}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary={LanguageManager.trans("dontTouchAlliesInfo")}
-                />
-              </ListItem>
-            </List>
-          </div>
-        </Modal>
       </Paper>
     );
   }
@@ -776,7 +743,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ [event.target.name]: checked } as Pick<
       IFightsTabState,
       keyof IFightsTabState
-    >);
+      >);
     this.props.account.extensions.fights.config[event.target.name] = checked;
     await this.props.account.extensions.fights.config.save();
   };

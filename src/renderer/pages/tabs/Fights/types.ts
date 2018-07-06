@@ -42,7 +42,6 @@ export interface IFightsTabState {
   ignoreSummonedEnemies: boolean;
   lockFight: boolean;
   maxCells: number;
-  modalInfos: boolean;
   monsterToApproach: number;
   regenEnd: number;
   regenStart: number;

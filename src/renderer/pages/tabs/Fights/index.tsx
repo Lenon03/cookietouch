@@ -15,11 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
-import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -73,7 +69,6 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
       .ignoreSummonedEnemies,
     lockFight: this.props.account.extensions.fights.config.lockFight,
     maxCells: this.props.account.extensions.fights.config.maxCells,
-    modalInfos: false,
     monsterToApproach: this.props.account.extensions.fights.config
       .monsterToApproach,
     regenEnd: this.props.account.extensions.fights.config.regenEnd,
@@ -155,7 +150,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       </MenuItem>
                     </Select>
                   </FormControl>
-                  <Tooltip title={`${LanguageManager.trans("monsterToApproachInfo")}`}>
+                  <Tooltip
+                    title={LanguageManager.trans("monsterToApproachInfo")}
+                  >
                     <TextField
                       disabled={this.state.characterConnected === false}
                       autoFocus={true}
@@ -170,7 +167,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       InputLabelProps={{ shrink: true }}
                     />
                   </Tooltip>
-                  <Tooltip title={`${LanguageManager.trans("spellToApproachInfo")}`}>
+                  <Tooltip title={LanguageManager.trans("spellToApproachInfo")}>
                     <TextField
                       disabled={this.state.characterConnected === false}
                       autoFocus={true}
@@ -189,7 +186,8 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                     <InputLabel htmlFor="blockSpectatorScenario">
                       {LanguageManager.trans("blockSpectator")}
                     </InputLabel>
-                    <Select className={classes.selectBlockSpectator}
+                    <Select
+                      className={classes.selectBlockSpectator}
                       disabled={this.state.characterConnected === false}
                       value={this.state.blockSpectatorScenario}
                       onChange={this.handleSelectChange}
@@ -345,7 +343,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                   <Typography className={classes.title}>
                     {LanguageManager.trans("regeneration")}
                   </Typography>
-                  <Tooltip title={`${LanguageManager.trans("regenInfosMinimum")}`}>
+                  <Tooltip title={LanguageManager.trans("regenInfosMinimum")}>
                     <TextField
                       disabled={this.state.characterConnected === false}
                       autoFocus={true}
@@ -360,7 +358,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       InputLabelProps={{ shrink: true }}
                     />
                   </Tooltip>
-                  <Tooltip title={`${LanguageManager.trans("regenInfosMaximum")}`}>
+                  <Tooltip title={LanguageManager.trans("regenInfosMaximum")}>
                     <TextField
                       disabled={this.state.characterConnected === false}
                       autoFocus={true}
@@ -444,48 +442,52 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
               <form onSubmit={this.submit}>
                 <Grid container={true} spacing={8}>
                   <Grid item={true} xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="spellId">
-                        {LanguageManager.trans("spell")}
-                      </InputLabel>
-                      <Select
-                        disabled={this.state.characterConnected === false}
-                        value={this.state.addSpellForm.spellId}
-                        onChange={this.handleSelectChangeForm}
-                        inputProps={{ id: "spellId", name: "spellId" }}
-                      >
-                        {this.state.characterSpells.map((s, index) => (
-                          <MenuItem key={index} value={s.id}>
-                            {s.name}
+                    <Tooltip title={LanguageManager.trans("spellInfo")}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="spellId">
+                          {LanguageManager.trans("spell")}
+                        </InputLabel>
+                        <Select
+                          disabled={this.state.characterConnected === false}
+                          value={this.state.addSpellForm.spellId}
+                          onChange={this.handleSelectChangeForm}
+                          inputProps={{ id: "spellId", name: "spellId" }}
+                        >
+                          {this.state.characterSpells.map((s, index) => (
+                            <MenuItem key={index} value={s.id}>
+                              {s.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Tooltip>
+                    <Tooltip title={LanguageManager.trans("targetInfo")}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="target">
+                          {LanguageManager.trans("target")}
+                        </InputLabel>
+                        <Select
+                          disabled={this.state.characterConnected === false}
+                          value={this.state.addSpellForm.target}
+                          onChange={this.handleSelectChangeForm}
+                          inputProps={{ id: "target", name: "target" }}
+                        >
+                          <MenuItem value={SpellTargets.ALLY}>
+                            {LanguageManager.trans("ally")}
                           </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="target">
-                        {LanguageManager.trans("target")}
-                      </InputLabel>
-                      <Select
-                        disabled={this.state.characterConnected === false}
-                        value={this.state.addSpellForm.target}
-                        onChange={this.handleSelectChangeForm}
-                        inputProps={{ id: "target", name: "target" }}
-                      >
-                        <MenuItem value={SpellTargets.ALLY}>
-                          {LanguageManager.trans("ally")}
-                        </MenuItem>
-                        <MenuItem value={SpellTargets.SELF}>
-                          {LanguageManager.trans("self")}
-                        </MenuItem>
-                        <MenuItem value={SpellTargets.ENEMY}>
-                          {LanguageManager.trans("enemy")}
-                        </MenuItem>
-                        <MenuItem value={SpellTargets.EMPTY_CELL}>
-                          {LanguageManager.trans("emptyCell")}
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Tooltip title={`${LanguageManager.trans("turnsInfo")}`}>
+                          <MenuItem value={SpellTargets.SELF}>
+                            {LanguageManager.trans("self")}
+                          </MenuItem>
+                          <MenuItem value={SpellTargets.ENEMY}>
+                            {LanguageManager.trans("enemy")}
+                          </MenuItem>
+                          <MenuItem value={SpellTargets.EMPTY_CELL}>
+                            {LanguageManager.trans("emptyCell")}
+                          </MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Tooltip>
+                    <Tooltip title={LanguageManager.trans("turnsInfo")}>
                       <TextField
                         disabled={this.state.characterConnected === false}
                         autoFocus={true}
@@ -500,7 +502,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                         InputLabelProps={{ shrink: true }}
                       />
                     </Tooltip>
-                    <Tooltip title={`${LanguageManager.trans("castPerTurnInfo")}`}>
+                    <Tooltip title={LanguageManager.trans("castPerTurnInfo")}>
                       <TextField
                         disabled={this.state.characterConnected === false}
                         autoFocus={true}
@@ -515,7 +517,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                         InputLabelProps={{ shrink: true }}
                       />
                     </Tooltip>
-                    <Tooltip title={`${LanguageManager.trans("targetLifeInfo")}`}>
+                    <Tooltip title={LanguageManager.trans("targetLifeInfo")}>
                       <TextField
                         disabled={this.state.characterConnected === false}
                         autoFocus={true}
@@ -530,7 +532,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                         InputLabelProps={{ shrink: true }}
                       />
                     </Tooltip>
-                    <Tooltip title={`${LanguageManager.trans("characterLifeInfo")}`}>
+                    <Tooltip title={LanguageManager.trans("characterLifeInfo")}>
                       <TextField
                         disabled={this.state.characterConnected === false}
                         autoFocus={true}
@@ -551,7 +553,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       <InputLabel htmlFor="resistance">
                         {LanguageManager.trans("resistance")}
                       </InputLabel>
-                      <Tooltip title={`${LanguageManager.trans("resistanceInfo")}`}>
+                      <Tooltip title={LanguageManager.trans("resistanceInfo")}>
                         <Select
                           disabled={this.state.characterConnected === false}
                           value={this.state.addSpellForm.resistance}
@@ -576,14 +578,16 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                         </Select>
                       </Tooltip>
                     </FormControl>
-                    <Tooltip title={`${LanguageManager.trans("resistanceInfo")}`}>
+                    <Tooltip title={LanguageManager.trans("resistanceInfo")}>
                       <TextField
                         disabled={this.state.characterConnected === false}
                         autoFocus={true}
                         margin="dense"
                         id="resistanceValue"
                         name="resistanceValue"
-                        label={`${LanguageManager.trans("targetResistance")} <=`}
+                        label={`${LanguageManager.trans(
+                          "targetResistance"
+                        )} <=`}
                         value={this.state.addSpellForm.resistanceValue}
                         fullWidth={true}
                         onChange={this.handleSelectChangeForm}
@@ -605,7 +609,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       InputLabelProps={{ shrink: true }}
                     />
                     <FormGroup>
-                      <Tooltip title={`${LanguageManager.trans("meleeInfo")}`}>
+                      <Tooltip title={LanguageManager.trans("meleeInfo")}>
                         <FormControlLabel
                           control={
                             <Switch
@@ -622,7 +626,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <Tooltip title={`${LanguageManager.trans("hitManyPossibleInfo")}`}>
+                      <Tooltip
+                        title={LanguageManager.trans("hitManyPossibleInfo")}
+                      >
                         <FormControlLabel
                           control={
                             <Switch
@@ -639,7 +645,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <Tooltip title={`${LanguageManager.trans("dontTouchSelfInfo")}`}>
+                      <Tooltip
+                        title={LanguageManager.trans("dontTouchSelfInfo")}
+                      >
                         <FormControlLabel
                           control={
                             <Switch
@@ -659,7 +667,9 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
                       </Tooltip>
                     </FormGroup>
                     <FormGroup>
-                      <Tooltip title={`${LanguageManager.trans("dontTouchAlliesInfo")}`}>
+                      <Tooltip
+                        title={LanguageManager.trans("dontTouchAlliesInfo")}
+                      >
                         <FormControlLabel
                           control={
                             <Switch
@@ -720,21 +730,6 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     await this.props.account.extensions.fights.config.save();
   };
 
-  private getModalStyle = () => {
-    const top = 50;
-    const left = 50;
-
-    return {
-      left: `${left}%`,
-      top: `${top}%`,
-      transform: `translate(-${top}%, -${left}%)`
-    };
-  };
-
-  private handleClose = () => {
-    this.setState({ modalInfos: false });
-  };
-
   private handleChange = (event, value) => {
     this.setState({ activeTab: value });
   };
@@ -743,7 +738,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ [event.target.name]: checked } as Pick<
       IFightsTabState,
       keyof IFightsTabState
-      >);
+    >);
     this.props.account.extensions.fights.config[event.target.name] = checked;
     await this.props.account.extensions.fights.config.save();
   };
@@ -829,10 +824,6 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
       sp => sp.spellId !== s.spellId
     );
     await this.props.account.extensions.fights.config.save();
-  };
-
-  private openInfos = () => {
-    this.setState({ modalInfos: true });
   };
 }
 

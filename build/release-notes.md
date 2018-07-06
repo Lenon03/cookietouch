@@ -1,10 +1,9 @@
-
-## FR
+[FR]
 
 - Alignement du textField pour le chat.
 - Modifications dans les onglets Combat et Sort .
 
-## EN
+[EN]
 
 - Alignment of the textField for chat.
-- Changes in the Combat and Sort tabs.
+- Changes in the Fights and Spells tabs.

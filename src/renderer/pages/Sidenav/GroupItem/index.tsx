@@ -34,8 +34,10 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
           onClick={this.changeAccount(group.chief)}
           style={{
             backgroundColor:
+              CookieMain.selectedAccount &&
               CookieMain.selectedAccount.accountConfig.username ===
-                group.chief.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+                group.chief.accountConfig.username &&
+              "rgba(180, 180, 180, 0.2)"
           }}
         >
           <ListItemIcon>
@@ -75,8 +77,10 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
                 onClick={this.changeAccount(m)}
                 style={{
                   backgroundColor:
+                    CookieMain.selectedAccount &&
                     CookieMain.selectedAccount.accountConfig.username ===
-                      m.accountConfig.username && "rgba(180, 180, 180, 0.2)"
+                      m.accountConfig.username &&
+                    "rgba(180, 180, 180, 0.2)"
                 }}
               >
                 <ListItemIcon>

@@ -454,5 +454,10 @@
   "later": "Plus tard",
   "releaseAvailable": "La version ? est maintenant disponible. L'application seras installé la prochaine fois que vous redémarrerez l'application.",
   "releaseNotes": "\n\nNotes de mise à jour:\n?",
-  "update": "Mettre à jour"
+  "update": "Mettre à jour",
+  "sync": "Actualiser",
+  "itemsForSale": "Objet(s) en vente:",
+  "objectsForSale": "Objet(s) à vendre:",
+  "configSelling": "Configuration de la vente",
+  "placeHolderObjects": "Entrez un nom d'objet"
 }

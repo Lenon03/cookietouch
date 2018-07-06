@@ -29,9 +29,7 @@ export async function appUpdater(win: BrowserWindow, channel: string) {
   });
 
   autoUpdater.on("update-downloaded", info => {
-    win.webContents.once("dom-ready", () => {
-      win.webContents.send("go-update", info);
-    });
+    win.webContents.send("go-update", info);
   });
 
   autoUpdater.checkForUpdates();

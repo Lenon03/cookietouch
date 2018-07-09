@@ -11,13 +11,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { signin, signup } from "@renderer/FirebaseHelpers";
+import { signin } from "@renderer/FirebaseHelpers";
 import { loginFormDialogStyles } from "@renderer/pages/LoginFormDialog/styles";
 import {
   ILoginFormDialogProps,
   ILoginFormDialogState,
   LoginFormDialogProps
 } from "@renderer/pages/LoginFormDialog/types";
+import { remote } from "electron";
 import * as React from "react";
 
 class LoginFormDialog extends React.Component<
@@ -84,10 +85,10 @@ class LoginFormDialog extends React.Component<
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeDialog} color="primary">
+            <Button onClick={closeDialog} variant="raised" color="primary">
               {LanguageManager.trans("cancel")}
             </Button>
-            <Button onClick={this.signin} color="primary">
+            <Button onClick={this.signin} variant="raised" color="primary">
               {LanguageManager.trans("connect")}
             </Button>
           </DialogActions>
@@ -112,21 +113,23 @@ class LoginFormDialog extends React.Component<
   };
 
   private signin = async () => {
-    const result = await signin(this.state.email, this.state.password);
+    try {
+      const result = await signin(this.state.email, this.state.password);
 
-    if (result) {
-      this.props.closeDialog();
-      this.setState({ email: "", password: "" });
-    } else {
-      const result2 = await signup(this.state.email, this.state.password);
-
-      if (result2) {
+      if (!result) {
+        remote.dialog.showErrorBox(
+          LanguageManager.trans("error"),
+          LanguageManager.trans("emailValidated")
+        );
+      } else {
         this.props.closeDialog();
-        this.setState({
-          email: "",
-          password: ""
-        });
+        this.setState({ email: "", password: "" });
       }
+    } catch (e) {
+      remote.dialog.showErrorBox(
+        LanguageManager.trans("error"),
+        LanguageManager.trans("invalidCredentials")
+      );
     }
   };
 }

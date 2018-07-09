@@ -461,5 +461,8 @@
   "configSelling": "Configuration de la vente",
   "placeHolderObjects": "Entrez un nom d'objet",
   "regenInfosMinimum": "Se régénère si la vie du personnage (%) est inférieur à cette valeur. (0 pour désactiver)",
-  "regenInfosMaximum": "Jusqu'à : (%)"
+  "regenInfosMaximum": "Jusqu'à : (%)",
+  "error": "Erreur",
+  "invalidCredentials": "Identifiants incorrects.",
+  "emailValidated": "Vous devez vérifier votre email !"
 }

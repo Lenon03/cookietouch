@@ -1,6 +1,7 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { signout } from "@renderer/FirebaseHelpers";
 import BottomAppBar from "@renderer/pages/BottomAppBar";
 import { mainStyles } from "@renderer/pages/Main/styles";
 import { IMainProps, IMainState, MainProps } from "@renderer/pages/Main/types";
@@ -19,7 +20,11 @@ class Main extends React.Component<MainProps, IMainState> {
   public componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ user });
+        if (user.emailVerified) {
+          this.setState({ user });
+        } else {
+          signout();
+        }
       } else {
         this.setState({ user: null });
       }

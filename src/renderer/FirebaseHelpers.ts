@@ -23,10 +23,12 @@ export async function signin(
   password: string
 ): Promise<boolean> {
   try {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
-    return true;
+    const userCred = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    return userCred.user ? userCred.user.emailVerified : false;
   } catch (error) {
-    return false;
+    throw error;
   }
 }
 

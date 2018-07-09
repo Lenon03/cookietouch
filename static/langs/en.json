@@ -461,5 +461,8 @@
   "configSelling": "Sales configuration",
   "placeHolderObjects": "Enter an item name",
   "regenInfosMinimum": "Regenerate if the character's life (%) is under this value. (0 to deactivate)",
-  "regenInfosMaximum": "to: (%)"
+  "regenInfosMaximum": "to: (%)",
+  "error": "Error",
+  "invalidCredentials": "Invalid Credentials",
+  "emailValidated": "You have to verified your email !"
 }

@@ -46,10 +46,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     super(props);
 
     this.commandProcessor = new CommandProcessor("/");
-    this.commandProcessor.registerCommandHandler(
-      "sendMessage",
-      new SendMessageCommand()
-    );
+    this.commandProcessor.registerCommandHandler("w", new SendMessageCommand());
   }
 
   public componentDidMount() {
@@ -87,7 +84,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                       >
                         {`[${moment(m.time).format("LTS")}][${m.source}] ${
                           m.content
-                          }`}
+                        }`}
                       </span>
                     );
                   }
@@ -146,7 +143,8 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
               <Grid item={true} xs={9}>
                 <FormControl className={classes.formControl}>
                   {/* <InputLabel htmlFor="content">{LanguageManager.trans("name")}</InputLabel> */}
-                  <Input className={classes.inputConsoleChat}
+                  <Input
+                    className={classes.inputConsoleChat}
                     disabled={this.state.characterConnected === false}
                     autoFocus={true}
                     id="content"
@@ -276,7 +274,8 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                 label={LanguageManager.trans("showSeek")}
               />
             </FormGroup>
-            <Button className={classes.cleanConsole}
+            <Button
+              className={classes.cleanConsole}
               onClick={this.clearConsole}
               variant="raised"
               color="primary"
@@ -319,7 +318,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     this.setState({ [name]: event.target.value } as Pick<
       IConsoleTabState,
       keyof IConsoleTabState
-      >);
+    >);
   };
 
   private characterSelected = () => {

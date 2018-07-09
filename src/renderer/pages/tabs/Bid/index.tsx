@@ -35,7 +35,6 @@ import { List } from "linqts";
 import { basename } from "path";
 import * as React from "react";
 
-
 class Bid extends React.Component<BidTabProps, IBidTabState> {
   public state: IBidTabState = {
     addObjectForm: {
@@ -43,7 +42,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       gid: -1,
       lot: 1,
       minPrice: 1,
-      quantity: 1,
+      quantity: 1
     },
     allItems: [],
     characterConnected: false,
@@ -55,7 +54,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     objectsInSaleNames: [],
     running: false,
     script: "",
-    selectedItem: null,
+    selectedItem: null
   };
 
   public componentDidMount() {
@@ -69,7 +68,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       this.statisticsUpdated
     );
     this.props.account.game.bid.StartedSelling.on(this.startedSelling);
-    this.props.account.game.character.inventory.InventoryUpdated.on(this.getAllItems);
+    this.props.account.game.character.inventory.InventoryUpdated.on(
+      this.getAllItems
+    );
   }
 
   public componentWillUnmount() {
@@ -83,7 +84,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       this.statisticsUpdated
     );
     this.props.account.game.bid.StartedSelling.off(this.startedSelling);
-    this.props.account.game.character.inventory.InventoryUpdated.off(this.getAllItems);
+    this.props.account.game.character.inventory.InventoryUpdated.off(
+      this.getAllItems
+    );
   }
 
   public render() {
@@ -96,9 +99,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             <div className={classes.leftSide}>
               <Card className={classes.card}>
                 <CardContent>
-                  <Typography
-                    variant="title"
-                    className={classes.title}>
+                  <Typography variant="title" className={classes.title}>
                     {LanguageManager.trans("configSelling")}
                   </Typography>
                   <FormGroup>
@@ -128,7 +129,8 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                     InputLabelProps={{ shrink: true }}
                   />
                   <Typography>
-                    {LanguageManager.trans("kamasGained")}: {this.state.kamasGained}
+                    {LanguageManager.trans("kamasGained")}:{" "}
+                    {this.state.kamasGained}
                   </Typography>
                   <br />
                   <Typography>
@@ -163,32 +165,40 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             <div className={classes.leftSide}>
               <Card className={classes.card}>
                 <CardContent>
-                  <Typography
-                    variant="title"
-                    className={classes.title}>
+                  <Typography variant="title" className={classes.title}>
                     {LanguageManager.trans("addItem")}
                   </Typography>
                   <Downshift onChange={this.selectedItem}>
-                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                    {({
+                      getInputProps,
+                      getItemProps,
+                      isOpen,
+                      inputValue,
+                      selectedItem,
+                      highlightedIndex
+                    }) => (
                       <div className={classes.container}>
                         {this.renderInput({
                           classes,
                           fullWidth: true,
                           inputProps: getInputProps({
                             id: "integration-downshift-simple",
-                            placeholder: LanguageManager.trans("placeHolderObjects"),
-                          }),
+                            placeholder: LanguageManager.trans(
+                              "placeHolderObjects"
+                            )
+                          })
                         })}
                         {isOpen ? (
                           <Paper className={classes.paper} square={true}>
-                            {this.getSuggestions(inputValue).map((suggestion, index) =>
-                              this.renderSuggestion(
-                                suggestion,
-                                index,
-                                getItemProps({ item: suggestion.nameId }),
-                                highlightedIndex,
-                                selectedItem,
-                              ),
+                            {this.getSuggestions(inputValue).map(
+                              (suggestion, index) =>
+                                this.renderSuggestion(
+                                  suggestion,
+                                  index,
+                                  getItemProps({ item: suggestion.nameId }),
+                                  highlightedIndex,
+                                  selectedItem
+                                )
                             )}
                           </Paper>
                         ) : null}
@@ -258,8 +268,12 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                       type="number"
                       InputLabelProps={{ shrink: true }}
                     />
-                    <Button type="submit" variant="raised" color="primary"
-                      className={classes.leftSideButtomAdd}>
+                    <Button
+                      type="submit"
+                      variant="raised"
+                      color="primary"
+                      className={classes.leftSideButtomAdd}
+                    >
                       {LanguageManager.trans("add")}
                     </Button>
                   </form>
@@ -270,9 +284,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
           <Grid item={true} xs={7} className={classes.rightSide}>
             <Card className={classes.card}>
               <CardContent>
-                <Typography
-                  variant="title"
-                  className={classes.title}>
+                <Typography variant="title" className={classes.title}>
                   {LanguageManager.trans("objectsForSale")}
                 </Typography>
                 <Table className={classes.table}>
@@ -323,9 +335,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
             </Card>
             <Card className={classes.card}>
               <CardContent>
-                <Typography
-                  variant="title"
-                  className={classes.title}>
+                <Typography variant="title" className={classes.title}>
                   {LanguageManager.trans("itemsForSale")}
                 </Typography>
                 <Table className={classes.table}>
@@ -333,9 +343,15 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                     <TableRow>
                       <TableCell numeric={true}>GID</TableCell>
                       <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric={true}>{LanguageManager.trans("lot")}</TableCell>
-                      <TableCell numeric={true}>Prix</TableCell>
-                      <TableCell>Délais de vente</TableCell>
+                      <TableCell numeric={true}>
+                        {LanguageManager.trans("lot")}
+                      </TableCell>
+                      <TableCell numeric={true}>
+                        {LanguageManager.trans("price")}
+                      </TableCell>
+                      <TableCell>
+                        {LanguageManager.trans("salesDelay")}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -343,7 +359,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                       return (
                         <TableRow key={index}>
                           <TableCell>{o.objectGID}</TableCell>
-                          <TableCell>{this.state.objectsInSaleNames[index]}</TableCell>
+                          <TableCell>
+                            {this.state.objectsInSaleNames[index]}
+                          </TableCell>
                           <TableCell>{o.quantity}</TableCell>
                           <TableCell>{o.objectPrice}</TableCell>
                           <TableCell>{o.unsoldDelay}</TableCell>
@@ -357,7 +375,8 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
                   size="small"
                   variant="raised"
                   onClick={this.syncObjects}
-                  color="secondary">
+                  color="secondary"
+                >
                   {LanguageManager.trans("sync")}
                 </Button>
               </CardContent>
@@ -431,7 +450,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     this.setState({ [event.target.name]: value } as Pick<
       IBidTabState,
       keyof IBidTabState
-      >);
+    >);
     this.props.account.extensions.bid.config[event.target.name] = value;
     await this.props.account.extensions.bid.config.save();
   };
@@ -473,25 +492,33 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     });
   };
 
-  private renderInput = (inputProps) => {
+  private renderInput = inputProps => {
     const { InputProps, classes, ref, ...other } = inputProps;
     return (
       <TextField
         InputProps={{
           classes: {
-            root: classes.inputRoot,
+            root: classes.inputRoot
           },
           inputRef: ref,
-          ...InputProps,
+          ...InputProps
         }}
         {...other}
       />
     );
-  }
+  };
 
-  private renderSuggestion = (suggestion: Items, index: number, itemProps: any, highlightedIndex: number, selectedItem: Items) => {
+  private renderSuggestion = (
+    suggestion: Items,
+    index: number,
+    itemProps: any,
+    highlightedIndex: number,
+    selectedItem: Items
+  ) => {
     const isHighlighted = highlightedIndex === index;
-    const isSelected = selectedItem && (selectedItem.nameId || "").indexOf(suggestion.nameId) > -1;
+    const isSelected =
+      selectedItem &&
+      (selectedItem.nameId || "").indexOf(suggestion.nameId) > -1;
     return (
       <MenuItem
         {...itemProps}
@@ -499,19 +526,21 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
         selected={isHighlighted}
         component="div"
         style={{
-          fontWeight: isSelected ? 500 : 400,
+          fontWeight: isSelected ? 500 : 400
         }}
       >
         {suggestion.nameId}
       </MenuItem>
     );
-  }
-  private getSuggestions = (inputValue) => {
+  };
+  private getSuggestions = inputValue => {
     let count = 0;
 
-    return this.state.allItems.filter((suggestion) => {
+    return this.state.allItems.filter(suggestion => {
       const keep =
-        (!inputValue || suggestion.nameId.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
+        (!inputValue ||
+          suggestion.nameId.toLowerCase().indexOf(inputValue.toLowerCase()) !==
+            -1) &&
         count < 5;
 
       if (keep) {
@@ -519,14 +548,19 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       }
       return keep;
     });
-  }
+  };
 
   private getAllItems = async () => {
-    const res = await DataManager.get<Items>(DataTypes.Items, ...this.props.account.game.character.inventory.objects.ToArray().map((o) => o.gid));
+    const res = await DataManager.get<Items>(
+      DataTypes.Items,
+      ...this.props.account.game.character.inventory.objects
+        .ToArray()
+        .map(o => o.gid)
+    );
     this.setState({
-      allItems: res.map((o) => o.object),
+      allItems: res.map(o => o.object)
     });
-  }
+  };
 
   private syncObjects = () => {
     const a = this.props.account;
@@ -539,28 +573,31 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     a.game.bid.StartedSelling.on(selling);
 
     a.game.bid.startSelling();
-  }
+  };
 
   private startedSelling = async () => {
-    const response = await DataManager.get<Items>(DataTypes.Items, ...this.props.account.game.bid.objectsInSale.ToArray().map((o) => o.objectGID));
-    const names = response.map((o) => o.object.nameId);
+    const response = await DataManager.get<Items>(
+      DataTypes.Items,
+      ...this.props.account.game.bid.objectsInSale
+        .ToArray()
+        .map(o => o.objectGID)
+    );
+    const names = response.map(o => o.object.nameId);
     this.setState({
       objectsInSale: this.props.account.game.bid.objectsInSale.ToArray(),
-      objectsInSaleNames: names,
+      objectsInSaleNames: names
     });
-  }
+  };
 
-  private selectedItem = (itemName) => {
-    this.setState((prev) => {
-      const selectedItem = prev.allItems.find((i) => i.nameId === itemName);
-      return (
-        {
-          addObjectForm: { ...prev.addObjectForm, gid: selectedItem.id },
-          selectedItem,
-        }
-      );
+  private selectedItem = itemName => {
+    this.setState(prev => {
+      const selectedItem = prev.allItems.find(i => i.nameId === itemName);
+      return {
+        addObjectForm: { ...prev.addObjectForm, gid: selectedItem.id },
+        selectedItem
+      };
     });
-  }
+  };
 }
 
 export default withStyles(bidTabStyles)<IBidTabProps>(Bid);

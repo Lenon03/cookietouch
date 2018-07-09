@@ -464,5 +464,7 @@
   "regenInfosMaximum": "to: (%)",
   "error": "Error",
   "invalidCredentials": "Invalid Credentials",
-  "emailValidated": "You have to verified your email !"
+  "emailValidated": "You have to verified your email !",
+  "price": "Price",
+  "salesDelay": "Sales delay"
 }

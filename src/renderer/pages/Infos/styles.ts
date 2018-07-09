@@ -1,6 +1,12 @@
 import { StyleRulesCallback } from "@material-ui/core/styles/withStyles";
 
-export type InfosStyle = "root" | "paper" | "icon" | "infosLinearProgress" | "buttonRemove" | "buttonConnect";
+export type InfosStyle =
+  | "root"
+  | "paper"
+  | "icon"
+  | "infosLinearProgress"
+  | "buttonRemove"
+  | "buttonConnect";
 
 export const infosStyles: StyleRulesCallback<InfosStyle> = theme => ({
   buttonConnect: {

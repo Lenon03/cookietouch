@@ -16,7 +16,7 @@ import * as React from "react";
 class Stats extends React.Component<
   CharacterStatsTabProps,
   ICharacterStatsTabState
-  > {
+> {
   public state: ICharacterStatsTabState = {
     actionPoints: -1,
     agility: -1,
@@ -68,7 +68,8 @@ class Stats extends React.Component<
             <Card className={classes.card}>
               <h4>{LanguageManager.trans("summary")}</h4>
               <div className={classes.lineStats}>
-                <img className={classes.iconStats}
+                <img
+                  className={classes.iconStats}
                   style={{ marginTop: -4 }}
                   src={require("@renderer/img/starYellow.png")}
                   alt="etoile_jaune"
@@ -81,7 +82,8 @@ class Stats extends React.Component<
                 </span>
               </div>
               <div className={classes.lineStats}>
-                <img className={classes.iconStats}
+                <img
+                  className={classes.iconStats}
                   src={require("@renderer/img/movement.png")}
                   alt="mouvement"
                 />
@@ -93,7 +95,11 @@ class Stats extends React.Component<
                 </span>
               </div>
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/initiative.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/initiative.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>Initiative</div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.initiative}
@@ -101,7 +107,11 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/prospecting.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/prospecting.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
                   {LanguageManager.trans("prospecting")}
                 </div>
@@ -111,7 +121,11 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/range.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/range.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
                   {LanguageManager.trans("range")}
                 </div>
@@ -121,7 +135,11 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/summon.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/summon.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
                   {LanguageManager.trans("summons")}
                 </div>
@@ -135,7 +153,11 @@ class Stats extends React.Component<
             <Card className={classes.card}>
               <h4>{LanguageManager.trans("stats")}</h4>
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/vitality.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/vitality.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
                   {LanguageManager.trans("vitality")}
                 </div>
@@ -154,9 +176,14 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/wisdom.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/wisdom.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
-                  {LanguageManager.trans("wisdom")}</div>
+                  {LanguageManager.trans("wisdom")}
+                </div>
                 <span className={classes.statsLabelSpanAdd}>
                   {this.state.wisdom}
                   <Button
@@ -172,9 +199,14 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/strength.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/strength.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
-                  {LanguageManager.trans("strength")}</div>
+                  {LanguageManager.trans("strength")}
+                </div>
                 <span className={classes.statsLabelSpanAdd}>
                   {this.state.strength}
                   <Button
@@ -190,9 +222,14 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/intelligence.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/intelligence.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
-                  {LanguageManager.trans("intelligence")}</div>
+                  {LanguageManager.trans("intelligence")}
+                </div>
                 <span className={classes.statsLabelSpanAdd}>
                   {this.state.intelligence}
                   <Button
@@ -208,9 +245,14 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/chance.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/chance.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
-                  {LanguageManager.trans("chance")}</div>
+                  {LanguageManager.trans("chance")}
+                </div>
                 <span className={classes.statsLabelSpanAdd}>
                   {this.state.chance}
                   <Button
@@ -226,9 +268,14 @@ class Stats extends React.Component<
               </div>
 
               <div className={classes.lineStats}>
-                <img className={classes.iconStats} src={require("@renderer/img/agility.png")} alt="" />
+                <img
+                  className={classes.iconStats}
+                  src={require("@renderer/img/agility.png")}
+                  alt=""
+                />
                 <div className={classes.labelStats}>
-                  {LanguageManager.trans("agility")}</div>
+                  {LanguageManager.trans("agility")}
+                </div>
                 <span className={classes.statsLabelSpanAdd}>
                   {this.state.agility}
                   <Button
@@ -245,7 +292,10 @@ class Stats extends React.Component<
             </Card>
             <div className={classes.labelPointsStats}>
               {LanguageManager.trans("points")}
-              <span style={{ marginRight: 56 }} className={classes.statsLabelSpanAdd}>
+              <span
+                style={{ marginRight: 56 }}
+                className={classes.statsLabelSpanAdd}
+              >
                 {this.state.statsPoints}
               </span>
             </div>

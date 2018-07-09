@@ -464,5 +464,7 @@
   "regenInfosMaximum": "Jusqu'à : (%)",
   "error": "Erreur",
   "invalidCredentials": "Identifiants incorrects.",
-  "emailValidated": "Vous devez vérifier votre email !"
+  "emailValidated": "Vous devez vérifier votre email !",
+  "price": "Prix",
+  "salesDelay": "Délais de vente"
 }

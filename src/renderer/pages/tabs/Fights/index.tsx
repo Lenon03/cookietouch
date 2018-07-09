@@ -738,7 +738,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     this.setState({ [event.target.name]: checked } as Pick<
       IFightsTabState,
       keyof IFightsTabState
-      >);
+    >);
     this.props.account.extensions.fights.config[event.target.name] = checked;
     await this.props.account.extensions.fights.config.save();
   };

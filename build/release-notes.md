@@ -1,9 +1,7 @@
 [FR]
 
-- Ajout de la commande "/w" dans le chat pour envoyer un message privé.
-- Il est obligatoire maintenant d'avoir un email validé. (https://cookietouch.com)
+- Petite revue graphique de la page Personnage.
 
 [EN]
 
-- The "/w" command was added in the chat to send private messages.
-- A validated email is now mandatory. (https://cookietouch.com)
+- A short graphic review of the Character page.

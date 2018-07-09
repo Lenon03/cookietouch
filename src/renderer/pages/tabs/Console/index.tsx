@@ -84,7 +84,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
                       >
                         {`[${moment(m.time).format("LTS")}][${m.source}] ${
                           m.content
-                        }`}
+                          }`}
                       </span>
                     );
                   }
@@ -318,7 +318,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     this.setState({ [name]: event.target.value } as Pick<
       IConsoleTabState,
       keyof IConsoleTabState
-    >);
+      >);
   };
 
   private characterSelected = () => {

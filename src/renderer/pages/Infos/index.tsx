@@ -77,24 +77,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
         {/* <Paper className={classes.paper}> */}
         <Paper className={classes.paper}>
           <Grid container={true} spacing={0}>
-            <Grid item={true} xs={2}>
-              {/* <Switch
-                checked={this.props.account.network.connected}
-                onChange={() => { this.props.account.network.connected ? this.stop() : this.start(); }}
-              />
-              {this.props.account.network.connected ? LanguageManager.trans("disconnect") : LanguageManager.trans("connect")} */}
-              <Button
-                size="small"
-                variant="raised"
-                onClick={this.startStop}
-                color="primary"
-              >
-                {this.props.account.network.connected
-                  ? LanguageManager.trans("disconnect")
-                  : LanguageManager.trans("connect")}
-              </Button>
-            </Grid>
-            <Grid item={true} xs={9}>
+            <Grid item={true} xs={10}>
               Script: {this.state.scriptName}
               <Button
                 size="small"
@@ -127,7 +110,24 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Button>
             </Grid>
             <Grid item={true} xs={1}>
-              <Button
+              {/* <Switch
+                checked={this.props.account.network.connected}
+                onChange={() => { this.props.account.network.connected ? this.stop() : this.start(); }}
+              />
+              {this.props.account.network.connected ? LanguageManager.trans("disconnect") : LanguageManager.trans("connect")} */}
+              <Button className={classes.buttonConnect}
+                size="small"
+                variant="raised"
+                onClick={this.startStop}
+                color="primary"
+              >
+                {this.props.account.network.connected
+                  ? LanguageManager.trans("disconnect")
+                  : LanguageManager.trans("connect")}
+              </Button>
+            </Grid>
+            <Grid item={true} xs={1}>
+              <Button className={classes.buttonRemove}
                 disabled={
                   this.props.account.hasGroup &&
                   !this.props.account.isGroupChief
@@ -160,15 +160,17 @@ class Infos extends React.Component<InfosProps, IInfosState> {
         <Paper className={classes.paper}>
           <Grid container={true} spacing={8}>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon="heart"
-              />
-              {(this.state.lifePoints !== -1
-                ? (this.state.lifePoints / this.state.lifePointsMax) * 100
-                : 0
-              ).toFixed(2)}%
+              <div className={classes.infosLinearProgress}>
+                <FontAwesomeIcon
+                  className={classes.icon}
+                  size="lg"
+                  icon="heart"
+                />
+                {(this.state.lifePoints !== -1
+                  ? (this.state.lifePoints / this.state.lifePointsMax) * 100
+                  : 0
+                ).toFixed(2)}%
+              </div>
               <Tooltip
                 title={`${this.state.lifePoints} / ${this.state.lifePointsMax}`}
               >
@@ -184,15 +186,17 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Tooltip>
             </Grid>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon="briefcase"
-              />
-              {(this.state.weight !== -1
-                ? (this.state.weight / this.state.weightMax) * 100
-                : 0
-              ).toFixed(2)}%
+              <div className={classes.infosLinearProgress}>
+                <FontAwesomeIcon
+                  className={classes.icon}
+                  size="lg"
+                  icon="briefcase"
+                />
+                {(this.state.weight !== -1
+                  ? (this.state.weight / this.state.weightMax) * 100
+                  : 0
+                ).toFixed(2)}%
+              </div>
               <Tooltip title={`${this.state.weight} / ${this.state.weightMax}`}>
                 <LinearProgress
                   style={{ height: 16, marginLeft: "20px" }}
@@ -206,11 +210,13 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Tooltip>
             </Grid>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon className={classes.icon} size="lg" icon="star" />
-              {(this.state.experiencePercent !== -1
-                ? this.state.experiencePercent
-                : 0
-              ).toFixed(2)}%
+              <div className={classes.infosLinearProgress}>
+                <FontAwesomeIcon className={classes.icon} size="lg" icon="star" />
+                {(this.state.experiencePercent !== -1
+                  ? this.state.experiencePercent
+                  : 0
+                ).toFixed(2)}%
+              </div>
               <Tooltip
                 title={`${this.state.experience} / ${this.state.experienceMax}`}
               >
@@ -226,15 +232,17 @@ class Infos extends React.Component<InfosProps, IInfosState> {
               </Tooltip>
             </Grid>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon className={classes.icon} size="lg" icon="bolt" />
-              {(this.state.energyPoints !== -1
-                ? (this.state.energyPoints / this.state.energyPointsMax) * 100
-                : 0
-              ).toFixed(2)}%
+              <div className={classes.infosLinearProgress}>
+                <FontAwesomeIcon className={classes.icon} size="lg" icon="bolt" />
+                {(this.state.energyPoints !== -1
+                  ? (this.state.energyPoints / this.state.energyPointsMax) * 100
+                  : 0
+                ).toFixed(2)}%
+              </div>
               <Tooltip
                 title={`${this.state.energyPoints} / ${
                   this.state.energyPointsMax
-                }`}
+                  }`}
               >
                 <LinearProgress
                   style={{ height: 16, marginLeft: "20px" }}
@@ -242,19 +250,21 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   value={
                     this.state.energyPoints !== -1
                       ? (this.state.energyPoints / this.state.energyPointsMax) *
-                        100
+                      100
                       : 0
                   }
                 />
               </Tooltip>
             </Grid>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon
-                className={classes.icon}
-                size="lg"
-                icon={faKickstarterK}
-              />{" "}
-              {this.state.kamas}
+              <div className={classes.infosLinearProgress}>
+                <FontAwesomeIcon
+                  className={classes.icon}
+                  size="lg"
+                  icon={faKickstarterK}
+                />{" "}
+                {this.state.kamas}
+              </div>
             </Grid>
             <Grid item={true} xs={2}>
               <FontAwesomeIcon className={classes.icon} size="lg" icon="gem" />{" "}
@@ -323,7 +333,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     this.setState({
       position: `${this.props.account.game.map.labelPosition} (${
         this.props.account.game.map.id
-      })`
+        })`
     });
   };
 
@@ -371,11 +381,11 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     this.setState({
       bonuspack: this.props.account.data.isSubscriber
         ? `${LanguageManager.trans(
-            "subscriber",
-            this.props.account.data.subscriptionEndDate.toLocaleString(
-              GlobalConfiguration.lang
-            )
-          )}`
+          "subscriber",
+          this.props.account.data.subscriptionEndDate.toLocaleString(
+            GlobalConfiguration.lang
+          )
+        )}`
         : LanguageManager.trans("nosubscriber"),
       goultines: this.props.account.data.goultines
     });

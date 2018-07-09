@@ -2,6 +2,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { characterStatsTabStyles } from "@renderer/pages/tabs/Character/Stats/styles";
@@ -15,7 +16,7 @@ import * as React from "react";
 class Stats extends React.Component<
   CharacterStatsTabProps,
   ICharacterStatsTabState
-> {
+  > {
   public state: ICharacterStatsTabState = {
     actionPoints: -1,
     agility: -1,
@@ -64,110 +65,81 @@ class Stats extends React.Component<
             <img src={this.state.skinUrl} alt="character" />
           </Grid>
           <Grid item={true} xs={4}>
-            <h4>{LanguageManager.trans("summary")}</h4>
-            <div>
-              <div>
-                <img src={require("@renderer/img/heart.png")} alt="coeur" />
-              </div>
-              <div>
-                {LanguageManager.trans("healthPoints")}
-                <span className={classes.statsLabelSpan}>
-                  {this.state.lifePoints} / {this.state.maxLifePoints}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <img
+            <Card className={classes.card}>
+              <h4>{LanguageManager.trans("summary")}</h4>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats}
+                  style={{ marginTop: -4 }}
                   src={require("@renderer/img/starYellow.png")}
                   alt="etoile_jaune"
                 />
-              </div>
-              <div>
-                {LanguageManager.trans("actionPoints")}
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("actionPoints")}
+                </div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.actionPoints}
                 </span>
               </div>
-            </div>
-
-            <div>
-              <div>
-                <img
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats}
                   src={require("@renderer/img/movement.png")}
                   alt="mouvement"
                 />
-              </div>
-              <div>
-                {LanguageManager.trans("movementPoints")}
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("movementPoints")}
+                </div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.movementPoints}
                 </span>
               </div>
-            </div>
-
-            <div>
-              <div>
-                <img src={require("@renderer/img/initiative.png")} alt="" />
-              </div>
-              <div>
-                Initiative
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/initiative.png")} alt="" />
+                <div className={classes.labelStats}>Initiative</div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.initiative}
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/prospecting.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("prospecting")}
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/prospecting.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("prospecting")}
+                </div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.prospecting}
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/range.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("range")}
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/range.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("range")}
+                </div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.range}
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/summon.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("summons")}
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/summon.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("summons")}
+                </div>
                 <span className={classes.statsLabelSpan}>
                   {this.state.summonableCreaturesBoost}
                 </span>
               </div>
-            </div>
+            </Card>
           </Grid>
           <Grid item={true} xs={4}>
-            <h4>{LanguageManager.trans("stats")}</h4>
-            <h5>
-              {LanguageManager.trans("points")} {this.state.statsPoints}
-            </h5>
-
-            <div>
-              <div>
-                <img src={require("@renderer/img/vitality.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("vitality")}
-                <span className={classes.statsLabelSpan}>
+            <Card className={classes.card}>
+              <h4>{LanguageManager.trans("stats")}</h4>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/vitality.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("vitality")}
+                </div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.vitality}
                   <Button
                     variant="fab"
@@ -180,15 +152,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/wisdom.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("wisdom")}
-                <span className={classes.statsLabelSpan}>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/wisdom.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("wisdom")}</div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.wisdom}
                   <Button
                     variant="fab"
@@ -201,15 +170,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/strength.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("strength")}
-                <span className={classes.statsLabelSpan}>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/strength.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("strength")}</div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.strength}
                   <Button
                     variant="fab"
@@ -222,15 +188,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/intelligence.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("intelligence")}
-                <span className={classes.statsLabelSpan}>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/intelligence.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("intelligence")}</div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.intelligence}
                   <Button
                     variant="fab"
@@ -243,15 +206,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/chance.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("chance")}
-                <span className={classes.statsLabelSpan}>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/chance.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("chance")}</div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.chance}
                   <Button
                     variant="fab"
@@ -264,15 +224,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
-            </div>
 
-            <div>
-              <div>
-                <img src={require("@renderer/img/agility.png")} alt="" />
-              </div>
-              <div>
-                {LanguageManager.trans("agility")}
-                <span className={classes.statsLabelSpan}>
+              <div className={classes.lineStats}>
+                <img className={classes.iconStats} src={require("@renderer/img/agility.png")} alt="" />
+                <div className={classes.labelStats}>
+                  {LanguageManager.trans("agility")}</div>
+                <span className={classes.statsLabelSpanAdd}>
                   {this.state.agility}
                   <Button
                     variant="fab"
@@ -285,6 +242,12 @@ class Stats extends React.Component<
                   </Button>
                 </span>
               </div>
+            </Card>
+            <div className={classes.labelPointsStats}>
+              {LanguageManager.trans("points")}
+              <span style={{ marginRight: 56 }} className={classes.statsLabelSpanAdd}>
+                {this.state.statsPoints}
+              </span>
             </div>
           </Grid>
         </Grid>

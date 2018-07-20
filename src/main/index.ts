@@ -4,7 +4,8 @@ import {
   crashReporter,
   ipcMain,
   Menu,
-  MenuItemConstructorOptions
+  MenuItemConstructorOptions,
+  screen
 } from "electron";
 import { appUpdater } from "./updater";
 
@@ -47,11 +48,17 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 let mainWindow: BrowserWindow;
 
 function createMainWindow() {
+  const size = screen.getPrimaryDisplay().workAreaSize;
   const window = new BrowserWindow({
-    show: false
+    // frame: false,
+    height: size.height,
+    webPreferences: {
+      webSecurity: false
+    },
+    width: size.width,
+    x: 0,
+    y: 0
   });
-  window.maximize();
-  window.show();
 
   const url = isDevelopment
     ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`

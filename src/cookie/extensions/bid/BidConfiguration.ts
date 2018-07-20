@@ -5,7 +5,6 @@ import ObjectToSellEntry, {
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
 import firebase from "firebase";
-import { List } from "linqts";
 
 interface IBidConfigurationJSON {
   interval: number;
@@ -16,10 +15,10 @@ interface IBidConfigurationJSON {
 export default class BidConfiguration {
   public interval: number;
   public scriptPath: string;
-  public objectsToSell: List<ObjectToSellEntry>;
+  public objectsToSell: ObjectToSellEntry[];
   private account: Account;
 
-  private authChangedUnsuscribe: firebase.Unsubscribe;
+  private authChangedUnsubscribe: firebase.Unsubscribe;
   private stopDataSnapshot: () => void;
 
   private globalDoc: firebase.firestore.DocumentReference;
@@ -30,12 +29,12 @@ export default class BidConfiguration {
     this.account = account;
     this.interval = 10;
     this.scriptPath = "";
-    this.objectsToSell = new List();
+    this.objectsToSell = [];
   }
 
   public removeListeners = () => {
-    if (this.authChangedUnsuscribe) {
-      this.authChangedUnsuscribe();
+    if (this.authChangedUnsubscribe) {
+      this.authChangedUnsubscribe();
     }
     if (this.stopDataSnapshot) {
       this.stopDataSnapshot();
@@ -51,7 +50,7 @@ export default class BidConfiguration {
   }
 
   public async load() {
-    this.authChangedUnsuscribe = firebase
+    this.authChangedUnsubscribe = firebase
       .auth()
       .onAuthStateChanged(async user => {
         if (!user) {
@@ -80,7 +79,7 @@ export default class BidConfiguration {
   public async save() {
     const toSave: IBidConfigurationJSON = {
       interval: this.interval,
-      objectsToSell: this.objectsToSell.ToArray().map(o => o.toJSON()),
+      objectsToSell: this.objectsToSell.map(o => o.toJSON()),
       scriptPath: this.scriptPath
     };
     await this.globalDoc.set(toSave);
@@ -93,8 +92,8 @@ export default class BidConfiguration {
     const json = snapshot.data() as IBidConfigurationJSON;
     this.interval = json.interval;
     this.scriptPath = json.scriptPath;
-    this.objectsToSell = new List(
-      json.objectsToSell.map(o => ObjectToSellEntry.fromJSON(o))
+    this.objectsToSell = json.objectsToSell.map(o =>
+      ObjectToSellEntry.fromJSON(o)
     );
     this.onChanged.trigger();
   }

@@ -8,6 +8,7 @@ import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
+import { List } from "linqts";
 
 export default class BidExtension implements IClearable {
   public kamasGained: number = 0;
@@ -61,7 +62,7 @@ export default class BidExtension implements IClearable {
     if (this.enabled) {
       return;
     }
-    if (this.config.objectsToSell.Count() === 0) {
+    if (this.config.objectsToSell.length === 0) {
       this.account.logger.logError(
         LanguageManager.trans("bidExtension"),
         LanguageManager.trans("noObjectsToSell")
@@ -118,7 +119,7 @@ export default class BidExtension implements IClearable {
     await sleep(400);
     // Get all the prices and save them
     this.pricesInBid = new Map<number, number[]>();
-    const gids = this.config.objectsToSell
+    const gids = new List(this.config.objectsToSell)
       .Select(o => o.gid)
       .Distinct()
       .ToArray();
@@ -159,7 +160,7 @@ export default class BidExtension implements IClearable {
       LanguageManager.trans("salesBegin")
     );
     // For every ObjectToSell that we have
-    const objects = this.config.objectsToSell.ToArray();
+    const objects = this.config.objectsToSell;
     for (const objToSell of objects) {
       // Get the items that are already in the bid for this specific ObjectToSell
       const objsInSale = this.account.game.bid.objectsInSale.Where(

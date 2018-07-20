@@ -54,7 +54,7 @@ export default class Account implements IEntity {
     this.config = new Configuration(this);
     this.framesData = new FramesData();
     this.state = AccountStates.DISCONNECTED;
-    this.haapi = new HaapiConnection();
+    this.haapi = new HaapiConnection(this);
     this.network = new Network(this);
     this.game = new Game(this);
     this.scripts = new ScriptsManager(this);

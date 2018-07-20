@@ -16,6 +16,7 @@ import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
 import EntityLook from "@/protocol/network/types/EntityLook";
 import LiteEvent from "@/utils/LiteEvent";
+import UnreachableCaseError from "@/utils/UnreachableCaseError";
 
 export default class Character {
   public breedData: Breeds;
@@ -164,6 +165,10 @@ export default class Character {
         data = this.breedData.statsPointsForWisdom;
         baseStats = this.stats.wisdom.base;
         break;
+      case BoostableStats.NONE:
+        break;
+      default:
+        throw new UnreachableCaseError(stat);
     }
 
     while (statsPointsLeft > 0) {

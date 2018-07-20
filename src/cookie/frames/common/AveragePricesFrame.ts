@@ -1,6 +1,7 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
 import ObjectAveragePricesMessage from "@/protocol/network/messages/ObjectAveragePricesMessage";
+import axios from "axios";
 
 export default class AveragePricesFrame implements IFrame {
   public register() {
@@ -15,20 +16,17 @@ export default class AveragePricesFrame implements IFrame {
     account: Account,
     data: ObjectAveragePricesMessage
   ) {
-    /*
     const server = account.game.server.id;
-    const ref = firebase.database().ref(`/averagePrices`);
-
+    const prices = [];
     for (let x = 0; x < data.ids.length; x++) {
-      const id = data.ids[x];
+      const item = data.ids[x];
       const price = data.avgPrices[x];
-      const entry = {
-        price,
-        server,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      };
-      ref.child(id.toString()).push(entry);
+      prices.push({ item, price });
     }
-    */
+    axios.post("http://217.69.15.30:4000/prices", {
+      prices,
+      server,
+      timestamp: Date.now()
+    });
   }
 }

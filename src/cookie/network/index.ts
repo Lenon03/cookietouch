@@ -6,6 +6,7 @@ import Frames from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import RegisteredMessage from "@/network/RegisteredMessage";
 import DTConstants from "@/protocol/DTConstants";
+import Message from "@/protocol/network/messages/Message";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { randomString } from "@/utils/Random";
@@ -37,7 +38,7 @@ export default class Network implements IClearable {
 
   public registerMessage(
     name: string,
-    action: (account: Account, message: any) => void
+    action: (account: Account, message: Message) => void
   ): string {
     const id = randomString(16);
     this._registeredMessages.set(id, new RegisteredMessage(name, action));
@@ -316,7 +317,10 @@ export default class Network implements IClearable {
         retries: 10
       },
       strategy: "disconnect,timeout",
-      transformer: "engine.io"
+      transformer: "engine.io",
+      transport: {
+        // agent:
+      }
     });
   }
 }

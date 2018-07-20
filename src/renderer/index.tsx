@@ -14,6 +14,7 @@ import { render } from "react-dom";
 import Loader from "react-loader-spinner";
 import "typeface-roboto/index.css";
 import "./main.scss";
+// import "./test";
 
 render(
   <Loader type="ThreeDots" color="#6B331C" height="300" width="300" />,
@@ -75,7 +76,7 @@ ipcRenderer.on("go-update", (event, info) => {
     },
     response => {
       if (response === 0) {
-        setTimeout(() => remote.autoUpdater.quitAndInstall(), 1);
+        setTimeout(() => ipcRenderer.send("ask-quitAndInstall"), 1);
       }
     }
   );

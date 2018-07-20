@@ -31,7 +31,6 @@ import {
 } from "@renderer/pages/tabs/Bid/types";
 import Downshift from "downshift";
 import { remote } from "electron";
-import { List } from "linqts";
 import { basename } from "path";
 import * as React from "react";
 
@@ -425,7 +424,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     }
     const name = objResp[0].object.nameId;
 
-    this.props.account.extensions.bid.config.objectsToSell.Add(
+    this.props.account.extensions.bid.config.objectsToSell.push(
       new ObjectToSellEntry(
         name,
         infos.gid,
@@ -459,7 +458,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     event: React.MouseEvent<HTMLElement>
   ) => {
     const objects = this.state.objects.filter(o => o.gid !== obj.gid);
-    this.props.account.extensions.bid.config.objectsToSell = new List(objects);
+    this.props.account.extensions.bid.config.objectsToSell = objects;
     await this.props.account.extensions.bid.config.save();
   };
 
@@ -470,7 +469,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
   private configChanged = () => {
     this.setState({
       interval: this.props.account.extensions.bid.config.interval,
-      objects: this.props.account.extensions.bid.config.objectsToSell.ToArray(),
+      objects: this.props.account.extensions.bid.config.objectsToSell,
       script:
         this.props.account.extensions.bid.config.scriptPath &&
         basename(this.props.account.extensions.bid.config.scriptPath, ".js")

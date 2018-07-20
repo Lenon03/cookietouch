@@ -1,6 +1,10 @@
 import CharacterCreation, {
   ICharacterCreation
 } from "@/configurations/accounts/CharacterCreation";
+import ProxyConfiguration, {
+  IProxyConfiguration
+} from "@/configurations/accounts/ProxyConfiguration";
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import { Enumerable } from "linqts";
 
 export interface IAccountConfiguration {
@@ -11,6 +15,7 @@ export interface IAccountConfiguration {
   characterCreation: ICharacterCreation;
   planificationActivated: boolean;
   planification: boolean[];
+  proxy: IProxyConfiguration;
 }
 
 export default class AccountConfiguration implements IAccountConfiguration {
@@ -21,6 +26,7 @@ export default class AccountConfiguration implements IAccountConfiguration {
   public characterCreation: CharacterCreation;
   public planificationActivated: boolean;
   public planification: boolean[];
+  public proxy: ProxyConfiguration;
 
   constructor(username: string, password: string, server = -1, character = "") {
     this.server = server;
@@ -30,11 +36,27 @@ export default class AccountConfiguration implements IAccountConfiguration {
     this.characterCreation = new CharacterCreation();
     this.planificationActivated = false;
     this.planification = Enumerable.Repeat(true, 24).ToArray();
+    this.proxy = new ProxyConfiguration();
+  }
+
+  public setProxy(
+    ip: string,
+    port: number,
+    username: string = "",
+    password: string = ""
+  ) {
+    this.proxy.ip = ip;
+    this.proxy.port = port;
+    this.proxy.username = username;
+    this.proxy.password = password;
+
+    GlobalConfiguration.save();
   }
 
   public toJSON(): IAccountConfiguration {
     return Object.assign({}, this, {
-      characterCreation: this.characterCreation.toJSON()
+      characterCreation: this.characterCreation.toJSON(),
+      proxy: this.proxy.toJSON()
     });
   }
 
@@ -48,10 +70,13 @@ export default class AccountConfiguration implements IAccountConfiguration {
         AccountConfiguration.prototype
       );
       // tslint:disable-next-line:prefer-object-spread
-      const test = Object.assign(accountConfiguration, json, {
-        characterCreation: CharacterCreation.fromJSON(json.characterCreation)
+      return Object.assign(accountConfiguration, json, {
+        characterCreation: CharacterCreation.fromJSON(json.characterCreation),
+        proxy:
+          json.proxy === undefined
+            ? new ProxyConfiguration()
+            : ProxyConfiguration.fromJSON(json.proxy)
       });
-      return test;
     }
   }
 

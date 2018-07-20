@@ -36,18 +36,6 @@ export async function signout() {
   await firebase.auth().signOut();
 }
 
-export async function signup(
-  email: string,
-  password: string
-): Promise<boolean> {
-  try {
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
 export function presence() {
   firebase.auth().onAuthStateChanged(user => {
     if (!user) {

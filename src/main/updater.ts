@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
 
@@ -30,6 +30,10 @@ export async function appUpdater(win: BrowserWindow, channel: string) {
 
   autoUpdater.on("update-downloaded", info => {
     win.webContents.send("go-update", info);
+  });
+
+  ipcMain.on("ask-quitAndInstall", event => {
+    autoUpdater.quitAndInstall();
   });
 
   autoUpdater.checkForUpdates();

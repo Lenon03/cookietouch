@@ -39,11 +39,9 @@ export default class ObjectToSellEntry implements IObjectToSellEntry {
     if (typeof json === "string") {
       return JSON.parse(json, ObjectToSellEntry.reviver);
     } else {
-      const accountConfiguration = Object.create(ObjectToSellEntry.prototype);
-      return {
-        ...accountConfiguration,
-        ...json
-      };
+      const object = Object.create(ObjectToSellEntry.prototype);
+      // tslint:disable-next-line:prefer-object-spread
+      return Object.assign(object, json, {});
     }
   }
 

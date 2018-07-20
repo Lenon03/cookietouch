@@ -1,29 +1,36 @@
 import * as crypto from "crypto";
 
 export default class Crypto {
-  public static algorithm = "aes-256-ctr";
+  private static algorithm = "aes-256-ctr";
 
-  public static encrypt(text: string, password: string) {
+  private key: Buffer;
+  private iv: Buffer;
+
+  constructor(password: string) {
     const keys = Crypto.compute(Crypto.algorithm, password);
-    const key = Buffer.from(keys[0], "hex");
-    const iv = Buffer.from(keys[1], "hex");
-    const cipher = crypto.createCipheriv(Crypto.algorithm, key, iv);
+    this.key = Buffer.from(keys[0], "hex");
+    this.iv = Buffer.from(keys[1], "hex");
+  }
+
+  public encrypt(text: string) {
+    const cipher = crypto.createCipheriv(Crypto.algorithm, this.key, this.iv);
     let crypted = cipher.update(text, "utf8", "hex");
     crypted += cipher.final("hex");
     return crypted;
   }
 
-  public static decrypt(text: string, password: string) {
-    const keys = Crypto.compute(Crypto.algorithm, password);
-    const key = Buffer.from(keys[0], "hex");
-    const iv = Buffer.from(keys[1], "hex");
-    const decipher = crypto.createDecipheriv(Crypto.algorithm, key, iv);
+  public decrypt(text: string) {
+    const decipher = crypto.createDecipheriv(
+      Crypto.algorithm,
+      this.key,
+      this.iv
+    );
     let dec = decipher.update(text, "hex", "utf8");
     dec += decipher.final("utf8");
     return dec;
   }
 
-  public static createHash(text: string) {
+  public createHash(text: string) {
     return crypto
       .createHash("md5")
       .update(text)

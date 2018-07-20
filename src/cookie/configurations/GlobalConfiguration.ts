@@ -56,9 +56,7 @@ export default class GlobalConfiguration {
   private static globalDoc: firebase.firestore.DocumentReference;
 
   public static get accountsList(): AccountConfiguration[] {
-    let list = new List<AccountConfiguration>(
-      JSON.parse(JSON.stringify(this._accounts))
-    ).ToArray();
+    let list = new List<AccountConfiguration>(this._accounts).ToArray();
     CookieMain.entities.ForEach(e => {
       if (e instanceof Account) {
         list = list.filter(elem => elem.username !== e.accountConfig.username);

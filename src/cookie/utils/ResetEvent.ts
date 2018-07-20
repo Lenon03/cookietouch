@@ -2,6 +2,8 @@ import { extend, isFunction } from "lodash";
 
 let tokenId = 0;
 
+export type tokenCallback = (token?: IToken) => any;
+
 export interface IOptions {
   autoResetCount: number;
   maxQueueSize: number;
@@ -9,11 +11,11 @@ export interface IOptions {
 }
 
 export interface IToken {
-  callback: () => any;
+  callback: tokenCallback;
   elapsed: () => number;
   id: number;
   isCanceled: boolean;
-  resetEvent: () => any;
+  resetEvent: () => void;
   start: Date;
   timeoutId: NodeJS.Timer;
 }
@@ -57,7 +59,7 @@ export default class ResetEvent {
    * A function that is used to create a token. Override if needed.
    * @param {function} callback - The callback associated with the token.
    */
-  public createToken(callback: () => any): IToken {
+  public createToken(callback: tokenCallback): IToken {
     const token = {
       callback,
       id: tokenId++,
@@ -112,15 +114,6 @@ export default class ResetEvent {
   }
 
   /**
-   * A function that is used to execute the user callback. Default implementation invokes the callback synchronously.
-   * Override if needed.
-   * @param {object} token - The the token which contains the callback to call.
-   */
-  public executeCallback(token: any) {
-    token.callback(token);
-  }
-
-  /**
    * Takes control over the reset event, callers to wait will wait until the reset event is reset.
    */
   public reset() {
@@ -170,9 +163,9 @@ export default class ResetEvent {
    * @param {function} callback - the function to execute when the reset event becomes signaled
    * @param {number} [timeout] - The amount of time to wait in milliseconds before canceling the callback call.
    * The callback is of the form foo(token) (i.e. it will receive the acquired token as a parameter when called)
-   * @returns {object} token - A token which can be used to cancel the callback and to track the elapsed time
+   * @returns {IToken} token - A token which can be used to cancel the callback and to track the elapsed time
    */
-  public wait(callback: () => any, timeout?: number) {
+  public wait(callback: tokenCallback, timeout?: number): IToken {
     if (!isFunction(callback)) {
       throw new Error("Callback must be a function");
     }
@@ -210,5 +203,14 @@ export default class ResetEvent {
     }
 
     return token;
+  }
+
+  /**
+   * A function that is used to execute the user callback. Default implementation invokes the callback synchronously.
+   * Override if needed.
+   * @param {IToken} token - The the token which contains the callback to call.
+   */
+  private executeCallback(token: IToken) {
+    token.callback(token);
   }
 }

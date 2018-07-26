@@ -1,6 +1,11 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Frames, { IFrame } from "@/frames";
+import AccountLoggingKickedMessage from "@/protocol/network/messages/AccountLoggingKickedMessage";
+import BasicLatencyStatsRequestMessage from "@/protocol/network/messages/BasicLatencyStatsRequestMessage";
+import RecaptchaRequestMessage from "@/protocol/network/messages/RecaptchaRequestMessage";
+import SequenceNumberRequestMessage from "@/protocol/network/messages/SequenceNumberRequestMessage";
+import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
 
 export default class SecurityFrame implements IFrame {
   public register() {
@@ -36,7 +41,10 @@ export default class SecurityFrame implements IFrame {
     );
   }
 
-  private async HandleRecaptchaRequestMessage(account: Account, data: any) {
+  private async HandleRecaptchaRequestMessage(
+    account: Account,
+    data: RecaptchaRequestMessage
+  ) {
     account.framesData.captchasCounter++;
     account.logger.logWarning(
       LanguageManager.trans("recaptcha"),
@@ -47,7 +55,7 @@ export default class SecurityFrame implements IFrame {
 
   private async HandleSequenceNumberRequestMessage(
     account: Account,
-    data: any
+    data: SequenceNumberRequestMessage
   ) {
     account.framesData.sequence++;
     account.network.sendMessageFree("SequenceNumberMessage", {
@@ -57,7 +65,7 @@ export default class SecurityFrame implements IFrame {
 
   private async HandleBasicLatencyStatsRequestMessage(
     account: Account,
-    data: any
+    data: BasicLatencyStatsRequestMessage
   ) {
     await account.network.sendMessageFree("BasicLatencyStatsMessage", {
       latency: 262,
@@ -66,7 +74,10 @@ export default class SecurityFrame implements IFrame {
     });
   }
 
-  private async HandleTextInformationMessage(account: Account, data: any) {
+  private async HandleTextInformationMessage(
+    account: Account,
+    data: TextInformationMessage
+  ) {
     if (data.msgId === 245) {
       account.logger.logDebug(
         LanguageManager.trans("securityFrame"),
@@ -78,7 +89,10 @@ export default class SecurityFrame implements IFrame {
     }
   }
 
-  private async HandleAccountLoggingKickedMessage(account: Account, data: any) {
+  private async HandleAccountLoggingKickedMessage(
+    account: Account,
+    data: AccountLoggingKickedMessage
+  ) {
     account.logger.logDebug(
       LanguageManager.trans("securityFrame"),
       LanguageManager.trans("kickedTime", data.days, data.hours, data.minutes)

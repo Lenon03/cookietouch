@@ -4,6 +4,9 @@ import Frames, { IFrame } from "@/frames";
 import DataManager from "@/protocol/data";
 import Achievements from "@/protocol/data/classes/Achievements";
 import { DataTypes } from "@/protocol/data/DataTypes";
+import AchievementFinishedMessage from "@/protocol/network/messages/AchievementFinishedMessage";
+import AchievementListMessage from "@/protocol/network/messages/AchievementListMessage";
+import AchievementRewardSuccessMessage from "@/protocol/network/messages/AchievementRewardSuccessMessage";
 
 export default class AchievementsFrame implements IFrame {
   public register() {
@@ -26,7 +29,7 @@ export default class AchievementsFrame implements IFrame {
 
   private async HandleAchievementRewardSuccessMessage(
     account: Account,
-    message: any
+    message: AchievementRewardSuccessMessage
   ) {
     account.statistics.UpdateAchievementRewardSuccessMessage(message);
     const achievementResp = await DataManager.get<Achievements>(
@@ -42,7 +45,7 @@ export default class AchievementsFrame implements IFrame {
 
   private async HandleAchievementFinishedMessage(
     account: Account,
-    message: any
+    message: AchievementFinishedMessage
   ) {
     if (!account.config.acceptAchievements) {
       return;
@@ -53,7 +56,10 @@ export default class AchievementsFrame implements IFrame {
     });
   }
 
-  private async HandleAchievementListMessage(account: Account, message: any) {
+  private async HandleAchievementListMessage(
+    account: Account,
+    message: AchievementListMessage
+  ) {
     if (!account.config.acceptAchievements) {
       return;
     }

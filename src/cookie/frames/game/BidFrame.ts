@@ -1,5 +1,10 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
+import ExchangeErrorMessage from "@/protocol/network/messages/ExchangeErrorMessage";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeStartedBidBuyerMessage from "@/protocol/network/messages/ExchangeStartedBidBuyerMessage";
+import ExchangeStartedBidSellerMessage from "@/protocol/network/messages/ExchangeStartedBidSellerMessage";
+import ExchangeTypesItemsExchangerDescriptionForUserMessage from "@/protocol/network/messages/ExchangeTypesItemsExchangerDescriptionForUserMessage";
 
 export default class BidFrame implements IFrame {
   public register() {
@@ -32,14 +37,14 @@ export default class BidFrame implements IFrame {
 
   private async HandleExchangeStartedBidBuyerMessage(
     account: Account,
-    message: any
+    message: ExchangeStartedBidBuyerMessage
   ) {
     account.game.bid.UpdateExchangeStartedBidBuyerMessage(message);
   }
 
   private async HandleExchangeTypesItemsExchangerDescriptionForUserMessage(
     account: Account,
-    message: any
+    message: ExchangeTypesItemsExchangerDescriptionForUserMessage
   ) {
     account.game.bid.UpdateExchangeTypesItemsExchangerDescriptionForUserMessage(
       message
@@ -48,16 +53,22 @@ export default class BidFrame implements IFrame {
 
   private async HandleExchangeStartedBidSellerMessage(
     account: Account,
-    message: any
+    message: ExchangeStartedBidSellerMessage
   ) {
     account.game.bid.UpdateExchangeStartedBidSellerMessage(message);
   }
 
-  private async HandleExchangeErrorMessage(account: Account, message: any) {
+  private async HandleExchangeErrorMessage(
+    account: Account,
+    message: ExchangeErrorMessage
+  ) {
     account.game.bid.UpdateExchangeErrorMessage(message);
   }
 
-  private async HandleExchangeLeaveMessage(account: Account, message: any) {
+  private async HandleExchangeLeaveMessage(
+    account: Account,
+    message: ExchangeLeaveMessage
+  ) {
     account.game.bid.UpdateExchangeLeaveMessage(message);
   }
 }

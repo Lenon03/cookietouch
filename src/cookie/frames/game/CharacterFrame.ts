@@ -1,7 +1,12 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Frames, { IFrame } from "@/frames";
+import CharacterExperienceGainMessage from "@/protocol/network/messages/CharacterExperienceGainMessage";
+import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
+import CharacterStatsListMessage from "@/protocol/network/messages/CharacterStatsListMessage";
+import EmotePlayMessage from "@/protocol/network/messages/EmotePlayMessage";
 import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
+import UpdateLifePointsMessage from "@/protocol/network/messages/UpdateLifePointsMessage";
 
 export default class CharacterFrame implements IFrame {
   public register() {
@@ -92,13 +97,16 @@ export default class CharacterFrame implements IFrame {
     );
   }
 
-  private async HandleEmotePlayMessage(account: Account, message: any) {
+  private async HandleEmotePlayMessage(
+    account: Account,
+    message: EmotePlayMessage
+  ) {
     account.game.character.UpdateEmotePlayMessage(message);
   }
 
   private async HandleCharacterExperienceGainMessage(
     account: Account,
-    message: any
+    message: CharacterExperienceGainMessage
   ) {
     account.statistics.UpdateCharacterExperienceGainMessage(message);
     account.game.character.stats.UpdateCharacterExperienceGainMessage(message);
@@ -110,12 +118,15 @@ export default class CharacterFrame implements IFrame {
 
   private async HandleCharacterStatsListMessage(
     account: Account,
-    message: any
+    message: CharacterStatsListMessage
   ) {
     account.game.character.UpdateCharacterStatsListMessage(message);
   }
 
-  private async HandleCharacterLevelUpMessage(account: Account, message: any) {
+  private async HandleCharacterLevelUpMessage(
+    account: Account,
+    message: CharacterLevelUpMessage
+  ) {
     account.statistics.UpdateCharacterLevelUpMessage(message);
     account.game.character.UpdateCharacterLevelUpMessage(message);
     account.logger.logDebug(
@@ -124,7 +135,10 @@ export default class CharacterFrame implements IFrame {
     );
   }
 
-  private async HandleUpdateLifePointsMessage(account: Account, message: any) {
+  private async HandleUpdateLifePointsMessage(
+    account: Account,
+    message: UpdateLifePointsMessage
+  ) {
     account.game.character.stats.UpdateUpdateLifePointsMessage(message);
   }
 

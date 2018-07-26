@@ -316,7 +316,7 @@ export default class CharacterCreatorExtension implements IClearable {
         this.account.network.sendMessageFree(
           "GameFightPlacementPositionRequestmessage",
           {
-            cellId: cells[getRandomInt(0, cells.length)]
+            cellId: cells[getRandomInt(0, cells.length - 1)]
           }
         );
         break;

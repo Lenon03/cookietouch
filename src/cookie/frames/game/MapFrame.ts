@@ -65,8 +65,8 @@ export default class MapFrame implements IFrame {
       this
     );
     Frames.dispatcher.register(
-      "GameContextRemoveMultipleElementMessage",
-      this.HandleGameContextRemoveMultipleElementMessage,
+      "GameContextRemoveMultipleElementsMessage",
+      this.HandleGameContextRemoveMultipleElementsMessage,
       this
     );
     Frames.dispatcher.register(
@@ -183,11 +183,11 @@ export default class MapFrame implements IFrame {
     }
   }
 
-  private async HandleGameContextRemoveMultipleElementMessage(
+  private async HandleGameContextRemoveMultipleElementsMessage(
     account: Account,
     message: any
   ) {
-    await account.game.map.UpdateGameContextRemoveMultipleElementMessage(
+    await account.game.map.UpdateGameContextRemoveMultipleElementsMessage(
       message
     );
   }

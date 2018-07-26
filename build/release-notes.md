@@ -1,11 +1,13 @@
 [FR]
 
-- Petite revue graphique de la page Personnage.
-- Correction du bouton "Installer et relancer" lors d'une mise à jour.
-- Correction d'un problème dans la configuration hdv.
+- Correction d'un bug lors de reception de captchas.
+- Correction de l'utilisation des zaapi dans les scripts.
+- Classement des objets par pourcentage dans la page Statistiques.
+- Correction d'un bug ou les personnages présents sur la map n'était pas à jour.
 
 [EN]
 
-- A short graphic review of the Character page.
-- Fix the "Install and relaunch" button in the update dialog.
-- Fix a bug in the bid configuration.
+- Fixed a bug when a captcha is received.
+- Fixed the use of zaapi in scripts.
+- Sort objects by percentage in the Statistics page.
+- Fixed a bug where characters on the map was not in sync.

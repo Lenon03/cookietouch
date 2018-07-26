@@ -148,7 +148,7 @@
   "primusDestroyed": "Connexion détruite",
   "scripts": "Scripts",
   "movingToGroup": "Déplacement devant un groupe de monstres (cellule: ?, monstres: ?, niveau: ?)",
-  "movingToGroupBlocked": "Le chemin devant le group de monstres est probablement bloqué.",
+  "movingToGroupBlocked": "Le chemin devant le groupe de monstres est probablement bloqué.",
   "movingToGroupFailed": "Déplacement devant le groupe de monstres échoué.",
   "gatherError": "Erreur durant la récolte",
   "changeMapSpecificFailed": "Impossible de changer de map (direction: ?, cellule: ?)",

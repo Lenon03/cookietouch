@@ -1,4 +1,5 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
+import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import { displayTime } from "@/utils/Time";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -188,11 +189,19 @@ class Statistics extends React.Component<
       gathersCount: this.props.account.statistics.gathersCount,
       kamasGained: this.props.account.statistics.kamasGained,
       levelsGained: this.props.account.statistics.levelsGained,
-      objectsObtainedInFights: this.props.account.statistics.objectsObtainedInFights.ToArray(),
-      objectsObtainedInGathers: this.props.account.statistics.objectsObtainedInGathers.ToArray(),
+      objectsObtainedInFights: this.props.account.statistics.objectsObtainedInFights
+        .ToArray()
+        .sort(this.sortObjects),
+      objectsObtainedInGathers: this.props.account.statistics.objectsObtainedInGathers
+        .ToArray()
+        .sort(this.sortObjects),
       totalFightsTime: this.props.account.statistics.totalFightsTime,
       totalGathersTime: this.props.account.statistics.totalGathersTime
     });
+  };
+
+  private sortObjects = (a: ObjectObtainedEntry, b: ObjectObtainedEntry) => {
+    return b.percentage - a.percentage;
   };
 }
 

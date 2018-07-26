@@ -25,6 +25,7 @@ export default class RecaptchaHandler {
           return response.solution.gRecaptchaResponse;
         }
       } catch (error) {
+        release();
         throw error;
       }
     }

@@ -14,6 +14,8 @@ import SubAreas from "@/protocol/data/classes/SubAreas";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import MapData from "@/protocol/data/map";
 import MapsManager from "@/protocol/data/map/MapsManager";
+import GameContextRemoveElementMessage from "@/protocol/network/messages/GameContextRemoveElementMessage";
+import GameContextRemoveMultipleElementsMessage from "@/protocol/network/messages/GameContextRemoveMultipleElementsMessage";
 import MapComplementaryInformationsDataMessage from "@/protocol/network/messages/MapComplementaryInformationsDataMessage";
 import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRolePlayCharacterInformations";
 import GameRolePlayGroupMonsterInformations from "@/protocol/network/types/GameRolePlayGroupMonsterInformations";
@@ -462,12 +464,16 @@ export default class MapGame implements IClearable {
     }
   }
 
-  public async UpdateGameContextRemoveElementMessage(message: any) {
+  public async UpdateGameContextRemoveElementMessage(
+    message: GameContextRemoveElementMessage
+  ) {
     this.removeEntity(message.id);
   }
 
-  public async UpdateGameContextRemoveMultipleElementMessage(message: any) {
-    for (const e of message.Id) {
+  public async UpdateGameContextRemoveMultipleElementsMessage(
+    message: GameContextRemoveMultipleElementsMessage
+  ) {
+    for (const e of message.id) {
       this.removeEntity(e);
     }
   }

@@ -1,7 +1,9 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { TeleportablesEnum } from "@/game/managers/teleportables";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 
 export default class UseTeleportableAction extends ScriptAction {
   public _name: string = "UseTeleportableAction";
@@ -19,7 +21,7 @@ export default class UseTeleportableAction extends ScriptAction {
       (this.type !== TeleportablesEnum.ZAAP ||
         account.game.managers.teleportables.useZaap(this.destinationMapId)) &&
       (this.type !== TeleportablesEnum.ZAAPI ||
-        account.game.managers.teleportables.useZaap(this.destinationMapId))
+        account.game.managers.teleportables.useZaapi(this.destinationMapId))
     ) {
       return ScriptAction.processingResult();
     }

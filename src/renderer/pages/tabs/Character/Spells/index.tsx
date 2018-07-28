@@ -7,6 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
 import { characterSpellsTabStyles } from "@renderer/pages/tabs/Character/Spells/styles";
 import {
   CharacterSpellsTabProps,
@@ -39,9 +40,9 @@ class Spells extends React.Component<
 
     return (
       <div className={classes.root}>
-        <h4>
+        <Typography variant="headline">
           {LanguageManager.trans("spellsPoints", this.state.spellsPoints)}
-        </h4>
+        </Typography>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>

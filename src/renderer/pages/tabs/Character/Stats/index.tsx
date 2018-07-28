@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Typography from "@material-ui/core/Typography";
 import { characterStatsTabStyles } from "@renderer/pages/tabs/Character/Stats/styles";
 import {
   CharacterStatsTabProps,
@@ -58,7 +59,9 @@ class Stats extends React.Component<
       <div className={classes.root}>
         <Grid container={true} spacing={16}>
           <Grid item={true} xs={4}>
-            <h4>{account.game.character.name}</h4>
+            <Typography variant="title">
+              {account.game.character.name}
+            </Typography>
             <h5>
               {LanguageManager.trans("level")} {this.state.level}
             </h5>

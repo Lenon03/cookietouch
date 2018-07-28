@@ -20,7 +20,7 @@ export const mainContentStyles: StyleRulesCallback<
     marginTop: 64
   },
   sidenav: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#444444",
     border: "1px solid " + theme.palette.primary.main,
     height: "100%",
     left: 0,

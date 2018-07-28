@@ -1,21 +1,14 @@
+import amber from "@material-ui/core/colors/amber";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
 
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      contrastText: "#2E2E2E",
-      dark: "#eec485",
-      light: "#eec485",
-      main: "#eec485"
-    },
-    secondary: {
-      contrastText: "#FFF",
-      dark: "#EFC991",
-      light: "#EFC991",
-      main: "#EFC991"
-    }
+    primary: blueGrey,
+    secondary: amber,
+    type: "dark"
   },
   spacing: {
     unit: 3

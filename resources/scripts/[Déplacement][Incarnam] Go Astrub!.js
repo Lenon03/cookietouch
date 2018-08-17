@@ -19,11 +19,11 @@ const move = [
   { map: 80220676, custom: goAstrub }
 ]
 
-function* goAstrub() {
-  yield* npc.npc(-2, 1)
+async function* goAstrub() {
+  yield* await npc.npc(-2, 1)
   if (isInDialog()) {
     printMessage("Je parle au mec pour descendre à Astrub.")
-    yield* npc.reply(-1)
-    yield* npc.reply(-1)
+    yield* await npc.reply(-1)
+    yield* await npc.reply(-1)
   }
 }

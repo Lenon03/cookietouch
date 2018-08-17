@@ -19,23 +19,23 @@ export default class MapAPI {
     this.account = account;
   }
 
-  public get currentPos(): string {
+  public currentPos(): string {
     return this.account.game.map.currentPosition;
   }
 
-  public get currentMapId(): number {
+  public currentMapId(): number {
     return this.account.game.map.id;
   }
 
-  public get area(): string {
+  public area(): string {
     return this.account.game.map.area;
   }
 
-  public get subArea(): string {
+  public subArea(): string {
     return this.account.game.map.subArea;
   }
 
-  public changeMap(where: string): boolean {
+  public async changeMap(where: string): Promise<boolean> {
     if (this.account.isBusy) {
       return false;
     }
@@ -47,11 +47,11 @@ export default class MapAPI {
       );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(action, true);
+    await this.account.scripts.actionsManager.enqueueAction(action, true);
     return true;
   }
 
-  public moveToCell(cellId: number): boolean {
+  public async moveToCell(cellId: number): Promise<boolean> {
     if (cellId < 0 || cellId > 559) {
       return false;
     }
@@ -61,26 +61,32 @@ export default class MapAPI {
     ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new MoveToCellAction(cellId),
       true
     );
     return true;
   }
 
-  public useById(elementId: number, skillInstanceUid = -1): boolean {
+  public async useById(
+    elementId: number,
+    skillInstanceUid = -1
+  ): Promise<boolean> {
     const interactive = this.account.game.map.getInteractiveElement(elementId);
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseByIdAction(elementId, skillInstanceUid),
       true
     );
     return true;
   }
 
-  public use(elementCellId: number, skillInstanceUid = -1): boolean {
+  public async use(
+    elementCellId: number,
+    skillInstanceUid = -1
+  ): Promise<boolean> {
     if (elementCellId < 0 || elementCellId > 559) {
       return false;
     }
@@ -90,14 +96,17 @@ export default class MapAPI {
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseAction(elementCellId, skillInstanceUid),
       true
     );
     return true;
   }
 
-  public useLockedHouse(doorCellId: number, lockCode: string): boolean {
+  public async useLockedHouse(
+    doorCellId: number,
+    lockCode: string
+  ): Promise<boolean> {
     if (doorCellId < 0 || doorCellId > 559) {
       return false;
     }
@@ -107,18 +116,21 @@ export default class MapAPI {
     if (!interactive || interactive.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseLockedHouseAction(doorCellId, lockCode),
       true
     );
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new WaitMapChangeAction(20000),
       true
     );
     return true;
   }
 
-  public useLockedStorage(elementCellId: number, lockCode: string): boolean {
+  public async useLockedStorage(
+    elementCellId: number,
+    lockCode: string
+  ): Promise<boolean> {
     if (elementCellId < 0 || elementCellId > 559) {
       return false;
     }
@@ -128,14 +140,14 @@ export default class MapAPI {
     if (!lockedStorage || lockedStorage.element.usable === false) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseLockedStorageAction(elementCellId, lockCode),
       true
     );
     return true;
   }
 
-  public saveZaap(): boolean {
+  public async saveZaap(): Promise<boolean> {
     if (!this.account.game.map.zaap) {
       this.account.logger.logWarning(
         LanguageManager.trans("teleportablesManagers"),
@@ -143,14 +155,14 @@ export default class MapAPI {
       );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new SaveZaapAction(),
       true
     );
     return true;
   }
 
-  public useZaap(destinationMapId: number): boolean {
+  public async useZaap(destinationMapId: number): Promise<boolean> {
     if (!this.account.game.map.zaap) {
       this.account.logger.logWarning(
         LanguageManager.trans("teleportablesManagers"),
@@ -158,14 +170,14 @@ export default class MapAPI {
       );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseTeleportableAction(TeleportablesEnum.ZAAP, destinationMapId),
       true
     );
     return true;
   }
 
-  public useZaapi(destinationMapId: number): boolean {
+  public async useZaapi(destinationMapId: number): Promise<boolean> {
     if (!this.account.game.map.zaapi) {
       this.account.logger.logWarning(
         LanguageManager.trans("teleportablesManagers"),
@@ -173,15 +185,15 @@ export default class MapAPI {
       );
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new UseTeleportableAction(TeleportablesEnum.ZAAPI, destinationMapId),
       true
     );
     return true;
   }
 
-  public waitMapChange(delay = 5000) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async waitMapChange(delay = 5000) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new WaitMapChangeAction(delay),
       true
     );

@@ -26,14 +26,14 @@ export default class FightAPI {
     );
   }
 
-  public fight(
+  public async fight(
     forbiddenMonsters: number[] = null,
     mandatoryMonsters: number[] = null,
     minMonsters = 1,
     maxMonsters = 8,
     minLevel = 1,
     maxLevel = 1000
-  ): boolean {
+  ): Promise<boolean> {
     if (
       !this.canFight(
         forbiddenMonsters,
@@ -46,7 +46,7 @@ export default class FightAPI {
     ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new FightAction(
         minMonsters,
         maxMonsters,

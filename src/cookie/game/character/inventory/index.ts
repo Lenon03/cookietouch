@@ -91,8 +91,7 @@ export default class Inventory {
   }
 
   public getObjectByGid(gid: number) {
-    // tslint:disable-next-line:triple-equals
-    return this.objects.FirstOrDefault(o => o.gid == gid);
+    return this.objects.FirstOrDefault(o => o.gid === gid);
   }
 
   public getObjectsByGid(gid: number) {
@@ -232,27 +231,6 @@ export default class Inventory {
     );
   }
 
-  public resetMaxWeight() {
-    try {
-      const job = this.account.game.character.jobs.jobs.Sum(j => j.level);
-      const jobCount = this.account.game.character.jobs.jobs.Count(
-        j => j.level === 100
-      );
-      const strength = this.totalStat(
-        this.account.game.character.stats.strength
-      );
-      const boost = this.account.game.character.inventory.equipments.Sum(
-        e => e.weightBoost
-      );
-      this.weightMax =
-        !job || !jobCount || !strength || !boost
-          ? this._fallbackMaxWeight
-          : 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
-    } catch (e) {
-      this.weightMax = this._fallbackMaxWeight;
-    }
-  }
-
   public async UpdateInventoryContentMessage(message: InventoryContentMessage) {
     this._objects = new Map<number, ObjectEntry>();
     this.kamas = message.kamas;
@@ -362,6 +340,27 @@ export default class Inventory {
     this.kamas = message.stats.kamas;
     this.resetMaxWeight();
     this.onInventoryUpdated.trigger(false);
+  }
+
+  private resetMaxWeight() {
+    try {
+      const job = this.account.game.character.jobs.jobs.Sum(j => j.level);
+      const jobCount = this.account.game.character.jobs.jobs.Count(
+        j => j.level === 100
+      );
+      const strength = this.totalStat(
+        this.account.game.character.stats.strength
+      );
+      const boost = this.account.game.character.inventory.equipments.Sum(
+        e => e.weightBoost
+      );
+      this.weightMax =
+        !job || !jobCount || !strength || !boost
+          ? this._fallbackMaxWeight
+          : 1000 + 5 * job + 1000 * jobCount + 5 * strength + boost;
+    } catch (e) {
+      this.weightMax = this._fallbackMaxWeight;
+    }
   }
 
   private totalStat(stat: CharacterBaseCharacteristic): number {

@@ -269,7 +269,7 @@ export default class BidExtension implements IClearable {
       try {
         this.account.scripts.fromFile(this.config.scriptPath);
         // We'll just assume that if we got to this line, the script will 100% start
-        this.account.scripts.startScript();
+        await this.account.scripts.startScript();
       } catch (error) {
         this.account.logger.logError(
           LanguageManager.trans("scriptsManager"),

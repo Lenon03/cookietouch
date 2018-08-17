@@ -1,5 +1,5 @@
 {
-  "title": "CookieTouch - DevChris",
+  "title": "CookieTouch",
   "renderer": {
     "webpackConfig": "webpack.renderer.additions.js"
   }

@@ -32,7 +32,9 @@ export const characterStatsTabStyles: StyleRulesCallback<
   },
   lineStats: {
     alignItems: "center",
+    display: "flex",
     height: 50,
+    justifyContent: "space-between",
     verticalAlign: "middle"
   },
   root: {
@@ -41,6 +43,7 @@ export const characterStatsTabStyles: StyleRulesCallback<
   },
   statsLabelSpan: {
     float: "right",
+    justifyItems: "center",
     marginTop: 16
   },
   statsLabelSpanAdd: {

@@ -6,20 +6,20 @@ import Frames from "@/frames";
 import DTConstants from "@/protocol/DTConstants";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
+import { LoadingPage } from "@renderer/LoadingPage";
 import Main from "@renderer/pages/Main";
+import { spinnerService } from "@renderer/Spinner/Service";
 import { crashReporter, ipcRenderer, remote } from "electron";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
-import Loader from "react-loader-spinner";
 import "typeface-roboto/index.css";
 import "./main.scss";
 // import "./test";
 
-render(
-  <Loader type="ThreeDots" color="#6B331C" height="300" width="300" />,
-  document.getElementById("app")
-);
+render(<LoadingPage />, document.getElementById("app"));
+
+spinnerService.show("mySpinner");
 
 crashReporter.start({
   companyName: "DevChris",
@@ -49,6 +49,8 @@ async function main() {
   await BreedsUtility.Init();
   MapPoint.Init();
   Frames.Init();
+
+  spinnerService.hide("mySpinner");
 
   render(<Main />, document.getElementById("app"));
 }

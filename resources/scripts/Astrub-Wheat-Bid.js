@@ -50,6 +50,6 @@ const bank = [
   { map: "7,-24", custom: stopCustom },
 ]
 
-function* stopCustom() {
+async function* stopCustom() {
   stopScript("Je m'arrete pour vendre.");
 }

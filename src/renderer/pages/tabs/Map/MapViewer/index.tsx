@@ -12,6 +12,7 @@ import DataManager, { IDataResponse } from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import Skills from "@/protocol/data/classes/Skills";
 import { DataTypes } from "@/protocol/data/DataTypes";
+import GraphicalElement from "@/protocol/data/map/GraphicalElement";
 import DTConstants from "@/protocol/DTConstants";
 import Color from "@/utils/Color";
 import Point from "@/utils/Point";
@@ -147,7 +148,6 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
               : ""}
             <div id="tooltip" />
             <canvas
-              id="mapStatus"
               ref={this.canvasRef}
               width={DTConstants.TILE_WIDTH * (DTConstants.MAP_WIDTH + 0.5)}
               height={DTConstants.TILE_HEIGHT * (DTConstants.MAP_HEIGHT + 0.5)}
@@ -399,22 +399,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${
               g.g
             }.png`;
-            if (g.sx) {
-              // TODO: Turn correctly the image...
-            }
-            ctx.drawImage(
-              img2,
-              0,
-              0,
-              g.cw,
-              g.ch,
-              (g.x / DTConstants.ORIGINAL_WIDTH) * c.width +
-                DTConstants.TILE_WIDTH / 2,
-              (g.y / DTConstants.ORIGINAL_HEIGHT) * c.height +
-                DTConstants.TILE_HEIGHT / 2,
-              (g.cw / DTConstants.ORIGINAL_WIDTH) * c.width,
-              (g.ch / DTConstants.ORIGINAL_HEIGHT) * c.height
-            );
+            this.drawGraphical(img2, this.canvasRef.current, g);
           }
         }
       }
@@ -655,8 +640,8 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
     }
 
     tooltip.innerHTML = htmlBuffer;
-    tooltip.style.left = point.x + 5 + "px";
-    tooltip.style.top = point.y + 5 + "px";
+    tooltip.style.left = `${point.x + 5}px`;
+    tooltip.style.top = `${point.y + 230}px`;
   };
 
   private hideCellInfo = () => {
@@ -766,6 +751,41 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   private toggleShowReal = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ showReal: event.target.checked }, () => this.buildMap());
   };
+
+  private drawGraphical(
+    image: HTMLImageElement,
+    canvas: HTMLCanvasElement,
+    g: GraphicalElement
+  ) {
+    const ctx = canvas.getContext("2d");
+
+    const tmpX =
+      (g.x / DTConstants.ORIGINAL_WIDTH) * canvas.width +
+      DTConstants.TILE_WIDTH / 2;
+    const tmpY =
+      (g.y / DTConstants.ORIGINAL_HEIGHT) * canvas.height +
+      DTConstants.TILE_HEIGHT / 2;
+
+    const scaleH = g.sx || 1;
+    const scaleV = g.sy || 1;
+    const posX = g.sx ? tmpX * -1 : tmpX;
+    const posY = g.sy ? tmpY * -1 : tmpY;
+
+    ctx.save();
+    ctx.scale(scaleH, scaleV);
+    ctx.drawImage(
+      image,
+      0,
+      0,
+      g.cw,
+      g.ch,
+      posX,
+      posY,
+      (g.cw / DTConstants.ORIGINAL_WIDTH) * canvas.width,
+      (g.ch / DTConstants.ORIGINAL_HEIGHT) * canvas.height
+    );
+    ctx.restore();
+  }
 }
 
 export default withStyles(mapViewerStyles)<IMapViewerProps>(MapViewer);

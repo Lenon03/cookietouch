@@ -130,7 +130,7 @@ export default class ScriptsManager {
     this.scriptManager.loadFromFile(
       filePath,
       this.account.accountConfig.username,
-      this.beforeDoFile.bind(this)
+      this.beforeDoFile
     );
     this.currentScriptName = path.basename(filePath, ".js");
     this.account.logger.logInfo(
@@ -182,7 +182,7 @@ export default class ScriptsManager {
     await this.checkForMount();
   }
 
-  public startScript() {
+  public async startScript() {
     if (!this.currentScriptName || isEmpty(this.currentScriptName)) {
       return;
     }
@@ -207,7 +207,7 @@ export default class ScriptsManager {
     );
     this.onScriptStarted.trigger();
     this.currentFunctionType = FunctionTypes.MOVE;
-    this.processScript();
+    await this.processScript();
   }
 
   public stopScript(reason: string = "") {
@@ -304,7 +304,7 @@ export default class ScriptsManager {
           continue;
         }
         this.parseEntry(entry);
-        this.processCurrentEntryFlag();
+        await this.processCurrentEntryFlag();
         return;
       }
 
@@ -365,14 +365,14 @@ export default class ScriptsManager {
     }
   }
 
-  private processEntryFlags(avoidChecks: boolean = false) {
+  private async processEntryFlags(avoidChecks: boolean = false) {
     if (!this.running) {
       return;
     }
 
     // Check for max pods
     if (this.gotToMaxPods) {
-      this.processScript();
+      await this.processScript();
       return;
     }
 
@@ -386,7 +386,7 @@ export default class ScriptsManager {
               ...gatherAction.elements
             )
           ) {
-            this.processCurrentEntryFlag(gatherAction);
+            await this.processCurrentEntryFlag(gatherAction);
             return;
           }
           break;
@@ -402,7 +402,7 @@ export default class ScriptsManager {
               fightAction.mandatoryMonsters
             )
           ) {
-            this.processCurrentEntryFlag(fightAction);
+            await this.processCurrentEntryFlag(fightAction);
             return;
           }
           break;
@@ -415,36 +415,40 @@ export default class ScriptsManager {
     if (this.entryFlagsIndex === this.entryFlags.Count()) {
       this.stopScript(LanguageManager.trans("nothingToDo"));
     } else {
-      this.processCurrentEntryFlag();
+      await this.processCurrentEntryFlag();
     }
   }
 
-  private processCurrentEntryFlag(alreadyParsedAction: ScriptAction = null) {
+  private async processCurrentEntryFlag(
+    alreadyParsedAction: ScriptAction = null
+  ) {
     if (!this.running) {
       return;
     }
     const currentFlag = this.entryFlags.ElementAt(this.entryFlagsIndex);
     switch (currentFlag.type) {
       case IFlagType.GatherFlag:
-        this.handleGatherFlag(alreadyParsedAction as GatherAction);
+        await this.handleGatherFlag(alreadyParsedAction as GatherAction);
         break;
       case IFlagType.FightFlag:
-        this.handleFightFlag(alreadyParsedAction as FightAction);
+        await this.handleFightFlag(alreadyParsedAction as FightAction);
         break;
       case IFlagType.NpcBankFlag:
-        this.handleNpcBankFlag();
+        await this.handleNpcBankFlag();
         break;
       case IFlagType.PhenixFlag:
-        this.handlePhenixFlag(currentFlag as PhenixFlag);
+        await this.handlePhenixFlag(currentFlag as PhenixFlag);
         break;
       case IFlagType.CustomFlag:
-        this.actionsManager.handleCustom((currentFlag as CustomFlag).func);
+        await this.actionsManager.handleCustom(
+          (currentFlag as CustomFlag).func
+        );
         break;
       case IFlagType.DoorFlag:
-        this.handleDoorFlag(currentFlag as DoorFlag);
+        await this.handleDoorFlag(currentFlag as DoorFlag);
         break;
       case IFlagType.ChangeMapFlag:
-        this.handleChangeMapFlag(currentFlag as ChangeMapFlag);
+        await this.handleChangeMapFlag(currentFlag as ChangeMapFlag);
         break;
     }
   }
@@ -704,7 +708,7 @@ export default class ScriptsManager {
     }
   }
 
-  private checkForSpecialCases(): boolean {
+  private async checkForSpecialCases(): Promise<boolean> {
     // Special case: When we release the character from being a phantom, we have to go back to the move function.
     // Group special case: only reset the current function when everyone is alive
     if (
@@ -719,7 +723,7 @@ export default class ScriptsManager {
         LanguageManager.trans("characterNoMorePhantom")
       );
       this.currentFunctionType = FunctionTypes.MOVE;
-      this.processScript();
+      await this.processScript();
       return true;
     }
     // Special case: When it's the BANK function and the character is not fullpods anymore
@@ -735,14 +739,14 @@ export default class ScriptsManager {
         LanguageManager.trans("characterNoMoreFullWeight")
       );
       this.currentFunctionType = FunctionTypes.MOVE;
-      this.processScript();
+      await this.processScript();
       return true;
     }
     // No special case
     return false;
   }
 
-  private handleGatherFlag(gatherAction: GatherAction) {
+  private async handleGatherFlag(gatherAction: GatherAction) {
     const action = gatherAction ? gatherAction : this.createGatherAction();
     // If the action is null, it's probably due to the character not having resources to gather (no jobs usually)
     if (!action) {
@@ -750,7 +754,7 @@ export default class ScriptsManager {
     }
     // If we can actually gather in this map, enqueue the action
     if (this.account.game.managers.gathers.canGather(...action.elements)) {
-      this.actionsManager.enqueueAction(action, true);
+      await this.actionsManager.enqueueAction(action, true);
     } else {
       // Otherwise move to next flag
       // We'll avoid the checks because we know we can't gather anymore
@@ -758,7 +762,7 @@ export default class ScriptsManager {
         LanguageManager.trans("scripts"),
         LanguageManager.trans("noResource")
       );
-      this.processEntryFlags(true);
+      await this.processEntryFlags(true);
     }
   }
 
@@ -788,7 +792,7 @@ export default class ScriptsManager {
     return new GatherAction(resourcesIds.ToArray());
   }
 
-  private handleFightFlag(fightAction: FightAction) {
+  private async handleFightFlag(fightAction: FightAction) {
     const action = fightAction ? fightAction : this.createFightAction();
     // If we got the max fights per map, reprocess entry flags
     const maxFightsPerMap = this.scriptManager.config.MAX_FIGHTS_PER_MAP
@@ -802,7 +806,7 @@ export default class ScriptsManager {
         LanguageManager.trans("scripts"),
         LanguageManager.trans("maxFightsPerMap", maxFightsPerMap)
       );
-      this.processEntryFlags(true);
+      await this.processEntryFlags(true);
       return;
     }
     // If we can actually fight in this map, enqueue the action
@@ -816,7 +820,7 @@ export default class ScriptsManager {
         action.mandatoryMonsters
       )
     ) {
-      this.actionsManager.enqueueAction(action, true);
+      await this.actionsManager.enqueueAction(action, true);
     } else {
       // Otherwise move to the next flag
       // We'll avoid the checks because we know we can't fight anymore
@@ -824,7 +828,7 @@ export default class ScriptsManager {
         LanguageManager.trans("scripts"),
         LanguageManager.trans("noMonstersGroup")
       );
-      this.processEntryFlags(true);
+      await this.processEntryFlags(true);
     }
   }
 
@@ -867,29 +871,29 @@ export default class ScriptsManager {
     );
   }
 
-  private handleNpcBankFlag() {
+  private async handleNpcBankFlag() {
     // Opening the storage
-    this.actionsManager.enqueueAction(new NpcBankAction(-1, -1));
+    await this.actionsManager.enqueueAction(new NpcBankAction(-1, -1));
     // BANK_PUT_ITEMS
     const bankPutItems = this.scriptManager.config.BANK_PUT_ITEMS;
     if (bankPutItems && bankPutItems.length > 0) {
       for (const val of bankPutItems) {
         if (typeof val.id === "number" && typeof val.quantity === "number") {
-          this.actionsManager.enqueueAction(
+          await this.actionsManager.enqueueAction(
             new StoragePutItemAction(val.id, val.quantity)
           );
         }
       }
     } else {
       // If BANK_PUT_ITEMS is not set, put all items
-      this.actionsManager.enqueueAction(new StoragePutAllItemsAction());
+      await this.actionsManager.enqueueAction(new StoragePutAllItemsAction());
     }
     // BANK_GET_ITEMS
     const bankGetItems = this.scriptManager.config.BANK_GET_ITEMS;
     if (bankGetItems && bankGetItems.length > 0) {
       for (const val of bankGetItems) {
         if (typeof val.id === "number" && typeof val.quantity === "number") {
-          this.actionsManager.enqueueAction(
+          await this.actionsManager.enqueueAction(
             new StorageGetItemAction(val.id, val.quantity)
           );
         }
@@ -899,7 +903,7 @@ export default class ScriptsManager {
     const autoRegen = this.scriptManager.config.AUTO_REGEN;
     if (autoRegen) {
       if (autoRegen.store > 0) {
-        this.actionsManager.enqueueAction(
+        await this.actionsManager.enqueueAction(
           new StorageGetAutoRegenStoreAction(autoRegen.items, autoRegen.store)
         );
       }
@@ -909,20 +913,24 @@ export default class ScriptsManager {
       ? this.scriptManager.config.BANK_PUT_KAMAS
       : -1;
     if (amount >= 0) {
-      this.actionsManager.enqueueAction(new StoragePutKamasAction(amount));
+      await this.actionsManager.enqueueAction(
+        new StoragePutKamasAction(amount)
+      );
     }
     // BANK_GET_KAMAS
     amount = this.scriptManager.config.BANK_GET_KAMAS
       ? this.scriptManager.config.BANK_GET_KAMAS
       : -1;
     if (amount >= 0) {
-      this.actionsManager.enqueueAction(new StorageGetKamasAction(amount));
+      await this.actionsManager.enqueueAction(
+        new StorageGetKamasAction(amount)
+      );
     }
     // Leave the storage
-    this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
+    await this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
   }
 
-  private handlePhenixFlag(flag: PhenixFlag) {
+  private async handlePhenixFlag(flag: PhenixFlag) {
     const phenix = this.account.game.map.phenixs.find(
       ph => ph.cellId === flag.cellId
     );
@@ -931,11 +939,11 @@ export default class ScriptsManager {
       this.stopScript(LanguageManager.trans("noPhenixOnCell", flag.cellId));
       return;
     }
-    this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
-    this.actionsManager.enqueueAction(new DelayAction(2000), true);
+    await this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
+    await this.actionsManager.enqueueAction(new DelayAction(2000), true);
   }
 
-  private handleDoorFlag(flag: DoorFlag) {
+  private async handleDoorFlag(flag: DoorFlag) {
     const door = this.account.game.map.doors.find(
       d => d.cellId === flag.cellId
     );
@@ -943,14 +951,17 @@ export default class ScriptsManager {
       this.stopScript(LanguageManager.trans("noDoorOnCell", flag.cellId));
       return;
     }
-    this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
-    this.actionsManager.enqueueAction(new WaitMapChangeAction(10000), true);
+    await this.actionsManager.enqueueAction(new UseAction(flag.cellId, -1));
+    await this.actionsManager.enqueueAction(
+      new WaitMapChangeAction(10000),
+      true
+    );
   }
 
-  private handleChangeMapFlag(flag: ChangeMapFlag) {
+  private async handleChangeMapFlag(flag: ChangeMapFlag) {
     const action = ChangeMapAction.tryParse(flag.where);
     if (action) {
-      this.actionsManager.enqueueAction(action, true);
+      await this.actionsManager.enqueueAction(action, true);
     } else {
       this.stopScript(LanguageManager.trans("invalidDirection"));
     }
@@ -999,35 +1010,35 @@ export default class ScriptsManager {
       );
     }
     // Check for special cases (full pods, phenix)
-    if (this.checkForSpecialCases()) {
+    if (await this.checkForSpecialCases()) {
       return;
     }
     // If a map changed occured, re-process the script
     if (data.mapChanged) {
-      this.processScript();
+      await this.processScript();
     } else {
-      this.processEntryFlags();
+      await this.processEntryFlags();
     }
   };
 
-  private onCustomHandled = (data: IActionsManagerEventData) => {
+  private onCustomHandled = async (data: IActionsManagerEventData) => {
     // If this account is a member of a group, ignore this event because group will handle it
     if (this.account.hasGroup && !this.account.isGroupChief) {
       return;
     }
     // Check for special cases (full pods, phenix)
-    if (this.checkForSpecialCases()) {
+    if (await this.checkForSpecialCases()) {
       return;
     }
     // If a map changed occured, re-process the script
     if (data.mapChanged) {
-      this.processScript();
+      await this.processScript();
     } else {
-      this.processEntryFlags();
+      await this.processEntryFlags();
     }
   };
 
-  private async beforeDoFile() {
+  private beforeDoFile = () => {
     (global as any).API[this.account.accountConfig.username] = this.api;
 
     (global as any).API[this.account.accountConfig.username].isFighting = () =>
@@ -1067,20 +1078,20 @@ export default class ScriptsManager {
       this.stopScript(reason);
     };
 
-    (global as any).API[this.account.accountConfig.username].delayFunc = (
+    (global as any).API[this.account.accountConfig.username].delayFunc = async (
       delay: number
     ) => {
-      this.actionsManager.enqueueAction(new DelayAction(delay), true);
+      await this.actionsManager.enqueueAction(new DelayAction(delay), true);
     };
 
     (global as any).API[
       this.account.accountConfig.username
-    ].leaveDialogFunc = (): boolean => {
+    ].leaveDialogFunc = async (): Promise<boolean> => {
       if (this.account.isInDialog) {
-        this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
+        await this.actionsManager.enqueueAction(new LeaveDialogAction(), true);
         return true;
       }
       return false;
     };
-  }
+  };
 }

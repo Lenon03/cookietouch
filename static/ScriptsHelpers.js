@@ -1,41 +1,41 @@
 // Character
 const character = {
-  isAlive: API.character.isAlive,
-  isTombstone: API.character.isTombstone,
-  isPhantom: API.character.isPhantom,
-  name: API.character.name,
-  level: API.character.level,
-  sex: API.character.sex,
-  lifePoints: API.character.lifePoints,
-  maxLifePoints: API.character.maxLifePoints,
-  lifePointsP: API.character.lifePointsP,
-  experience: API.character.experience,
-  energyPoints: API.character.energyPoints,
-  maxEnergyPoints: API.character.maxEnergyPoints,
-  energyPointsP: API.character.energyPointsP,
-  kamas: API.character.kamas,
-  sit: API.character.sit,
-  freeSoul: API.character.freeSoul
+  isAlive: API.character.isAlive.bind(API.character),
+  isTombstone: API.character.isTombstone.bind(API.character),
+  isPhantom: API.character.isPhantom.bind(API.character),
+  name: API.character.name.bind(API.character),
+  level: API.character.level.bind(API.character),
+  sex: API.character.sex.bind(API.character),
+  lifePoints: API.character.lifePoints.bind(API.character),
+  maxLifePoints: API.character.maxLifePoints.bind(API.character),
+  lifePointsP: API.character.lifePointsP.bind(API.character),
+  experience: API.character.experience.bind(API.character),
+  energyPoints: API.character.energyPoints.bind(API.character),
+  maxEnergyPoints: API.character.maxEnergyPoints.bind(API.character),
+  energyPointsP: API.character.energyPointsP.bind(API.character),
+  kamas: API.character.kamas.bind(API.character),
+  sit: API.character.sit.bind(API.character),
+  freeSoul: API.character.freeSoul.bind(API.character)
 }
 // Jobs
 const jobs = {
-  hasJob: API.jobs.hasJob,
-  name: API.jobs.name,
-  level: API.jobs.level,
-  getCollectSkills: API.jobs.getCollectSkills,
-  allCollectSkills: API.jobs.allCollectSkills,
+  hasJob: API.jobs.hasJob.bind(API.jobs),
+  name: API.jobs.name.bind(API.jobs),
+  level: API.jobs.level.bind(API.jobs),
+  getCollectSkills: API.jobs.getCollectSkills.bind(API.jobs),
+  allCollectSkills: API.jobs.allCollectSkills.bind(API.jobs),
 }
 // Fight
-const canFight = API.fight.canFight
-function* fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel) {
-  if (API.fight.fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel)) {
+const canFight = API.fight.canFight.bind(API.fight)
+async function* fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel) {
+  if (await API.fight.fight(forbiddenMonsters, mandatoryMonsters, minMonsters, maxMonsters, minMonstersLevel, maxMonstersLevel)) {
     yield;
   }
 }
 // Gather
-const canGather = API.gather.canGather
-function* gather(...resourcesIds) {
-  if (API.gather.gather(...resourcesIds)) {
+const canGather = API.gather.canGather.bind(API.gather)
+async function* gather(...resourcesIds) {
+  if (await API.gather.gather(...resourcesIds)) {
     yield;
   }
 }
@@ -50,96 +50,96 @@ const printError = API.printError
 const stopScript = API.stopScript
 const delayFunc = API.delayFunc
 const leaveDialogFunc = API.leaveDialogFunc
-function* delay(ms) {
-  delayFunc(ms)
+async function* delay(ms) {
+  await delayFunc(ms)
   yield;
 }
-function* leaveDialog() {
-  if (leaveDialogFunc()) {
+async function* leaveDialog() {
+  if (await leaveDialogFunc()) {
     yield;
   }
 }
 // Inventory
 const inventory = {
-  pods: API.inventory.pods,
-  podsMax: API.inventory.podsMax,
-  podsP: API.inventory.podsP,
-  itemCount: API.inventory.itemCount,
-  itemWeight: API.inventory.itemWeight,
-  useItem: function* (gid, qty) {
-    if (API.inventory.useItem(gid, qty)) {
+  pods: API.inventory.pods.bind(API.inventory),
+  podsMax: API.inventory.podsMax.bind(API.inventory),
+  podsP: API.inventory.podsP.bind(API.inventory),
+  itemCount: API.inventory.itemCount.bind(API.inventory),
+  itemWeight: API.inventory.itemWeight.bind(API.inventory),
+  useItem: async function* (gid, qty) {
+    if (await API.inventory.useItem(gid, qty)) {
       yield;
     }
   },
-  equipItem: function* (gid) {
-    if (API.inventory.equipItem(gid)) {
+  equipItem: async function* (gid) {
+    if (await API.inventory.equipItem(gid)) {
       yield;
     }
   },
-  unEquipItem: function* (gid) {
-    if (API.inventory.unEquipItem(gid)) {
+  unEquipItem: async function* (gid) {
+    if (await API.inventory.unEquipItem(gid)) {
       yield;
     }
   },
-  dropItem: function* (gid, qty) {
-    if (API.inventory.dropItem(gid)) {
+  dropItem: async function* (gid, qty) {
+    if (await API.inventory.dropItem(gid, qty)) {
       yield;
     }
   },
-  deleteItem: function* (gid, qty) {
-    if (API.inventory.deleteItem(gid)) {
+  deleteItem: async function* (gid, qty) {
+    if (await API.inventory.deleteItem(gid, qty)) {
       yield;
     }
   }
 }
 // Map
-function* changeMap(where) {
-  if (API.map.changeMap(where)) {
+async function* changeMap(where) {
+  if (await API.map.changeMap(where)) {
     yield;
   }
 }
-function* moveToCell(cellId) {
-  if (API.map.moveToCell(cellId)) {
+async function* moveToCell(cellId) {
+  if (await API.map.moveToCell(cellId)) {
     yield;
   }
 }
-function* useById(elementId, skillInstanceUid) {
-  if (API.map.useById(elementId, skillInstanceUid)) {
+async function* useById(elementId, skillInstanceUid) {
+  if (await API.map.useById(elementId, skillInstanceUid)) {
     yield;
   }
 }
-function* use(elementCellId, skillInstanceUid) {
-  if (API.map.use(elementCellId, skillInstanceUid)) {
+async function* use(elementCellId, skillInstanceUid) {
+  if (await API.map.use(elementCellId, skillInstanceUid)) {
     yield;
   }
 }
-function* useLockedHouse(doorCellId, lockCode) {
-  if (API.map.useLockedHouse(doorCellId, lockCode)) {
+async function* useLockedHouse(doorCellId, lockCode) {
+  if (await API.map.useLockedHouse(doorCellId, lockCode)) {
     yield;
   }
 }
-function* useLockedStorage(elementCellId, lockCode) {
-  if (API.map.useLockedStorage(elementCellId, lockCode)) {
+async function* useLockedStorage(elementCellId, lockCode) {
+  if (await API.map.useLockedStorage(elementCellId, lockCode)) {
     yield;
   }
 }
-function* useZaap(destinationMapId) {
-  if (API.map.useZaap(destinationMapId)) {
+async function* useZaap(destinationMapId) {
+  if (await API.map.useZaap(destinationMapId)) {
     yield;
   }
 }
-function* useZaapi(destinationMapId) {
-  if (API.map.useZaapi(destinationMapId)) {
+async function* useZaapi(destinationMapId) {
+  if (await API.map.useZaapi(destinationMapId)) {
     yield;
   }
 }
-function* saveZaap() {
-  if (API.map.saveZaap()) {
+async function* saveZaap() {
+  if (await API.map.saveZaap()) {
     yield;
   }
 }
-function* waitMapChange(delay) {
-  if (API.map.waitMapChange(delay)) {
+async function* waitMapChange(delay) {
+  if (await API.map.waitMapChange(delay)) {
     yield;
   }
 }
@@ -148,161 +148,161 @@ function* joinFriend(name) {
     yield;
   }
 }
-const onCell = API.map.onCell
-const onMap = API.map.onMap
-const currentPos = API.map.currentPos
-const currentMapId = API.map.currentMapId
-const area = API.map.area
-const subArea = API.map.subArea
+const onCell = API.map.onCell.bind(API.map);
+const onMap = API.map.onMap.bind(API.map);
+const currentPos = API.map.currentPos.bind(API.map);
+const currentMapId = API.map.currentMapId.bind(API.map);
+const area = API.map.area.bind(API.map);
+const subArea = API.map.subArea.bind(API.map);
 // Npc
 const npc = {
-  npcBank: function* (npcId, replyId) {
-    if (API.npc.npcBank(npcId, replyId)) {
+  npcBank: async function* (npcId, replyId) {
+    if (await API.npc.npcBank(npcId, replyId)) {
       yield;
     }
   },
-  npc: function* (npcId, actionIndex) {
-    if (API.npc.npc(npcId, actionIndex)) {
+  npc: async function* (npcId, actionIndex) {
+    if (await API.npc.npc(npcId, actionIndex)) {
       yield;
     }
   },
-  reply: function* (replyId) {
-    API.npc.reply(replyId);
+  reply: async function* (replyId) {
+    await API.npc.reply(replyId);
     yield;
   }
 }
 // Mount
 const mount = {
-  isRiding: API.mount.isRiding,
-  hasMount: API.mount.hasMount,
-  currentRatio: API.mount.currentRatio,
-  toggleRiding: function* () {
-    if (API.mount.toggleRiding()) {
+  isRiding: API.mount.isRiding.bind(API.mount),
+  hasMount: API.mount.hasMount.bind(API.mount),
+  currentRatio: API.mount.currentRatio.bind(API.mount),
+  toggleRiding: async function* () {
+    if (await API.mount.toggleRiding()) {
       yield;
     }
   },
-  setRatio: function* (ratio) {
-    if (API.mount.setRatio(ratio)) {
+  setRatio: async function* (ratio) {
+    if (await API.mount.setRatio(ratio)) {
       yield;
     }
   }
 }
 // Storage
 const storage = {
-  itemCount: API.storage.itemCount,
-  kamas: API.storage.kamas,
-  putItem: function* (gid, qty) {
-    if (API.storage.putItem(gid, qty)) {
+  itemCount: API.storage.itemCount.bind(API.storage),
+  kamas: API.storage.kamas.bind(API.storage),
+  putItem: async function* (gid, qty) {
+    if (await API.storage.putItem(gid, qty)) {
       yield;
     }
   },
-  getItem: function* (gid, qty) {
-    if (API.storage.getItem(gid, qty)) {
+  getItem: async function* (gid, qty) {
+    if (await API.storage.getItem(gid, qty)) {
       yield;
     }
   },
-  putKamas: function* (qty) {
-    if (API.storage.putKamas(qty)) {
+  putKamas: async function* (qty) {
+    if (await API.storage.putKamas(qty)) {
       yield;
     }
   },
-  getKamas: function* (qty) {
-    if (API.storage.getKamas(qty)) {
+  getKamas: async function* (qty) {
+    if (await API.storage.getKamas(qty)) {
       yield;
     }
   },
-  putAllItems: function* () {
-    if (API.storage.putAllItems()) {
+  putAllItems: async function* () {
+    if (await API.storage.putAllItems()) {
       yield;
     }
   },
-  getAllItems: function* () {
-    if (API.storage.getAllItems()) {
+  getAllItems: async function* () {
+    if (await API.storage.getAllItems()) {
       yield;
     }
   },
-  putExistingItems: function* () {
-    if (API.storage.putExistingItems()) {
+  putExistingItems: async function* () {
+    if (await API.storage.putExistingItems()) {
       yield;
     }
   },
-  getExistingItems: function* () {
-    if (API.storage.getExistingItems()) {
+  getExistingItems: async function* () {
+    if (await API.storage.getExistingItems()) {
       yield;
     }
   }
 }
 // Exchange
 const exchange = {
-  weightP: API.exchange.weightP,
-  targetWeightP: API.exchange.targetWeightP,
-  startExchange: function* (playerId) {
-    API.exchange.startExchange(playerId)
+  weightP: API.exchange.weightP.bind(API.exchange),
+  targetWeightP: API.exchange.targetWeightP.bind(API.exchange),
+  startExchange: async function* (playerId) {
+    await API.exchange.startExchange(playerId)
     yield;
   },
-  sendReady: function* () {
-    API.exchange.sendReady()
+  sendReady: async function* () {
+    await API.exchange.sendReady()
     yield;
   },
-  putItem: function* (gid, qty) {
-    API.exchange.putItem(gid, qty)
+  putItem: async function* (gid, qty) {
+    await API.exchange.putItem(gid, qty)
     yield;
   },
-  removeItem: function* (gid, qty) {
-    API.exchange.removeItem(gid, qty)
+  removeItem: async function* (gid, qty) {
+    await API.exchange.removeItem(gid, qty)
     yield;
   },
-  putKamas: function* (qty) {
-    API.exchange.putKamas(qty)
+  putKamas: async function* (qty) {
+    await API.exchange.putKamas(qty)
     yield;
   },
-  removeKamas: function* (qty) {
-    API.exchange.removeKamas(qty)
+  removeKamas: async function* (qty) {
+    await API.exchange.removeKamas(qty)
     yield;
   },
-  putAllItems: function* () {
-    API.exchange.putAllItems()
+  putAllItems: async function* () {
+    await API.exchange.putAllItems()
     yield;
   },
-  removeAllItems: function* () {
-    API.exchange.removeAllItems()
+  removeAllItems: async function* () {
+    await API.exchange.removeAllItems()
     yield;
   }
 }
 // Bid
 const bid = {
-  startBuying: function* () {
-    if (API.bid.startBuying()) {
+  startBuying: async function* () {
+    if (await API.bid.startBuying()) {
       yield;
     }
   },
   getItemPrice: async function (gid, lot) {
     return await API.bid.getItemPrice(gid, lot);
   },
-  buyItem: function* (gid, lot) {
-    if (API.bid.buyItem(gid, lot)) {
+  buyItem: async function* (gid, lot) {
+    if (await API.bid.buyItem(gid, lot)) {
       yield;
     }
   },
-  startSelling: function* () {
-    if (API.bid.startSelling()) {
+  startSelling: async function* () {
+    if (await API.bid.startSelling()) {
       yield;
     }
   },
-  itemsInSaleCount: API.bid.itemsInSaleCount,
-  getItemsInSale: API.bid.getItemsInSale,
-  sellItem: function* (gid, lot, price) {
-    if (API.bid.sellItem(gid, lot, price)) {
+  itemsInSaleCount: API.bid.itemsInSaleCount.bind(API.bid),
+  getItemsInSale: API.bid.getItemsInSale.bind(API.bid),
+  sellItem: async function* (gid, lot, price) {
+    if (await API.bid.sellItem(gid, lot, price)) {
       yield;
     }
   },
-  editItemInSalePrice: function* (uid, newPrice) {
-    if (API.bid.editItemInSalePrice(uid, newPrice)) {
+  editItemInSalePrice: async function* (uid, newPrice) {
+    if (await API.bid.editItemInSalePrice(uid, newPrice)) {
       yield;
     }
   },
-  removeItemInSale: function* (uid) {
-    if (API.bid.removeItemInSale(uid)) {
+  removeItemInSale: async function* (uid) {
+    if (await API.bid.removeItemInSale(uid)) {
       yield;
     }
   }

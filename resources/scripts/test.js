@@ -6,6 +6,6 @@ const move = [
   { map: 80218115, custom: myCustom }
 ]
 
-function* myCustom() {
+async function* myCustom() {
   printMessage(`J'ai ${inventory.pods} pods !!!`)
 }

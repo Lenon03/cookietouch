@@ -9,31 +9,33 @@ export default class MountAPI {
     this.account = account;
   }
 
-  public get hasMount(): boolean {
+  public hasMount(): boolean {
     return this.account.game.character.mount.hasMount;
   }
 
-  public get isRiding(): boolean {
+  public isRiding(): boolean {
     return this.account.game.character.mount.isRiding;
   }
 
-  public get currentRatio(): number {
+  public currentRatio(): number {
     return this.account.game.character.mount.currentRatio;
   }
 
-  public toggleRiding(): boolean {
+  public async toggleRiding(): Promise<boolean> {
     if (!this.account.game.character.mount.hasMount) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new ToggleRidingAction());
+    await this.account.scripts.actionsManager.enqueueAction(
+      new ToggleRidingAction()
+    );
     return true;
   }
 
-  public setRatio(ratio: number): boolean {
+  public async setRatio(ratio: number): Promise<boolean> {
     if (ratio > 100 || !this.account.game.character.mount.hasMount) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new SetRatioAction(ratio)
     );
     return true;

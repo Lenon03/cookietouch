@@ -8,68 +8,68 @@ export default class CharacterAPI {
     this.account = account;
   }
 
-  public get isAlive(): boolean {
+  public isAlive(): boolean {
     return (
       this.account.game.character.lifeStatus ===
       PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
     );
   }
 
-  public get isTombstone(): boolean {
+  public isTombstone(): boolean {
     return (
       this.account.game.character.lifeStatus ===
       PlayerLifeStatusEnum.STATUS_TOMBSTONE
     );
   }
 
-  public get isPhantom(): boolean {
+  public isPhantom(): boolean {
     return (
       this.account.game.character.lifeStatus ===
       PlayerLifeStatusEnum.STATUS_PHANTOM
     );
   }
 
-  public get name(): string {
+  public name(): string {
     return this.account.game.character.name;
   }
 
-  public get level(): number {
+  public level(): number {
     return this.account.game.character.level;
   }
 
-  public get sex(): boolean {
+  public sex(): boolean {
     return this.account.game.character.sex;
   }
 
-  public get lifePoints(): number {
+  public lifePoints(): number {
     return this.account.game.character.stats.lifePoints;
   }
 
-  public get maxLifePoints(): number {
+  public maxLifePoints(): number {
     return this.account.game.character.stats.maxLifePoints;
   }
 
-  public get lifePointsP(): number {
+  public lifePointsP(): number {
     return this.account.game.character.stats.lifePercent;
   }
 
-  public get experience(): number {
+  public experience(): number {
     return this.account.game.character.stats.experiencePercent;
   }
 
-  public get energyPoints(): number {
+  public energyPoints(): number {
     return this.account.game.character.stats.energyPoints;
   }
 
-  public get maxEnergyPoints(): number {
+  public maxEnergyPoints(): number {
     return this.account.game.character.stats.maxEnergyPoints;
   }
 
-  public get energyPointsP(): number {
+  public energyPointsP(): number {
     return this.account.game.character.stats.energyPercent;
   }
 
-  public get kamas(): number {
+  public kamas(): number {
     return this.account.game.character.inventory.kamas;
   }
 

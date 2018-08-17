@@ -10,30 +10,30 @@ export default class NpcAPI {
     this.account = account;
   }
 
-  public npcBank(npcId: number, replyId: number): boolean {
+  public async npcBank(npcId: number, replyId: number): Promise<boolean> {
     if (npcId > 0 && !this.account.game.map.npcs.find(n => n.npcId === npcId)) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new NpcBankAction(npcId, replyId),
       true
     );
     return true;
   }
 
-  public npc(npcId: number, actionIndex: number): boolean {
+  public async npc(npcId: number, actionIndex: number): Promise<boolean> {
     if (npcId > 0 && !this.account.game.map.npcs.find(n => n.npcId === npcId)) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new NpcAction(npcId, actionIndex),
       true
     );
     return true;
   }
 
-  public reply(replyId: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async reply(replyId: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ReplyAction(replyId),
       true
     );

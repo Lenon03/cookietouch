@@ -9,6 +9,8 @@ import {
 } from "electron";
 import { appUpdater } from "./updater";
 
+app.commandLine.appendSwitch("js-flags", "--harmony-async-iteration");
+
 crashReporter.start({
   companyName: "DevChris",
   ignoreSystemCrashHandler: true,

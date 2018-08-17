@@ -7,7 +7,7 @@ export default class JobsAPI {
     this.account = account;
   }
 
-  public get allCollectSkills() {
+  public allCollectSkills() {
     return this.account.game.character.jobs.collectSkillsIds.ToArray();
   }
 

@@ -1,7 +1,7 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
 import ObjectAveragePricesMessage from "@/protocol/network/messages/ObjectAveragePricesMessage";
-import axios from "axios";
+// import axios from "axios";
 
 export default class AveragePricesFrame implements IFrame {
   public register() {
@@ -16,6 +16,7 @@ export default class AveragePricesFrame implements IFrame {
     account: Account,
     data: ObjectAveragePricesMessage
   ) {
+    /*
     const server = account.game.server.id;
     const prices = [];
     for (let x = 0; x < data.ids.length; x++) {
@@ -28,5 +29,6 @@ export default class AveragePricesFrame implements IFrame {
       server,
       timestamp: Date.now()
     });
+    */
   }
 }

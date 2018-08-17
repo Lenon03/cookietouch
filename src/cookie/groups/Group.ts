@@ -170,8 +170,11 @@ export default class Group implements IEntity {
       return;
     }
 
-    this.members.ForEach(t => {
-      t.scripts.actionsManager.enqueueAction(action, startDequeueingAction);
+    this.members.ForEach(async t => {
+      await t.scripts.actionsManager.enqueueAction(
+        action,
+        startDequeueingAction
+      );
     });
 
     // Reset all ResetEvents of the members if this action will start dequeueing actions
@@ -240,6 +243,6 @@ export default class Group implements IEntity {
     }
 
     await sleep(2000);
-    this.chief.scripts.startScript();
+    await this.chief.scripts.startScript();
   };
 }

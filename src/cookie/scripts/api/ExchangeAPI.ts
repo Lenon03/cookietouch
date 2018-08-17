@@ -15,65 +15,65 @@ export default class ExchangeAPI {
     this.account = account;
   }
 
-  public get weightP(): number {
+  public weightP(): number {
     return this.account.game.exchange.weightPercent;
   }
 
-  public get targetWeightP(): number {
+  public targetWeightP(): number {
     return this.account.game.exchange.remoteWeightPercent;
   }
 
-  public startExchange(playerId: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async startExchange(playerId: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new StartExchangeAction(playerId),
       true
     );
   }
 
-  public sendReady() {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async sendReady() {
+    await this.account.scripts.actionsManager.enqueueAction(
       new SendReadyAction(),
       true
     );
   }
 
-  public putItem(gid: number, qty: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async putItem(gid: number, qty: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangePutItemAction(gid, qty),
       true
     );
   }
 
-  public removeItem(gid: number, qty: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async removeItem(gid: number, qty: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangeRemoveItemAction(gid, qty),
       true
     );
   }
 
-  public putAllItems() {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async putAllItems() {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangePutAllItemsAction(),
       true
     );
   }
 
-  public removeAllItems() {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async removeAllItems() {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangeRemoveAllItemsAction(),
       true
     );
   }
 
-  public putKamas(qty: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async putKamas(qty: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangePutKamasAction(qty),
       true
     );
   }
 
-  public removeKamas(qty: number) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async removeKamas(qty: number) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new ExchangeRemoveKamasAction(qty),
       true
     );

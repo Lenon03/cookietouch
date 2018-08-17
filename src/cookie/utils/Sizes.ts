@@ -1,40 +1,30 @@
 import { remote } from "electron";
-import * as fs from "fs";
-import { flatten } from "lodash";
+import { lstat, readdir } from "fs";
 import { join } from "path";
+import { promisify } from "util";
+
+const readdirAsync = promisify(readdir);
+const lstatAsync = promisify(lstat);
 
 export function format(n: number) {
   return n.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1,");
 }
-export function getFiles(dir: string): string[] {
-  dir = dir.replace(/\/$/, "");
-  return flatten(
-    fs.readdirSync(dir).map(file => {
-      const fileOrDir = fs.statSync([dir, file].join("/"));
-      if (fileOrDir.isFile()) {
-        return (dir + "/" + file).replace(/^\.\/\/?/, "");
-      } else if (fileOrDir.isDirectory()) {
-        return getFiles([dir, file].join("/"));
-      } else {
-        return null;
-      }
-    })
-  );
-}
 
-export function getSizeString(path: string): string {
-  const buffers = getFiles(path)
-    .map(file => fs.readFileSync(file))
-    .join("\n");
-  return format(buffers.length);
-}
+export async function getFolderSize(path: string): Promise<number> {
+  const childs = await readdirAsync(path);
+  const filesPromises = childs.map(async fileName => {
+    const filePath = join(path, fileName);
+    const fileStats = await lstatAsync(filePath);
+    if (fileStats.isDirectory()) {
+      return getFolderSize(filePath);
+    }
 
-export function getSize(path: string): number {
-  const buffers = getFiles(path)
-    .map(file => fs.readFileSync(file))
-    .join("\n");
-  return buffers.length;
+    return fileStats.size;
+  });
+
+  const fileSizes = await Promise.all(filesPromises);
+  return fileSizes.reduce((total, fileSize) => total + fileSize, 0);
 }
 
 export const getCacheSize = () =>
-  getSize(join(remote.app.getPath("userData"), "assets"));
+  getFolderSize(join(remote.app.getPath("userData"), "assets"));

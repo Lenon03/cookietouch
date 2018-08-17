@@ -16,7 +16,7 @@ export default class StorageAPI {
     this.account = account;
   }
 
-  public get kamas(): number {
+  public kamas(): number {
     return this.account.game.storage.kamas;
   }
 
@@ -26,7 +26,7 @@ export default class StorageAPI {
       .Sum(o => o.quantity);
   }
 
-  public putItem(gid: number, quantity: number): boolean {
+  public async putItem(gid: number, quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
@@ -37,84 +37,84 @@ export default class StorageAPI {
     ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StoragePutItemAction(gid, quantity),
       true
     );
     return true;
   }
 
-  public getItem(gid: number, quantity: number): boolean {
+  public async getItem(gid: number, quantity: number): Promise<boolean> {
     if (this.itemCount(gid) === 0) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StorageGetItemAction(gid, quantity),
       true
     );
     return true;
   }
 
-  public putKamas(quantity: number): boolean {
+  public async putKamas(quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StoragePutKamasAction(quantity),
       true
     );
     return true;
   }
 
-  public getKamas(quantity: number): boolean {
+  public async getKamas(quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StorageGetKamasAction(quantity),
       true
     );
     return true;
   }
 
-  public putAllItems(): boolean {
+  public async putAllItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StoragePutAllItemsAction(),
       true
     );
     return true;
   }
 
-  public getAllItems(): boolean {
+  public async getAllItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StorageGetAllItemsAction(),
       true
     );
     return true;
   }
 
-  public putExistingItems(): boolean {
+  public async putExistingItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StoragePutExistingItemsAction(),
       true
     );
     return true;
   }
 
-  public getExistingItems(): boolean {
+  public async getExistingItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StorageGetExistingItemsAction(),
       true
     );

@@ -21,7 +21,9 @@ import WaitMapChangeAction from "@/scripts/actions/map/WaitMapChangeAction";
 import NpcAction from "@/scripts/actions/npcs/NpcAction";
 import NpcBankAction from "@/scripts/actions/npcs/NpcBankAction";
 import ReplyAction from "@/scripts/actions/npcs/ReplyAction";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
@@ -94,18 +96,21 @@ export default class ActionsManager {
     return this.onCustomHandled.expose();
   }
 
-  public handleCustom(customFunction: GeneratorFunction) {
+  public async handleCustom(customFunction: GeneratorFunction) {
     if (!this.account.scripts.running || this.currentCoroutine) {
       return;
     }
     this.currentCoroutine = customFunction();
-    this.processCoroutine();
+    await this.processCoroutine();
   }
 
-  public enqueueAction(action: ScriptAction, startDequeuingActions = false) {
+  public async enqueueAction(
+    action: ScriptAction,
+    startDequeuingActions = false
+  ) {
     this.actionsQueue.push(action);
     if (startDequeuingActions) {
-      this.dequeueActions(0);
+      await this.dequeueActions(0);
     }
 
     // If this account is a group chief, enqueue the action to the others members
@@ -149,14 +154,14 @@ export default class ActionsManager {
       // If there is a coroutine currently being handled, process it
       // Otherwise tell the scripts manager that we're done
       if (this.currentCoroutine) {
-        this.processCoroutine();
+        await this.processCoroutine();
       } else {
         this.actionsFinished();
       }
     }
   }
 
-  private processCoroutine() {
+  private async processCoroutine() {
     if (!this.account.scripts.running) {
       return;
     }
@@ -164,7 +169,7 @@ export default class ActionsManager {
       const name = this.currentAction
         ? this.currentAction._name
         : LanguageManager.trans("unknown");
-      const result = this.currentCoroutine.next();
+      const result = await this.currentCoroutine.next();
       this.account.logger.logDebug(
         LanguageManager.trans("scripts"),
         LanguageManager.trans("processingCoroutine", name, result.done)
@@ -197,7 +202,7 @@ export default class ActionsManager {
           LanguageManager.trans("actionsManager"),
           LanguageManager.trans("actionDone", type)
         );
-        this.dequeueActions(100);
+        await this.dequeueActions(100);
         break;
       case ScriptActionResults.FAILED:
         this.account.logger.logDebug(
@@ -244,7 +249,7 @@ export default class ActionsManager {
     }
   }
 
-  private map_mapChanged = () => {
+  private map_mapChanged = async () => {
     if (!this.account.scripts.running || !this.currentAction) {
       return;
     }
@@ -280,7 +285,7 @@ export default class ActionsManager {
     }
 
     this.clearActions();
-    this.dequeueActions(1500);
+    await this.dequeueActions(1500);
   };
 
   private movements_movementFinished = async (success: boolean) => {
@@ -312,7 +317,7 @@ export default class ActionsManager {
             LanguageManager.trans("scripts"),
             LanguageManager.trans("errorLaunchFight")
           );
-          this.dequeueActions(0);
+          await this.dequeueActions(0);
         }
 
         this.monstersGroupToAttack = 0;
@@ -323,14 +328,14 @@ export default class ActionsManager {
       this.account.scripts.stopScript();
     } else if (this.currentAction instanceof MoveToCellAction) {
       if (success) {
-        this.dequeueActions(0);
+        await this.dequeueActions(0);
       } else {
         this.account.scripts.stopScript();
       }
     }
   };
 
-  private interactives_useFinished = (success: boolean) => {
+  private interactives_useFinished = async (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -343,7 +348,7 @@ export default class ActionsManager {
       if (!success) {
         this.account.scripts.stopScript();
       } else {
-        this.dequeueActions(this.actionsQueue.length > 0 ? 0 : 500);
+        await this.dequeueActions(this.actionsQueue.length > 0 ? 0 : 500);
       }
     }
   };
@@ -371,7 +376,7 @@ export default class ActionsManager {
     }
   };
 
-  private gathers_gatherFinished = (result: GatherResults) => {
+  private gathers_gatherFinished = async (result: GatherResults) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -384,7 +389,7 @@ export default class ActionsManager {
           break;
         default:
           // GATHERED, STOLEN, BLACKLISTED, or TIMED_OUT
-          this.dequeueActions(1000);
+          await this.dequeueActions(1000);
           break;
       }
     }
@@ -410,7 +415,7 @@ export default class ActionsManager {
     }
   };
 
-  private npcs_questionReceived = () => {
+  private npcs_questionReceived = async () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -425,11 +430,11 @@ export default class ActionsManager {
       this.currentAction instanceof NpcAction ||
       this.currentAction instanceof ReplyAction
     ) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private storage_storageStarted = () => {
+  private storage_storageStarted = async () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -437,20 +442,20 @@ export default class ActionsManager {
       this.currentAction instanceof NpcBankAction ||
       this.currentAction instanceof UseLockedStorageAction
     ) {
-      this.dequeueActions(200);
+      await this.dequeueActions(200);
     }
   };
 
-  private storage_storageLeft = () => {
+  private storage_storageLeft = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof LeaveDialogAction) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private npcs_dialogLeft = () => {
+  private npcs_dialogLeft = async () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -459,20 +464,20 @@ export default class ActionsManager {
       this.currentAction instanceof ReplyAction ||
       this.currentAction instanceof LeaveDialogAction
     ) {
-      this.dequeueActions(200);
+      await this.dequeueActions(200);
     }
   };
 
-  private exchange_exchangeStarted = () => {
+  private exchange_exchangeStarted = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof StartExchangeAction) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private exchange_exchangeLeft = () => {
+  private exchange_exchangeLeft = async () => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -480,44 +485,44 @@ export default class ActionsManager {
       this.currentAction instanceof SendReadyAction ||
       this.currentAction instanceof LeaveDialogAction
     ) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private bid_startedBuying = () => {
+  private bid_startedBuying = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof StartBuyingAction) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private bid_startedSelling = () => {
+  private bid_startedSelling = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof StartSellingAction) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private bid_bidLeft = () => {
+  private bid_bidLeft = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof LeaveDialogAction) {
-      this.dequeueActions(400);
+      await this.dequeueActions(400);
     }
   };
 
-  private teleportables_useFinished = (success: boolean) => {
+  private teleportables_useFinished = async (success: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
     if (this.currentAction instanceof UseTeleportableAction) {
       if (success) {
-        this.dequeueActions(1500);
+        await this.dequeueActions(1500);
       } else {
         this.account.scripts.stopScript(
           LanguageManager.trans(
@@ -529,7 +534,7 @@ export default class ActionsManager {
     }
   };
 
-  private timeoutTimerCallback() {
+  private async timeoutTimerCallback() {
     // Running and not Enabled because during fights, the script is paused
     if (!this.account.scripts.running) {
       return;
@@ -539,6 +544,6 @@ export default class ActionsManager {
       LanguageManager.trans("timedOut")
     );
     this.account.scripts.stopScript();
-    this.account.scripts.startScript();
+    await this.account.scripts.startScript();
   }
 }

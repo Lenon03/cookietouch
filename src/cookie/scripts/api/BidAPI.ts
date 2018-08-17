@@ -21,11 +21,11 @@ export default class BidAPI {
     this.account = account;
   }
 
-  public startBuying(): boolean {
+  public async startBuying(): Promise<boolean> {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StartBuyingAction(),
       true
     );
@@ -36,29 +36,29 @@ export default class BidAPI {
     return this.account.game.bid.getItemPrice(gid, lot);
   }
 
-  public buyItem(gid: number, lot: number): boolean {
+  public async buyItem(gid: number, lot: number): Promise<boolean> {
     if (this.account.state !== AccountStates.BUYING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new BuyItemAction(gid, lot),
       true
     );
     return true;
   }
 
-  public startSelling(): boolean {
+  public async startSelling(): Promise<boolean> {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new StartSellingAction(),
       true
     );
     return true;
   }
 
-  public get itemsInSaleCount(): number {
+  public itemsInSaleCount(): number {
     return this.account.game.bid.objectsInSale
       ? this.account.game.bid.objectsInSale.Count()
       : 0;
@@ -82,36 +82,43 @@ export default class BidAPI {
     return tmp.ToArray();
   }
 
-  public sellItem(gid: number, lot: number, price: number): boolean {
+  public async sellItem(
+    gid: number,
+    lot: number,
+    price: number
+  ): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new SellItemAction(gid, lot, price),
       true
     );
     return true;
   }
 
-  public removeItemInSale(uid: number): boolean {
+  public async removeItemInSale(uid: number): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new RemoveItemInSaleAction(uid),
       true
     );
     return true;
   }
 
-  public editItemInSalePrice(uid: number, newPrice: number): boolean {
+  public async editItemInSalePrice(
+    uid: number,
+    newPrice: number
+  ): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
     if (newPrice === 0) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new EditItemInSalePriceAction(uid, newPrice),
       true
     );

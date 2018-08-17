@@ -17,12 +17,12 @@ export default class GatherAPI {
     return this.account.game.managers.gathers.canGather(...resourcesIds);
   }
 
-  public gather(...resourcesIds: number[]): boolean {
+  public async gather(...resourcesIds: number[]): Promise<boolean> {
     // Using canGather will handle the case of resourcesIds being empty
     if (!this.canGather(...resourcesIds)) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(
+    await this.account.scripts.actionsManager.enqueueAction(
       new GatherAction(resourcesIds),
       true
     );

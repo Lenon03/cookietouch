@@ -67,10 +67,9 @@ export default class JsonScriptManager {
     this.script = "";
     this.username = username;
     const content = fs.readFileSync(filePath);
-    this.regexYield();
     beforeDoFile();
     this.script +=
-      fs.readFileSync(path.join(staticPath, "./ScriptsHelpers.js")) +
+      fs.readFileSync(path.join(staticPath, "./ScriptsHelpers.js")).toString() +
       content.toString();
     this.regexAll();
   }
@@ -92,11 +91,6 @@ export default class JsonScriptManager {
     return {
       maps: eval(`${this.script};${name}`)
     };
-  }
-
-  private regexYield() {
-    // const regex = /execute/g;
-    // this.script = this.script.replace(regex, "yield*");
   }
 
   private regexAll() {

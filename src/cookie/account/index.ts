@@ -205,7 +205,7 @@ export default class Account implements IEntity {
         // Sometimes this will fail if we receive more than one captcha
         if (!this.hasGroup && this._wasScriptRunning) {
           await sleep(2000);
-          this.scripts.startScript();
+          await this.scripts.startScript();
           // Only set reset _wasScriptRunning if the script was actually started
           // Because if the bot received another recaptcha, startScript will just return because isBusy will be true
           if (this.scripts.enabled) {
@@ -276,6 +276,6 @@ export default class Account implements IEntity {
       "planification",
       LanguageManager.trans("restartingScript")
     );
-    this.scripts.startScript();
+    await this.scripts.startScript();
   };
 }

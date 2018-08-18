@@ -1,8 +1,8 @@
 {
-    "title": "CookieTouch Documentation",
-    "description": "The CookieTouch documentation",
-    "author": "DevChris",
-    "pdf.fontFamily": "Roboto",
-    "pdf.fontSize": "14",
-    "pdf.pageNumbers": false
+  "title": "CookieTouch Documentation",
+  "description": "The CookieTouch documentation",
+  "author": "SapientiaFr",
+  "pdf.fontFamily": "Roboto",
+  "pdf.fontSize": "14",
+  "pdf.pageNumbers": false
 }

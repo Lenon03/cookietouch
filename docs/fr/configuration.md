@@ -1,11 +1,11 @@
 # CookieTouch API Documentation
-[Summary](SUMMARY.md) | [Single page summary](singlepage.md)
+[Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
 
 <hr>
 
 ## Sommaire
 - [Configuration](#configuration)
-  - [MAX_PODS](#max&#95pods)
+  - [MAX_PODS](#max_pods)
   - [MIN_MONSTERS](#min_monsters)
   - [MAX_MONSTERS](#max_monsters)
   - [MIN_MONSTERS_LEVEL](#min_monsters_level)
@@ -41,6 +41,8 @@ Si vous ne déclarez pas une variable, elle aura une valeur par défaut. Vous n'
 
 *Remarque: ces variables doivent toutes etre définies dans l'object config, dans le cas contraire cela n'aurai aucune utilité.*
 
+<hr>
+
 ## MAX_PODS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -51,6 +53,8 @@ Cette variable permet de configurer le pourcentage de pods au-delà duquel votre
 const config = { MAX_PODS: 100 } // Retour en banque à 100% de pods
 ```
 *Valeur par défaut: Retour en banque à 90% de pods.*
+
+<hr>
 
 ## MIN_MONSTERS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
@@ -63,6 +67,8 @@ const config = { MIN_MONSTERS: 2 } // Combattre les groupes de 2 monstres minimu
 ```
 *Valeur par défaut: 1.*
 
+<hr>
+
 ## MAX_MONSTERS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -74,6 +80,8 @@ const config = { MAX_MONSTERS: 5 } // Combattre les groupes de 5 monstres maximu
 ```
 *Valeur par défaut: 8.*
   
+<hr>
+
 ## MIN_MONSTERS_LEVEL
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -84,6 +92,8 @@ Cette variable permet de configurer le niveau minimum d'un groupe de monstres à
 const config = { MIN_MONSTERS_LEVEL: 200 } // Combattre les groupes de niveau 200 minimum
 ```
 *Valeur par défaut: niveau 1.*
+
+<hr>
 
 ## MAX_MONSTERS_LEVEL
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
@@ -96,6 +106,8 @@ const config = { MAX_MONSTERS_LEVEL: 500 } // Combattre les groupes de niveau 50
 ```
 *Valeur par défaut: niveau 1000.*
   
+<hr>
+
 ## FORBIDDEN_MONSTERS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>
 
@@ -106,6 +118,8 @@ Cette variable permet de configurer les monstres interdits (lorsque vous utilise
 const config = { FORBIDDEN_MONSTERS: [ 148, 134 ] } // Ne pas attaquer les Chef de Guerre Bouftou ou les Boufton Blanc
 ```
 *Valeur par défaut: pas de monstre interdit.*
+
+<hr>
 
 ## MANDATORY_MONSTERS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>
@@ -118,6 +132,8 @@ const config = { MANDATORY_MONSTERS: [ 149 ] } // Attaque uniquement s'il y a un
 ```
 *Valeur par défaut: pas de monstre obligatoire.*
 
+<hr>
+
 ## MAX_FIGHTS_PER_MAP
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -129,6 +145,8 @@ const config = { MAX_FIGHTS_PER_MAP: 10 } // Le bot continuera le script après 
 ```
 *Valeur par défaut: pas de limite au nombre de combat sur la map.*
 
+<hr>
+
 ## ELEMENTS_TO_GATHER
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>
 
@@ -139,6 +157,8 @@ Cette variable permet de configurer les éléments à récolter (lorsque vous ut
 const config = { ELEMENTS_TO_GATHER: [ 38, 43 ] } // Récolte uniquement le Blé et l'Orge
 ```
 *Valeur par défaut: récolte tous les éléments.*
+
+<hr>
 
 ## BANK_PUT_ITEMS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ id: number; quantity: number }></a>
@@ -158,6 +178,8 @@ const config = {
 
 Si vous mettez une quantité de 0, toute la quantité de l'élément sera déposée.
 
+<hr>
+
 ## BANK_GET_ITEMS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ id: number; quantity: number }></a>
 
@@ -175,6 +197,8 @@ const config = {
 
 Si vous mettez une quantité de 0, toute la quantité de l'élément sera récupérée.
 
+<hr>
+
 ## BANK_PUT_KAMAS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -188,6 +212,8 @@ const config = { BANK_PUT_KAMAS: 2000 } // Dépose 2 000 kamas en banque
 
 Si vous mettez 0, tous les kamas seront déposés.
 
+<hr>
+
 ## BANK_GET_KAMAS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
@@ -200,6 +226,8 @@ const config = { BANK_GET_KAMAS: 2000 } // Récupère 2 000 kamas en banque
 *Valeur par défaut: ne récupère pas de kamas.*
 
 Si vous mettez 0, tous les kamas seront récupérés.
+
+<hr>
 
 ## AUTO_REGEN
 - Valeur: `{ items: number[]; store: number; minLife: number; maxLife: number }`
@@ -224,6 +252,8 @@ Les items sont utilisés dans l'ordre, lorsque le premier item n'est plus dispon
 Lors du retour en banque, il prendra en priorité le premier élément si il est disponible en quantité suffisante, sinon il comblera avec le second item jusqu'à atteindre la quantité désirée.
 S'il n'y a plus d'items disponibles, le personnage attend d'avoir retrouvé ses points de vie avant de continuer.
 
+<hr>
+
 ## AUTO_DELETE
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>
 
@@ -241,6 +271,8 @@ Cette fonction est compatible avec le retour en banque, si le personnage est ful
 
 La suppression automatique se fait lorsque MAX_PODS est atteint.
 
+<hr>
+
 ## OPEN_BAGS
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
 
@@ -251,6 +283,8 @@ Cette variable permet de configurer l'ouverture automatique des sacs de récolte
 const config = { OPEN_BAGS: true }
 ```
 *Valeur par défaut: false, pas d'ouverture automatique des sacs.*
+
+<hr>
 
 ## DISPLAY_GATHER_COUNT
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
@@ -263,6 +297,8 @@ const config = { DISPLAY_GATHER_COUNT: true } // Affiche le compteur de récolte
 ```
 *Valeur par défaut: pas d'affichage du compteur de récoltes.*
 
+<hr>
+
 ## DISPLAY_FIGHT_COUNT
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
 
@@ -274,7 +310,12 @@ const config = { DISPLAY_FIGHT_COUNT: true } // Affiche le compteur de combats
 ```
 *Valeur par défaut: pas d'affichage du compteur de combats.*
 
+<hr>
+
 # Mise en pratique
+
+**Exemple:**
+
 ```js
 const config = {
   MAX_PODS: 90, // Retour en banque à 90% pods
@@ -286,4 +327,13 @@ const config = {
     { item: 548, quantity: 1 } // Récupère une Potion de Rappel à chaque passage en banque
   ]
 }
+```
+
+Nous pouvons avoir accès à tout moment à ces variables. Donc on peut aussi les modifier dans une fonction custom !
+
+**Exemple:**
+
+```js
+config.MAX_MONSTERS = 3;
+printMessage(config.MAX_MONSTERS); // Affiche 3
 ```

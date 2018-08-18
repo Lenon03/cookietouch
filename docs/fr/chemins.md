@@ -73,7 +73,8 @@ Les variables ci-dessous permettent de créer des trajets avec les paramètres s
 </tbody>
 </table>
 
-Exemple: 
+**Exemple:**
+*Dans cet exemple, nous utilisons une fonction custom qui nous permet d'utiliser une potion si nous sommes sur la map 67371008.*
 ```js
 const move = [
     { map : 88081177, path : "top" },
@@ -84,10 +85,10 @@ const move = [
     { map : 88081177, custom: MaFonction},
 ]
 ```
-Dans cet exemple, nous utilisons une fonction custom qui nous permet d'utiliser une potion si nous sommes sur la map 67371008.
+<hr>
 
+<h2 id = "move">move</h2>
 
-## move
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ map; path; gather; fight; npcBank; phenix; door; custom }></a>
 
 Contient le trajet et la plupart des actions du bot.
@@ -105,8 +106,9 @@ if (currentMapId === 67371008) {
   yield* delay(1000);
 }
 ```
+<hr>
 
-## bank
+<h2 id = "bank">bank</h2>
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ map; path; gather; fight; npcBank; phenix; door; custom }></a>
 
 Contient le trajet vers la banque.
@@ -128,7 +130,9 @@ Ici, les mapId sont utilisés pour différencier l'interieur de l'exterieur de l
 
 npcBank est définit à true, le bot va donc ouvrir la banque et executer les actions prédéfinies dans [Configuration](Configuration.md).
 
-## phenix
+<hr>
+
+<h2 id = "phenix">phenix</h2>
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ map; path; gather; fight; npcBank; phenix; door; custom }></a>
 
 Contient le trajet vers le phenix.
@@ -144,3 +148,4 @@ const phenix = [
 ```
   
 Ce n'est pas un trajet obligatoire si le bot ne combat pas et n'a aucun risque de devenir un fantome.
+

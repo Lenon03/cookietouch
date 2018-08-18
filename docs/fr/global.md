@@ -1,5 +1,5 @@
 # CookieTouch API Documentation
-[Summary](SUMMARY.md) | [Single page summary](singlepage.md)
+[Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
 
 <hr>
 
@@ -8,12 +8,12 @@
   - [isFighting](#isfighting)
   - [isGathering](#isgathering)
   - [isInDialog](#isindialog)
-  - [printMessage](#printmessagemessage-string)
-  - [printDebug](#printdebugmessage-string)
-  - [printSuccess](#printsuccessmessage-string)
-  - [printError](#printerrormessage-string)
+  - [printMessage](#global-print-message)
+  - [printDebug](#global-print-debug)
+  - [printSuccess](#global-print-success)
+  - [printError](#global-print-error)
   - [stopScript](#stopscript)
-  - [delay](#delayms-number)
+  - [delay](#global-delay)
   - [leaveDialogFunc](#leavedialogfunc)
   - [leaveDialog](#leavedialog)
 
@@ -55,38 +55,44 @@ if (isInDialog()) {
   printMessage("Un dialogue est ouvert !");
 }
 ```
+<hr>
+<h2 id="global-print-message">printMessage(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)</h2>
 
-## printMessage(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)
 Affiche un message dans la console.
 
 **Exemple:**
 ```js
 printMessage("Ceci est un message.");
 ```
+<hr>
+<h2 id="global-print-debug">printDebug(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)</h2>
 
-## printDebug(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)
 Affiche un message de debug dans la console.
 
 **Exemple:**
 ```js
 printDebug("Ceci est un message de debug.");
 ```
+<hr>
+<h2 id="global-print-success">printSuccess(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)</h2>
 
-## printSuccess(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)
 Affiche un succès dans la console.
 
 **Exemple:**
 ```js
 printSuccess("Ceci est un message de succès.");
 ```
+<hr>
+<h2 id="global-print-error">printError(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)</h2>
 
-## printError(<code>message</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>)
+
 Affiche une erreur dans la console.
 
 **Exemple:**
 ```js
 printError("Ceci est un message d'erreur");
 ```
+<hr>
 
 ## stopScript()
 Stoppe et termine le script immédiatement.
@@ -95,14 +101,16 @@ Stoppe et termine le script immédiatement.
 ```js
 stopScript();
 ```
+<hr>
+<h2 id="global-delay">delay(<code>ms</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>)</h2>
 
-## delay(<code>ms</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>)
 Fait une pause dans le script.
 
 **Exemple:**
 ```js
-delay(3000); // Fait une pause de 3000ms (3 secondes).
+yield* await delay(3000); // Fait une pause de 3000ms (3 secondes).
 ```
+<hr>
 
 ## leaveDialogFunc()
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
@@ -115,6 +123,7 @@ if (leaveDialogFunc()) {
   printMessage("Un dialogue était ouvert, on l'a fermé!");
 }
 ```
+<hr>
 
 ## leaveDialog()
 Ferme une boite de dialogue.
@@ -123,6 +132,6 @@ Ferme une boite de dialogue.
 ```js
 if (isInDialog()) {
   printMessage("Un dialogue est ouvert, on le ferme !");
-  leaveDialog();
+  yield* await leaveDialog();
 }
 ```

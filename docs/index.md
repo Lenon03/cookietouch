@@ -1,5 +1,5 @@
 
 # CookieTouch Documentation
 
-* [English](en/)
+* [English](en/) - not up to date
 * [French](fr/)

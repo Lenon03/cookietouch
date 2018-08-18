@@ -1,6 +1,6 @@
 # CookieTouch API Documentation
 
-[Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
+[Summary](SUMMARY.md) | [Single page summary](singlepage.md)
 
 <hr>
 

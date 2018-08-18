@@ -15,54 +15,77 @@ Les variables ci-dessous permettent de créer des trajets avec les paramètres s
 <table>
 <thead>
 <tr>
-<th>Paramètres</th>
+<th>Param&egrave;tres</th>
 <th>Type</th>
 <th>Description</th>
+ <th>Exemple</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>map</td>
 <td>number | string</td>
-<td>Correspond à <a href="Map.md#currentpos">currentPos</a> et à <a href="Map.md#currentmapid">currentMapId</a></td>
+<td>Correspond &agrave; <a href="Map.md#currentpos">currentPos</a> et &agrave; <a href="Map.md#currentmapid">currentMapId</a></td>
+<td></td>
 </tr>
 <tr>
 <td>path</td>
 <td>string</td>
-<td>Correspond à <a href="Map.md#changemapwhere-string">where</a>, peut aussi etre un cellId</td>
+<td>Correspond &agrave; <a href="Map.md#changemapwhere-string">where</a>, peut aussi etre un cellId</td>
+<td>path : 355 ou path : "top"</td>
 </tr>
 <tr>
 <td>gather</td>
 <td>boolean</td>
-<td>True si le bot doit récolter des ressources, sinon false</td>
+<td>True si le bot doit r&eacute;colter des ressources, sinon false</td>
+<td>gather : true</td>
 </tr>
 <tr>
 <td>fight</td>
 <td>boolean</td>
 <td>True si le bot doit combattre, sinon false</td>
+<td>fight : true</td>
 </tr>
 <tr>
 <td>npcBank</td>
 <td>boolean</td>
 <td>True si le bot doit ouvrir la banque, sinon false</td>
+<td>npcBank = true</td>
 </tr>
 <tr>
 <td>phenix</td>
 <td>number</td>
-<td>Correspond au cellId du phenix à utiliser</td>
+<td>Correspond au cellId du phenix &agrave; utiliser</td>
+<td>phenix : 355</td>
 </tr>
 <tr>
 <td>door</td>
 <td>number</td>
-<td>Correspond au cellId de la porte à utiliser</td>
+<td>Correspond au cellId de la porte &agrave; utiliser</td>
+<td>door : 355</td>
 </tr>
 <tr>
 <td>custom</td>
 <td>GeneratorFunction</td>
 <td>Permet d'executer un fonction custom</td>
+<td>custom : MaFonction</td>
 </tr>
 </tbody>
 </table>
+
+##Exemple: 
+```js
+const move = [
+    { map : 88081177, path : "top" },
+    { map : 88081177, path : 355 },
+    { map : 88081177, gather: true},
+    { map : 88081177, fight : true },
+    { map : 88081177, door: 355},
+    { map : 88081177, custom: MaFonction},
+]
+```
+Dans cet exemple, nous utilisons une fonction custom qui nous permet d'utiliser une potion si nous sommes sur la map 67371008.
+
 
 ## move
 - Valeur: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">Array<{ map; path; gather; fight; npcBank; phenix; door; custom }></a>
@@ -112,4 +135,12 @@ Contient le trajet vers le phenix.
 
 Il est important que le bot se trouve dans l'une des maps du chemin phenix pour commencer.
 
+```js 
+const phenix = [ 
+    { map: "67371008", phenix: 192 }, 
+    { map: "13,19", path: "bottom" },
+    { map: "13,20", path: "left" }
+] 
+```
+  
 Ce n'est pas un trajet obligatoire si le bot ne combat pas et n'a aucun risque de devenir un fantome.

@@ -1,5 +1,5 @@
 # CookieTouch API Documentation
-[Summary](SUMMARY.md) | [Single page summary](singlepage.md)
+[Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
 
 <hr>
 
@@ -26,7 +26,7 @@ Les variables ci-dessous permettent de créer des trajets avec les paramètres s
 <td>map</td>
 <td>number | string</td>
 <td>Correspond &agrave; <a href="Map.md#currentpos">currentPos</a> et &agrave; <a href="Map.md#currentmapid">currentMapId</a></td>
-<td></td>
+<td>map : 88081177 ou map : "-2,0"</td>
 </tr>
 <tr>
 <td>path</td>

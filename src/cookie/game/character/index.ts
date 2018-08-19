@@ -172,12 +172,9 @@ export default class Character {
     }
 
     while (statsPointsLeft > 0) {
-      // const neededPts = data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
-
-      // const tmp = data.filter(d => baseStats >= d[0]);
-      // const neededPts = tmp[tmp.length - 1][1];
-
-      const neededPts = data.reverse().find(d => baseStats >= d[0])[1];
+      data = data.reverse();
+      const neededPts = data.find(d => baseStats >= d[0])[1];
+      data = data.reverse();
 
       if (statsPointsLeft < neededPts) {
         break;
@@ -269,7 +266,7 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessageFree("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeRequestMessage", {
       spellId,
       spellLevel: level
     });
@@ -514,7 +511,7 @@ export default class Character {
 
   public UpdateLifePointsRegenBeginMessage(message: any) {
     this.regenTimer = global.setInterval(
-      this.regenTimerCallBack.bind(this),
+      this.regenTimerCallBack,
       message.regenRate * 100
     );
   }
@@ -524,14 +521,14 @@ export default class Character {
     global.clearInterval(this.regenTimer);
   }
 
-  private regenTimerCallBack() {
+  private regenTimerCallBack = () => {
     if (this.stats.lifePoints >= this.stats.maxLifePoints) {
       global.clearInterval(this.regenTimer);
       return;
     }
     this.stats.lifePoints++;
     this.onStatsUpdated.trigger();
-  }
+  };
 
   private getNeededPointsToBoostStat(stat: BoostableStats): number {
     let data: number[][] = null;
@@ -568,6 +565,6 @@ export default class Character {
         throw new UnreachableCaseError(stat);
     }
 
-    return data.reverse().find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
+    return data.reverse().find(d => baseStats >= d[0])[1];
   }
 }

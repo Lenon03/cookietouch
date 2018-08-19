@@ -1,11 +1,9 @@
 [FR]
 
-- Correction du bug d'auto boost des stats
-- Amélioration du système de cache (fichiers des maps et des données du jeu)
-- Correction de la méthode joinFriend pour les scripts
+- Ajout du copier/coller sur MacOS (ainsi que d'autres commandes)
+- Correction de l'augmentation automatique des sorts
 
 [EN]
 
-- Fix auto boost stats
-- Better cache system for maps and other game data files
-- Fix joinFriend method in scripts
+- Add copy/paste commands on MacOS
+- Fix auto levelup spells

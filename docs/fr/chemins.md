@@ -100,10 +100,10 @@ const move = [
   { map: "67371008", custom: usePotion },
 ]
 
-function* usePotion() {
+async function* usePotion() {
 if (currentMapId === 67371008) {
-  yield* inventory.useItem(6965);
-  yield* delay(1000);
+  yield* await inventory.useItem(6965);
+  yield* await delay(1000);
 }
 ```
 <hr>

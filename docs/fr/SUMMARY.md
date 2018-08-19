@@ -5,7 +5,7 @@
 
 # Sommaire
 
-* [Introduction](README.md)
+* [Introduction](introduction.md)
 * [HDV](hdv.md)
 * [Personnage](personnage.md)
 * [Configuration](configuration.md)

@@ -172,7 +172,12 @@ export default class Character {
     }
 
     while (statsPointsLeft > 0) {
-      const neededPts = data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
+      // const neededPts = data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
+
+      // const tmp = data.filter(d => baseStats >= d[0]);
+      // const neededPts = tmp[tmp.length - 1][1];
+
+      const neededPts = data.reverse().find(d => baseStats >= d[0])[1];
 
       if (statsPointsLeft < neededPts) {
         break;
@@ -557,8 +562,12 @@ export default class Character {
         data = this.breedData.statsPointsForWisdom;
         baseStats = this.stats.wisdom.base;
         break;
+      case BoostableStats.NONE:
+        break;
+      default:
+        throw new UnreachableCaseError(stat);
     }
 
-    return data.find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
+    return data.reverse().find(d => baseStats >= d[0])[1]; // TODO: Replace by findLast
   }
 }

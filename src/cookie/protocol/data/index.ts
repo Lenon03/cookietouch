@@ -2,10 +2,15 @@ import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import Data from "@/protocol/data/Data";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
+import {
+  existsAsync,
+  mkdirp,
+  readFileAsync,
+  writeFileAsync
+} from "@/utils/fsAsync";
 import axios from "axios";
 import { remote } from "electron";
-import * as fs from "fs";
-import * as path from "path";
+import { join } from "path";
 
 export interface IDataResponse<T> {
   id: number;
@@ -20,9 +25,9 @@ export default class DataManager {
     const myArray: Array<IDataResponse<T>> = [];
     const newIds = [];
     for (const id of ids) {
-      const filePath = this.getFilePath(DataTypes[type], id);
-      if (fs.existsSync(filePath)) {
-        const file = fs.readFileSync(filePath);
+      const filePath = await this.getFilePath(DataTypes[type], id);
+      if (await existsAsync(filePath)) {
+        const file = await readFileAsync(filePath);
         myArray.push(JSON.parse(file.toString()));
       } else {
         newIds.push(id);
@@ -44,16 +49,15 @@ export default class DataManager {
         ids: newIds
       }
     );
-    for (const item of Object.entries(response.data)) {
+    const writePromises = Object.entries(response.data).map(async item => {
       const dataRes = {
         id: parseInt(item["0"], 10),
         object: item["1"]
       } as IDataResponse<T>;
-      fs.writeFileSync(
-        this.getFilePath(DataTypes[type], dataRes.id),
-        JSON.stringify(dataRes)
-      );
-    }
+      const filePath = await this.getFilePath(DataTypes[type], dataRes.id);
+      return writeFileAsync(filePath, JSON.stringify(dataRes));
+    });
+    Promise.all(writePromises); // TODO: await or not?
     this.buildData(response.data, myArray);
     return myArray;
   }
@@ -71,27 +75,18 @@ export default class DataManager {
     }
   }
 
-  private static getFilePath(type: string, id: number): string {
-    let folderPath = path.join(remote.app.getPath("userData"), "assets");
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    folderPath = path.join(folderPath, DTConstants.assetsVersion);
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    folderPath = path.join(folderPath, "data");
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    folderPath = path.join(folderPath, GlobalConfiguration.lang);
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    folderPath = path.join(folderPath, type);
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    return path.join(folderPath, `${id}.json`);
+  private static async getFilePath(type: string, id: number): Promise<string> {
+    const folderPath = join(
+      remote.app.getPath("userData"),
+      "assets",
+      DTConstants.assetsVersion,
+      "data",
+      GlobalConfiguration.lang,
+      type
+    );
+
+    await mkdirp(folderPath);
+
+    return join(folderPath, `${id}.json`);
   }
 }

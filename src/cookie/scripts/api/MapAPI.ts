@@ -199,8 +199,8 @@ export default class MapAPI {
     );
   }
 
-  public joinFriend(name: string) {
-    this.account.scripts.actionsManager.enqueueAction(
+  public async joinFriend(name: string) {
+    await this.account.scripts.actionsManager.enqueueAction(
       new JoinFriendAction(name),
       true
     );

@@ -204,7 +204,7 @@ export default class Group implements IEntity {
     await Promise.all(
       tasks.map(t => {
         t.callback();
-        Promise.resolve();
+        return Promise.resolve();
       })
     ); // TODO: Check this
   }

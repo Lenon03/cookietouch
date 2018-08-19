@@ -143,8 +143,8 @@ async function* waitMapChange(delay) {
     yield;
   }
 }
-function* joinFriend(name) {
-  if (API.map.joinFriend(name)) {
+async function* joinFriend(name) {
+  if (await API.map.joinFriend(name)) {
     yield;
   }
 }

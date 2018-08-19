@@ -550,11 +550,15 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
   };
 
   private getAllItems = async () => {
+    const inventoryItems = this.props.account.game.character.inventory.objects
+      .ToArray()
+      .map(o => o.gid);
+    if (inventoryItems.length === 0) {
+      return;
+    }
     const res = await DataManager.get<Items>(
       DataTypes.Items,
-      ...this.props.account.game.character.inventory.objects
-        .ToArray()
-        .map(o => o.gid)
+      ...inventoryItems
     );
     this.setState({
       allItems: res.map(o => o.object)

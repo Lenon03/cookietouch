@@ -85,7 +85,9 @@ export default class DataManager {
       type
     );
 
-    await mkdirp(folderPath);
+    if (!(await existsAsync(folderPath))) {
+      await mkdirp(folderPath);
+    }
 
     return join(folderPath, `${id}.json`);
   }

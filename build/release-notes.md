@@ -1,9 +1,9 @@
 [FR]
 
-- Ajout du copier/coller sur MacOS (ainsi que d'autres commandes)
-- Correction de l'augmentation automatique des sorts
+- Ajout d'un bouton "Acheter Bonus Pack" (1 semaine en payant en kamas)
+- Correction de la date de fin du bonus pack
 
 [EN]
 
-- Add copy/paste commands on MacOS
-- Fix auto levelup spells
+- Add "Buy Bonus Pack" button (1 week by Kamas)
+- Fix bonus pack end date

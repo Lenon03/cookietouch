@@ -87,10 +87,9 @@ export default class FloodExtension {
     const seekChannelSentences = this.getSentences(
       ChatChannelsMultiEnum.CHANNEL_SEEK
     );
-    if (seekChannelSentences.Count() > 0) {
-      const sentence = seekChannelSentences.ElementAt(
-        getRandomInt(0, seekChannelSentences.Count() - 1)
-      );
+    if (seekChannelSentences.length > 0) {
+      const sentence =
+        seekChannelSentences[getRandomInt(0, seekChannelSentences.length - 1)];
       await this.account.game.chat.sendMessage(
         this.setAttributes(sentence.content),
         sentence.channel
@@ -105,10 +104,11 @@ export default class FloodExtension {
     const salesChannelSentences = this.getSentences(
       ChatChannelsMultiEnum.CHANNEL_SALES
     );
-    if (salesChannelSentences.Count() > 0) {
-      const sentence = salesChannelSentences.ElementAt(
-        getRandomInt(0, salesChannelSentences.Count() - 1)
-      );
+    if (salesChannelSentences.length > 0) {
+      const sentence =
+        salesChannelSentences[
+          getRandomInt(0, salesChannelSentences.length - 1)
+        ];
       await this.account.game.chat.sendMessage(
         this.setAttributes(sentence.content),
         sentence.channel
@@ -123,10 +123,11 @@ export default class FloodExtension {
     const generalChannelSentences = this.getSentences(
       ChatChannelsMultiEnum.CHANNEL_GLOBAL
     );
-    if (generalChannelSentences.Count() > 0) {
-      const sentence = generalChannelSentences.ElementAt(
-        getRandomInt(0, generalChannelSentences.Count() - 1)
-      );
+    if (generalChannelSentences.length > 0) {
+      const sentence =
+        generalChannelSentences[
+          getRandomInt(0, generalChannelSentences.length - 1)
+        ];
       await this.account.game.chat.sendMessage(
         this.setAttributes(sentence.content),
         sentence.channel
@@ -139,10 +140,11 @@ export default class FloodExtension {
       return;
     }
     const privateChannelSentences = this.getPrivateSentences(true, false);
-    if (privateChannelSentences.Count() > 0) {
-      const sentence = privateChannelSentences.ElementAt(
-        getRandomInt(0, privateChannelSentences.Count() - 1)
-      );
+    if (privateChannelSentences.length > 0) {
+      const sentence =
+        privateChannelSentences[
+          getRandomInt(0, privateChannelSentences.length - 1)
+        ];
       await this.account.game.chat.sendMessageTo(
         this.setAttributes(sentence.content, player),
         player.name
@@ -155,10 +157,11 @@ export default class FloodExtension {
       return;
     }
     const privateChannelSentences = this.getPrivateSentences(false, true);
-    if (privateChannelSentences.Count() > 0) {
-      const sentence = privateChannelSentences.ElementAt(
-        getRandomInt(0, privateChannelSentences.Count() - 1)
-      );
+    if (privateChannelSentences.length > 0) {
+      const sentence =
+        privateChannelSentences[
+          getRandomInt(0, privateChannelSentences.length - 1)
+        ];
       await this.account.game.chat.sendMessageTo(
         this.setAttributes(sentence.content, player),
         player.name
@@ -185,11 +188,11 @@ export default class FloodExtension {
   }
 
   private getSentences(channel: ChatChannelsMultiEnum) {
-    return this.config.sentences.Where(s => s.channel === channel);
+    return this.config.sentences.filter(s => s.channel === channel);
   }
 
   private getPrivateSentences(onPlayerJoined: boolean, onPlayerLeft: boolean) {
-    return this.config.sentences.Where(s => {
+    return this.config.sentences.filter(s => {
       if (onPlayerJoined && !s.onPlayerJoined) {
         return false;
       }

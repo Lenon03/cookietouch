@@ -13,6 +13,9 @@ export default class AccountData {
   public nickname: string;
   public goultines: number;
 
+  public bakHardToSoftCurrentRate: number;
+  public bakSoftToHardCurrentRate: number;
+
   get isSubscriber(): boolean {
     return new Date() < this.subscriptionEndDate;
   }

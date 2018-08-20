@@ -122,7 +122,7 @@ export default class Network implements IClearable {
     this.socket.open();
   }
 
-  public async send(call: string, data?: any) {
+  public send(call: string, data?: any) {
     if (!this.connected) {
       return;
     }
@@ -144,8 +144,8 @@ export default class Network implements IClearable {
     this.socket.write(msg);
   }
 
-  public async sendMessageFree(messageName: string, data?: any) {
-    await this.send("sendMessage", { type: messageName, data });
+  public sendMessageFree(messageName: string, data?: any) {
+    this.send("sendMessage", { type: messageName, data });
   }
 
   // Remove for now because class are rename in production mode...

@@ -466,5 +466,6 @@
   "invalidCredentials": "Invalid Credentials",
   "emailValidated": "You have to verified your email !",
   "price": "Price",
-  "salesDelay": "Sales delay"
+  "salesDelay": "Sales delay",
+  "buyBonusPack": "Buy Bonus Pack"
 }

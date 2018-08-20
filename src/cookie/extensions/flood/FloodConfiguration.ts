@@ -4,7 +4,6 @@ import FloodSentence, {
 } from "@/extensions/flood/FloodSentence";
 import LiteEvent from "@/utils/LiteEvent";
 import firebase from "firebase";
-import { List } from "linqts";
 
 interface IFloodConfigurationJSON {
   seekChannelInterval: number;
@@ -13,11 +12,11 @@ interface IFloodConfigurationJSON {
   sentences: IFloodSentence[];
 }
 
-export default class FloodConfiguration {
+export default class FloodConfiguration implements IFloodConfigurationJSON {
   public seekChannelInterval: number;
   public salesChannelInterval: number;
   public generalChannelInterval: number;
-  public sentences: List<FloodSentence>;
+  public sentences: FloodSentence[];
 
   private authChangedUnsuscribe: firebase.Unsubscribe;
   private stopDataSnapshot: () => void;
@@ -32,7 +31,7 @@ export default class FloodConfiguration {
     this.seekChannelInterval = 60;
     this.salesChannelInterval = 120;
     this.generalChannelInterval = 30;
-    this.sentences = new List();
+    this.sentences = [];
   }
 
   public get Changed() {
@@ -80,7 +79,7 @@ export default class FloodConfiguration {
       generalChannelInterval: this.generalChannelInterval,
       salesChannelInterval: this.salesChannelInterval,
       seekChannelInterval: this.seekChannelInterval,
-      sentences: this.sentences.ToArray().map(o => o.toJSON())
+      sentences: this.sentences.map(o => o.toJSON())
     };
     await this.globalDoc.set(toSave);
   }
@@ -93,9 +92,7 @@ export default class FloodConfiguration {
     this.seekChannelInterval = json.seekChannelInterval;
     this.salesChannelInterval = json.salesChannelInterval;
     this.generalChannelInterval = json.generalChannelInterval;
-    this.sentences = new List(
-      json.sentences.map(o => FloodSentence.fromJSON(o))
-    );
+    this.sentences = json.sentences.map(o => FloodSentence.fromJSON(o));
     this.onChanged.trigger();
   }
 }

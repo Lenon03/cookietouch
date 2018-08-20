@@ -22,6 +22,16 @@ import { displayTime, sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
 import moment from "moment";
 
+export enum BonusPackMoney {
+  KAMAS = "KMS",
+  GOULTINES = "GOU"
+}
+
+export enum BonusPackDuration {
+  WEEK = 7,
+  MONTH = 30
+}
+
 export default class Account implements IEntity {
   public accountConfig: AccountConfiguration;
   public game: Game;
@@ -161,6 +171,74 @@ export default class Account implements IEntity {
     if (this.isInDialog) {
       this.network.sendMessageFree("LeaveDialogRequestMessage");
     }
+  }
+
+  public buyBonusPack(
+    money = BonusPackMoney.KAMAS,
+    duration = BonusPackDuration.WEEK
+  ) {
+    const handleSetShopDetailsSuccess = (account: Account, message: any) => {
+      this.network.send("shopOpenRequest");
+      this.network.unregisterMessage(setShopDetailsSuccessHandlerID);
+    };
+
+    const setShopDetailsSuccessHandlerID = this.network.registerMessage(
+      "setShopDetailsSuccess",
+      handleSetShopDetailsSuccess
+    );
+
+    const handleShopOpenSuccess = (account: Account, message: any) => {
+      this.network.send("shopOpenCategoryRequest", {
+        categoryId: 557,
+        page: 1,
+        size: 3
+      });
+      this.network.unregisterMessage(handleShopOpenSuccessHandlerID);
+    };
+
+    const handleShopOpenSuccessHandlerID = this.network.registerMessage(
+      "shopOpenSuccess",
+      handleShopOpenSuccess
+    );
+
+    const handleShopOpenCategorySuccess = (account: Account, message: any) => {
+      const choice = message.articles.find(a =>
+        (a.name as string).includes(duration.toString())
+      );
+      this.network.send("shopBuyRequest", {
+        amountHard: choice.price,
+        amountSoft: Math.round(
+          choice.price * this.data.bakHardToSoftCurrentRate
+        ),
+        currency: money,
+        isMysteryBox: false,
+        purchase: [
+          {
+            id: choice.id,
+            quantity: 1
+          }
+        ]
+      });
+      this.network.unregisterMessage(shopOpenCategorySuccessHandlerID);
+    };
+
+    const shopOpenCategorySuccessHandlerID = this.network.registerMessage(
+      "shopOpenCategorySuccess",
+      handleShopOpenCategorySuccess
+    );
+
+    const handleShopBuySuccess = (account: Account, message: any) => {
+      console.log("GOOD BUY!!!!");
+      this.network.unregisterMessage(shopBuySuccessHandlerID);
+    };
+
+    const shopBuySuccessHandlerID = this.network.registerMessage(
+      "shopBuySuccess",
+      handleShopBuySuccess
+    );
+
+    this.network.send("setShopDetailsRequest", {});
+    this.network.send("restoreMysteryBox");
   }
 
   public async handleRecaptcha(sitekey: string, tries: number = 1) {

@@ -466,5 +466,6 @@
   "invalidCredentials": "Identifiants incorrects.",
   "emailValidated": "Vous devez vérifier votre email !",
   "price": "Prix",
-  "salesDelay": "Délais de vente"
+  "salesDelay": "Délais de vente",
+  "buyBonusPack": "Acheter le Bonus Pack"
 }

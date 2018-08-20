@@ -36,7 +36,9 @@ export default class MapsManager {
       "maps"
     );
 
-    await mkdirp(folderPath);
+    if (!(await existsAsync(folderPath))) {
+      await mkdirp(folderPath);
+    }
 
     return join(folderPath, `${id}.json`);
   }

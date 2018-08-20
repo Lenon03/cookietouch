@@ -9,6 +9,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
 import CookieMain from "@renderer/CookieMain";
 import { infosStyles } from "@renderer/pages/Infos/styles";
 import {
@@ -22,6 +23,7 @@ import * as React from "react";
 class Infos extends React.Component<InfosProps, IInfosState> {
   public readonly idleState: IInfosState = {
     bonuspack: "",
+    characterConnected: false,
     energyPoints: -1,
     energyPointsMax: -1,
     experience: -1,
@@ -42,6 +44,9 @@ class Infos extends React.Component<InfosProps, IInfosState> {
   public state: IInfosState = this.idleState;
 
   public componentDidMount() {
+    this.props.account.game.character.CharacterSelected.on(
+      this.characterSelected
+    );
     this.props.account.game.character.StatsUpdated.on(this.statsUpdated);
     this.props.account.game.fight.FighterStatsUpdated.on(
       this.fighterStatsUpdated
@@ -56,6 +61,9 @@ class Infos extends React.Component<InfosProps, IInfosState> {
   }
 
   public componentWillUnmount() {
+    this.props.account.game.character.CharacterSelected.off(
+      this.characterSelected
+    );
     this.props.account.game.character.StatsUpdated.off(this.statsUpdated);
     this.props.account.game.fight.FighterStatsUpdated.off(
       this.fighterStatsUpdated
@@ -74,11 +82,12 @@ class Infos extends React.Component<InfosProps, IInfosState> {
 
     return (
       <div className={classes.root}>
-        {/* <Paper className={classes.paper}> */}
         <Paper className={classes.paper}>
           <Grid container={true} spacing={0}>
             <Grid item={true} xs={10}>
-              Script: {this.state.scriptName}
+              <Typography variant="subheading">
+                Script: {this.state.scriptName}
+              </Typography>
               <Button
                 size="small"
                 variant="raised"
@@ -147,15 +156,28 @@ class Infos extends React.Component<InfosProps, IInfosState> {
         <Paper className={classes.paper}>
           <Grid container={true} spacing={0}>
             <Grid item={true} xs={4}>
-              {this.state.position}
+              <Typography variant="subheading">
+                {this.state.position}
+              </Typography>
             </Grid>
-            <Grid item={true} xs={4}>
-              {this.state.bonuspack}
+            <Grid item={true} xs={6}>
+              <Typography variant="subheading">
+                {this.state.bonuspack}
+              </Typography>
+              <Button
+                onClick={this.buyBonusPack}
+                disabled={!this.state.characterConnected}
+                size="small"
+                variant="raised"
+                color="secondary"
+              >
+                {LanguageManager.trans("buyBonusPack")}
+              </Button>
             </Grid>
-            <Grid item={true} xs={4}>
-              <span style={{ float: "right" }}>
+            <Grid item={true} xs={2}>
+              <Typography style={{ float: "right" }} variant="subheading">
                 Status: {AccountStates[this.state.status]}
-              </span>
+              </Typography>
             </Grid>
           </Grid>
         </Paper>
@@ -168,10 +190,13 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   size="lg"
                   icon="heart"
                 />
-                {(this.state.lifePoints !== -1
-                  ? (this.state.lifePoints / this.state.lifePointsMax) * 100
-                  : 0
-                ).toFixed(2)}%
+                <Typography variant="subheading">
+                  {(this.state.lifePoints !== -1
+                    ? (this.state.lifePoints / this.state.lifePointsMax) * 100
+                    : 0
+                  ).toFixed(2)}
+                  %
+                </Typography>
               </div>
               <Tooltip
                 title={`${this.state.lifePoints} / ${this.state.lifePointsMax}`}
@@ -194,10 +219,13 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   size="lg"
                   icon="briefcase"
                 />
-                {(this.state.weight !== -1
-                  ? (this.state.weight / this.state.weightMax) * 100
-                  : 0
-                ).toFixed(2)}%
+                <Typography variant="subheading">
+                  {(this.state.weight !== -1
+                    ? (this.state.weight / this.state.weightMax) * 100
+                    : 0
+                  ).toFixed(2)}
+                  %
+                </Typography>
               </div>
               <Tooltip title={`${this.state.weight} / ${this.state.weightMax}`}>
                 <LinearProgress
@@ -218,10 +246,13 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   size="lg"
                   icon="star"
                 />
-                {(this.state.experiencePercent !== -1
-                  ? this.state.experiencePercent
-                  : 0
-                ).toFixed(2)}%
+                <Typography variant="subheading">
+                  {(this.state.experiencePercent !== -1
+                    ? this.state.experiencePercent
+                    : 0
+                  ).toFixed(2)}
+                  %
+                </Typography>
               </div>
               <Tooltip
                 title={`${this.state.experience} / ${this.state.experienceMax}`}
@@ -244,10 +275,14 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   size="lg"
                   icon="bolt"
                 />
-                {(this.state.energyPoints !== -1
-                  ? (this.state.energyPoints / this.state.energyPointsMax) * 100
-                  : 0
-                ).toFixed(2)}%
+                <Typography variant="subheading">
+                  {(this.state.energyPoints !== -1
+                    ? (this.state.energyPoints / this.state.energyPointsMax) *
+                      100
+                    : 0
+                  ).toFixed(2)}
+                  %
+                </Typography>
               </div>
               <Tooltip
                 title={`${this.state.energyPoints} / ${
@@ -272,17 +307,18 @@ class Infos extends React.Component<InfosProps, IInfosState> {
                   className={classes.icon}
                   size="lg"
                   icon={faKickstarterK}
-                />{" "}
-                {this.state.kamas}
+                />
+                <Typography variant="subheading">{this.state.kamas}</Typography>
               </div>
             </Grid>
             <Grid item={true} xs={2}>
-              <FontAwesomeIcon className={classes.icon} size="lg" icon="gem" />{" "}
-              {this.state.goultines}
+              <FontAwesomeIcon className={classes.icon} size="lg" icon="gem" />
+              <Typography variant="subheading">
+                {this.state.goultines}
+              </Typography>
             </Grid>
           </Grid>
         </Paper>
-        {/* </Paper> */}
       </div>
     );
   }
@@ -337,6 +373,14 @@ class Infos extends React.Component<InfosProps, IInfosState> {
   private stop = () => {
     this.props.account.stop();
     this.setState(this.idleState);
+  };
+
+  private buyBonusPack = () => {
+    this.props.account.buyBonusPack();
+  };
+
+  private characterSelected = () => {
+    this.setState({ characterConnected: true });
   };
 
   private mapChanged = () => {

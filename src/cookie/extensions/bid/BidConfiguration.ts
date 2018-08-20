@@ -12,7 +12,7 @@ interface IBidConfigurationJSON {
   objectsToSell: IObjectToSellEntry[];
 }
 
-export default class BidConfiguration {
+export default class BidConfiguration implements IBidConfigurationJSON {
   public interval: number;
   public scriptPath: string;
   public objectsToSell: ObjectToSellEntry[];

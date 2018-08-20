@@ -88,12 +88,7 @@ export default class IdentificationFrame implements IFrame {
       message.subscriptionEndDate === 0
         ? null
         : moment()
-            .add(
-              Math.floor(
-                (message.subscriptionEndDate - Date.now()) / 1000 / 60 / 60 / 24
-              ),
-              "days"
-            )
+            .add(message.subscriptionEndDate - Date.now(), "ms")
             .toDate();
     account.data.wasAlreadyConnected = message.wasAlreadyConnected;
   }

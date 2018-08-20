@@ -24,6 +24,7 @@ export interface IInfosState {
   weightMax: number;
   goultines: number;
   bonuspack: string;
+  characterConnected: boolean;
 }
 
 export type InfosProps = IInfosProps & WithStyles<InfosStyle>;

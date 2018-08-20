@@ -9,6 +9,16 @@ export default class GoultinesFrame implements IFrame {
       this.HandlemoneyGoultinesAmountSuccess,
       this
     );
+    Frames.dispatcher.register(
+      "bakHardToSoftCurrentRateSuccess",
+      this.HandlebakHardToSoftCurrentRateSuccess,
+      this
+    );
+    Frames.dispatcher.register(
+      "bakSoftToHardCurrentRateSuccess",
+      this.HandlebakSoftToHardCurrentRateSuccess,
+      this
+    );
   }
 
   private async HandlemoneyGoultinesAmountSuccess(
@@ -16,5 +26,19 @@ export default class GoultinesFrame implements IFrame {
     data: MoneyGoultinesAmountSuccess
   ) {
     account.data.UpdateMoneyGoultinesAmountSuccess(data);
+  }
+
+  private async HandlebakHardToSoftCurrentRateSuccess(
+    account: Account,
+    data: any
+  ) {
+    account.data.bakHardToSoftCurrentRate = data.rate;
+  }
+
+  private async HandlebakSoftToHardCurrentRateSuccess(
+    account: Account,
+    data: any
+  ) {
+    account.data.bakSoftToHardCurrentRate = data.rate;
   }
 }

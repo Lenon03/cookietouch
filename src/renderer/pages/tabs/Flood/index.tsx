@@ -26,7 +26,6 @@ import {
   IFloodTabProps,
   IFloodTabState
 } from "@renderer/pages/tabs/Flood/types";
-import { List } from "linqts";
 import * as React from "react";
 
 class Flood extends React.Component<FloodTabProps, IFloodTabState> {
@@ -260,7 +259,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
 
     const infos = this.state.addSentenceForm;
 
-    this.props.account.extensions.flood.config.sentences.Add(
+    this.props.account.extensions.flood.config.sentences.push(
       new FloodSentence(
         infos.content,
         infos.channel,
@@ -297,7 +296,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
     const sentences = this.state.sentences.filter(
       s => s.content !== sentence.content
     );
-    this.props.account.extensions.flood.config.sentences = new List(sentences);
+    this.props.account.extensions.flood.config.sentences = sentences;
     this.props.account.extensions.flood.config.save();
   };
 
@@ -314,7 +313,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
         .salesChannelInterval,
       seekChannelInterval: this.props.account.extensions.flood.config
         .seekChannelInterval,
-      sentences: this.props.account.extensions.flood.config.sentences.ToArray()
+      sentences: this.props.account.extensions.flood.config.sentences
     });
   };
 

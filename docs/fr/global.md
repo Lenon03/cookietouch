@@ -123,15 +123,4 @@ if (leaveDialogFunc()) {
   printMessage("Un dialogue était ouvert, on l'a fermé!");
 }
 ```
-<hr>
-
-## leaveDialog()
-Ferme une boite de dialogue.
-
-**Exemple:**
-```js
-if (isInDialog()) {
-  printMessage("Un dialogue est ouvert, on le ferme !");
-  yield* await leaveDialog();
-}
 ```

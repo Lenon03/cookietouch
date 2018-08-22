@@ -1,9 +1,10 @@
 # CookieTouch API Documentation
 
-[Summary](SUMMARY.md) | [Single page summary](singlepage.md)
+[Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
 
 <hr>
 
+- [Introduction](introduction.md)
 - [HDV](hdv.md)
 - [Chemins](chemins.md)
 - [Configuration](configuration.md)

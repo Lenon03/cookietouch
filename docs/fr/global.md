@@ -110,17 +110,16 @@ Fait une pause dans le script.
 ```js
 yield* await delay(3000); // Fait une pause de 3000ms (3 secondes).
 ```
+
 <hr>
 
-## leaveDialogFunc()
-- Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
-
-Retourne true et ferme la boite de dialogue si il y en a une d'ouverte, sinon retourne false.
+## leaveDialog()
+Ferme une boite de dialogue.
 
 **Exemple:**
 ```js
-if (leaveDialogFunc()) {
-  printMessage("Un dialogue était ouvert, on l'a fermé!");
+if (isInDialog()) {
+  printMessage("Un dialogue est ouvert, on le ferme !");
+  yield* await leaveDialog();
 }
-```
 ```

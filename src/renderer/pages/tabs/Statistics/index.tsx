@@ -1,6 +1,9 @@
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
 import { displayTime } from "@/utils/Time";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -10,6 +13,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 import { statisticsTabStyles } from "@renderer/pages/tabs/Statistics/styles";
 import {
   IStatisticsTabProps,
@@ -51,129 +56,157 @@ class Statistics extends React.Component<
 
     return (
       <div className={classes.root}>
-        <Grid container={true} spacing={8}>
-          <Grid item={true} xs={2}>
-            <Typography>
-              {LanguageManager.trans("achievementsFinished")}{" "}
-              {this.state.achievementsFinished}
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>
+              {LanguageManager.trans("statsFight")}
             </Typography>
-            <br />
-            <Typography>
-              {LanguageManager.trans("averageFightTime")}{" "}
-              {displayTime(this.state.averageFightTime)}
-            </Typography>
-            <br />
-            <Typography>
-              {LanguageManager.trans("experienceGained")}{" "}
-              {this.state.experienceGained}
-            </Typography>
-            <br />
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
             <Typography>
               {LanguageManager.trans("fightsCount")} {this.state.fightsCount}
-            </Typography>
-            <br />
-            <Typography>
+              <br />
               {LanguageManager.trans("fightsLost")} {this.state.fightsLost}
-            </Typography>
-            <br />
-            <Typography>
+              <br />
               {LanguageManager.trans("fightsWon")} {this.state.fightsWon}
-            </Typography>
-            <br />
-            <Typography>
-              {LanguageManager.trans("gathersCount")} {this.state.gathersCount}
-            </Typography>
-            <br />
-            <Typography>
-              {LanguageManager.trans("kamasGained") + ":"}{" "}
-              {this.state.kamasGained}
-            </Typography>
-            <br />
-            <Typography>
-              {LanguageManager.trans("levelsGained")} {this.state.levelsGained}
-            </Typography>
-            <br />
-            <Typography>
+              <br />
+              {LanguageManager.trans("averageFightTime")}{" "}
+              {displayTime(this.state.averageFightTime)}
+              <br />
               {LanguageManager.trans("totalFightsTime")}{" "}
               {displayTime(this.state.totalFightsTime)}
             </Typography>
-            <br />
+          </ExpansionPanelDetails>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>
+                {LanguageManager.trans("statsFightRessource")}
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Grid container={true} spacing={0} alignItems={"flex-start"}>
+                <Grid item={true} xs={12}>
+                  <Table className={classes.table}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell numeric={true}>GID</TableCell>
+                        <TableCell>{LanguageManager.trans("name")}</TableCell>
+                        <TableCell numeric={true}>%</TableCell>
+                        <TableCell numeric={true}>
+                          {LanguageManager.trans("quantity")}
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.objectsObtainedInFights.map((o, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <TableCell numeric={true}>{o.gid}</TableCell>
+                            <TableCell>{o.name}</TableCell>
+                            <TableCell>
+                              <Typography>
+                                {o.percentage.toFixed(2)}%
+                              </Typography>
+                              <LinearProgress
+                                style={{ height: 16 }}
+                                variant="determinate"
+                                value={o.percentage}
+                              />
+                            </TableCell>
+                            <TableCell numeric={true}>{o.quantity}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </Grid>
+              </Grid>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>
+              {LanguageManager.trans("statsGather")}
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
             <Typography>
+              {LanguageManager.trans("gathersCount")} {this.state.gathersCount}
+              <br />
               {LanguageManager.trans("totalGathersTime")}{" "}
               {displayTime(this.state.totalGathersTime)}
             </Typography>
-          </Grid>
-          <Grid item={true} xs={10}>
-            <Grid container={true} spacing={8}>
-              <Grid item={true} xs={6}>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell numeric={true}>GID</TableCell>
-                      <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric={true}>%</TableCell>
-                      <TableCell numeric={true}>
-                        {LanguageManager.trans("quantity")}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.objectsObtainedInFights.map((o, index) => {
-                      return (
-                        <TableRow key={index}>
-                          <TableCell numeric={true}>{o.gid}</TableCell>
-                          <TableCell>{o.name}</TableCell>
-                          <TableCell>
-                            <Typography>{o.percentage.toFixed(2)}%</Typography>
-                            <LinearProgress
-                              style={{ height: 16 }}
-                              variant="determinate"
-                              value={o.percentage}
-                            />
-                          </TableCell>
-                          <TableCell numeric={true}>{o.quantity}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+          </ExpansionPanelDetails>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>
+                {LanguageManager.trans("statsGatherRessource")}
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Grid container={true} spacing={0} alignItems={"flex-start"}>
+                <Grid item={true} xs={12}>
+                  <Table className={classes.table}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell numeric={true}>GID</TableCell>
+                        <TableCell>{LanguageManager.trans("name")}</TableCell>
+                        <TableCell numeric={true}>%</TableCell>
+                        <TableCell numeric={true}>
+                          {LanguageManager.trans("quantity")}
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.objectsObtainedInGathers.map((o, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <TableCell numeric={true}>{o.gid}</TableCell>
+                            <TableCell>{o.name}</TableCell>
+                            <TableCell>
+                              <Typography>
+                                {o.percentage.toFixed(2)}%
+                              </Typography>
+                              <LinearProgress
+                                style={{ height: 16 }}
+                                variant="determinate"
+                                value={o.percentage}
+                              />
+                            </TableCell>
+                            <TableCell numeric={true}>{o.quantity}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-              <Grid item={true} xs={6}>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell numeric={true}>GID</TableCell>
-                      <TableCell>{LanguageManager.trans("name")}</TableCell>
-                      <TableCell numeric={true}>%</TableCell>
-                      <TableCell numeric={true}>
-                        {LanguageManager.trans("quantity")}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.objectsObtainedInGathers.map((o, index) => {
-                      return (
-                        <TableRow key={index}>
-                          <TableCell numeric={true}>{o.gid}</TableCell>
-                          <TableCell>{o.name}</TableCell>
-                          <TableCell>
-                            <Typography>{o.percentage.toFixed(2)}%</Typography>
-                            <LinearProgress
-                              style={{ height: 16 }}
-                              variant="determinate"
-                              value={o.percentage}
-                            />
-                          </TableCell>
-                          <TableCell numeric={true}>{o.quantity}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>
+              {LanguageManager.trans("statsOther")}
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              {LanguageManager.trans("levelsGained")} {this.state.levelsGained}
+              <br />
+              {LanguageManager.trans("experienceGained")}{" "}
+              {this.state.experienceGained}
+              <br />
+              {LanguageManager.trans("kamasGained") + ":"}{" "}
+              {this.state.kamasGained}
+              <br />
+              {LanguageManager.trans("achievementsFinished")}{" "}
+              {this.state.achievementsFinished}
+              <br />
+            </Typography>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </div>
     );
   }

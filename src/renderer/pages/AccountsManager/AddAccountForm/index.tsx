@@ -37,18 +37,8 @@ class AddAccountForm extends React.Component<
     username: ""
   };
 
-  constructor(props) {
-    super(props);
-    DataManager.get<Servers>(
-      DataTypes.Servers,
-      ...[401, 403, 404, 405, 406, 407]
-    ).then(data => {
-      const servers = new Map<number, string>();
-      for (const server of data) {
-        servers.set(server.id, server.object.nameId);
-      }
-      this.setState({ servers });
-    });
+  public componentDidMount() {
+    this.getServers();
   }
 
   public render() {
@@ -176,6 +166,18 @@ class AddAccountForm extends React.Component<
       showPassword: false,
       username: ""
     });
+  };
+
+  private getServers = async () => {
+    const data = await DataManager.get<Servers>(
+      DataTypes.Servers,
+      ...[401, 403, 404, 405, 406, 407]
+    );
+    const servers = new Map<number, string>();
+    for (const server of data) {
+      servers.set(server.id, server.object.nameId);
+    }
+    this.setState({ servers });
   };
 }
 

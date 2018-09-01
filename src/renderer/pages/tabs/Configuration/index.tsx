@@ -1,5 +1,6 @@
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import BreedsUtility from "@/core/BreedsUtility";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import DataManager from "@/protocol/data";
 import Breeds from "@/protocol/data/classes/Breeds";
@@ -42,6 +43,7 @@ class Configuration extends React.Component<
     authorizedTradesFrom: [],
     autoMount: true,
     autoRegenAccepted: false,
+    breedSpells: [],
     characterConnected: false,
     disconnectUponFightsLimit: false,
     enableSpeedHack: false,
@@ -153,19 +155,23 @@ class Configuration extends React.Component<
                     })}
                   </TableBody>
                 </Table>
-                <TextField
-                  disabled={this.state.characterConnected === false}
-                  autoFocus={true}
-                  margin="dense"
-                  id="spellId"
-                  name="spellId"
-                  label={LanguageManager.trans("spell")}
-                  value={this.state.spellId}
-                  fullWidth={true}
-                  onChange={this.handleSelectChange}
-                  type="number"
-                  InputLabelProps={{ shrink: true }}
-                />
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="spellId">
+                    {LanguageManager.trans("spell")}
+                  </InputLabel>
+                  <Select
+                    disabled={this.state.characterConnected === false}
+                    value={this.state.spellId}
+                    onChange={this.handleSelectChange}
+                    inputProps={{ id: "spellId", name: "spellId" }}
+                  >
+                    {this.state.breedSpells.map((b, i) => (
+                      <MenuItem key={i} value={b.id}>
+                        {b.nameId}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="spellLevel">
                     {LanguageManager.trans("level")}
@@ -174,7 +180,7 @@ class Configuration extends React.Component<
                     disabled={this.state.characterConnected === false}
                     value={this.state.spellLevel}
                     onChange={this.handleSelectChange}
-                    inputProps={{ id: "spellLevel", name: "spellLevel" }}
+                    inputProps={{ id: "spellLevel", name: "spellId" }}
                   >
                     <MenuItem value={SpellLevels.ONE}>1</MenuItem>
                     <MenuItem value={SpellLevels.TWO}>2</MenuItem>
@@ -393,12 +399,22 @@ class Configuration extends React.Component<
     });
   };
 
-  private characterSelected = () => {
+  private characterSelected = async () => {
+    const breedSpellId = BreedsUtility.breeds.First(
+      b => b.id === this.props.account.game.character.breed
+    ).breedSpellsId;
+    const breedSpellsResponse = await DataManager.get<Spells>(
+      DataTypes.Spells,
+      ...breedSpellId
+    );
+    const breedSpells = breedSpellsResponse.map(b => b.object);
+
     this.setState({
       acceptAchievements: this.props.account.config.acceptAchievements,
       authorizedTradesFrom: this.props.account.config.authorizedTradesFrom,
       autoMount: this.props.account.config.autoMount,
       autoRegenAccepted: this.props.account.config.autoRegenAccepted,
+      breedSpells,
       characterConnected: true,
       disconnectUponFightsLimit: this.props.account.config
         .disconnectUponFightsLimit,
@@ -449,7 +465,6 @@ class Configuration extends React.Component<
     this.props.account.config[event.target.name] = checked;
     this.props.account.config.save();
   };
-
   private handleSelectChange = event => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<

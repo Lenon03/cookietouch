@@ -467,5 +467,10 @@
   "emailValidated": "You have to verified your email !",
   "price": "Price",
   "salesDelay": "Sales delay",
-  "buyBonusPack": "Buy Bonus Pack"
+  "buyBonusPack": "Buy Bonus Pack",
+  "statsFight": "Fighting statistics",
+  "statsGather": "Harvest stastistic",
+  "statsOther": "Other stastistic",
+  "statsFightRessource": "Resources obtained during the fighting",
+  "statsGatherRessource": "Resources obtained during the Harvest"
 }

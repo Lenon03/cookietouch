@@ -467,5 +467,10 @@
   "emailValidated": "Vous devez vérifier votre email !",
   "price": "Prix",
   "salesDelay": "Délais de vente",
-  "buyBonusPack": "Acheter le Bonus Pack"
+  "buyBonusPack": "Acheter le Bonus Pack",
+  "statsFight": "Statistiques des combats",
+  "statsGather": "Statistiques des récoltes",
+  "statsOther": "Statistiques diverses",
+  "statsFightRessource": "Ressources obtenues durant les combats",
+  "statsGatherRessource": "Ressources obtenues durant les récoltes"
 }

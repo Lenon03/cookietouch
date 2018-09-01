@@ -1,6 +1,7 @@
 import Account from "@/account";
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
+import Spells from "@/protocol/data/classes/Spells";
 import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { ConfigurationTabStyle } from "@renderer/pages/tabs/Configuration/styles";
 
@@ -22,6 +23,7 @@ export interface IConfigurationTabState {
   authorizedTradesFrom: number[];
   autoRegenAccepted: boolean;
   autoMount: boolean;
+  breedSpells: Spells[];
   characterConnected: boolean;
   disconnectUponFightsLimit: boolean;
   enableSpeedHack: boolean;

@@ -1,4 +1,5 @@
 # CookieTouch API Documentation
+
 [Summary](SUMMARY.md) | [Single page summary](singlepage.md)
 
 <hr>
@@ -34,10 +35,6 @@
   - [AUTO_REGEN](configuration.md#auto_regen)
   - [AUTO_DELETE](configuration.md#auto_delete)
   - [OPEN_BAGS](configuration.md#open_bags)
-  - [BEFORE_GATHER](configuration.md#before_gather)
-  - [AFTER_GATHER](configuration.md#after_gather)
-  - [BEFORE_FIGHT](configuration.md#before_fight)
-  - [AFTER_FIGHT](configuration.md#after_fight)
   - [DISPLAY_GATHER_COUNT](configuration.md#display_gather_count)
   - [DISPLAY_FIGHT_COUNT](configuration.md#display_fight_count)
 - [Exchange](exchange.md)

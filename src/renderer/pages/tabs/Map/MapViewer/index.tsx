@@ -57,10 +57,14 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   private readonly lockedStorageImage = "12367.png";
 
   private canvasRef: React.RefObject<HTMLCanvasElement>;
+  private tooltipRef: React.RefObject<HTMLDivElement>;
+  private mapImageRef: React.RefObject<HTMLImageElement>;
 
   constructor(props: MapViewerProps) {
     super(props);
     this.canvasRef = React.createRef();
+    this.tooltipRef = React.createRef();
+    this.mapImageRef = React.createRef();
     this.initCells();
   }
 
@@ -125,7 +129,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       <div className={classes.root}>
         <Grid container={true} spacing={8}>
           <Grid item={true} xs={10}>
-            <img style={{ display: "none" }} id="mapimg" />
+            <img style={{ display: "none" }} ref={this.mapImageRef} />
             {this.props.account.game.map.data
               ? Array.from(
                   this.props.account.game.map.data.midgroundLayer.keys()
@@ -138,7 +142,9 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
                           <img
                             key={`${index}-${index2}`}
                             style={{ display: "none" }}
-                            id={`g-${cellId}-${g.g}`}
+                            id={`${
+                              this.props.account.accountConfig.username
+                            }-g-${cellId}-${g.g}`}
                           />
                         ) : (
                           ""
@@ -146,7 +152,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
                     )
                 )
               : ""}
-            <div id="tooltip" />
+            <div className={classes.tooltip} ref={this.tooltipRef} />
             <canvas
               ref={this.canvasRef}
               width={DTConstants.TILE_WIDTH * (DTConstants.MAP_WIDTH + 0.5)}
@@ -355,7 +361,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       this.walkableCellBrush.a = 0.5;
       this.losCellBrush.a = 0.5;
       this.obstacleCellBrush.a = 0.5;
-      const img = document.getElementById("mapimg") as HTMLImageElement;
+      const img = this.mapImageRef.current;
       img.src = `${DTConstants.config.assetsUrl}/backgrounds/${
         this.props.account.game.map.data.id
       }.jpg`;
@@ -394,7 +400,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
         for (const g of gs) {
           if (g.g) {
             const img2 = document.getElementById(
-              `g-${i}-${g.g}`
+              `${this.props.account.accountConfig.username}-g-${i}-${g.g}`
             ) as HTMLImageElement;
             img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${
               g.g
@@ -415,13 +421,14 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       if (this.props.account.game.map.teleportableCells.includes(i)) {
         this.cells.ElementAt(i).DrawImage(ctx, this.sunImage);
       } else if (
-        this.props.account.game.map.phenixs.find(p => p.cellId === i) != null
+        this.props.account.game.map.phenixs.find(p => p.cellId === i) !==
+        undefined
       ) {
         this.cells.ElementAt(i).DrawImage(ctx, this.phenixImage);
       } else if (
         this.props.account.game.map.lockedStorages.find(
           ls => ls.cellId === i
-        ) != null
+        ) !== undefined
       ) {
         this.cells.ElementAt(i).DrawImage(ctx, this.lockedStorageImage);
       }
@@ -561,17 +568,6 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       | StatedElementEntry,
     point: Point
   ) => {
-    const tooltip = document.getElementById("tooltip");
-    tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
-    tooltip.style.borderRadius = "5px";
-    tooltip.style.boxShadow =
-      "0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)";
-    tooltip.style.color = "#fff";
-    tooltip.style.margin = "5px";
-    tooltip.style.padding = "5px";
-    tooltip.style.position = "absolute";
-    tooltip.style.display = "block";
-
     let htmlBuffer = "";
     if (e instanceof FightPlayerEntry) {
       htmlBuffer += `${e.name} (${e.level})<br>`;
@@ -638,15 +634,16 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
         interactive.name
       }`;
     }
-
+    const tooltip = this.tooltipRef.current;
     tooltip.innerHTML = htmlBuffer;
     tooltip.style.left = `${point.x + 5}px`;
-    tooltip.style.top = `${point.y + 230}px`;
+    tooltip.style.top = `${point.y + 355}px`;
+    tooltip.style.visibility = "visible";
   };
 
   private hideCellInfo = () => {
-    const tooltip = document.getElementById("tooltip");
-    tooltip.style.display = "none";
+    const tooltip = this.tooltipRef.current;
+    tooltip.style.visibility = "hidden";
   };
 
   private onMouseClick = event => {

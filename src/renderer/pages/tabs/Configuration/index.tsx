@@ -180,7 +180,7 @@ class Configuration extends React.Component<
                     disabled={this.state.characterConnected === false}
                     value={this.state.spellLevel}
                     onChange={this.handleSelectChange}
-                    inputProps={{ id: "spellLevel", name: "spellId" }}
+                    inputProps={{ id: "spellLevel", name: "spellLevel" }}
                   >
                     <MenuItem value={SpellLevels.ONE}>1</MenuItem>
                     <MenuItem value={SpellLevels.TWO}>2</MenuItem>

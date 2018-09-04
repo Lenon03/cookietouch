@@ -194,19 +194,10 @@ export default class Group implements IEntity {
     const tasks: IToken[] = [];
 
     for (const e of events) {
-      tasks.push(
-        e.wait(() => {
-          /**/
-        })
-      );
+      tasks.push(e.wait(() => Promise.resolve()));
     }
 
-    await Promise.all(
-      tasks.map(t => {
-        t.callback();
-        return Promise.resolve();
-      })
-    ); // TODO: Check this
+    await Promise.all(tasks.map(t => t.callback())); // TODO: Check this
   }
 
   private chiefFightIdReceived = () => {

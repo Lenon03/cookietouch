@@ -668,6 +668,7 @@ export default class ScriptsManager {
     if (this.gotToMaxPods && this.currentFunctionType === FunctionTypes.MOVE) {
       // Check if there is an AUTO_DELETE option
       await this.checkForAutoDelete();
+      await sleep(1000);
       // To fix this bug https://pastebin.com/HWYjTjuE
       // We will check if the script is running (since a fight pauses the script)
       if (!this.running) {

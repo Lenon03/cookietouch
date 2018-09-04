@@ -1,13 +1,11 @@
 [FR]
 
-- CookieTouch est désormais disponible en allemand ! (Merci @WhySoAngry)
-- Lors de l'ouverture de plusieurs comptes, les popups sur la map fonctionnent désormais correctement
-- Refonte de la page Statistiques.
-- Pour choisir les sorts à augmenter automatiquement, vous avez désormais la liste des sorts de votre classe au lieu de de devoir rentrer un ID
+- Correction du bug qui faisais passer dans bank après une suppression d'items
+- Correction de bugs dans les groupes. J'attend vos retours, Merci !
+- Désormais disponible pour les PC 32 Bits !
 
 [EN]
 
-- CookieTouch is now available in German ! (Thanks @WhySoAngry)
-- Popups in the map tab are now working correctly in multi-account
-- Improvements on the statistics page
-- To choose the spells to upgrade automatically, you now have the list of spells in your breed instead of having to enter an ID
+- Fix a bug which wants to go to the bank after items deletion
+- Fix bugs in groups. I'm waiting for your feedback, thank you!
+- Now available for 32 bits computers !

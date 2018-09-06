@@ -20,6 +20,7 @@ export interface IConfigurationTabProps {
 
 export interface IConfigurationTabState {
   acceptAchievements: boolean;
+  antiAgro: boolean;
   authorizedTradesFrom: number[];
   autoRegenAccepted: boolean;
   autoMount: boolean;

@@ -3,20 +3,24 @@ import FightTeamInformations from "@/protocol/network/types/FightTeamInformation
 import Type from "@/protocol/network/types/Type";
 
 export default class FightCommonInformations extends Type {
+  public fightTeams: FightTeamInformations[];
+  public fightTeamsPositions: number;
+  public fightTeamsOptions: FightOptionsInformations[];
+  public fightId: number;
+  public fightType: number;
 
-  public fightteams: FightTeamInformations[];
-  public fightteamspositions: number;
-  public fightteamsoptions: FightOptionsInformations[];
-  public fightid: number;
-  public fighttype: number;
-
-  constructor(fightid = 0, fighttype = 0, fightteams: FightTeamInformations[],
-              fightteamspositions = 0, fightteamsoptions: FightOptionsInformations[]) {
+  constructor(
+    fightId = 0,
+    fightType = 0,
+    fightTeams: FightTeamInformations[],
+    fightTeamsPositions = 0,
+    fightTeamsOptions: FightOptionsInformations[]
+  ) {
     super();
-    this.fightid = fightid;
-    this.fightteams = fightteams;
-    this.fightteamspositions = fightteamspositions;
-    this.fightteamsoptions = fightteamsoptions;
-    this.fighttype = fighttype;
+    this.fightId = fightId;
+    this.fightTeams = fightTeams;
+    this.fightTeamsPositions = fightTeamsPositions;
+    this.fightTeamsOptions = fightTeamsOptions;
+    this.fightType = fightType;
   }
 }

@@ -463,7 +463,7 @@ export default class ScriptsManager {
         LanguageManager.trans("scriptsManager"),
         LanguageManager.trans("characterTombstone")
       );
-      await this.account.network.sendMessageFree(
+      this.account.network.sendMessageFree(
         "GameRolePlayFreeSoulRequestMessage"
       );
       // Wait for a map change since after a free soul, we get teleported
@@ -695,12 +695,12 @@ export default class ScriptsManager {
       );
       for (const gid of autoDeleteElements) {
         // Remove all the objects and not only the first one, because sometimes objects are simplette to 1-s
-        this.account.game.character.inventory
+        for (const obj of this.account.game.character.inventory
           .getObjectsByGid(gid)
-          .ForEach(async obj => {
-            this.account.game.character.inventory.deleteObject(obj, 0);
-            await sleep(800);
-          });
+          .ToArray()) {
+          this.account.game.character.inventory.deleteObject(obj, 0);
+          await sleep(800);
+        }
       }
       this.account.logger.logDebug(
         LanguageManager.trans("scripts"),

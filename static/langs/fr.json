@@ -472,5 +472,6 @@
   "statsGather": "Statistiques des récoltes",
   "statsOther": "Statistiques diverses",
   "statsFightRessource": "Ressources obtenues durant les combats",
-  "statsGatherRessource": "Ressources obtenues durant les récoltes"
+  "statsGatherRessource": "Ressources obtenues durant les récoltes",
+  "antiAgro": "Anti agression des monstres"
 }

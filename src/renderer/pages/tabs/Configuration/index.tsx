@@ -40,6 +40,7 @@ class Configuration extends React.Component<
 > {
   public state: IConfigurationTabState = {
     acceptAchievements: true,
+    antiAgro: true,
     authorizedTradesFrom: [],
     autoMount: true,
     autoRegenAccepted: false,
@@ -221,6 +222,21 @@ class Configuration extends React.Component<
                       />
                     }
                     label={LanguageManager.trans("speedhack")}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        id="antiAgro"
+                        name="antiAgro"
+                        disabled={this.state.characterConnected === false}
+                        color="primary"
+                        checked={this.state.antiAgro}
+                        onChange={this.handleSwitchChange}
+                      />
+                    }
+                    label={LanguageManager.trans("antiAgro")}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -411,6 +427,7 @@ class Configuration extends React.Component<
 
     this.setState({
       acceptAchievements: this.props.account.config.acceptAchievements,
+      antiAgro: this.props.account.config.antiAgro,
       authorizedTradesFrom: this.props.account.config.authorizedTradesFrom,
       autoMount: this.props.account.config.autoMount,
       autoRegenAccepted: this.props.account.config.autoRegenAccepted,
@@ -478,6 +495,7 @@ class Configuration extends React.Component<
   private configUpdated = () => {
     this.setState({
       acceptAchievements: this.props.account.config.acceptAchievements,
+      antiAgro: this.props.account.config.antiAgro,
       authorizedTradesFrom: this.props.account.config.authorizedTradesFrom,
       autoMount: this.props.account.config.autoMount,
       autoRegenAccepted: this.props.account.config.autoRegenAccepted,

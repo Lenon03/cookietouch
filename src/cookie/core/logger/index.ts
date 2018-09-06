@@ -3,7 +3,7 @@ import { ChannelColors } from "@/core/logger/ChannelColors";
 import { LogType } from "@/core/logger/LogType";
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
-import * as moment from "moment";
+import moment from "moment";
 
 export interface IMessage {
   source?: string;

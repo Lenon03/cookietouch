@@ -23,9 +23,10 @@ interface IConfigurationJSON {
   autoMount: boolean;
   authorizedTradesFrom: number[];
   enableSpeedHack: boolean;
+  antiAgro: boolean;
 }
 
-export default class Configuration {
+export default class Configuration implements IConfigurationJSON {
   public showGeneralMessages: boolean;
   public showPartyMessages: boolean;
   public showGuildMessages: boolean;
@@ -42,6 +43,7 @@ export default class Configuration {
   public autoMount: boolean;
   public authorizedTradesFrom: number[];
   public enableSpeedHack: boolean;
+  public antiAgro: boolean;
 
   private authChangedUnsuscribe: firebase.Unsubscribe;
   private stopDataSnapshot: () => void;
@@ -75,6 +77,7 @@ export default class Configuration {
     this.autoMount = true;
     this.authorizedTradesFrom = [];
     this.enableSpeedHack = false;
+    this.antiAgro = true;
   }
 
   public removeListeners = () => {
@@ -116,6 +119,7 @@ export default class Configuration {
   public async save() {
     const toSave: IConfigurationJSON = {
       acceptAchievements: this.acceptAchievements,
+      antiAgro: this.antiAgro,
       authorizedTradesFrom: this.authorizedTradesFrom,
       autoMount: this.autoMount,
       autoRegenAccepted: this.autoRegenAccepted,
@@ -142,6 +146,7 @@ export default class Configuration {
     }
     const json = snapshot.data() as IConfigurationJSON;
     this.acceptAchievements = json.acceptAchievements;
+    this.antiAgro = !!json.antiAgro;
     this.autoMount = json.autoMount;
     this.authorizedTradesFrom = json.authorizedTradesFrom;
     this.autoRegenAccepted = json.autoRegenAccepted;

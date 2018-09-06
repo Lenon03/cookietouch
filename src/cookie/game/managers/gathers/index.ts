@@ -121,8 +121,10 @@ export default class GathersManager implements IClearable {
         this.account.game.map.playedCharacter.cellId,
         statedElement.cellId,
         this.account.game.map.occupiedCells,
+        this.account.game.map.monstersGroups,
         true,
-        true
+        true,
+        this.account.config.antiAgro
       );
 
       // If the path if invalid.

@@ -1,11 +1,9 @@
 [FR]
 
-- Correction du bug qui faisais passer dans bank après une suppression d'items
-- Correction de bugs dans les groupes. J'attend vos retours, Merci !
-- Désormais disponible pour les PC 32 Bits !
+- Correction du bug où le bot croyais avoir encore un zaapi sur la map.
+- Gestion de l'anti-agression
 
 [EN]
 
-- Fix a bug which wants to go to the bank after items deletion
-- Fix bugs in groups. I'm waiting for your feedback, thank you!
-- Now available for 32 bits computers !
+- Fix a bug where the bot believe it still has a zaapi
+- Handling anti aggression

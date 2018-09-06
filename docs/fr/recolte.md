@@ -16,7 +16,7 @@ Toutes les fonctions relatives à la récolte.
 <hr>
 
 <h2 id="gather-can-gather">
-  canGather(<code>...resourcesIds</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">string</a>)
+  canGather(<code>...resourcesIds</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>)
 </h2>
 
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
@@ -27,13 +27,15 @@ Retourne true si la map contient les ressources recherchées, sinon retourne fal
 
 **Exemple:**
 ```js
-canGather([1, 28]) // True si il est possible de recolter du Frene et/ou de l'If sur cette map.
+canGather(1, 28) // True si il est possible de recolter du Frene et/ou de l'If sur cette map.
+ou
+canGather(...[1,28])
 ```
 
 <hr>
 
 <h2 id="gather-gather">
-  gather(<code>...resourcesIds</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">string</a>)
+  gather(<code>...resourcesIds</code>: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Reference/Global_Objects/Array">number[]</a>)
 </h2>
 
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
@@ -44,5 +46,7 @@ Retourne true et récolte les ressources si la map contient les ressources reche
 
 **Exemple:**
 ```js
-yield* await gather([1, 28]) // Récolte le Frene et/ou l'If si ils sont présents sur la map.
+yield* await gather(1, 28) // Récolte le Frene et/ou l'If si ils sont présents sur la map.
+ou
+yield* await gather(...[1, 28])
 ```

@@ -63,8 +63,10 @@ export default class MovementsManager implements IClearable {
       this.account.game.map.playedCharacter.cellId,
       cellId,
       this.account.game.map.occupiedCells,
+      this.account.game.map.monstersGroups,
       true,
-      stopNextToTarget
+      stopNextToTarget,
+      this.account.config.antiAgro
     );
 
     if (path.length === 0) {

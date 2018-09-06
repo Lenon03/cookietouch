@@ -1,6 +1,7 @@
 import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import Frames, { IFrame } from "@/frames";
+import GameRolePlayShowChallengeMessage from "@/protocol/network/messages/GameRolePlayShowChallengeMessage";
 
 export default class MapFrame implements IFrame {
   public register() {
@@ -72,6 +73,11 @@ export default class MapFrame implements IFrame {
     Frames.dispatcher.register(
       "GameRolePlayShowActorMessage",
       this.HandleGameRolePlayShowActorMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "GameRolePlayShowChallengeMessage",
+      this.HandleGameRolePlayShowChallengeMessage,
       this
     );
   }
@@ -197,5 +203,12 @@ export default class MapFrame implements IFrame {
     message: any
   ) {
     await account.game.map.UpdateGameRolePlayShowActorMessage(message);
+  }
+
+  private async HandleGameRolePlayShowChallengeMessage(
+    account: Account,
+    message: GameRolePlayShowChallengeMessage
+  ) {
+    await account.game.map.UpdateGameRolePlayShowChallengeMessage(message);
   }
 }

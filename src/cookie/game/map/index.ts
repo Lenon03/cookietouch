@@ -16,6 +16,7 @@ import MapData from "@/protocol/data/map";
 import MapsManager from "@/protocol/data/map/MapsManager";
 import GameContextRemoveElementMessage from "@/protocol/network/messages/GameContextRemoveElementMessage";
 import GameContextRemoveMultipleElementsMessage from "@/protocol/network/messages/GameContextRemoveMultipleElementsMessage";
+import GameRolePlayShowChallengeMessage from "@/protocol/network/messages/GameRolePlayShowChallengeMessage";
 import MapComplementaryInformationsDataMessage from "@/protocol/network/messages/MapComplementaryInformationsDataMessage";
 import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRolePlayCharacterInformations";
 import GameRolePlayGroupMonsterInformations from "@/protocol/network/types/GameRolePlayGroupMonsterInformations";
@@ -26,42 +27,6 @@ import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 
 export default class MapGame implements IClearable {
-  private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
-  private static readonly doorTypeIds = [-1, 128, 168, 16];
-
-  public data: MapData;
-  public area: string;
-  public subArea: string;
-  public posX: number;
-  public posY: number;
-  public playedCharacter: PlayerEntry = null;
-  public teleportableCells: number[] = [];
-  public blacklistedMonsters: number[] = [];
-  public zaap: ElementInCellEntry = null;
-  public zaapi: ElementInCellEntry = null;
-  private _players = new Map<number, PlayerEntry>();
-  private _npcs = new Map<number, NpcEntry>();
-  private _monstersGroups = new Map<number, MonstersGroupEntry>();
-  private _interactives = new Map<number, InteractiveElementEntry>();
-  private _doors = new Map<number, ElementInCellEntry>();
-  private _statedElements = new Map<number, StatedElementEntry>();
-  private _phenixs = new Map<number, ElementInCellEntry>();
-  private _lockedStorages = new Map<number, ElementInCellEntry>();
-  private readonly onMapChanged = new LiteEvent<void>();
-  private readonly onMapLoaded = new LiteEvent<void>();
-  private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
-  private readonly onPlayerLeft = new LiteEvent<PlayerEntry>();
-  private readonly onEntitiesUpdated = new LiteEvent<void>();
-  private readonly onInteractivesUpdated = new LiteEvent<void>();
-  private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
-  private account: Account;
-  private _joinedFight: boolean;
-  private _firstTime: boolean = true;
-
-  constructor(account: Account) {
-    this.account = account;
-  }
-
   get id() {
     return this.data.id;
   }
@@ -140,6 +105,41 @@ export default class MapGame implements IClearable {
 
   get lockedStorages() {
     return Array.from(this._lockedStorages.values());
+  }
+  private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
+  private static readonly doorTypeIds = [-1, 128, 168, 16];
+
+  public data: MapData;
+  public area: string;
+  public subArea: string;
+  public posX: number;
+  public posY: number;
+  public playedCharacter: PlayerEntry = null;
+  public teleportableCells: number[] = [];
+  public blacklistedMonsters: number[] = [];
+  public zaap: ElementInCellEntry = null;
+  public zaapi: ElementInCellEntry = null;
+  private _players = new Map<number, PlayerEntry>();
+  private _npcs = new Map<number, NpcEntry>();
+  private _monstersGroups = new Map<number, MonstersGroupEntry>();
+  private _interactives = new Map<number, InteractiveElementEntry>();
+  private _doors = new Map<number, ElementInCellEntry>();
+  private _statedElements = new Map<number, StatedElementEntry>();
+  private _phenixs = new Map<number, ElementInCellEntry>();
+  private _lockedStorages = new Map<number, ElementInCellEntry>();
+  private readonly onMapChanged = new LiteEvent<void>();
+  private readonly onMapLoaded = new LiteEvent<void>();
+  private readonly onPlayerJoined = new LiteEvent<PlayerEntry>();
+  private readonly onPlayerLeft = new LiteEvent<PlayerEntry>();
+  private readonly onEntitiesUpdated = new LiteEvent<void>();
+  private readonly onInteractivesUpdated = new LiteEvent<void>();
+  private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
+  private account: Account;
+  private _joinedFight: boolean;
+  private _firstTime: boolean = true;
+
+  constructor(account: Account) {
+    this.account = account;
   }
 
   public clear() {
@@ -324,6 +324,7 @@ export default class MapGame implements IClearable {
     this.teleportableCells = [];
     this.blacklistedMonsters = [];
     this.zaap = null;
+    this.zaapi = null;
 
     // Entities
     for (const actor of message.actors) {
@@ -548,6 +549,13 @@ export default class MapGame implements IClearable {
 
   public async UpdateGameFightJoinMessage(message: any) {
     this._joinedFight = true;
+  }
+
+  public async UpdateGameRolePlayShowChallengeMessage(
+    message: GameRolePlayShowChallengeMessage
+  ) {
+    // TODO: Update the monsters group on the map
+    this.account.logger.logDofus("test", JSON.stringify(message));
   }
 
   private removeEntity(id: number) {

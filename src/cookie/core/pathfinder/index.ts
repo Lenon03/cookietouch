@@ -1,8 +1,12 @@
 import CellData from "@/core/pathfinder/CellData";
 import CellPath from "@/core/pathfinder/CellPath";
 import MapPoint from "@/core/pathfinder/MapPoint";
+import Shaper from "@/core/pathfinder/shapes/zones/Shaper";
+import MonstersGroupEntry from "@/game/map/entities/MonstersGroupEntry";
 import Map from "@/protocol/data/map";
 import Cell from "@/protocol/data/map/Cell";
+import { union } from "@/utils/Arrays";
+import agroData from "./agroData.json";
 
 export default class Pathfinder {
   private readonly OCCUPIED_CELL_WEIGHT = 10;
@@ -11,18 +15,19 @@ export default class Pathfinder {
   private readonly HEIGHT = 36;
   private firstCellZone = 0;
   private grid: CellData[][];
+  private oldGrid: CellData[][];
   private oldMovementSystem: boolean;
 
   constructor() {
     this.grid = Array(this.WIDTH)
       .fill(0)
-      .map(x => Array(this.HEIGHT).fill(0));
+      .map(() => Array(this.HEIGHT).fill(0));
   }
 
   public setMap(map: Map) {
     // TODO: add whether a map uses the old system onto the map data
     // when it is generated on the server side
-    // oldMovementSystem = map.usesOldMovementSystem;
+    // this.oldMovementSystem = map.usesOldMovementSystem;
     this.firstCellZone = map.cells[0].z || 0;
     this.oldMovementSystem = true;
     for (let i = 0; i < this.WIDTH; i++) {
@@ -35,15 +40,19 @@ export default class Pathfinder {
         );
       }
     }
+    this.oldGrid = JSON.parse(JSON.stringify(this.grid));
   }
 
   public getPath(
     source: number,
     target: number,
     occupiedCells: number[],
+    monstersGroup: MonstersGroupEntry[],
     allowDiagonal: boolean,
-    stopNextToTarget: boolean
+    stopNextToTarget: boolean,
+    antiAgro: boolean = false
   ): number[] {
+    this.antiAgro(monstersGroup, antiAgro);
     let c = 0;
     let candidate: CellPath = null;
     const srcPos = MapPoint.fromCellId(source);
@@ -154,7 +163,7 @@ export default class Pathfinder {
       cellPos = MapPoint.fromCellId(cellId);
       this.grid[cellPos.x + 1][
         cellPos.y + 1
-      ].weight -= this.OCCUPIED_CELL_WEIGHT;
+      ].weight += this.OCCUPIED_CELL_WEIGHT;
     }
     const shortestPath = [];
     while (closestPath !== null) {
@@ -420,5 +429,51 @@ export default class Pathfinder {
     cells.push(this.grid[i][j + 1]);
     cells.push(this.grid[i + 1][j]);
     return cells;
+  }
+
+  private antiAgro(
+    monstersGroup: MonstersGroupEntry[],
+    antiAgro: boolean = false
+  ) {
+    if (this.oldGrid) {
+      // we must iterate through the oldGrid array because if we do
+      // pathFinder.grid = oldGrid we will erase the reference to the real pathfinder's grid
+      for (let i = 0; i < this.oldGrid.length; i++) {
+        for (let j = 0; j < this.oldGrid[i].length; j++) {
+          this.grid[i][j].zone = this.oldGrid[i][j].zone;
+          this.grid[i][j].floor = this.oldGrid[i][j].floor;
+        }
+      }
+    }
+
+    // collect the cells for every agressive mobs on the map
+    let cells: MapPoint[] = [];
+
+    const aggressiveMonstersGroups: MonstersGroupEntry[] = [];
+    for (const m of monstersGroup) {
+      for (const a of agroData.monsters) {
+        if (m.containsMonster(a) && !aggressiveMonstersGroups.includes(m)) {
+          aggressiveMonstersGroups.push(m);
+        }
+      }
+    }
+
+    for (const m of aggressiveMonstersGroups) {
+      const cell = MapPoint.fromCellId(m.cellId);
+      cells.push(...Shaper.shapeRing(cell.x, cell.y, 0, 3));
+    }
+
+    cells = union(cells);
+
+    if (antiAgro) {
+      // then write walls instead of free cells \o/
+      for (const cell of cells) {
+        const gridPoint = this.grid[cell.x + 1][cell.y + 1];
+        if (gridPoint) {
+          gridPoint.floor = -1;
+          gridPoint.zone = -1;
+        }
+      }
+    }
   }
 }

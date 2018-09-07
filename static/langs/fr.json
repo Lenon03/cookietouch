@@ -294,8 +294,8 @@
   "passingTurn": "On passe notre tour.",
   "playerKicked": "Un joueur ne faisant pas parti de votre groupe à essayer de rejoindre votre combat. Il a été expulsé.",
   "planification": "Planification",
-  "username": "Nom de compte",
-  "password": "Mot de passe",
+  "username": "Nom de compte *",
+  "password": "Mot de passe *",
   "server": "Serveur",
   "consumables": "Consommables",
   "questobjects": "Objets de quête",
@@ -473,5 +473,10 @@
   "statsOther": "Statistiques diverses",
   "statsFightRessource": "Ressources obtenues durant les combats",
   "statsGatherRessource": "Ressources obtenues durant les récoltes",
-  "antiAgro": "Anti agression des monstres"
+  "antiAgro": "Anti agression des monstres",
+  "cacheSize": "Taille du cache : ",
+  "accountList": "Liste des comptes ",
+  "addAccount": "Ajouter un compte",
+  "addAccountInfo": "Les champs * sont obligatoires",
+  "importTxt": "Importer .txt"
 }

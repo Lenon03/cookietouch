@@ -135,18 +135,22 @@ class AccountsList extends React.Component<
   private importAccount = () => {
     remote.dialog.showOpenDialog(
       {
-        filters: [{ name: "textfile", extensions: ["txt"] }],
+        filters: [{ name: "TXT", extensions: ["txt"] }],
         properties: ["openFile"]
       },
       async filepaths => {
+        if (filepaths.length === 0) {
+          return;
+        }
         const filePath = filepaths[0];
         if (await existsAsync(filePath)) {
-          const file = await readFileAsync(filePath);
-          const arry = file.toString().split("\n");
+          const file = await readFileAsync(filePath, "utf8");
+          const arry = file.split("\n");
           for (const entry of arry) {
+            const splitted = entry.split(":");
             GlobalConfiguration.addAccountAndSave(
-              entry.split(":")[0],
-              entry.split(":")[1],
+              splitted[0],
+              splitted[1],
               -1,
               ""
             );

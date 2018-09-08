@@ -12,5 +12,6 @@
 - Adding the possibility to import account list from a text file (account:password)
 - When anti monsters aggression is activated, delay between movement tries is 1min instead of 5 seconds
 - Final bundle size is decreased
+- Fix condition on the opponent's air resistances
 - Inventory content now shows up correctly but can take longer to load
 - Fixes on the documentation

@@ -294,8 +294,8 @@
   "passingTurn": "We're passing our turn.",
   "playerKicked": "A player who doesn't belong to your group tried to join your fight. He has been kicked.",
   "planification": "Planification",
-  "username": "Account name",
-  "password": "Password",
+  "username": "Account name *",
+  "password": "Password *",
   "server": "Server",
   "consumables": "Consumables",
   "questobjects": "Quest objects",
@@ -473,5 +473,10 @@
   "statsOther": "Other stastistic",
   "statsFightRessource": "Resources obtained during the fighting",
   "statsGatherRessource": "Resources obtained during the Harvest",
-  "antiAgro": "Anti monsters aggression"
+  "antiAgro": "Anti monsters aggression",
+  "cacheSize": "Cache size : ",
+  "accountList": "Account list",
+  "addAccount": "Add account",
+  "addACcountInfo": "Fields * are required",
+  "importTxt": "Import .txt"
 }

@@ -1,6 +1,7 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { existsAsync, readFileAsync } from "@/utils/fsAsync";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -11,6 +12,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Typography from "@material-ui/core/Typography";
 import CookieMain from "@renderer/CookieMain";
 import { accountsListStyles } from "@renderer/pages/AccountsManager/AccountsList/styles";
 import {
@@ -18,9 +20,9 @@ import {
   IAccountsListProps,
   IAccountsListState
 } from "@renderer/pages/AccountsManager/AccountsList/types";
+import { remote } from "electron";
 import { List as LinqList } from "linqts";
 import * as React from "react";
-
 class AccountsList extends React.Component<
   AccountsListProps,
   IAccountsListState
@@ -44,6 +46,9 @@ class AccountsList extends React.Component<
 
     return (
       <Paper className={classes.root}>
+        <Typography variant="title" align="center">
+          {LanguageManager.trans("accountList")}
+        </Typography>
         <List>
           {accountsList.map((value, idx) => (
             <ListItem
@@ -94,6 +99,14 @@ class AccountsList extends React.Component<
         >
           {LanguageManager.trans("connect")}
         </Button>
+        <Button
+          style={{ float: "right" }}
+          onClick={this.importAccount}
+          variant="raised"
+          color="primary"
+        >
+          {LanguageManager.trans("importTxt")}
+        </Button>
       </Paper>
     );
   }
@@ -117,6 +130,35 @@ class AccountsList extends React.Component<
       accountsList: GlobalConfiguration.accountsList,
       accountsToConnect: []
     });
+  };
+
+  private importAccount = () => {
+    remote.dialog.showOpenDialog(
+      {
+        filters: [{ name: "TXT", extensions: ["txt"] }],
+        properties: ["openFile"]
+      },
+      async filepaths => {
+        if (filepaths.length === 0) {
+          return;
+        }
+        const filePath = filepaths[0];
+        if (await existsAsync(filePath)) {
+          const file = await readFileAsync(filePath, "utf8");
+          const arry = file.split("\n");
+          for (const entry of arry) {
+            const splitted = entry.split(":");
+            GlobalConfiguration.addAccountAndSave(
+              splitted[0],
+              splitted[1],
+              -1,
+              ""
+            );
+          }
+          CookieMain.refreshEntities();
+        }
+      }
+    );
   };
 
   private connectGroup = (chief: AccountConfiguration) => (

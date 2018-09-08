@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CookieMain from "@renderer/CookieMain";
@@ -46,6 +47,13 @@ class AddAccountForm extends React.Component<
 
     return (
       <Paper className={classes.root}>
+        <Typography variant="title" align="center">
+          {LanguageManager.trans("addAccount")}
+        </Typography>
+        <br />
+        <Typography variant="caption" align="left">
+          {LanguageManager.trans("addAccountInfo")}
+        </Typography>
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="username">
             {LanguageManager.trans("username")}
@@ -112,18 +120,20 @@ class AddAccountForm extends React.Component<
             onChange={this.handleChange("character")}
             fullWidth={true}
           />
+          <br />
+          <Button
+            disabled={
+              this.state.username.length === 0 ||
+              this.state.password.length === 0
+            }
+            style={{ float: "right" }}
+            onClick={this.addAccount}
+            variant="raised"
+            color="primary"
+          >
+            {LanguageManager.trans("add")}
+          </Button>
         </FormControl>
-        <Button
-          disabled={
-            this.state.username.length === 0 || this.state.password.length === 0
-          }
-          style={{ float: "right" }}
-          onClick={this.addAccount}
-          variant="raised"
-          color="primary"
-        >
-          {LanguageManager.trans("add")}
-        </Button>
       </Paper>
     );
   }

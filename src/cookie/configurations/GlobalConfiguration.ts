@@ -6,7 +6,7 @@ import { Languages } from "@/configurations/language/Languages";
 import Group from "@/groups/Group";
 import LiteEvent, { ILiteEvent } from "@/utils/LiteEvent";
 import CookieMain from "@renderer/CookieMain";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { List } from "linqts";
 
 export enum UpdatesChannel {

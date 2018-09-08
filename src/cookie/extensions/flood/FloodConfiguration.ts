@@ -3,7 +3,7 @@ import FloodSentence, {
   IFloodSentence
 } from "@/extensions/flood/FloodSentence";
 import LiteEvent from "@/utils/LiteEvent";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 interface IFloodConfigurationJSON {
   seekChannelInterval: number;

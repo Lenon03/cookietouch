@@ -1,6 +1,6 @@
 import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { MainStyle } from "@renderer/pages/Main/styles";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export interface IMainProps {
   //

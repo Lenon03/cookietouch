@@ -128,23 +128,18 @@ export default class SpellsManager {
       entries.push(entry);
     }
 
-    for (const kvp of FightsPathfinder.getReachableZone(
+    for (const [cellid, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
-      if (!kvp["1"].reachable) {
+      if (!moveNode.reachable) {
         continue;
       }
-      if (kvp["1"].ap > 0 || kvp["1"].mp > 0) {
+      if (moveNode.ap > 0 || moveNode.mp > 0) {
         continue;
       }
-      entry = await this.getRangeNodeEntry(
-        kvp["0"],
-        kvp["1"],
-        spell,
-        spellLevel
-      );
+      entry = await this.getRangeNodeEntry(cellid, moveNode, spell, spellLevel);
       if (entry.touchedEnemiesByCell.size > 0) {
         entries.push(entry);
       }
@@ -159,7 +154,7 @@ export default class SpellsManager {
     let usedMps = 99;
 
     for (const t of entries) {
-      for (const kvp of t.touchedEnemiesByCell.entries()) {
+      for (const [cellid, moveNode] of t.touchedEnemiesByCell.entries()) {
         // Check hand to hand
         if (
           spell.handToHand &&
@@ -172,24 +167,24 @@ export default class SpellsManager {
           (await this.account.game.fight.canLaunchSpellOnTarget(
             spell.spellId,
             t.fromCellId,
-            kvp["0"]
+            cellid
           )) !== SpellInabilityReasons.NONE
         ) {
           continue;
         }
 
         // >= in case a cell uses less mp
-        if (kvp["1"] < touchedEnemies) {
+        if (moveNode < touchedEnemies) {
           continue;
         }
         if (
-          kvp["1"] <= touchedEnemies &&
-          (kvp["1"] !== touchedEnemies || t.mpUsed > usedMps)
+          moveNode <= touchedEnemies &&
+          (moveNode !== touchedEnemies || t.mpUsed > usedMps)
         ) {
           continue;
         }
-        touchedEnemies = kvp["1"];
-        cellId = kvp["0"];
+        touchedEnemies = moveNode;
+        cellId = cellid;
         fromCellId = t.fromCellId;
         usedMps = t.mpUsed;
         if (t.node !== null) {
@@ -340,25 +335,24 @@ export default class SpellsManager {
     let node: [number, MoveNode] = null;
     let pmUsed = 99;
 
-    for (const kvp of FightsPathfinder.getReachableZone(
+    for (const [cellId, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
-      if (!kvp["1"].reachable) {
+      if (!moveNode.reachable) {
         continue;
       }
 
       // Only choose the safe paths
-      if (kvp["1"].path.ap > 0 || kvp["1"].path.mp > 0) {
+      // TODO: Maybe in the futur try to cast the spell even with tackle cost, in a good way of course
+      if (moveNode.path.ap > 0 || moveNode.path.mp > 0) {
         continue;
       }
 
       if (
         spell.handToHand &&
-        MapPoint.fromCellId(kvp["0"]).distanceToCell(
-          MapPoint.fromCellId(kvp["0"])
-        )
+        MapPoint.fromCellId(cellId).distanceToCell(MapPoint.fromCellId(cellId))
       ) {
         continue;
       }
@@ -366,16 +360,16 @@ export default class SpellsManager {
       if (
         (await this.account.game.fight.canLaunchSpellOnTarget(
           spell.spellId,
-          kvp["0"],
+          cellId,
           target.cellId
         )) !== SpellInabilityReasons.NONE
       ) {
         continue;
       }
 
-      if (kvp["1"].path.reachable.length <= pmUsed) {
-        node = kvp;
-        pmUsed = kvp["1"].path.reachable.length;
+      if (moveNode.path.reachable.length <= pmUsed) {
+        node = [cellId, moveNode];
+        pmUsed = moveNode.path.reachable.length;
       }
     }
 
@@ -457,37 +451,38 @@ export default class SpellsManager {
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
     let node: [number, MoveNode] = null;
     let pmUsed = 99;
-    for (const kvp of FightsPathfinder.getReachableZone(
+    for (const [cellid, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
-      if (!kvp["1"].reachable) {
+      if (!moveNode.reachable) {
         continue;
       }
       // Only choose the safe paths
-      if (kvp["1"].path.ap > 0 || kvp["1"].path.mp > 0) {
+      // TODO: Maybe in the futur try to cast the spell even with tackle cost, in a good way of course
+      if (moveNode.path.ap > 0 || moveNode.path.mp > 0) {
         continue;
       }
       // if (spell.handToHand && MapPoint.fromCellId(kvp.key).distanceToCell(MapPoint.fromCellId())) {
       //   continue;
       // }
-      const range = this.account.game.fight.getSpellRange(kvp["0"], spellLevel);
+      const range = this.account.game.fight.getSpellRange(cellid, spellLevel);
       for (const t of range) {
         if (
           (await this.account.game.fight.canLaunchSpellOnTarget(
             spell.spellId,
-            kvp["0"],
+            cellid,
             t
           )) !== SpellInabilityReasons.NONE
         ) {
           continue;
         }
-        if (kvp["1"].path.reachable.length >= pmUsed) {
+        if (moveNode.path.reachable.length >= pmUsed) {
           continue;
         }
-        node = kvp;
-        pmUsed = kvp["1"].path.reachable.length;
+        node = [cellid, moveNode];
+        pmUsed = moveNode.path.reachable.length;
       }
     }
     if (node !== null) {
@@ -556,7 +551,7 @@ export default class SpellsManager {
       case SpellResistances.FIRE:
         return fighter.stats.fireElementResistPercent <= spell.resistanceValue;
       case SpellResistances.WIND:
-        return fighter.stats.waterElementResistPercent <= spell.resistanceValue;
+        return fighter.stats.airElementResistPercent <= spell.resistanceValue;
       default:
         // Water
         return fighter.stats.waterElementResistPercent <= spell.resistanceValue;

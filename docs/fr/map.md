@@ -1,9 +1,11 @@
 # CookieTouch API Documentation
+
 [Sommaire](SUMMARY.md) | [Sommaire détaillé](singlepage.md)
 
 <hr>
 
 ## Sommaire
+
 - [Map](#map)
   - [changeMap](#map-change-map)
   - [moveToCell](#map-move-to-cell)
@@ -24,8 +26,8 @@
   - [subArea](#subarea)
 
 # Map
-Toutes les fonctions relatives aux maps.
 
+Toutes les fonctions relatives aux maps.
 
 Les cellId vont de 0 à 559, vous pouvez les afficher dans l'onglet Map de CookieTouch.
 
@@ -38,6 +40,7 @@ Les cellId vont de 0 à 559, vous pouvez les afficher dans l'onglet Map de Cooki
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
 
 Permet de changer de carte. Les directions suivantes sont acceptées:
+
 - `top` pour aller vers le haut.
 - `bottom` pour aller vers le bas.
 - `right` pour aller vers la droite.
@@ -46,10 +49,11 @@ Permet de changer de carte. Les directions suivantes sont acceptées:
 Retourne false si le bot n'a pas pu changer de map, sinon retourne true.
 
 **Exemple:**
+
 ```js
-if (yield* await changeMap("top") !== true) // Essaie d'aller sur la map du haut.
-{ 
-  yield* await changeMap("right"); // Si la map du haut est inaccessible, alors va a droite.
+if (yield * (await changeMap("top")) !== true) {
+  // Essaie d'aller sur la map du haut.
+  yield * (await changeMap("right")); // Si la map du haut est inaccessible, alors va a droite.
 }
 ```
 
@@ -66,9 +70,10 @@ Permet de se déplacer sur une cellule. Les cellId vont de 0 à 559, vous pouvez
 Retourne false si la cellule est inaccessible, sinon retourne true.
 
 **Exemple:**
+
 ```js
 cellId = 0;
-while (yield* await moveToCell(cellId)) {
+while (yield * (await moveToCell(cellId))) {
   cellId++; // Tant que la cellId est inaccessible ajouter 1 à cellId.
 }
 ```
@@ -86,8 +91,9 @@ Permet d’utiliser une action d’un élement interactif à partir de son ident
 Retourne true si l'element est utilisable, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await useById(1545, 1);
+yield * (await useById(1545, 1));
 ```
 
 <hr>
@@ -103,8 +109,9 @@ Permet d’utiliser une action d’un élement interactif sur une cellule donné
 Retourne true si le bot a pu interagir avec l'élement, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await use(1545, 1);
+yield * (await use(1545, 1));
 ```
 
 <hr>
@@ -120,8 +127,9 @@ Permet d’utiliser une porte de maison protégée par un code.
 Retourne true si le bot est entré, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await useLockedHouse(239, 00000000); // Ouvre la porte en cellule 239 avec le code 00000000.
+yield * (await useLockedHouse(239, "00000000")); // Ouvre la porte en cellule 239 avec le code 00000000.
 ```
 
 <hr>
@@ -137,9 +145,11 @@ Permet d’utiliser un coffre de maison protégé par un code.
 Retourne true si le bot a ouvert le coffre, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await useLockedStorage(127, 00000000); // Ouvre le coffre en cellule 127 avec le code 00000000.
+yield * (await useLockedStorage(127, "00000000")); // Ouvre le coffre en cellule 127 avec le code 00000000.
 ```
+
 <hr>
 
 <h2 id="map-use-zaap">
@@ -153,8 +163,9 @@ Permet d’utiliser un zaap.
 Retourne true si le bot a pu utiliser le zaap, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await useZaap(2545); // se téléporte sur le zaap de la map 2545.
+yield * (await useZaap(2545)); // se téléporte sur le zaap de la map 2545.
 ```
 
 <hr>
@@ -170,21 +181,24 @@ Permet d’utiliser un zaapi.
 Retourne true si le bot a pu utiliser le zaapi, sinon retourne false.
 
 **Exemple:**
+
 ```js
-yield* await useZaapi(3545); // se téléporte sur le zaapi de la map 3545.
+yield * (await useZaapi(3545)); // se téléporte sur le zaapi de la map 3545.
 ```
 
 <hr>
 
 ## saveZaap()
+
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Boolean_type">boolean</a>
 
 Permet de sauvegarder un zaap pour l’utiliser comme position par défaut de réapparition de votre personnage.
 
 **Exemple:**
+
 ```js
 if (onMap("0,-2")) {
-  yield* await saveZaap(); // Sauvegarde le Zaap en "0,-2".
+  yield * (await saveZaap()); // Sauvegarde le Zaap en "0,-2".
 }
 ```
 
@@ -197,8 +211,9 @@ if (onMap("0,-2")) {
 Met le script en pause jusqu’au prochain changement de map.
 
 **Exemple:**
+
 ```js
-yield* await waitMapChange(2000); // Attend 2 secondes.
+yield * (await waitMapChange(2000)); // Attend 2 secondes.
 ```
 
 <hr>
@@ -210,8 +225,9 @@ yield* await waitMapChange(2000); // Attend 2 secondes.
 Vous permet de rejoindre un ami. Disponible seulement si vous êtes à Incarnam.
 
 **Exemple:**
+
 ```js
-yield* await joinFriend("Eausa"); // Se téléporte syr le personnage nommé "Eausa"
+yield * (await joinFriend("Eausa")); // Se téléporte syr le personnage nommé "Eausa"
 ```
 
 <hr>
@@ -225,10 +241,11 @@ yield* await joinFriend("Eausa"); // Se téléporte syr le personnage nommé "Ea
 Retourne true si le personnage est sur la cellule, sinon retourne false.
 
 **Exemple:**
+
 ```js
 let cellId = 0;
 while (!onCell(cellId)) {
-  cellId++; // À la fin de la boucle, cellId est égal à la cellule sur laquelle se trouve le personnage.
+  cellId++; // À la fin de la boucle, cellId est égal à la cellule sur laquelle se trouve le personnage.
 }
 const characterCell = cellId;
 ```
@@ -244,6 +261,7 @@ const characterCell = cellId;
 Retourne true si le personnage est sur la map donnée, sinon retourne false.
 
 **Exemple:**
+
 ```js
 if (onMap("-2,0")) {
   // You are in "-2.0".
@@ -253,37 +271,44 @@ if (onMap("-2,0")) {
 <hr>
 
 ## currentPos()
+
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>
 
 Retourne les coordonnées de la map actuelle.
 
 **Exemple:**
+
 ```js
-onMap(currentPos()) // Retourne toujours true.
+onMap(currentPos()); // Retourne toujours true.
 ```
 
 <hr>
 
 ## currentMapId()
+
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
 Retourne la mapId de la map actuelle.
 
 **Exemple:**
+
 ```js
-if (currentMapId() === 88081177) { // 88081177 est la map exterieure "9,2".
-  yield* useLockedHouse(cellid, 00000000); // Lorsque le bot arrive sur la map de votre maison, entrer dans la maison.
+if (currentMapId() === 88081177) {
+  // 88081177 est la map exterieure "9,2".
+  yield * useLockedHouse(cellid, 00000000); // Lorsque le bot arrive sur la map de votre maison, entrer dans la maison.
 }
 ```
 
 <hr>
 
 ## area()
+
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>
 
 Retourne le nom de la zone.
 
 **Exemple:**
+
 ```js
 if (area() === "Astrub") {
   // Nous sommes dans la zone Astrub.
@@ -293,11 +318,13 @@ if (area() === "Astrub") {
 <hr>
 
 ## subArea
+
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#String_type">string</a>
 
 Retourne le nom de la sous-zone.
 
 **Exemple:**
+
 ```js
 if (subArea() === "Cité d'Astrub") {
   // Nous sommes à l'intérieur de la ville d'Astrub.

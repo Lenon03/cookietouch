@@ -48,17 +48,17 @@ export default class FightsUtility {
           MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
         );
 
-    for (const kvp of FightsPathfinder.getReachableZone(
+    for (const [cellId, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
-      if (!kvp["1"].reachable) {
+      if (!moveNode.reachable) {
         continue;
       }
       const tempTotalDistances = basedOnAllMonsters
-        ? this.getTotalDistancesFromEnemies(kvp["0"])
-        : MapPoint.fromCellId(kvp["0"]).distanceToCell(
+        ? this.getTotalDistancesFromEnemies(cellId)
+        : MapPoint.fromCellId(cellId).distanceToCell(
             MapPoint.fromCellId(
               this.account.game.fight.getNearestEnemy().cellId
             )
@@ -69,13 +69,13 @@ export default class FightsUtility {
         (!nearest && tempTotalDistances >= totalDistances)
       ) {
         if (nearest) {
-          node = kvp;
+          node = [cellId, moveNode];
           totalDistances = tempTotalDistances;
-        } else if (kvp["1"].path.reachable.length >= distance) {
+        } else if (moveNode.path.reachable.length >= distance) {
           // If we need to give the farthest cell, we might as well give the one that uses the most available MP
-          node = kvp;
+          node = [cellId, moveNode];
           totalDistances = tempTotalDistances;
-          distance = kvp["1"].path.reachable.length;
+          distance = moveNode.path.reachable.length;
         }
       }
     }

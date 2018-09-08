@@ -4,7 +4,7 @@ import Type from "@/protocol/network/types/Type";
 
 export default class FightCommonInformations extends Type {
   public fightTeams: FightTeamInformations[];
-  public fightTeamsPositions: number;
+  public fightTeamsPositions: number[];
   public fightTeamsOptions: FightOptionsInformations[];
   public fightId: number;
   public fightType: number;
@@ -13,7 +13,7 @@ export default class FightCommonInformations extends Type {
     fightId = 0,
     fightType = 0,
     fightTeams: FightTeamInformations[],
-    fightTeamsPositions = 0,
+    fightTeamsPositions = [],
     fightTeamsOptions: FightOptionsInformations[]
   ) {
     super();

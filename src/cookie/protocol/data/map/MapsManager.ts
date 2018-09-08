@@ -24,7 +24,7 @@ export default class MapsManager {
       DTConstants.config.assetsUrl + "/maps/" + mapId + ".json"
     );
     const data = response.data;
-    writeFileAsync(filePath, JSON.stringify(data)); // TODO: await or not?
+    await writeFileAsync(filePath, JSON.stringify(data));
     return this.buildMap(data);
   }
 

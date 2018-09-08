@@ -4,7 +4,7 @@ import ObjectToSellEntry, {
 } from "@/extensions/bid/ObjectToSellEntry";
 import LiteEvent from "@/utils/LiteEvent";
 import { isBlank } from "@/utils/String";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 interface IBidConfigurationJSON {
   interval: number;

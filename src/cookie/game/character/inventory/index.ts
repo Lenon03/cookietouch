@@ -11,6 +11,7 @@ import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInvent
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import LiteEvent from "@/utils/LiteEvent";
+import { sleep } from "@/utils/Time";
 import { List } from "linqts";
 
 export default class Inventory {
@@ -241,7 +242,8 @@ export default class Inventory {
     );
     for (const obj of message.objects) {
       const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = new ObjectEntry(obj, e ? e : undefined);
+      const entry = new ObjectEntry(obj, e);
+      await sleep(100);
       this._objects.set(obj.objectUID, entry);
     }
     this.onInventoryUpdated.trigger(true);
@@ -257,12 +259,12 @@ export default class Inventory {
   public async UpdateObjectsAddedMessage(message: any) {
     const items = await DataManager.get<Items>(
       DataTypes.Items,
-      ...message.object.map((o: any) => o.objectGID)
+      ...message.object.map(o => o.objectGID)
     );
 
     for (const obj of message.object) {
       const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = new ObjectEntry(obj, e ? e : null);
+      const entry = new ObjectEntry(obj, e);
       this._objects.set(obj.objectUID, entry);
     }
 

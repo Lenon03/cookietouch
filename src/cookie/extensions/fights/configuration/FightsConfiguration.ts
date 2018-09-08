@@ -5,7 +5,7 @@ import { FightStartPlacement } from "@/extensions/fights/configuration/enums/Fig
 import { FightTactics } from "@/extensions/fights/configuration/enums/FightTactics";
 import Spell, { ISpell } from "@/extensions/fights/configuration/Spell";
 import LiteEvent from "@/utils/LiteEvent";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 interface IFightsConfigurationJSON {
   approachWhenNoSpellCasted: boolean;

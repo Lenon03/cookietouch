@@ -9,7 +9,7 @@ import {
   IBottomAppBarProps,
   IBottomAppBarState
 } from "@renderer/pages/BottomAppBar/types";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import * as React from "react";
 
 class BottomAppBar extends React.Component<

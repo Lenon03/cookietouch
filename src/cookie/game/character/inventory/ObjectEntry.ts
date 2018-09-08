@@ -1,4 +1,6 @@
-import InventoryHelper, { ObjectTypes } from "@/game/character/inventory/InventoryHelper";
+import InventoryHelper, {
+  ObjectTypes
+} from "@/game/character/inventory/InventoryHelper";
 import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import ItemTypes from "@/protocol/data/classes/ItemTypes";
@@ -32,7 +34,7 @@ export default class ObjectEntry {
     this.quantity = o.quantity;
     this.position = o.position;
 
-    if (item === undefined) {
+    if (!item) {
       DataManager.get<Items>(DataTypes.Items, this.gid).then(data => {
         item = data[0].object;
 

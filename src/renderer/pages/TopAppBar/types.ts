@@ -1,6 +1,6 @@
 import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { TopAppBarStyle } from "@renderer/pages/TopAppBar/styles";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export interface ITopAppBarProps {
   clickMenu: () => void;

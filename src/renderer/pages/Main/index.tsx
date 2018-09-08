@@ -8,7 +8,7 @@ import { IMainProps, IMainState, MainProps } from "@renderer/pages/Main/types";
 import MainContent from "@renderer/pages/MainContent";
 import TopAppBar from "@renderer/pages/TopAppBar";
 import withRoot from "@renderer/withRoot";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import * as React from "react";
 
 class Main extends React.Component<MainProps, IMainState> {

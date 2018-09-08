@@ -371,11 +371,14 @@ export default class MapGame implements IClearable {
     }
 
     // Doors
-    for (const kvp of this.data.midgroundLayer.entries()) {
-      for (const graph of kvp["1"]) {
+    for (const [
+      cellId,
+      graphicalElements
+    ] of this.data.midgroundLayer.entries()) {
+      for (const graph of graphicalElements) {
         // Check for teleportable cells
         if (graph.g === 21000) {
-          this.teleportableCells.push(kvp["0"]);
+          this.teleportableCells.push(cellId);
         } else {
           // Check for other usable interactives (like doors)
           const interactive = this.getInteractiveElement(graph.id);
@@ -389,7 +392,7 @@ export default class MapGame implements IClearable {
           if (graph.g === 7521) {
             this._phenixs.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp["0"])
+              new ElementInCellEntry(interactive, cellId)
             );
           }
 
@@ -399,15 +402,15 @@ export default class MapGame implements IClearable {
 
           // Zaap
           if (graph.g === 15363 || graph.g === 38003) {
-            this.zaap = new ElementInCellEntry(interactive, kvp["0"]);
+            this.zaap = new ElementInCellEntry(interactive, cellId);
           } else if (graph.g === 15004 || graph.g === 9541) {
             // Zaapi
-            this.zaapi = new ElementInCellEntry(interactive, kvp["0"]);
+            this.zaapi = new ElementInCellEntry(interactive, cellId);
           } else if (graph.g === 12367) {
             // Locked Storages
             this._lockedStorages.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp["0"])
+              new ElementInCellEntry(interactive, cellId)
             );
           } else if (
             MapGame.doorTypeIds.includes(interactive.elementTypeId) &&
@@ -415,7 +418,7 @@ export default class MapGame implements IClearable {
           ) {
             this._doors.set(
               graph.id,
-              new ElementInCellEntry(interactive, kvp["0"])
+              new ElementInCellEntry(interactive, cellId)
             );
           }
         }
@@ -554,8 +557,7 @@ export default class MapGame implements IClearable {
   public async UpdateGameRolePlayShowChallengeMessage(
     message: GameRolePlayShowChallengeMessage
   ) {
-    // TODO: Update the monsters group on the map
-    this.account.logger.logDofus("test", JSON.stringify(message));
+    // TODO: Remove monsters from the map?
   }
 
   private removeEntity(id: number) {

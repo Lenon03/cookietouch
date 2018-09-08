@@ -21,7 +21,15 @@ crashReporter.start({
 
 const template: MenuItemConstructorOptions[] = [
   {
-    label: app.getVersion()
+    label: app.getVersion(),
+    submenu: [
+      {
+        click: () => {
+          //
+        },
+        label: "Check updates"
+      }
+    ]
   }
 ];
 if (process.platform === "darwin") {

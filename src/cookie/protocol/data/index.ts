@@ -57,7 +57,7 @@ export default class DataManager {
       const filePath = await this.getFilePath(DataTypes[type], dataRes.id);
       return writeFileAsync(filePath, JSON.stringify(dataRes));
     });
-    Promise.all(writePromises); // TODO: await or not?
+    await Promise.all(writePromises);
     this.buildData(response.data, myArray);
     return myArray;
   }

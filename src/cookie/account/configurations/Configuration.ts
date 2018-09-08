@@ -4,7 +4,7 @@ import SpellToBoostEntry, {
 } from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import LiteEvent, { ILiteEvent } from "@/utils/LiteEvent";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 interface IConfigurationJSON {
   showGeneralMessages: boolean;

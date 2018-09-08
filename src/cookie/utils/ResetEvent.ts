@@ -1,4 +1,4 @@
-import { extend, isFunction } from "lodash";
+import { isFunction } from "util";
 
 let tokenId = 0;
 
@@ -45,7 +45,7 @@ export default class ResetEvent {
   constructor(isSignaled?: boolean, options?: IOptions) {
     this.queue = [];
     this.isSignaled = isSignaled;
-    this.options = extend({}, ResetEvent.defaultOptions, options);
+    this.options = { ...ResetEvent.defaultOptions, ...options };
   }
 
   /**

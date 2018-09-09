@@ -32,8 +32,8 @@ export default class TeleportablesManager {
       "TeleportDestinationsListMessage",
       this.handleTeleportDestinationsListMessage
     );
-    map.MapChanged.on(success => this.mapChanged);
-    interactives.UseFinished.on(success => this.interactivesUseFinished);
+    map.MapChanged.on(this.mapChanged);
+    interactives.UseFinished.on(this.interactivesUseFinished);
   }
 
   public get UseFinished() {
@@ -184,7 +184,7 @@ export default class TeleportablesManager {
     });
   };
 
-  private mapChanged = (success: boolean) => {
+  private mapChanged = () => {
     if (
       this._teleportable === TeleportablesEnum.NONE ||
       this._destinationMapId === 0

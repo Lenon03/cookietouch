@@ -4,7 +4,7 @@ import Cell from "@/protocol/data/map/Cell";
 import DTConstants from "@/protocol/DTConstants";
 import {
   existsAsync,
-  mkdirp,
+  mkdirRecursive,
   readFileAsync,
   writeFileAsync
 } from "@/utils/fsAsync";
@@ -37,7 +37,7 @@ export default class MapsManager {
     );
 
     if (!(await existsAsync(folderPath))) {
-      await mkdirp(folderPath);
+      mkdirRecursive(folderPath);
     }
 
     return join(folderPath, `${id}.json`);

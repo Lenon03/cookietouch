@@ -4,7 +4,7 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import DTConstants from "@/protocol/DTConstants";
 import {
   existsAsync,
-  mkdirp,
+  mkdirRecursive,
   readFileAsync,
   writeFileAsync
 } from "@/utils/fsAsync";
@@ -86,7 +86,7 @@ export default class DataManager {
     );
 
     if (!(await existsAsync(folderPath))) {
-      await mkdirp(folderPath);
+      mkdirRecursive(folderPath);
     }
 
     return join(folderPath, `${id}.json`);

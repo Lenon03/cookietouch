@@ -8,6 +8,8 @@ const move = [
 
 async function* test() {
   printMessage("Let's go!");
+  yield* await gather(38);
+  printMessage("Finish Gather!");
   yield* await delay(2000);
-  printMessage("Finish!");
+  printMessage("All Finish!");
 }

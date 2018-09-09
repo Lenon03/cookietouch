@@ -40,6 +40,7 @@ export default class Network implements IClearable {
     name: string,
     action: (account: Account, message: Message) => void
   ): string {
+    // TODO: We have to call unregisterMessage on all call to this method
     const id = randomString(16);
     this._registeredMessages.set(id, new RegisteredMessage(name, action));
     return id;

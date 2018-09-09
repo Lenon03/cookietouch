@@ -1,21 +1,25 @@
+export type LiteEventHandler<T> = (data?: T) => void | Promise<void>;
+
 export interface ILiteEvent<T> {
-  on(handler: (data?: T) => void): void;
-  off(handler: (data?: T) => void): void;
+  on(handler: LiteEventHandler<T>): void;
+  off(handler: LiteEventHandler<T>): void;
 }
 
 export default class LiteEvent<T> implements ILiteEvent<T> {
-  private handlers: Array<(data?: T) => void> = [];
+  private handlers: Array<LiteEventHandler<T>> = [];
 
-  public on(handler: (data?: T) => void): void {
+  public on(handler: LiteEventHandler<T>): void {
     this.handlers.push(handler);
   }
 
-  public off(handler: (data?: T) => void): void {
+  public off(handler: LiteEventHandler<T>): void {
     this.handlers = this.handlers.filter(h => h !== handler);
   }
 
-  public trigger(data?: T) {
-    this.handlers.slice(0).forEach(h => h(data));
+  public async trigger(data?: T) {
+    // TODO: Maybe await all call to this method?
+    const handlers = this.handlers.slice(0).map(async h => h(data));
+    await Promise.all(handlers);
   }
 
   public expose(): ILiteEvent<T> {

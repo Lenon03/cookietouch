@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class EquipItemAction extends ScriptAction {
@@ -17,6 +19,6 @@ export default class EquipItemAction extends ScriptAction {
     if (obj !== null && account.game.character.inventory.equipObject(obj)) {
       await sleep(500);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

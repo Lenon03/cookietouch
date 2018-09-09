@@ -1,6 +1,8 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class WaitMapChangeAction extends ScriptAction {
@@ -38,6 +40,6 @@ export default class WaitMapChangeAction extends ScriptAction {
       LanguageManager.trans("waitMapChangeAction"),
       LanguageManager.trans("waited")
     );
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

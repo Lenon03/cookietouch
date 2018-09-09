@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class DropItemAction extends ScriptAction {
@@ -20,6 +22,6 @@ export default class DropItemAction extends ScriptAction {
       account.game.character.inventory.dropObject(obj, this.quantity);
       await sleep(500);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

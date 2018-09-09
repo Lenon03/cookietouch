@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class StorageGetItemAction extends ScriptAction {
@@ -17,6 +19,6 @@ export default class StorageGetItemAction extends ScriptAction {
     if (account.game.storage.getItem(this.gid, this.quantity)) {
       await sleep(1000);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

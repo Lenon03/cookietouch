@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 
 export default class UseItemAction extends ScriptAction {
   public _name: string = "UseItemAction";
@@ -19,6 +21,6 @@ export default class UseItemAction extends ScriptAction {
       account.game.character.inventory.useObject(obj, this.quantity);
       // await sleep(500);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class SetRatioAction extends ScriptAction {
@@ -16,6 +18,6 @@ export default class SetRatioAction extends ScriptAction {
       account.game.character.mount.setRatio(this.ratio);
       await sleep(400);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

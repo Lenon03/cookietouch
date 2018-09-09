@@ -1,5 +1,7 @@
 import Account from "@/account";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
 export default class StoragePutKamasAction extends ScriptAction {
@@ -15,6 +17,6 @@ export default class StoragePutKamasAction extends ScriptAction {
     if (account.game.storage.putKamas(this.amount)) {
       await sleep(1000);
     }
-    return ScriptActionResults.DONE;
+    return ScriptAction.doneResult();
   }
 }

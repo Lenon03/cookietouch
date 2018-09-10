@@ -1,23 +1,29 @@
+import { captureException, init } from "@sentry/electron";
 import {
   app,
   BrowserWindow,
-  crashReporter,
   ipcMain,
   Menu,
   MenuItemConstructorOptions,
   screen
 } from "electron";
+import log from "electron-log";
 import { appUpdater } from "./updater";
+
+init({
+  dsn: "https://c2de150c591046829235a291351779b7@sentry.io/1237788"
+});
 
 app.commandLine.appendSwitch("js-flags", "--harmony-async-iteration");
 
-crashReporter.start({
-  companyName: "DevChris",
-  ignoreSystemCrashHandler: true,
-  productName: "CookieTouch",
-  submitURL:
-    "https://sentry.io/api/1237788/minidump?sentry_key=c2de150c591046829235a291351779b7"
-});
+const onError = error => {
+  log.transports.file.level = "debug";
+  captureException(error);
+  log.error(error);
+};
+
+process.on("uncaughtException", onError);
+process.on("unhandledRejection", onError);
 
 const template: MenuItemConstructorOptions[] = [
   {

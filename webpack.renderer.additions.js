@@ -1,10 +1,13 @@
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 const {
   TsConfigPathsPlugin
 } = require('awesome-typescript-loader');
 
 module.exports = {
   resolve: {
-    plugins: [new TsConfigPathsPlugin()]
+    plugins: [
+      new TsConfigPathsPlugin()
+    ]
   },
   module: {
     rules: [{
@@ -19,5 +22,13 @@ module.exports = {
       enforce: 'pre',
       exclude: /node_modules/
     }]
-  }
+  },
+  plugins: [
+    new SentryWebpackPlugin({
+      include: '.',
+      ignoreFile: '.sentrycliignore',
+      ignore: ['node_modules', 'custom.additions.webpack.js'],
+      configFile: 'sentry.properties'
+    })
+  ]
 }

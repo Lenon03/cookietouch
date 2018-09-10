@@ -9,25 +9,22 @@ import "@renderer/FontAwesomeIcons";
 import { LoadingPage } from "@renderer/LoadingPage";
 import Main from "@renderer/pages/Main";
 import { spinnerService } from "@renderer/Spinner/Service";
-import { crashReporter, ipcRenderer, remote } from "electron";
+// import "./test";
+import { init } from "@sentry/electron";
+import { ipcRenderer, remote } from "electron";
 import "material-design-icons/iconfont/material-icons.css";
 import * as React from "react";
 import { render } from "react-dom";
 import "typeface-roboto/index.css";
 import "./main.scss";
-// import "./test";
+
+init({
+  dsn: "https://c2de150c591046829235a291351779b7@sentry.io/1237788"
+});
 
 render(<LoadingPage />, document.getElementById("app"));
 
 spinnerService.show("mySpinner");
-
-crashReporter.start({
-  companyName: "DevChris",
-  ignoreSystemCrashHandler: true,
-  productName: "CookieTouch",
-  submitURL:
-    "https://sentry.io/api/1237788/minidump?sentry_key=c2de150c591046829235a291351779b7"
-});
 
 initialize();
 presence();

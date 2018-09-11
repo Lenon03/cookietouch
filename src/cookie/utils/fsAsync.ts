@@ -12,22 +12,31 @@ const mkdirAsync = promisify(mkdir);
  * @param targetDir target directory path to be created recursively.
  * @param isRelative is the provided `targetDir` a relative path?
  */
-export function mkdirRecursive(targetDir: string, isRelative = false) {
-  const initDir = isAbsolute(targetDir) ? sep : "";
-  const baseDir = isRelative ? __dirname : ".";
+export function mkdirRecursive(targetDir: string, { isRelativeToScript = false } = {}) {
+  const initDir = isAbsolute(targetDir) ? sep : '';
+  const baseDir = isRelativeToScript ? __dirname : '.';
 
-  targetDir.split(sep).reduce((prevDirPath, dirToCreate) => {
-    const curDirPathToCreate = resolve(baseDir, prevDirPath, dirToCreate);
+  return targetDir.split(sep).reduce((parentDir, childDir) => {
+    const curDir = resolve(baseDir, parentDir, childDir);
     try {
-      mkdirSync(curDirPathToCreate);
+      mkdirSync(curDir);
     } catch (err) {
-      if (err.code !== "EEXIST") {
-        throw err;
+      if (err.code === 'EEXIST') { // curDir already exists!
+        return curDir;
       }
-      // caught EEXIST error if curDirPathToCreate already existed (not a problem for us).
+
+      // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows.
+      if (err.code === 'ENOENT') { // Throw the original parentDir error on curDir `ENOENT` failure.
+        throw new Error(`EACCES: permission denied, mkdir '${parentDir}'`);
+      }
+
+      const caughtErr = ['EACCES', 'EPERM', 'EISDIR'].indexOf(err.code) > -1;
+      if (!caughtErr || caughtErr && targetDir === curDir) {
+        throw err; // Throw if it's just the last created dir.
+      }
     }
 
-    return curDirPathToCreate; // becomes prevDirPath on next call to reduce
+    return curDir;
   }, initDir);
 }
 

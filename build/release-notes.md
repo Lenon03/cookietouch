@@ -1,9 +1,8 @@
 [FR]
 
-- Correction du blocage à l'écran de chargement (windows)
-- Améliorations globales
-
+- Correction du blocage à l'écran de chargement (Windows)
+- Ajout d'un rapport de bug (invisible à l'utilisateur)
 [EN]
 
-- Fix windows loading bug
-- Global improvements
+- Fix infinite loading screen on Windows
+- Add a bug reporter (invisible to the user)

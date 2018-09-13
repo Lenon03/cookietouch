@@ -1,46 +1,48 @@
 matrix:
   include:
-    - os: osx
-      osx_image: xcode9.4
-      language: node_js
-      node_js: "10"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-    - os: linux
-      services: docker
-      language: generic
+  - os: osx
+    osx_image: xcode9.4
+    language: node_js
+    node_js: '10'
+    env:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  - os: linux
+    services: docker
+    language: generic
 cache:
   directories:
-    - node_modules
-    - "$HOME/.cache/electron"
-    - "$HOME/.cache/electron-builder"
+  - node_modules
+  - "$HOME/.cache/electron"
+  - "$HOME/.cache/electron-builder"
 before_install:
-  - |
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.3.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.3.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1
-      export PATH="/tmp/git-lfs:$PATH"
-    fi
+- |
+  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.3.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.3.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1
+    export PATH="/tmp/git-lfs:$PATH"
+  fi
 before_script:
-  - git lfs pull
+- git lfs pull
 script:
-  - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      docker run --rm \
-        --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
-        -v ${PWD}:/project \
-        -v ~/.cache/electron:/root/.cache/electron \
-        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-        electronuserland/builder:wine \
-        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-    else
-      yarn release
-    fi
+- |
+  if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    docker run --rm \
+      --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+      -v ${PWD}:/project \
+      -v ~/.cache/electron:/root/.cache/electron \
+      -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+      electronuserland/builder:wine \
+      /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
+  else
+    yarn release
+  fi
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
+- rm -rf $HOME/.cache/electron-builder/wine
 branches:
   only:
-    - master
+  - master
 env:
   global:
-    secure: cMC9p7m/TtmEohR7M1jV1nD1q/DX9O5Z1nBkI5G2DI2mAGSRjhSlN1Yq7yEcYeYkGX0bziBi4+Lgd/5TVLumP0LLFAo+iD2iCCpu0dk0iVJTLb92HKEf6s0COAqRVGPlJhqaWOOyDVhauQvN6Z78tLNhq4VO6Y7HsHxphCMogMmKjSgLtc2+2IT1fErnHxh0PHGYhDQaEshcw/SRiPCJqii5eqy168HDfCR4PpPu9Mj1WXqjXFSjA4cIm/bHfbXD29kiRGO5QD+sX/sPMtLJ3HWvPDIyIxItvXFGrh2034/iZb7rHushOtqMvqQ/fkVWWlatBKP+rRHfOHZqlqfC6THCkEgwhb8bdskyD5KSysSXE+hWljKJDNxTDWwlJ8/kMUd8liDUvmNrQU9MUAE8ajoA95eRdhOcZ+bM/KPneS/gBHPPMtZCEFV5Nz+9SiDc67S0jl1T4g02tVZmarCLknWBQLEvDJL/6JvxPSegavrVndaO2fSVPD+lODRQshweEhySrj07MDXql1QhxO3v4VdJSb7HzAh5ZR6HcwEloroyvilFc+KdHpch2pFRJGwK1t8ogLgz+txSziq13zFkt4lIU0FBfgSW8rHAhoMo334y4RLtKg8wQD0S54ev99WFYzrA4MD+PTSH+R9Hz8q75YCh4G3qSdiygxf1Pe24zAU=
+  - secure: cMC9p7m/TtmEohR7M1jV1nD1q/DX9O5Z1nBkI5G2DI2mAGSRjhSlN1Yq7yEcYeYkGX0bziBi4+Lgd/5TVLumP0LLFAo+iD2iCCpu0dk0iVJTLb92HKEf6s0COAqRVGPlJhqaWOOyDVhauQvN6Z78tLNhq4VO6Y7HsHxphCMogMmKjSgLtc2+2IT1fErnHxh0PHGYhDQaEshcw/SRiPCJqii5eqy168HDfCR4PpPu9Mj1WXqjXFSjA4cIm/bHfbXD29kiRGO5QD+sX/sPMtLJ3HWvPDIyIxItvXFGrh2034/iZb7rHushOtqMvqQ/fkVWWlatBKP+rRHfOHZqlqfC6THCkEgwhb8bdskyD5KSysSXE+hWljKJDNxTDWwlJ8/kMUd8liDUvmNrQU9MUAE8ajoA95eRdhOcZ+bM/KPneS/gBHPPMtZCEFV5Nz+9SiDc67S0jl1T4g02tVZmarCLknWBQLEvDJL/6JvxPSegavrVndaO2fSVPD+lODRQshweEhySrj07MDXql1QhxO3v4VdJSb7HzAh5ZR6HcwEloroyvilFc+KdHpch2pFRJGwK1t8ogLgz+txSziq13zFkt4lIU0FBfgSW8rHAhoMo334y4RLtKg8wQD0S54ev99WFYzrA4MD+PTSH+R9Hz8q75YCh4G3qSdiygxf1Pe24zAU=
+  - secure: xgWJPZt7g4TwL9nojuDB1SpFRj8Zgk8DL2mjLZVx7DftnP77R+uA8LVuQ3txxZuVAkK/BxaL7TZ4BX5xqyap82cxu9kSXwIcDkMBYvzFO7096W2J3JKcxSJlTBn0QFrrnx92iC8yVloCaEnbPOpSrb7yLT1gl1c3mrGcfKxphgyrvZtKgsetoHGZlDlNinarxyT1mFF7gKb8M7Nj5MpQ/WWaIVQqtRzGZdfJwpoJT2Fy1HNRbnvePj7gpf765D5JePe0SHDUqypyvk47jnKUTVs3ya6B1/Ub6qxTb5HGBJVO7l0aTgFS2cbnzPZ6UoQuzRAdDQ6WevFqqsPaYWTMFDjQ74I/aF5ZCHqCZ3majn90xcJWjKQYNNyUDxW8EF0dSgBcXQaBaIu+T100E/yrHv+y9amB3ExVtLTkA/lFk2UfKfDk2n+Im4xw7hrlnM9Apg8WcS/NTvmC1TautWmjCqfGT4Nul5mxvdsJE4bf26CUhVFyVbgygtV1RFaCPnu0JIGycXPfGzQtY1bZ/3jWEXwUGG2nhKb+qiml24oFi2YC2tg6cJT9jVGjAZNJJjKPhjcxpOwyv8s71XGOQHc5Bs887HFpuGl98YDyiISgAvGoevJwMrC8KkDCRevSiUJVDrH+bVbj2eP25wiyjCIlH6KTt2nf6NyEqGBtFyMHgns=
+  - secure: JDjjp9seWyKK4X9AANCKEE2C3OSshU1jryRg1VGsyymLhsfytiX0CWfjTRNy9zDNcEGSb/Zkk8UAWZsT2sivwxRBo+X1HgZnbrp5YvTq+IliIhxdog1U/jOz6KPqQOtMzS5Ro9/HTbxBkssuOvRdiohK5lhN8RzJ0MNGXbYoB59uJuDCbPOFvgmwK4QcPNDyCb+Mve0q/RiMthK61x+FFjf3hHWHYzUfYawB/ENK7U6f96hLl9Rvelb74to4qIoCQYb3bXIRQ4BNtL7gfh11vZS2iJbjdnkL6Sh3O5AAH5gt4VaU60B4aN/+EogtAcjRWCuWVXas6V+7f7pGwjlz9ehzzmjNcaS1z1km7RNjuyGECwcSpNbAFdAn3WgCRG0meufi4yqB2U8l07N9RbgFVcVuLFHAVs+AZ/y+uVPxuYBR3fzVjqzNLuHwldTDr0zjoqKZ95k92L7MkJ5FPUevG/8po1hDgK4SePIdM9VTc6k1neY/+1Owql4u01YtVk0rhjvW3MzAgPTgRmhe5soEXGrsUSUMsu6Ylcj4TJ3N2Rl+HH9vdzFCaIGRf50Ntq/4UAwrnnoIHS5uWfPnw4lAy2M9cYnS++W9IouNrbbxBS3eperd4C3z1UH29e2Wu2eD263sBPM5ffDaP84pHPEPfkd0ILFPmO40++N8yHTrrE8=

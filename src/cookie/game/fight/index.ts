@@ -408,7 +408,7 @@ export default class Fight implements IClearable {
   public async canLaunchSpell(spellId: number): Promise<SpellInabilityReasons> {
     const spellEntry = this.account.game.character.getSpell(spellId);
 
-    if (spellEntry === null) {
+    if (!spellEntry || !this.playedFighter) {
       return SpellInabilityReasons.UNKNOWN;
     }
 

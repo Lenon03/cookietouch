@@ -4,6 +4,10 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import Frames, { IFrame } from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import { ServerStatusEnum } from "@/protocol/enums/ServerStatusEnum";
+import AuthenticationTicketAcceptedMessage from "@/protocol/network/messages/AuthenticationTicketAcceptedMessage";
+import AuthenticationTicketRefusedMessage from "@/protocol/network/messages/AuthenticationTicketRefusedMessage";
+import HelloGameMessage from "@/protocol/network/messages/HelloGameMessage";
+import SelectedServerDataMessage from "@/protocol/network/messages/SelectedServerDataMessage";
 import ServersListMessage from "@/protocol/network/messages/ServersListMessage";
 import ServerStatusUpdateMessage from "@/protocol/network/messages/ServerStatusUpdateMessage";
 import { sleep } from "@/utils/Time";
@@ -138,7 +142,7 @@ export default class ServerSelectionFrame implements IFrame {
 
   private async HandleSelectedServerDataMessage(
     account: Account,
-    message: any
+    message: SelectedServerDataMessage
   ) {
     account.game.server.UpdateSelectedServerDataMessage(message);
     account.framesData.ticket = message.ticket;
@@ -150,7 +154,10 @@ export default class ServerSelectionFrame implements IFrame {
     });
   }
 
-  private async HandleHelloGameMessage(account: Account, message: any) {
+  private async HandleHelloGameMessage(
+    account: Account,
+    message: HelloGameMessage
+  ) {
     account.network.sendMessageFree("AuthenticationTicketMessage", {
       lang: GlobalConfiguration.lang,
       ticket: account.framesData.ticket
@@ -160,7 +167,7 @@ export default class ServerSelectionFrame implements IFrame {
 
   private async HandleAuthenticationTicketAcceptedMessage(
     account: Account,
-    message: any
+    message: AuthenticationTicketAcceptedMessage
   ) {
     // TODO: Send this maybe at the TrustStatusMessage
     account.network.sendMessageFree("CharactersListRequestMessage");
@@ -168,7 +175,7 @@ export default class ServerSelectionFrame implements IFrame {
 
   private async HandleAuthenticationTicketRefusedMessage(
     account: Account,
-    message: any
+    message: AuthenticationTicketRefusedMessage
   ) {
     account.stop();
   }

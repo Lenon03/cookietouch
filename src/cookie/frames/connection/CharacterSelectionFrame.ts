@@ -1,8 +1,13 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import Frames, { IFrame } from "@/frames";
+import CharacterCreationResultMessage from "@/protocol/network/messages/CharacterCreationResultMessage";
 import CharacterNameSuggestionFailureMessage from "@/protocol/network/messages/CharacterNameSuggestionFailureMessage";
+import CharacterNameSuggestionSuccessMessage from "@/protocol/network/messages/CharacterNameSuggestionSuccessMessage";
+import CharacterSelectedForceMessage from "@/protocol/network/messages/CharacterSelectedForceMessage";
+import CharacterSelectedSuccessMessage from "@/protocol/network/messages/CharacterSelectedSuccessMessage";
 import CharactersListMessage from "@/protocol/network/messages/CharactersListMessage";
+import GameContextCreateMessage from "@/protocol/network/messages/GameContextCreateMessage";
 import { randomString } from "@/utils/Random";
 import { isBlank } from "@/utils/String";
 
@@ -89,7 +94,7 @@ export default class CharacterSelectionFrame implements IFrame {
 
   private async HandleCharacterNameSuggestionSuccessMessage(
     account: Account,
-    message: any
+    message: CharacterNameSuggestionSuccessMessage
   ) {
     account.extensions.characterCreation.UpdateCharacterNameSuggestionSuccessMessage(
       message
@@ -107,7 +112,7 @@ export default class CharacterSelectionFrame implements IFrame {
 
   private async HandleCharacterCreationResultMessage(
     account: Account,
-    message: any
+    message: CharacterCreationResultMessage
   ) {
     account.extensions.characterCreation.UpdateCharacterCreationResultMessage(
       message
@@ -116,7 +121,7 @@ export default class CharacterSelectionFrame implements IFrame {
 
   private async HandleCharacterSelectedSuccessMessage(
     account: Account,
-    message: any
+    message: CharacterSelectedSuccessMessage
   ) {
     account.game.character.UpdateCharacterSelectedSuccessMessage(message);
 
@@ -138,7 +143,10 @@ export default class CharacterSelectionFrame implements IFrame {
     account.network.sendMessageFree("GameContextCreateRequestMessage");
   }
 
-  private async HandleGameContextCreateMessage(account: Account, message: any) {
+  private async HandleGameContextCreateMessage(
+    account: Account,
+    message: GameContextCreateMessage
+  ) {
     if (!account.framesData.initialized && message.context === 1) {
       await account.network.sendMessageFree("ObjectAveragePricesGetMessage");
       account.framesData.initialized = true;
@@ -147,7 +155,7 @@ export default class CharacterSelectionFrame implements IFrame {
 
   private async HandleCharacterSelectedForceMessage(
     account: Account,
-    message: any
+    message: CharacterSelectedForceMessage
   ) {
     await account.network.sendMessageFree("CharacterSelectedForceReadyMessage");
   }

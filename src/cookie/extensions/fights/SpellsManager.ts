@@ -331,6 +331,9 @@ export default class SpellsManager {
     spell: Spell,
     target: FighterEntry
   ): Promise<SpellCastingResults> {
+    if (!target) {
+      return SpellCastingResults.NOT_CASTED;
+    }
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
     let node: [number, MoveNode] = null;
     let pmUsed = 99;

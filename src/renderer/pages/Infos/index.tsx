@@ -339,6 +339,9 @@ class Infos extends React.Component<InfosProps, IInfosState> {
         properties: ["openFile"]
       },
       filepaths => {
+        if (filepaths.length === 0) {
+          return;
+        }
         const filepath = filepaths[0];
         this.props.account.scripts.fromFile(filepath);
       }

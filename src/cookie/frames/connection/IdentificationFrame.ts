@@ -4,8 +4,11 @@ import Frames, { IFrame } from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
 import DTConstants from "@/protocol/DTConstants";
 import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
+import ConnectionFailedMessage from "@/protocol/network/messages/ConnectionFailedMessage";
+import HelloConnectMessage from "@/protocol/network/messages/HelloConnectMessage";
 import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
 import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
+import IdentificationSuccessMessage from "@/protocol/network/messages/IdentificationSuccessMessage";
 import moment from "moment";
 
 export default class IdentificationFrame implements IFrame {
@@ -42,7 +45,10 @@ export default class IdentificationFrame implements IFrame {
     );
   }
 
-  private async HandleHelloConnectMessage(account: Account, message: any) {
+  private async HandleHelloConnectMessage(
+    account: Account,
+    message: HelloConnectMessage
+  ) {
     account.network.phase = NetworkPhases.LOGIN;
     account.framesData.key = message.key;
     account.framesData.salt = message.salt;
@@ -66,7 +72,10 @@ export default class IdentificationFrame implements IFrame {
     });
   }
 
-  private async HandleConnectionFailedMessage(account: Account, message: any) {
+  private async HandleConnectionFailedMessage(
+    account: Account,
+    message: ConnectionFailedMessage
+  ) {
     account.logger.logError(
       LanguageManager.trans("identificationFrame"),
       message.reason
@@ -75,7 +84,7 @@ export default class IdentificationFrame implements IFrame {
 
   private async HandleIdentificationSuccessMessage(
     account: Account,
-    message: any
+    message: IdentificationSuccessMessage
   ) {
     account.data.accountCreation = message.accountCreation;
     account.data.accountId = message.accountId;

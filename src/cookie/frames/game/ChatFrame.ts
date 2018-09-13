@@ -7,7 +7,12 @@ import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 import { ChatErrorEnum } from "@/protocol/enums/ChatErrorEnum";
 import { ObjectErrorEnum } from "@/protocol/enums/ObjectErrorEnum";
 import { TextInformationTypeEnum } from "@/protocol/enums/TextInformationTypeEnum";
+import ChatServerCopyMessage from "@/protocol/network/messages/ChatServerCopyMessage";
+import ChatServerMessage from "@/protocol/network/messages/ChatServerMessage";
 import ChatServerWithObjectMessage from "@/protocol/network/messages/ChatServerWithObjectMessage";
+import ObjectErrorMessage from "@/protocol/network/messages/ObjectErrorMessage";
+import SystemMessageDisplayMessage from "@/protocol/network/messages/SystemMessageDisplayMessage";
+import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
 
 export default class ChatFrame implements IFrame {
   public register() {
@@ -48,7 +53,10 @@ export default class ChatFrame implements IFrame {
     );
   }
 
-  private async HandleObjectErrorMessage(account: Account, message: any) {
+  private async HandleObjectErrorMessage(
+    account: Account,
+    message: ObjectErrorMessage
+  ) {
     account.logger.logError(
       LanguageManager.trans("chatFrame"),
       ObjectErrorEnum[message.reason]
@@ -77,7 +85,10 @@ export default class ChatFrame implements IFrame {
     }
   }
 
-  private async HandleTextInformationMessage(account: Account, message: any) {
+  private async HandleTextInformationMessage(
+    account: Account,
+    message: TextInformationMessage
+  ) {
     let text: string = message.text;
     for (let i = 0; i < message.parameters.length; i++) {
       text = text.replace(`$%${i}`, message.parameters[i]);
@@ -98,12 +109,15 @@ export default class ChatFrame implements IFrame {
 
   private async HandleSystemMessageDisplayMessage(
     account: Account,
-    message: any
+    message: SystemMessageDisplayMessage
   ) {
     account.logger.logError(LanguageManager.trans("chatFrame"), message.text);
   }
 
-  private async HandleChatServerMessage(account: Account, message: any) {
+  private async HandleChatServerMessage(
+    account: Account,
+    message: ChatServerMessage
+  ) {
     if (!this.isChannelEnabled(account, message.channel)) {
       return;
     }
@@ -200,7 +214,10 @@ export default class ChatFrame implements IFrame {
     }
   }
 
-  private async HandleChatServerCopyMessage(account: Account, message: any) {
+  private async HandleChatServerCopyMessage(
+    account: Account,
+    message: ChatServerCopyMessage
+  ) {
     if (message.channel === ChatActivableChannelsEnum.PSEUDO_CHANNEL_PRIVATE) {
       account.logger.log(
         `à ${message.receiverName}`,

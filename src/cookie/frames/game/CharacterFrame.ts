@@ -5,7 +5,15 @@ import CharacterExperienceGainMessage from "@/protocol/network/messages/Characte
 import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
 import CharacterStatsListMessage from "@/protocol/network/messages/CharacterStatsListMessage";
 import EmotePlayMessage from "@/protocol/network/messages/EmotePlayMessage";
+import GameRolePlayPlayerLifeStatusMessage from "@/protocol/network/messages/GameRolePlayPlayerLifeStatusMessage";
+import JobDescriptionMessage from "@/protocol/network/messages/JobDescriptionMessage";
+import JobExperienceMultiUpdateMessage from "@/protocol/network/messages/JobExperienceMultiUpdateMessage";
+import JobExperienceUpdateMessage from "@/protocol/network/messages/JobExperienceUpdateMessage";
+import LifePointsRegenBeginMessage from "@/protocol/network/messages/LifePointsRegenBeginMessage";
 import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
+import PlayerStatusUpdateMessage from "@/protocol/network/messages/PlayerStatusUpdateMessage";
+import SpellListMessage from "@/protocol/network/messages/SpellListMessage";
+import SpellUpgradeSuccessMessage from "@/protocol/network/messages/SpellUpgradeSuccessMessage";
 import UpdateLifePointsMessage from "@/protocol/network/messages/UpdateLifePointsMessage";
 
 export default class CharacterFrame implements IFrame {
@@ -80,21 +88,6 @@ export default class CharacterFrame implements IFrame {
       this.HandleJobExperienceUpdateMessage,
       this
     );
-    Frames.dispatcher.register(
-      "MountXpRatioMessage",
-      this.HandleMountXpRatioMessage,
-      this
-    );
-    Frames.dispatcher.register(
-      "MountRidingMessage",
-      this.HandleMountRidingMessage,
-      this
-    );
-    Frames.dispatcher.register(
-      "MountSetMessage",
-      this.HandleMountSetMessage,
-      this
-    );
   }
 
   private async HandleEmotePlayMessage(
@@ -144,21 +137,21 @@ export default class CharacterFrame implements IFrame {
 
   private async HandleGameRolePlayPlayerLifeStatusMessage(
     account: Account,
-    message: any
+    message: GameRolePlayPlayerLifeStatusMessage
   ) {
     account.game.character.UpdateGameRolePlayPlayerLifeStatusMessage(message);
   }
 
   private async HandlePlayerStatusUpdateMessage(
     account: Account,
-    message: any
+    message: PlayerStatusUpdateMessage
   ) {
     account.game.character.UpdatePlayerStatusUpdateMessage(message);
   }
 
   private async HandleLifePointsRegenBeginMessage(
     account: Account,
-    message: any
+    message: LifePointsRegenBeginMessage
   ) {
     account.game.character.UpdateLifePointsRegenBeginMessage(message);
   }
@@ -179,24 +172,30 @@ export default class CharacterFrame implements IFrame {
     account.game.character.stats.UpdateLifePointsRegenEndMessage(message);
   }
 
-  private async HandleSpellListMessage(account: Account, message: any) {
+  private async HandleSpellListMessage(
+    account: Account,
+    message: SpellListMessage
+  ) {
     account.game.character.UpdateSpellListMessage(message);
   }
 
   private async HandleSpellUpgradeSuccessMessage(
     account: Account,
-    message: any
+    message: SpellUpgradeSuccessMessage
   ) {
     account.game.character.UpdateSpellUpgradeSuccessMessage(message);
   }
 
-  private async HandleJobDescriptionMessage(account: Account, message: any) {
+  private async HandleJobDescriptionMessage(
+    account: Account,
+    message: JobDescriptionMessage
+  ) {
     account.game.character.jobs.UpdateJobDescriptionMessage(message);
   }
 
   private async HandleJobExperienceMultiUpdateMessage(
     account: Account,
-    message: any
+    message: JobExperienceMultiUpdateMessage
   ) {
     await account.game.character.jobs.UpdateJobExperienceMultiUpdateMessage(
       message
@@ -205,20 +204,8 @@ export default class CharacterFrame implements IFrame {
 
   private async HandleJobExperienceUpdateMessage(
     account: Account,
-    message: any
+    message: JobExperienceUpdateMessage
   ) {
     await account.game.character.jobs.UpdateJobExperienceUpdateMessage(message);
-  }
-
-  private async HandleMountXpRatioMessage(account: Account, message: any) {
-    await account.game.character.mount.UpdateMountXpRatioMessage(message);
-  }
-
-  private async HandleMountRidingMessage(account: Account, message: any) {
-    await account.game.character.mount.UpdateMountRidingMessage(message);
-  }
-
-  private async HandleMountSetMessage(account: Account, message: any) {
-    await account.game.character.mount.UpdateMountSetMessage(message);
   }
 }

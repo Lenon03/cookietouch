@@ -354,6 +354,10 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
     };
   };
   private buildMap = () => {
+    if (!this.props.account.game.map.data) {
+      // TODO: Is it a good idea?
+      return;
+    }
     const c = this.canvasRef.current;
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
@@ -402,6 +406,10 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             const img2 = document.getElementById(
               `${this.props.account.accountConfig.username}-g-${i}-${g.g}`
             ) as HTMLImageElement;
+            if (!img2) {
+              // TODO: Check why the image doesn't exist
+              return;
+            }
             img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${
               g.g
             }.png`;

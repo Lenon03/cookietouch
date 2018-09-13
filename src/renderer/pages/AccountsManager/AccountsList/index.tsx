@@ -139,7 +139,7 @@ class AccountsList extends React.Component<
         properties: ["openFile"]
       },
       async filepaths => {
-        if (filepaths.length === 0) {
+        if (filepaths && filepaths.length === 0) {
           return;
         }
         const filePath = filepaths[0];

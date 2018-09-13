@@ -35,7 +35,7 @@
   "homepage": "https://github.com/cookie-project/cookietouch#readme",
   "devDependencies": {
     "@sentry/cli": "^1.35.5",
-    "@sentry/webpack-plugin": "^1.6.0",
+    "@sentry/webpack-plugin": "^1.6.1",
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
@@ -52,7 +52,7 @@
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.0.3",
-    "webpack": "^4.18.0",
+    "webpack": "^4.18.1",
     "webpack-build-notifier": "^0.1.29"
   },
   "dependencies": {
@@ -73,9 +73,9 @@
     "linqts": "^1.12.0",
     "material-design-icons": "^3.0.1",
     "moment": "^2.22.2",
-    "react": "^16.5.0",
+    "react": "^16.5.1",
     "react-color": "^2.14.1",
-    "react-dom": "^16.5.0",
+    "react-dom": "^16.5.1",
     "react-loader-spinner": "^2.1.0",
     "source-map-support": "^0.5.9",
     "typeface-roboto": "^0.0.54",

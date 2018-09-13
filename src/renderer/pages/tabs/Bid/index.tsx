@@ -401,6 +401,9 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
         properties: ["openFile"]
       },
       async filepaths => {
+        if (filepaths.length === 0) {
+          return;
+        }
         const filepath = filepaths[0];
         this.props.account.extensions.bid.config.scriptPath = filepath;
         await this.props.account.extensions.bid.config.save();

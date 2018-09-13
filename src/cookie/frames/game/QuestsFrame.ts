@@ -1,5 +1,9 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
+import QuestStartedMessage from "@/protocol/network/messages/QuestStartedMessage";
+import QuestStepInfoMessage from "@/protocol/network/messages/QuestStepInfoMessage";
+import QuestStepValidatedMessage from "@/protocol/network/messages/QuestStepValidatedMessage";
+import QuestValidatedMessage from "@/protocol/network/messages/QuestValidatedMessage";
 
 export default class QuestsFrame implements IFrame {
   public register() {
@@ -25,24 +29,33 @@ export default class QuestsFrame implements IFrame {
     );
   }
 
-  private async HandleQuestStartedMessage(account: Account, message: any) {
+  private async HandleQuestStartedMessage(
+    account: Account,
+    message: QuestStartedMessage
+  ) {
     account.extensions.characterCreation.UpdateQuestStartedMessage(message);
   }
 
-  private async HandleQuestStepInfoMessage(account: Account, message: any) {
+  private async HandleQuestStepInfoMessage(
+    account: Account,
+    message: QuestStepInfoMessage
+  ) {
     account.extensions.characterCreation.UpdateQuestStepInfoMessage(message);
   }
 
   private async HandleQuestStepValidatedMessage(
     account: Account,
-    message: any
+    message: QuestStepValidatedMessage
   ) {
     account.extensions.characterCreation.UpdateQuestStepValidatedMessage(
       message
     );
   }
 
-  private async HandleQuestValidatedMessage(account: Account, message: any) {
+  private async HandleQuestValidatedMessage(
+    account: Account,
+    message: QuestValidatedMessage
+  ) {
     account.extensions.characterCreation.UpdateQuestValidatedMessage(message);
   }
 }

@@ -6,6 +6,7 @@ import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import { DialogTypeEnum } from "@/protocol/enums/DialogTypeEnum";
+import StorageInventoryContentMessage from "@/protocol/network/messages/StorageInventoryContentMessage";
 import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
@@ -44,7 +45,7 @@ export default class Storage {
       return false;
     }
     const item = this.account.game.character.inventory.getObjectByGid(gid);
-    if (item === null) {
+    if (!item) {
       return false;
     }
 
@@ -213,13 +214,15 @@ export default class Storage {
     this.account.state = AccountStates.STORAGE;
   }
 
-  public async UpdateStorageInventoryContentMessage(message: any) {
+  public async UpdateStorageInventoryContentMessage(
+    message: StorageInventoryContentMessage
+  ) {
     this.kamas = message.kamas;
     this.objects = new List<ObjectEntry>();
 
     const objects = await DataManager.get<Items>(
       DataTypes.Items,
-      ...message.objects.map((o: any) => o.objectGID)
+      ...message.objects.map(o => o.objectGID)
     );
 
     for (const obj of message.objects) {

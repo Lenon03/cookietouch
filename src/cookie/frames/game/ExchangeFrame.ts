@@ -1,5 +1,13 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
+import ExchangeIsReadyMessage from "@/protocol/network/messages/ExchangeIsReadyMessage";
+import ExchangeKamaModifiedMessage from "@/protocol/network/messages/ExchangeKamaModifiedMessage";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
+import ExchangeObjectModifiedMessage from "@/protocol/network/messages/ExchangeObjectModifiedMessage";
+import ExchangeObjectRemovedMessage from "@/protocol/network/messages/ExchangeObjectRemovedMessage";
+import ExchangeRequestedTradeMessage from "@/protocol/network/messages/ExchangeRequestedTradeMessage";
+import ExchangeStartedWithPodsMessage from "@/protocol/network/messages/ExchangeStartedWithPodsMessage";
 import { sleep } from "@/utils/Time";
 
 export default class ExchangeFrame implements IFrame {
@@ -48,7 +56,7 @@ export default class ExchangeFrame implements IFrame {
 
   private async HandleExchangeRequestedTradeMessage(
     account: Account,
-    message: any
+    message: ExchangeRequestedTradeMessage
   ) {
     await sleep(200);
     account.game.exchange.UpdateExchangeRequestedTradeMessage(message);
@@ -56,44 +64,50 @@ export default class ExchangeFrame implements IFrame {
 
   private async HandleExchangeStartedWithPodsMessage(
     account: Account,
-    message: any
+    message: ExchangeStartedWithPodsMessage
   ) {
     account.game.exchange.UpdateExchangeStartedWithPodsMessage(message);
   }
 
   private async HandleExchangeObjectAddedMessage(
     account: Account,
-    message: any
+    message: ExchangeObjectAddedMessage
   ) {
     account.game.exchange.UpdateExchangeObjectAddedMessage(message);
   }
 
   private async HandleExchangeObjectModifiedMessage(
     account: Account,
-    message: any
+    message: ExchangeObjectModifiedMessage
   ) {
     account.game.exchange.UpdateExchangeObjectModifiedMessage(message);
   }
 
   private async HandleExchangeObjectRemovedMessage(
     account: Account,
-    message: any
+    message: ExchangeObjectRemovedMessage
   ) {
     account.game.exchange.UpdateExchangeObjectRemovedMessage(message);
   }
 
   private async HandleExchangeKamaModifiedMessage(
     account: Account,
-    message: any
+    message: ExchangeKamaModifiedMessage
   ) {
     account.game.exchange.UpdateExchangeKamaModifiedMessage(message);
   }
 
-  private async HandleExchangeIsReadyMessage(account: Account, message: any) {
+  private async HandleExchangeIsReadyMessage(
+    account: Account,
+    message: ExchangeIsReadyMessage
+  ) {
     account.game.exchange.UpdateExchangeIsReadyMessage(message);
   }
 
-  private async HandleExchangeLeaveMessage(account: Account, message: any) {
+  private async HandleExchangeLeaveMessage(
+    account: Account,
+    message: ExchangeLeaveMessage
+  ) {
     account.game.exchange.UpdateExchangeLeaveMessage(message);
   }
 }

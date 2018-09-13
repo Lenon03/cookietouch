@@ -13,6 +13,7 @@ import ExchangeFrame from "@/frames/game/ExchangeFrame";
 import FightFrame from "@/frames/game/FightFrame";
 import InventoryFrame from "@/frames/game/InventoryFrame";
 import MapFrame from "@/frames/game/MapFrame";
+import MountFrame from "@/frames/game/MountFrame";
 import NpcsFrame from "@/frames/game/NpcsFrame";
 import QuestsFrame from "@/frames/game/QuestsFrame";
 import StorageFrame from "@/frames/game/StorageFrame";
@@ -43,7 +44,8 @@ export default class Frames {
     new StorageFrame(),
     new FightFrame(),
     new AveragePricesFrame(),
-    new GoultinesFrame()
+    new GoultinesFrame(),
+    new MountFrame()
   ];
 
   public static Init() {

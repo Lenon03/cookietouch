@@ -1,5 +1,13 @@
 import Account from "@/account";
 import Frames, { IFrame } from "@/frames";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeStartedWithStorageMessage from "@/protocol/network/messages/ExchangeStartedWithStorageMessage";
+import StorageInventoryContentMessage from "@/protocol/network/messages/StorageInventoryContentMessage";
+import StorageKamasUpdateMessage from "@/protocol/network/messages/StorageKamasUpdateMessage";
+import StorageObjectRemoveMessage from "@/protocol/network/messages/StorageObjectRemoveMessage";
+import StorageObjectsRemoveMessage from "@/protocol/network/messages/StorageObjectsRemoveMessage";
+import StorageObjectsUpdateMessage from "@/protocol/network/messages/StorageObjectsUpdateMessage";
+import StorageObjectUpdateMessage from "@/protocol/network/messages/StorageObjectUpdateMessage";
 
 export default class StorageFrame implements IFrame {
   public register() {
@@ -47,54 +55,57 @@ export default class StorageFrame implements IFrame {
 
   private async HandleExchangeStartedWithStorageMessage(
     account: Account,
-    message: any
+    message: ExchangeStartedWithStorageMessage
   ) {
     account.game.storage.UpdateExchangeStartedWithStorageMessage(message);
   }
 
   private async HandleStorageInventoryContentMessage(
     account: Account,
-    message: any
+    message: StorageInventoryContentMessage
   ) {
     account.game.storage.UpdateStorageInventoryContentMessage(message);
   }
 
   private async HandleStorageKamasUpdateMessage(
     account: Account,
-    message: any
+    message: StorageKamasUpdateMessage
   ) {
     account.game.storage.UpdateStorageKamasUpdateMessage(message);
   }
 
   private async HandleStorageObjectUpdateMessage(
     account: Account,
-    message: any
+    message: StorageObjectUpdateMessage
   ) {
     account.game.storage.UpdateStorageObjectUpdateMessage(message);
   }
 
   private async HandleStorageObjectRemoveMessage(
     account: Account,
-    message: any
+    message: StorageObjectRemoveMessage
   ) {
     account.game.storage.UpdateStorageObjectRemoveMessage(message);
   }
 
   private async HandleStorageObjectsUpdateMessage(
     account: Account,
-    message: any
+    message: StorageObjectsUpdateMessage
   ) {
     account.game.storage.UpdateStorageObjectsUpdateMessage(message);
   }
 
   private async HandleStorageObjectsRemoveMessage(
     account: Account,
-    message: any
+    message: StorageObjectsRemoveMessage
   ) {
     account.game.storage.UpdateStorageObjectsRemoveMessage(message);
   }
 
-  private async HandleExchangeLeaveMessage(account: Account, message: any) {
+  private async HandleExchangeLeaveMessage(
+    account: Account,
+    message: ExchangeLeaveMessage
+  ) {
     account.game.storage.UpdateExchangeLeaveMessage(message);
   }
 }

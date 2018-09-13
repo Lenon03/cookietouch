@@ -8,6 +8,7 @@
   - [isRiding](#mountisriding)
   - [hasMount](#mounthasmount)
   - [currentRatio](#mountcurrentratio)
+  - [currentLevel](#mountcurrentlevel)
   - [toggleRiding](#mount-toggle-riding)
   - [setRatio](#mount-set-ratio)
 
@@ -34,6 +35,13 @@ Retourne true si le personnage possède une monture, sinon retourne false.
 - Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
 
 Retourne le pourcentage d'experience donnée à la monture.
+
+<hr>
+
+## mount.currentLevel()
+- Return type: <a href="https://developer.mozilla.org/fr-Fr/docs/Web/JavaScript/Data_structures#Number_type">number</a>
+
+Retourne le level de la monture.
 
 <hr>
 

@@ -18,7 +18,17 @@ export default class MountAPI {
   }
 
   public currentRatio(): number {
+    if (!this.account.game.character.mount.hasMount) {
+      return -1;
+    }
     return this.account.game.character.mount.currentRatio;
+  }
+
+  public currentLevel(): number {
+    if (!this.account.game.character.mount.hasMount) {
+      return -1;
+    }
+    return this.account.game.character.mount.data.level;
   }
 
   public async toggleRiding(): Promise<boolean> {
@@ -32,7 +42,7 @@ export default class MountAPI {
   }
 
   public async setRatio(ratio: number): Promise<boolean> {
-    if (ratio > 100 || !this.account.game.character.mount.hasMount) {
+    if (ratio > 90 || !this.account.game.character.mount.hasMount) {
       return false;
     }
     await this.account.scripts.actionsManager.enqueueAction(

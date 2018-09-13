@@ -855,7 +855,7 @@ export default class ScriptsManager {
         forbiddenMonsters.push(fm);
       }
     }
-    // Forbidden monsters
+    // mandatory monsters
     entry = this.scriptManager.config.MANDATORY_MONSTERS;
     if (entry) {
       for (const fm of entry) {

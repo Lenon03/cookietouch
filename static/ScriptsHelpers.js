@@ -176,6 +176,7 @@ const mount = {
   isRiding: API.mount.isRiding.bind(API.mount),
   hasMount: API.mount.hasMount.bind(API.mount),
   currentRatio: API.mount.currentRatio.bind(API.mount),
+  currentLevel: API.mount.currentLevel.bind(API.mount),
   toggleRiding: async function* () {
     if (await API.mount.toggleRiding.bind(API.mount)()) {
       yield;

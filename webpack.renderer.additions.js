@@ -27,7 +27,7 @@ module.exports = {
     new SentryWebpackPlugin({
       include: '.',
       ignoreFile: '.sentrycliignore',
-      ignore: ['node_modules', 'custom.additions.webpack.js'],
+      ignore: ['node_modules', 'webpack.renderer.additions.js'],
       configFile: 'sentry.properties'
     })
   ]

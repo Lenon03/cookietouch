@@ -2,13 +2,14 @@ import Account from "@/account";
 import MountRidingMessage from "@/protocol/network/messages/MountRidingMessage";
 import MountSetMessage from "@/protocol/network/messages/MountSetMessage";
 import MountXpRatioMessage from "@/protocol/network/messages/MountXpRatioMessage";
+import MountClientData from "@/protocol/network/types/MountClientData";
 import IClearable from "@/utils/IClearable";
 
 export default class Mount implements IClearable {
   public hasMount: boolean;
   public isRiding: boolean;
   public currentRatio: number;
-
+  public data: MountClientData;
   private account: Account;
 
   constructor(account: Account) {
@@ -40,6 +41,7 @@ export default class Mount implements IClearable {
 
   public UpdateMountSetMessage(message: MountSetMessage) {
     this.hasMount = true;
+    this.data = message.mountData;
   }
 
   public UpdateMountRidingMessage(message: MountRidingMessage) {

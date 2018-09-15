@@ -49,30 +49,18 @@ export default class DataManager {
         ids: newIds
       }
     );
-    const writePromises = Object.entries(response.data).map(async item => {
-      const dataRes = {
-        id: parseInt(item["0"], 10),
-        object: item["1"]
-      } as IDataResponse<T>;
-      const filePath = await this.getFilePath(DataTypes[type], dataRes.id);
-      return writeFileAsync(filePath, JSON.stringify(dataRes));
-    });
-    await Promise.all(writePromises);
-    this.buildData(response.data, myArray);
-    return myArray;
-  }
 
-  private static buildData<T extends Data>(
-    json: any,
-    array: Array<IDataResponse<T>>
-  ) {
-    for (const item of Object.entries(json)) {
+    for (const item of Object.entries(response.data)) {
       const dataRes = {
         id: parseInt(item["0"], 10),
         object: item["1"]
       } as IDataResponse<T>;
-      array.push(dataRes);
+      myArray.push(dataRes);
+      const filePath = await this.getFilePath(DataTypes[type], dataRes.id);
+      await writeFileAsync(filePath, JSON.stringify(dataRes));
     }
+
+    return myArray;
   }
 
   private static async getFilePath(type: string, id: number): Promise<string> {

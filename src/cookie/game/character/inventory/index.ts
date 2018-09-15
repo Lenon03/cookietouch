@@ -243,7 +243,6 @@ export default class Inventory {
     for (const obj of message.objects) {
       const e = items.find(f => f.id === obj.objectGID).object;
       const entry = new ObjectEntry(obj, e);
-      await sleep(100);
       this._objects.set(obj.objectUID, entry);
     }
     this.onInventoryUpdated.trigger(true);

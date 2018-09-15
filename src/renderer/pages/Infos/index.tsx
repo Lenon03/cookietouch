@@ -339,7 +339,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
         properties: ["openFile"]
       },
       filepaths => {
-        if (filepaths.length === 0) {
+        if (!filepaths) {
           return;
         }
         const filepath = filepaths[0];

@@ -359,6 +359,9 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       return;
     }
     const c = this.canvasRef.current;
+    if (!c) {
+      return;
+    }
     const ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
     if (this.state.showReal) {

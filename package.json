@@ -52,7 +52,7 @@
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.0.3",
-    "webpack": "^4.18.1",
+    "webpack": "^4.19.0",
     "webpack-build-notifier": "^0.1.29"
   },
   "dependencies": {
@@ -69,7 +69,7 @@
     "downshift": "^2.2.2",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.1.2",
-    "firebase": "^5.4.2",
+    "firebase": "^5.5.0",
     "linqts": "^1.12.0",
     "material-design-icons": "^3.0.1",
     "moment": "^2.22.2",

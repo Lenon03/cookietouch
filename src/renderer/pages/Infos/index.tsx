@@ -426,7 +426,10 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     });
   };
 
-  private inventoryUpdated = () => {
+  private inventoryUpdated = (withObject: boolean) => {
+    if (withObject) {
+      return;
+    }
     this.setState({
       kamas: this.props.account.game.character.inventory.kamas,
       weight: this.props.account.game.character.inventory.weight,

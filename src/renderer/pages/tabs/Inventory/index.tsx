@@ -361,6 +361,9 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
   }
 
   private inventoryUpdated = (withObject: boolean) => {
+    if (!withObject) {
+      return;
+    }
     this.setState({
       consumables: this.props.account.game.character.inventory.consumables.ToArray(),
       equipments: this.props.account.game.character.inventory.equipments.ToArray(),

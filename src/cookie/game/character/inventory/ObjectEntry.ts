@@ -28,80 +28,85 @@ export default class ObjectEntry {
   public regenValue: number;
   public weightBoost: number;
 
-  constructor(o: ObjectItem, item?: Items) {
-    this.gid = o.objectGID;
-    this.uid = o.objectUID;
-    this.quantity = o.quantity;
-    this.position = o.position;
+  public static async setup(o: ObjectItem, item?: Items) {
+    const obj = new ObjectEntry();
+    obj.gid = o.objectGID;
+    obj.uid = o.objectUID;
+    obj.quantity = o.quantity;
+    obj.position = o.position;
 
     if (!item) {
-      DataManager.get<Items>(DataTypes.Items, this.gid).then(data => {
-        item = data[0].object;
+      const data = await DataManager.get<Items>(DataTypes.Items, obj.gid);
+      item = data[0].object;
 
-        DataManager.get<ItemTypes>(DataTypes.ItemTypes, item.typeId).then(
-          data2 => {
-            const type = data2[0].object;
+      const data2 = await DataManager.get<ItemTypes>(
+        DataTypes.ItemTypes,
+        item.typeId
+      );
 
-            this.name = item.nameId;
-            this.iconId = item.iconId;
-            this.usable = item.usable;
-            this.exchangeable = item.exchangeable;
-            this.range = item.range;
-            this.isFishingRod =
-              item.typeId === 20 && item.useAnimationId === 18;
-            this.realWeight = item.realWeight;
-            this.typeId = item.typeId;
-            this.superTypeId = type.superTypeId;
-            this.type = InventoryHelper.getObjectType(this.superTypeId);
+      const type = data2[0].object;
 
-            // Check if this item gives hp back (BOOST_HP 110)
-            for (const e of o.effects) {
-              if (!(e._type === "ObjectEffectInteger")) {
-                continue;
-              }
-
-              const newE = e as ObjectEffectInteger;
-
-              if (e.actionId === 110) {
-                this.regenValue = newE.value;
-              } else if (e.actionId === 158) {
-                this.weightBoost = newE.value;
-              }
-            }
-          }
-        );
-      });
-      return;
-    }
-
-    DataManager.get<ItemTypes>(DataTypes.ItemTypes, item.typeId).then(data => {
-      const type = data[0].object;
-
-      this.name = item.nameId;
-      this.iconId = item.iconId;
-      this.usable = item.usable;
-      this.exchangeable = item.exchangeable;
-      this.range = item.range;
-      this.isFishingRod = item.typeId === 20 && item.useAnimationId === 18;
-      this.realWeight = item.realWeight;
-      this.typeId = item.typeId;
-      this.superTypeId = type.superTypeId;
-      this.type = InventoryHelper.getObjectType(this.superTypeId);
+      obj.name = item.nameId;
+      obj.iconId = item.iconId;
+      obj.usable = item.usable;
+      obj.exchangeable = item.exchangeable;
+      obj.range = item.range;
+      obj.isFishingRod = item.typeId === 20 && item.useAnimationId === 18;
+      obj.realWeight = item.realWeight;
+      obj.typeId = item.typeId;
+      obj.superTypeId = type.superTypeId;
+      obj.type = InventoryHelper.getObjectType(obj.superTypeId);
 
       // Check if this item gives hp back (BOOST_HP 110)
       for (const e of o.effects) {
         if (!(e._type === "ObjectEffectInteger")) {
           continue;
         }
+
         const newE = e as ObjectEffectInteger;
 
         if (e.actionId === 110) {
-          this.regenValue = newE.value;
+          obj.regenValue = newE.value;
         } else if (e.actionId === 158) {
-          this.weightBoost = newE.value;
+          obj.weightBoost = newE.value;
         }
       }
-    });
+      return obj;
+    }
+
+    const data3 = await DataManager.get<ItemTypes>(
+      DataTypes.ItemTypes,
+      item.typeId
+    );
+
+    const type2 = data3[0].object;
+
+    obj.name = item.nameId;
+    obj.iconId = item.iconId;
+    obj.usable = item.usable;
+    obj.exchangeable = item.exchangeable;
+    obj.range = item.range;
+    obj.isFishingRod = item.typeId === 20 && item.useAnimationId === 18;
+    obj.realWeight = item.realWeight;
+    obj.typeId = item.typeId;
+    obj.superTypeId = type2.superTypeId;
+    obj.type = InventoryHelper.getObjectType(obj.superTypeId);
+
+    // Check if this item gives hp back (BOOST_HP 110)
+    for (const e of o.effects) {
+      if (!(e._type === "ObjectEffectInteger")) {
+        continue;
+      }
+      const newE = e as ObjectEffectInteger;
+
+      if (e.actionId === 110) {
+        obj.regenValue = newE.value;
+      } else if (e.actionId === 158) {
+        obj.weightBoost = newE.value;
+      }
+    }
+
+    return obj;
   }
 
   get iconUrl() {

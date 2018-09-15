@@ -552,7 +552,10 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     });
   };
 
-  private getAllItems = async () => {
+  private getAllItems = async (withObject: boolean) => {
+    if (!withObject) {
+      return;
+    }
     const inventoryItems = this.props.account.game.character.inventory.objects
       .ToArray()
       .map(o => o.gid);

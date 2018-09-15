@@ -8,10 +8,20 @@ import DataManager from "@/protocol/data";
 import Items from "@/protocol/data/classes/Items";
 import { DataTypes } from "@/protocol/data/DataTypes";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import CharacterStatsListMessage from "@/protocol/network/messages/CharacterStatsListMessage";
 import InventoryContentMessage from "@/protocol/network/messages/InventoryContentMessage";
+import InventoryWeightMessage from "@/protocol/network/messages/InventoryWeightMessage";
+import KamasUpdateMessage from "@/protocol/network/messages/KamasUpdateMessage";
+import ObjectAddedMessage from "@/protocol/network/messages/ObjectAddedMessage";
+import ObjectDeletedMessage from "@/protocol/network/messages/ObjectDeletedMessage";
+import ObjectModifiedMessage from "@/protocol/network/messages/ObjectModifiedMessage";
+import ObjectMovementMessage from "@/protocol/network/messages/ObjectMovementMessage";
+import ObjectQuantityMessage from "@/protocol/network/messages/ObjectQuantityMessage";
+import ObjectsAddedMessage from "@/protocol/network/messages/ObjectsAddedMessage";
+import ObjectsDeletedMessage from "@/protocol/network/messages/ObjectsDeletedMessage";
+import ObjectsQuantityMessage from "@/protocol/network/messages/ObjectsQuantityMessage";
 import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 import LiteEvent from "@/utils/LiteEvent";
-import { sleep } from "@/utils/Time";
 import { List } from "linqts";
 
 export default class Inventory {
@@ -242,20 +252,20 @@ export default class Inventory {
     );
     for (const obj of message.objects) {
       const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = new ObjectEntry(obj, e);
+      const entry = await ObjectEntry.setup(obj, e);
       this._objects.set(obj.objectUID, entry);
     }
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectAddedMessage(message: any) {
-    const obj = new ObjectEntry(message.object);
+  public async UpdateObjectAddedMessage(message: ObjectAddedMessage) {
+    const obj = await ObjectEntry.setup(message.object);
     this._objects.set(message.object.objectUID, obj);
     this.onObjectGained.trigger(obj.gid);
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectsAddedMessage(message: any) {
+  public async UpdateObjectsAddedMessage(message: ObjectsAddedMessage) {
     const items = await DataManager.get<Items>(
       DataTypes.Items,
       ...message.object.map(o => o.objectGID)
@@ -263,26 +273,26 @@ export default class Inventory {
 
     for (const obj of message.object) {
       const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = new ObjectEntry(obj, e);
+      const entry = await ObjectEntry.setup(obj, e);
       this._objects.set(obj.objectUID, entry);
     }
 
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectDeletedMessage(message: any) {
+  public async UpdateObjectDeletedMessage(message: ObjectDeletedMessage) {
     this._objects.delete(message.objectUID);
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectsDeletedMessage(message: any) {
+  public async UpdateObjectsDeletedMessage(message: ObjectsDeletedMessage) {
     for (const uid of message.objectUID) {
       this._objects.delete(uid);
     }
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectModifiedMessage(message: any) {
+  public async UpdateObjectModifiedMessage(message: ObjectModifiedMessage) {
     const obj = this._objects.get(message.object.objectUID);
     if (obj !== undefined) {
       obj.UpdateObjectItem(message.object);
@@ -290,7 +300,7 @@ export default class Inventory {
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectMovementMessage(message: any) {
+  public async UpdateObjectMovementMessage(message: ObjectMovementMessage) {
     const obj = this._objects.get(message.objectUID);
     if (obj !== undefined) {
       obj.UpdateObjectMovementMessage(message);
@@ -305,7 +315,7 @@ export default class Inventory {
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectQuantityMessage(message: any) {
+  public async UpdateObjectQuantityMessage(message: ObjectQuantityMessage) {
     const obj = this._objects.get(message.objectUID);
     if (obj !== undefined) {
       obj.UpdateQuantity(message.quantity);
@@ -314,30 +324,32 @@ export default class Inventory {
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateObjectsQuantityMessage(message: any) {
+  public async UpdateObjectsQuantityMessage(message: ObjectsQuantityMessage) {
     for (const o of message.objectsUIDAndQty) {
       const obj = this._objects.get(o.objectUID);
       if (obj !== undefined) {
-        obj.UpdateQuantity(message.quantity);
+        obj.UpdateQuantity(o.quantity);
         this.onObjectGained.trigger(obj.gid);
       }
     }
     this.onInventoryUpdated.trigger(true);
   }
 
-  public async UpdateInventoryWeightMessage(message: any) {
+  public async UpdateInventoryWeightMessage(message: InventoryWeightMessage) {
     this.weight = message.weight;
     this._fallbackMaxWeight = message.weightMax;
     this.resetMaxWeight();
     this.onInventoryUpdated.trigger(false);
   }
 
-  public async UpdateKamasUpdateMessage(message: any) {
+  public async UpdateKamasUpdateMessage(message: KamasUpdateMessage) {
     this.kamas = message.kamasTotal;
     this.onInventoryUpdated.trigger(false);
   }
 
-  public async UpdateCharacterStatsListMessage(message: any) {
+  public async UpdateCharacterStatsListMessage(
+    message: CharacterStatsListMessage
+  ) {
     this.kamas = message.stats.kamas;
     this.resetMaxWeight();
     this.onInventoryUpdated.trigger(false);

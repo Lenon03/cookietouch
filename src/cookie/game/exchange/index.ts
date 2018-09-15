@@ -311,7 +311,7 @@ export default class Exchange {
   }
 
   public async UpdateExchangeObjectAddedMessage(message: any) {
-    const newObj = new ObjectEntry(message.object);
+    const newObj = await ObjectEntry.setup(message.object);
     if (message.remote) {
       this.remoteObjects.push(newObj);
       this.remoteCurrentWeight += newObj.realWeight * newObj.quantity;

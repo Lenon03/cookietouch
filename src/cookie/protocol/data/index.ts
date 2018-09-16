@@ -25,7 +25,7 @@ export default class DataManager {
     const myArray: Array<IDataResponse<T>> = [];
     const newIds = [];
     for (const id of ids) {
-      const filePath = await this.getFilePath(DataTypes[type], id);
+      const filePath = await DataManager.getFilePath(DataTypes[type], id);
       if (await existsAsync(filePath)) {
         const file = await readFileAsync(filePath);
         myArray.push(JSON.parse(file.toString()));
@@ -56,7 +56,10 @@ export default class DataManager {
         object: item["1"]
       } as IDataResponse<T>;
       myArray.push(dataRes);
-      const filePath = await this.getFilePath(DataTypes[type], dataRes.id);
+      const filePath = await DataManager.getFilePath(
+        DataTypes[type],
+        dataRes.id
+      );
       await writeFileAsync(filePath, JSON.stringify(dataRes));
     }
 

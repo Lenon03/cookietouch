@@ -13,6 +13,8 @@ import ChatServerWithObjectMessage from "@/protocol/network/messages/ChatServerW
 import ObjectErrorMessage from "@/protocol/network/messages/ObjectErrorMessage";
 import SystemMessageDisplayMessage from "@/protocol/network/messages/SystemMessageDisplayMessage";
 import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
+import Pushbullet from "@/utils/Pushbullet";
+import { NotificationType } from "@/utils/Pushbullet/types";
 
 export default class ChatFrame implements IFrame {
   public register() {
@@ -201,6 +203,13 @@ export default class ChatFrame implements IFrame {
           message.content,
           ChannelColors.PRIVATE
         );
+        const type = message.senderName.startsWith("[")
+          ? NotificationType.MOD_PRIVATE_MESSAGE
+          : NotificationType.PRIVATE_MESSAGE;
+        Pushbullet.sendNotification(type, account, {
+          message: message.content,
+          senderName: message.senderName
+        });
         break;
       }
       case ChatChannelsMultiEnum.CHANNEL_ADS: {

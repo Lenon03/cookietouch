@@ -12,6 +12,8 @@ export interface IConfigurationState {
   anticaptchaKey: string;
   anticaptchaBalance: number;
   lang: Languages;
+  pushBulletAccessToken: string;
+  pushBulletEmail: string;
   showDebugMessages: boolean;
 
   updatesChannel: UpdatesChannel;

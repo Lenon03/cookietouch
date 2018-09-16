@@ -18,6 +18,7 @@ import Fights from "@renderer/pages/tabs/Fights";
 import Flood from "@renderer/pages/tabs/Flood";
 import Inventory from "@renderer/pages/tabs/Inventory";
 import Map from "@renderer/pages/tabs/Map";
+import Pushbullet from "@renderer/pages/tabs/Pushbullet";
 import Statistics from "@renderer/pages/tabs/Statistics";
 import * as React from "react";
 
@@ -77,6 +78,10 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
               className={classes.tab}
               icon={<FontAwesomeIcon icon="cogs" />}
             />
+            <Tab
+              className={classes.tab}
+              icon={<FontAwesomeIcon icon="bell" />}
+            />
           </Tabs>
         </AppBar>
 
@@ -106,6 +111,9 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
         </div>
         <div style={{ display: value !== 8 ? "none" : "" }}>
           <Configuration account={account} />
+        </div>
+        <div style={{ display: value !== 9 ? "none" : "" }}>
+          <Pushbullet account={account} />
         </div>
 
         {/* {value === 0 && <Console account={account} />}

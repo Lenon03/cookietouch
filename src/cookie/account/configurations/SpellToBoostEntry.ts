@@ -4,7 +4,7 @@ export interface ISpellToBoostEntry {
   level: number;
 }
 
-export default class SpellToBoostEntry {
+export default class SpellToBoostEntry implements ISpellToBoostEntry {
   public id: number;
   public name: string;
   public level: number;

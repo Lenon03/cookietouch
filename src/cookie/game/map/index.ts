@@ -24,6 +24,8 @@ import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePla
 import GameRolePlayNpcInformations from "@/protocol/network/types/GameRolePlayNpcInformations";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
+import Pushbullet from "@/utils/Pushbullet";
+import { NotificationType } from "@/utils/Pushbullet/types";
 import { sleep } from "@/utils/Time";
 
 export default class MapGame implements IClearable {
@@ -333,7 +335,17 @@ export default class MapGame implements IClearable {
         if (parsed.contextualId === this.account.game.character.id) {
           this.playedCharacter = new PlayerEntry(parsed);
         } else {
-          this._players.set(parsed.contextualId, new PlayerEntry(parsed));
+          const pe = new PlayerEntry(parsed);
+          if (pe.name.startsWith("[")) {
+            Pushbullet.sendNotification(
+              NotificationType.MOD_ON_MAP,
+              this.account,
+              {
+                senderName: pe.name
+              }
+            );
+          }
+          this._players.set(parsed.contextualId, pe);
         }
       } else if (actor._type === "GameRolePlayMutantInformations") {
         const parsed = actor as GameRolePlayMutantInformations;
@@ -449,6 +461,11 @@ export default class MapGame implements IClearable {
   public async UpdateGameRolePlayShowActorMessage(message: any) {
     if (message.informations._type === "GameRolePlayCharacterInformations") {
       const pe = new PlayerEntry(message.informations);
+      if (pe.name.startsWith("[")) {
+        Pushbullet.sendNotification(NotificationType.MOD_ON_MAP, this.account, {
+          senderName: pe.name
+        });
+      }
       this._players.set(pe.id, pe);
       this.onEntitiesUpdated.trigger();
       this.onPlayerJoined.trigger(pe);

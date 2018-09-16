@@ -126,6 +126,12 @@ export default class IdentificationFrame implements IFrame {
           LanguageManager.trans("accountBan")
         );
         break;
+      case IdentificationFailureReasonEnum.EMAIL_UNVALIDATED:
+        account.logger.logError(
+          LanguageManager.trans("identificationFrame"),
+          LanguageManager.trans("emailUnvalidated")
+        );
+        break;
     }
   }
 }

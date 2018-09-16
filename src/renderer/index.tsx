@@ -4,6 +4,7 @@ import BreedsUtility from "@/core/BreedsUtility";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import Frames from "@/frames";
 import DTConstants from "@/protocol/DTConstants";
+import Pushbullet from "@/utils/Pushbullet";
 import { initialize, presence } from "@renderer/FirebaseHelpers";
 import "@renderer/FontAwesomeIcons";
 import { LoadingPage } from "@renderer/LoadingPage";
@@ -41,6 +42,7 @@ GlobalConfiguration.Updated.on(onGlobalConfigChanged);
 async function main() {
   GlobalConfiguration.Init();
   await GlobalConfiguration.load();
+  Pushbullet.changeToken(GlobalConfiguration.pushBulletAccessToken);
   LanguageManager.Init();
   await DTConstants.Init();
   await BreedsUtility.Init();

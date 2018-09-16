@@ -1,6 +1,6 @@
 {
   "name": "cookietouch",
-  "version": "0.0.1-beta.10",
+  "version": "0.0.1-beta.11",
   "description": "DofusTouch Bot with Electron React/TypeScript",
   "main": "dist/main/main.js",
   "scripts": {

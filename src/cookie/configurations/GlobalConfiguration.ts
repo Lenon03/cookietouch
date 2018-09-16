@@ -17,6 +17,7 @@ export enum UpdatesChannel {
 
 interface IGlobalConfigurationJSON {
   anticaptchaKey: string;
+  pushBulletAccessToken: string;
   lang: Languages;
   accounts: IAccountConfiguration[];
   showDebugMessages: boolean;
@@ -46,7 +47,7 @@ export default class GlobalConfiguration {
   // TODO: Put this private and fix validate method on CharacterCreator
   public static _accounts: AccountConfiguration[] = [];
   public static anticaptchaKey: string = "";
-
+  public static pushBulletAccessToken: string = "";
   public static lang: Languages = Languages.FRENCH;
 
   public static showDebugMessages = false;
@@ -120,6 +121,7 @@ export default class GlobalConfiguration {
       accounts: this._accounts.map(o => o.toJSON()),
       anticaptchaKey: this.anticaptchaKey,
       lang: this.lang,
+      pushBulletAccessToken: this.pushBulletAccessToken,
       showDebugMessages: this.showDebugMessages,
       updatesChannel: this.updatesChannel
     };
@@ -134,6 +136,9 @@ export default class GlobalConfiguration {
     const json = snapshot.data() as IGlobalConfigurationJSON;
     this._accounts = json.accounts.map(o => AccountConfiguration.fromJSON(o));
     this.anticaptchaKey = json.anticaptchaKey;
+    this.pushBulletAccessToken = json.pushBulletAccessToken
+      ? json.pushBulletAccessToken
+      : "";
     this.lang = json.lang;
     this.showDebugMessages = json.showDebugMessages;
     this.updatesChannel = json.updatesChannel;

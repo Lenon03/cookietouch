@@ -17,6 +17,8 @@ import ScriptsManager from "@/scripts/ScriptsManager";
 import StatisticsManager from "@/statistics/StatisticsManager";
 import IEntity from "@/utils/IEntity";
 import LiteEvent from "@/utils/LiteEvent";
+import Pushbullet from "@/utils/Pushbullet";
+import { NotificationType } from "@/utils/Pushbullet/types";
 import { randomString } from "@/utils/Random";
 import { displayTime, sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
@@ -250,7 +252,7 @@ export default class Account implements IEntity {
     this._wasScriptRunning = this._wasScriptRunning || this.scripts.enabled;
     this.scripts.stopScript();
     this.onRecaptchaReceived.trigger(this);
-
+    Pushbullet.sendNotification(NotificationType.CAPTCHA_REQUEST, this);
     try {
       const NS_PER_SEC = 1e9;
       const time = process.hrtime();
@@ -345,6 +347,7 @@ export default class Account implements IEntity {
       this.scripts.stopScript();
       this.extensions.flood.stop();
     }
+    Pushbullet.sendNotification(NotificationType.DISCONNECT, this);
     // this.onDisconnected.trigger();
   };
 

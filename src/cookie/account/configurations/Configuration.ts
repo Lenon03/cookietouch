@@ -1,4 +1,7 @@
 import Account from "@/account";
+import PushBulletConfig, {
+  IPushBulletConfig
+} from "@/account/configurations/PushBulletConfig";
 import SpellToBoostEntry, {
   ISpellToBoostEntry
 } from "@/account/configurations/SpellToBoostEntry";
@@ -24,6 +27,7 @@ interface IConfigurationJSON {
   authorizedTradesFrom: number[];
   enableSpeedHack: boolean;
   antiAgro: boolean;
+  pushBullet: IPushBulletConfig;
 }
 
 export default class Configuration implements IConfigurationJSON {
@@ -44,6 +48,7 @@ export default class Configuration implements IConfigurationJSON {
   public authorizedTradesFrom: number[];
   public enableSpeedHack: boolean;
   public antiAgro: boolean;
+  public pushBullet: PushBulletConfig;
 
   private authChangedUnsuscribe: firebase.Unsubscribe;
   private stopDataSnapshot: () => void;
@@ -126,6 +131,9 @@ export default class Configuration implements IConfigurationJSON {
       disconnectUponFightsLimit: this.disconnectUponFightsLimit,
       enableSpeedHack: this.enableSpeedHack,
       ignoreNonAuthorizedTrades: this.ignoreNonAuthorizedTrades,
+      pushBullet: this.pushBullet
+        ? this.pushBullet.toJSON()
+        : new PushBulletConfig().toJSON(),
       showAllianceMessages: this.showAllianceMessages,
       showGeneralMessages: this.showGeneralMessages,
       showGuildMessages: this.showGuildMessages,
@@ -153,6 +161,9 @@ export default class Configuration implements IConfigurationJSON {
     this.disconnectUponFightsLimit = json.disconnectUponFightsLimit;
     this.enableSpeedHack = json.enableSpeedHack;
     this.ignoreNonAuthorizedTrades = json.ignoreNonAuthorizedTrades;
+    this.pushBullet = json.pushBullet
+      ? PushBulletConfig.fromJSON(json.pushBullet)
+      : new PushBulletConfig();
     this.showAllianceMessages = json.showAllianceMessages;
     this.showGeneralMessages = json.showGeneralMessages;
     this.showGuildMessages = json.showGuildMessages;

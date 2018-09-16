@@ -2,6 +2,7 @@ import GlobalConfiguration, {
   UpdatesChannel
 } from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import Pushbullet from "@/utils/Pushbullet";
 import { isEmpty } from "@/utils/String";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -34,6 +35,8 @@ class Configuration extends React.Component<
     anticaptchaBalance: -1,
     anticaptchaKey: GlobalConfiguration.anticaptchaKey,
     lang: GlobalConfiguration.lang,
+    pushBulletAccessToken: GlobalConfiguration.pushBulletAccessToken,
+    pushBulletEmail: "",
     showDebugMessages: GlobalConfiguration.showDebugMessages,
     updatesChannel: GlobalConfiguration.updatesChannel
   };
@@ -110,6 +113,28 @@ class Configuration extends React.Component<
                 {LanguageManager.trans("update")}
               </Button>
             </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="pushBulletAccessToken">
+                {LanguageManager.trans("pushBulletAccessToken")}
+              </InputLabel>
+              <Input
+                autoFocus={true}
+                id="pushBulletAccessToken"
+                type="text"
+                value={this.state.pushBulletAccessToken}
+                onChange={this.pushBulletAccessTokenChanged}
+                fullWidth={true}
+              />
+              <Typography>Email: {this.state.pushBulletEmail}</Typography>
+              <Button
+                variant="raised"
+                size="small"
+                color="primary"
+                onClick={this.updatePushBulletAccessToken}
+              >
+                {LanguageManager.trans("update")}
+              </Button>
+            </FormControl>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -145,13 +170,16 @@ class Configuration extends React.Component<
       </div>
     );
   }
-
-  private anticaptchaChanged = e => {
-    this.setState({ anticaptchaKey: e.target.value });
-    GlobalConfiguration.anticaptchaKey = e.target.value;
+  private pushBulletAccessTokenChanged = e => {
+    this.setState({ pushBulletAccessToken: e.target.value });
+    GlobalConfiguration.pushBulletAccessToken = e.target.value;
+    Pushbullet.changeToken(GlobalConfiguration.pushBulletAccessToken);
     GlobalConfiguration.save();
   };
-
+  private updatePushBulletAccessToken = async () => {
+    const response = await Pushbullet.getInfo();
+    this.setState({ pushBulletEmail: response.email });
+  };
   private langChanged = e => {
     this.setState({ lang: e.target.value });
     GlobalConfiguration.lang = e.target.value;
@@ -170,6 +198,11 @@ class Configuration extends React.Component<
     GlobalConfiguration.save();
   };
 
+  private anticaptchaChanged = e => {
+    this.setState({ anticaptchaKey: e.target.value });
+    GlobalConfiguration.anticaptchaKey = e.target.value;
+    GlobalConfiguration.save();
+  };
   private updateAnticaptchaBalance = async () => {
     const key = GlobalConfiguration.anticaptchaKey;
     if (isEmpty(key)) {
@@ -184,6 +217,7 @@ class Configuration extends React.Component<
     this.setState({
       anticaptchaKey: GlobalConfiguration.anticaptchaKey,
       lang: GlobalConfiguration.lang,
+      pushBulletAccessToken: GlobalConfiguration.pushBulletAccessToken,
       showDebugMessages: GlobalConfiguration.showDebugMessages,
       updatesChannel: GlobalConfiguration.updatesChannel
     });

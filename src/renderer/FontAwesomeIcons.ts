@@ -1,6 +1,7 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faKickstarterK } from "@fortawesome/free-brands-svg-icons";
 import {
+  faBell,
   faBolt,
   faBriefcase,
   faBullhorn,
@@ -40,5 +41,6 @@ library.add(
   faGem,
   faHeart,
   faStar,
-  faKickstarterK
+  faKickstarterK,
+  faBell
 );

@@ -39,16 +39,16 @@ export default class CookieMain {
   }
 
   public static connectAccounts(accountConfigs: List<AccountConfiguration>) {
-    accountConfigs.ForEach(accountConfig => {
+    accountConfigs.ForEach(async accountConfig => {
       const account = new Account(accountConfig);
       this.entities.Add(account);
       this.onEntitiesUpdated.trigger();
       this.selectedAccount = account;
-      account.start();
+      await account.start();
     });
   }
 
-  public static connectGroup(
+  public static async connectGroup(
     chief: AccountConfiguration,
     members: List<AccountConfiguration>
   ) {
@@ -57,7 +57,7 @@ export default class CookieMain {
     this.entities.Add(group);
     this.onEntitiesUpdated.trigger();
     this.selectedAccount = group.chief;
-    group.connect();
+    await group.connect();
   }
 
   public static async removeSelectedAccount() {

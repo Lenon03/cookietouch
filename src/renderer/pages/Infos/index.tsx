@@ -369,8 +369,8 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     });
   };
 
-  private start = () => {
-    this.props.account.start();
+  private start = async () => {
+    await this.props.account.start();
   };
 
   private stop = () => {

@@ -13,17 +13,24 @@ export default class MonsterEntry {
   public miniBoss: boolean;
   public questMonster: boolean;
 
-  constructor(infos: MonsterInGroupLightInformations) {
-    this.genericId = infos.creatureGenericId;
-    this.grade = infos.grade;
-    DataManager.get<Monsters>(DataTypes.Monsters, this.genericId).then(data => {
-      const m = data[0].object;
-      this.name = m.nameId;
-      this.level = m.grades[this.grade - 1].level;
-      this.boss = m.isBoss;
-      this.miniBoss = m.isMiniBoss;
-      this.questMonster = m.isQuestMonster;
-    });
+  public static async setup(
+    infos: MonsterInGroupLightInformations
+  ): Promise<MonsterEntry> {
+    const monsterEntry = new MonsterEntry();
+    monsterEntry.genericId = infos.creatureGenericId;
+    monsterEntry.grade = infos.grade;
+    const data = await DataManager.get<Monsters>(
+      DataTypes.Monsters,
+      monsterEntry.genericId
+    );
+    const m = data[0].object;
+    monsterEntry.name = m.nameId;
+    monsterEntry.level = m.grades[monsterEntry.grade - 1].level;
+    monsterEntry.boss = m.isBoss;
+    monsterEntry.miniBoss = m.isMiniBoss;
+    monsterEntry.questMonster = m.isQuestMonster;
+
+    return monsterEntry;
   }
   get iconUrl() {
     return `${DTConstants.config.assetsUrl}/gfx/monsters/${this.genericId}.png`;

@@ -127,6 +127,9 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
+  BrowserWindow.addDevToolsExtension(
+    "/home/devchris/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.3.2_0"
+  );
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();

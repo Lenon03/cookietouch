@@ -80,9 +80,9 @@ export default class Group implements IEntity {
     member.RecaptchaResolved.on(this.accountRecaptchaResolved);
   }
 
-  public connect() {
-    this.chief.start();
-    this.members.ForEach((t: Account) => t.start());
+  public async connect() {
+    await this.chief.start();
+    this.members.ForEach(async (t: Account) => t.start());
   }
 
   public disconnect() {

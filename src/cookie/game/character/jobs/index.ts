@@ -47,7 +47,7 @@ export default class Job {
     );
 
     for (const job of message.jobsDescription) {
-      const jobEntry = new JobEntry(
+      const jobEntry = await JobEntry.setup(
         job,
         jobsData.find(f => f.id === job.jobId).object
       );

@@ -599,7 +599,7 @@ export default class Fight implements IClearable {
     if (message.informations.contextualId === this.account.game.character.id) {
       this.playedFighter = new FightPlayerEntry(message.informations);
     } else {
-      this.addFighter(message.informations);
+      await this.addFighter(message.informations);
     }
     this.sortFighters();
     this.onFightersUpdated.trigger();
@@ -646,16 +646,17 @@ export default class Fight implements IClearable {
   public async UpdateGameFightSynchronizeMessage(
     message: GameFightSynchronizeMessage
   ) {
-    message.fighters.forEach(f => {
+    for (const f of message.fighters) {
       const fighter = this.getFighter(f.contextualId);
 
       if (fighter === null) {
-        this.addFighter(f);
+        await this.addFighter(f);
         this.sortFighters();
       } else {
         fighter.UpdateGameFightFighterInformations(f);
       }
-    });
+    }
+
     this.onFightersUpdated.trigger();
   }
 
@@ -723,7 +724,7 @@ export default class Fight implements IClearable {
   public async UpdateGameActionFightSummonMessage(
     message: GameActionFightSummonMessage
   ) {
-    this.addFighter(message.summon);
+    await this.addFighter(message.summon);
     this.sortFighters();
     this.onFightersUpdated.trigger();
   }
@@ -947,7 +948,7 @@ export default class Fight implements IClearable {
     }
   }
 
-  private addFighter(infos: GameFightFighterInformations) {
+  private async addFighter(infos: GameFightFighterInformations) {
     if (
       infos._type === "GameFightCharacterInformations" ||
       infos._type === "GameFightMutantInformations"
@@ -956,7 +957,10 @@ export default class Fight implements IClearable {
     } else if (infos._type === "GameFightMonsterInformations") {
       this._fighters.set(
         infos.contextualId,
-        new FightMonsterEntry(infos as GameFightMonsterInformations, infos)
+        await FightMonsterEntry.setup(
+          infos as GameFightMonsterInformations,
+          infos
+        )
       );
     }
   }

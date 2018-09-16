@@ -7,14 +7,19 @@ export default class MonstersGroupEntry extends MovableEntity {
   public leader: MonsterEntry;
   public followers: MonsterEntry[] = [];
 
-  constructor(infos: GameRolePlayGroupMonsterInformations) {
-    super();
-    this.id = infos.contextualId;
-    this.cellId = infos.disposition.cellId;
+  public static async setup(
+    infos: GameRolePlayGroupMonsterInformations
+  ): Promise<MonstersGroupEntry> {
+    const m = new MonstersGroupEntry();
+    m.id = infos.contextualId;
+    m.cellId = infos.disposition.cellId;
     for (const u of infos.staticInfos.underlings) {
-      this.followers.push(new MonsterEntry(u));
+      m.followers.push(await MonsterEntry.setup(u));
     }
-    this.leader = new MonsterEntry(infos.staticInfos.mainCreatureLightInfos);
+    m.leader = await MonsterEntry.setup(
+      infos.staticInfos.mainCreatureLightInfos
+    );
+    return m;
   }
 
   get monstersCount() {

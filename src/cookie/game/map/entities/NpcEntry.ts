@@ -9,13 +9,16 @@ export default class NpcEntry {
   public cellId: number;
   public data: Npcs;
 
-  constructor(infos: GameRolePlayNpcInformations) {
-    this.id = infos.contextualId;
-    this.npcId = infos.npcId;
-    this.cellId = infos.disposition.cellId;
-    DataManager.get<Npcs>(DataTypes.Npcs, this.npcId).then(data => {
-      this.data = data[0].object;
-    });
+  public static async setup(
+    infos: GameRolePlayNpcInformations
+  ): Promise<NpcEntry> {
+    const npc = new NpcEntry();
+    npc.id = infos.contextualId;
+    npc.npcId = infos.npcId;
+    npc.cellId = infos.disposition.cellId;
+    const data = await DataManager.get<Npcs>(DataTypes.Npcs, npc.npcId);
+    npc.data = data[0].object;
+    return npc;
   }
 
   get name() {

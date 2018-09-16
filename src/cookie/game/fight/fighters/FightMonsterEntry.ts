@@ -12,23 +12,26 @@ export default class FightMonsterEntry extends FighterEntry {
   public isMiniBoss: boolean;
   public isQuestMonster: boolean;
 
-  constructor(
+  public static async setup(
     infos1: GameFightMonsterInformations,
     infos2: GameFightFighterInformations
-  ) {
-    super(infos2);
+  ): Promise<FightMonsterEntry> {
+    const f = new FightMonsterEntry(infos2);
 
-    this.creatureGenericId = infos1.creatureGenericId;
+    f.creatureGenericId = infos1.creatureGenericId;
 
-    DataManager.get<Monsters>(DataTypes.Monsters, this.creatureGenericId).then(
-      resp => {
-        const m = resp[0].object;
-        this.name = m.nameId;
-        this.isBoss = m.isBoss;
-        this.isMiniBoss = m.isMiniBoss;
-        this.isQuestMonster = m.isQuestMonster;
-        this.level = m.grades[infos1.creatureGrade - 1].level;
-      }
+    const data = await DataManager.get<Monsters>(
+      DataTypes.Monsters,
+      f.creatureGenericId
     );
+
+    const m = data[0].object;
+    f.name = m.nameId;
+    f.isBoss = m.isBoss;
+    f.isMiniBoss = m.isMiniBoss;
+    f.isQuestMonster = m.isQuestMonster;
+    f.level = m.grades[infos1.creatureGrade - 1].level;
+
+    return f;
   }
 }

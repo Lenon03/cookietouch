@@ -19,28 +19,34 @@ export default class JobEntry {
   public experienceNextLevelFloor: number;
   public collectSkills: List<CollectSkillEntry>;
 
-  constructor(job: JobDescription, jobData: Jobs) {
-    this.id = job.jobId;
-    this.name = jobData.nameId;
-    this.iconId = jobData.iconId;
-    this.collectSkills = new List<CollectSkillEntry>();
+  public static async setup(
+    job: JobDescription,
+    jobData: Jobs
+  ): Promise<JobEntry> {
+    const jobEntry = new JobEntry();
+    jobEntry.id = job.jobId;
+    jobEntry.name = jobData.nameId;
+    jobEntry.iconId = jobData.iconId;
+    jobEntry.collectSkills = new List<CollectSkillEntry>();
 
     if (job.skills.length > 0) {
       const skillId = job.skills.map(s => s.skillId);
-      DataManager.get<Skills>(DataTypes.Skills, ...skillId).then(resp => {
-        const skillsResp = resp;
+      const skillsResp = await DataManager.get<Skills>(
+        DataTypes.Skills,
+        ...skillId
+      );
 
-        for (const skill of job.skills) {
-          if (skill._type === "SkillActionDescriptionCollect") {
-            const c = new CollectSkillEntry(
-              skill as SkillActionDescriptionCollect,
-              skillsResp.find(s => s.id === skill.skillId).object
-            );
-            this.collectSkills.Add(c);
-          }
+      for (const skill of job.skills) {
+        if (skill._type === "SkillActionDescriptionCollect") {
+          const c = new CollectSkillEntry(
+            skill as SkillActionDescriptionCollect,
+            skillsResp.find(s => s.id === skill.skillId).object
+          );
+          jobEntry.collectSkills.Add(c);
         }
-      });
+      }
     }
+    return jobEntry;
   }
 
   get experiencePercent() {

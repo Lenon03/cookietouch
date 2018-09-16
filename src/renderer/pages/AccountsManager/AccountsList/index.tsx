@@ -167,9 +167,10 @@ class AccountsList extends React.Component<
     const members = this.state.accountsToConnect.filter(
       a => a.username !== chief.username
     );
-    CookieMain.connectGroup(chief, new LinqList(members));
-    this.setState({ accountsToConnect: [] });
-    this.props.closeDialog();
+    CookieMain.connectGroup(chief, new LinqList(members)).then(() => {
+      this.setState({ accountsToConnect: [] });
+      this.props.closeDialog();
+    });
   };
 
   private connectAccount = (account: AccountConfiguration) => (

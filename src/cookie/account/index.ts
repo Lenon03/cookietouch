@@ -135,7 +135,7 @@ export default class Account implements IEntity {
     );
   }
 
-  public start() {
+  public async start() {
     if (this.state !== AccountStates.DISCONNECTED) {
       return;
     }
@@ -147,16 +147,19 @@ export default class Account implements IEntity {
     this.game.clear();
     this.extensions.clear();
     this.state = AccountStates.CONNECTING;
-    this.haapi
-      .processHaapi(this.accountConfig.username, this.accountConfig.password)
-      .then(() =>
-        this.network.connect(
-          randomString(16),
-          DTConstants.config.dataUrl
-        )
-      )
-      .catch((error: Error) => this.logger.logError("", error.message));
-    // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
+    try {
+      await this.haapi.processHaapi(
+        this.accountConfig.username,
+        this.accountConfig.password
+      );
+      this.network.connect(
+        randomString(16),
+        DTConstants.config.dataUrl
+      );
+      // this.network.connect(DTConstants.config.sessionId, DTConstants.config.dataUrl);
+    } catch (error) {
+      this.logger.logError("", error.message);
+    }
   }
 
   public stop() {
@@ -306,7 +309,7 @@ export default class Account implements IEntity {
     }
   }
 
-  private plannificationCallback = () => {
+  private plannificationCallback = async () => {
     if (!this.accountConfig.planificationActivated) {
       return;
     }
@@ -331,7 +334,7 @@ export default class Account implements IEntity {
         "planification",
         LanguageManager.trans("autoConnect")
       );
-      this.start();
+      await this.start();
     }
   };
 

@@ -347,12 +347,12 @@ export default class MapGame implements IClearable {
         actor._type === "GameRolePlayNpcWithQuestInformations"
       ) {
         const parsed = actor as GameRolePlayNpcInformations;
-        this._npcs.set(actor.contextualId, new NpcEntry(parsed));
+        this._npcs.set(actor.contextualId, await NpcEntry.setup(parsed));
       } else if (actor._type === "GameRolePlayGroupMonsterInformations") {
         const parsed = actor as GameRolePlayGroupMonsterInformations;
         this._monstersGroups.set(
           actor.contextualId,
-          new MonstersGroupEntry(parsed)
+          await MonstersGroupEntry.setup(parsed)
         );
       }
     }
@@ -462,7 +462,7 @@ export default class MapGame implements IClearable {
     } else if (
       message.informations._type === "GameRolePlayGroupMonsterInformations"
     ) {
-      const mge = new MonstersGroupEntry(message.informations);
+      const mge = await MonstersGroupEntry.setup(message.informations);
       this._monstersGroups.set(message.informations.contextualId, mge);
       this.onEntitiesUpdated.trigger();
     }

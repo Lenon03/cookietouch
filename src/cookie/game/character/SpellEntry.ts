@@ -11,24 +11,28 @@ export default class SpellEntry {
   public name: string;
   public minPlayerLevel: number;
 
-  constructor(s: SpellItem | number, spell: Spells | number) {
+  public static async setup(
+    s: SpellItem | number,
+    spell: Spells | number
+  ): Promise<SpellEntry> {
+    const spellEntry = new SpellEntry();
     if (typeof s === "number" && typeof spell === "number") {
-      DataManager.get<Spells>(DataTypes.Spells, s).then(data => {
-        const o = data[0].object;
-        this.id = o.id;
-        this.level = spell;
-        this.name = o.nameId;
-        this.setMinPlayerLevel(o);
-      });
+      const data = await DataManager.get<Spells>(DataTypes.Spells, s);
+      const o = data[0].object;
+      spellEntry.id = o.id;
+      spellEntry.level = spell;
+      spellEntry.name = o.nameId;
+      spellEntry.setMinPlayerLevel(o);
     } else if (
       typeof s === "object" /* SpellItem */ &&
       typeof spell === "object" /* Spells */
     ) {
-      this.id = s.spellId;
-      this.level = s.spellLevel;
-      this.name = spell.nameId;
-      this.setMinPlayerLevel(spell);
+      spellEntry.id = s.spellId;
+      spellEntry.level = s.spellLevel;
+      spellEntry.name = spell.nameId;
+      spellEntry.setMinPlayerLevel(spell);
     }
+    return spellEntry;
   }
 
   get iconUrl() {

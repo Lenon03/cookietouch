@@ -474,7 +474,7 @@ export default class Character {
 
     for (const sp of message.spells) {
       const spell = spells.find(f => f.id === sp.spellId);
-      this.spells.push(new SpellEntry(sp, spell.object));
+      this.spells.push(await SpellEntry.setup(sp, spell.object));
     }
     this.onSpellsUpdated.trigger();
   }
@@ -484,7 +484,9 @@ export default class Character {
     if (spell !== null) {
       spell.UpdateSpellUpgradeSuccessMessage(message);
     } else {
-      this.spells.push(new SpellEntry(message.spellId, message.spellLevel));
+      this.spells.push(
+        await SpellEntry.setup(message.spellId, message.spellLevel)
+      );
       // TODO: Check if the new added spellEntry contains good data.
       console.log("SpellEntryAddedOnUpgrade => ", this.spells);
     }

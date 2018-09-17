@@ -135,6 +135,14 @@ export default class Pushbullet {
         )}`;
         break;
       }
+      case NotificationType.SCRIPT_ERROR: {
+        if (!data || (data && !data.error)) {
+          throw new Error("We have to pass the error");
+        }
+        title += ` ${LanguageManager.trans("scriptError")}`;
+        body = `${LanguageManager.trans("scriptErrorBody", data.error)}`;
+        break;
+      }
     }
     return Pushbullet.push(title, body);
   }

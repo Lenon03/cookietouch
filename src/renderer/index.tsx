@@ -34,6 +34,7 @@ presence();
 
 const onGlobalConfigChanged = () => {
   ipcRenderer.send("ask-update", GlobalConfiguration.updatesChannel);
+  Pushbullet.changeToken(GlobalConfiguration.pushBulletAccessToken);
   GlobalConfiguration.Updated.off(onGlobalConfigChanged);
 };
 
@@ -42,7 +43,6 @@ GlobalConfiguration.Updated.on(onGlobalConfigChanged);
 async function main() {
   GlobalConfiguration.Init();
   await GlobalConfiguration.load();
-  Pushbullet.changeToken(GlobalConfiguration.pushBulletAccessToken);
   LanguageManager.Init();
   await DTConstants.Init();
   await BreedsUtility.Init();

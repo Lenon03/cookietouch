@@ -30,11 +30,13 @@ export enum NotificationType {
   CAPTCHA_REQUEST,
   MOD_ON_MAP,
   MOD_PRIVATE_MESSAGE,
-  DISCONNECT
+  DISCONNECT,
+  SCRIPT_ERROR
 }
 
 export interface INotificationData {
   level?: number;
   senderName?: string;
   message?: string;
+  error?: string;
 }

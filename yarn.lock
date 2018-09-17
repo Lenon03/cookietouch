@@ -704,9 +704,9 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@material-ui/core@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.0.3.tgz#505499a984feb5da9c13f73e1fa601d0da1acdc3"
+"@material-ui/core@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.1.0.tgz#40c70e0764ef27dca5e149551577eba10c2e79ce"
   dependencies:
     "@babel/runtime" "7.0.0"
     "@types/jss" "^9.5.3"
@@ -761,6 +761,15 @@
 "@sentry/cli@^1.35.5":
   version "1.35.5"
   resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.35.5.tgz#5fdc6bb71236ccb80b758cb6b35452f80097acd0"
+  dependencies:
+    https-proxy-agent "^2.2.1"
+    node-fetch "^2.1.2"
+    progress "2.0.0"
+    proxy-from-env "^1.0.0"
+
+"@sentry/cli@^1.35.6":
+  version "1.35.6"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.35.6.tgz#5cf9dcf7a005a82fef057e2cbf2aa341a38306dd"
   dependencies:
     https-proxy-agent "^2.2.1"
     node-fetch "^2.1.2"
@@ -842,9 +851,13 @@
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
 
-"@types/node@*", "@types/node@^10.9.4":
+"@types/node@*":
   version "10.9.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
+
+"@types/node@^10.10.1":
+  version "10.10.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.10.1.tgz#d5c96ca246a418404914d180b7fdd625ad18eca6"
 
 "@types/node@^8.0.24":
   version "8.10.29"

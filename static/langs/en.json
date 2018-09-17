@@ -488,6 +488,7 @@
   "pushBulletModOnMap": "Moderator on map",
   "pushBulletModPrivateMessage": "Moderator message",
   "pushBulletPrivateMessage": "Private message",
+  "pushBulletScriptError" : "Script error",
   "pushBulletNotificationTitle": "Pushbullet notification",
   "levelUpBody": "You up level :",
   "disconnectBody": "You have been disconnected",
@@ -499,5 +500,7 @@
   "modMessage": "Message from a moderator",
   "modMessageBody": "From moderator ? : ?",
   "privateMessage": "Private message",
-  "privateMessageBody": "From ? : ?"
+  "privateMessageBody": "From ? : ?",
+  "scriptError": "Script error",
+  "scriptErrorBody": "Your script have an error : ?"
 }

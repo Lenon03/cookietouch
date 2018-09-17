@@ -347,7 +347,9 @@ export default class Account implements IEntity {
       this.scripts.stopScript();
       this.extensions.flood.stop();
     }
-    Pushbullet.sendNotification(NotificationType.DISCONNECT, this);
+    if (this.config.pushBullet) {
+      Pushbullet.sendNotification(NotificationType.DISCONNECT, this);
+    }
     // this.onDisconnected.trigger();
   };
 

@@ -33,6 +33,8 @@ import ActionsManager, {
 } from "@/scripts/managers/ActionsManager";
 import JsonScriptManager, { IMap } from "@/scripts/managers/JsonScriptManager";
 import LiteEvent from "@/utils/LiteEvent";
+import Pushbullet from "@/utils/Pushbullet";
+import { NotificationType } from "@/utils/Pushbullet/types";
 import { isEmpty } from "@/utils/String";
 import { sleep } from "@/utils/Time";
 import * as fs from "fs";
@@ -242,6 +244,9 @@ export default class ScriptsManager {
         LanguageManager.trans("scriptStopped")
       );
     } else {
+      Pushbullet.sendNotification(NotificationType.SCRIPT_ERROR, this.account, {
+        error: reason
+      });
       this.account.logger.logError(
         LanguageManager.trans("script"),
         LanguageManager.trans("scriptStoppedReason", reason)

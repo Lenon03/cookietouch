@@ -488,7 +488,8 @@
   "pushBulletModOnMap": "Modérateur sur la map",
   "pushBulletModPrivateMessage": "Message d'un modérateur",
   "pushBulletPrivateMessage": "Message privé",
-  "pushBulletNotificationTitle": "Notification de pushbullet",
+  "pushBulletScriptError": "Erreur de script",
+  "pushBulletNotificationTitle": "Notifications de pushbullet",
   "levelUpBody": "Vous venez de passer level :",
   "disconnectBody": "Vous venez d'être déconnecté",
   "recaptchaReceivedBody": "Vous avez reçu un captcha",
@@ -499,5 +500,7 @@
   "modMessage": "Message d'un modérateur",
   "modMessageBody": "Du modérateur ? : ?",
   "privateMessage": "Message privée",
-  "privateMessageBody": "De ? : ?"
+  "privateMessageBody": "De ? : ?",
+  "scriptError": "Erreur de script",
+  "scriptErrorBody": "Votre script rencontre une erreur : ?"
 }

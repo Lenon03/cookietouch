@@ -27,7 +27,8 @@ class Pushbullet extends React.Component<
     level: false,
     modOnMap: false,
     modPrivateMessage: false,
-    privateMessage: false
+    privateMessage: false,
+    scriptError: false
   };
 
   public componentDidMount() {
@@ -142,6 +143,24 @@ class Pushbullet extends React.Component<
                   <FormControlLabel
                     control={
                       <Switch
+                        id="scriptError"
+                        name="scriptError"
+                        disabled={
+                          this.state.characterConnected === false ||
+                          this.state.active === false
+                        }
+                        color="primary"
+                        checked={this.state.scriptError}
+                        onChange={this.handleSwitchChange}
+                      />
+                    }
+                    label={LanguageManager.trans("pushBulletScriptError")}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
                         id="modOnMap"
                         name="modOnMap"
                         disabled={
@@ -222,7 +241,8 @@ class Pushbullet extends React.Component<
       level: this.props.account.config.pushBullet.level,
       modOnMap: this.props.account.config.pushBullet.modOnMap,
       modPrivateMessage: this.props.account.config.pushBullet.modPrivateMessage,
-      privateMessage: this.props.account.config.pushBullet.privateMessage
+      privateMessage: this.props.account.config.pushBullet.privateMessage,
+      scriptError: this.props.account.config.pushBullet.scriptError
     });
   };
 }

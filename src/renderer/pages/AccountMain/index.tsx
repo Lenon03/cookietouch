@@ -1,12 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import { accountMainStyles } from "@renderer/pages/AccountMain/styles";
 import {
-  AccountMainProps,
   IAccountMainProps,
   IAccountMainState
 } from "@renderer/pages/AccountMain/types";
@@ -22,7 +19,10 @@ import Pushbullet from "@renderer/pages/tabs/Pushbullet";
 import Statistics from "@renderer/pages/tabs/Statistics";
 import * as React from "react";
 
-class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
+class AccountMain extends React.Component<
+  IAccountMainProps,
+  IAccountMainState
+> {
   public state: IAccountMainState = {
     value: 0
   };
@@ -134,4 +134,4 @@ class AccountMain extends React.Component<AccountMainProps, IAccountMainState> {
   };
 }
 
-export default withStyles(accountMainStyles)<IAccountMainProps>(AccountMain);
+export default AccountMain;

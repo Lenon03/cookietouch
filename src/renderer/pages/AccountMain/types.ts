@@ -1,13 +1,27 @@
 import Account from "@/account";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { AccountMainStyle } from "@renderer/pages/AccountMain/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IAccountMainProps {
+const styles = (theme: Theme) =>
+  createStyles({
+    appBar: {
+      //
+    },
+    root: {
+      flexGrow: 1,
+      margin: theme.spacing.unit
+    },
+    tab: {
+      //
+    },
+    tabs: {
+      //
+    }
+  });
+
+export interface IAccountMainProps extends WithStyles<typeof styles> {
   account: Account;
 }
 
 export interface IAccountMainState {
   value: number;
 }
-
-export type AccountMainProps = IAccountMainProps & WithStyles<AccountMainStyle>;

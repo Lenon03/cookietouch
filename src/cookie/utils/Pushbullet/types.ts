@@ -24,6 +24,7 @@ export interface IDevices {
 }
 
 export enum NotificationType {
+  LEVEL_JOB,
   LEVEL,
   PRIVATE_MESSAGE,
   IN_JAIL,
@@ -38,5 +39,7 @@ export interface INotificationData {
   level?: number;
   senderName?: string;
   message?: string;
+  levelJob?: number;
+  jobName?: string;
   error?: string;
 }

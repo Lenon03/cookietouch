@@ -25,6 +25,7 @@ class Pushbullet extends React.Component<
     disconnect: false,
     inJail: false,
     level: false,
+    levelJob: false,
     modOnMap: false,
     modPrivateMessage: false,
     privateMessage: false,
@@ -143,6 +144,24 @@ class Pushbullet extends React.Component<
                   <FormControlLabel
                     control={
                       <Switch
+                        id="levelJob"
+                        name="levelJob"
+                        disabled={
+                          this.state.characterConnected === false ||
+                          this.state.active === false
+                        }
+                        color="primary"
+                        checked={this.state.levelJob}
+                        onChange={this.handleSwitchChange}
+                      />
+                    }
+                    label={LanguageManager.trans("pushBulletLevelJob")}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
                         id="scriptError"
                         name="scriptError"
                         disabled={
@@ -239,6 +258,7 @@ class Pushbullet extends React.Component<
       disconnect: this.props.account.config.pushBullet.disconnect,
       inJail: this.props.account.config.pushBullet.inJail,
       level: this.props.account.config.pushBullet.level,
+      levelJob: this.props.account.config.pushBullet.levelJob,
       modOnMap: this.props.account.config.pushBullet.modOnMap,
       modPrivateMessage: this.props.account.config.pushBullet.modPrivateMessage,
       privateMessage: this.props.account.config.pushBullet.privateMessage,

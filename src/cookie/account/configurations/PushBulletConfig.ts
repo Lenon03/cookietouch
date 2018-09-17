@@ -7,6 +7,7 @@ export interface IPushBulletConfig {
   modOnMap: boolean;
   modPrivateMessage: boolean;
   disconnect: boolean;
+  levelJob: boolean;
   scriptError: boolean;
 }
 
@@ -19,6 +20,7 @@ export default class PushBulletConfig implements IPushBulletConfig {
   public modOnMap = false;
   public modPrivateMessage = false;
   public disconnect = false;
+  public levelJob = false;
   public scriptError = false;
 
   public toJSON(): IPushBulletConfig {

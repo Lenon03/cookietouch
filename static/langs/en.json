@@ -501,6 +501,9 @@
   "modMessageBody": "From moderator ? : ?",
   "privateMessage": "Private message",
   "privateMessageBody": "From ? : ?",
+  "levelUpJob": "Job level up",
+  "levelUpJobBody": "? now level ?",
+  "pushBulletLevelJob": "Job level up",
   "scriptError": "Script error",
   "scriptErrorBody": "Your script have an error : ?"
 }

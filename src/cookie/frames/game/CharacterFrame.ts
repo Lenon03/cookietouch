@@ -9,6 +9,7 @@ import GameRolePlayPlayerLifeStatusMessage from "@/protocol/network/messages/Gam
 import JobDescriptionMessage from "@/protocol/network/messages/JobDescriptionMessage";
 import JobExperienceMultiUpdateMessage from "@/protocol/network/messages/JobExperienceMultiUpdateMessage";
 import JobExperienceUpdateMessage from "@/protocol/network/messages/JobExperienceUpdateMessage";
+import JobLevelUpMessage from "@/protocol/network/messages/JobLevelUpMessage";
 import LifePointsRegenBeginMessage from "@/protocol/network/messages/LifePointsRegenBeginMessage";
 import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
 import PlayerStatusUpdateMessage from "@/protocol/network/messages/PlayerStatusUpdateMessage";
@@ -86,6 +87,11 @@ export default class CharacterFrame implements IFrame {
     Frames.dispatcher.register(
       "JobExperienceUpdateMessage",
       this.HandleJobExperienceUpdateMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "JobLevelUpMessage",
+      this.HandleJobLevelUpMessage,
       this
     );
   }
@@ -207,5 +213,12 @@ export default class CharacterFrame implements IFrame {
     message: JobExperienceUpdateMessage
   ) {
     await account.game.character.jobs.UpdateJobExperienceUpdateMessage(message);
+  }
+
+  private async HandleJobLevelUpMessage(
+    account: Account,
+    message: JobLevelUpMessage
+  ) {
+    await account.game.character.jobs.UpdateJobLevelUpMessage(message);
   }
 }

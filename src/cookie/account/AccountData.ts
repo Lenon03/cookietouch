@@ -12,7 +12,6 @@ export default class AccountData {
   public wasAlreadyConnected: boolean;
   public nickname: string;
   public goultines: number;
-
   public bakHardToSoftCurrentRate: number;
   public bakSoftToHardCurrentRate: number;
 

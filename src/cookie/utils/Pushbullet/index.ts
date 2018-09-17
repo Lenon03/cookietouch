@@ -135,6 +135,24 @@ export default class Pushbullet {
         )}`;
         break;
       }
+      case NotificationType.LEVEL_JOB: {
+        if (!account.config.pushBullet.levelJob) {
+          return;
+        }
+        if (!data || (data && !data.levelJob)) {
+          throw new Error("We have to pass the job level");
+        }
+        if (!data || (data && !data.jobName)) {
+          throw new Error("We have to pass the job name");
+        }
+        title += ` ${LanguageManager.trans("levelUpJob")}`;
+        body = `${LanguageManager.trans(
+          "levelUpJobBody",
+          data.jobName,
+          data.levelJob
+        )}`;
+        break;
+      }
       case NotificationType.SCRIPT_ERROR: {
         if (!data || (data && !data.error)) {
           throw new Error("We have to pass the error");

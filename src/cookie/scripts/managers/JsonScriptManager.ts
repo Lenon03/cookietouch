@@ -53,7 +53,7 @@ export interface IFunc {
 
 export default class JsonScriptManager {
   public script: string = "";
-  private username: string;
+  private username: string = "";
 
   public get config(): IConfig {
     return eval(`${this.script};config`);
@@ -83,7 +83,7 @@ export default class JsonScriptManager {
       case FunctionTypes.PHENIX:
         return this.getFunc("phenix");
       default:
-        return null;
+        return this.getFunc("move");
     }
   }
 

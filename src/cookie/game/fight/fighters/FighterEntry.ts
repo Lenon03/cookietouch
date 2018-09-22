@@ -14,16 +14,16 @@ import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStat
 import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 
 export default abstract class FighterEntry {
-  public contextualId: number;
-  public alive: boolean;
-  public cellId: number;
-  public team: TeamEnum;
-  public stats: GameFightMinimalStats;
-  public lifePoints: number;
-  public maxLifePoints: number;
-  public actionPoints: number;
-  public movementPoints: number;
-  public name: string;
+  public contextualId: number = 0;
+  public alive: boolean = false;
+  public cellId: number = 0;
+  public team: TeamEnum = TeamEnum.TEAM_CHALLENGER;
+  public stats: GameFightMinimalStats = new GameFightMinimalStats();
+  public lifePoints: number = 0;
+  public maxLifePoints: number = 0;
+  public actionPoints: number = 0;
+  public movementPoints: number = 0;
+  public name: string = "";
 
   constructor(infos: GameFightFighterInformations) {
     this.UpdateGameFightFighterInformations(infos);

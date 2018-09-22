@@ -4,7 +4,7 @@ import Zone from "@/core/pathfinder/shapes/zones/Zone";
 import ZonesUtility from "@/core/pathfinder/shapes/zones/ZonesUtility";
 import SpellLevels from "@/protocol/data/classes/SpellLevels";
 import Map from "@/protocol/data/map";
-import { union } from "@/utils/Arrays";
+import { notEmpty, union } from "@/utils/Arrays";
 
 export default class SpellShapes {
   public static getSpellRange(
@@ -13,6 +13,9 @@ export default class SpellShapes {
     additionnalRange = 0
   ): MapPoint[] {
     const mp = MapPoint.fromCellId(sourceCellId);
+    if (!mp) {
+      return [];
+    }
     const range =
       spellLevel.range + (spellLevel.rangeCanBeBoosted ? additionnalRange : 0);
 
@@ -41,22 +44,28 @@ export default class SpellShapes {
     casterCellId: number,
     targetCellId: number
   ): MapPoint[] {
-    const zone = [];
+    const zone: Array<MapPoint | null> = [];
 
     const effect = this.getZoneEffect(spellLevel);
     const shaper = Shaper.shaperMap.get(effect.zoneShape);
 
-    if (shaper === null) {
+    if (!shaper) {
       zone.push(MapPoint.fromCellId(targetCellId));
-      return zone;
+      return zone.filter(notEmpty);
     }
 
     const targetCoords = MapPoint.fromCellId(targetCellId);
+    if (!targetCoords) {
+      return zone.filter(notEmpty);
+    }
     let dirX = 0;
     let dirY = 0;
 
     if (shaper.hasDirection) {
       const casterCoords = MapPoint.fromCellId(casterCellId);
+      if (!casterCoords) {
+        return zone.filter(notEmpty);
+      }
       dirX =
         targetCoords.x === casterCoords.x
           ? 0
@@ -91,11 +100,11 @@ export default class SpellShapes {
       }
     }
 
-    return zone;
+    return zone.filter(notEmpty);
   }
 
   private static getZoneEffect(spellLevel: SpellLevels): Zone {
-    let zoneEffect: Zone = null;
+    let zoneEffect: Zone | null = null;
     let ray = 63;
 
     for (const e of spellLevel.effects) {

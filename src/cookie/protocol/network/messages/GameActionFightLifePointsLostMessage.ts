@@ -6,10 +6,18 @@ export default class GameActionFightLifePointsLostMessage extends AbstractGameAc
   public permanentDamages: number;
   public _isDead: boolean;
 
-  constructor(actionId = 0, sourceId = 0, targetId = 0, loss = 0, permanentDamages = 0) {
+  constructor(
+    actionId = 0,
+    sourceId = 0,
+    targetId = 0,
+    loss = 0,
+    permanentDamages = 0,
+    isDead = false
+  ) {
     super(actionId, sourceId);
     this.targetId = targetId;
     this.loss = loss;
     this.permanentDamages = permanentDamages;
+    this._isDead = isDead;
   }
 }

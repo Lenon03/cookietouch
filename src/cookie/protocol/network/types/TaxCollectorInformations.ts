@@ -15,9 +15,18 @@ export default class TaxCollectorInformations extends Type {
   public state: number;
   public look: EntityLook;
 
-  constructor(uniqueId = 0, firtNameId = 0, lastNameId = 0, additionalInfos: AdditionalTaxCollectorInformations = null,
-              worldX = 0, worldY = 0, subAreaId = 0, state = 0, look: EntityLook = null,
-              complements: TaxCollectorComplementaryInformations[] = null) {
+  constructor(
+    uniqueId = 0,
+    firtNameId = 0,
+    lastNameId = 0,
+    additionalInfos = new AdditionalTaxCollectorInformations(),
+    worldX = 0,
+    worldY = 0,
+    subAreaId = 0,
+    state = 0,
+    look = new EntityLook(),
+    complements: TaxCollectorComplementaryInformations[] = []
+  ) {
     super();
     this.complements = complements;
     this.uniqueId = uniqueId;

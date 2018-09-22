@@ -1,7 +1,7 @@
 import Account from "@/account";
 import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-const styles = (theme: Theme) =>
+export const accountMainstyles = (theme: Theme) =>
   createStyles({
     appBar: {
       //
@@ -18,7 +18,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface IAccountMainProps extends WithStyles<typeof styles> {
+export interface IAccountMainProps
+  extends WithStyles<typeof accountMainstyles> {
   account: Account;
 }
 

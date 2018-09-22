@@ -69,7 +69,7 @@ export default class ChatFrame implements IFrame {
     account: Account,
     message: ChatServerWithObjectMessage
   ) {
-    // TODO: message.objects = objects in message
+    // TODO: message.objects = objects in message "\uFFFC"
     this.HandleChatServerMessage(account, message);
   }
 

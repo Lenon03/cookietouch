@@ -6,11 +6,14 @@ export default class AllianceInvitedMessage extends Message {
   public recruterName: string;
   public allianceInfo: BasicNamedAllianceInformations;
 
-  constructor(recruterId = 0, recruterName = "", allianceInfo: BasicNamedAllianceInformations = null) {
+  constructor(
+    recruterId = 0,
+    recruterName = "",
+    allianceInfo = new BasicNamedAllianceInformations()
+  ) {
     super();
     this.recruterId = recruterId;
     this.recruterName = recruterName;
     this.allianceInfo = allianceInfo;
-
   }
 }

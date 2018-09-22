@@ -6,7 +6,12 @@ export default class VillageConquestPrismInformation extends Type {
   public isEntered: boolean;
   public isInRoom: boolean;
 
-  constructor(areaId = 0, areaAlignment = 0, isEntered = false, isInRoom = false) {
+  constructor(
+    areaId = 0,
+    areaAlignment = 0,
+    isEntered = false,
+    isInRoom = false
+  ) {
     super();
     this.areaId = areaId;
     this.areaAlignment = areaAlignment;

@@ -22,18 +22,17 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
-import { mapViewerStyles } from "@renderer/pages/tabs/Map/MapViewer/styles";
 import {
   IMapViewerProps,
   IMapViewerState,
-  MapViewerProps
+  mapViewerStyles
 } from "@renderer/pages/tabs/Map/MapViewer/types";
 import MapViewerCell from "@renderer/pages/tabs/Map/MapViewerCell";
 import { List } from "linqts";
 import * as React from "react";
 
-class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
-  public cells: List<MapViewerCell>;
+class MapViewer extends React.Component<IMapViewerProps, IMapViewerState> {
+  public cells = new List<MapViewerCell>();
 
   public state: IMapViewerState = {
     path: [],
@@ -60,7 +59,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   private tooltipRef: React.RefObject<HTMLDivElement>;
   private mapImageRef: React.RefObject<HTMLImageElement>;
 
-  constructor(props: MapViewerProps) {
+  constructor(props: IMapViewerProps) {
     super(props);
     this.canvasRef = React.createRef();
     this.tooltipRef = React.createRef();
@@ -69,8 +68,8 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   }
 
   public componentDidMount() {
-    this.canvasRef.current.addEventListener("click", this.onMouseClick, false);
-    this.canvasRef.current.addEventListener(
+    this.canvasRef.current!.addEventListener("click", this.onMouseClick, false);
+    this.canvasRef.current!.addEventListener(
       "mousemove",
       this.onMouseMove,
       false
@@ -94,12 +93,12 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   }
 
   public componentWillUnmount() {
-    this.canvasRef.current.removeEventListener(
+    this.canvasRef.current!.removeEventListener(
       "click",
       this.onMouseClick,
       false
     );
-    this.canvasRef.current.removeEventListener(
+    this.canvasRef.current!.removeEventListener(
       "mousemove",
       this.onMouseMove,
       false
@@ -134,8 +133,8 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
               ? Array.from(
                   this.props.account.game.map.data.midgroundLayer.keys()
                 ).map((cellId, index) =>
-                  this.props.account.game.map.data.midgroundLayer
-                    .get(cellId)
+                  this.props.account.game.map
+                    .data!.midgroundLayer.get(cellId)!
                     .map(
                       (g, index2) =>
                         g.g ? (
@@ -193,7 +192,10 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   private refreshMapViewer = () => {
     this.buildMap();
   };
-  private playedCharacterMoving = async (cells: number[]) => {
+  private playedCharacterMoving = async (cells?: number[]) => {
+    if (!cells) {
+      return;
+    }
     this.setState({ path: cells }, () => this.buildMap());
     if (!this.props.account.config.enableSpeedHack) {
       const num = PathDuration.calculate(cells);
@@ -363,12 +365,18 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       return;
     }
     const ctx = c.getContext("2d");
+    if (!ctx) {
+      return;
+    }
     ctx.clearRect(0, 0, c.width, c.height);
     if (this.state.showReal) {
       this.walkableCellBrush.a = 0.5;
       this.losCellBrush.a = 0.5;
       this.obstacleCellBrush.a = 0.5;
       const img = this.mapImageRef.current;
+      if (!img) {
+        return;
+      }
       img.src = `${DTConstants.config.assetsUrl}/backgrounds/${
         this.props.account.game.map.data.id
       }.jpg`;
@@ -403,7 +411,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
         this.state.showReal &&
         this.props.account.game.map.data.midgroundLayer.has(i)
       ) {
-        const gs = this.props.account.game.map.data.midgroundLayer.get(i);
+        const gs = this.props.account.game.map.data.midgroundLayer.get(i)!;
         for (const g of gs) {
           if (g.g) {
             const img2 = document.getElementById(
@@ -416,7 +424,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             img2.src = `${DTConstants.config.assetsUrl}/gfx/world/png/${
               g.g
             }.png`;
-            this.drawGraphical(img2, this.canvasRef.current, g);
+            this.drawGraphical(img2, this.canvasRef.current!, g);
           }
         }
       }
@@ -446,7 +454,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       this.drawTileContent(ctx, i);
     }
   };
-  private onMouseMove = event => {
+  private onMouseMove = (event: MouseEvent) => {
     const pos = new Point(event.offsetX, event.offsetY);
     for (let cellId = 0; cellId < this.cells.Count(); cellId++) {
       const cell = this.cells.ElementAt(cellId);
@@ -469,7 +477,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             this.showCellInfo(
               this.props.account.game.fight.allies.find(
                 a => a.cellId === cellId
-              ),
+              )!,
               cell.mid
             );
             return;
@@ -481,7 +489,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             this.showCellInfo(
               this.props.account.game.fight.enemies.find(
                 e => e.cellId === cellId
-              ),
+              )!,
               cell.mid
             );
             return;
@@ -504,7 +512,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             this.showCellInfo(
               this.props.account.game.map.monstersGroups.find(
                 mg => mg.cellId === cellId
-              ),
+              )!,
               cell.mid
             );
             return;
@@ -516,7 +524,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             this.showCellInfo(
               this.props.account.game.map.players.find(
                 p => p.cellId === cellId
-              ),
+              )!,
               cell.mid
             );
             return;
@@ -525,7 +533,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             undefined
           ) {
             this.showCellInfo(
-              this.props.account.game.map.doors.find(d => d.cellId === cellId),
+              this.props.account.game.map.doors.find(d => d.cellId === cellId)!,
               cell.mid
             );
             return;
@@ -537,7 +545,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             this.showCellInfo(
               this.props.account.game.map.statedElements.find(
                 se => se.cellId === cellId
-              ),
+              )!,
               cell.mid
             );
             return;
@@ -558,7 +566,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
             undefined
           ) {
             this.showCellInfo(
-              this.props.account.game.map.npcs.find(n => n.cellId === cellId),
+              this.props.account.game.map.npcs.find(n => n.cellId === cellId)!,
               cell.mid
             );
             return;
@@ -618,6 +626,9 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
       const interactive = this.props.account.game.map.getInteractiveElement(
         e.id
       );
+      if (!interactive) {
+        return;
+      }
       let resp: Array<IDataResponse<Skills>>;
       let usable: string;
       if (interactive.enabledSkills.length === 0) {
@@ -645,7 +656,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
         interactive.name
       }`;
     }
-    const tooltip = this.tooltipRef.current;
+    const tooltip = this.tooltipRef.current!;
     tooltip.innerHTML = htmlBuffer;
     tooltip.style.left = `${point.x + 5}px`;
     tooltip.style.top = `${point.y + 355}px`;
@@ -653,11 +664,11 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   };
 
   private hideCellInfo = () => {
-    const tooltip = this.tooltipRef.current;
+    const tooltip = this.tooltipRef.current!;
     tooltip.style.visibility = "hidden";
   };
 
-  private onMouseClick = event => {
+  private onMouseClick = (event: MouseEvent) => {
     if (this.props.account.isBusy) {
       return;
     }
@@ -666,7 +677,7 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
 
     for (let i = 0; i < this.cells.Count(); i++) {
       if (this.cells.ElementAt(i).IsPointInside(pos)) {
-        if (this.props.account.game.map.data.cells[i].isWalkable(false)) {
+        if (this.props.account.game.map.data!.cells[i].isWalkable(false)) {
           this.setState({ selectedCellId: i }, () => this.buildMap());
 
           const task = async () => {
@@ -767,6 +778,10 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   ) {
     const ctx = canvas.getContext("2d");
 
+    if (!ctx) {
+      return;
+    }
+
     const tmpX =
       (g.x / DTConstants.ORIGINAL_WIDTH) * canvas.width +
       DTConstants.TILE_WIDTH / 2;
@@ -796,4 +811,4 @@ class MapViewer extends React.Component<MapViewerProps, IMapViewerState> {
   }
 }
 
-export default withStyles(mapViewerStyles)<IMapViewerProps>(MapViewer);
+export default withStyles(mapViewerStyles)(MapViewer);

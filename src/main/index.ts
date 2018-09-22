@@ -14,9 +14,7 @@ init({
   dsn: "https://c2de150c591046829235a291351779b7@sentry.io/1237788"
 });
 
-app.commandLine.appendSwitch("js-flags", "--harmony-async-iteration");
-
-const onError = error => {
+const onError = (error: any) => {
   log.transports.file.level = "error";
   captureException(error);
   log.error(error);
@@ -75,7 +73,7 @@ if (process.platform === "darwin") {
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-let mainWindow: BrowserWindow;
+let mainWindow: BrowserWindow | null;
 
 function createMainWindow() {
   const size = screen.getPrimaryDisplay().workAreaSize;
@@ -136,7 +134,7 @@ app.on("ready", () => {
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();
   if (!isDevelopment) {
-    ipcMain.on("ask-update", (event, channel: string) =>
+    ipcMain.on("ask-update", (event: any, channel: string) =>
       appUpdater(mainWindow, channel)
     );
   }

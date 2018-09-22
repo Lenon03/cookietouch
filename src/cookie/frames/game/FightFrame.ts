@@ -342,6 +342,9 @@ export default class FightFrame implements IFrame {
   ) {
     account.game.fight.UpdateGameActionFightLifePointsGainMessage(message);
     const fighter = account.game.fight.getFighter(message.targetId);
+    if (!fighter) {
+      return;
+    }
     account.logger.logInfo(
       LanguageManager.trans("fightFrame"),
       LanguageManager.trans("hpGained", fighter.name, message.delta)

@@ -1,14 +1,25 @@
 import Account from "@/account";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { CharacterTabStyle } from "@renderer/pages/tabs/Character/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ICharacterTabProps {
+export const characterTabStyles = (theme: Theme) =>
+  createStyles({
+    appBar: {
+      //
+    },
+    root: {
+      flexGrow: 1
+    },
+    tab: {
+      borderCollapse: "collapse",
+      maxWidth: 1000
+    }
+  });
+
+export interface ICharacterTabProps
+  extends WithStyles<typeof characterTabStyles> {
   account: Account;
 }
 
 export interface ICharacterTabState {
   value: number;
 }
-
-export type CharacterTabProps = ICharacterTabProps &
-  WithStyles<CharacterTabStyle>;

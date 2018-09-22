@@ -6,6 +6,5 @@ export default class ServerSessionConstantString extends ServerSessionConstant {
   constructor(id = 0, value = "") {
     super(id);
     this.value = value;
-
   }
 }

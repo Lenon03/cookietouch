@@ -9,8 +9,8 @@ export default class FightAPI {
   }
 
   public canFight(
-    forbiddenMonsters: number[] = null,
-    mandatoryMonsters: number[] = null,
+    forbiddenMonsters?: number[],
+    mandatoryMonsters?: number[],
     minMonsters = 1,
     maxMonsters = 8,
     minLevel = 1,
@@ -27,8 +27,8 @@ export default class FightAPI {
   }
 
   public async fight(
-    forbiddenMonsters: number[] = null,
-    mandatoryMonsters: number[] = null,
+    forbiddenMonsters?: number[],
+    mandatoryMonsters?: number[],
     minMonsters = 1,
     maxMonsters = 8,
     minLevel = 1,

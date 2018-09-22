@@ -1,13 +1,27 @@
 import Account from "@/account";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { AccountItemStyle } from "@renderer/pages/Sidenav/AccountItem/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IAccountItemProps {
+export const accountItemStyles = (theme: Theme) =>
+  createStyles({
+    image: {
+      color: theme.palette.primary.main,
+      height: 30,
+      width: 30
+    },
+    root: {
+      flexGrow: 1
+    },
+    text: {
+      color: theme.palette.primary.main,
+      fontWeight: "bold"
+    }
+  });
+
+export interface IAccountItemProps
+  extends WithStyles<typeof accountItemStyles> {
   account: Account;
 }
 
 export interface IAccountItemState {
   //
 }
-
-export type AccountItemProps = IAccountItemProps & WithStyles<AccountItemStyle>;

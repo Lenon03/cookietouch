@@ -23,9 +23,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { bidTabStyles } from "@renderer/pages/tabs/Bid/styles";
 import {
-  BidTabProps,
+  bidTabStyles,
   IBidTabProps,
   IBidTabState
 } from "@renderer/pages/tabs/Bid/types";
@@ -34,7 +33,7 @@ import { remote } from "electron";
 import { basename } from "path";
 import * as React from "react";
 
-class Bid extends React.Component<BidTabProps, IBidTabState> {
+class Bid extends React.Component<IBidTabProps, IBidTabState> {
   public state: IBidTabState = {
     addObjectForm: {
       basePrice: 1,
@@ -416,7 +415,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     await this.props.account.extensions.bid.config.save();
   };
 
-  private submit = async event => {
+  private submit = async (event: any) => {
     event.preventDefault();
 
     const infos = this.state.addObjectForm;
@@ -440,20 +439,22 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     await this.props.account.extensions.bid.config.save();
   };
 
-  private handleSelectChangeForm = event => {
+  private handleSelectChangeForm = (event: any) => {
     const v = parseInt(event.target.value, 10);
     const addObjectForm = { ...this.state.addObjectForm };
-    addObjectForm[event.target.name] = v;
+    (addObjectForm as any)[event.target.name] = v;
     this.setState({ addObjectForm });
   };
 
-  private handleInputChange = async event => {
+  private handleInputChange = async (event: any) => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<
       IBidTabState,
       keyof IBidTabState
     >);
-    this.props.account.extensions.bid.config[event.target.name] = value;
+    (this.props.account.extensions.bid.config as any)[
+      event.target.name
+    ] = value;
     await this.props.account.extensions.bid.config.save();
   };
 
@@ -494,7 +495,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     });
   };
 
-  private renderInput = inputProps => {
+  private renderInput = (inputProps: any) => {
     const { InputProps, classes, ref, ...other } = inputProps;
     return (
       <TextField
@@ -514,7 +515,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     suggestion: Items,
     index: number,
     itemProps: any,
-    highlightedIndex: number,
+    highlightedIndex: number | null,
     selectedItem: Items
   ) => {
     const isHighlighted = highlightedIndex === index;
@@ -535,7 +536,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
       </MenuItem>
     );
   };
-  private getSuggestions = inputValue => {
+  private getSuggestions = (inputValue: any) => {
     let count = 0;
 
     return this.state.allItems.filter(suggestion => {
@@ -552,7 +553,7 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     });
   };
 
-  private getAllItems = async (withObject: boolean) => {
+  private getAllItems = async (withObject?: boolean) => {
     if (!withObject) {
       return;
     }
@@ -598,15 +599,21 @@ class Bid extends React.Component<BidTabProps, IBidTabState> {
     });
   };
 
-  private selectedItem = itemName => {
+  private selectedItem = (itemName: string) => {
     this.setState(prev => {
       const selectedItem = prev.allItems.find(i => i.nameId === itemName);
+      if (!selectedItem) {
+        return null;
+      }
       return {
-        addObjectForm: { ...prev.addObjectForm, gid: selectedItem.id },
+        addObjectForm: {
+          ...prev.addObjectForm,
+          gid: selectedItem.id
+        },
         selectedItem
       };
     });
   };
 }
 
-export default withStyles(bidTabStyles)<IBidTabProps>(Bid);
+export default withStyles(bidTabStyles)(Bid);

@@ -32,21 +32,35 @@ export default class FightsUtility {
   public getNearestOrFarthestEndMoveNode(
     nearest: boolean,
     basedOnAllMonsters = true
-  ): [number, MoveNode] {
-    let node: [number, MoveNode] = null;
+  ): [number, MoveNode] | null {
+    let node: [number, MoveNode] | null = null;
     let totalDistances = -1;
     let distance = -1;
+
+    if (!this.account.game.fight.playedFighter || !this.account.game.map.data) {
+      return node;
+    }
+
+    let mp = MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId);
+
+    const near = this.account.game.fight.getNearestEnemy();
+
+    if (!near || !mp) {
+      return null;
+    }
+
+    const nMp = MapPoint.fromCellId(near.cellId);
+
+    if (!nMp) {
+      return null;
+    }
 
     // Include our current cell
     totalDistances = basedOnAllMonsters
       ? this.getTotalDistancesFromEnemies(
           this.account.game.fight.playedFighter.cellId
         )
-      : MapPoint.fromCellId(
-          this.account.game.fight.playedFighter.cellId
-        ).distanceToCell(
-          MapPoint.fromCellId(this.account.game.fight.getNearestEnemy().cellId)
-        );
+      : mp.distanceToCell(nMp);
 
     for (const [cellId, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
@@ -56,13 +70,13 @@ export default class FightsUtility {
       if (!moveNode.reachable) {
         continue;
       }
+      mp = MapPoint.fromCellId(cellId);
+      if (!mp) {
+        return null;
+      }
       const tempTotalDistances = basedOnAllMonsters
         ? this.getTotalDistancesFromEnemies(cellId)
-        : MapPoint.fromCellId(cellId).distanceToCell(
-            MapPoint.fromCellId(
-              this.account.game.fight.getNearestEnemy().cellId
-            )
-          );
+        : mp.distanceToCell(nMp);
 
       if (
         (nearest && tempTotalDistances <= totalDistances) ||
@@ -71,7 +85,10 @@ export default class FightsUtility {
         if (nearest) {
           node = [cellId, moveNode];
           totalDistances = tempTotalDistances;
-        } else if (moveNode.path.reachable.length >= distance) {
+        } else if (
+          moveNode.path &&
+          moveNode.path.reachable.length >= distance
+        ) {
           // If we need to give the farthest cell, we might as well give the one that uses the most available MP
           node = [cellId, moveNode];
           totalDistances = tempTotalDistances;
@@ -106,9 +123,9 @@ export default class FightsUtility {
   }
 
   public getTotalDistancesFromEnemies(fromCellId: number): number {
-    const mp = MapPoint.fromCellId(fromCellId);
-    const cells = this.account.game.fight.enemies.map(e =>
-      MapPoint.fromCellId(e.cellId)
+    const mp = MapPoint.fromCellId(fromCellId)!;
+    const cells = this.account.game.fight.enemies.map(
+      e => MapPoint.fromCellId(e.cellId)!
     );
     return cells.reduce((prev, next) => prev + mp.distanceToCell(next), 0);
   }

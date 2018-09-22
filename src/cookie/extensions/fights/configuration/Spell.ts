@@ -23,9 +23,9 @@ export default class Spell {
   public spellName: string;
   public target: SpellTargets;
   public turns: number;
-  public lastTurn: number;
+  public lastTurn: number = 0;
   public relaunchs: number;
-  public remainingRelaunchs: number;
+  public remainingRelaunchs: number = 0;
   public targetHp: number;
   public characterHp: number;
   public resistance: SpellResistances;

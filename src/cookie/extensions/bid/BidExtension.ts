@@ -19,7 +19,7 @@ export default class BidExtension implements IClearable {
   private timer: TimerWrapper;
   private enabled: boolean = false;
   private waiting: boolean = false;
-  private pricesInBid: Map<number, number[]>;
+  private pricesInBid: Map<number, number[]> | null = null;
   private readonly onStarted = new LiteEvent<void>();
   private readonly onStopped = new LiteEvent<void>();
   private readonly onStatisticsUpdated = new LiteEvent<void>();
@@ -144,7 +144,7 @@ export default class BidExtension implements IClearable {
     await this.processSalesSession();
   };
 
-  private onScriptStopped = (name: string) => {
+  private onScriptStopped = (name?: string) => {
     if (!this.enabled) {
       return;
     }
@@ -164,12 +164,18 @@ export default class BidExtension implements IClearable {
     for (const objToSell of objects) {
       // Get the items that are already in the bid for this specific ObjectToSell
       const objsInSale = this.account.game.bid.objectsInSale.Where(
-        o => o.objectGID === objToSell.gid && o.quantity === objToSell.lot
+        o =>
+          o !== undefined &&
+          o.objectGID === objToSell.gid &&
+          o.quantity === objToSell.lot
       );
       // Get the price in bid of this specific ObjectToSell
-      const priceInBid = this.pricesInBid.get(objToSell.gid)[
-        this.lotToIndex(objToSell.lot)
-      ];
+      const prices = this.pricesInBid && this.pricesInBid.get(objToSell.gid);
+      if (!prices) {
+        // TODO: check what we can do here?
+        return;
+      }
+      const priceInBid = prices[this.lotToIndex(objToSell.lot)];
       // This will hold the price that should our objects have (either modified or added)
       let newPrice = priceInBid;
       let ours = true;

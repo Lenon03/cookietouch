@@ -14,17 +14,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-import { statisticsTabStyles } from "@renderer/pages/tabs/Statistics/styles";
 import {
   IStatisticsTabProps,
   IStatisticsTabState,
-  StatisticsTabProps
+  statisticsTabStyles
 } from "@renderer/pages/tabs/Statistics/types";
 import * as React from "react";
 
 class Statistics extends React.Component<
-  StatisticsTabProps,
+  IStatisticsTabProps,
   IStatisticsTabState
 > {
   public state: IStatisticsTabState = {
@@ -238,4 +236,4 @@ class Statistics extends React.Component<
   };
 }
 
-export default withStyles(statisticsTabStyles)<IStatisticsTabProps>(Statistics);
+export default withStyles(statisticsTabStyles)(Statistics);

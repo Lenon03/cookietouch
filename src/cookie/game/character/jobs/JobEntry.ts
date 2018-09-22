@@ -10,14 +10,14 @@ import SkillActionDescriptionCollect from "@/protocol/network/types/SkillActionD
 import { List } from "linqts";
 
 export default class JobEntry {
-  public id: number;
-  public level: number;
-  public name: string;
-  public iconId: number;
-  public experience: number;
-  public experienceLevelFloor: number;
-  public experienceNextLevelFloor: number;
-  public collectSkills: List<CollectSkillEntry>;
+  public id: number = 0;
+  public level: number = 0;
+  public name: string = "";
+  public iconId: number = 0;
+  public experience: number = 0;
+  public experienceLevelFloor: number = 0;
+  public experienceNextLevelFloor: number = 0;
+  public collectSkills: List<CollectSkillEntry> = new List();
 
   public static async setup(
     job: JobDescription,
@@ -38,9 +38,14 @@ export default class JobEntry {
 
       for (const skill of job.skills) {
         if (skill._type === "SkillActionDescriptionCollect") {
+          const item = skillsResp.find(s => s.id === skill.skillId);
+          const object = item && item.object;
+          if (!object) {
+            continue;
+          }
           const c = new CollectSkillEntry(
             skill as SkillActionDescriptionCollect,
-            skillsResp.find(s => s.id === skill.skillId).object
+            object
           );
           jobEntry.collectSkills.Add(c);
         }

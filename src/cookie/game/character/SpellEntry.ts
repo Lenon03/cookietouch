@@ -6,10 +6,10 @@ import DTConstants from "@/protocol/DTConstants";
 import SpellItem from "@/protocol/network/types/SpellItem";
 
 export default class SpellEntry {
-  public id: number;
-  public level: number;
-  public name: string;
-  public minPlayerLevel: number;
+  public id: number = 0;
+  public level: number = 0;
+  public name: string = "";
+  public minPlayerLevel: number = 0;
 
   public static async setup(
     s: SpellItem | number,

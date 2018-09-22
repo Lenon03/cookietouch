@@ -13,7 +13,7 @@ export enum TeleportablesEnum {
 
 export default class TeleportablesManager {
   private _account: Account;
-  private _destinationMapId: number;
+  private _destinationMapId: number = 0;
   private _teleportable: TeleportablesEnum;
   private readonly onUseFinished = new LiteEvent<boolean>();
 
@@ -57,11 +57,19 @@ export default class TeleportablesManager {
       return false;
     }
 
+    const skill = this._account.game.map.zaap.element.enabledSkills.find(
+      s => s.id === 44
+    );
+
+    if (!skill) {
+      // TODO: ??
+      return false;
+    }
+
     return this._account.game.managers.interactives.moveToUseInteractive(
       this._account.game.map.zaap.element,
       this._account.game.map.zaap.cellId,
-      this._account.game.map.zaap.element.enabledSkills.find(s => s.id === 44)
-        .instanceUid
+      skill.instanceUid
     );
   }
 
@@ -195,7 +203,7 @@ export default class TeleportablesManager {
     this.isUseFinished(true);
   };
 
-  private interactivesUseFinished = (success: boolean) => {
+  private interactivesUseFinished = (success?: boolean) => {
     if (
       this._teleportable === TeleportablesEnum.NONE ||
       this._destinationMapId === 0

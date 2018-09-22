@@ -7,15 +7,17 @@ import Tabs from "@material-ui/core/Tabs";
 import Jobs from "@renderer/pages/tabs/Character/Jobs";
 import Spells from "@renderer/pages/tabs/Character/Spells";
 import Stats from "@renderer/pages/tabs/Character/Stats";
-import { characterTabStyles } from "@renderer/pages/tabs/Character/styles";
 import {
-  CharacterTabProps,
+  characterTabStyles,
   ICharacterTabProps,
   ICharacterTabState
 } from "@renderer/pages/tabs/Character/types";
 import * as React from "react";
 
-class Character extends React.Component<CharacterTabProps, ICharacterTabState> {
+class Character extends React.Component<
+  ICharacterTabProps,
+  ICharacterTabState
+> {
   public state: ICharacterTabState = {
     value: 0
   };
@@ -60,9 +62,9 @@ class Character extends React.Component<CharacterTabProps, ICharacterTabState> {
     );
   }
 
-  private handleChange = (event, value) => {
+  private handleChange = (event: any, value: number) => {
     this.setState({ value });
   };
 }
 
-export default withStyles(characterTabStyles)<ICharacterTabProps>(Character);
+export default withStyles(characterTabStyles)(Character);

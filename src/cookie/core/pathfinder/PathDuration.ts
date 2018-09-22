@@ -30,7 +30,7 @@ export default class PathDuration {
       return duration;
     }
 
-    let motionScheme: AnimDuration;
+    let motionScheme: AnimDuration | undefined;
 
     if (slide) {
       motionScheme = this.animDurations.get(AnimDurationTypes.SLIDE);
@@ -47,15 +47,15 @@ export default class PathDuration {
     let prevY = -1;
 
     for (let i = 0; i < path.length; i++) {
-      const coord = MapPoint.fromCellId(path[i]);
+      const coord = MapPoint.fromCellId(path[i])!;
 
       if (i !== 0) {
         if (coord.y === prevY) {
-          duration += motionScheme.horizontal;
+          duration += motionScheme!.horizontal;
         } else if (coord.x === prevX) {
-          duration += motionScheme.vertical;
+          duration += motionScheme!.vertical;
         } else {
-          duration += motionScheme.linear;
+          duration += motionScheme!.linear;
         }
       }
 

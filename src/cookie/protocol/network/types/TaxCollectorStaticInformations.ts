@@ -6,7 +6,11 @@ export default class TaxCollectorStaticInformations extends Type {
   public lastNameId: number;
   public guildIdentity: GuildInformations;
 
-  constructor(firstNameId = 0, lastNameId = 0, guildIdentity: GuildInformations = null) {
+  constructor(
+    firstNameId = 0,
+    lastNameId = 0,
+    guildIdentity = new GuildInformations()
+  ) {
     super();
     this.firstNameId = firstNameId;
     this.lastNameId = lastNameId;

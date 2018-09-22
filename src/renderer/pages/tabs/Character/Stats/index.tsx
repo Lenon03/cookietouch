@@ -6,16 +6,15 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
-import { characterStatsTabStyles } from "@renderer/pages/tabs/Character/Stats/styles";
 import {
-  CharacterStatsTabProps,
+  characterStatsTabStyles,
   ICharacterStatsTabProps,
   ICharacterStatsTabState
 } from "@renderer/pages/tabs/Character/Stats/types";
 import * as React from "react";
 
 class Stats extends React.Component<
-  CharacterStatsTabProps,
+  ICharacterStatsTabProps,
   ICharacterStatsTabState
 > {
   public state: ICharacterStatsTabState = {
@@ -414,6 +413,4 @@ class Stats extends React.Component<
   }
 }
 
-export default withStyles(characterStatsTabStyles)<ICharacterStatsTabProps>(
-  Stats
-);
+export default withStyles(characterStatsTabStyles)(Stats);

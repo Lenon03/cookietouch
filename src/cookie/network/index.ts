@@ -17,7 +17,7 @@ export default class Network implements IClearable {
   public connected: boolean = false;
   private account: Account;
   private socket: any;
-  private sessionId: string;
+  private sessionId: string | null = null;
   private server: any;
   private _phase: NetworkPhases;
   private readonly onPhaseChanged = new LiteEvent<NetworkPhases>();
@@ -28,7 +28,7 @@ export default class Network implements IClearable {
     data: any;
   }>();
 
-  private _registeredMessages: Map<string, RegisteredMessage>;
+  private _registeredMessages: Map<string, RegisteredMessage<any>>;
 
   constructor(account: Account) {
     this.account = account;
@@ -36,13 +36,13 @@ export default class Network implements IClearable {
     this._registeredMessages = new Map();
   }
 
-  public registerMessage(
+  public registerMessage<T extends Message>(
     name: string,
-    action: (account: Account, message: Message) => void
+    action: (account: Account, message: T) => void
   ): string {
     // TODO: We have to call unregisterMessage on all call to this method
     const id = randomString(16);
-    this._registeredMessages.set(id, new RegisteredMessage(name, action));
+    this._registeredMessages.set(id, new RegisteredMessage<T>(name, action));
     return id;
   }
 
@@ -113,7 +113,7 @@ export default class Network implements IClearable {
     this.phase = NetworkPhases.SWITCHING_TO_GAME;
     this.send("disconnecting", "SWITCHING_TO_GAME");
     this.socket.destroy();
-    const currentUrl = this.makeSticky(url, this.sessionId);
+    const currentUrl = this.makeSticky(url, this.sessionId!);
     this.account.logger.logDebug(
       LanguageManager.trans("primus"),
       LanguageManager.trans("connectToGame", currentUrl)

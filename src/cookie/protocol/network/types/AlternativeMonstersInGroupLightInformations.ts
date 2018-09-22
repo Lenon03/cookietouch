@@ -2,7 +2,6 @@ import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInG
 import Type from "@/protocol/network/types/Type";
 
 export default class AlternativeMonstersInGroupLightInformations extends Type {
-
   public monsters: MonsterInGroupLightInformations[];
   public playercount: number;
 

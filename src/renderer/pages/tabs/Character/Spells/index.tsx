@@ -8,16 +8,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import { characterSpellsTabStyles } from "@renderer/pages/tabs/Character/Spells/styles";
 import {
-  CharacterSpellsTabProps,
+  characterSpellsTabStyles,
   ICharacterSpellsTabProps,
   ICharacterSpellsTabState
 } from "@renderer/pages/tabs/Character/Spells/types";
 import * as React from "react";
 
 class Spells extends React.Component<
-  CharacterSpellsTabProps,
+  ICharacterSpellsTabProps,
   ICharacterSpellsTabState
 > {
   public state: ICharacterSpellsTabState = {
@@ -104,6 +103,4 @@ class Spells extends React.Component<
   };
 }
 
-export default withStyles(characterSpellsTabStyles)<ICharacterSpellsTabProps>(
-  Spells
-);
+export default withStyles(characterSpellsTabStyles)(Spells);

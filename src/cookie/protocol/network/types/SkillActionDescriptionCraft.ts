@@ -8,6 +8,5 @@ export default class SkillActionDescriptionCraft extends SkillActionDescription 
     super(skillId);
     this.maxSlots = maxSlots;
     this.probability = probability;
-
   }
 }

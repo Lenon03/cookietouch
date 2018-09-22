@@ -3,11 +3,9 @@ const channelSep = /:+/g;
 const channelsSymbol = Symbol("channels");
 
 export default class EventClass {
-  constructor() {
-    this[channelsSymbol] = {};
-  }
+  private [channelsSymbol]: any;
 
-  public trigger(event, data) {
+  public trigger(event: string, data: any) {
     const channels = this._getChannels(event);
 
     for (const channel of channels) {
@@ -24,7 +22,7 @@ export default class EventClass {
     }
   }
 
-  public on(event, callback) {
+  public on(event: string, callback: () => void) {
     const channels = this._getChannels(event);
 
     for (const channel of channels) {
@@ -36,7 +34,7 @@ export default class EventClass {
     }
   }
 
-  public off(event, callback) {
+  public off(event: string, callback: () => void) {
     const channels = this._getChannels(event);
 
     for (const channel of channels) {
@@ -52,21 +50,21 @@ export default class EventClass {
     }
   }
 
-  public once(event, callback) {
-    function offCallback() {
+  public once(event: string, callback: () => void) {
+    const offCallback = () => {
       this.off(event, callback);
       this.off(event, offCallback);
-    }
+    };
 
     this.on(event, callback);
     this.on(event, offCallback);
   }
 
-  private _getChannels(channelString) {
+  private _getChannels(channelString: string) {
     return channelString.trim().split(multiChannelSep);
   }
 
-  private _getNameSpaces(channel) {
+  private _getNameSpaces(channel: string) {
     const namespaces = [];
     const splittedChannels = channel.trim().split(channelSep);
 

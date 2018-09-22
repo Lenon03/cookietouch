@@ -15,16 +15,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
-import { consoleTabStyles } from "@renderer/pages/tabs/Console/styles";
 import {
-  ConsoleTabProps,
+  consoleTabStyles,
   IConsoleTabProps,
   IConsoleTabState
 } from "@renderer/pages/tabs/Console/types";
 import moment from "moment";
 import * as React from "react";
 
-class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
+class Console extends React.Component<IConsoleTabProps, IConsoleTabState> {
   public state: IConsoleTabState = {
     channel: ChatChannelsMultiEnum.CHANNEL_GLOBAL,
     characterConnected: false,
@@ -42,7 +41,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
 
   private commandProcessor: CommandProcessor;
 
-  constructor(props) {
+  constructor(props: IConsoleTabProps) {
     super(props);
 
     this.commandProcessor = new CommandProcessor("/");
@@ -314,7 +313,7 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     this.setState({ messages: [] });
   };
 
-  private handleChange = name => event => {
+  private handleChange = (name: any) => (event: any) => {
     this.setState({ [name]: event.target.value } as Pick<
       IConsoleTabState,
       keyof IConsoleTabState
@@ -335,17 +334,20 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
     });
   };
 
-  private handleChannelChange = event => {
+  private handleChannelChange = (event: any) => {
     this.setState({ channel: event.target.value });
   };
 
-  private handleStatusChange = event => {
+  private handleStatusChange = (event: any) => {
     const status = parseInt(event.target.value, 10);
     this.setState({ status });
     this.props.account.game.character.changeStatus(status);
   };
 
-  private onMessage = (message: IMessage) => {
+  private onMessage = (message?: IMessage) => {
+    if (!message) {
+      return;
+    }
     const newMessages = this.state.messages;
     newMessages.push(message);
     if (newMessages.length > (this.props.max ? this.props.max : 200)) {
@@ -437,4 +439,4 @@ class Console extends React.Component<ConsoleTabProps, IConsoleTabState> {
   };
 }
 
-export default withStyles(consoleTabStyles)<IConsoleTabProps>(Console);
+export default withStyles(consoleTabStyles)(Console);

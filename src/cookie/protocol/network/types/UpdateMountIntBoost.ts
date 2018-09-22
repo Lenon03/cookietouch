@@ -6,6 +6,5 @@ export default class UpdateMountIntBoost extends UpdateMountBoost {
   constructor(type = 0, value = 0) {
     super(type);
     this.value = value;
-
   }
 }

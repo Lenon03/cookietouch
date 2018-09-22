@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class PrismSubAreaInformation extends Type {
-
   public worldX: number;
   public worldY: number;
   public mapId: number;
@@ -10,7 +9,15 @@ export default class PrismSubAreaInformation extends Type {
   public isInFight: boolean;
   public isFightable: boolean;
 
-  constructor(worldX = 0, worldY = 0, mapId = 0, subAreaId = 0, alignment = 0, isInFight = false, isFightable = false) {
+  constructor(
+    worldX = 0,
+    worldY = 0,
+    mapId = 0,
+    subAreaId = 0,
+    alignment = 0,
+    isInFight = false,
+    isFightable = false
+  ) {
     super();
     this.worldX = worldX;
     this.worldY = worldY;

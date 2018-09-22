@@ -4,9 +4,8 @@ import GuildEmblem from "@/protocol/network/types/GuildEmblem";
 export default class AllianceModificationEmblemValidMessage extends Message {
   public alliancemblem: GuildEmblem;
 
-  constructor(alliancemblem: GuildEmblem = null) {
+  constructor(alliancemblem = new GuildEmblem()) {
     super();
     this.alliancemblem = alliancemblem;
-
   }
 }

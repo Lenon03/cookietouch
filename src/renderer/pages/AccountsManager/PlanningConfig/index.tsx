@@ -1,5 +1,6 @@
 import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
+import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -15,22 +16,20 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
-import { planningConfigStyles } from "@renderer/pages/AccountsManager/PlanningConfig/styles";
 import {
   IPlanningConfigProps,
   IPlanningConfigState,
-  PlanningConfigProps
+  planningConfigStyles
 } from "@renderer/pages/AccountsManager/PlanningConfig/types";
 import { Enumerable } from "linqts";
 import * as React from "react";
 
 class PlanningConfig extends React.Component<
-  PlanningConfigProps,
+  IPlanningConfigProps,
   IPlanningConfigState
 > {
   public readonly state: IPlanningConfigState = {
@@ -39,10 +38,6 @@ class PlanningConfig extends React.Component<
     planning: Enumerable.Repeat(false, 24).ToArray(),
     selectedAccounts: []
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   public componentDidMount() {
     CookieMain.EntitiesUpdated.on(this.entitiesUpdated);
@@ -99,6 +94,7 @@ class PlanningConfig extends React.Component<
                     value={this.state.selectedAccounts.map(a => a.username)}
                     onChange={this.handleChangeAccounts}
                     input={<Input id="select-multiple-chip" />}
+                    // @ts-ignore
                     renderValue={this.renderSelect}
                     MenuProps={menuProps}
                   >
@@ -158,7 +154,7 @@ class PlanningConfig extends React.Component<
     this.setState({ planning });
   };
 
-  private activeChanged = event => {
+  private activeChanged = (event: any) => {
     this.setState({ active: event.target.checked });
   };
 
@@ -166,7 +162,7 @@ class PlanningConfig extends React.Component<
     for (const acc of this.state.selectedAccounts) {
       const account = GlobalConfiguration._accounts.find(
         a => a.username === acc.username
-      );
+      )!;
       account.planificationActivated = this.state.active;
       account.planification = this.state.planning;
     }
@@ -181,24 +177,27 @@ class PlanningConfig extends React.Component<
     });
   };
 
-  private handleChangeAccounts = event => {
+  private handleChangeAccounts = (event: any) => {
     const accounts = this.state.accountsList.filter(a =>
       event.target.value.includes(a.username)
     );
     this.setState({ selectedAccounts: accounts });
   };
 
-  private renderSelect = (selected: React.ReactText[]): React.ReactNode => {
+  private renderSelect = (selected: string[]): React.ReactNode => {
     return (
       <div className={this.props.classes.chips}>
-        {selected.map(value => (
-          <Chip key={value} label={value} className={this.props.classes.chip} />
-        ))}
+        {selected &&
+          selected.map(value => (
+            <Chip
+              key={value}
+              label={value}
+              className={this.props.classes.chip}
+            />
+          ))}
       </div>
     );
   };
 }
 
-export default withStyles(planningConfigStyles)<IPlanningConfigProps>(
-  PlanningConfig
-);
+export default withStyles(planningConfigStyles)(PlanningConfig);

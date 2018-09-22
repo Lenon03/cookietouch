@@ -4,9 +4,8 @@ import AllianceVersatileInformations from "@/protocol/network/types/AllianceVers
 export default class AllianceVersatileInfoListMessage extends Message {
   public alliances: AllianceVersatileInformations[];
 
-  constructor(alliances: AllianceVersatileInformations[]) {
+  constructor(alliances: AllianceVersatileInformations[] = []) {
     super();
     this.alliances = alliances;
-
   }
 }

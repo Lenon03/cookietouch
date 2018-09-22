@@ -66,6 +66,9 @@ export default class GlobalConfiguration {
           elem => elem.username !== e.chief.accountConfig.username
         );
         e.members.ForEach(member => {
+          if (!member) {
+            return;
+          }
           list = list.filter(
             elem => elem.username !== member.accountConfig.username
           );
@@ -94,7 +97,7 @@ export default class GlobalConfiguration {
   }
 
   public static addAccountsAndSave(accounts: List<AccountConfiguration>) {
-    accounts.ForEach(account => this._accounts.push(account));
+    accounts.ForEach(account => account && this._accounts.push(account));
     this.save();
   }
 
@@ -104,8 +107,8 @@ export default class GlobalConfiguration {
     );
   }
 
-  public static getAccount(username: string): AccountConfiguration {
-    return this._accounts.find(a => a.username === username);
+  public static getAccount(username: string): AccountConfiguration | null {
+    return this._accounts.find(a => a.username === username) || null;
   }
 
   public static async load() {

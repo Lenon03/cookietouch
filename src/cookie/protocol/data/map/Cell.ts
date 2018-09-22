@@ -1,9 +1,9 @@
 export default class Cell {
-  public l: number;
-  public f: number;
-  public c: number;
-  public s: number;
-  public z: number;
+  public l: number | undefined;
+  public f: number | undefined;
+  public c: number | undefined;
+  public s: number | undefined;
+  public z: number | undefined;
 
   constructor(l?: number, f?: number, c?: number, s?: number, z?: number) {
     this.l = l;
@@ -14,18 +14,30 @@ export default class Cell {
   }
 
   public isWalkable(isFightMode: boolean = false): boolean {
+    if (!this.l) {
+      return false;
+    }
     return (this.l & (isFightMode ? 5 : 1)) === 1;
   }
 
   public isFarmCell(): boolean {
+    if (!this.l) {
+      return false;
+    }
     return (this.l & 32) === 32;
   }
 
   public isVisible(): boolean {
+    if (!this.l) {
+      return false;
+    }
     return (this.l & 64) === 64;
   }
 
   public isObstacle(): boolean {
+    if (!this.l) {
+      return false;
+    }
     return (this.l & 2) !== 2;
   }
 }

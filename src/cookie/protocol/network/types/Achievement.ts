@@ -3,12 +3,15 @@ import AchievementStartedObjective from "@/protocol/network/types/AchievementSta
 import Type from "@/protocol/network/types/Type";
 
 export default class Achievement extends Type {
-
   public finishedObjective: AchievementObjective[];
   public startedObjectives: AchievementStartedObjective[];
   public id: number;
 
-  constructor(id = 0, finishedObjective: AchievementObjective[], startedObjectives: AchievementStartedObjective[]) {
+  constructor(
+    id = 0,
+    finishedObjective: AchievementObjective[],
+    startedObjectives: AchievementStartedObjective[]
+  ) {
     super();
     this.finishedObjective = finishedObjective;
     this.startedObjectives = startedObjectives;

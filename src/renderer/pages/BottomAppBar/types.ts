@@ -1,7 +1,23 @@
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { BottomAppBarStyle } from "@renderer/pages/BottomAppBar/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IBottomAppBarProps {
+export const bottomAppBarStyles = (theme: Theme) =>
+  createStyles({
+    appbar: {
+      background: theme.palette.primary.main
+    },
+    root: {
+      bottom: 0,
+      flexGrow: 1,
+      position: "fixed",
+      width: "100%"
+    },
+    toolbar: {
+      minHeight: 28
+    }
+  });
+
+export interface IBottomAppBarProps
+  extends WithStyles<typeof bottomAppBarStyles> {
   //
 }
 
@@ -9,6 +25,3 @@ export interface IBottomAppBarState {
   totalUsers: number;
   usersConnected: number;
 }
-
-export type BottomAppBarProps = IBottomAppBarProps &
-  WithStyles<BottomAppBarStyle>;

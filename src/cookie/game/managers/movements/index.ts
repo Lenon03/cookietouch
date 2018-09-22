@@ -16,7 +16,7 @@ import { Enumerable } from "linqts";
 export default class MovementsManager implements IClearable {
   private readonly onMovementFinished = new LiteEvent<boolean>();
   private account: Account;
-  private currentPath: number[] = null;
+  private currentPath: number[] | null = null;
   private neighbourMapId: number = 0;
   private pathfinder: Pathfinder;
   private retries: number = 0;
@@ -52,6 +52,10 @@ export default class MovementsManager implements IClearable {
           this.currentPath !== null
         )
       );
+      return MovementRequestResults.FAILED;
+    }
+
+    if (!this.account.game.map.playedCharacter) {
       return MovementRequestResults.FAILED;
     }
 
@@ -117,12 +121,22 @@ export default class MovementsManager implements IClearable {
     return MovementRequestResults.MOVED;
   }
 
-  public async moveToCellInFight(node: [number, MoveNode] = null) {
+  public async moveToCellInFight(node: [number, MoveNode] | null = null) {
     if (this.account.state !== AccountStates.FIGHTING) {
       return;
     }
 
-    if (node === null || node["1"].path.reachable.length === 0) {
+    if (!node) {
+      return;
+    }
+
+    const path = node["1"].path;
+
+    if (!path || (path && path.reachable.length === 0)) {
+      return;
+    }
+
+    if (!this.account.game.fight.playedFighter) {
       return;
     }
 
@@ -131,39 +145,43 @@ export default class MovementsManager implements IClearable {
     }
 
     // Insert the current cellId
-    node["1"].path.reachable.unshift(
-      this.account.game.fight.playedFighter.cellId
-    );
+    path.reachable.unshift(this.account.game.fight.playedFighter.cellId);
 
     await this.account.network.sendMessageFree(
       "GameMapMovementRequestMessage",
       {
-        keyMovements: this.pathfinder.compressPath(node["1"].path.reachable),
+        keyMovements: this.pathfinder.compressPath(path.reachable),
         mapId: this.account.game.map.id
       }
     );
   }
 
-  public canChangeMap(cellId: number, direction: MapChangeDirections): boolean {
+  public canChangeMap(
+    cellId?: number,
+    direction: MapChangeDirections = MapChangeDirections.Top
+  ): boolean {
+    if (!cellId || !this.account.game.map.data) {
+      return false;
+    }
     switch (direction) {
       case MapChangeDirections.Left:
         return (
-          (this.account.game.map.data.cells[cellId].c & direction) > 0 &&
+          (this.account.game.map.data.cells[cellId].c! & direction) > 0 &&
           cellId % 14 === 0
         );
       case MapChangeDirections.Right:
         return (
-          (this.account.game.map.data.cells[cellId].c & direction) > 0 &&
+          (this.account.game.map.data.cells[cellId].c! & direction) > 0 &&
           cellId % 14 === 13
         );
       case MapChangeDirections.Top:
         return (
-          (this.account.game.map.data.cells[cellId].c & direction) > 0 &&
+          (this.account.game.map.data.cells[cellId].c! & direction) > 0 &&
           cellId < 28
         );
       case MapChangeDirections.Bottom:
         return (
-          (this.account.game.map.data.cells[cellId].c & direction) > 0 &&
+          (this.account.game.map.data.cells[cellId].c! & direction) > 0 &&
           cellId > 531
         );
     }
@@ -348,6 +366,9 @@ export default class MovementsManager implements IClearable {
   }
 
   private getNeighbourMapId(direction: MapChangeDirections) {
+    if (!this.account.game.map.data) {
+      return 0;
+    }
     switch (direction) {
       case MapChangeDirections.Bottom:
         return this.account.game.map.data.bottomNeighbourId;
@@ -363,6 +384,10 @@ export default class MovementsManager implements IClearable {
   }
 
   private sendMoveMessage() {
+    if (!this.currentPath) {
+      // TODO: ??
+      return;
+    }
     this.account.network.sendMessageFree("GameMapMovementRequestMessage", {
       keyMovements: this.pathfinder.compressPath(this.currentPath),
       mapId: this.account.game.map.id

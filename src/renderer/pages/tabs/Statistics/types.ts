@@ -1,9 +1,26 @@
 import Account from "@/account";
 import ObjectObtainedEntry from "@/statistics/ObjectObtainedEntry";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { StatisticsTabStyle } from "@renderer/pages/tabs/Statistics/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IStatisticsTabProps {
+export const statisticsTabStyles = (theme: Theme) =>
+  createStyles({
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular
+    },
+    root: {
+      flexGrow: 1,
+      padding: 10
+    },
+    table: {
+      maxHeight: 300,
+      minWidth: 300,
+      overflowY: "auto"
+    }
+  });
+
+export interface IStatisticsTabProps
+  extends WithStyles<typeof statisticsTabStyles> {
   account: Account;
 }
 
@@ -22,6 +39,3 @@ export interface IStatisticsTabState {
   totalFightsTime: number;
   totalGathersTime: number;
 }
-
-export type StatisticsTabProps = IStatisticsTabProps &
-  WithStyles<StatisticsTabStyle>;

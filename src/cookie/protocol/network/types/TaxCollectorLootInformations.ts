@@ -12,6 +12,5 @@ export default class TaxCollectorLootInformations extends TaxCollectorComplement
     this.experience = experience;
     this.pods = pods;
     this.itemsValue = itemsValue;
-
   }
 }

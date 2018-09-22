@@ -8,15 +8,17 @@ import ListItemText from "@material-ui/core/ListItemText";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CookieMain from "@renderer/CookieMain";
-import { accountItemStyles } from "@renderer/pages/Sidenav/AccountItem/styles";
 import {
-  AccountItemProps,
+  accountItemStyles,
   IAccountItemProps,
   IAccountItemState
 } from "@renderer/pages/Sidenav/AccountItem/types";
 import * as React from "react";
 
-class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
+class AccountItem extends React.Component<
+  IAccountItemProps,
+  IAccountItemState
+> {
   public render() {
     const { account, classes } = this.props;
 
@@ -29,8 +31,9 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
             backgroundColor:
               CookieMain.selectedAccount &&
               CookieMain.selectedAccount.accountConfig.username ===
-                account.accountConfig.username &&
-              "rgba(180, 180, 180, 0.2)"
+                account.accountConfig.username
+                ? "rgba(180, 180, 180, 0.2)"
+                : undefined
           }}
         >
           <ListItemIcon>
@@ -79,4 +82,4 @@ class AccountItem extends React.Component<AccountItemProps, IAccountItemState> {
   }
 }
 
-export default withStyles(accountItemStyles)<IAccountItemProps>(AccountItem);
+export default withStyles(accountItemStyles)(AccountItem);

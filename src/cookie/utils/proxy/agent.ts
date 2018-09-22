@@ -1,13 +1,13 @@
 import { EventEmitter } from "events";
 import { promisify } from "util";
 
-function isAgent(v) {
+function isAgent(v: any) {
   return v && typeof v.addRequest === "function";
 }
 
 export default class Agent extends EventEmitter {
   private _promisifiedCallback: boolean;
-  private timeout: number;
+  private timeout: number | null = null;
   private options: any;
 
   constructor(callback?: () => void, _opts: { timeout?: number } = {}) {
@@ -39,7 +39,7 @@ export default class Agent extends EventEmitter {
    *
    * @api public
    */
-  public addRequest(req, _opts) {
+  public addRequest(req: any, _opts: any) {
     const ownOpts = { ..._opts };
 
     // Set default `host` for HTTP to localhost
@@ -73,12 +73,12 @@ export default class Agent extends EventEmitter {
     req.shouldKeepAlive = false;
 
     // Create the `stream.Duplex` instance
-    let timeout: NodeJS.Timer;
+    let timeout: NodeJS.Timer | null = null;
     let timedOut = false;
     const timeoutMs = this.timeout;
     const freeSocket = this.freeSocket;
 
-    function onerror(err) {
+    function onerror(err: any) {
       if (req._hadError) {
         return;
       }
@@ -98,7 +98,7 @@ export default class Agent extends EventEmitter {
       onerror(err);
     }
 
-    function callbackError(err) {
+    function callbackError(err: any) {
       if (timedOut) {
         return;
       }
@@ -109,7 +109,7 @@ export default class Agent extends EventEmitter {
       onerror(err);
     }
 
-    function onsocket(socket) {
+    function onsocket(socket: any) {
       if (timedOut) {
         return;
       }
@@ -143,7 +143,7 @@ export default class Agent extends EventEmitter {
       this._promisifiedCallback = true;
     }
 
-    if (timeoutMs > 0) {
+    if (timeoutMs && timeoutMs > 0) {
       timeout = setTimeout(ontimeout, timeoutMs);
     }
 
@@ -154,13 +154,13 @@ export default class Agent extends EventEmitter {
     }
   }
 
-  protected callback(req?, opts?, fn?) {
+  protected callback(req?: any, opts?: any, fn?: any) {
     throw new Error(
       '"agent-base" has no default implementation, you must subclass and override `callback()`'
     );
   }
 
-  private freeSocket(socket, opts) {
+  private freeSocket(socket: any, opts: any) {
     // TODO reuse sockets
     socket.destroy();
   }

@@ -30,15 +30,14 @@ import Tabs from "@material-ui/core/Tabs";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import { fightsTabStyles } from "@renderer/pages/tabs/Fights/styles";
 import {
-  FightsTabProps,
+  fightsTabStyles,
   IFightsTabProps,
   IFightsTabState
 } from "@renderer/pages/tabs/Fights/types";
 import * as React from "react";
 
-class Fights extends React.Component<FightsTabProps, IFightsTabState> {
+class Fights extends React.Component<IFightsTabProps, IFightsTabState> {
   public state: IFightsTabState = {
     activeTab: 0,
     addSpellForm: {
@@ -701,13 +700,14 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     );
   }
 
-  private submit = async event => {
+  private submit = async (event: any) => {
     event.preventDefault();
 
     const infos = this.state.addSpellForm;
 
-    const name = this.state.characterSpells.find(s => s.id === infos.spellId)
-      .name;
+    const xspell = this.state.characterSpells.find(s => s.id === infos.spellId);
+
+    const name = (xspell && xspell.name) || "-";
 
     const spell = new Spell(
       infos.spellId,
@@ -730,29 +730,31 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     await this.props.account.extensions.fights.config.save();
   };
 
-  private handleChange = (event, value) => {
+  private handleChange = (event: any, value: any) => {
     this.setState({ activeTab: value });
   };
 
-  private handleSwitchChange = async (event, checked) => {
+  private handleSwitchChange = async (event: any, checked: boolean) => {
     this.setState({ [event.target.name]: checked } as Pick<
       IFightsTabState,
       keyof IFightsTabState
     >);
-    this.props.account.extensions.fights.config[event.target.name] = checked;
+    (this.props.account.extensions.fights.config as any)[
+      event.target.name
+    ] = checked;
     await this.props.account.extensions.fights.config.save();
   };
 
-  private handleSwitchChangeForm = (event, checked) => {
+  private handleSwitchChangeForm = (event: any, checked: boolean) => {
     const addSpellForm = { ...this.state.addSpellForm };
-    addSpellForm[event.target.name] = checked;
+    (addSpellForm as any)[event.target.name] = checked;
     this.setState({ addSpellForm });
   };
 
-  private handleSelectChangeForm = event => {
+  private handleSelectChangeForm = (event: any) => {
     const v = parseInt(event.target.value, 10);
     const addSpellForm = { ...this.state.addSpellForm };
-    addSpellForm[event.target.name] = v;
+    (addSpellForm as any)[event.target.name] = v;
     this.setState({ addSpellForm });
   };
 
@@ -762,7 +764,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     const v: any = parseInt(event.target.value, 10);
     const k = event.target.name as keyof IFightsTabState;
     this.setState({ [k]: v } as Pick<IFightsTabState, keyof IFightsTabState>);
-    this.props.account.extensions.fights.config[event.target.name] = v;
+    (this.props.account.extensions.fights.config as any)[event.target.name] = v;
     await this.props.account.extensions.fights.config.save();
   };
 
@@ -772,7 +774,7 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
     const v: any = parseInt(event.target.value, 10);
     const k = event.target.name as keyof IFightsTabState;
     this.setState({ [k]: v } as Pick<IFightsTabState, keyof IFightsTabState>);
-    this.props.account.extensions.fights.config[event.target.name] = v;
+    (this.props.account.extensions.fights.config as any)[event.target.name] = v;
     await this.props.account.extensions.fights.config.save();
   };
 
@@ -827,4 +829,4 @@ class Fights extends React.Component<FightsTabProps, IFightsTabState> {
   };
 }
 
-export default withStyles(fightsTabStyles)<IFightsTabProps>(Fights);
+export default withStyles(fightsTabStyles)(Fights);

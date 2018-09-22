@@ -28,7 +28,7 @@ export default class InventoryAPI {
   public itemCount(gid: number): number {
     return this.account.game.character.inventory
       .getObjectsByGid(gid)
-      .Sum(o => o.quantity);
+      .Sum(o => (o !== undefined && o.quantity) || 0);
   }
 
   public itemWeight(gid: number): number {

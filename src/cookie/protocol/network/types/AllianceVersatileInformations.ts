@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class AllianceVersatileInformations extends Type {
-
   public allianceDd: number;
   public nbGuilds: number;
   public nbMembers: number;

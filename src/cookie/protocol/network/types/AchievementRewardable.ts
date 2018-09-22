@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class AchievementRewardable extends Type {
-
   public id: number;
   public finishedLevel: number;
 

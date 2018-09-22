@@ -5,7 +5,7 @@ export default class IndexedEntityLook extends Type {
   public look: EntityLook;
   public index: number;
 
-  constructor(look: EntityLook = null, index = 0) {
+  constructor(look = new EntityLook(), index = 0) {
     super();
     this.look = look;
     this.index = index;

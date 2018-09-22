@@ -6,7 +6,11 @@ export default class SubEntity extends Type {
   public bindingPointIndex: number;
   public subEntityLook: EntityLook;
 
-  constructor(bindingPointCategory = 0, bindingPointIndex = 0, subEntityLook: EntityLook = null) {
+  constructor(
+    bindingPointCategory = 0,
+    bindingPointIndex = 0,
+    subEntityLook = new EntityLook()
+  ) {
     super();
     this.bindingPointCategory = bindingPointCategory;
     this.bindingPointIndex = bindingPointIndex;

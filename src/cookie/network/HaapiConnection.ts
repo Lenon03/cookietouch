@@ -5,8 +5,8 @@ import DTConstants from "@/protocol/DTConstants";
 import axios, { AxiosInstance } from "axios";
 
 export default class HaapiConnection {
-  public haapi: IHaapi;
-  public token: string;
+  public haapi: IHaapi | undefined;
+  public token: string | undefined;
 
   private axios: AxiosInstance;
 
@@ -77,7 +77,7 @@ export default class HaapiConnection {
   private async getToken(): Promise<string> {
     const config = {
       headers: {
-        apikey: this.haapi.key
+        apikey: this.haapi!.key
       },
       params: {
         game: DTConstants.config.haapi.id

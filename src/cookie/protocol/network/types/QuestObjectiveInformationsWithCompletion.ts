@@ -4,11 +4,15 @@ export default class QuestObjectiveInformationsWithCompletion extends QuestObjec
   public curCompletion: number;
   public maxCompletion: number;
 
-  constructor(objectiveId = 0, objectiveStatus = false, curCompletion = 0,
-              maxCompletion = 0, dialogParams: string[] = null) {
+  constructor(
+    objectiveId = 0,
+    objectiveStatus = false,
+    curCompletion = 0,
+    maxCompletion = 0,
+    dialogParams: string[] = []
+  ) {
     super(objectiveId, objectiveStatus, dialogParams);
     this.curCompletion = curCompletion;
     this.maxCompletion = maxCompletion;
-
   }
 }

@@ -21,7 +21,7 @@ import QuestStepInfoMessage from "@/protocol/network/messages/QuestStepInfoMessa
 import QuestStepValidatedMessage from "@/protocol/network/messages/QuestStepValidatedMessage";
 import QuestValidatedMessage from "@/protocol/network/messages/QuestValidatedMessage";
 import QuestActiveDetailedInformations from "@/protocol/network/types/QuestActiveDetailedInformations";
-import { Deferred } from "@/utils/Deferred";
+import { Deferred, IDeferred } from "@/utils/Deferred";
 import IClearable from "@/utils/IClearable";
 import { getRandomInt } from "@/utils/Random";
 import { sleep } from "@/utils/Time";
@@ -31,10 +31,10 @@ export default class CharacterCreatorExtension implements IClearable {
   private account: Account;
   private created: boolean = false;
   private currentItemIndex: number = 0;
-  private currentStep: QuestActiveDetailedInformations = null;
+  private currentStep: QuestActiveDetailedInformations | null = null;
   private currentStepNumber: number = 0;
   private inTutorial: boolean = false;
-  private name = Deferred<string>();
+  private name: IDeferred<string> | null = Deferred<string>();
 
   constructor(account: Account) {
     this.account = account;
@@ -73,7 +73,7 @@ export default class CharacterCreatorExtension implements IClearable {
       // this.account.accountConfig.characterCreation.create = false;
       GlobalConfiguration._accounts.find(
         a => a.username === this.account.accountConfig.username
-      ).characterCreation.create = false;
+      )!.characterCreation.create = false;
       GlobalConfiguration.save();
       this.account.network.sendMessageFree("CharacterFirstSelectionMessage", {
         doTutorial: true,
@@ -83,7 +83,9 @@ export default class CharacterCreatorExtension implements IClearable {
     }
     let name = this.account.accountConfig.characterCreation.name;
     let max = 0;
-    BreedsUtility.breeds.ForEach(b => (b.id > max ? (max = b.id) : b));
+    BreedsUtility.breeds.ForEach(
+      b => b !== undefined && (b.id > max ? (max = b.id) : b)
+    );
     const breed =
       this.account.accountConfig.characterCreation.breed === -1
         ? getRandomInt(1, max + 1)
@@ -129,7 +131,9 @@ export default class CharacterCreatorExtension implements IClearable {
   public async UpdateCharacterNameSuggestionSuccessMessage(
     message: CharacterNameSuggestionSuccessMessage
   ) {
-    this.name.resolve(message.suggestion);
+    if (this.name) {
+      this.name.resolve(message.suggestion);
+    }
   }
 
   public async UpdateCharacterNameSuggestionFailureMessage(
@@ -153,7 +157,7 @@ export default class CharacterCreatorExtension implements IClearable {
       message.result === CharacterCreationResultEnum.ERR_NAME_ALREADY_EXISTS
     ) {
       await sleep(1000);
-      this.UpdateCharactersListMessage(new CharactersListMessage(false, null));
+      this.UpdateCharactersListMessage(new CharactersListMessage(false, []));
     } else {
       this.account.logger.logError(
         LanguageManager.trans("characterCreator"),
@@ -311,7 +315,7 @@ export default class CharacterCreatorExtension implements IClearable {
       // Step 6: Change fight placement
       case 6:
         const cells = this.account.game.fight.positionsForChallengers
-          .Except(new List([this.account.game.fight.playedFighter.cellId]))
+          .Except(new List([this.account.game.fight.playedFighter!.cellId]))
           .ToArray();
         this.account.network.sendMessageFree(
           "GameFightPlacementPositionRequestmessage",
@@ -339,7 +343,7 @@ export default class CharacterCreatorExtension implements IClearable {
   }
 
   private validateCurrentStep() {
-    if (!this.isDoingTutorial) {
+    if (!this.isDoingTutorial || !this.currentStep) {
       return;
     }
     for (const t of this.currentStep.objectives) {
@@ -364,7 +368,7 @@ export default class CharacterCreatorExtension implements IClearable {
     }
   };
 
-  private onObjectEquipped = async (gid: number) => {
+  private onObjectEquipped = async (gid?: number) => {
     if (!this.isDoingTutorial) {
       return;
     }
@@ -436,12 +440,12 @@ export default class CharacterCreatorExtension implements IClearable {
     }
   };
 
-  private onMovementFinished = (success: boolean) => {
+  private onMovementFinished = (success?: boolean) => {
     if (!success) {
       return;
     }
     const mg = this.account.game.map.monstersGroups[0];
-    if (mg && mg.cellId === this.account.game.map.playedCharacter.cellId) {
+    if (mg && mg.cellId === this.account.game.map.playedCharacter!.cellId) {
       this.account.network.sendMessageFree(
         "GameRolePlayAttackMonsterRequestMessage",
         {

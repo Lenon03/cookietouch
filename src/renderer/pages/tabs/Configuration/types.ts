@@ -2,8 +2,30 @@ import Account from "@/account";
 import SpellToBoostEntry from "@/account/configurations/SpellToBoostEntry";
 import { BoostableStats } from "@/game/character/BoostableStats";
 import Spells from "@/protocol/data/classes/Spells";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { ConfigurationTabStyle } from "@renderer/pages/tabs/Configuration/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
+
+export const configurationTabStyles = (theme: Theme) =>
+  createStyles({
+    card: {
+      margin: 20,
+      minWidth: 275
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      width: "100%"
+    },
+    root: {
+      flexGrow: 1
+    },
+    table: {
+      maxWidth: 700
+    },
+    title: {
+      color: theme.palette.text.secondary,
+      fontSize: 14,
+      marginBottom: 16
+    }
+  });
 
 export enum SpellLevels {
   ONE = 1,
@@ -14,7 +36,8 @@ export enum SpellLevels {
   SIX = 6
 }
 
-export interface IConfigurationTabProps {
+export interface IConfigurationTabProps
+  extends WithStyles<typeof configurationTabStyles> {
   account: Account;
 }
 
@@ -35,6 +58,3 @@ export interface IConfigurationTabState {
   statToBoost: BoostableStats;
   toAddToAuthorized: number;
 }
-
-export type ConfigurationTabProps = IConfigurationTabProps &
-  WithStyles<ConfigurationTabStyle>;

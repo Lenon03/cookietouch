@@ -6,6 +6,5 @@ export default class ShortcutObjectPreset extends ShortcutObject {
   constructor(slot = 0, presetId = 0) {
     super(slot);
     this.presetId = presetId;
-
   }
 }

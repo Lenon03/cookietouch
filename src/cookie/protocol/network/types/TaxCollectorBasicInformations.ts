@@ -8,7 +8,14 @@ export default class TaxCollectorBasicInformations extends Type {
   public mapId: number;
   public subAreaId: number;
 
-  constructor(firstNameId = 0, lastNameId = 0, worldX = 0, worldY = 0, mapId = 0, subAreaId = 0) {
+  constructor(
+    firstNameId = 0,
+    lastNameId = 0,
+    worldX = 0,
+    worldY = 0,
+    mapId = 0,
+    subAreaId = 0
+  ) {
     super();
     this.firstNameId = firstNameId;
     this.lastNameId = lastNameId;

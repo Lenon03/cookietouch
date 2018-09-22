@@ -6,11 +6,12 @@ import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInG
 export default class GroupMonsterStaticInformationsWithAlternatives extends GroupMonsterStaticInformations {
   public alternatives: AlternativeMonstersInGroupLightInformations[];
 
-  constructor(mainCreatureLightInfos: MonsterInGroupLightInformations = null,
-              underlings: MonsterInGroupInformations[] = null,
-              alternatives: AlternativeMonstersInGroupLightInformations[] = null) {
+  constructor(
+    mainCreatureLightInfos = new MonsterInGroupLightInformations(),
+    underlings: MonsterInGroupInformations[] = [],
+    alternatives: AlternativeMonstersInGroupLightInformations[] = []
+  ) {
     super(mainCreatureLightInfos, underlings);
     this.alternatives = alternatives;
-
   }
 }

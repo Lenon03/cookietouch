@@ -95,7 +95,7 @@ export default class IdentificationFrame implements IFrame {
     account.data.secretQuestion = message.secretQuestion;
     account.data.subscriptionEndDate =
       message.subscriptionEndDate === 0
-        ? null
+        ? undefined
         : moment()
             .add(message.subscriptionEndDate - Date.now(), "ms")
             .toDate();

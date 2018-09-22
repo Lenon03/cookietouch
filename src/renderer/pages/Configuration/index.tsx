@@ -18,9 +18,8 @@ import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
-import { configurationStyles } from "@renderer/pages/Configuration/styles";
 import {
-  ConfigurationProps,
+  configurationStyles,
   IConfigurationProps,
   IConfigurationState
 } from "@renderer/pages/Configuration/types";
@@ -28,7 +27,7 @@ import { AntiCaptcha } from "anticaptcha";
 import * as React from "react";
 
 class Configuration extends React.Component<
-  ConfigurationProps,
+  IConfigurationProps,
   IConfigurationState
 > {
   public state: IConfigurationState = {
@@ -170,7 +169,7 @@ class Configuration extends React.Component<
       </div>
     );
   }
-  private pushBulletAccessTokenChanged = e => {
+  private pushBulletAccessTokenChanged = (e: any) => {
     this.setState({ pushBulletAccessToken: e.target.value });
     GlobalConfiguration.pushBulletAccessToken = e.target.value;
     Pushbullet.changeToken(GlobalConfiguration.pushBulletAccessToken);
@@ -180,25 +179,25 @@ class Configuration extends React.Component<
     const response = await Pushbullet.getInfo();
     this.setState({ pushBulletEmail: response.email });
   };
-  private langChanged = e => {
+  private langChanged = (e: any) => {
     this.setState({ lang: e.target.value });
     GlobalConfiguration.lang = e.target.value;
     GlobalConfiguration.save();
   };
 
-  private updatesChannelChanged = e => {
+  private updatesChannelChanged = (e: any) => {
     this.setState({ updatesChannel: e.target.value });
     GlobalConfiguration.updatesChannel = e.target.value;
     GlobalConfiguration.save();
   };
 
-  private showDebugMessagesChanged = event => {
+  private showDebugMessagesChanged = (event: any) => {
     this.setState({ showDebugMessages: event.target.checked });
     GlobalConfiguration.showDebugMessages = event.target.checked;
     GlobalConfiguration.save();
   };
 
-  private anticaptchaChanged = e => {
+  private anticaptchaChanged = (e: any) => {
     this.setState({ anticaptchaKey: e.target.value });
     GlobalConfiguration.anticaptchaKey = e.target.value;
     GlobalConfiguration.save();
@@ -224,6 +223,4 @@ class Configuration extends React.Component<
   };
 }
 
-export default withStyles(configurationStyles)<IConfigurationProps>(
-  Configuration
-);
+export default withStyles(configurationStyles)(Configuration);

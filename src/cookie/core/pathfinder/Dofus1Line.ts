@@ -12,6 +12,10 @@ export default class Dofus1Line {
     const sourceMp = MapPoint.fromCellId(sourceCellId);
     const targetMp = MapPoint.fromCellId(targetCellId);
 
+    if (!sourceMp || !targetMp) {
+      return true;
+    }
+
     let x = sourceMp.x + 0.5;
     let y = sourceMp.y + 0.5;
     const targetX = targetMp.x + 0.5;

@@ -3,23 +3,27 @@ import MovableEntity from "@/game/map/entities/MovableEntity";
 import GameRolePlayGroupMonsterInformations from "@/protocol/network/types/GameRolePlayGroupMonsterInformations";
 
 export default class MonstersGroupEntry extends MovableEntity {
-  public id: number;
-  public leader: MonsterEntry;
-  public followers: MonsterEntry[] = [];
-
   public static async setup(
     infos: GameRolePlayGroupMonsterInformations
   ): Promise<MonstersGroupEntry> {
-    const m = new MonstersGroupEntry();
-    m.id = infos.contextualId;
-    m.cellId = infos.disposition.cellId;
+    const followers: MonsterEntry[] = [];
     for (const u of infos.staticInfos.underlings) {
-      m.followers.push(await MonsterEntry.setup(u));
+      followers.push(await MonsterEntry.setup(u));
     }
-    m.leader = await MonsterEntry.setup(
+    const leader = await MonsterEntry.setup(
       infos.staticInfos.mainCreatureLightInfos
     );
+    const m = new MonstersGroupEntry(infos.contextualId, leader, followers);
+    m.cellId = infos.disposition.cellId;
     return m;
+  }
+
+  constructor(
+    public id: number = 0,
+    public leader: MonsterEntry,
+    public followers: MonsterEntry[] = []
+  ) {
+    super();
   }
 
   get monstersCount() {

@@ -1,7 +1,33 @@
 import Account from "@/account";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { InventoryTabStyle } from "@renderer/pages/tabs/Inventory/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
+
+export const inventoryTabStyles = (theme: Theme) =>
+  createStyles({
+    appBar: {
+      //
+    },
+    overflow: {
+      maxHeight: "40vh",
+      overflowY: "auto"
+    },
+    root: {
+      flexGrow: 1
+    },
+    tab: {
+      maxWidth: 1000,
+      minWidth: 30
+    },
+    table: {
+      minWidth: 700,
+      textAlign: "center",
+      verticalAlign: "middle"
+    },
+    tablecell: {
+      textAlign: "center",
+      verticalAlign: "middle"
+    }
+  });
 
 export enum DeleteDropUseChoice {
   Delete,
@@ -9,7 +35,8 @@ export enum DeleteDropUseChoice {
   Use
 }
 
-export interface IInventoryTabProps {
+export interface IInventoryTabProps
+  extends WithStyles<typeof inventoryTabStyles> {
   account: Account;
 }
 
@@ -20,10 +47,7 @@ export interface IInventoryTabState {
   equipments: ObjectEntry[];
   quantity: number;
   questObjects: ObjectEntry[];
-  object: ObjectEntry;
+  object: ObjectEntry | null;
   resources: ObjectEntry[];
   modal: boolean;
 }
-
-export type InventoryTabProps = IInventoryTabProps &
-  WithStyles<InventoryTabStyle>;

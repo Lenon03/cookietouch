@@ -25,12 +25,12 @@ import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
 export default class Inventory {
-  public kamas: number;
-  public weight: number;
-  public weightMax: number;
+  public kamas: number = 0;
+  public weight: number = 0;
+  public weightMax: number = 0;
 
   private account: Account;
-  private _fallbackMaxWeight: number;
+  private _fallbackMaxWeight: number = 0;
   private _objects = new Map<number, ObjectEntry>();
   private readonly onInventoryUpdated = new LiteEvent<boolean>();
   private readonly onObjectGained = new LiteEvent<number>();
@@ -45,19 +45,27 @@ export default class Inventory {
   }
 
   get equipments() {
-    return this.objects.Where(o => o.type === ObjectTypes.EQUIPMENT);
+    return this.objects.Where(
+      o => o !== undefined && o.type === ObjectTypes.EQUIPMENT
+    );
   }
 
   get consumables() {
-    return this.objects.Where(o => o.type === ObjectTypes.CONSUMABLE);
+    return this.objects.Where(
+      o => o !== undefined && o.type === ObjectTypes.CONSUMABLE
+    );
   }
 
   get resources() {
-    return this.objects.Where(o => o.type === ObjectTypes.RESOURCES);
+    return this.objects.Where(
+      o => o !== undefined && o.type === ObjectTypes.RESOURCES
+    );
   }
 
   get questObjects() {
-    return this.objects.Where(o => o.type === ObjectTypes.QUEST_OBJECT);
+    return this.objects.Where(
+      o => o !== undefined && o.type === ObjectTypes.QUEST_OBJECT
+    );
   }
 
   get weightPercent() {
@@ -68,6 +76,7 @@ export default class Inventory {
     return (
       this.objects.FirstOrDefault(
         o =>
+          o !== undefined &&
           o.position ===
             CharacterInventoryPositionEnum.ACCESSORY_POSITION_WEAPON &&
           o.isFishingRod
@@ -98,19 +107,21 @@ export default class Inventory {
   }
 
   public getObjectByUid(uid: number) {
-    return this.objects.FirstOrDefault(o => o.uid === uid);
+    return this.objects.FirstOrDefault(o => o !== undefined && o.uid === uid);
   }
 
   public getObjectByGid(gid: number) {
-    return this.objects.FirstOrDefault(o => o.gid === gid);
+    return this.objects.FirstOrDefault(o => o !== undefined && o.gid === gid);
   }
 
   public getObjectsByGid(gid: number) {
-    return this.objects.Where(o => o.gid === gid);
+    return this.objects.Where(o => o !== undefined && o.gid === gid);
   }
 
   public getObjectInPosition(pos: CharacterInventoryPositionEnum) {
-    return this.objects.FirstOrDefault(o => o.position === pos);
+    return this.objects.FirstOrDefault(
+      o => o !== undefined && o.position === pos
+    );
   }
 
   public equipObject(obj: ObjectEntry): boolean {
@@ -129,7 +140,7 @@ export default class Inventory {
       obj.superTypeId
     );
 
-    if (possiblePositions.length === 0) {
+    if (!possiblePositions || possiblePositions.length === 0) {
       return false;
     }
 
@@ -185,8 +196,8 @@ export default class Inventory {
     return true;
   }
 
-  public useObject(obj: ObjectEntry, qty = 1) {
-    if (obj === undefined) {
+  public useObject(obj: ObjectEntry | null, qty = 1) {
+    if (!obj) {
       return;
     }
 
@@ -208,8 +219,8 @@ export default class Inventory {
     );
   }
 
-  public dropObject(obj: ObjectEntry, qty = 1) {
-    if (obj === undefined) {
+  public dropObject(obj: ObjectEntry | null, qty = 1) {
+    if (!obj) {
       return;
     }
 
@@ -225,8 +236,8 @@ export default class Inventory {
     );
   }
 
-  public deleteObject(obj: ObjectEntry, qty = 1) {
-    if (obj === undefined) {
+  public deleteObject(obj: ObjectEntry | null, qty = 1) {
+    if (!obj) {
       return;
     }
 
@@ -251,8 +262,9 @@ export default class Inventory {
       ...message.objects.map(o => o.objectGID)
     );
     for (const obj of message.objects) {
-      const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = await ObjectEntry.setup(obj, e);
+      const item = items.find(f => f.id === obj.objectGID);
+      const object = item && item.object;
+      const entry = await ObjectEntry.setup(obj, object);
       this._objects.set(obj.objectUID, entry);
     }
     this.onInventoryUpdated.trigger(true);
@@ -272,8 +284,9 @@ export default class Inventory {
     );
 
     for (const obj of message.object) {
-      const e = items.find(f => f.id === obj.objectGID).object;
-      const entry = await ObjectEntry.setup(obj, e);
+      const item = items.find(f => f.id === obj.objectGID);
+      const object = item && item.object;
+      const entry = await ObjectEntry.setup(obj, object);
       this._objects.set(obj.objectUID, entry);
     }
 
@@ -357,15 +370,17 @@ export default class Inventory {
 
   private resetMaxWeight() {
     try {
-      const job = this.account.game.character.jobs.jobs.Sum(j => j.level);
+      const job = this.account.game.character.jobs.jobs.Sum(
+        j => (j && j.level) || 0
+      );
       const jobCount = this.account.game.character.jobs.jobs.Count(
-        j => j.level === 100
+        j => (j && j.level === 100) || false
       );
       const strength = this.totalStat(
         this.account.game.character.stats.strength
       );
       const boost = this.account.game.character.inventory.equipments.Sum(
-        e => e.weightBoost
+        e => (e && e.weightBoost) || 0
       );
       this.weightMax =
         !job || !jobCount || !strength || !boost

@@ -3,6 +3,7 @@ import GlobalConfiguration from "@/configurations/GlobalConfiguration";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { existsAsync, readFileAsync } from "@/utils/fsAsync";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,20 +12,19 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import CookieMain from "@renderer/CookieMain";
-import { accountsListStyles } from "@renderer/pages/AccountsManager/AccountsList/styles";
 import {
-  AccountsListProps,
+  accountsListStyles,
   IAccountsListProps,
   IAccountsListState
 } from "@renderer/pages/AccountsManager/AccountsList/types";
 import { remote } from "electron";
 import { List as LinqList } from "linqts";
 import * as React from "react";
+
 class AccountsList extends React.Component<
-  AccountsListProps,
+  IAccountsListProps,
   IAccountsListState
 > {
   public state: IAccountsListState = {
@@ -111,7 +111,7 @@ class AccountsList extends React.Component<
     );
   }
 
-  private handleToggle = value => () => {
+  private handleToggle = (value: AccountConfiguration) => () => {
     const { accountsToConnect } = this.state;
     const currentIndex = accountsToConnect.indexOf(value);
     const newChecked = [...accountsToConnect];
@@ -199,4 +199,4 @@ class AccountsList extends React.Component<
   };
 }
 
-export default withStyles(accountsListStyles)<IAccountsListProps>(AccountsList);
+export default withStyles(accountsListStyles)(AccountsList);

@@ -8,6 +8,7 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import Color from "@/utils/Color";
 import { getRandomInt } from "@/utils/Random";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { withStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
@@ -22,14 +23,12 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
-import { characterCreatorStyles } from "@renderer/pages/AccountsManager/CharacterCreator/styles";
 import {
-  CharacterCreatorProps,
+  characterCreatorStyles,
   ICharacterCreatorProps,
   ICharacterCreatorState
 } from "@renderer/pages/AccountsManager/CharacterCreator/types";
@@ -37,7 +36,7 @@ import ColorPicker from "@renderer/pages/AccountsManager/ColorPicker";
 import * as React from "react";
 
 class CharacterCreator extends React.Component<
-  CharacterCreatorProps,
+  ICharacterCreatorProps,
   ICharacterCreatorState
 > {
   public state: ICharacterCreatorState = {
@@ -110,6 +109,7 @@ class CharacterCreator extends React.Component<
                 value={this.state.selectedAccounts.map(a => a.username)}
                 onChange={this.handleChangeAccounts}
                 input={<Input id="select-multiple-chip" />}
+                // @ts-ignore
                 renderValue={this.renderSelect}
                 MenuProps={menuProps}
               >
@@ -308,7 +308,9 @@ class CharacterCreator extends React.Component<
       this.setState({ head: -1 });
       return;
     }
-    const breed = BreedsUtility.breeds.First(b => b.id === this.state.breed);
+    const breed = BreedsUtility.breeds.First(
+      b => (b && b.id === this.state.breed) || false
+    );
     const colors = BreedsUtility.getBreedBaseColors(breed, this.state.sex);
     this.setState(
       {
@@ -367,22 +369,22 @@ class CharacterCreator extends React.Component<
     });
   };
 
-  private handleChangeColor = name => color => {
+  private handleChangeColor = (name: any) => (color: any) => {
     this.setState({ [name]: color.hex } as Pick<
       ICharacterCreatorState,
       keyof ICharacterCreatorState
     >);
   };
 
-  private tutorialChanged = event => {
+  private tutorialChanged = (event: any) => {
     this.setState({ tutorial: event.target.checked });
   };
 
-  private createChanged = event => {
+  private createChanged = (event: any) => {
     this.setState({ create: event.target.checked });
   };
 
-  private handleSelectChange = event => {
+  private handleSelectChange = (event: any) => {
     this.setState(
       { [event.target.name]: event.target.value } as Pick<
         ICharacterCreatorState,
@@ -394,14 +396,14 @@ class CharacterCreator extends React.Component<
     );
   };
 
-  private handleChange = name => event => {
+  private handleChange = (name: any) => (event: any) => {
     this.setState({ [name]: event.target.value } as Pick<
       ICharacterCreatorState,
       keyof ICharacterCreatorState
     >);
   };
 
-  private handleChangeAccounts = event => {
+  private handleChangeAccounts = (event: any) => {
     const accounts = this.state.accountsList.filter(a =>
       event.target.value.includes(a.username)
     );
@@ -413,7 +415,7 @@ class CharacterCreator extends React.Component<
     for (const acc of this.state.selectedAccounts) {
       GlobalConfiguration._accounts.find(
         a => a.username === acc.username
-      ).characterCreation = crea;
+      )!.characterCreation = crea;
     }
     GlobalConfiguration.save();
     CookieMain.refreshEntities();
@@ -444,7 +446,7 @@ class CharacterCreator extends React.Component<
     return crea;
   };
 
-  private renderSelect = (selected: React.ReactText[]): React.ReactNode => {
+  private renderSelect = (selected: string[]): React.ReactNode => {
     return (
       <div className={this.props.classes.chips}>
         {selected.map(value => (
@@ -455,6 +457,4 @@ class CharacterCreator extends React.Component<
   };
 }
 
-export default withStyles(characterCreatorStyles)<ICharacterCreatorProps>(
-  CharacterCreator
-);
+export default withStyles(characterCreatorStyles)(CharacterCreator);

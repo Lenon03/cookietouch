@@ -20,7 +20,8 @@ export default class RolePlayExtension {
     );
   }
 
-  private exchangeRequested(from: number) {
+  private exchangeRequested(from?: number) {
+    from = from || 0;
     // If the character isn't authorized to tradus us, refuse it
     if (!this.account.config.authorizedTradesFrom.includes(from)) {
       if (this.account.config.ignoreNonAuthorizedTrades) {

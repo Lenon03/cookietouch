@@ -3,15 +3,14 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
 import AccountItem from "@renderer/pages/Sidenav/AccountItem";
 import GroupItem from "@renderer/pages/Sidenav/GroupItem";
-import { sidenavStyles } from "@renderer/pages/Sidenav/styles";
 import {
   ISidenavProps,
   ISidenavState,
-  SidenavProps
+  sidenavStyles
 } from "@renderer/pages/Sidenav/types";
 import * as React from "react";
 
-class Sidenav extends React.Component<SidenavProps, ISidenavState> {
+class Sidenav extends React.Component<ISidenavProps, ISidenavState> {
   public state: ISidenavState = {
     connectedAccounts: CookieMain.connectedAccounts
   };
@@ -33,7 +32,7 @@ class Sidenav extends React.Component<SidenavProps, ISidenavState> {
         <ListRender component="nav">
           {connectedAccounts.ToArray().map((a, idx) => {
             if (a.hasGroup) {
-              return <GroupItem key={idx} group={a.group} />;
+              return <GroupItem key={idx} group={a.group!} />;
             } else {
               return <AccountItem key={idx} account={a} />;
             }
@@ -48,4 +47,4 @@ class Sidenav extends React.Component<SidenavProps, ISidenavState> {
   };
 }
 
-export default withStyles(sidenavStyles)<ISidenavProps>(Sidenav);
+export default withStyles(sidenavStyles)(Sidenav);

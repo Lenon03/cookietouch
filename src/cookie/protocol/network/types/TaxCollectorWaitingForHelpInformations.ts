@@ -4,9 +4,8 @@ import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxC
 export default class TaxCollectorWaitingForHelpInformations extends TaxCollectorComplementaryInformations {
   public waitingForHelpInfo: ProtectedEntityWaitingForHelpInfo;
 
-  constructor(waitingForHelpInfo: ProtectedEntityWaitingForHelpInfo = null) {
+  constructor(waitingForHelpInfo = new ProtectedEntityWaitingForHelpInfo()) {
     super();
     this.waitingForHelpInfo = waitingForHelpInfo;
-
   }
 }

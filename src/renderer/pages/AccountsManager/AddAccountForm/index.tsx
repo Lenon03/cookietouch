@@ -3,6 +3,7 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import DataManager from "@/protocol/data";
 import Servers from "@/protocol/data/classes/Servers";
 import { DataTypes } from "@/protocol/data/DataTypes";
+import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,21 +13,19 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CookieMain from "@renderer/CookieMain";
-import { addAccountFormStyles } from "@renderer/pages/AccountsManager/AddAccountForm/styles";
 import {
-  AddAccountFormProps,
+  addAccountFormStyles,
   IAddAccountFormProps,
   IAddAccountFormState
 } from "@renderer/pages/AccountsManager/AddAccountForm/types";
 import * as React from "react";
 
 class AddAccountForm extends React.Component<
-  AddAccountFormProps,
+  IAddAccountFormProps,
   IAddAccountFormState
 > {
   public state: IAddAccountFormState = {
@@ -138,21 +137,21 @@ class AddAccountForm extends React.Component<
     );
   }
 
-  private handleChange = prop => event => {
+  private handleChange = (prop: any) => (event: any) => {
     this.setState({ [prop]: event.target.value } as Pick<
       IAddAccountFormState,
       keyof IAddAccountFormState
     >);
   };
 
-  private handleSelectChange = event => {
+  private handleSelectChange = (event: any) => {
     this.setState({ [event.target.name]: event.target.value } as Pick<
       IAddAccountFormState,
       keyof IAddAccountFormState
     >);
   };
 
-  private handleMouseDownPassword = event => {
+  private handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
 
@@ -191,6 +190,4 @@ class AddAccountForm extends React.Component<
   };
 }
 
-export default withStyles(addAccountFormStyles)<IAddAccountFormProps>(
-  AddAccountForm
-);
+export default withStyles(addAccountFormStyles)(AddAccountForm);

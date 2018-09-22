@@ -11,16 +11,15 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import CookieMain from "@renderer/CookieMain";
-import { infosStyles } from "@renderer/pages/Infos/styles";
 import {
   IInfosProps,
   IInfosState,
-  InfosProps
+  infosStyles
 } from "@renderer/pages/Infos/types";
 import { remote } from "electron";
 import * as React from "react";
 
-class Infos extends React.Component<InfosProps, IInfosState> {
+class Infos extends React.Component<IInfosProps, IInfosState> {
   public readonly idleState: IInfosState = {
     bonuspack: "",
     characterConnected: false,
@@ -362,10 +361,10 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     CookieMain.removeSelectedAccount();
   };
 
-  private scriptLoaded = (scriptName: string) => {
+  private scriptLoaded = (scriptName?: string) => {
     this.setState({
       scriptLoaded: true,
-      scriptName
+      scriptName: scriptName || ""
     });
   };
 
@@ -426,7 +425,7 @@ class Infos extends React.Component<InfosProps, IInfosState> {
     });
   };
 
-  private inventoryUpdated = (withObject: boolean) => {
+  private inventoryUpdated = (withObject?: boolean) => {
     if (withObject) {
       return;
     }
@@ -442,14 +441,16 @@ class Infos extends React.Component<InfosProps, IInfosState> {
       bonuspack: this.props.account.data.isSubscriber
         ? `${LanguageManager.trans(
             "subscriber",
-            this.props.account.data.subscriptionEndDate.toLocaleString(
-              GlobalConfiguration.lang
-            )
+            this.props.account.data.subscriptionEndDate
+              ? this.props.account.data.subscriptionEndDate.toLocaleString(
+                  GlobalConfiguration.lang
+                )
+              : ""
           )}`
         : LanguageManager.trans("nosubscriber"),
-      goultines: this.props.account.data.goultines
+      goultines: this.props.account.data.goultines || 0
     });
   };
 }
 
-export default withStyles(infosStyles)<IInfosProps>(Infos);
+export default withStyles(infosStyles)(Infos);

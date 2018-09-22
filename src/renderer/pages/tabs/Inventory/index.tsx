@@ -17,16 +17,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tabs from "@material-ui/core/Tabs";
 import TextField from "@material-ui/core/TextField";
-import { inventoryTabStyles } from "@renderer/pages/tabs/Inventory/styles";
 import {
   DeleteDropUseChoice,
   IInventoryTabProps,
   IInventoryTabState,
-  InventoryTabProps
+  inventoryTabStyles
 } from "@renderer/pages/tabs/Inventory/types";
 import * as React from "react";
 
-class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
+class Inventory extends React.Component<
+  IInventoryTabProps,
+  IInventoryTabState
+> {
   public state: IInventoryTabState = {
     consumables: [],
     deleteDropUseChoice: DeleteDropUseChoice.Delete,
@@ -360,7 +362,7 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     );
   }
 
-  private inventoryUpdated = (withObject: boolean) => {
+  private inventoryUpdated = (withObject?: boolean) => {
     if (!withObject) {
       return;
     }
@@ -393,11 +395,11 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
     this.toggleModal();
   };
 
-  private handleChange = (event, value) => {
+  private handleChange = (event: any, value: any) => {
     this.setState({ value });
   };
 
-  private handleQuantityChange = name => event => {
+  private handleQuantityChange = (name: any) => (event: any) => {
     this.setState({ [name]: event.target.value } as Pick<
       IInventoryTabState,
       keyof IInventoryTabState
@@ -448,4 +450,4 @@ class Inventory extends React.Component<InventoryTabProps, IInventoryTabState> {
   };
 }
 
-export default withStyles(inventoryTabStyles)<IInventoryTabProps>(Inventory);
+export default withStyles(inventoryTabStyles)(Inventory);

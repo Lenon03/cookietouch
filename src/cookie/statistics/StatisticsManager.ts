@@ -28,8 +28,8 @@ export default class StatisticsManager {
   public totalFightsTime: number;
   public totalGathersTime: number;
 
-  private lastObjectGained: number;
-  private gatherStartTime: [number, number];
+  private lastObjectGained: number = 0;
+  private gatherStartTime: [number, number] | undefined;
 
   private account: Account;
   private readonly onStatisticsUpdated = new LiteEvent<void>();
@@ -89,8 +89,16 @@ export default class StatisticsManager {
       }
     }
     // Set object's percentages
-    const totalQty = this.objectsObtainedInFights.Sum(o => o.quantity);
+    const totalQty = this.objectsObtainedInFights.Sum(o => {
+      if (!o) {
+        return 0;
+      }
+      return o.quantity;
+    });
     this.objectsObtainedInFights.ForEach(obj => {
+      if (!obj) {
+        return;
+      }
       obj.percentage = (obj.quantity / totalQty) * 100;
     });
     this.onStatisticsUpdated.trigger();
@@ -129,8 +137,16 @@ export default class StatisticsManager {
       );
       this.lastObjectGained = 0;
       // Set object's percentages
-      const totalQty = this.objectsObtainedInGathers.Sum(o => o.quantity);
+      const totalQty = this.objectsObtainedInGathers.Sum(o => {
+        if (!o) {
+          return 0;
+        }
+        return o.quantity;
+      });
       this.objectsObtainedInGathers.ForEach(obj => {
+        if (!obj) {
+          return;
+        }
         obj.percentage = (obj.quantity / totalQty) * 100;
       });
     }
@@ -141,7 +157,7 @@ export default class StatisticsManager {
     this.gatherStartTime = process.hrtime();
   };
 
-  private gatherFinished = (result: GatherResults) => {
+  private gatherFinished = (result?: GatherResults) => {
     if (result === GatherResults.GATHERED) {
       this.gathersCount++;
       const MS_PER_SEC = 1e3;
@@ -152,8 +168,8 @@ export default class StatisticsManager {
     this.onStatisticsUpdated.trigger();
   };
 
-  private objectGained = (obj: number) => {
-    this.lastObjectGained = obj;
+  private objectGained = (obj?: number) => {
+    this.lastObjectGained = obj || 0;
   };
 
   private async addOrUpdate(
@@ -161,7 +177,7 @@ export default class StatisticsManager {
     gid: number,
     qty: number
   ) {
-    let elem = list.FirstOrDefault(o => o.gid === gid);
+    let elem = list.FirstOrDefault(o => o !== undefined && o.gid === gid);
     if (!elem) {
       const itemResp = await DataManager.get<Items>(DataTypes.Items, gid);
       elem = new ObjectObtainedEntry(gid, itemResp[0].object.nameId, 0);

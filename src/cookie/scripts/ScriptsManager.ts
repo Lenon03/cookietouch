@@ -43,17 +43,17 @@ import * as path from "path";
 
 export default class ScriptsManager {
   public actionsManager: ActionsManager;
-  public currentScriptName: string;
-  public enabled: boolean;
-  public paused: boolean;
+  public currentScriptName: string | undefined;
+  public enabled: boolean = false;
+  public paused: boolean = false;
   private api: API;
   private readonly onScriptLoaded = new LiteEvent<string>();
   private readonly onScriptStarted = new LiteEvent<any>();
   private readonly onScriptStopped = new LiteEvent<string>();
   private account: Account;
   private entryFlags: List<IFlag>;
-  private entryFlagsIndex: number;
-  private _currentFunctionType: FunctionTypes;
+  private entryFlagsIndex: number = 0;
+  private _currentFunctionType: FunctionTypes = FunctionTypes.MOVE;
   private _scriptManager: JsonScriptManager;
 
   constructor(account: Account) {
@@ -72,7 +72,7 @@ export default class ScriptsManager {
   get running(): boolean {
     return this.account.isGroupChief === true
       ? this.enabled && !this.paused
-      : this.account.group.chief.scripts.running === true;
+      : this.account.group!.chief.scripts.running === true;
   }
 
   public get ScriptLoaded() {
@@ -90,21 +90,21 @@ export default class ScriptsManager {
   get currentFunctionType(): FunctionTypes {
     return this.account.isGroupChief
       ? this._currentFunctionType
-      : this.account.group.chief.scripts._currentFunctionType;
+      : this.account.group!.chief.scripts._currentFunctionType;
   }
 
   set currentFunctionType(type: FunctionTypes) {
     if (this.account.isGroupChief) {
       this._currentFunctionType = type;
     } else {
-      this.account.group.chief.scripts._currentFunctionType = type;
+      this.account.group!.chief.scripts._currentFunctionType = type;
     }
   }
 
   get scriptManager(): JsonScriptManager {
     return this.account.isGroupChief
       ? this._scriptManager
-      : this.account.group.chief.scripts._scriptManager;
+      : this.account.group!.chief.scripts._scriptManager;
   }
 
   private get gotToMaxPods(): boolean {
@@ -193,7 +193,7 @@ export default class ScriptsManager {
     }
     // If this account is a group chief, do some checkings
     if (this.account.hasGroup && this.account.isGroupChief) {
-      if (this.account.group.isAnyoneBusy) {
+      if (this.account.group!.isAnyoneBusy) {
         this.account.logger.logError(
           LanguageManager.trans("script"),
           LanguageManager.trans("errorLaunchScriptBusy")
@@ -217,9 +217,9 @@ export default class ScriptsManager {
     if (
       this.account.hasGroup &&
       !this.account.isGroupChief &&
-      this.account.group.chief.scripts.enabled
+      this.account.group!.chief.scripts.enabled
     ) {
-      this.account.group.chief.scripts.stopScript(reason);
+      this.account.group!.chief.scripts.stopScript(reason);
       return;
     }
     if (!this.enabled) {
@@ -235,7 +235,7 @@ export default class ScriptsManager {
 
     // If the account is a group chief, do the same for members
     if (this.account.hasGroup && this.account.isGroupChief) {
-      this.account.group.membersCleaningAndClearing();
+      this.account.group!.membersCleaningAndClearing();
     }
 
     if (reason === "") {
@@ -263,8 +263,8 @@ export default class ScriptsManager {
     try {
       // If this account is a group chief, do some checkings
       if (this.account.hasGroup && this.account.isGroupChief) {
-        await this.account.group.regroupMembersIfNeeded();
-        if (this.account.group.isAnyoneBusy) {
+        await this.account.group!.regroupMembersIfNeeded();
+        if (this.account.group!.isAnyoneBusy) {
           this.stopScript(LanguageManager.trans("someoneBusy"));
           return;
         }
@@ -272,7 +272,7 @@ export default class ScriptsManager {
 
       // If this account is a group chief, apply a group checking
       if (this.account.hasGroup && this.account.isGroupChief) {
-        await this.account.group.applyCheckings();
+        await this.account.group!.applyCheckings();
       } else {
         // Otherwise apply a solo checking
         await this.applyCheckings();
@@ -385,6 +385,9 @@ export default class ScriptsManager {
       switch (this.entryFlags.ElementAt(this.entryFlagsIndex).type) {
         case IFlagType.GatherFlag:
           const gatherAction = this.createGatherAction();
+          if (!gatherAction) {
+            return;
+          }
           // We'll assume gatherAction can never be null
           if (
             this.account.game.managers.gathers.canGather(
@@ -424,9 +427,7 @@ export default class ScriptsManager {
     }
   }
 
-  private async processCurrentEntryFlag(
-    alreadyParsedAction: ScriptAction = null
-  ) {
+  private async processCurrentEntryFlag(alreadyParsedAction?: ScriptAction) {
     if (!this.running) {
       return;
     }
@@ -527,18 +528,18 @@ export default class ScriptsManager {
         continue;
       }
       // If the item is not a regen item, go to the next one
-      if (obj.regenValue <= 0) {
+      if (obj.regenValue && obj.regenValue <= 0) {
         continue;
       }
       // Get how much quantity we need
-      const neededQty = Math.floor(hpToRegen / obj.regenValue);
+      const neededQty = Math.floor(hpToRegen / obj.regenValue!);
       // Then get how much quantity we actually have
       const validQty = Math.min(neededQty, obj.quantity);
       // Use the object
       this.account.game.character.inventory.useObject(obj, validQty);
       await sleep(800);
       // Decreate the hp to regen
-      hpToRegen -= obj.regenValue * validQty;
+      hpToRegen -= obj.regenValue! * validQty;
     }
   }
 
@@ -605,10 +606,13 @@ export default class ScriptsManager {
       return;
     }
     const bags = this.account.game.character.inventory.objects.Where(
-      o => o.typeId === 100 && o.superTypeId === 6
+      o => o !== undefined && o.typeId === 100 && o.superTypeId === 6
     );
     if (bags.Count() > 0) {
       bags.ForEach(async b => {
+        if (!b) {
+          return;
+        }
         this.account.game.character.inventory.useObject(b);
         await sleep(800);
       });
@@ -720,7 +724,7 @@ export default class ScriptsManager {
     if (
       this.currentFunctionType === FunctionTypes.PHENIX &&
       (this.account.hasGroup && this.account.isGroupChief
-        ? this.account.group.isEveryoneAliveAndKicking
+        ? this.account.group!.isEveryoneAliveAndKicking
         : this.account.game.character.lifeStatus ===
           PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)
     ) {
@@ -737,7 +741,7 @@ export default class ScriptsManager {
     if (
       this.currentFunctionType === FunctionTypes.BANK &&
       (this.account.hasGroup && this.account.isGroupChief
-        ? !this.account.group.isAnyoneFullWeight
+        ? !this.account.group!.isAnyoneFullWeight
         : !this.gotToMaxPods)
     ) {
       this.account.logger.logDebug(
@@ -772,7 +776,7 @@ export default class ScriptsManager {
     }
   }
 
-  private createGatherAction(): GatherAction {
+  private createGatherAction(): GatherAction | null {
     // Check if the script has the elements to gather
     const elementsToGather = this.scriptManager.config.ELEMENTS_TO_GATHER;
     const resourcesIds = new List<number>();
@@ -997,7 +1001,7 @@ export default class ScriptsManager {
     );
   };
 
-  private onActionsFinished = async (data: IActionsManagerEventData) => {
+  private onActionsFinished = async (data?: IActionsManagerEventData) => {
     // If this account is a member of a group
     if (this.account.hasGroup) {
       // If this account is not the chief, ignore this event since the group will handle it
@@ -1009,7 +1013,7 @@ export default class ScriptsManager {
         LanguageManager.trans("groups"),
         LanguageManager.trans("waitingAllMembers")
       );
-      await this.account.group.waitForAllActionsFinished();
+      await this.account.group!.waitForAllActionsFinished();
       this.account.logger.logDebug(
         LanguageManager.trans("groups"),
         LanguageManager.trans("allMembersDone")
@@ -1020,14 +1024,14 @@ export default class ScriptsManager {
       return;
     }
     // If a map changed occured, re-process the script
-    if (data.mapChanged) {
+    if (data && data.mapChanged) {
       await this.processScript();
     } else {
       await this.processEntryFlags();
     }
   };
 
-  private onCustomHandled = async (data: IActionsManagerEventData) => {
+  private onCustomHandled = async (data?: IActionsManagerEventData) => {
     // If this account is a member of a group, ignore this event because group will handle it
     if (this.account.hasGroup && !this.account.isGroupChief) {
       return;
@@ -1037,7 +1041,7 @@ export default class ScriptsManager {
       return;
     }
     // If a map changed occured, re-process the script
-    if (data.mapChanged) {
+    if (data && data.mapChanged) {
       await this.processScript();
     } else {
       await this.processEntryFlags();

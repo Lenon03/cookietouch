@@ -8,15 +8,15 @@ import { List } from "linqts";
 
 export default class CookieMain {
   public static entities = new List<IEntity>();
-  private static _selectedAccount: Account = null;
-  private static readonly onSelectedAccountChanged = new LiteEvent<Account>();
+  private static _selectedAccount: Account | null = null;
+  private static readonly onSelectedAccountChanged = new LiteEvent<Account | null>();
   private static readonly onEntitiesUpdated = new LiteEvent<void>();
 
   public static get selectedAccount() {
     return this._selectedAccount;
   }
 
-  public static set selectedAccount(account: Account) {
+  public static set selectedAccount(account: Account | null) {
     this._selectedAccount = account;
     this.onSelectedAccountChanged.trigger(this._selectedAccount);
   }
@@ -40,6 +40,9 @@ export default class CookieMain {
 
   public static connectAccounts(accountConfigs: List<AccountConfiguration>) {
     accountConfigs.ForEach(async accountConfig => {
+      if (!accountConfig) {
+        return;
+      }
       const account = new Account(accountConfig);
       this.entities.Add(account);
       this.onEntitiesUpdated.trigger();
@@ -53,7 +56,7 @@ export default class CookieMain {
     members: List<AccountConfiguration>
   ) {
     const group = new Group(new Account(chief));
-    members.ForEach(m => group.addMember(new Account(m)));
+    members.ForEach(m => m && group.addMember(new Account(m)));
     this.entities.Add(group);
     this.onEntitiesUpdated.trigger();
     this.selectedAccount = group.chief;
@@ -108,8 +111,6 @@ export default class CookieMain {
     this.entities.RemoveAt(index);
     // Set another account as a selectedAccount
     this.refreshSelectedAccount(index);
-    // Dispose
-    group = null;
   }
 
   public static async disconnectAccount(account: Account) {

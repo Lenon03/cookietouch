@@ -1,9 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { withStyles } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import {
+  accountMainstyles,
   IAccountMainProps,
   IAccountMainState
 } from "@renderer/pages/AccountMain/types";
@@ -14,7 +16,7 @@ import Console from "@renderer/pages/tabs/Console";
 import Fights from "@renderer/pages/tabs/Fights";
 import Flood from "@renderer/pages/tabs/Flood";
 import Inventory from "@renderer/pages/tabs/Inventory";
-import Map from "@renderer/pages/tabs/Map";
+import { Map } from "@renderer/pages/tabs/Map";
 import Pushbullet from "@renderer/pages/tabs/Pushbullet";
 import Statistics from "@renderer/pages/tabs/Statistics";
 import * as React from "react";
@@ -129,9 +131,9 @@ class AccountMain extends React.Component<
     );
   }
 
-  private handleChange = (event, value) => {
+  private handleChange = (event: any, value: number) => {
     this.setState({ value });
   };
 }
 
-export default AccountMain;
+export default withStyles(accountMainstyles)(AccountMain);

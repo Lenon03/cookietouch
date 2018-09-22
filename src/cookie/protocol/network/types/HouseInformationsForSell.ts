@@ -13,9 +13,19 @@ export default class HouseInformationsForSell extends Type {
   public isLocked: boolean;
   public price: number;
 
-  constructor(modelId = 0, ownerName = "", ownerConnected = false, worldX = 0,
-              worldY = 0, subAreaId = 0, nbRoom = 0, nbChest = 0, isLocked = false,
-              price = 0, skillListIds: number[] = null) {
+  constructor(
+    modelId = 0,
+    ownerName = "",
+    ownerConnected = false,
+    worldX = 0,
+    worldY = 0,
+    subAreaId = 0,
+    nbRoom = 0,
+    nbChest = 0,
+    isLocked = false,
+    price = 0,
+    skillListIds: number[] = []
+  ) {
     super();
     this.skillListIds = skillListIds;
     this.modelId = modelId;

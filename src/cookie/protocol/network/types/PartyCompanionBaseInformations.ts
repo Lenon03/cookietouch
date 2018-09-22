@@ -6,7 +6,11 @@ export default class PartyCompanionBaseInformations extends Type {
   public companionGenericId: number;
   public entityLook: EntityLook;
 
-  constructor(indexId = 0, companionGenericId = 0, entityLook: EntityLook = null) {
+  constructor(
+    indexId = 0,
+    companionGenericId = 0,
+    entityLook = new EntityLook()
+  ) {
     super();
     this.indexId = indexId;
     this.companionGenericId = companionGenericId;

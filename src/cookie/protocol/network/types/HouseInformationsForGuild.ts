@@ -11,8 +11,17 @@ export default class HouseInformationsForGuild extends Type {
   public subAreaId: number;
   public guildshareParams: number;
 
-  constructor(houseId = 0, modelId = 0, ownerName = "", worldX = 0, worldY = 0,
-              mapId = 0, subAreaId = 0, guildshareParams = 0, skillListIds: number[] = null) {
+  constructor(
+    houseId = 0,
+    modelId = 0,
+    ownerName = "",
+    worldX = 0,
+    worldY = 0,
+    mapId = 0,
+    subAreaId = 0,
+    guildshareParams = 0,
+    skillListIds: number[] = []
+  ) {
     super();
     this.skillListIds = skillListIds;
     this.houseId = houseId;

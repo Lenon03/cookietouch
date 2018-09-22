@@ -16,6 +16,8 @@ import PlayerStatusUpdateMessage from "@/protocol/network/messages/PlayerStatusU
 import SpellListMessage from "@/protocol/network/messages/SpellListMessage";
 import SpellUpgradeSuccessMessage from "@/protocol/network/messages/SpellUpgradeSuccessMessage";
 import UpdateLifePointsMessage from "@/protocol/network/messages/UpdateLifePointsMessage";
+import Pushbullet from "@/utils/Pushbullet";
+import { NotificationType } from "@/utils/Pushbullet/types";
 
 export default class CharacterFrame implements IFrame {
   public register() {
@@ -132,6 +134,9 @@ export default class CharacterFrame implements IFrame {
       LanguageManager.trans("characterFrame"),
       LanguageManager.trans("levelUp")
     );
+    Pushbullet.sendNotification(NotificationType.LEVEL, account, {
+      level: message.newLevel
+    });
   }
 
   private async HandleUpdateLifePointsMessage(

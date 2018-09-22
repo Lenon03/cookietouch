@@ -21,7 +21,7 @@ export default class StorageGetAutoRegenStoreAction extends ScriptAction {
     for (let i = 0; i < this.items.length && store > 0; i++) {
       // We'll have to get the items manually instead of using Storage.GetItem()
       const obj = account.game.storage.objects.FirstOrDefault(
-        o => o.gid === this.items[i]
+        o => o !== undefined && o.gid === this.items[i]
       );
       if (!obj) {
         continue;

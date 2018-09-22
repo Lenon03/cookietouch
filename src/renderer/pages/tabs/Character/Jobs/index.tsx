@@ -7,16 +7,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tooltip from "@material-ui/core/Tooltip";
-import { characterJobsTabStyles } from "@renderer/pages/tabs/Character/Jobs/styles";
 import {
-  CharacterJobsTabProps,
+  characterJobsTabStyles,
   ICharacterJobsTabProps,
   ICharacterJobsTabState
 } from "@renderer/pages/tabs/Character/Jobs/types";
 import * as React from "react";
 
 class Jobs extends React.Component<
-  CharacterJobsTabProps,
+  ICharacterJobsTabProps,
   ICharacterJobsTabState
 > {
   public state: ICharacterJobsTabState = {
@@ -85,4 +84,4 @@ class Jobs extends React.Component<
   };
 }
 
-export default withStyles(characterJobsTabStyles)<ICharacterJobsTabProps>(Jobs);
+export default withStyles(characterJobsTabStyles)(Jobs);

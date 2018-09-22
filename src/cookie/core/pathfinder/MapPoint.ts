@@ -1,3 +1,5 @@
+import { notEmpty } from "@/utils/Arrays";
+
 export default class MapPoint {
   public static cells: MapPoint[];
   public x: number;
@@ -22,7 +24,7 @@ export default class MapPoint {
   }
 
   public static fromCellId(cellId: number) {
-    return this.cells.find(cell => cell.cellId === cellId);
+    return this.cells.find(cell => cell.cellId === cellId) || null;
   }
 
   public static fromCoords(x: number, y: number) {
@@ -34,8 +36,11 @@ export default class MapPoint {
     cellId: number,
     allowDiagonal: boolean
   ): MapPoint[] {
+    const neighbours: Array<MapPoint | null> = [];
     const coord = this.fromCellId(cellId);
-    const neighbours = [];
+    if (!coord) {
+      return neighbours.filter(notEmpty);
+    }
 
     neighbours.push(this.fromCoords(coord.x, coord.y + 1));
     neighbours.push(this.fromCoords(coord.x - 1, coord.y));
@@ -49,7 +54,7 @@ export default class MapPoint {
       neighbours.push(this.fromCoords(coord.x + 1, coord.y - 1));
     }
 
-    return neighbours.filter(n => n !== null);
+    return neighbours.filter(notEmpty);
   }
 
   public distanceTo(destination: MapPoint): number {

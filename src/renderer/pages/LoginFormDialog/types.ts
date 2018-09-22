@@ -1,7 +1,13 @@
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { LoginFormDialogStyle } from "@renderer/pages/LoginFormDialog/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ILoginFormDialogProps {
+export const loginFormDialogStyles = (theme: Theme) =>
+  createStyles({
+    formControl: { margin: theme.spacing.unit },
+    root: { flexGrow: 1 }
+  });
+
+export interface ILoginFormDialogProps
+  extends WithStyles<typeof loginFormDialogStyles> {
   dialogOpen: boolean;
   closeDialog: () => void;
 }
@@ -11,6 +17,3 @@ export interface ILoginFormDialogState {
   password: string;
   showPassword: boolean;
 }
-
-export type LoginFormDialogProps = ILoginFormDialogProps &
-  WithStyles<LoginFormDialogStyle>;

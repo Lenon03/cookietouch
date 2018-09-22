@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class AlignmentBonusInformations extends Type {
-
   public pctbonus: number;
   public grademult: number;
 

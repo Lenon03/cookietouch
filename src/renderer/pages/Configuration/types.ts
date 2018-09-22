@@ -1,9 +1,15 @@
 import { UpdatesChannel } from "@/configurations/GlobalConfiguration";
 import { Languages } from "@/configurations/language/Languages";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { ConfigurationStyle } from "@renderer/pages/Configuration/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IConfigurationProps {
+export const configurationStyles = (theme: Theme) =>
+  createStyles({
+    formControl: { margin: theme.spacing.unit },
+    root: { flexGrow: 1 }
+  });
+
+export interface IConfigurationProps
+  extends WithStyles<typeof configurationStyles> {
   dialogOpen: boolean;
   closeDialog: () => void;
 }
@@ -18,6 +24,3 @@ export interface IConfigurationState {
 
   updatesChannel: UpdatesChannel;
 }
-
-export type ConfigurationProps = IConfigurationProps &
-  WithStyles<ConfigurationStyle>;

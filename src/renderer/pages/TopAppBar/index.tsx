@@ -14,15 +14,14 @@ import { signout } from "@renderer/FirebaseHelpers";
 import AccountsManager from "@renderer/pages/AccountsManager";
 import Configuration from "@renderer/pages/Configuration";
 import LoginFormDialog from "@renderer/pages/LoginFormDialog";
-import { topAppBarStyles } from "@renderer/pages/TopAppBar/styles";
 import {
   ITopAppBarProps,
   ITopAppBarState,
-  TopAppBarProps
+  topAppBarStyles
 } from "@renderer/pages/TopAppBar/types";
 import * as React from "react";
 
-class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
+class TopAppBar extends React.Component<ITopAppBarProps, ITopAppBarState> {
   public state: ITopAppBarState = {
     accountsManager: false,
     anchorEl: null,
@@ -56,7 +55,7 @@ class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
             {user ? (
               <div>
                 <IconButton
-                  aria-owns={open ? "menu-appbar" : null}
+                  aria-owns={open ? "menu-appbar" : undefined}
                   aria-haspopup="true"
                   onClick={this.handleMenu}
                   color="inherit"
@@ -155,4 +154,4 @@ class TopAppBar extends React.Component<TopAppBarProps, ITopAppBarState> {
   };
 }
 
-export default withStyles(topAppBarStyles)<ITopAppBarProps>(TopAppBar);
+export default withStyles(topAppBarStyles)(TopAppBar);

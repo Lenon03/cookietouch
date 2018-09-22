@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
 
-export async function appUpdater(win: BrowserWindow, channel: string) {
+export async function appUpdater(win: BrowserWindow | null, channel: string) {
   log.transports.file.level = "debug";
   autoUpdater.logger = log;
 
@@ -29,10 +29,14 @@ export async function appUpdater(win: BrowserWindow, channel: string) {
   });
 
   autoUpdater.on("update-downloaded", info => {
+    if (!win) {
+      log.error("No BrowserWindow found in update-downloaded");
+      return;
+    }
     win.webContents.send("go-update", info);
   });
 
-  ipcMain.on("ask-quitAndInstall", event => {
+  ipcMain.on("ask-quitAndInstall", (event: any) => {
     autoUpdater.quitAndInstall();
   });
 

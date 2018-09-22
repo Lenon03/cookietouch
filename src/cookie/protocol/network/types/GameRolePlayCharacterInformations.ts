@@ -7,10 +7,15 @@ import HumanInformations from "@/protocol/network/types/HumanInformations";
 export default class GameRolePlayCharacterInformations extends GameRolePlayHumanoidInformations {
   public alignmentInfos: ActorAlignmentInformations;
 
-  constructor(contextualId = 0, look: EntityLook = null,
-              disposition: EntityDispositionInformations = null,
-              name: string = "", accountId = 0, humanoidInfos: HumanInformations = null,
-              alignmentInfos: ActorAlignmentInformations = null) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name: string = "",
+    accountId = 0,
+    humanoidInfos = new HumanInformations(),
+    alignmentInfos = new ActorAlignmentInformations()
+  ) {
     super(contextualId, look, disposition, name, accountId, humanoidInfos);
     this.alignmentInfos = alignmentInfos;
   }

@@ -6,8 +6,10 @@ export default class GroupMonsterStaticInformations extends Type {
   public underlings: MonsterInGroupInformations[];
   public mainCreatureLightInfos: MonsterInGroupLightInformations;
 
-  constructor(mainCreatureLightInfos: MonsterInGroupLightInformations = null,
-              underlings: MonsterInGroupInformations[] = null) {
+  constructor(
+    mainCreatureLightInfos = new MonsterInGroupLightInformations(),
+    underlings: MonsterInGroupInformations[] = []
+  ) {
     super();
     this.mainCreatureLightInfos = mainCreatureLightInfos;
     this.underlings = underlings;

@@ -22,8 +22,8 @@ export default class StorageAPI {
 
   public itemCount(gid: number): number {
     return this.account.game.storage.objects
-      .Where(o => o.gid === gid)
-      .Sum(o => o.quantity);
+      .Where(o => o !== undefined && o.gid === gid)
+      .Sum(o => (o !== undefined && o.quantity) || 0);
   }
 
   public async putItem(gid: number, quantity: number): Promise<boolean> {
@@ -33,7 +33,7 @@ export default class StorageAPI {
     if (
       this.account.game.character.inventory
         .getObjectsByGid(gid)
-        .Sum(o => o.quantity) === 0
+        .Sum(o => (o !== undefined && o.quantity) || 0) === 0
     ) {
       return false;
     }

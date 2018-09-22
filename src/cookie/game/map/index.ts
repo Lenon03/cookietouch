@@ -30,6 +30,9 @@ import { sleep } from "@/utils/Time";
 
 export default class MapGame implements IClearable {
   get id() {
+    if (!this.data) {
+      return -1;
+    }
     return this.data.id;
   }
 
@@ -111,16 +114,16 @@ export default class MapGame implements IClearable {
   private static readonly doorSkillIds = [184, 183, 187, 198, 114, 84];
   private static readonly doorTypeIds = [-1, 128, 168, 16];
 
-  public data: MapData;
-  public area: string;
-  public subArea: string;
-  public posX: number;
-  public posY: number;
-  public playedCharacter: PlayerEntry = null;
+  public data: MapData | null = null;
+  public area: string | null = null;
+  public subArea: string | null = null;
+  public posX: number = 0;
+  public posY: number = 0;
+  public playedCharacter: PlayerEntry | null = null;
   public teleportableCells: number[] = [];
   public blacklistedMonsters: number[] = [];
-  public zaap: ElementInCellEntry = null;
-  public zaapi: ElementInCellEntry = null;
+  public zaap: ElementInCellEntry | null = null;
+  public zaapi: ElementInCellEntry | null = null;
   private _players = new Map<number, PlayerEntry>();
   private _npcs = new Map<number, NpcEntry>();
   private _monstersGroups = new Map<number, MonstersGroupEntry>();
@@ -137,7 +140,7 @@ export default class MapGame implements IClearable {
   private readonly onInteractivesUpdated = new LiteEvent<void>();
   private readonly onPlayedCharacterMoving = new LiteEvent<number[]>();
   private account: Account;
-  private _joinedFight: boolean;
+  private _joinedFight: boolean = false;
   private _firstTime: boolean = true;
 
   constructor(account: Account) {
@@ -179,15 +182,11 @@ export default class MapGame implements IClearable {
   }
 
   public getStatedElement(elementId: number) {
-    return this._statedElements.has(elementId)
-      ? this._statedElements.get(elementId)
-      : null;
+    return this._statedElements.get(elementId) || null;
   }
 
   public getInteractiveElement(elementId: number) {
-    return this._interactives.has(elementId)
-      ? this._interactives.get(elementId)
-      : null;
+    return this._interactives.get(elementId) || null;
   }
 
   public canFight(
@@ -195,8 +194,8 @@ export default class MapGame implements IClearable {
     maxMonsters = 8,
     minLevel = 1,
     maxLevel = 1000,
-    forbiddenMonsters: number[] = null,
-    mandatoryMonsters: number[] = null
+    forbiddenMonsters?: number[],
+    mandatoryMonsters?: number[]
   ): boolean {
     return (
       this.getMonstersGroup(
@@ -215,8 +214,8 @@ export default class MapGame implements IClearable {
     maxMonsters = 8,
     minLevel = 1,
     maxLevel = 1000,
-    forbiddenMonsters: number[] = null,
-    mandatoryMonsters: number[] = null
+    forbiddenMonsters?: number[],
+    mandatoryMonsters?: number[]
   ): MonstersGroupEntry[] {
     const monstersGroups: MonstersGroupEntry[] = [];
 
@@ -241,7 +240,7 @@ export default class MapGame implements IClearable {
       }
 
       let valid = true;
-      if (forbiddenMonsters !== null) {
+      if (forbiddenMonsters) {
         for (const m of forbiddenMonsters) {
           if (monstersGroup.containsMonster(m)) {
             valid = false;
@@ -251,7 +250,7 @@ export default class MapGame implements IClearable {
       }
 
       // Only check for mandatory monsters if the group passed the forbidden monsters test
-      if (mandatoryMonsters !== null && valid) {
+      if (mandatoryMonsters && valid) {
         for (const m of mandatoryMonsters) {
           if (!monstersGroup.containsMonster(m)) {
             valid = false;
@@ -273,12 +272,12 @@ export default class MapGame implements IClearable {
     return coords === this.id.toString() || coords === this.currentPosition;
   }
 
-  public getPlayer(id: number): PlayerEntry {
+  public getPlayer(id: number): PlayerEntry | null {
     if (this.playedCharacter !== null && this.playedCharacter.id === id) {
       return this.playedCharacter;
     }
 
-    return this._players.has(id) ? this._players.get(id) : null;
+    return this._players.get(id) || null;
   }
 
   public async UpdateMapComplementaryInformationsDataMessage(
@@ -395,7 +394,7 @@ export default class MapGame implements IClearable {
           // Check for other usable interactives (like doors)
           const interactive = this.getInteractiveElement(graph.id);
 
-          if (interactive === null) {
+          if (!interactive) {
             continue;
           }
 

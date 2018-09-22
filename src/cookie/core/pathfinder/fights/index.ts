@@ -12,7 +12,7 @@ export default class FightsPathfinder {
     source: number,
     target: number,
     zone: Map<number, MoveNode>
-  ): FightPath {
+  ): FightPath | null {
     if (!zone.has(target)) {
       return null;
     }
@@ -28,6 +28,9 @@ export default class FightsPathfinder {
 
     while (current !== source) {
       const cell = zone.get(current);
+      if (!cell) {
+        continue;
+      }
       if (cell.reachable) {
         reachable.unshift(current);
         reachableMap.set(current, distance);
@@ -59,6 +62,10 @@ export default class FightsPathfinder {
   ): Map<number, MoveNode> {
     const zone = new Map<number, MoveNode>();
 
+    if (!fight.playedFighter) {
+      return zone;
+    }
+
     if (fight.playedFighter.movementPoints <= 0) {
       return zone;
     }
@@ -79,27 +86,25 @@ export default class FightsPathfinder {
     closed.set(currentCellId, node);
 
     while (opened.length > 0) {
-      const current = opened.pop();
+      const current = opened.pop()!;
       const cellId = current.cellId;
       const neighbours = MapPoint.getNeighbourCells(cellId, false);
 
-      const tacklers = [];
+      const tacklers: FighterEntry[] = [];
       let i = 0;
       while (i < neighbours.length) {
-        let tackler;
+        let tackler: FighterEntry | undefined;
         const neigh = neighbours[i];
         if (neigh) {
           tackler = fight.fighters.find(f => f.cellId === neigh.cellId);
         }
-        if (neigh !== undefined && tackler === undefined) {
+        if (tackler === undefined) {
           i++;
           continue;
         }
 
         neighbours.splice(i, 1);
-        if (tackler !== undefined) {
-          tacklers.push(tackler);
-        }
+        tacklers.push(tackler);
       }
       const test = { apCost: 0, mpCost: 0 };
       this.getTackleCost(
@@ -122,6 +127,9 @@ export default class FightsPathfinder {
       for (const neighbour of neighbours) {
         if (closed.has(neighbour.cellId)) {
           const previous = closed.get(neighbour.cellId);
+          if (!previous) {
+            continue;
+          }
           if (previous.availableMp > availableMp) {
             continue;
           }
@@ -157,7 +165,7 @@ export default class FightsPathfinder {
     }
 
     for (const cellKey of zone.keys()) {
-      const elem = zone.get(cellKey);
+      const elem = zone.get(cellKey)!;
       elem.path = this.getPath(currentCellId, cellKey, zone);
       zone.set(cellKey, elem);
     }
@@ -177,6 +185,10 @@ export default class FightsPathfinder {
 
     test.mpCost = 0;
     test.apCost = 0;
+
+    if (!fight.playedFighter) {
+      return;
+    }
 
     if (
       !this.canBeTackled(fight, fight.playedFighter) ||
@@ -206,8 +218,8 @@ export default class FightsPathfinder {
   }
 
   private static canBeTackler(
-    tackler: FighterEntry = null,
-    actor: FighterEntry = null
+    tackler: FighterEntry | null = null,
+    actor: FighterEntry | null = null
   ): boolean {
     if (tackler === null || actor === null) {
       return false;

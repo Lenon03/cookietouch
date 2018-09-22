@@ -28,7 +28,7 @@ export default class MountAPI {
     if (!this.account.game.character.mount.hasMount) {
       return -1;
     }
-    return this.account.game.character.mount.data.level;
+    return this.account.game.character.mount.data!.level;
   }
 
   public async toggleRiding(): Promise<boolean> {

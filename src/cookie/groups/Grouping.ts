@@ -26,23 +26,27 @@ export default class Grouping {
   public async groupMembers() {
     const missingMembers = this._group.members.Where(
       m =>
+        m !== undefined &&
         m.game.map.currentPosition !==
-        this._group.chief.game.map.currentPosition
+          this._group.chief.game.map.currentPosition
     );
     if (this._missingMembers.Count() === 0) {
       return;
     }
     this._missingMembers = missingMembers;
     this._missingMembers.ForEach(async m => {
+      if (!m) {
+        return;
+      }
       await this.groupMissingMember(m);
     });
   }
 
   private async groupMissingMember(missingMember: Account) {
-    let tcs: IDeferred<boolean> = null;
+    let tcs: IDeferred<boolean> | null = null;
     const mapChanged = async () => {
       await sleep(1500);
-      tcs.resolve(true);
+      tcs!.resolve(true);
     };
     missingMember.game.map.MapChanged.on(mapChanged);
     while (

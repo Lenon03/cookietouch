@@ -21,9 +21,9 @@ export enum GatherResults {
 export default class GathersManager implements IClearable {
   private account: Account;
   private blacklistedElements: number[];
-  private elementToGather: InteractiveElementEntry;
+  private elementToGather: InteractiveElementEntry | null = null;
   private pathfinder: Pathfinder;
-  private stolen: boolean;
+  private stolen: boolean = false;
   private readonly onGatherStarted = new LiteEvent<void>();
   private readonly onGatherFinished = new LiteEvent<GatherResults>();
 
@@ -115,7 +115,16 @@ export default class GathersManager implements IClearable {
       const statedElement = this.account.game.map.getStatedElement(
         interactive.id
       );
+
+      if (!statedElement || !this.account.game.map.playedCharacter) {
+        continue;
+      }
+
       const elem = MapPoint.fromCellId(statedElement.cellId);
+
+      if (!elem) {
+        continue;
+      }
 
       const path = this.pathfinder.getPath(
         this.account.game.map.playedCharacter.cellId,
@@ -136,6 +145,11 @@ export default class GathersManager implements IClearable {
       // If we have a fishing rod, we need to compare if with the rod's range,
       // otherwise we'll compare it to 1
       const lastCell = MapPoint.fromCellId(path[path.length - 1]);
+
+      if (!lastCell) {
+        continue;
+      }
+
       const distToCell = lastCell.distanceToCell(elem);
       const distTo = lastCell.distanceTo(elem);
       if (
@@ -185,6 +199,9 @@ export default class GathersManager implements IClearable {
       );
       this.isGatherFinished(GatherResults.STOLEN);
     } else {
+      if (!this.elementToGather) {
+        return;
+      }
       this.account.network.sendMessageFree("InteractiveUseRequestMessage", {
         elemId: this.elementToGather.id,
         skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid
@@ -203,7 +220,7 @@ export default class GathersManager implements IClearable {
     this.onGatherFinished.trigger(result);
   }
 
-  private onMovementFinished = (success: boolean) => {
+  private onMovementFinished = (success?: boolean) => {
     if (this.elementToGather === null) {
       return;
     }
@@ -245,6 +262,9 @@ export default class GathersManager implements IClearable {
     account: Account,
     message: any
   ) => {
+    if (!this.elementToGather) {
+      return;
+    }
     this.blacklistedElements.push(this.elementToGather.id);
     this.isGatherFinished(GatherResults.BLACKLISTED);
   };

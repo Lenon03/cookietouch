@@ -34,7 +34,9 @@ export default class Group implements IEntity {
   }
 
   get isAnyoneBusy() {
-    return this.chief.isBusy || this.members.Any((m: Account) => m.isBusy);
+    return (
+      this.chief.isBusy || this.members.Any(m => m !== undefined && m.isBusy)
+    );
   }
 
   get isAnyoneFullWeight() {
@@ -45,7 +47,8 @@ export default class Group implements IEntity {
       return true;
     }
     return this.members.Any(
-      (t: Account) => t.game.character.inventory.weightPercent >= maxPods
+      t =>
+        t !== undefined && t.game.character.inventory.weightPercent >= maxPods
     );
   }
 
@@ -57,9 +60,10 @@ export default class Group implements IEntity {
       return false;
     }
     return this.members.All(
-      (t: Account) =>
+      t =>
+        t !== undefined &&
         t.game.character.lifeStatus ===
-        PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+          PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
     );
   }
 
@@ -82,16 +86,19 @@ export default class Group implements IEntity {
 
   public async connect() {
     await this.chief.start();
-    this.members.ForEach(async (t: Account) => t.start());
+    this.members.ForEach(async t => t !== undefined && t.start());
   }
 
   public disconnect() {
     this.chief.stop();
-    this.members.ForEach((t: Account) => t.stop());
+    this.members.ForEach(t => t !== undefined && t.stop());
   }
 
   public membersCleaningAndClearing() {
-    this.members.ForEach((t: Account) => {
+    this.members.ForEach(t => {
+      if (!t) {
+        return;
+      }
       t.game.managers.gathers.cancelGather();
       t.game.managers.interactives.cancelUse();
       t.scripts.actionsManager.clearEverything();
@@ -112,15 +119,17 @@ export default class Group implements IEntity {
 
   public isGroupMember(playerId: number): boolean {
     return (
-      this.members.FirstOrDefault(m => m.game.character.id === playerId) !==
-      null
+      this.members.FirstOrDefault(
+        m => m !== undefined && m.game.character.id === playerId
+      ) !== null
     );
   }
 
   public async regroupMembersIfNeeded() {
     if (
       this.members.All(
-        (m: Account) =>
+        m =>
+          m !== undefined &&
           m.game.map.currentPosition === this.chief.game.map.currentPosition
       )
     ) {
@@ -131,7 +140,9 @@ export default class Group implements IEntity {
 
   public async waitForMembersToJoinFight() {
     while (
-      this.members.Any(m => m.state !== AccountStates.FIGHTING) &&
+      this.members.Any(
+        m => m !== undefined && m.state !== AccountStates.FIGHTING
+      ) &&
       !this.chief.game.fight.isFightStarted
     ) {
       // Waiting for members to join the fight...
@@ -144,6 +155,9 @@ export default class Group implements IEntity {
       return;
     }
     this.members.ForEach(t => {
+      if (!t) {
+        return;
+      }
       if (t.state !== AccountStates.FIGHTING) {
         t.network.sendMessageFree("GameFightJoinRequestMessage", {
           fightId: this.chief.game.fight.fightId,
@@ -171,6 +185,9 @@ export default class Group implements IEntity {
     }
 
     this.members.ForEach(async t => {
+      if (!t) {
+        return;
+      }
       await t.scripts.actionsManager.enqueueAction(
         action,
         startDequeueingAction
@@ -204,10 +221,13 @@ export default class Group implements IEntity {
     this.signalMembersToJoinFight();
   };
 
-  private memberActionsFinished = (data: {
+  private memberActionsFinished = (data?: {
     account: Account;
     mapChanged: boolean;
   }) => {
+    if (!data) {
+      return;
+    }
     data.account.logger.logDebug(
       LanguageManager.trans("group"),
       LanguageManager.trans("finishedActions")
@@ -220,11 +240,11 @@ export default class Group implements IEntity {
     }
   };
 
-  private accountRecaptchaResolved = async (data: {
+  private accountRecaptchaResolved = async (data?: {
     account: Account;
     success: boolean;
   }) => {
-    if (!data.success) {
+    if (data && !data.success) {
       return;
     }
     // Check if this was the last member that got the captcha

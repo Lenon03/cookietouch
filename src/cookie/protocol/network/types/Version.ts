@@ -8,7 +8,14 @@ export default class Version extends Type {
   public patch: number;
   public buildType: number;
 
-  constructor(major = 0, minor = 0, release = 0, revision = 0, patch = 0, buildType = 0) {
+  constructor(
+    major = 0,
+    minor = 0,
+    release = 0,
+    revision = 0,
+    patch = 0,
+    buildType = 0
+  ) {
     super();
     this.major = major;
     this.minor = minor;

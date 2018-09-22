@@ -29,12 +29,12 @@ import { List } from "linqts";
 export default class FightsExtension implements IClearable {
   public config: FightsConfiguration;
   private account: Account;
-  private awaitingSequenceEnd: boolean;
-  private _endTurn: boolean;
-  private spellCasted: boolean;
-  private spellIndex: number;
+  private awaitingSequenceEnd: boolean = false;
+  private _endTurn: boolean = false;
+  private spellCasted: boolean = false;
+  private spellIndex: number = 0;
   private spellsManager: SpellsManager;
-  private turnId: number;
+  private turnId: number = 0;
   private utility: FightsUtility;
 
   constructor(account: Account) {
@@ -49,7 +49,7 @@ export default class FightsExtension implements IClearable {
 
   get spells() {
     return this.account.extensions.characterCreation.isDoingTutorial
-      ? TutorialHelper.baseSpells.get(this.account.game.character.breed)
+      ? TutorialHelper.baseSpells.get(this.account.game.character.breed)!
       : new List(this.config.spells);
   }
 
@@ -134,6 +134,12 @@ export default class FightsExtension implements IClearable {
     const selectAllies = allies.Select(a => a.cellId);
     const defenders = new List(message.positionsForDefenders);
     const challengers = new List(message.positionsForChallengers);
+
+    if (!this.account.game.fight.playedFighter) {
+      // TODO: ??
+      return;
+    }
+
     const possiblePositions =
       this.account.game.fight.playedFighter.team === TeamEnum.TEAM_CHALLENGER
         ? challengers.Except(selectAllies)
@@ -162,7 +168,7 @@ export default class FightsExtension implements IClearable {
     }
     // If this account is a group chief, wait for the group members to join (or for the fight to start :/)
     if (this.account.hasGroup && this.account.isGroupChief) {
-      await this.account.group.waitForMembersToJoinFight();
+      await this.account.group!.waitForMembersToJoinFight();
       // Group special case: If one of the members didn't join, and the fight started, there is no need to send ready message
       if (this.account.game.fight.isFightStarted) {
         return;
@@ -188,7 +194,7 @@ export default class FightsExtension implements IClearable {
 
     if (this.account.hasGroup && this.account.isGroupChief) {
       if (
-        !this.account.group.isGroupMember(message.informations.contextualId)
+        !this.account.group!.isGroupMember(message.informations.contextualId)
       ) {
         await sleep(800);
         await this.account.network.sendMessageFree("GameContextKickMessage", {
@@ -199,7 +205,7 @@ export default class FightsExtension implements IClearable {
           LanguageManager.trans("playerKicked")
         );
         // If this person took a member's place, send a group signal so that the member joins again
-        this.account.group.signalMembersToJoinFight();
+        this.account.group!.signalMembersToJoinFight();
       }
     }
   }
@@ -214,6 +220,9 @@ export default class FightsExtension implements IClearable {
   private fightJoined = () => {
     this.turnId = 0;
     this.spells.ForEach(s => {
+      if (!s) {
+        return;
+      }
       s.lastTurn = 0;
       s.remainingRelaunchs = s.relaunchs;
     });
@@ -261,7 +270,10 @@ export default class FightsExtension implements IClearable {
   };
 
   private async endTurn() {
-    if (!this.account.game.fight.isOurTurn) {
+    if (
+      !this.account.game.fight.isOurTurn ||
+      !this.account.game.fight.playedFighter
+    ) {
       return;
     }
     if (this.config.tactic === FightTactics.PASSIVE) {
@@ -280,6 +292,18 @@ export default class FightsExtension implements IClearable {
       this.account.game.fight.playedFighter.movementPoints > 0 &&
       this.account.game.fight.enemies.length > 0
     ) {
+      const nearestt = this.account.game.fight.getNearestEnemy();
+      let maxx = false;
+      if (nearestt) {
+        const mp = MapPoint.fromCellId(nearestt.cellId);
+        const playerMp = MapPoint.fromCellId(
+          this.account.game.fight.playedFighter.cellId
+        );
+        maxx =
+          !mp || !playerMp
+            ? true
+            : mp.distanceToCell(playerMp) >= this.config.maxCells;
+      }
       // If no spell casted, approach event if the tactic is fugitive
       // Also if distance to the nearest enemy is >= maxCells
       const nearest =
@@ -287,11 +311,7 @@ export default class FightsExtension implements IClearable {
         ((this.config.approachWhenNoSpellCasted ||
           this.account.extensions.characterCreation.isDoingTutorial) &&
           !this.spellCasted) ||
-        MapPoint.fromCellId(
-          this.account.game.fight.getNearestEnemy().cellId
-        ).distanceToCell(
-          MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)
-        ) >= this.config.maxCells;
+        maxx;
       const node = this.utility.getNearestOrFarthestEndMoveNode(
         nearest,
         this.config.tactic === FightTactics.FUGITIVE ||
@@ -381,7 +401,10 @@ export default class FightsExtension implements IClearable {
   private async tryApproachingForSpell(
     possiblePlacements: number[]
   ): Promise<boolean> {
-    if (this.config.spellToApproach === -1) {
+    if (
+      this.config.spellToApproach === -1 ||
+      !this.account.game.fight.playedFighter
+    ) {
       return false;
     }
     const spellResp = await DataManager.get<Spells>(
@@ -432,7 +455,10 @@ export default class FightsExtension implements IClearable {
   private async tryApproachingMonster(
     possiblePlacements: number[]
   ): Promise<boolean> {
-    if (this.config.monsterToApproach === -1) {
+    if (
+      this.config.monsterToApproach === -1 ||
+      !this.account.game.fight.playedFighter
+    ) {
       return false;
     }
     const monster = this.account.game.fight.monsters.find(
@@ -450,9 +476,12 @@ export default class FightsExtension implements IClearable {
     let distance = -1;
 
     for (const cell of possiblePlacements) {
-      const tempDistance = MapPoint.fromCellId(monster.cellId).distanceToCell(
-        MapPoint.fromCellId(cell)
-      );
+      const monsterMp = MapPoint.fromCellId(monster.cellId);
+      const mp = MapPoint.fromCellId(cell);
+      if (!monsterMp || !mp) {
+        continue;
+      }
+      const tempDistance = monsterMp.distanceToCell(mp);
       if (cellId === -1 || tempDistance < distance) {
         cellId = cell;
         distance = tempDistance;

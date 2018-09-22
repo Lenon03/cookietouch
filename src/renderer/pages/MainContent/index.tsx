@@ -5,16 +5,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CookieMain from "@renderer/CookieMain";
 import AccountMain from "@renderer/pages/AccountMain";
 import Infos from "@renderer/pages/Infos";
-import { mainContentStyles } from "@renderer/pages/MainContent/styles";
 import {
   IMainContentProps,
   IMainContentState,
-  MainContentProps
+  mainContentStyles
 } from "@renderer/pages/MainContent/types";
 import Sidenav from "@renderer/pages/Sidenav";
 import * as React from "react";
 
-class MainContent extends React.Component<MainContentProps, IMainContentState> {
+class MainContent extends React.Component<
+  IMainContentProps,
+  IMainContentState
+> {
   public state: IMainContentState = {
     selectedAccount: CookieMain.selectedAccount
   };
@@ -62,25 +64,26 @@ class MainContent extends React.Component<MainContentProps, IMainContentState> {
                         <Infos account={account} />
                         <AccountMain account={account} />
                       </div>
-                      {account.group.members.ToArray().map((member, idx) => {
-                        return (
-                          <div
-                            key={idx}
-                            style={{
-                              display:
-                                selectedAccount.accountConfig.character ===
-                                  member.accountConfig.character &&
-                                selectedAccount.accountConfig.username ===
-                                  member.accountConfig.username
-                                  ? "block"
-                                  : "none"
-                            }}
-                          >
-                            <Infos account={member} />
-                            <AccountMain account={member} />
-                          </div>
-                        );
-                      })}
+                      {account.group &&
+                        account.group.members.ToArray().map((member, idx) => {
+                          return (
+                            <div
+                              key={idx}
+                              style={{
+                                display:
+                                  selectedAccount.accountConfig.character ===
+                                    member.accountConfig.character &&
+                                  selectedAccount.accountConfig.username ===
+                                    member.accountConfig.username
+                                    ? "block"
+                                    : "none"
+                              }}
+                            >
+                              <Infos account={member} />
+                              <AccountMain account={member} />
+                            </div>
+                          );
+                        })}
                     </div>
                   );
                 } else {
@@ -114,9 +117,9 @@ class MainContent extends React.Component<MainContentProps, IMainContentState> {
     );
   }
 
-  private selectedAccountChanged = (account: Account) => {
-    this.setState({ selectedAccount: account });
+  private selectedAccountChanged = (account?: Account | null) => {
+    this.setState({ selectedAccount: account || null });
   };
 }
 
-export default withStyles(mainContentStyles)<IMainContentProps>(MainContent);
+export default withStyles(mainContentStyles)(MainContent);

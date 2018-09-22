@@ -5,13 +5,13 @@ import DTConstants from "@/protocol/DTConstants";
 import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInGroupLightInformations";
 
 export default class MonsterEntry {
-  public genericId: number;
-  public grade: number;
-  public name: string;
-  public level: number;
-  public boss: boolean;
-  public miniBoss: boolean;
-  public questMonster: boolean;
+  public genericId: number = 0;
+  public grade: number = 0;
+  public name: string = "";
+  public level: number = 0;
+  public boss: boolean = false;
+  public miniBoss: boolean = false;
+  public questMonster: boolean = false;
 
   public static async setup(
     infos: MonsterInGroupLightInformations

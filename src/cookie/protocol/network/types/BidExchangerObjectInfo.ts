@@ -6,7 +6,11 @@ export default class BidExchangerObjectInfo extends Type {
   public prices: number[];
   public objectUID: number;
 
-  constructor(objectUID = 0, effects: ObjectEffect[] = null, prices: number[] = null) {
+  constructor(
+    objectUID = 0,
+    effects: ObjectEffect[] = [],
+    prices: number[] = []
+  ) {
     super();
     this.objectUID = objectUID;
     this.effects = effects;

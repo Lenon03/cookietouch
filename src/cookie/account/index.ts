@@ -45,7 +45,7 @@ export default class Account implements IEntity {
   public config: Configuration;
   public extensions: Extensions;
   public scripts: ScriptsManager;
-  public group: Group = null;
+  public group: Group | null = null;
   public planificationTimer: TimerWrapper;
   public statistics: StatisticsManager;
   private readonly onStateChanged = new LiteEvent<void>();
@@ -57,7 +57,7 @@ export default class Account implements IEntity {
   }>();
   private _wasScriptRunning = false;
   private _wasScriptEnabled = false;
-  private _state: AccountStates;
+  private _state: AccountStates = AccountStates.DISCONNECTED;
 
   constructor(config: AccountConfiguration) {
     this.logger = new Logger();
@@ -87,7 +87,7 @@ export default class Account implements IEntity {
   }
 
   get isGroupChief(): boolean {
-    return !this.hasGroup || this.group.chief === this;
+    return !this.hasGroup || (this.group && this.group.chief === this) || false;
   }
 
   public get StateChanged() {
@@ -207,7 +207,10 @@ export default class Account implements IEntity {
     );
 
     const handleShopOpenCategorySuccess = (account: Account, message: any) => {
-      const choice = message.articles.find(a =>
+      if (!this.data.bakHardToSoftCurrentRate) {
+        return;
+      }
+      const choice = message.articles.find((a: any) =>
         (a.name as string).includes(duration.toString())
       );
       this.network.send("shopBuyRequest", {

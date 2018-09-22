@@ -5,10 +5,13 @@ export default class QuestActiveDetailedInformations extends QuestActiveInformat
   public objectives: QuestObjectiveInformations[];
   public stepId: number;
 
-  constructor(questId = 0, stepId = 0, objectives: QuestObjectiveInformations[] = null) {
+  constructor(
+    questId = 0,
+    stepId = 0,
+    objectives: QuestObjectiveInformations[] = []
+  ) {
     super(questId);
     this.objectives = objectives;
     this.stepId = stepId;
-
   }
 }

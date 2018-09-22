@@ -5,7 +5,7 @@ export default class MoveNode {
   public mp: number;
   public from: number;
   public reachable: boolean;
-  public path: FightPath;
+  public path: FightPath | null = null;
 
   constructor(ap: number, mp: number, from: number, reachable: boolean) {
     this.ap = ap;

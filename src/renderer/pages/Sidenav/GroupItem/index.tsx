@@ -11,15 +11,14 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import CookieMain from "@renderer/CookieMain";
-import { groupItemStyles } from "@renderer/pages/Sidenav/GroupItem/styles";
 import {
-  GroupItemProps,
+  groupItemStyles,
   IGroupItemProps,
   IGroupItemState
 } from "@renderer/pages/Sidenav/GroupItem/types";
 import * as React from "react";
 
-class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
+class GroupItem extends React.Component<IGroupItemProps, IGroupItemState> {
   public state: IGroupItemState = {
     open: false
   };
@@ -36,8 +35,9 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
             backgroundColor:
               CookieMain.selectedAccount &&
               CookieMain.selectedAccount.accountConfig.username ===
-                group.chief.accountConfig.username &&
-              "rgba(180, 180, 180, 0.2)"
+                group.chief.accountConfig.username
+                ? "rgba(180, 180, 180, 0.2)"
+                : undefined
           }}
         >
           <ListItemIcon>
@@ -79,8 +79,9 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
                   backgroundColor:
                     CookieMain.selectedAccount &&
                     CookieMain.selectedAccount.accountConfig.username ===
-                      m.accountConfig.username &&
-                    "rgba(180, 180, 180, 0.2)"
+                      m.accountConfig.username
+                      ? "rgba(180, 180, 180, 0.2)"
+                      : undefined
                 }}
               >
                 <ListItemIcon>
@@ -119,4 +120,4 @@ class GroupItem extends React.Component<GroupItemProps, IGroupItemState> {
   };
 }
 
-export default withStyles(groupItemStyles)<IGroupItemProps>(GroupItem);
+export default withStyles(groupItemStyles)(GroupItem);

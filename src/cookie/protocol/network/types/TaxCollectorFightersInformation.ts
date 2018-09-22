@@ -6,8 +6,11 @@ export default class TaxCollectorFightersInformation extends Type {
   public enemyCharactersInformations: CharacterMinimalPlusLookInformations[];
   public collectorId: number;
 
-  constructor(collectorId = 0, allyCharactersInformations: CharacterMinimalPlusLookInformations[] = null,
-              enemyCharactersInformations: CharacterMinimalPlusLookInformations[] = null) {
+  constructor(
+    collectorId = 0,
+    allyCharactersInformations: CharacterMinimalPlusLookInformations[] = [],
+    enemyCharactersInformations: CharacterMinimalPlusLookInformations[] = []
+  ) {
     super();
     this.allyCharactersInformations = allyCharactersInformations;
     this.enemyCharactersInformations = enemyCharactersInformations;

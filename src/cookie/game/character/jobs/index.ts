@@ -1,8 +1,10 @@
 import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import JobEntry from "@/game/character/jobs/JobEntry";
 import DataManager from "@/protocol/data";
 import Jobs from "@/protocol/data/classes/Jobs";
 import { DataTypes } from "@/protocol/data/DataTypes";
+import JobDescriptionMessage from "@/protocol/network/messages/JobDescriptionMessage";
 import JobExperienceMultiUpdateMessage from "@/protocol/network/messages/JobExperienceMultiUpdateMessage";
 import JobExperienceUpdateMessage from "@/protocol/network/messages/JobExperienceUpdateMessage";
 import JobLevelUpMessage from "@/protocol/network/messages/JobLevelUpMessage";
@@ -15,7 +17,7 @@ import { List } from "linqts";
 export default class Job {
   public jobs: List<JobEntry>;
   private account: Account;
-  private _jobsInitialized: boolean;
+  private _jobsInitialized: boolean = false;
   private readonly onJobsUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -37,13 +39,15 @@ export default class Job {
     return (
       this.jobs.FirstOrDefault(
         j =>
-          j.collectSkills.FirstOrDefault(s => s.interactiveId === id) !==
-          undefined
+          j !== undefined &&
+          j.collectSkills.FirstOrDefault(
+            s => s !== undefined && s.interactiveId === id
+          ) !== undefined
       ) !== undefined
     );
   }
 
-  public async UpdateJobDescriptionMessage(message: any) {
+  public async UpdateJobDescriptionMessage(message: JobDescriptionMessage) {
     this._jobsInitialized = false;
     this.jobs = new List<JobEntry>();
 
@@ -53,10 +57,16 @@ export default class Job {
     );
 
     for (const job of message.jobsDescription) {
-      const jobEntry = await JobEntry.setup(
-        job,
-        jobsData.find(f => f.id === job.jobId).object
-      );
+      const item = jobsData.find(f => f.id === job.jobId);
+      const object = item && item.object;
+      if (!object) {
+        this.account.logger.logWarning(
+          LanguageManager.trans("jobs"),
+          LanguageManager.trans("jobNotFound", job.jobId)
+        );
+        continue;
+      }
+      const jobEntry = await JobEntry.setup(job, object);
       this.jobs.Add(jobEntry);
     }
 
@@ -75,7 +85,7 @@ export default class Job {
 
     for (const exp of message.experiencesUpdate) {
       this.jobs
-        .FirstOrDefault(j => j.id === exp.jobId)
+        .FirstOrDefault(j => j !== undefined && j.id === exp.jobId)
         .UpdateJobExperience(exp);
     }
 
@@ -86,14 +96,16 @@ export default class Job {
     message: JobExperienceUpdateMessage
   ) {
     this.jobs
-      .FirstOrDefault(j => j.id === message.experiencesUpdate.jobId)
+      .FirstOrDefault(
+        j => j !== undefined && j.id === message.experiencesUpdate.jobId
+      )
       .UpdateJobExperience(message.experiencesUpdate);
     this.onJobsUpdated.trigger();
   }
 
   public async UpdateJobLevelUpMessage(message: JobLevelUpMessage) {
     const job = this.jobs.FirstOrDefault(
-      j => j.id === message.jobsDescription.jobId
+      j => j !== undefined && j.id === message.jobsDescription.jobId
     );
     const jobsData = await DataManager.get<Jobs>(
       DataTypes.Jobs,

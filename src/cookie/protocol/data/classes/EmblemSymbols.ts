@@ -1,9 +1,9 @@
 import Data from "@/protocol/data/Data";
 
 export default class EmblemSymbols extends Data {
-  public skinId: number;
-  public iconId: number;
-  public order: number;
-  public categoryId: number;
-  public colorizable: boolean;
+  public skinId: number = 0;
+  public iconId: number = 0;
+  public order: number = 0;
+  public categoryId: number = 0;
+  public colorizable: boolean = false;
 }

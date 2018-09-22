@@ -1,8 +1,49 @@
 import Account from "@/account";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { CharacterStatsTabStyle } from "@renderer/pages/tabs/Character/Stats/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ICharacterStatsTabProps {
+export const characterStatsTabStyles = (theme: Theme) =>
+  createStyles({
+    card: {
+      minWidth: 275,
+      padding: 20
+    },
+    iconStats: {
+      float: "left",
+      marginTop: "6px"
+    },
+    labelPointsStats: {
+      marginLeft: 20,
+      marginTop: 10
+    },
+    labelStats: {
+      float: "left",
+      marginLeft: 12,
+      marginTop: "15px"
+    },
+    lineStats: {
+      alignItems: "center",
+      display: "flex",
+      height: 50,
+      justifyContent: "space-between",
+      verticalAlign: "middle"
+    },
+    root: {
+      flexGrow: 1,
+      padding: 10
+    },
+    statsLabelSpan: {
+      float: "right",
+      justifyItems: "center",
+      marginTop: 16
+    },
+    statsLabelSpanAdd: {
+      float: "right",
+      marginTop: 4
+    }
+  });
+
+export interface ICharacterStatsTabProps
+  extends WithStyles<typeof characterStatsTabStyles> {
   account: Account;
 }
 
@@ -25,6 +66,3 @@ export interface ICharacterStatsTabState {
   agility: number;
   statsPoints: number;
 }
-
-export type CharacterStatsTabProps = ICharacterStatsTabProps &
-  WithStyles<CharacterStatsTabStyle>;

@@ -7,7 +7,11 @@ export default class GameContextActorInformations extends Type {
   public look: EntityLook;
   public disposition: EntityDispositionInformations;
 
-  constructor(contextualId = 0, look: EntityLook = null, disposition: EntityDispositionInformations = null) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations()
+  ) {
     super();
     this.contextualId = contextualId;
     this.look = look;

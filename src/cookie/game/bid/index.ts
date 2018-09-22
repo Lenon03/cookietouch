@@ -7,18 +7,20 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import { ExchangeErrorEnum } from "@/protocol/enums/ExchangeErrorEnum";
 import BidExchangerObjectInfo from "@/protocol/network/types/BidExchangerObjectInfo";
 import ObjectItemToSellInBid from "@/protocol/network/types/ObjectItemToSellInBid";
-import { Deferred } from "@/utils/Deferred";
+import { Deferred, IDeferred } from "@/utils/Deferred";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import { List } from "linqts";
 
 export default class Bid implements IClearable {
-  public maxItemPerAccount: number;
-  public objectsInSale: List<ObjectItemToSellInBid>;
+  public maxItemPerAccount: number = 0;
+  public objectsInSale: List<ObjectItemToSellInBid> = new List();
 
-  private _itemDescription = Deferred<List<BidExchangerObjectInfo>>();
-  private _lastSearchedGID: number;
+  private _itemDescription: IDeferred<
+    List<BidExchangerObjectInfo>
+  > | null = Deferred<List<BidExchangerObjectInfo>>();
+  private _lastSearchedGID: number = 0;
   private account: Account;
   private readonly onStartedBuying = new LiteEvent<void>();
   private readonly onStartedSelling = new LiteEvent<void>();
@@ -76,12 +78,12 @@ export default class Bid implements IClearable {
 
   public async getItemPrices(gid: number): Promise<number[]> {
     if (this.account.state !== AccountStates.BUYING) {
-      return null;
+      return [];
     }
 
     const resp = await this.initializeGetItemPrice(gid);
-    if (!resp) {
-      return null;
+    if (!resp || !this._itemDescription) {
+      return [];
     }
 
     // Item not found in bid
@@ -178,7 +180,7 @@ export default class Bid implements IClearable {
     }
 
     const itemInSale = this.objectsInSale.FirstOrDefault(
-      o => o.objectUID === uid
+      o => o !== undefined && o.objectUID === uid
     );
 
     if (itemInSale === null) {
@@ -203,7 +205,7 @@ export default class Bid implements IClearable {
     }
 
     const itemInSale = this.objectsInSale.FirstOrDefault(
-      o => o.objectUID === uid
+      o => o !== undefined && o.objectUID === uid
     );
 
     if (itemInSale === null) {
@@ -230,6 +232,9 @@ export default class Bid implements IClearable {
   public async UpdateExchangeTypesItemsExchangerDescriptionForUserMessage(
     message: any
   ) {
+    if (!this._itemDescription) {
+      return;
+    }
     this._itemDescription.resolve(new List(message.itemTypeDescriptions));
   }
 
@@ -248,7 +253,7 @@ export default class Bid implements IClearable {
     if (message.errorType !== 11 || this._itemDescription === null) {
       return;
     }
-    this._itemDescription.resolve(null);
+    this._itemDescription.resolve(new List());
   }
 
   public async UpdateExchangeLeaveMessage(message: any) {
@@ -267,19 +272,19 @@ export default class Bid implements IClearable {
   private async getCheapestItem(
     gid: number,
     lot: number
-  ): Promise<BidExchangerObjectInfo> {
+  ): Promise<BidExchangerObjectInfo | null> {
     if (this.account.state !== AccountStates.BUYING) {
       return null;
     }
 
     const resp = await this.initializeGetItemPrice(gid);
-    if (!resp) {
+    if (!resp || !this._itemDescription) {
       return null;
     }
 
     const list = await this._itemDescription.promise;
 
-    if (list === null || list.Count() === 0) {
+    if (list.Count() === 0) {
       return null;
     }
 

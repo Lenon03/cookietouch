@@ -6,8 +6,14 @@ import GuildInformations from "@/protocol/network/types/GuildInformations";
 export default class GameRolePlayMerchantWithGuildInformations extends GameRolePlayMerchantInformations {
   public guildInformations: GuildInformations;
 
-  constructor(contextualId = 0, look: EntityLook, disposition: EntityDispositionInformations,
-              name = "", sellType = 0, guildInformations: GuildInformations) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name = "",
+    sellType = 0,
+    guildInformations = new GuildInformations()
+  ) {
     super(contextualId, look, disposition, name, sellType);
     this.guildInformations = guildInformations;
   }

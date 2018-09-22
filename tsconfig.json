@@ -3,15 +3,16 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "esnext",
+    "strict": true,
     "removeComments": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "jsx": "react",
     "sourceRoot": "/",
-    "strict": false,
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],
+      "@main/*": ["main/*"],
       "@logger": ["cookie/core/logger"],
       "@renderer/*": ["renderer/*"]
     }

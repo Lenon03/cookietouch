@@ -8,7 +8,7 @@ export default class {
   public bottomNeighbourId: number;
   public leftNeighbourId: number;
   public rightNeighbourId: number;
-  public shadowBonusOnEntities: number;
+  public shadowBonusOnEntities: number = 0;
   public cells: Cell[] = [];
   public midgroundLayer = new Map<number, GraphicalElement[]>();
   public atlasLayout = new AtlasLayout();

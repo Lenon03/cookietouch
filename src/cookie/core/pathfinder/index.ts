@@ -5,7 +5,7 @@ import Shaper from "@/core/pathfinder/shapes/zones/Shaper";
 import MonstersGroupEntry from "@/game/map/entities/MonstersGroupEntry";
 import Map from "@/protocol/data/map";
 import Cell from "@/protocol/data/map/Cell";
-import { union } from "@/utils/Arrays";
+import { notEmpty, union } from "@/utils/Arrays";
 import agroData from "./agroData.json";
 
 export default class Pathfinder {
@@ -15,8 +15,8 @@ export default class Pathfinder {
   private readonly HEIGHT = 36;
   private firstCellZone = 0;
   private grid: CellData[][];
-  private oldGrid: CellData[][];
-  private oldMovementSystem: boolean;
+  private oldGrid: CellData[][] = [];
+  private oldMovementSystem: boolean = false;
 
   constructor() {
     this.grid = Array(this.WIDTH)
@@ -24,7 +24,11 @@ export default class Pathfinder {
       .map(() => Array(this.HEIGHT).fill(0));
   }
 
-  public setMap(map: Map) {
+  public setMap(map: Map | null) {
+    if (!map) {
+      // TODO: Error?
+      return;
+    }
     // TODO: add whether a map uses the old system onto the map data
     // when it is generated on the server side
     // this.oldMovementSystem = map.usesOldMovementSystem;
@@ -54,14 +58,17 @@ export default class Pathfinder {
   ): number[] {
     this.antiAgro(monstersGroup, antiAgro);
     let c = 0;
-    let candidate: CellPath = null;
+    let candidate: CellPath | null = null;
     const srcPos = MapPoint.fromCellId(source);
     const dstPos = MapPoint.fromCellId(target);
+    if (!srcPos || !dstPos) {
+      return [];
+    }
     const si = srcPos.x + 1;
     const sj = srcPos.y + 1;
     const srcCell = this.grid[si][sj];
     if (srcCell.zone === -1) {
-      let bestFit: CellData = null;
+      let bestFit: CellData | null = null;
       let bestDist = Infinity;
       let bestFloorDiff = Infinity;
       for (let i = -1; i <= 1; i++) {
@@ -86,29 +93,33 @@ export default class Pathfinder {
           }
         }
       }
-      if (bestFit !== null) {
-        return [
-          source,
-          MapPoint.fromCoords(bestFit.i + 1, bestFit.j + 1).cellId
-        ];
+
+      if (bestFit) {
+        const point = MapPoint.fromCoords(bestFit.i + 1, bestFit.j + 1);
+        if (point) {
+          return [source, point.cellId];
+        }
       }
       throw new Error(`[Pathfinder] Player stuck in ${si}/${sj}`);
     }
     const di = dstPos.x + 1;
     const dj = dstPos.y + 1;
-    let cellPos: MapPoint = null;
+    let cellPos: MapPoint | null = null;
     for (const cellId of occupiedCells) {
       cellPos = MapPoint.fromCellId(cellId);
+      if (!cellPos) {
+        continue;
+      }
       this.grid[cellPos.x + 1][
         cellPos.y + 1
       ].weight += this.OCCUPIED_CELL_WEIGHT;
     }
-    let candidates = [];
-    const selections = [];
+    let candidates: CellPath[] = [];
+    const selections: CellPath[] = [];
     const distSrcDst = Math.sqrt(Math.pow(si - di, 2) + Math.pow(sj - dj, 2));
     let selection = new CellPath(si, sj, 0, distSrcDst, null);
-    let reachingPath: CellPath = null;
-    let closestPath = selection;
+    let reachingPath: CellPath | null = null;
+    let closestPath: CellPath | null = selection;
     while (selection.i !== di || selection.j !== dj) {
       this.addCandidates(selection, di, dj, candidates, allowDiagonal);
       const n = candidates.length;
@@ -161,15 +172,20 @@ export default class Pathfinder {
     }
     for (const cellId of occupiedCells) {
       cellPos = MapPoint.fromCellId(cellId);
+      if (!cellPos) {
+        continue;
+      }
       this.grid[cellPos.x + 1][
         cellPos.y + 1
       ].weight += this.OCCUPIED_CELL_WEIGHT;
     }
-    const shortestPath = [];
+    const shortestPath: number[] = [];
     while (closestPath !== null) {
-      shortestPath.unshift(
-        MapPoint.fromCoords(closestPath.i - 1, closestPath.j - 1).cellId
-      );
+      const mp = MapPoint.fromCoords(closestPath.i - 1, closestPath.j - 1);
+      if (!mp) {
+        continue;
+      }
+      shortestPath.unshift(mp.cellId);
       closestPath = closestPath.path;
     }
     return shortestPath;
@@ -185,6 +201,9 @@ export default class Pathfinder {
     for (let i = 0; i < path.length; i++) {
       let direction = 0;
       const coord = MapPoint.fromCellId(path[i]);
+      if (!coord) {
+        continue;
+      }
       if (i === 0) {
         direction = -1;
       } else {
@@ -226,11 +245,14 @@ export default class Pathfinder {
         accessibleCells.push(MapPoint.fromCoords(cell.i - 1, cell.j - 1));
       }
     }
-    return accessibleCells;
+    return accessibleCells.filter(notEmpty);
   }
 
   public updateCellPath(cellId: number, cell: Cell) {
     const p = MapPoint.fromCellId(cellId);
+    if (!p) {
+      return;
+    }
     this.updateCellPath2(cell, this.grid[p.x + 1][p.y + 1]);
   }
 
@@ -242,8 +264,14 @@ export default class Pathfinder {
     result.push(path[0]);
 
     let previous = MapPoint.fromCellId(path[0]);
+    if (!previous) {
+      return result;
+    }
     for (let i = 1; i < path.length; i++) {
       const coord = MapPoint.fromCellId(path[i]);
+      if (!coord) {
+        continue;
+      }
       let incrX = 0;
       let incrY = 0;
       const c = Math.abs(coord.x - previous.x);
@@ -253,7 +281,11 @@ export default class Pathfinder {
           incrX = coord.x > previous.x ? 1 : -1;
           previous.x += incrX;
           while (previous.x !== coord.x) {
-            result.push(MapPoint.fromCoords(previous.x, previous.y).cellId);
+            const mp = MapPoint.fromCoords(previous.x, previous.y);
+            if (!mp) {
+              continue;
+            }
+            result.push(mp.cellId);
             previous.x += incrX;
           }
         }
@@ -261,7 +293,11 @@ export default class Pathfinder {
           incrY = coord.y > previous.y ? 1 : -1;
           previous.y += incrY;
           while (previous.y !== coord.y) {
-            result.push(MapPoint.fromCoords(previous.x, previous.y).cellId);
+            const mp = MapPoint.fromCoords(previous.x, previous.y);
+            if (!mp) {
+              continue;
+            }
+            result.push(mp.cellId);
             previous.y += incrY;
           }
         }
@@ -269,7 +305,11 @@ export default class Pathfinder {
         incrX = coord.x > previous.x ? 1 : -1;
         incrY = coord.y > previous.y ? 1 : -1;
         while (previous.y !== coord.y) {
-          result.push(MapPoint.fromCoords(previous.x, previous.y).cellId);
+          const mp = MapPoint.fromCoords(previous.x, previous.y);
+          if (!mp) {
+            continue;
+          }
+          result.push(mp.cellId);
           previous.x += incrX;
           previous.y += incrY;
         }
@@ -285,8 +325,14 @@ export default class Pathfinder {
       return false;
     }
     let prev = MapPoint.fromCellId(path[0]);
+    if (!prev) {
+      return false;
+    }
     for (const c of path) {
       const coord = MapPoint.fromCellId(c);
+      if (!coord) {
+        continue;
+      }
       if (Math.abs(prev.x - coord.x) > 1) {
         return false;
       }
@@ -298,7 +344,7 @@ export default class Pathfinder {
     return true;
   }
 
-  private updateCellPath2(cell: Cell, cellPath: CellData) {
+  private updateCellPath2(cell: Cell | null, cellPath: CellData) {
     if (cell !== null && cell.isWalkable(false)) {
       cellPath.floor = cell.f || 0;
       cellPath.zone = cell.z || 0;
@@ -460,6 +506,9 @@ export default class Pathfinder {
 
     for (const m of aggressiveMonstersGroups) {
       const cell = MapPoint.fromCellId(m.cellId);
+      if (!cell) {
+        continue;
+      }
       cells.push(...Shaper.shapeRing(cell.x, cell.y, 0, 3));
     }
 

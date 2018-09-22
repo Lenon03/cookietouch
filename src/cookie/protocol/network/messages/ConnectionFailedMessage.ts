@@ -5,5 +5,6 @@ export default class ConnectionFailedMessage extends Message {
 
   constructor(reason: string) {
     super();
+    this.reason = reason;
   }
 }

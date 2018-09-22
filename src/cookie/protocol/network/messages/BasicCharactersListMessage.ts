@@ -7,6 +7,5 @@ export default class BasicCharactersListMessage extends Message {
   constructor(characters: CharacterBaseInformations[]) {
     super();
     this.characters = characters;
-
   }
 }

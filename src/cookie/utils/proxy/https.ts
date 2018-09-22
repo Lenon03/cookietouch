@@ -62,7 +62,7 @@ export default class HttpsProxyAgent extends Agent {
    * @api public
    */
 
-  protected callback(req?, opts?, fn?) {
+  protected callback(req?: any, opts?: any, fn?: any) {
     const proxy = this.proxy;
 
     // create a socket connection to the proxy server
@@ -72,7 +72,7 @@ export default class HttpsProxyAgent extends Agent {
     // the CONNECT response, so that if the response is anything other than an "200"
     // response code, then we can re-play the "data" events on the socket once the
     // HTTP parser is hooked up...
-    let buffers: Buffer[] = [];
+    let buffers: Buffer[] | null = [];
     let buffersLength = 0;
 
     function read() {
@@ -92,7 +92,7 @@ export default class HttpsProxyAgent extends Agent {
       socket.removeListener("readable", read);
     }
 
-    function onclose(err) {
+    function onclose(err: any) {
       // debug("onclose had error %o", err);
     }
 
@@ -100,15 +100,15 @@ export default class HttpsProxyAgent extends Agent {
       // debug("onend");
     }
 
-    function onerror(err) {
+    function onerror(err: any) {
       cleanup();
       fn(err);
     }
 
     function ondata(b: Buffer) {
-      buffers.push(b);
+      buffers!.push(b);
       buffersLength += b.length;
-      let buffered = Buffer.concat(buffers, buffersLength);
+      let buffered: Buffer | null = Buffer.concat(buffers!, buffersLength);
       const str = buffered.toString("ascii");
 
       if (!~str.indexOf("\r\n\r\n")) {
@@ -165,12 +165,12 @@ export default class HttpsProxyAgent extends Agent {
       }
     }
 
-    function onsocket(sockett) {
+    function onsocket(sockett: any) {
       // replay the "buffers" Buffer onto the `socket`, since at this point
       // the HTTP module machinery has been hooked up for the user
       if ("function" === typeof sockett.ondata) {
         // node <= v0.11.3, the `ondata` function is set on the socket
-        sockett.ondata(buffers, 0, buffers.length);
+        sockett.ondata(buffers, 0, buffers!.length);
       } else if (sockett.listeners("data").length > 0) {
         // node > v0.11.3, the "data" event is listened for directly
         sockett.emit("data", buffers);
@@ -220,6 +220,6 @@ export default class HttpsProxyAgent extends Agent {
   }
 }
 
-function isDefaultPort(port, secure) {
+function isDefaultPort(port: 80 | 443, secure: boolean) {
   return Boolean((!secure && port === 80) || (secure && port === 443));
 }

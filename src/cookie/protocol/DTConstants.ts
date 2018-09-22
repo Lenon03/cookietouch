@@ -56,6 +56,6 @@ export default class DTConstants {
     const response = await axios.get(`${DTConstants.MAIN_URL}/build/script.js`);
     const regex = /.*buildVersion=("|')([0-9]*\.[0-9]*\.[0-9]*)("|')/g;
     const m = regex.exec(response.data.substring(1, 10000));
-    return m[2];
+    return m![2];
   }
 }

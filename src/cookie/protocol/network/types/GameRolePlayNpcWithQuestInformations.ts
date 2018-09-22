@@ -10,7 +10,22 @@ export default class GameRolePlayNpcWithQuestInformations extends Type {
   public sex: boolean;
   public specialArtworkId: number;
 
-  constructor() {
+  constructor(
+    contextualId = 0,
+    disposition: any[] = [],
+    look: any[] = [],
+    npcId = 0,
+    questFlag: GameRolePlayNpcQuestFlag[] = [],
+    sex = false,
+    specialArtworkId = 0
+  ) {
     super();
+    this.contextualId = contextualId;
+    this.disposition = disposition;
+    this.look = look;
+    this.npcId = npcId;
+    this.questFlag = questFlag;
+    this.sex = sex;
+    this.specialArtworkId = specialArtworkId;
   }
 }

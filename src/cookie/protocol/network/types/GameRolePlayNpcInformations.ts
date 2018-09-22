@@ -7,8 +7,14 @@ export default class GameRolePlayNpcInformations extends GameRolePlayActorInform
   public sex: boolean;
   public specialArtworkId: number;
 
-  constructor(contextualId = 0, look: EntityLook = null, disposition: EntityDispositionInformations = null,
-              npcId = 0, sex = false, specialArtworkId = 0) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    npcId = 0,
+    sex = false,
+    specialArtworkId = 0
+  ) {
     super(contextualId, look, disposition);
     this.npcId = npcId;
     this.sex = sex;

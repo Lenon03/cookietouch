@@ -8,8 +8,13 @@ export default class EntityLook extends Type {
   public subEntities: SubEntity[];
   public bonesId: number;
 
-  constructor(bonesId = 0, skins: number[] = null, indexedColors: number[] = null,
-              scales: number[] = null, subEntities: SubEntity[] = null) {
+  constructor(
+    bonesId = 0,
+    skins: number[] = [],
+    indexedColors: number[] = [],
+    scales: number[] = [],
+    subEntities: SubEntity[] = []
+  ) {
     super();
     this.bonesId = bonesId;
     this.skins = skins;

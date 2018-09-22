@@ -1,10 +1,10 @@
 import Data from "@/protocol/data/Data";
 
 export default class ItemTypes extends Data {
-  public nameId: string;
-  public superTypeId: number;
-  public plural: boolean;
-  public gender: number;
-  public rawZone: string;
-  public needUseConfirm: boolean;
+  public nameId: string = "";
+  public superTypeId: number = 0;
+  public plural: boolean = false;
+  public gender: number = 0;
+  public rawZone: string = "";
+  public needUseConfirm: boolean = false;
 }

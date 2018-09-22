@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class AdditionalTaxCollectorInformations extends Type {
-
   public collectorCallerName: string;
   public date: number;
 

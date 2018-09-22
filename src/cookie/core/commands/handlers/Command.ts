@@ -1,5 +1,5 @@
 export default class Command<ICommandProps> {
-  protected args: string[];
+  protected args: string[] = [];
 
   /**
    * Assign each word in the command string to command args.
@@ -15,7 +15,7 @@ export default class Command<ICommandProps> {
    * @memberof Command
    */
   protected parseArgs(command: string): ICommandProps {
-    const parsedArgs = {};
+    const parsedArgs: Record<string, any> = {};
     const commandPayload = command.split(" ").map(word => word.trim());
 
     delete commandPayload[0];

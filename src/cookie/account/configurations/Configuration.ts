@@ -50,10 +50,10 @@ export default class Configuration implements IConfigurationJSON {
   public antiAgro: boolean;
   public pushBullet: PushBulletConfig;
 
-  private authChangedUnsuscribe: firebase.Unsubscribe;
-  private stopDataSnapshot: () => void;
+  private authChangedUnsuscribe: firebase.Unsubscribe | undefined;
+  private stopDataSnapshot: (() => void) | undefined;
 
-  private globalDoc: firebase.firestore.DocumentReference;
+  private globalDoc: firebase.firestore.DocumentReference | undefined;
 
   private readonly onUpdated = new LiteEvent<void>();
 
@@ -83,6 +83,7 @@ export default class Configuration implements IConfigurationJSON {
     this.authorizedTradesFrom = [];
     this.enableSpeedHack = false;
     this.antiAgro = true;
+    this.pushBullet = new PushBulletConfig();
   }
 
   public removeListeners = () => {
@@ -122,6 +123,9 @@ export default class Configuration implements IConfigurationJSON {
   }
 
   public async save() {
+    if (!this.globalDoc) {
+      return;
+    }
     const toSave: IConfigurationJSON = {
       acceptAchievements: this.acceptAchievements,
       antiAgro: this.antiAgro,

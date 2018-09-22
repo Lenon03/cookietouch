@@ -4,9 +4,8 @@ import HumanOption from "@/protocol/network/types/HumanOption";
 export default class HumanOptionGuild extends HumanOption {
   public guildInformations: GuildInformations;
 
-  constructor(guildInformations: GuildInformations = null) {
+  constructor(guildInformations = new GuildInformations()) {
     super();
     this.guildInformations = guildInformations;
-
   }
 }

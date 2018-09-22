@@ -4,22 +4,30 @@ import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import { ExchangeTypeEnum } from "@/protocol/enums/ExchangeTypeEnum";
+import ExchangeIsReadyMessage from "@/protocol/network/messages/ExchangeIsReadyMessage";
+import ExchangeKamaModifiedMessage from "@/protocol/network/messages/ExchangeKamaModifiedMessage";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
+import ExchangeObjectModifiedMessage from "@/protocol/network/messages/ExchangeObjectModifiedMessage";
+import ExchangeObjectRemovedMessage from "@/protocol/network/messages/ExchangeObjectRemovedMessage";
+import ExchangeRequestedTradeMessage from "@/protocol/network/messages/ExchangeRequestedTradeMessage";
+import ExchangeStartedWithPodsMessage from "@/protocol/network/messages/ExchangeStartedWithPodsMessage";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 
 export default class Exchange {
   public objects: ObjectEntry[];
   public remoteObjects: ObjectEntry[];
-  public kamas: number;
-  public remoteKamas: number;
-  public currentWeight: number;
-  public maxWeight: number;
-  public remoteCurrentWeight: number;
-  public remoteMaxWeight: number;
-  public isReady: boolean;
-  public remoteIsReady: boolean;
+  public kamas: number = 0;
+  public remoteKamas: number = 0;
+  public currentWeight: number = 0;
+  public maxWeight: number = 0;
+  public remoteCurrentWeight: number = 0;
+  public remoteMaxWeight: number = 0;
+  public isReady: boolean = false;
+  public remoteIsReady: boolean = false;
   private account: Account;
-  private step: number;
+  private step: number = 0;
   private readonly onExchangeRequested = new LiteEvent<number>();
   private readonly onExchangeStarted = new LiteEvent<void>();
   private readonly onExchangeContentChanged = new LiteEvent<void>();
@@ -160,6 +168,9 @@ export default class Exchange {
     );
 
     this.account.game.character.inventory.equipments.ForEach(async obj => {
+      if (!obj) {
+        return;
+      }
       if (
         !obj.exchangeable ||
         obj.position !==
@@ -175,6 +186,9 @@ export default class Exchange {
     });
 
     this.account.game.character.inventory.consumables.ForEach(async obj => {
+      if (!obj) {
+        return;
+      }
       if (
         !obj.exchangeable ||
         obj.position !==
@@ -190,6 +204,9 @@ export default class Exchange {
     });
 
     this.account.game.character.inventory.resources.ForEach(async obj => {
+      if (!obj) {
+        return;
+      }
       if (
         !obj.exchangeable ||
         obj.position !==
@@ -281,7 +298,9 @@ export default class Exchange {
     return true;
   }
 
-  public async UpdateExchangeRequestedTradeMessage(message: any) {
+  public async UpdateExchangeRequestedTradeMessage(
+    message: ExchangeRequestedTradeMessage
+  ) {
     if (
       message.exchangeType === ExchangeTypeEnum.PLAYER_TRADE &&
       message.target === this.account.game.character.id
@@ -290,7 +309,9 @@ export default class Exchange {
     }
   }
 
-  public async UpdateExchangeStartedWithPodsMessage(message: any) {
+  public async UpdateExchangeStartedWithPodsMessage(
+    message: ExchangeStartedWithPodsMessage
+  ) {
     this.step = 0;
     this.isReady = false;
     this.remoteIsReady = false;
@@ -310,7 +331,9 @@ export default class Exchange {
     this.onExchangeStarted.trigger();
   }
 
-  public async UpdateExchangeObjectAddedMessage(message: any) {
+  public async UpdateExchangeObjectAddedMessage(
+    message: ExchangeObjectAddedMessage
+  ) {
     const newObj = await ObjectEntry.setup(message.object);
     if (message.remote) {
       this.remoteObjects.push(newObj);
@@ -323,10 +346,20 @@ export default class Exchange {
     this.onExchangeContentChanged.trigger();
   }
 
-  public async UpdateExchangeObjectModifiedMessage(message: any) {
+  public async UpdateExchangeObjectModifiedMessage(
+    message: ExchangeObjectModifiedMessage
+  ) {
     const modifiedObj = message.remote
       ? this.remoteObjects.find(o => o.uid === message.object.objectUID)
       : this.objects.find(o => o.uid === message.object.objectUID);
+
+    if (!modifiedObj) {
+      this.account.logger.logWarning(
+        LanguageManager.trans("exchange"),
+        LanguageManager.trans("objectNotFound", message.object.objectUID)
+      );
+      return;
+    }
 
     const qtyDiff = message.object.quantity - modifiedObj.quantity;
     modifiedObj.UpdateObjectItem(message.object);
@@ -340,10 +373,20 @@ export default class Exchange {
     this.onExchangeContentChanged.trigger();
   }
 
-  public async UpdateExchangeObjectRemovedMessage(message: any) {
+  public async UpdateExchangeObjectRemovedMessage(
+    message: ExchangeObjectRemovedMessage
+  ) {
     const removedObj = message.remote
-      ? this.remoteObjects.find(o => o.uid === message.object.objectUID)
-      : this.objects.find(o => o.uid === message.object.objectUID);
+      ? this.remoteObjects.find(o => o.uid === message.objectUID)
+      : this.objects.find(o => o.uid === message.objectUID);
+
+    if (!removedObj) {
+      this.account.logger.logWarning(
+        LanguageManager.trans("exchange"),
+        LanguageManager.trans("objectNotFound", message.objectUID)
+      );
+      return;
+    }
 
     if (message.remote) {
       this.remoteCurrentWeight -= removedObj.quantity * removedObj.realWeight;
@@ -361,7 +404,9 @@ export default class Exchange {
     this.onExchangeContentChanged.trigger();
   }
 
-  public async UpdateExchangeKamaModifiedMessage(message: any) {
+  public async UpdateExchangeKamaModifiedMessage(
+    message: ExchangeKamaModifiedMessage
+  ) {
     if (message.remote) {
       this.remoteKamas = message.quantity;
     } else {
@@ -372,7 +417,7 @@ export default class Exchange {
     this.onExchangeContentChanged.trigger();
   }
 
-  public async UpdateExchangeIsReadyMessage(message: any) {
+  public async UpdateExchangeIsReadyMessage(message: ExchangeIsReadyMessage) {
     if (message.id === this.account.game.character.id) {
       this.isReady = true;
     } else {
@@ -381,7 +426,7 @@ export default class Exchange {
     }
   }
 
-  public async UpdateExchangeLeaveMessage(message: any) {
+  public async UpdateExchangeLeaveMessage(message: ExchangeLeaveMessage) {
     if (this.account.state !== AccountStates.EXCHANGE) {
       return;
     }

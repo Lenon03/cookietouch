@@ -8,6 +8,5 @@ export default class ShortcutObjectItem extends ShortcutObject {
     super(slot);
     this.itemUID = itemUID;
     this.itemGID = itemGID;
-
   }
 }

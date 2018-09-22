@@ -56,7 +56,7 @@ async function main() {
 
 main();
 
-ipcRenderer.on("go-update", (event, info) => {
+ipcRenderer.on("go-update", (event: any, info: any) => {
   let message = LanguageManager.trans("releaseAvailable", info.version);
   if (info.releaseNotes) {
     message += LanguageManager.trans("releaseNotes", info.releaseNotes);

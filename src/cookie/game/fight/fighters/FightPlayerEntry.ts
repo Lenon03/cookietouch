@@ -4,7 +4,7 @@ import GameFightFighterInformations from "@/protocol/network/types/GameFightFigh
 import GameFightMutantInformations from "@/protocol/network/types/GameFightMutantInformations";
 
 export default class FightPlayerEntry extends FighterEntry {
-  public level: number;
+  public level: number = 0;
 
   constructor(infos: GameFightFighterInformations) {
     super(infos);

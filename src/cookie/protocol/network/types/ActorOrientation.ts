@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class ActorOrientation extends Type {
-
   public id: number;
   public direction: number;
 

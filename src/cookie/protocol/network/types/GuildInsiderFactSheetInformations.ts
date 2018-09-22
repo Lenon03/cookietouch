@@ -8,10 +8,19 @@ export default class GuildInsiderFactSheetInformations extends GuildFactSheetInf
   public lastActivity: number;
   public enabled: boolean;
 
-  constructor(guildId = 0, guildName = "", guildEmblem: GuildEmblem = null,
-              leaderId = 0, guildLevel = 0, nbMembers = 0, leaderName = "",
-              nbConnectedMembers = 0, nbTaxCollectors = 0, lastActivity = 0,
-              enabled = false) {
+  constructor(
+    guildId = 0,
+    guildName = "",
+    guildEmblem = new GuildEmblem(),
+    leaderId = 0,
+    guildLevel = 0,
+    nbMembers = 0,
+    leaderName = "",
+    nbConnectedMembers = 0,
+    nbTaxCollectors = 0,
+    lastActivity = 0,
+    enabled = false
+  ) {
     super(guildId, guildName, guildEmblem, leaderId, guildLevel, nbMembers);
     this.leaderName = leaderName;
     this.nbConnectedMembers = nbConnectedMembers;

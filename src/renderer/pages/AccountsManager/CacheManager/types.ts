@@ -1,13 +1,20 @@
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { CacheManagerStyle } from "@renderer/pages/AccountsManager/CacheManager/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ICacheManagerProps {
+export const cacheManagerStyles = (theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: 16
+    },
+    root: {
+      flexGrow: 1
+    }
+  });
+
+export interface ICacheManagerProps
+  extends WithStyles<typeof cacheManagerStyles> {
   //
 }
 
 export interface ICacheManagerState {
   cacheSize: number;
 }
-
-export type CacheManagerProps = ICacheManagerProps &
-  WithStyles<CacheManagerStyle>;

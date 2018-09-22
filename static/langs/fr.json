@@ -496,7 +496,7 @@
   "inJail": "En prison ",
   "inJailBody": "Vous êtes en prison",
   "modOnMap": "Modérateur sur la map",
-  "modOnMapBody" : "Un modérateur est sur votre map",
+  "modOnMapBody": "Un modérateur est sur votre map",
   "modMessage": "Message d'un modérateur",
   "modMessageBody": "Du modérateur ? : ?",
   "privateMessage": "Message privée",
@@ -505,5 +505,7 @@
   "levelUpJobBody": "? maintenant level ?",
   "pushBulletLevelJob": "Level up d'un métier",
   "scriptError": "Erreur de script",
-  "scriptErrorBody": "Votre script rencontre une erreur : ?"
+  "scriptErrorBody": "Votre script rencontre une erreur : ?",
+  "jobNotFound": "Métier #? introuvable",
+  "objectNotFound": "Objet #? introuvable"
 }

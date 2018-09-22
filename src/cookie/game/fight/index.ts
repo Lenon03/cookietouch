@@ -50,15 +50,15 @@ import LiteEvent from "@/utils/LiteEvent";
 import { List } from "linqts";
 
 export default class Fight implements IClearable {
-  public type: FightTypeEnum;
+  public type: FightTypeEnum = FightTypeEnum.FIGHT_TYPE_CHALLENGE;
   public options: FightOptionsEnum[];
-  public isFightStarted: boolean;
-  public playedFighter: FightPlayerEntry = null;
-  public isOurTurn: boolean;
-  public roundNumber: number;
+  public isFightStarted: boolean = false;
+  public playedFighter: FightPlayerEntry | null = null;
+  public isOurTurn: boolean = false;
+  public roundNumber: number = 0;
   public positionsForChallengers = new List<number>();
   public positionsForDefenders = new List<number>();
-  public fightId: number;
+  public fightId: number = 0;
   private account: Account;
   private _allies: Map<number, FighterEntry>;
   private _enemies: Map<number, FighterEntry>;
@@ -97,8 +97,11 @@ export default class Fight implements IClearable {
   }
 
   get invocationsCount() {
+    if (!this.playedFighter) {
+      return 0;
+    }
     return this.fighters.filter(
-      f => f.stats.summoner === this.playedFighter.contextualId
+      f => f.stats.summoner === this.playedFighter!.contextualId
     ).length;
   }
 
@@ -110,9 +113,9 @@ export default class Fight implements IClearable {
     return this.fighters.map(f => f.cellId);
   }
 
-  get weakestEnemy(): FighterEntry {
+  get weakestEnemy(): FighterEntry | null {
     let lp = -1;
-    let enemy: FighterEntry = null;
+    let enemy: FighterEntry | null = null;
 
     for (const enemyEntry of this.enemies) {
       if (!enemyEntry.alive) {
@@ -128,9 +131,9 @@ export default class Fight implements IClearable {
     return enemy;
   }
 
-  get weakestAlly(): FighterEntry {
+  get weakestAlly(): FighterEntry | null {
     let lp = -1;
-    let ally: FighterEntry = null;
+    let ally: FighterEntry | null = null;
 
     for (const allyEntry of this.allies) {
       if (!allyEntry.alive) {
@@ -263,20 +266,20 @@ export default class Fight implements IClearable {
     return this._effectsDurations.has(stateId);
   }
 
-  public getFighter(id: number): FighterEntry {
+  public getFighter(id: number): FighterEntry | null {
     if (this.playedFighter !== null && this.playedFighter.contextualId === id) {
       return this.playedFighter;
     }
 
-    return this._fighters.has(id) ? this._fighters.get(id) : null;
+    return this._fighters.get(id) || null;
   }
 
-  public getFighterInCell(cellId: number): FighterEntry {
+  public getFighterInCell(cellId: number): FighterEntry | null {
     if (this.playedFighter !== null && this.playedFighter.cellId === cellId) {
       return this.playedFighter;
     }
     const tmp = this.fighters.find(f => f.alive && f.cellId === cellId);
-    return tmp === undefined ? null : tmp;
+    return tmp || null;
   }
 
   public isCellFree(cellId: number): boolean {
@@ -285,19 +288,21 @@ export default class Fight implements IClearable {
 
   public getNearestEnemy(
     cellId = -1,
-    filter: (
-      value: FighterEntry,
-      index: number,
-      array: FighterEntry[]
-    ) => any = null
-  ): FighterEntry {
+    filter?: (value: FighterEntry | null) => boolean
+  ): FighterEntry | null {
+    if (!this.playedFighter) {
+      return null;
+    }
     const charMp = MapPoint.fromCellId(
       cellId === -1 ? this.playedFighter.cellId : cellId
     );
+    if (!charMp) {
+      return null;
+    }
     let distance = -1;
-    let enemy: FighterEntry = null;
+    let enemy: FighterEntry | null = null;
 
-    for (const enemyEntry of filter === null
+    for (const enemyEntry of !filter
       ? this.enemies
       : this.enemies.filter(filter)) {
       if (!enemyEntry.alive) {
@@ -305,6 +310,9 @@ export default class Fight implements IClearable {
       }
 
       const enemyMp = MapPoint.fromCellId(enemyEntry.cellId);
+      if (!enemyMp) {
+        continue;
+      }
       const tempDistance = charMp.distanceToCell(enemyMp);
 
       if (distance === -1 || tempDistance < distance) {
@@ -317,15 +325,17 @@ export default class Fight implements IClearable {
   }
 
   public getNearestAlly(
-    filter: (
-      value: FighterEntry,
-      index: number,
-      array: FighterEntry[]
-    ) => any = null
-  ): FighterEntry {
+    filter: (value: FighterEntry | null) => boolean
+  ): FighterEntry | null {
+    if (!this.playedFighter) {
+      return null;
+    }
     const charMp = MapPoint.fromCellId(this.playedFighter.cellId);
+    if (!charMp) {
+      return null;
+    }
     let distance = -1;
-    let ally: FighterEntry = null;
+    let ally: FighterEntry | null = null;
 
     for (const allyEntry of filter === null
       ? this.allies
@@ -335,6 +345,9 @@ export default class Fight implements IClearable {
       }
 
       const allyMp = MapPoint.fromCellId(allyEntry.cellId);
+      if (!allyMp) {
+        return null;
+      }
       const tempDistance = charMp.distanceToCell(allyMp);
 
       if (distance === -1 || tempDistance < distance) {
@@ -347,21 +360,41 @@ export default class Fight implements IClearable {
   }
 
   public getHandToHandEnemies(cellId = -1): FighterEntry[] {
+    if (!this.playedFighter) {
+      return [];
+    }
     const charMp = MapPoint.fromCellId(
       cellId === -1 ? this.playedFighter.cellId : cellId
     );
-    return this.enemies.filter(
-      e => e.alive && charMp.distanceToCell(MapPoint.fromCellId(e.cellId)) === 1
-    );
+    if (!charMp) {
+      return [];
+    }
+    return this.enemies.filter(e => {
+      const eMp = MapPoint.fromCellId(e.cellId);
+      if (!eMp) {
+        return false;
+      }
+      return e.alive && charMp.distanceToCell(eMp) === 1;
+    });
   }
 
   public getHandToHandAllies(cellId = -1): FighterEntry[] {
+    if (!this.playedFighter) {
+      return [];
+    }
     const charMp = MapPoint.fromCellId(
       cellId === -1 ? this.playedFighter.cellId : cellId
     );
-    return this.allies.filter(
-      a => a.alive && charMp.distanceToCell(MapPoint.fromCellId(a.cellId)) === 1
-    );
+    if (!charMp) {
+      return [];
+    }
+    return this.allies.filter(a => {
+      const mp = MapPoint.fromCellId(a.cellId);
+      if (!mp) {
+        return false;
+      }
+      return a.alive && charMp.distanceToCell(mp) === 1;
+    });
   }
 
   public isHandToHandWithAnEnemy(cellId = -1) {
@@ -376,9 +409,9 @@ export default class Fight implements IClearable {
     spellId: number,
     fromCellId: number,
     targetCellId: number,
-    spellLevel: SpellLevels = null
+    spellLevel?: SpellLevels
   ) {
-    if (spellLevel === null) {
+    if (!spellLevel) {
       const spellEntry = this.account.game.character.getSpell(spellId);
       if (spellEntry === null) {
         return null;
@@ -398,7 +431,7 @@ export default class Fight implements IClearable {
       spellLevel = response2[0].object;
     }
     return SpellShapes.getSpellEffectZone(
-      this.account.game.map.data,
+      this.account.game.map.data!,
       spellLevel,
       fromCellId,
       targetCellId
@@ -427,7 +460,7 @@ export default class Fight implements IClearable {
     if (
       spellLevel.maxCastPerTurn > 0 &&
       this._totalSpellLaunches.has(spellId) &&
-      this._totalSpellLaunches.get(spellId) >= spellLevel.maxCastPerTurn
+      this._totalSpellLaunches.get(spellId)! >= spellLevel.maxCastPerTurn
     ) {
       return SpellInabilityReasons.TOO_MANY_LAUNCHES;
     }
@@ -495,8 +528,8 @@ export default class Fight implements IClearable {
     if (
       spellLevel.maxCastPerTarget > 0 &&
       this._totalSpellLaunchesInCells.has(spellId) &&
-      this._totalSpellLaunchesInCells.get(spellId).has(targetCellId) &&
-      this._totalSpellLaunchesInCells.get(spellId).get(targetCellId) >=
+      this._totalSpellLaunchesInCells.get(spellId)!.has(targetCellId) &&
+      this._totalSpellLaunchesInCells.get(spellId)!.get(targetCellId)! >=
         spellLevel.maxCastPerTarget
     ) {
       return SpellInabilityReasons.TOO_MANY_LAUNCHES_ON_CELL;
@@ -541,7 +574,7 @@ export default class Fight implements IClearable {
         continue;
       }
 
-      if ((this.account.game.map.data.cells[mp.cellId].l & 7) === 3) {
+      if ((this.account.game.map.data!.cells[mp.cellId].l! & 7) === 3) {
         range.push(mp.cellId);
       }
     }
@@ -550,7 +583,7 @@ export default class Fight implements IClearable {
       for (let i = range.length - 1; i >= 0; i--) {
         if (
           Dofus1Line.isLineObstructed(
-            this.account.game.map.data,
+            this.account.game.map.data!,
             characterCellId,
             range[i],
             this.occupiedCells,
@@ -635,9 +668,9 @@ export default class Fight implements IClearable {
     message.dispositions.forEach(
       d =>
         this.getFighter(d.id) !== null
-          ? this.getFighter(d.id).UpdateIdentifiedEntityDispositionInformations(
-              d
-            )
+          ? this.getFighter(
+              d.id
+            )!.UpdateIdentifiedEntityDispositionInformations(d)
           : d
     );
     this.onFightersUpdated.trigger();
@@ -661,14 +694,14 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateFighterStatsListMessage(message: FighterStatsListMessage) {
-    this.playedFighter.UpdateCharacterCharacteristicsInformations(
-      message.stats
-    );
     if (this.playedFighter !== null) {
+      this.playedFighter.UpdateCharacterCharacteristicsInformations(
+        message.stats
+      );
       this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
       this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
+      this.onFighterStatsUpdated.trigger();
     }
-    this.onFighterStatsUpdated.trigger();
   }
 
   public async UpdateGameActionFightPointsVariationMessage(
@@ -703,7 +736,10 @@ export default class Fight implements IClearable {
     if (f !== null) {
       f.UpdateGameMapMovementMessage(message);
 
-      if (f.contextualId === this.playedFighter.contextualId) {
+      if (
+        this.playedFighter &&
+        f.contextualId === this.playedFighter.contextualId
+      ) {
         this.onPlayedFighterMoving.trigger(message.keyMovements);
       } else {
         this.onFightersUpdated.trigger();
@@ -737,7 +773,10 @@ export default class Fight implements IClearable {
       f.UpdateGameActionFightLifePointsLostMessage(message);
 
       // Trigger update event if its our character
-      if (message.targetId === this.playedFighter.contextualId) {
+      if (
+        this.playedFighter &&
+        message.targetId === this.playedFighter.contextualId
+      ) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
         this.onFighterStatsUpdated.trigger();
@@ -753,7 +792,10 @@ export default class Fight implements IClearable {
       f.UpdateGameActionFightLifePointsGainMessage(message);
 
       // Trigger update event if its our character
-      if (message.targetId === this.playedFighter.contextualId) {
+      if (
+        this.playedFighter &&
+        message.targetId === this.playedFighter.contextualId
+      ) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
         this.onFighterStatsUpdated.trigger();
@@ -762,7 +804,10 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateGameFightLeaveMessage(message: GameFightLeaveMessage) {
-    if (this.playedFighter.contextualId === message.charId) {
+    if (
+      this.playedFighter &&
+      this.playedFighter.contextualId === message.charId
+    ) {
       this.isFightStarted = false;
     } else {
       const f = this.getFighter(message.charId);
@@ -802,7 +847,7 @@ export default class Fight implements IClearable {
       // Effects
       const effectsKeys = Array.from(this._effectsDurations.keys()).reverse();
       for (const key of effectsKeys) {
-        const actualValue = this._effectsDurations.get(key);
+        const actualValue = this._effectsDurations.get(key)!;
         this._effectsDurations.set(key, actualValue - 1);
         if (actualValue - 1 === 0) {
           this._effectsDurations.delete(key);
@@ -814,7 +859,7 @@ export default class Fight implements IClearable {
         this._spellsIntervals.keys()
       ).reverse();
       for (const key of spellsIntervalsKeys) {
-        const actualValue = this._spellsIntervals.get(key);
+        const actualValue = this._spellsIntervals.get(key)!;
         this._spellsIntervals.set(key, actualValue - 1);
         if (actualValue - 1 === 0) {
           this._spellsIntervals.delete(key);
@@ -894,23 +939,23 @@ export default class Fight implements IClearable {
       }
       this._totalSpellLaunches.set(
         spell.id,
-        this._totalSpellLaunches.get(spell.id) + 1
+        this._totalSpellLaunches.get(spell.id)! + 1
       );
 
       if (this._totalSpellLaunchesInCells.has(spell.id)) {
         if (
           !this._totalSpellLaunchesInCells
-            .get(spell.id)
+            .get(spell.id)!
             .has(message.destinationCellId)
         ) {
           this._totalSpellLaunchesInCells
-            .get(spell.id)
+            .get(spell.id)!
             .set(message.destinationCellId, 0);
         }
-        const value = this._totalSpellLaunchesInCells.get(spell.id);
+        const value = this._totalSpellLaunchesInCells.get(spell.id)!;
         value.set(
           message.destinationCellId,
-          value.get(message.destinationCellId) + 1
+          value.get(message.destinationCellId)! + 1
         );
       } else {
         this._totalSpellLaunchesInCells.set(

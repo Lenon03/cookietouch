@@ -34,7 +34,7 @@ export interface IActionsManagerEventData {
 }
 
 export default class ActionsManager {
-  public fightsOnThisMap: number;
+  public fightsOnThisMap: number = 0;
   public monstersGroupToAttack: number = 0;
   private readonly onActionsFinished = new LiteEvent<
     IActionsManagerEventData
@@ -42,11 +42,11 @@ export default class ActionsManager {
   private readonly onCustomHandled = new LiteEvent<IActionsManagerEventData>();
   private account: Account;
   private actionsQueue: ScriptAction[];
-  private currentAction: ScriptAction;
-  private currentCoroutine: Generator;
+  private currentAction: ScriptAction | null = null;
+  private currentCoroutine: Generator | null = null;
   private fightsCounter: number = 0;
   private gathersCounter: number = 0;
-  private mapChanged: boolean;
+  private mapChanged: boolean = false;
   private timeoutTimer: TimerWrapper;
 
   constructor(account: Account) {
@@ -116,7 +116,7 @@ export default class ActionsManager {
     // If this account is a group chief, enqueue the action to the others members
     // Special case: if there is a coroutine currently being handled, ignore this
     if (this.account.hasGroup && this.account.isGroupChief) {
-      this.account.group.enqueueActionToMembers(action, startDequeuingActions);
+      this.account.group!.enqueueActionToMembers(action, startDequeuingActions);
     }
   }
 
@@ -148,7 +148,7 @@ export default class ActionsManager {
     );
     // If the queue still have actions
     if (this.actionsQueue.length > 0) {
-      this.currentAction = this.actionsQueue.shift();
+      this.currentAction = this.actionsQueue.shift() || null;
       await this.processCurrentAction();
     } else {
       // If there is a coroutine currently being handled, process it
@@ -169,6 +169,10 @@ export default class ActionsManager {
       const name = this.currentAction
         ? this.currentAction._name
         : LanguageManager.trans("unknown");
+      if (!this.currentCoroutine) {
+        // TODO: ??
+        return;
+      }
       const result = await this.currentCoroutine.next();
       this.account.logger.logDebug(
         LanguageManager.trans("scripts"),
@@ -187,7 +191,7 @@ export default class ActionsManager {
   }
 
   private async processCurrentAction() {
-    if (!this.account.scripts.running) {
+    if (!this.account.scripts.running || !this.currentAction) {
       return;
     }
     const type = this.currentAction._name;
@@ -288,7 +292,7 @@ export default class ActionsManager {
     await this.dequeueActions(1500);
   };
 
-  private movements_movementFinished = async (success: boolean) => {
+  private movements_movementFinished = async (success?: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -335,7 +339,7 @@ export default class ActionsManager {
     }
   };
 
-  private interactives_useFinished = async (success: boolean) => {
+  private interactives_useFinished = async (success?: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -376,7 +380,7 @@ export default class ActionsManager {
     }
   };
 
-  private gathers_gatherFinished = async (result: GatherResults) => {
+  private gathers_gatherFinished = async (result?: GatherResults) => {
     if (!this.account.scripts.running) {
       return;
     }
@@ -516,7 +520,7 @@ export default class ActionsManager {
     }
   };
 
-  private teleportables_useFinished = async (success: boolean) => {
+  private teleportables_useFinished = async (success?: boolean) => {
     if (!this.account.scripts.running) {
       return;
     }

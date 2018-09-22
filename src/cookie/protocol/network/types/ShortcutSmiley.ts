@@ -6,6 +6,5 @@ export default class ShortcutSmiley extends Shortcut {
   constructor(slot = 0, smileyId = 0) {
     super(slot);
     this.smileyId = smileyId;
-
   }
 }

@@ -3,9 +3,9 @@ import GameRolePlayCharacterInformations from "@/protocol/network/types/GameRole
 import GameRolePlayMutantInformations from "@/protocol/network/types/GameRolePlayMutantInformations";
 
 export default class PlayerEntry extends MovableEntity {
-  public id: number;
-  public name: string;
-  public level: number;
+  public id: number = 0;
+  public name: string = "";
+  public level: number = 0;
 
   constructor(
     infos: GameRolePlayCharacterInformations | GameRolePlayMutantInformations

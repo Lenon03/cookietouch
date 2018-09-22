@@ -2,10 +2,14 @@ import BasicNamedAllianceInformations from "@/protocol/network/types/BasicNamedA
 import GuildEmblem from "@/protocol/network/types/GuildEmblem";
 
 export default class AllianceInformations extends BasicNamedAllianceInformations {
-
   public allianceEmblem: GuildEmblem;
 
-  constructor(allianceId = 0, allianceTag = "", allianceName = "", allianceEmblem: GuildEmblem) {
+  constructor(
+    allianceId = 0,
+    allianceTag = "",
+    allianceName = "",
+    allianceEmblem = new GuildEmblem()
+  ) {
     super(allianceId, allianceTag, allianceName);
     this.allianceEmblem = allianceEmblem;
   }

@@ -14,29 +14,36 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 import { BreedEnum } from "@/protocol/enums/BreedEnum";
 import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
+import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
+import GameRolePlayPlayerLifeStatusMessage from "@/protocol/network/messages/GameRolePlayPlayerLifeStatusMessage";
+import LifePointsRegenBeginMessage from "@/protocol/network/messages/LifePointsRegenBeginMessage";
+import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
+import PlayerStatusUpdateMessage from "@/protocol/network/messages/PlayerStatusUpdateMessage";
+import SpellListMessage from "@/protocol/network/messages/SpellListMessage";
 import EntityLook from "@/protocol/network/types/EntityLook";
 import LiteEvent from "@/utils/LiteEvent";
 import UnreachableCaseError from "@/utils/UnreachableCaseError";
 
 export default class Character {
-  public breedData: Breeds;
-  public isSelected: boolean;
-  public name: string;
-  public id: number;
-  public level: number;
-  public skinUrl: string;
-  public status: PlayerStatusEnum;
-  public sex: boolean;
-  public breed: BreedEnum;
-  public look: EntityLook;
+  public breedData: Breeds | null = null;
+  public isSelected: boolean = false;
+  public name: string = "";
+  public id: number = 0;
+  public level: number = 0;
+  public skinUrl: string = "";
+  public status: PlayerStatusEnum = PlayerStatusEnum.PLAYER_STATUS_AVAILABLE;
+  public sex: boolean = false;
+  public breed: BreedEnum = BreedEnum.Feca;
+  public look: EntityLook | null = null;
   public stats: CharacterStats;
-  public lifeStatus: PlayerLifeStatusEnum;
+  public lifeStatus: PlayerLifeStatusEnum =
+    PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
   public spells: SpellEntry[];
   public mount: Mount;
   public jobs: Jobs;
   public inventory: Inventory;
 
-  private regenTimer: NodeJS.Timer = null;
+  private regenTimer: NodeJS.Timer | null = null;
   private readonly onCharacterSelected = new LiteEvent<void>();
   private readonly onStatsUpdated = new LiteEvent<void>();
   private readonly onSpellsUpdated = new LiteEvent<void>();
@@ -83,22 +90,12 @@ export default class Character {
     });
   }
 
-  public getSpell(id: number): SpellEntry {
-    const s = this.spells.find(f => f.id === id);
-    if (s !== undefined) {
-      return s;
-    } else {
-      return null;
-    }
+  public getSpell(id: number): SpellEntry | null {
+    return this.spells.find(f => f.id === id) || null;
   }
 
-  public getSpellByName(name: string): SpellEntry {
-    const s = this.spells.find(f => f.name === name);
-    if (s !== undefined) {
-      return s;
-    } else {
-      return null;
-    }
+  public getSpellByName(name: string): SpellEntry | null {
+    return this.spells.find(f => f.name === name) || null;
   }
 
   public canBoostStat(stat: BoostableStats): boolean {
@@ -131,11 +128,11 @@ export default class Character {
   }
 
   public autoBoostStat(stat: BoostableStats): boolean {
-    if (this.stats.statsPoints === 0) {
+    if (this.stats.statsPoints === 0 || !this.breedData) {
       return false;
     }
 
-    let data: number[][] = null;
+    let data: number[][] = [];
     let baseStats = 0;
     let statsPointsLeft = this.stats.statsPoints;
     let pts = 0;
@@ -173,7 +170,7 @@ export default class Character {
 
     while (statsPointsLeft > 0) {
       data = data.reverse();
-      const neededPts = data.find(d => baseStats >= d[0])[1];
+      const neededPts = data.find(d => baseStats >= d[0])![1];
       data = data.reverse();
 
       if (statsPointsLeft < neededPts) {
@@ -302,6 +299,9 @@ export default class Character {
       "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
     text += "b3";
     let num = 0;
+    if (!this.look) {
+      return "";
+    }
     const array = `${this.look.bonesId}`.split("");
     const array2 = array;
     for (const c of array2) {
@@ -453,20 +453,24 @@ export default class Character {
     this.onStatsUpdated.trigger();
   }
 
-  public async UpdateCharacterLevelUpMessage(message: any) {
+  public async UpdateCharacterLevelUpMessage(message: CharacterLevelUpMessage) {
     this.level = message.newLevel;
     this.onStatsUpdated.trigger();
   }
 
-  public async UpdateGameRolePlayPlayerLifeStatusMessage(message: any) {
+  public async UpdateGameRolePlayPlayerLifeStatusMessage(
+    message: GameRolePlayPlayerLifeStatusMessage
+  ) {
     this.lifeStatus = message.state;
   }
 
-  public async UpdatePlayerStatusUpdateMessage(message: any) {
+  public async UpdatePlayerStatusUpdateMessage(
+    message: PlayerStatusUpdateMessage
+  ) {
     this.status = message.status.statusId;
   }
 
-  public async UpdateSpellListMessage(message: any) {
+  public async UpdateSpellListMessage(message: SpellListMessage) {
     this.spells = [];
 
     const ids = message.spells.map((s: any) => s.spellId);
@@ -474,7 +478,8 @@ export default class Character {
 
     for (const sp of message.spells) {
       const spell = spells.find(f => f.id === sp.spellId);
-      this.spells.push(await SpellEntry.setup(sp, spell.object));
+      const spellx = (spell && spell.object) || sp.spellId;
+      this.spells.push(await SpellEntry.setup(sp, spellx));
     }
     this.onSpellsUpdated.trigger();
   }
@@ -511,21 +516,23 @@ export default class Character {
     }
   }
 
-  public UpdateLifePointsRegenBeginMessage(message: any) {
+  public UpdateLifePointsRegenBeginMessage(
+    message: LifePointsRegenBeginMessage
+  ) {
     this.regenTimer = global.setInterval(
       this.regenTimerCallBack,
       message.regenRate * 100
     );
   }
 
-  public UpdateLifePointsRegenEndMessage(message: any) {
+  public UpdateLifePointsRegenEndMessage(message: LifePointsRegenEndMessage) {
     this.onStatsUpdated.trigger();
-    global.clearInterval(this.regenTimer);
+    global.clearInterval(this.regenTimer!);
   }
 
   private regenTimerCallBack = () => {
     if (this.stats.lifePoints >= this.stats.maxLifePoints) {
-      global.clearInterval(this.regenTimer);
+      global.clearInterval(this.regenTimer!);
       return;
     }
     this.stats.lifePoints++;
@@ -533,8 +540,12 @@ export default class Character {
   };
 
   private getNeededPointsToBoostStat(stat: BoostableStats): number {
-    let data: number[][] = null;
+    let data: number[][] = [];
     let baseStats = 0;
+
+    if (!this.breedData) {
+      return 0;
+    }
 
     switch (stat) {
       case BoostableStats.AGILITY:
@@ -567,6 +578,6 @@ export default class Character {
         throw new UnreachableCaseError(stat);
     }
 
-    return data.reverse().find(d => baseStats >= d[0])[1];
+    return data.reverse().find(d => baseStats >= d[0])![1];
   }
 }

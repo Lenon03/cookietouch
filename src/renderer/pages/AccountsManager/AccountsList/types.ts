@@ -1,8 +1,23 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { AccountsListStyle } from "@renderer/pages/AccountsManager/AccountsList/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface IAccountsListProps {
+export const accountsListStyles = (theme: Theme) =>
+  createStyles({
+    icon: {
+      color: theme.palette.primary.main
+    },
+    root: {
+      color: theme.palette.text.secondary,
+      flexGrow: 1,
+      margin: theme.spacing.unit,
+      maxHeight: 400,
+      overflowY: "auto",
+      padding: theme.spacing.unit * 2
+    }
+  });
+
+export interface IAccountsListProps
+  extends WithStyles<typeof accountsListStyles> {
   closeDialog: () => void;
 }
 
@@ -10,6 +25,3 @@ export interface IAccountsListState {
   accountsList: AccountConfiguration[];
   accountsToConnect: AccountConfiguration[];
 }
-
-export type AccountsListProps = IAccountsListProps &
-  WithStyles<AccountsListStyle>;

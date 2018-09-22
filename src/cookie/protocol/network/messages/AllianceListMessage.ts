@@ -4,9 +4,8 @@ import AllianceFactSheetInformations from "@/protocol/network/types/AllianceFact
 export default class AllianceListMessage extends Message {
   public alliances: AllianceFactSheetInformations[];
 
-  constructor(alliances: AllianceFactSheetInformations[] = null) {
+  constructor(alliances: AllianceFactSheetInformations[] = []) {
     super();
     this.alliances = alliances;
-
   }
 }

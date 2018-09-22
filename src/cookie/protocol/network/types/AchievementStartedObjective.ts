@@ -1,7 +1,6 @@
 import AchievementObjective from "@/protocol/network/types/AchievementObjective";
 
 export default class AchievementStartedObjective extends AchievementObjective {
-
   public value: number;
 
   constructor(id = 0, maxValue = 0, value = 0) {

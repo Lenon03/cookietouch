@@ -5,7 +5,11 @@ export default class QuestObjectiveInformations extends Type {
   public objectiveId: number;
   public objectiveStatus: boolean;
 
-  constructor(objectiveId = 0, objectiveStatus = false, dialogParams: string[] = null) {
+  constructor(
+    objectiveId = 0,
+    objectiveStatus = false,
+    dialogParams: string[] = []
+  ) {
     super();
     this.dialogParams = dialogParams;
     this.objectiveId = objectiveId;

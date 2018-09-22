@@ -11,103 +11,73 @@ import ObjectEffectInteger from "@/protocol/network/types/ObjectEffectInteger";
 import ObjectItem from "@/protocol/network/types/ObjectItem";
 
 export default class ObjectEntry {
-  public gid: number;
-  public uid: number;
-  public quantity: number;
-  public position: CharacterInventoryPositionEnum;
-  public type: ObjectTypes;
-  public name: string;
-  public iconId: number;
-  public usable: boolean;
-  public exchangeable: boolean;
-  public range: number;
-  public isFishingRod: boolean;
-  public realWeight: number;
-  public typeId: number;
-  public superTypeId: number;
-  public regenValue: number;
-  public weightBoost: number;
-
   public static async setup(o: ObjectItem, item?: Items) {
-    const obj = new ObjectEntry();
-    obj.gid = o.objectGID;
-    obj.uid = o.objectUID;
-    obj.quantity = o.quantity;
-    obj.position = o.position;
-
     if (!item) {
-      const data = await DataManager.get<Items>(DataTypes.Items, obj.gid);
+      const data = await DataManager.get<Items>(DataTypes.Items, o.objectGID);
       item = data[0].object;
-
-      const data2 = await DataManager.get<ItemTypes>(
-        DataTypes.ItemTypes,
-        item.typeId
-      );
-
-      const type = data2[0].object;
-
-      obj.name = item.nameId;
-      obj.iconId = item.iconId;
-      obj.usable = item.usable;
-      obj.exchangeable = item.exchangeable;
-      obj.range = item.range;
-      obj.isFishingRod = item.typeId === 20 && item.useAnimationId === 18;
-      obj.realWeight = item.realWeight;
-      obj.typeId = item.typeId;
-      obj.superTypeId = type.superTypeId;
-      obj.type = InventoryHelper.getObjectType(obj.superTypeId);
-
-      // Check if this item gives hp back (BOOST_HP 110)
-      for (const e of o.effects) {
-        if (!(e._type === "ObjectEffectInteger")) {
-          continue;
-        }
-
-        const newE = e as ObjectEffectInteger;
-
-        if (e.actionId === 110) {
-          obj.regenValue = newE.value;
-        } else if (e.actionId === 158) {
-          obj.weightBoost = newE.value;
-        }
-      }
-      return obj;
     }
 
-    const data3 = await DataManager.get<ItemTypes>(
+    const data2 = await DataManager.get<ItemTypes>(
       DataTypes.ItemTypes,
       item.typeId
     );
 
-    const type2 = data3[0].object;
-
-    obj.name = item.nameId;
-    obj.iconId = item.iconId;
-    obj.usable = item.usable;
-    obj.exchangeable = item.exchangeable;
-    obj.range = item.range;
-    obj.isFishingRod = item.typeId === 20 && item.useAnimationId === 18;
-    obj.realWeight = item.realWeight;
-    obj.typeId = item.typeId;
-    obj.superTypeId = type2.superTypeId;
-    obj.type = InventoryHelper.getObjectType(obj.superTypeId);
+    const type = data2[0].object;
 
     // Check if this item gives hp back (BOOST_HP 110)
+    let regenValue = 0;
+    let weightBoost = 0;
     for (const e of o.effects) {
       if (!(e._type === "ObjectEffectInteger")) {
         continue;
       }
+
       const newE = e as ObjectEffectInteger;
 
       if (e.actionId === 110) {
-        obj.regenValue = newE.value;
+        regenValue = newE.value;
       } else if (e.actionId === 158) {
-        obj.weightBoost = newE.value;
+        weightBoost = newE.value;
       }
     }
-
-    return obj;
+    return new ObjectEntry(
+      o.objectGID,
+      o.objectUID,
+      o.quantity,
+      o.position,
+      InventoryHelper.getObjectType(type.superTypeId),
+      item.nameId,
+      item.iconId,
+      item.usable,
+      item.exchangeable,
+      item.range,
+      item.typeId === 20 && item.useAnimationId === 18,
+      item.realWeight,
+      item.typeId,
+      type.superTypeId,
+      regenValue,
+      weightBoost
+    );
   }
+
+  constructor(
+    public gid: number,
+    public uid: number,
+    public quantity: number,
+    public position: CharacterInventoryPositionEnum,
+    public type: ObjectTypes,
+    public name: string,
+    public iconId: number,
+    public usable: boolean,
+    public exchangeable: boolean,
+    public range: number,
+    public isFishingRod: boolean,
+    public realWeight: number,
+    public typeId: number,
+    public superTypeId: number,
+    public regenValue?: number,
+    public weightBoost?: number
+  ) {}
 
   get iconUrl() {
     return `${DTConstants.config.assetsUrl}/gfx/items/${this.iconId}.png`;

@@ -36,9 +36,9 @@ export default class BreedsUtility {
   public static getIndexedColor(index: number, color: Color) {
     let result = 0;
     result |= (index & 0xf) << 24;
-    result |= (color.r & 0xff) << 16;
-    result |= (color.g & 0xff) << 8;
-    result |= color.b & 0xff;
+    result |= (color.r! & 0xff) << 16;
+    result |= (color.g! & 0xff) << 8;
+    result |= color.b! & 0xff;
     return result;
   }
 

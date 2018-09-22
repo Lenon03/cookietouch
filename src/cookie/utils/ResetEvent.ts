@@ -17,7 +17,7 @@ export interface IToken {
   isCanceled: boolean;
   resetEvent: () => void;
   start: Date;
-  timeoutId: NodeJS.Timer;
+  timeoutId: NodeJS.Timer | null;
 }
 
 /**
@@ -36,11 +36,11 @@ export default class ResetEvent {
   /**
    * Checks if this reset event is signaled. A signaled reset event executes all callbacks immediately.
    */
-  public isSignaled: boolean;
+  public isSignaled: boolean | undefined;
 
   private queue: IToken[];
   private options: IOptions;
-  private callbacksCount: number;
+  private callbacksCount: number = 0;
 
   constructor(isSignaled?: boolean, options?: IOptions) {
     this.queue = [];
@@ -66,7 +66,7 @@ export default class ResetEvent {
       isCanceled: false,
       resetEvent: this.set,
       start: new Date(),
-      timeoutId: null as NodeJS.Timer
+      timeoutId: null
     } as IToken;
     token.elapsed = () => new Date().getTime() - token.start.getTime();
     return token;
@@ -91,21 +91,21 @@ export default class ResetEvent {
       if (options.overflowStrategy === "last") {
         const last = queue.pop();
         while (queue.length && queue.length > options.maxQueueSize - 1) {
-          result.unshift(queue.pop());
+          result.unshift(queue.pop()!);
         }
-        queue.push(last);
+        queue.push(last!);
         return result;
       }
 
       if (options.overflowStrategy === "first") {
         while (queue.length && queue.length > options.maxQueueSize) {
-          result.push(queue.shift());
+          result.push(queue.shift()!);
         }
         return result;
       }
 
       if (queue.length && options.overflowStrategy === "this") {
-        result.push(queue.pop());
+        result.push(queue.pop()!);
         return result;
       }
     }
@@ -141,14 +141,14 @@ export default class ResetEvent {
       queueToken = this.queue.shift();
       this.callbacksCount--;
 
-      if (queueToken.timeoutId && this.callbacksCount > 0) {
-        clearTimeout(queueToken.timeoutId);
+      if (queueToken!.timeoutId && this.callbacksCount > 0) {
+        clearTimeout(queueToken!.timeoutId!);
       }
 
-      if (queueToken.isCanceled) {
+      if (queueToken!.isCanceled) {
         this.callbacksCount++;
       } else {
-        this.executeCallback(queueToken);
+        this.executeCallback(queueToken!);
         if (this.callbacksCount === 0) {
           return;
         }
@@ -198,7 +198,7 @@ export default class ResetEvent {
     for (i = 0; i < reducedTokens.length; i++) {
       reducedTokens[i].isCanceled = true;
       if (reducedTokens[i].timeoutId) {
-        clearTimeout(reducedTokens[i].timeoutId);
+        clearTimeout(reducedTokens[i].timeoutId!);
       }
     }
 

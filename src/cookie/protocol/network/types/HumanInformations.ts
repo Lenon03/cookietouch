@@ -7,7 +7,11 @@ export default class HumanInformations extends Type {
   public restrictions: ActorRestrictionsInformations;
   public sex: boolean;
 
-  constructor(restrictions: ActorRestrictionsInformations = null, sex = false, options: HumanOption[] = null) {
+  constructor(
+    restrictions = new ActorRestrictionsInformations(),
+    sex = false,
+    options: HumanOption[] = []
+  ) {
     super();
     this.restrictions = restrictions;
     this.sex = sex;

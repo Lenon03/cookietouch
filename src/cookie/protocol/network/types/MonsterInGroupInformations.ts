@@ -4,7 +4,7 @@ import MonsterInGroupLightInformations from "@/protocol/network/types/MonsterInG
 export default class MonsterInGroupInformations extends MonsterInGroupLightInformations {
   public look: EntityLook;
 
-  constructor(creatureGenericId = 0, grade = 0, look: EntityLook = null) {
+  constructor(creatureGenericId = 0, grade = 0, look = new EntityLook()) {
     super(creatureGenericId, grade);
     this.look = look;
   }

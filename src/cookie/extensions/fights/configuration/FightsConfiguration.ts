@@ -40,10 +40,10 @@ export default class FightsConfiguration {
   public spells: Spell[];
   public fightSpeed: FightSpeeds;
 
-  private authChangedUnsuscribe: firebase.Unsubscribe;
-  private stopDataSnapshot: () => void;
+  private authChangedUnsuscribe: firebase.Unsubscribe | undefined;
+  private stopDataSnapshot: (() => void) | undefined;
 
-  private globalDoc: firebase.firestore.DocumentReference;
+  private globalDoc: firebase.firestore.DocumentReference | undefined;
   private readonly onChanged = new LiteEvent<void>();
   private account: Account;
 
@@ -107,6 +107,9 @@ export default class FightsConfiguration {
   }
 
   public async save() {
+    if (!this.globalDoc) {
+      return;
+    }
     const toSave: IFightsConfigurationJSON = {
       approachWhenNoSpellCasted: this.approachWhenNoSpellCasted,
       baseApproachAllMonsters: this.baseApproachAllMonsters,

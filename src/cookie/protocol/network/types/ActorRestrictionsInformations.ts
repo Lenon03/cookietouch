@@ -23,13 +23,29 @@ export default class ActorRestrictionsInformations extends Type {
   public cantAttackMonster: boolean;
   public cantWalk8Directions: boolean;
 
-  constructor(cantBeAggressed = false, cantBeChallenged = false, cantTrade = false,
-              cantBeAttackedByMutant = false, cantRun = false, forceSlowWalk = false,
-              cantMinimize = false, cantMove = false, cantAggress = false,
-              cantChallenge = false, cantExchange = false, cantAttack = false,
-              cantChat = false, cantBeMerchant = false, cantUseObject = false,
-              cantUseTaxCollector = false, cantUseInteractive = false, cantSpeakToNpc = false,
-              cantChangeZone = false, cantAttackMonster = false, cantWalk8Directions = false) {
+  constructor(
+    cantBeAggressed = false,
+    cantBeChallenged = false,
+    cantTrade = false,
+    cantBeAttackedByMutant = false,
+    cantRun = false,
+    forceSlowWalk = false,
+    cantMinimize = false,
+    cantMove = false,
+    cantAggress = false,
+    cantChallenge = false,
+    cantExchange = false,
+    cantAttack = false,
+    cantChat = false,
+    cantBeMerchant = false,
+    cantUseObject = false,
+    cantUseTaxCollector = false,
+    cantUseInteractive = false,
+    cantSpeakToNpc = false,
+    cantChangeZone = false,
+    cantAttackMonster = false,
+    cantWalk8Directions = false
+  ) {
     super();
     this.cantBeAggressed = cantBeAggressed;
     this.cantBeChallenged = cantBeChallenged;

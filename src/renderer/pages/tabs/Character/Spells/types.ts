@@ -1,9 +1,22 @@
 import Account from "@/account";
 import SpellEntry from "@/game/character/SpellEntry";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { CharacterSpellsTabStyle } from "@renderer/pages/tabs/Character/Spells/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ICharacterSpellsTabProps {
+export const characterSpellsTabStyles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      maxHeight: 400,
+      overflowY: "auto",
+      padding: 10
+    },
+    table: {
+      minWidth: 700
+    }
+  });
+
+export interface ICharacterSpellsTabProps
+  extends WithStyles<typeof characterSpellsTabStyles> {
   account: Account;
 }
 
@@ -11,6 +24,3 @@ export interface ICharacterSpellsTabState {
   spells: SpellEntry[];
   spellsPoints: number;
 }
-
-export type CharacterSpellsTabProps = ICharacterSpellsTabProps &
-  WithStyles<CharacterSpellsTabStyle>;

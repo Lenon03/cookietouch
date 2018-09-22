@@ -7,9 +7,14 @@ export default class GameRolePlayHumanoidInformations extends GameRolePlayNamedA
   public humanoidInfo: HumanInformations;
   public accountId: number;
 
-  constructor(contextualId = 0, look: EntityLook = null,
-              disposition: EntityDispositionInformations = null,
-              name: string = "", accountId = 0, humanoidInfos: HumanInformations = null) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name: string = "",
+    accountId = 0,
+    humanoidInfos = new HumanInformations()
+  ) {
     super(contextualId, look, disposition, name);
     this.accountId = accountId;
     this.humanoidInfo = humanoidInfos;

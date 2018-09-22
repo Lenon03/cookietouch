@@ -6,8 +6,8 @@ import CharacterBaseInformations from "@/protocol/network/types/CharacterBaseInf
 import LiteEvent from "@/utils/LiteEvent";
 
 export default class Server {
-  public id: number;
-  public name: string;
+  public id: number = 0;
+  public name: string = "";
   public characters: CharacterBaseInformations[] = [];
 
   private readonly onServerSelected = new LiteEvent<void>();

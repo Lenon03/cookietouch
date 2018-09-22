@@ -1,8 +1,34 @@
 import AccountConfiguration from "@/configurations/accounts/AccountConfiguration";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { CharacterCreatorStyle } from "@renderer/pages/AccountsManager/CharacterCreator/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
 
-export interface ICharacterCreatorProps {
+export const characterCreatorStyles = (theme: Theme) =>
+  createStyles({
+    chip: {
+      margin: theme.spacing.unit / 4
+    },
+    chips: {
+      display: "flex",
+      flexWrap: "wrap"
+    },
+    formControl: {
+      margin: theme.spacing.unit
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular
+    },
+    icon: {
+      color: theme.palette.primary.main,
+      // color: "#015357",
+      marginRight: 8
+    },
+    root: {
+      flexGrow: 1
+    }
+  });
+
+export interface ICharacterCreatorProps
+  extends WithStyles<typeof characterCreatorStyles> {
   //
 }
 
@@ -23,6 +49,3 @@ export interface ICharacterCreatorState {
   accountsList: AccountConfiguration[];
   selectedAccounts: AccountConfiguration[];
 }
-
-export type CharacterCreatorProps = ICharacterCreatorProps &
-  WithStyles<CharacterCreatorStyle>;

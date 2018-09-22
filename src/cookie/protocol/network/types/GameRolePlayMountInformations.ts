@@ -6,11 +6,16 @@ export default class GameRolePlayMountInformations extends GameRolePlayNamedActo
   public ownerName: string;
   public level: number;
 
-  constructor(contextualId = 0, look: EntityLook, disposition: EntityDispositionInformations,
-              name = "", ownerName = "", level = 0) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name = "",
+    ownerName = "",
+    level = 0
+  ) {
     super(contextualId, look, disposition, name);
     this.ownerName = ownerName;
     this.level = level;
-
   }
 }

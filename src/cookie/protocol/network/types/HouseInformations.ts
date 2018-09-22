@@ -7,13 +7,20 @@ export default class HouseInformations extends Type {
   public isSaleLocked: boolean;
   public modelId: number;
   public ownerName: string;
-
   // public specialArtworkId: number;
-  constructor(houseid = 0, ownername = "", isOnSale = false, isSaleLocked = false,
-              modelId = 0, doorsOnMap: any[] = null) {
+
+  constructor(
+    houseid = 0,
+    ownername = "",
+    isOnSale = false,
+    isSaleLocked = false,
+    modelId = 0,
+    doorsOnMap: any[] = []
+  ) {
     super();
     this.doorsOnMap = doorsOnMap;
     this.houseId = houseid;
+    this.ownerName = ownername;
     this.isOnSale = isOnSale;
     this.isSaleLocked = isSaleLocked;
     this.modelId = modelId;

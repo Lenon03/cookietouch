@@ -6,16 +6,15 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
-import { pushbulletTabStyles } from "@renderer/pages/tabs/Pushbullet/styles";
 import {
   IPushbulletTabProps,
   IPushbulletTabState,
-  PushbulletTabProps
+  pushbulletTabStyles
 } from "@renderer/pages/tabs/Pushbullet/types";
 import * as React from "react";
 
 class Pushbullet extends React.Component<
-  PushbulletTabProps,
+  IPushbulletTabProps,
   IPushbulletTabState
 > {
   public state: IPushbulletTabState = {
@@ -242,12 +241,15 @@ class Pushbullet extends React.Component<
       characterConnected: true
     });
   };
-  private handleSwitchChange = (event, checked) => {
+  private handleSwitchChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
     this.setState({ [event.target.name]: checked } as Pick<
       IPushbulletTabState,
       keyof IPushbulletTabState
     >);
-    this.props.account.config.pushBullet[event.target.name] = checked;
+    (this.props.account.config.pushBullet as any)[event.target.name] = checked;
     this.props.account.config.save();
   };
 
@@ -267,4 +269,4 @@ class Pushbullet extends React.Component<
   };
 }
 
-export default withStyles(pushbulletTabStyles)<IPushbulletTabProps>(Pushbullet);
+export default withStyles(pushbulletTabStyles)(Pushbullet);

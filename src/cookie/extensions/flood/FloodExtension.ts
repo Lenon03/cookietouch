@@ -135,8 +135,8 @@ export default class FloodExtension {
     }
   }
 
-  private map_PlayerJoined = async (player: PlayerEntry) => {
-    if (!this.running) {
+  private map_PlayerJoined = async (player?: PlayerEntry) => {
+    if (!this.running || !player) {
       return;
     }
     const privateChannelSentences = this.getPrivateSentences(true, false);
@@ -152,8 +152,8 @@ export default class FloodExtension {
     }
   };
 
-  private map_PlayerLeft = async (player: PlayerEntry) => {
-    if (!this.running) {
+  private map_PlayerLeft = async (player?: PlayerEntry) => {
+    if (!this.running || !player) {
       return;
     }
     const privateChannelSentences = this.getPrivateSentences(false, true);
@@ -169,7 +169,7 @@ export default class FloodExtension {
     }
   };
 
-  private setAttributes(content: string, player: PlayerEntry = null): string {
+  private setAttributes(content: string, player?: PlayerEntry): string {
     content = content.replace("%nbr%", this.getRandomNumber());
     content = content.replace("%smiley%", this.getRandomSmiley());
     if (player) {

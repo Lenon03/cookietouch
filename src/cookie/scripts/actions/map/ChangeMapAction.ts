@@ -2,7 +2,9 @@ import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 import { getRandomInt } from "@/utils/Random";
 import { capitalize } from "@/utils/String";
 
@@ -28,13 +30,14 @@ export default class ChangeMapAction extends ScriptAction {
     return this.direction !== MapChangeDirections.NONE && this.cellId === -1;
   }
 
-  public static tryParse(text: string): ChangeMapAction {
+  public static tryParse(text: string): ChangeMapAction | null {
     const parts = text.split("|");
     const randomPart = parts[getRandomInt(0, parts.length - 1)];
     // Specific direction
     let m = randomPart.match(ChangeMapAction.REGEX_SPECIFIC);
     if (m) {
       return new ChangeMapAction(
+        // @ts-ignore
         MapChangeDirections[capitalize(m[1])],
         parseInt(m[2], 10)
       );
@@ -42,6 +45,7 @@ export default class ChangeMapAction extends ScriptAction {
       // Simple directions
       m = randomPart.match(ChangeMapAction.REGEX_DIRECTIONS);
       if (m) {
+        // @ts-ignore
         return new ChangeMapAction(MapChangeDirections[capitalize(m[0])], -1);
       } else {
         // Change map from cells

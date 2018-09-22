@@ -1,7 +1,9 @@
 import Account from "@/account";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
-import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
 
 export default class FightAction extends ScriptAction {
   public _name: string = "FightAction";
@@ -9,16 +11,16 @@ export default class FightAction extends ScriptAction {
   public maxMonsters: number;
   public minMonstersLevel: number;
   public maxMonstersLevel: number;
-  public forbiddenMonsters: number[];
-  public mandatoryMonsters: number[];
+  public forbiddenMonsters: number[] | undefined;
+  public mandatoryMonsters: number[] | undefined;
 
   constructor(
     minMonsters: number,
     maxMonsters: number,
     minMonstersLevel: number,
     maxMonstersLevel: number,
-    forbiddenMonsters: number[],
-    mandatoryMonsters: number[]
+    forbiddenMonsters?: number[],
+    mandatoryMonsters?: number[]
   ) {
     super();
     this.minMonsters = minMonsters;

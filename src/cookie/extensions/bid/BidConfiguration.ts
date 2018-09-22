@@ -18,10 +18,10 @@ export default class BidConfiguration implements IBidConfigurationJSON {
   public objectsToSell: ObjectToSellEntry[];
   private account: Account;
 
-  private authChangedUnsubscribe: firebase.Unsubscribe;
-  private stopDataSnapshot: () => void;
+  private authChangedUnsubscribe: firebase.Unsubscribe | undefined;
+  private stopDataSnapshot: (() => void) | undefined;
 
-  private globalDoc: firebase.firestore.DocumentReference;
+  private globalDoc: firebase.firestore.DocumentReference | undefined;
 
   private readonly onChanged = new LiteEvent<void>();
 
@@ -77,6 +77,9 @@ export default class BidConfiguration implements IBidConfigurationJSON {
   }
 
   public async save() {
+    if (!this.globalDoc) {
+      return;
+    }
     const toSave: IBidConfigurationJSON = {
       interval: this.interval,
       objectsToSell: this.objectsToSell.map(o => o.toJSON()),

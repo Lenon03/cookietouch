@@ -6,11 +6,11 @@ import GameFightFighterInformations from "@/protocol/network/types/GameFightFigh
 import GameFightMonsterInformations from "@/protocol/network/types/GameFightMonsterInformations";
 
 export default class FightMonsterEntry extends FighterEntry {
-  public creatureGenericId: number;
-  public level: number;
-  public isBoss: boolean;
-  public isMiniBoss: boolean;
-  public isQuestMonster: boolean;
+  public creatureGenericId: number = 0;
+  public level: number = 0;
+  public isBoss: boolean = false;
+  public isMiniBoss: boolean = false;
+  public isQuestMonster: boolean = false;
 
   public static async setup(
     infos1: GameFightMonsterInformations,

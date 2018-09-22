@@ -12,7 +12,7 @@ import { List } from "linqts";
 
 export default class Storage {
   public objects: List<ObjectEntry>;
-  public kamas: number;
+  public kamas: number = 0;
   private readonly onStorageStarted = new LiteEvent<void>();
   private readonly onStorageUpdated = new LiteEvent<void>();
   private readonly onStorageLeft = new LiteEvent<void>();
@@ -72,7 +72,9 @@ export default class Storage {
     if (this.account.state !== AccountStates.STORAGE || quantity < 0) {
       return false;
     }
-    const item = this.objects.FirstOrDefault(o => o.gid === gid);
+    const item = this.objects.FirstOrDefault(
+      o => o !== undefined && o.gid === gid
+    );
     if (!item) {
       return false;
     }
@@ -226,7 +228,8 @@ export default class Storage {
     );
 
     for (const obj of message.objects) {
-      const oe = objects.find(f => f.id === obj.objectGID).object;
+      const oeRes = objects.find(f => f.id === obj.objectGID);
+      const oe = oeRes && oeRes.object;
       this.objects.Add(await ObjectEntry.setup(obj, oe));
     }
 
@@ -240,7 +243,7 @@ export default class Storage {
 
   public async UpdateStorageObjectUpdateMessage(message: any) {
     const obj = this.objects.FirstOrDefault(
-      o => o.uid === message.object.objectUID
+      o => o !== undefined && o.uid === message.object.objectUID
     );
 
     // Needs to be added
@@ -258,13 +261,17 @@ export default class Storage {
   }
 
   public async UpdateStorageObjectRemoveMessage(message: any) {
-    this.objects = this.objects.RemoveAll(o => o.uid === message.objectUID);
+    this.objects = this.objects.RemoveAll(
+      o => o !== undefined && o.uid === message.objectUID
+    );
     this.onStorageUpdated.trigger();
   }
 
   public async UpdateStorageObjectsUpdateMessage(message: any) {
     for (const item of message.objectList) {
-      const obj = this.objects.FirstOrDefault(o => o.uid === item.objectUID);
+      const obj = this.objects.FirstOrDefault(
+        o => o !== undefined && o.uid === item.objectUID
+      );
 
       // Need to be added
       if (obj === undefined) {
@@ -283,7 +290,9 @@ export default class Storage {
 
   public async UpdateStorageObjectsRemoveMessage(message: any) {
     for (const item of message.objectUIDList) {
-      this.objects = this.objects.RemoveAll(o => o.uid === item);
+      this.objects = this.objects.RemoveAll(
+        o => o !== undefined && o.uid === item
+      );
     }
     this.onStorageUpdated.trigger();
   }

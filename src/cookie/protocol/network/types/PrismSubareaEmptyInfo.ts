@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class PrismSubareaEmptyInfo extends Type {
-
   public subAreaId: number;
   public allianceId: number;
 

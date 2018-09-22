@@ -13,9 +13,16 @@ export default class PartyGuestInformations extends Type {
   public sex: boolean;
   public status: PlayerStatus;
 
-  constructor(guestId = 0, hostId = 0, name = "", guestLook: EntityLook = null,
-              breed = 0, sex = false, status: PlayerStatus = null,
-              companions: PartyCompanionBaseInformations[] = null) {
+  constructor(
+    guestId = 0,
+    hostId = 0,
+    name = "",
+    guestLook = new EntityLook(),
+    breed = 0,
+    sex = false,
+    status = new PlayerStatus(),
+    companions: PartyCompanionBaseInformations[] = []
+  ) {
     super();
     this.companions = companions;
     this.guestId = guestId;

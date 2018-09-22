@@ -4,9 +4,8 @@ import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxC
 export default class TaxCollectorGuildInformations extends TaxCollectorComplementaryInformations {
   public guild: BasicGuildInformations;
 
-  constructor(guild: BasicGuildInformations = null) {
+  constructor(guild = new BasicGuildInformations()) {
     super();
     this.guild = guild;
-
   }
 }

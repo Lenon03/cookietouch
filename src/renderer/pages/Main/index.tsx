@@ -3,15 +3,14 @@ import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { signout } from "@renderer/FirebaseHelpers";
 import BottomAppBar from "@renderer/pages/BottomAppBar";
-import { mainStyles } from "@renderer/pages/Main/styles";
-import { IMainProps, IMainState, MainProps } from "@renderer/pages/Main/types";
+import { IMainProps, IMainState, mainStyles } from "@renderer/pages/Main/types";
 import MainContent from "@renderer/pages/MainContent";
 import TopAppBar from "@renderer/pages/TopAppBar";
 import withRoot from "@renderer/withRoot";
 import firebase from "firebase/app";
 import * as React from "react";
 
-class Main extends React.Component<MainProps, IMainState> {
+class Main extends React.Component<IMainProps, IMainState> {
   public state: IMainState = {
     sidenavStatus: 0,
     user: null
@@ -56,4 +55,4 @@ class Main extends React.Component<MainProps, IMainState> {
   };
 }
 
-export default withRoot(withStyles(mainStyles)<IMainProps>(Main));
+export default withRoot(withStyles(mainStyles)(Main));

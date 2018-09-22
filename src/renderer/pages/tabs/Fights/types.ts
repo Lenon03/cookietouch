@@ -7,8 +7,51 @@ import { SpellResistances } from "@/extensions/fights/configuration/enums/SpellR
 import { SpellTargets } from "@/extensions/fights/configuration/enums/SpellTargets";
 import Spell from "@/extensions/fights/configuration/Spell";
 import SpellEntry from "@/game/character/SpellEntry";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { FightsTabStyle } from "@renderer/pages/tabs/Fights/styles";
+import { createStyles, Theme, WithStyles } from "@material-ui/core";
+
+export const fightsTabStyles = (theme: Theme) =>
+  createStyles({
+    appBar: {
+      //
+    },
+    card: {
+      margin: 20,
+      minWidth: 275
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      width: "100%"
+    },
+    overflow: {
+      maxHeight: 1200,
+      overflowY: "auto"
+    },
+    paper: {
+      color: theme.palette.text.secondary,
+      margin: theme.spacing.unit,
+      minHeight: 800,
+      padding: theme.spacing.unit * 2
+    },
+    root: {
+      flexGrow: 1
+    },
+    selectBlockSpectator: {
+      marginTop: 50
+    },
+    tab: {
+      height: 30,
+      maxWidth: 1000
+    },
+    table: {
+      heigth: "100%",
+      minWidth: 700
+    },
+    title: {
+      color: theme.palette.text.secondary,
+      fontSize: 14,
+      marginBottom: 16
+    }
+  });
 
 export interface IAddSpellForm {
   spellId: number;
@@ -26,7 +69,7 @@ export interface IAddSpellForm {
   avoidAllies: boolean;
 }
 
-export interface IFightsTabProps {
+export interface IFightsTabProps extends WithStyles<typeof fightsTabStyles> {
   account: Account;
 }
 
@@ -50,5 +93,3 @@ export interface IFightsTabState {
   spells: Spell[];
   fightSpeed: FightSpeeds;
 }
-
-export type FightsTabProps = IFightsTabProps & WithStyles<FightsTabStyle>;

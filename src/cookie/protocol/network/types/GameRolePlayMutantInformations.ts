@@ -7,12 +7,18 @@ export default class GameRolePlayMutantInformations extends GameRolePlayHumanoid
   public monsterId: number;
   public powerLevel: number;
 
-  constructor(contextualId = 0, look: EntityLook = null,
-              disposition: EntityDispositionInformations = null, name = "",
-              humanoidInfo: HumanInformations = null, accountId = 0, monsterId = 0, powerLevel = 0) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name = "",
+    humanoidInfo = new HumanInformations(),
+    accountId = 0,
+    monsterId = 0,
+    powerLevel = 0
+  ) {
     super(contextualId, look, disposition, name, accountId, humanoidInfo);
     this.monsterId = monsterId;
     this.powerLevel = powerLevel;
-
   }
 }

@@ -21,7 +21,7 @@ export default class MapViewerCell {
   }
 
   public DrawObstacle(drawingContext: CanvasRenderingContext2D, brush: Color) {
-    const newPoints = [];
+    const newPoints: Point[] = [];
 
     newPoints[0] = new Point(this.points[3].x, this.points[3].y - 10);
     newPoints[1] = new Point(this.points[0].x, this.points[0].y - 10);

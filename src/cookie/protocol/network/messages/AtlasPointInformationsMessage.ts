@@ -4,9 +4,8 @@ import AtlasPointsInformations from "@/protocol/network/types/AtlasPointsInforma
 export default class AtlasPointInformationsMessage extends Message {
   public type: AtlasPointsInformations;
 
-  constructor(type: AtlasPointsInformations) {
+  constructor(type = new AtlasPointsInformations()) {
     super();
     this.type = type;
-
   }
 }

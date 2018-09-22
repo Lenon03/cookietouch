@@ -62,7 +62,7 @@ export default class Npcs {
     if (actionIndex < 0) {
       return false;
     }
-    let npc: NpcEntry = null;
+    let npc: NpcEntry | undefined;
     const npcs = this.account.game.map.npcs;
 
     // In case the npcId is negative
@@ -79,7 +79,7 @@ export default class Npcs {
     }
 
     // Npc not found
-    if (npc === null || npc === undefined) {
+    if (!npc) {
       return false;
     }
     // Check if the npc has the action that we want

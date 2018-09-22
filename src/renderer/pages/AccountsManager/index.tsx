@@ -11,16 +11,15 @@ import AddAccountForm from "@renderer/pages/AccountsManager/AddAccountForm";
 import CacheManager from "@renderer/pages/AccountsManager/CacheManager";
 import CharacterCreator from "@renderer/pages/AccountsManager/CharacterCreator";
 import PlanningConfig from "@renderer/pages/AccountsManager/PlanningConfig";
-import { accountsManagerStyles } from "@renderer/pages/AccountsManager/styles";
 import {
-  AccountsManagerProps,
+  accountsManagerStyles,
   IAccountsManagerProps,
   IAccountsManagerState
 } from "@renderer/pages/AccountsManager/types";
 import * as React from "react";
 
 class AccountsManager extends React.Component<
-  AccountsManagerProps,
+  IAccountsManagerProps,
   IAccountsManagerState
 > {
   public render() {
@@ -67,6 +66,4 @@ class AccountsManager extends React.Component<
   }
 }
 
-export default withStyles(accountsManagerStyles)<IAccountsManagerProps>(
-  AccountsManager
-);
+export default withStyles(accountsManagerStyles)(AccountsManager);

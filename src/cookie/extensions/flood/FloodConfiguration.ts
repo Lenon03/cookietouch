@@ -18,10 +18,10 @@ export default class FloodConfiguration implements IFloodConfigurationJSON {
   public generalChannelInterval: number;
   public sentences: FloodSentence[];
 
-  private authChangedUnsuscribe: firebase.Unsubscribe;
-  private stopDataSnapshot: () => void;
+  private authChangedUnsuscribe: firebase.Unsubscribe | undefined;
+  private stopDataSnapshot: (() => void) | undefined;
 
-  private globalDoc: firebase.firestore.DocumentReference;
+  private globalDoc: firebase.firestore.DocumentReference | undefined;
 
   private account: Account;
   private readonly onChanged = new LiteEvent<void>();
@@ -75,6 +75,9 @@ export default class FloodConfiguration implements IFloodConfigurationJSON {
   }
 
   public async save() {
+    if (!this.globalDoc) {
+      return;
+    }
     const toSave: IFloodConfigurationJSON = {
       generalChannelInterval: this.generalChannelInterval,
       salesChannelInterval: this.salesChannelInterval,

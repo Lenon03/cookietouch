@@ -6,10 +6,10 @@ import MountClientData from "@/protocol/network/types/MountClientData";
 import IClearable from "@/utils/IClearable";
 
 export default class Mount implements IClearable {
-  public hasMount: boolean;
-  public isRiding: boolean;
-  public currentRatio: number;
-  public data: MountClientData;
+  public hasMount: boolean = false;
+  public isRiding: boolean = false;
+  public currentRatio: number = 0;
+  public data: MountClientData | undefined;
   private account: Account;
 
   constructor(account: Account) {

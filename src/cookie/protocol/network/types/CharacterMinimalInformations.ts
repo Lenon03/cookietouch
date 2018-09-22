@@ -1,7 +1,6 @@
 import AbstractCharacterInformation from "@/protocol/network/types/AbstractCharacterInformation";
 
 export default class CharacterMinimalInformations extends AbstractCharacterInformation {
-
   public level: number;
   public name: string;
 

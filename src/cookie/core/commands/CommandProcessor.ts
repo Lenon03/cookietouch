@@ -9,7 +9,7 @@ import ICommand from "@/core/commands/handlers/ICommand";
  */
 export default class CommandProcessor {
   private commandIdentifier: string;
-  private handlers = {};
+  private handlers: Record<string, ICommand<any>> = {};
 
   constructor(commandIndentifier: string) {
     this.commandIdentifier = commandIndentifier;

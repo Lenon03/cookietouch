@@ -28,11 +28,11 @@ export default class MapAPI {
   }
 
   public area(): string {
-    return this.account.game.map.area;
+    return this.account.game.map.area || "";
   }
 
   public subArea(): string {
-    return this.account.game.map.subArea;
+    return this.account.game.map.subArea || "";
   }
 
   public async changeMap(where: string): Promise<boolean> {
@@ -52,7 +52,7 @@ export default class MapAPI {
   }
 
   public async moveToCell(cellId: number): Promise<boolean> {
-    if (cellId < 0 || cellId > 559) {
+    if (cellId < 0 || cellId > 559 || !this.account.game.map.data) {
       return false;
     }
     if (
@@ -207,6 +207,9 @@ export default class MapAPI {
   }
 
   public onCell(cellId: number): boolean {
+    if (!this.account.game.map.playedCharacter) {
+      return false;
+    }
     return this.account.game.map.playedCharacter.cellId === cellId;
   }
 

@@ -8,9 +8,9 @@ import { sleep } from "@/utils/Time";
 
 export default class InteractivesManager implements IClearable {
   private _account: Account;
-  private _interactiveToUse: InteractiveElementEntry;
-  private _lockCode: string;
-  private _skillInstanceUid: number;
+  private _interactiveToUse: InteractiveElementEntry | null = null;
+  private _lockCode: string | null = null;
+  private _skillInstanceUid: number = 0;
   private readonly onUseFinished = new LiteEvent<boolean>();
 
   constructor(account: Account, movements: MovementsManager) {
@@ -56,7 +56,7 @@ export default class InteractivesManager implements IClearable {
     return this.onUseFinished.expose();
   }
 
-  public getElementOnCell(cellId: number): InteractiveElementEntry {
+  public getElementOnCell(cellId: number): InteractiveElementEntry | null {
     // Search for a stated element in the cellId
     // (not sure if its good to search in stated elements)
     const statedElem = this._account.game.map.statedElements.find(
@@ -64,7 +64,9 @@ export default class InteractivesManager implements IClearable {
     );
 
     if (statedElem !== undefined && statedElem.state === 0) {
-      return this._account.game.map.getInteractiveElement(statedElem.id);
+      return (
+        this._account.game.map.getInteractiveElement(statedElem.id) || null
+      );
     }
 
     // Search for a door in the cellId
@@ -157,7 +159,7 @@ export default class InteractivesManager implements IClearable {
     interactive: InteractiveElementEntry,
     cellId: number,
     skillInstanceUid: number,
-    lockCode: string = null
+    lockCode: string | null = null
   ): boolean {
     if (this._account.isBusy || this._interactiveToUse !== null) {
       return false;

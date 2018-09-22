@@ -17,7 +17,7 @@ import { DataTypes } from "@/protocol/data/DataTypes";
 
 export default class SpellsManager {
   private account: Account;
-  private enemiesTouched: number;
+  private enemiesTouched: number = 0;
   private spellIdToCast: number;
   private targetCellId: number;
 
@@ -55,6 +55,9 @@ export default class SpellsManager {
     if (!this.isDistanceGood(spell)) {
       return SpellCastingResults.NOT_CASTED;
     }
+    if (!this.account.game.fight.playedFighter) {
+      return SpellCastingResults.NOT_CASTED;
+    }
     // In case its a spell we need to cast at a specific hp percentage
     if (this.account.game.fight.playedFighter.lifePercent > spell.characterHp) {
       return SpellCastingResults.NOT_CASTED;
@@ -80,7 +83,11 @@ export default class SpellsManager {
       !spell.aoe &&
       !this.account.game.fight.isHandToHandWithAnEnemy()
     ) {
-      return this.moveToCastSimpleSpell(spell, this.getNearestTarget(spell));
+      const target = this.getNearestTarget(spell);
+      if (!target) {
+        return SpellCastingResults.NOT_CASTED;
+      }
+      return this.moveToCastSimpleSpell(spell, target);
     }
     // AOE spell (even hand to hand)
     if (spell.aoe) {
@@ -103,6 +110,10 @@ export default class SpellsManager {
       return SpellCastingResults.NOT_CASTED;
     }
 
+    if (!this.account.game.fight.playedFighter) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+
     const spellEntry = this.account.game.character.getSpell(spell.spellId);
     const spellDataResp = await DataManager.get<Spells>(
       DataTypes.Spells,
@@ -111,7 +122,7 @@ export default class SpellsManager {
     const spellData = spellDataResp[0].object;
     const spellLevelResp = await DataManager.get<SpellLevels>(
       DataTypes.SpellLevels,
-      spellData.spellLevels[spellEntry.level - 1]
+      spellData.spellLevels[spellEntry!.level - 1]
     );
     const spellLevel = spellLevelResp[0].object;
 
@@ -130,7 +141,7 @@ export default class SpellsManager {
 
     for (const [cellid, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
-      this.account.game.map.data,
+      this.account.game.map.data!,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
       if (!moveNode.reachable) {
@@ -149,7 +160,7 @@ export default class SpellsManager {
     // If we need to move, try to move with te lowest amount of mps (with the same number of touched enemies of course)
     let cellId = -1;
     let fromCellId = -1;
-    let node: [number, MoveNode] = null;
+    let node: [number, MoveNode] | null = null;
     let touchedEnemies = 0;
     let usedMps = 99;
 
@@ -226,7 +237,7 @@ export default class SpellsManager {
 
   private async getRangeNodeEntry(
     fromCellId: number,
-    node: MoveNode,
+    node: MoveNode | null,
     spell: Spell,
     spellLevel: SpellLevels
   ): Promise<RangeNodeEntry> {
@@ -288,6 +299,9 @@ export default class SpellsManager {
   }
 
   private async castSimpleSpell(spell: Spell): Promise<SpellCastingResults> {
+    if (!this.account.game.fight.playedFighter) {
+      return SpellCastingResults.NOT_CASTED;
+    }
     if (
       (await this.account.game.fight.canLaunchSpell(spell.spellId)) !==
       SpellInabilityReasons.NONE
@@ -335,15 +349,21 @@ export default class SpellsManager {
       return SpellCastingResults.NOT_CASTED;
     }
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
-    let node: [number, MoveNode] = null;
+    let node: [number, MoveNode] | null = null;
     let pmUsed = 99;
 
-    for (const [cellId, moveNode] of FightsPathfinder.getReachableZone(
+    if (!this.account.game.map.data || !this.account.game.fight.playedFighter) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+
+    const reachableZone = FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
-    ).entries()) {
-      if (!moveNode.reachable) {
+    ).entries();
+
+    for (const [cellId, moveNode] of reachableZone) {
+      if (!moveNode.reachable || !moveNode.path) {
         continue;
       }
 
@@ -355,7 +375,7 @@ export default class SpellsManager {
 
       if (
         spell.handToHand &&
-        MapPoint.fromCellId(cellId).distanceToCell(MapPoint.fromCellId(cellId))
+        !this.account.game.fight.isHandToHandWithAnEnemy(cellId)
       ) {
         continue;
       }
@@ -404,7 +424,14 @@ export default class SpellsManager {
       return SpellCastingResults.NOT_CASTED;
     }
 
+    if (!this.account.game.fight.playedFighter) {
+      return SpellCastingResults.NOT_CASTED;
+    }
+
     const spellEntry = this.account.game.character.getSpell(spell.spellId);
+    if (!spellEntry) {
+      return SpellCastingResults.NOT_CASTED;
+    }
     const spellDataResp = await DataManager.get<Spells>(
       DataTypes.Spells,
       spell.spellId
@@ -428,12 +455,14 @@ export default class SpellsManager {
           t
         )) === SpellInabilityReasons.NONE
       ) {
-        if (
-          spell.handToHand &&
-          MapPoint.fromCellId(t).distanceToCell(
-            MapPoint.fromCellId(this.account.game.fight.playedFighter.cellId)
-          ) !== 1
-        ) {
+        const mp = MapPoint.fromCellId(t);
+        const pMp = MapPoint.fromCellId(
+          this.account.game.fight.playedFighter.cellId
+        );
+        if (!mp || !pMp) {
+          continue;
+        }
+        if (spell.handToHand && mp.distanceToCell(pMp) !== 1) {
           continue;
         }
         this.account.logger.logDebug(
@@ -452,14 +481,17 @@ export default class SpellsManager {
     spellLevel: SpellLevels
   ): Promise<SpellCastingResults> {
     // We'll move to cast the spell (if we can) with the lowest number of MP possible
-    let node: [number, MoveNode] = null;
+    let node: [number, MoveNode] | null = null;
     let pmUsed = 99;
+    if (!this.account.game.fight.playedFighter || !this.account.game.map.data) {
+      return SpellCastingResults.NOT_CASTED;
+    }
     for (const [cellid, moveNode] of FightsPathfinder.getReachableZone(
       this.account.game.fight,
       this.account.game.map.data,
       this.account.game.fight.playedFighter.cellId
     ).entries()) {
-      if (!moveNode.reachable) {
+      if (!moveNode.reachable || !moveNode.path) {
         continue;
       }
       // Only choose the safe paths
@@ -495,7 +527,7 @@ export default class SpellsManager {
     return SpellCastingResults.NOT_CASTED;
   }
 
-  private getNearestTarget(spell: Spell): FighterEntry {
+  private getNearestTarget(spell: Spell): FighterEntry | null {
     if (spell.target === SpellTargets.SELF) {
       return this.account.game.fight.playedFighter;
     }
@@ -504,7 +536,10 @@ export default class SpellsManager {
       return null; // Assuming that the others never return null
     }
 
-    const filter = (fighter: FighterEntry) => {
+    const filter = (fighter: FighterEntry | null) => {
+      if (!fighter) {
+        return false;
+      }
       // In case the user wants to ignore invocations
       if (
         this.account.extensions.fights.config.ignoreSummonedEnemies &&
@@ -535,12 +570,18 @@ export default class SpellsManager {
       return false;
     }
 
+    if (!this.account.game.fight.playedFighter) {
+      return true;
+    }
+
     const mp = MapPoint.fromCellId(nearestEnemy.cellId);
-    return (
-      MapPoint.fromCellId(
-        this.account.game.fight.playedFighter.cellId
-      ).distanceToCell(mp) < spell.distanceToClosestMonster
+    const mp2 = MapPoint.fromCellId(
+      this.account.game.fight.playedFighter.cellId
     );
+    if (!mp || !mp2) {
+      return true;
+    }
+    return mp2.distanceToCell(mp) < spell.distanceToClosestMonster;
   }
 
   private isResistanceGood(spell: Spell, fighter: FighterEntry): boolean {

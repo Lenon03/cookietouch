@@ -12,10 +12,20 @@ export default class GameRolePlayGroupMonsterInformations extends GameRolePlayAc
   public hasHardcoreDrop: boolean;
   public hasAVARewardToken: boolean;
 
-  constructor(contextualId = 0, look: EntityLook = null, disposition: EntityDispositionInformations = null,
-              staticInfos: GroupMonsterStaticInformations = null, ageBonus = 0, lootShare = 0, alignmentSide = 0,
-              keyRingBonus = false, hasHardcoreDrop = false, hasAVARewardToken = false) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    staticInfos = new GroupMonsterStaticInformations(),
+    ageBonus = 0,
+    lootShare = 0,
+    alignmentSide = 0,
+    keyRingBonus = false,
+    hasHardcoreDrop = false,
+    hasAVARewardToken = false
+  ) {
     super(contextualId, look, disposition);
+    this.staticInfos = staticInfos;
     this.ageBonus = ageBonus;
     this.lootShare = lootShare;
     this.alignmentSide = alignmentSide;

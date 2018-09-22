@@ -3,9 +3,8 @@ import AppBar from "@material-ui/core/AppBar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { bottomAppBarStyles } from "@renderer/pages/BottomAppBar/styles";
 import {
-  BottomAppBarProps,
+  bottomAppBarStyles,
   IBottomAppBarProps,
   IBottomAppBarState
 } from "@renderer/pages/BottomAppBar/types";
@@ -13,7 +12,7 @@ import firebase from "firebase/app";
 import * as React from "react";
 
 class BottomAppBar extends React.Component<
-  BottomAppBarProps,
+  IBottomAppBarProps,
   IBottomAppBarState
 > {
   public state: IBottomAppBarState = {
@@ -24,6 +23,9 @@ class BottomAppBar extends React.Component<
   public componentDidMount() {
     const listRef = firebase.database().ref("status");
     listRef.on("value", snap => {
+      if (!snap) {
+        return;
+      }
       let num = 0;
       snap.forEach(x => {
         if (x.val().state === "online") {
@@ -60,4 +62,4 @@ class BottomAppBar extends React.Component<
   }
 }
 
-export default withStyles(bottomAppBarStyles)<IBottomAppBarProps>(BottomAppBar);
+export default withStyles(bottomAppBarStyles)(BottomAppBar);

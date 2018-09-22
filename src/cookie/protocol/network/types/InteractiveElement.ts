@@ -8,10 +8,15 @@ export default class InteractiveElement extends Type {
   public elementTypeId: number;
   public _name: string;
 
-  constructor(elementId = 0, elementTypeId = 0,
-              enabledSkills: InteractiveElementSkill[] = null,
-              disabledSkills: InteractiveElementSkill[] = null) {
+  constructor(
+    name = "",
+    elementId = 0,
+    elementTypeId = 0,
+    enabledSkills: InteractiveElementSkill[] = [],
+    disabledSkills: InteractiveElementSkill[] = []
+  ) {
     super();
+    this._name = name;
     this.enabledSkills = enabledSkills;
     this.disabledSkills = disabledSkills;
     this.elementId = elementId;

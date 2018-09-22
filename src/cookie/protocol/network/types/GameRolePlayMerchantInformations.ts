@@ -7,11 +7,16 @@ export default class GameRolePlayMerchantInformations extends GameRolePlayNamedA
   public options: HumanOption[];
   public sellType: number;
 
-  constructor(contextualId = 0, look: EntityLook, disposition: EntityDispositionInformations,
-              name = "", sellType = 0, options: HumanOption[] = null) {
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name = "",
+    sellType = 0,
+    options: HumanOption[] = []
+  ) {
     super(contextualId, look, disposition, name);
     this.options = options;
     this.sellType = sellType;
-
   }
 }

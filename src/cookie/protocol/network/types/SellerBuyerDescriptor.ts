@@ -10,9 +10,16 @@ export default class SellerBuyerDescriptor extends Type {
   public npcContextualId: number;
   public unsoldDelay: number;
 
-  constructor(taxPercentage = 0, taxModificationPercentage = 0, maxItemLevel = 0,
-              maxItemPerAccount = 0, npcContextualId = 0, unsoldDelay = 0, quantities: number[] = null,
-              types: number[] = null) {
+  constructor(
+    taxPercentage = 0,
+    taxModificationPercentage = 0,
+    maxItemLevel = 0,
+    maxItemPerAccount = 0,
+    npcContextualId = 0,
+    unsoldDelay = 0,
+    quantities: number[] = [],
+    types: number[] = []
+  ) {
     super();
     this.quantities = quantities;
     this.types = types;

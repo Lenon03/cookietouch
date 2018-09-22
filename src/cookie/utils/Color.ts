@@ -1,9 +1,9 @@
 export const RGB_COLOR_REGEX = /\((\d+),\s*(\d+),\s*(\d+)(,\s*(\d*.\d*))?\)/;
 
 export default class Color {
-  public r: number;
-  public g: number;
-  public b: number;
+  public r: number | undefined;
+  public g: number | undefined;
+  public b: number | undefined;
   public a: number = 1;
 
   constructor(r?: string | number, g?: number, b?: number, a?: number) {
@@ -15,7 +15,7 @@ export default class Color {
         this.g = parseInt(r.substr(2, 2), 16);
         this.b = parseInt(r.substr(4, 2), 16);
       } else if (r.indexOf("rgb") === 0) {
-        const res = RGB_COLOR_REGEX.exec(r);
+        const res = RGB_COLOR_REGEX.exec(r)!;
         this.r = parseInt(res[1], 10);
         this.g = parseInt(res[2], 10);
         this.b = parseInt(res[3], 10);
@@ -33,6 +33,9 @@ export default class Color {
   }
 
   public toHex() {
+    if (!this.r || !this.g || !this.b) {
+      return "#000";
+    }
     return (
       "#" +
       ("0" + this.r.toString(16)).slice(-2) +

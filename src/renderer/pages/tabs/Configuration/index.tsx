@@ -25,9 +25,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { configurationTabStyles } from "@renderer/pages/tabs/Configuration/styles";
 import {
-  ConfigurationTabProps,
+  configurationTabStyles,
   IConfigurationTabProps,
   IConfigurationTabState,
   SpellLevels
@@ -35,7 +34,7 @@ import {
 import * as React from "react";
 
 class Configuration extends React.Component<
-  ConfigurationTabProps,
+  IConfigurationTabProps,
   IConfigurationTabState
 > {
   public state: IConfigurationTabState = {
@@ -417,7 +416,7 @@ class Configuration extends React.Component<
 
   private characterSelected = async () => {
     const breedSpellId = BreedsUtility.breeds.First(
-      b => b.id === this.props.account.game.character.breed
+      b => b !== undefined && b.id === this.props.account.game.character.breed
     ).breedSpellsId;
     const breedSpellsResponse = await DataManager.get<Spells>(
       DataTypes.Spells,
@@ -474,21 +473,21 @@ class Configuration extends React.Component<
     this.setState({ spells: this.props.account.config.spellsToBoost });
   };
 
-  private handleSwitchChange = (event, checked) => {
+  private handleSwitchChange = (event: any, checked: boolean) => {
     this.setState({ [event.target.name]: checked } as Pick<
       IConfigurationTabState,
       keyof IConfigurationTabState
     >);
-    this.props.account.config[event.target.name] = checked;
+    (this.props.account.config as any)[event.target.name] = checked;
     this.props.account.config.save();
   };
-  private handleSelectChange = event => {
+  private handleSelectChange = (event: any) => {
     const value = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: value } as Pick<
       IConfigurationTabState,
       keyof IConfigurationTabState
     >);
-    this.props.account.config[event.target.name] = value;
+    (this.props.account.config as any)[event.target.name] = value;
     this.props.account.config.save();
   };
 
@@ -510,6 +509,4 @@ class Configuration extends React.Component<
   };
 }
 
-export default withStyles(configurationTabStyles)<IConfigurationTabProps>(
-  Configuration
-);
+export default withStyles(configurationTabStyles)(Configuration);

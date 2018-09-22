@@ -12,17 +12,16 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { signin } from "@renderer/FirebaseHelpers";
-import { loginFormDialogStyles } from "@renderer/pages/LoginFormDialog/styles";
 import {
   ILoginFormDialogProps,
   ILoginFormDialogState,
-  LoginFormDialogProps
+  loginFormDialogStyles
 } from "@renderer/pages/LoginFormDialog/types";
 import { remote } from "electron";
 import * as React from "react";
 
 class LoginFormDialog extends React.Component<
-  LoginFormDialogProps,
+  ILoginFormDialogProps,
   ILoginFormDialogState
 > {
   public state: ILoginFormDialogState = {
@@ -97,14 +96,14 @@ class LoginFormDialog extends React.Component<
     );
   }
 
-  private handleChange = prop => event => {
+  private handleChange = (prop: any) => (event: any) => {
     this.setState({ [prop]: event.target.value } as Pick<
       ILoginFormDialogState,
       keyof ILoginFormDialogState
     >);
   };
 
-  private handleMouseDownPassword = event => {
+  private handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
 
@@ -134,6 +133,4 @@ class LoginFormDialog extends React.Component<
   };
 }
 
-export default withStyles(loginFormDialogStyles)<ILoginFormDialogProps>(
-  LoginFormDialog
-);
+export default withStyles(loginFormDialogStyles)(LoginFormDialog);

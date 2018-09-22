@@ -1,7 +1,7 @@
 export default class TimerWrapper {
-  public enabled: boolean;
+  public enabled: boolean = false;
 
-  private timer: NodeJS.Timer;
+  private timer: NodeJS.Timer | undefined;
   private interval: number;
   private callback: () => void;
   private object: any;
@@ -31,7 +31,7 @@ export default class TimerWrapper {
       return;
     }
     this.enabled = false;
-    global.clearInterval(this.timer);
+    global.clearInterval(this.timer!);
   }
 
   public change(interval: number, now = false) {

@@ -1,7 +1,6 @@
 import Type from "@/protocol/network/types/Type";
 
 export default class BasicAllianceInformations extends Type {
-
   public allianceId: number;
   public allianceTag: string;
 

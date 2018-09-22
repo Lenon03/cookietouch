@@ -20,15 +20,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { floodTabStyles } from "@renderer/pages/tabs/Flood/styles";
 import {
-  FloodTabProps,
+  floodTabStyles,
   IFloodTabProps,
   IFloodTabState
 } from "@renderer/pages/tabs/Flood/types";
 import * as React from "react";
 
-class Flood extends React.Component<FloodTabProps, IFloodTabState> {
+class Flood extends React.Component<IFloodTabProps, IFloodTabState> {
   public state: IFloodTabState = {
     addSentenceForm: {
       channel: ChatActivableChannelsEnum.CHANNEL_GLOBAL,
@@ -254,7 +253,7 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
     );
   }
 
-  private submit = event => {
+  private submit = (event: any) => {
     event.preventDefault();
 
     const infos = this.state.addSentenceForm;
@@ -270,25 +269,25 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
     this.props.account.extensions.flood.config.save();
   };
 
-  private handleSwitchChangeForm = (event, checked) => {
+  private handleSwitchChangeForm = (event: any, checked: boolean) => {
     const addSentenceForm = { ...this.state.addSentenceForm };
-    addSentenceForm[event.target.name] = checked;
+    (addSentenceForm as any)[event.target.name] = checked;
     this.setState({ addSentenceForm });
   };
 
-  private handleSelectChangeForm = event => {
+  private handleSelectChangeForm = (event: any) => {
     const addSentenceForm = { ...this.state.addSentenceForm };
-    addSentenceForm[event.target.name] = event.target.value;
+    (addSentenceForm as any)[event.target.name] = event.target.value;
     this.setState({ addSentenceForm });
   };
 
-  private handleInputChange = event => {
+  private handleInputChange = (event: any) => {
     const v = parseInt(event.target.value, 10);
     this.setState({ [event.target.name]: v } as Pick<
       IFloodTabState,
       keyof IFloodTabState
     >);
-    this.props.account.extensions.flood.config[event.target.name] = v;
+    (this.props.account.extensions.flood.config as any)[event.target.name] = v;
     this.props.account.extensions.flood.config.save();
   };
 
@@ -330,4 +329,4 @@ class Flood extends React.Component<FloodTabProps, IFloodTabState> {
   };
 }
 
-export default withStyles(floodTabStyles)<IFloodTabProps>(Flood);
+export default withStyles(floodTabStyles)(Flood);

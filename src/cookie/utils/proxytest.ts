@@ -1,10 +1,25 @@
+/*
 import * as https from "https";
 // import * as Tls from "tls";
 // import * as Util from "util";
 
 export default class HttpsProxyAgent extends https.Agent {
+  private proxyHost: string | undefined;
+  private proxyPort: number | undefined;
+  private createConnection: (opts: any, callback: any) => void;
+
   constructor(options?: https.AgentOptions) {
     super(options);
+    this.proxyHost = options && options.host;
+    this.proxyPort = options && options.port;
+    this.createConnection = (opts: any, callback: any) => {
+      // do a CONNECT request
+      const req = https.request({
+        headers: {
+          host: opts.host
+        }
+      });
+    };
   }
 }
 

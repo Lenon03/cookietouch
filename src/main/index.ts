@@ -10,6 +10,8 @@ import {
 import log from "electron-log";
 import { appUpdater } from "./updater";
 
+app.commandLine.appendSwitch("js-flags", "--harmony-async-iteration");
+
 init({
   dsn: "https://c2de150c591046829235a291351779b7@sentry.io/1237788"
 });

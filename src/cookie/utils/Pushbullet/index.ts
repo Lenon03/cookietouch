@@ -61,7 +61,7 @@ export default class Pushbullet {
           throw new Error("We have to pass the level");
         }
         title += ` ${LanguageManager.trans("levelUp")}`;
-        body = `${LanguageManager.trans("levelUpBody")} ${data.level}`;
+        body = LanguageManager.trans("levelUpBody", data.level);
         break;
       }
       case NotificationType.DISCONNECT: {

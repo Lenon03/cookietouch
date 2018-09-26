@@ -78,29 +78,34 @@
 
 // /////////////////////////////////////////////////
 // /////////////////////////////////////////////////
+/*
+const proxy = "http://186.193.186.3:20183";
+const agent = new HttpsProxyAgent(proxy);
 
-// const opts: https.RequestOptions = {
-//   // agent,
-//   host: "ip.jsontest.com",
-//   method: "POST",
-//   path: "/",
-//   port: 80,
-//   timeout: 10000
-// };
-// const post_req = https.request(opts, res => {
-//   res.setEncoding("utf8");
-//   res.on("data", chunk => {
-//     console.log("Response: " + chunk);
-//   });
-// });
-// // post_req.write("name=john");
-// post_req.end();
+const opts: https.RequestOptions = {
+  agent: agent as any,
+  host: "ip.jsontest.com",
+  method: "GET",
+  path: "/",
+  port: 80,
+  timeout: 10000
+};
+const post_req = https.request(opts, res => {
+  res.setEncoding("utf8");
+  res.on("data", chunk => {
+    console.log("Response: " + chunk);
+  });
+});
+// post_req.write("name=john");
+post_req.end();
 
-// const config: AxiosRequestConfig = {
-//   baseURL: "http://ip.jsontest.com:80",
-//   httpsAgent: agent,
-//   proxy: false
-// };
+const config: AxiosRequestConfig = {
+  baseURL: "http://ip.jsontest.com:80",
+  httpsAgent: agent,
+  proxy: false,
+  timeout: 10000
+};
 
-// const myaxios = axios.create(config);
-// myaxios.get("/").then(res => console.log("xxx res", res.data));
+const myaxios = axios.create(config);
+myaxios.get("/").then(res => console.log("xxx res", res.data));
+*/

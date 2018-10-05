@@ -31,8 +31,8 @@ Les variables ci-dessous permettent de créer des trajets avec les paramètres s
 <tr>
 <td>path</td>
 <td>string</td>
-<td>Correspond &agrave; <a href="Map.md#changemapwhere-string">where</a>, peut aussi etre un cellId</td>
-<td>path : 355 ou path : "top"</td>
+<td>Correspond &agrave; <a href="Map.md#changemapwhere-string">where</a>, peut aussi etre un cellId ou un changement de map par un cellid</td>
+<td>path : "355" ou path : "top" ou path : "top(8)"</td>
 </tr>
 <tr>
 <td>gather</td>
@@ -74,11 +74,12 @@ Les variables ci-dessous permettent de créer des trajets avec les paramètres s
 </table>
 
 **Exemple:**
-*Dans cet exemple, nous utilisons une fonction custom qui nous permet d'utiliser une potion si nous sommes sur la map 67371008.*
+*Dans cet exemple, nous utilisons une fonction custom qui nous permet d'utiliser une potion si nous sommes sur la map 88081177.*
 ```js
 const move = [
     { map : 88081177, path : "top" },
-    { map : 88081177, path : 355 },
+    { map : 88081177, path : "355" },
+    { map : 88081177, path : "top(8)" },
     { map : 88081177, gather: true},
     { map : 88081177, fight : true },
     { map : 88081177, door: 355},

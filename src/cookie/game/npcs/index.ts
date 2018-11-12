@@ -2,14 +2,23 @@ import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import NpcEntry from "@/game/map/entities/NpcEntry";
 import LiteEvent from "@/utils/LiteEvent";
+// import ExchangeStartOkNpcShopMessage from "@/protocol/network/messages/ExchangeStartOkNpcShopMessage";
+import ObjectItemToSellInNpcShop from "@/protocol/network/types/ObjectItemToSellInNpcShop";
+/* import { Deferred, IDeferred } from "@/utils/Deferred";
+import { List } from "linqts";
+import DataManager from "@/protocol/data";
+import Items from "@/protocol/data/classes/Items";
+import { DataTypes } from "@/protocol/data/DataTypes";*/
 
 export default class Npcs {
   public possibleReplies: number[] = [];
-
+  private _objectsInSale: ObjectItemToSellInNpcShop[] = [];
   private account: Account;
   private readonly onDialogCreated = new LiteEvent<void>();
   private readonly onQuestionReceived = new LiteEvent<void>();
   private readonly onDialogLeft = new LiteEvent<void>();
+
+
 
   constructor(account: Account) {
     this.account = account;
@@ -94,6 +103,43 @@ export default class Npcs {
     return true;
   }
 
+  public async buyItem(gid: number, qty: number): Promise<boolean> {
+
+
+    if (!this._objectsInSale === null) {
+      return false;
+    }
+    console.log("taille du tableau d'items:" + this._objectsInSale.length);
+    console.log("prix 1er item :" + this._objectsInSale[0].objectPrice);
+    console.log("id 1er item: " + this._objectsInSale[0].objectGid);
+    console.log("prix 2eme item :" + this._objectsInSale[1].objectPrice);
+    console.log("id 2eme item: " + this._objectsInSale[1].objectGid);
+    /* for (const obj in this._objectsInSale) {
+      if (this._objectsInSale[obj].objectGid === gid) {
+        console.log(this._objectsInSale[obj].objectGid);
+      }
+      else {
+        console.log(this._objectsInSale[obj].objectGid);
+      }
+
+    }*/
+
+
+    console.log("on a trouvé le meme objet que dans le trajet !! on achete");
+    this.account.network.sendMessageFree("ExchangeBuyMessage", {
+      objectToBuyId: gid,
+      quantity: qty,
+    });
+    return true;
+
+
+
+    console.log("test du buy pnj");
+
+
+  }
+
+
   public async UpdateNpcDialogCreationMessage(message: any) {
     this.account.state = AccountStates.TALKING;
     this.onDialogCreated.trigger();
@@ -105,6 +151,13 @@ export default class Npcs {
     }
 
     this.possibleReplies = message.visibleReplies;
+    this.onQuestionReceived.trigger();
+  }
+
+  public async UpdateNpcShopMessage(message: any) {
+
+    console.log("on rentre ici");
+    this._objectsInSale = message.objectsInfos;
     this.onQuestionReceived.trigger();
   }
 

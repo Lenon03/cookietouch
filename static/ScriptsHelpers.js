@@ -169,7 +169,14 @@ const npc = {
   reply: async function* (replyId) {
     await API.npc.reply.bind(API.npc)(replyId);
     yield;
+  },
+  buy: async function* (guid,quantity) {
+    if(await API.npc.buy.bind(API.npc)(guid,quantity))
+    {
+      yield;
+    }
   }
+
 }
 // Mount
 const mount = {

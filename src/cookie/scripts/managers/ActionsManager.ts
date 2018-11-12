@@ -27,6 +27,7 @@ import ScriptAction, {
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
+// import BuyAction from "../actions/npcs/BuyAction";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -38,7 +39,7 @@ export default class ActionsManager {
   public monstersGroupToAttack: number = 0;
   private readonly onActionsFinished = new LiteEvent<
     IActionsManagerEventData
-  >();
+    >();
   private readonly onCustomHandled = new LiteEvent<IActionsManagerEventData>();
   private account: Account;
   private actionsQueue: ScriptAction[];
@@ -423,6 +424,7 @@ export default class ActionsManager {
     if (!this.account.scripts.running) {
       return;
     }
+
     if (this.currentAction instanceof NpcBankAction) {
       const nba = this.currentAction as NpcBankAction;
       if (!this.account.game.npcs.reply(nba.replyId)) {

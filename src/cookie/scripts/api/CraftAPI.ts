@@ -1,6 +1,6 @@
 import Account from "@/account";
 import SetRecipeAction from "../actions/craft/SetRecipeAction";
-
+import ReadyAction from "../actions/craft/ReadyAction";
 export default class CraftAPI {
   private account: Account;
 
@@ -14,4 +14,13 @@ export default class CraftAPI {
     );
     return true;
   }
+
+  public async ready(): Promise<boolean> {
+    await this.account.scripts.actionsManager.enqueueAction(
+      new ReadyAction(),
+      true
+    );
+    return true;
+  }
+
 }

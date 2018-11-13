@@ -154,6 +154,15 @@ const currentPos = API.map.currentPos.bind(API.map);
 const currentMapId = API.map.currentMapId.bind(API.map);
 const area = API.map.area.bind(API.map);
 const subArea = API.map.subArea.bind(API.map);
+// Craft
+const craft = {
+  setRecipe : async function* (guid)
+  {
+    if(await API.craft.setRecipe.bind(API.craft)(guid)){
+      yield;
+    }
+  }
+}
 // Npc
 const npc = {
   npcBank: async function* (npcId, replyId) {
@@ -175,6 +184,12 @@ const npc = {
     {
       yield;
     }
+  },
+  sell: async function* (guid,quantity) {
+      if(await API.npc.buy.bind(API.npc)(guid,quantity))
+      {
+        yield;
+      }
   }
 
 }

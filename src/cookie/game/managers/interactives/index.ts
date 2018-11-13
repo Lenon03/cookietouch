@@ -27,6 +27,11 @@ export default class InteractivesManager implements IClearable {
       }
     });
     this._account.network.registerMessage(
+      "ExchangeStartOkCraftWithInformationMessage",
+      this.handleInteractiveUsedMessage
+    );
+
+    this._account.network.registerMessage(
       "InteractiveUsedMessage",
       this.handleInteractiveUsedMessage
     );

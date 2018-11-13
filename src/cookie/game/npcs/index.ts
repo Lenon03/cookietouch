@@ -103,39 +103,49 @@ export default class Npcs {
     return true;
   }
 
-  public async buyItem(gid: number, qty: number): Promise<boolean> {
+  public async sellItem(gid: number, qty: number): Promise<boolean> {
 
-
-    if (!this._objectsInSale === null) {
+    const obj = this.account.game.character.inventory.getObjectByGid(gid);
+    if (obj === null) {
       return false;
+    }
+
+    qty =
+      qty <= 0
+        ? obj.quantity
+        : qty > obj.quantity
+          ? obj.quantity
+          : qty;
+    this.account.network.sendMessageFree("ExchangeSellMessage", {
+      objectToSellId: obj.uid,
+      quantity: qty,
+    });
+    return true;
+  }
+  public async buyItem(gid: number, qty: number): Promise<boolean> {
+    if (this._objectsInSale === null) {
+      return false;
+    }
+    for (const obj in this._objectsInSale) {
+      if (this._objectsInSale[obj].objectGid === gid) {
+        if (this._objectsInSale[obj].objectPrice > this.account.game.character.inventory.kamas) {
+          return false;
+        }
+      }
     }
     console.log("taille du tableau d'items:" + this._objectsInSale.length);
     console.log("prix 1er item :" + this._objectsInSale[0].objectPrice);
     console.log("id 1er item: " + this._objectsInSale[0].objectGid);
     console.log("prix 2eme item :" + this._objectsInSale[1].objectPrice);
     console.log("id 2eme item: " + this._objectsInSale[1].objectGid);
-    /* for (const obj in this._objectsInSale) {
-      if (this._objectsInSale[obj].objectGid === gid) {
-        console.log(this._objectsInSale[obj].objectGid);
-      }
-      else {
-        console.log(this._objectsInSale[obj].objectGid);
-      }
 
-    }*/
+    console.log("test du buy pnj");
 
-
-    console.log("on a trouvé le meme objet que dans le trajet !! on achete");
     this.account.network.sendMessageFree("ExchangeBuyMessage", {
       objectToBuyId: gid,
       quantity: qty,
     });
     return true;
-
-
-
-    console.log("test du buy pnj");
-
 
   }
 

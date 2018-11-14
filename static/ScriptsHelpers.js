@@ -162,12 +162,9 @@ const craft = {
       yield;
     }
   },
-  ready : async function* ()
-  {
-    if(await API.craft.ready.bind(API.craft))
-    {
-      yield;
-    }
+  ready : async function* (){
+    await API.craft.ready.bind(API.craft)()
+    yield;    
   }
 }
 // Npc

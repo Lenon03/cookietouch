@@ -1,24 +1,34 @@
 import Account from "@/account";
-import { AccountStates } from "@/account/AccountStates";
+// import { AccountStates } from "@/account/AccountStates";
 import LiteEvent from "@/utils/LiteEvent";
 import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
-
-
+import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
+import ExchangeStartOkCraftWithInformationMessage from "@/protocol/network/messages/ExchangeStartOkCraftWithInformationMessage";
 export default class Craft {
 
+  public remoteObjects: ObjectEntry[];
+  public objects: ObjectEntry[];
+  public objectsInfos: ObjectItemToSell[];
+  public remoteCurrentWeight: number = 0;
+  public currentWeight: number = 0;
+  public nbcase: number = 0;
+  public skillid: number = 0;
+  private account: Account;
+  private readonly onExchangeContentChanged = new LiteEvent<void>();
+  private readonly onExchangeLeft = new LiteEvent<void>();
   constructor(account: Account) {
     this.account = account;
-
+    this.objectsInfos = [];
     this.remoteObjects = [];
     this.objects = [];
   }
-  public remoteObjects: ObjectEntry[];
-  public objects: ObjectEntry[];
-  public remoteCurrentWeight: number = 0;
-  public currentWeight: number = 0;
-  private account: Account;
-  private readonly onExchangeContentChanged = new LiteEvent<void>();
+  public get ExchangeContentChanged() {
+    return this.onExchangeContentChanged.expose();
+  }
+  public get ExchangeLeft() {
+    return this.onExchangeLeft.expose();
+  }
   public setRecipe(guid: number): boolean {
     this.account.network.sendMessageFree("ExchangeSetCraftRecipeMessage", {
       objectGID: guid,
@@ -48,6 +58,13 @@ export default class Craft {
     }
 
     this.onExchangeContentChanged.trigger();
+  }
+
+  public async UpdateExchangeStartOkCraftWithInformationMessage(
+    message: ExchangeStartOkCraftWithInformationMessage
+  ) {
+    this.nbcase = message.nbCase;
+    this.skillid = message.skillId;
   }
 
 }

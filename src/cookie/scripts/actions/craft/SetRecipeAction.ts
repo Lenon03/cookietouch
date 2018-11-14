@@ -15,7 +15,7 @@ export default class SetRecipeAction extends ScriptAction {
   public async process(account: Account): Promise<ScriptActionResults> {
     const res = await account.game.craft.setRecipe(this.gid);
     if (res) {
-      await sleep(1500);
+      await sleep(2000);
     }
     return ScriptAction.doneResult();
 

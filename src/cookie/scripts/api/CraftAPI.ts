@@ -15,12 +15,12 @@ export default class CraftAPI {
     return true;
   }
 
-  public async ready(): Promise<boolean> {
+  public async ready() {
     await this.account.scripts.actionsManager.enqueueAction(
       new ReadyAction(),
       true
     );
-    return true;
+
   }
 
 }

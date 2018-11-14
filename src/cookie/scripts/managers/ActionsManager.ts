@@ -27,6 +27,7 @@ import ScriptAction, {
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
+import ReadyAction from "../actions/craft/ReadyAction";
 // import BuyAction from "../actions/npcs/BuyAction";
 
 export interface IActionsManagerEventData {
@@ -80,6 +81,7 @@ export default class ActionsManager {
     this.account.game.exchange.ExchangeStarted.on(
       this.exchange_exchangeStarted
     );
+    this.account.game.craft.ExchangeLeft.on(this.exchange_exchangeLeft);
     this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft);
     this.account.game.bid.StartedBuying.on(this.bid_startedBuying);
     this.account.game.bid.StartedSelling.on(this.bid_startedSelling);
@@ -489,7 +491,9 @@ export default class ActionsManager {
     }
     if (
       this.currentAction instanceof SendReadyAction ||
-      this.currentAction instanceof LeaveDialogAction
+      this.currentAction instanceof LeaveDialogAction ||
+      this.currentAction instanceof ReadyAction
+
     ) {
       await this.dequeueActions(400);
     }

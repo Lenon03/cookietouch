@@ -2,6 +2,7 @@ import Account from "@/account";
 import { AccountStates } from "@/account/AccountStates";
 import LanguageManager from "@/configurations/language/LanguageManager";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
+import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
 import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
 import { ExchangeTypeEnum } from "@/protocol/enums/ExchangeTypeEnum";
 import ExchangeIsReadyMessage from "@/protocol/network/messages/ExchangeIsReadyMessage";
@@ -12,12 +13,15 @@ import ExchangeObjectModifiedMessage from "@/protocol/network/messages/ExchangeO
 import ExchangeObjectRemovedMessage from "@/protocol/network/messages/ExchangeObjectRemovedMessage";
 import ExchangeRequestedTradeMessage from "@/protocol/network/messages/ExchangeRequestedTradeMessage";
 import ExchangeStartedWithPodsMessage from "@/protocol/network/messages/ExchangeStartedWithPodsMessage";
+import ExchangeRequestOnShopStockMessage from "@/protocol/network/messages/ExchangeRequestOnShopStockMessage";
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
+import ExchangeShopStockStartedMessage from "@/protocol/network/messages/ExchangeShopStockStartedMessage";
 
 export default class Exchange {
   public objects: ObjectEntry[];
   public remoteObjects: ObjectEntry[];
+  public objectsInfos: ObjectItemToSell[];
   public kamas: number = 0;
   public remoteKamas: number = 0;
   public currentWeight: number = 0;
@@ -38,6 +42,7 @@ export default class Exchange {
     this.account = account;
     this.objects = [];
     this.remoteObjects = [];
+    this.objectsInfos = [];
   }
 
   get weightPercent() {
@@ -67,7 +72,11 @@ export default class Exchange {
   public get ExchangeLeft() {
     return this.onExchangeLeft.expose();
   }
-
+  public startShop(): boolean {
+    this.account.network.sendMessageFree("ExchangeRequestOnShopStockMessage", {
+    });
+    return true;
+  }
   public startExchange(id: number): boolean {
     if (this.account.isBusy) {
       return false;
@@ -174,7 +183,7 @@ export default class Exchange {
       if (
         !obj.exchangeable ||
         obj.position !==
-          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
       ) {
         return;
       }
@@ -192,7 +201,7 @@ export default class Exchange {
       if (
         !obj.exchangeable ||
         obj.position !==
-          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
       ) {
         return;
       }
@@ -210,7 +219,7 @@ export default class Exchange {
       if (
         !obj.exchangeable ||
         obj.position !==
-          CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
       ) {
         return;
       }
@@ -442,5 +451,8 @@ export default class Exchange {
     this.step = 0;
     this.account.state = AccountStates.NONE;
     this.onExchangeLeft.trigger();
+  }
+  public async UpdateExchangeShopStockStarted(message: ExchangeShopStockStartedMessage) {
+    this.objectsInfos = message.objectsInfos;
   }
 }

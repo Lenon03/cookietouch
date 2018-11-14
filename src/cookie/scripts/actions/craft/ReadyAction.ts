@@ -13,11 +13,8 @@ export default class ReadyAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    const res = await account.game.craft.ready();
-    if (res) {
-      await sleep(1500);
-    }
-    return ScriptAction.doneResult();
+    account.game.craft.ready();
+    return ScriptAction.processingResult();
 
   }
 }

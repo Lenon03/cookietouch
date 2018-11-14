@@ -2,8 +2,8 @@ import Account from "@/account";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 import { sleep } from "@/utils/Time";
 
-export default class BuyAction extends ScriptAction {
-  public _name: string = "BuyAction";
+export default class SellAction extends ScriptAction {
+  public _name: string = "SellAction";
   public objectToSellId: number;
   public quantity: number;
 

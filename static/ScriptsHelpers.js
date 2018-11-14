@@ -161,6 +161,13 @@ const craft = {
     if(await API.craft.setRecipe.bind(API.craft)(guid)){
       yield;
     }
+  },
+  ready : async function* ()
+  {
+    if(await API.craft.ready.bind(API.craft))
+    {
+      yield;
+    }
   }
 }
 // Npc
@@ -186,7 +193,7 @@ const npc = {
     }
   },
   sell: async function* (guid,quantity) {
-      if(await API.npc.buy.bind(API.npc)(guid,quantity))
+      if(await API.npc.sell.bind(API.npc)(guid,quantity))
       {
         yield;
       }

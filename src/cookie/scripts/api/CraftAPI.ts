@@ -1,6 +1,7 @@
 import Account from "@/account";
 import SetRecipeAction from "../actions/craft/SetRecipeAction";
 import ReadyAction from "../actions/craft/ReadyAction";
+import SetQuantityAction from "../actions/craft/SetQuantityAction";
 export default class CraftAPI {
   private account: Account;
 
@@ -14,7 +15,13 @@ export default class CraftAPI {
     );
     return true;
   }
-
+  public async setQuantity(count: number): Promise<boolean> {
+    await this.account.scripts.actionsManager.enqueueAction(
+      new SetQuantityAction(count),
+      true
+    );
+    return true;
+  }
   public async ready() {
     await this.account.scripts.actionsManager.enqueueAction(
       new ReadyAction(),

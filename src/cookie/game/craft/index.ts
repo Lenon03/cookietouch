@@ -4,6 +4,7 @@ import LiteEvent from "@/utils/LiteEvent";
 import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
+import ExchangeReplayCountModifiedMessage from "@/protocol/network/messages/ExchangeReplayCountModifiedMessage";
 import ExchangeStartOkCraftWithInformationMessage from "@/protocol/network/messages/ExchangeStartOkCraftWithInformationMessage";
 export default class Craft {
 
@@ -15,19 +16,20 @@ export default class Craft {
   public nbcase: number = 0;
   public skillid: number = 0;
   private account: Account;
-  private readonly onExchangeContentChanged = new LiteEvent<void>();
-  private readonly onExchangeLeft = new LiteEvent<void>();
+  private readonly onCraftStarted = new LiteEvent<void>();
+  private readonly onCraftLeft = new LiteEvent<void>();
+  private readonly onCraftQuantityChanged = new LiteEvent<void>();
   constructor(account: Account) {
     this.account = account;
     this.objectsInfos = [];
     this.remoteObjects = [];
     this.objects = [];
   }
-  public get ExchangeContentChanged() {
-    return this.onExchangeContentChanged.expose();
+  public get CraftStarted() {
+    return this.onCraftStarted.expose();
   }
-  public get ExchangeLeft() {
-    return this.onExchangeLeft.expose();
+  public get CraftLeft() {
+    return this.onCraftLeft.expose();
   }
   public setRecipe(guid: number): boolean {
     this.account.network.sendMessageFree("ExchangeSetCraftRecipeMessage", {
@@ -36,7 +38,12 @@ export default class Craft {
     });
     return true;
   }
-
+  public setQuantity(count: number): boolean {
+    this.account.network.sendMessageFree("ExchangeReplayMessage", {
+      count: count,
+    });
+    return true;
+  }
   public ready(): boolean {
     this.account.network.sendMessageFree("ExchangeReadyMessage", {
       ready: true,
@@ -57,7 +64,12 @@ export default class Craft {
       this.currentWeight += newObj.realWeight * newObj.quantity;
     }
 
-    this.onExchangeContentChanged.trigger();
+
+  }
+  public async UpdateExchangeReplayCountModifiedMessage(
+    message: ExchangeReplayCountModifiedMessage
+  ) {
+    this.onCraftQuantityChanged.trigger();
   }
 
   public async UpdateExchangeStartOkCraftWithInformationMessage(
@@ -65,6 +77,7 @@ export default class Craft {
   ) {
     this.nbcase = message.nbCase;
     this.skillid = message.skillId;
+    this.onCraftStarted.trigger();
   }
 
 }

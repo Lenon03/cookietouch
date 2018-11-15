@@ -162,6 +162,12 @@ const craft = {
       yield;
     }
   },
+  setQuantity : async function* (count)
+  {
+    if(await API.craft.setQuantity.bind(API.craft)(count)){
+      yield;
+    }
+  },
   ready : async function* (){
     await API.craft.ready.bind(API.craft)()
     yield;    
@@ -269,6 +275,14 @@ const exchange = {
   },
   sendReady: async function* () {
     await API.exchange.sendReady.bind(API.exchange)()
+    yield;
+  },
+  startShop: async function* () {
+    await API.exchange.startShop.bind(API.exchange)()
+    yield;
+  },
+  addItemShop: async function* (gid,qty,price) {
+    await API.exchange.addItemShop.bind(API.exchange)(gid,qty,price)
     yield;
   },
   putItem: async function* (gid, qty) {

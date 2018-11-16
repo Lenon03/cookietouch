@@ -1,6 +1,6 @@
 import Account from "@/account";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
-import { sleep } from "@/utils/Time";
+// import { sleep } from "@/utils/Time";
 
 export default class SetRecipeAction extends ScriptAction {
   public _name: string = "SetRecipeAction";
@@ -13,11 +13,9 @@ export default class SetRecipeAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    const res = await account.game.craft.setRecipe(this.gid);
-    if (res) {
-      await sleep(2000);
+    if (account.game.craft.setRecipe(this.gid)) {
+      return ScriptAction.processingResult();
     }
     return ScriptAction.doneResult();
-
   }
 }

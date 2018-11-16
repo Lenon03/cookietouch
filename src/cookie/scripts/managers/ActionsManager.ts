@@ -31,7 +31,8 @@ import ReadyAction from "../actions/craft/ReadyAction";
 import SetRecipeAction from "../actions/craft/SetRecipeAction";
 import ExchangePutItemAction from "../actions/exchange/ExchangePutItemAction";
 import ExchangeRemoveItemAction from "../actions/exchange/ExchangeRemoveItemAction";
-// import BuyAction from "../actions/npcs/BuyAction";
+import SellAction from "../actions/npcs/SellAction";
+import BuyAction from "../actions/npcs/BuyAction";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -81,6 +82,7 @@ export default class ActionsManager {
     this.account.game.storage.StorageStarted.on(this.storage_storageStarted);
     this.account.game.storage.StorageLeft.on(this.storage_storageLeft);
     this.account.game.npcs.DialogLeft.on(this.npcs_dialogLeft);
+    this.account.game.npcs.NpcShopUpdated.on(this.npcs_shopUpdated);
     this.account.game.exchange.ExchangeStarted.on(
       this.exchange_exchangeStarted
     );
@@ -425,7 +427,17 @@ export default class ActionsManager {
       }
     }
   };
-
+  private npcs_shopUpdated = async () => {
+    if (!this.account.scripts.running) {
+      return;
+    }
+    if (
+      this.currentAction instanceof SellAction ||
+      this.currentAction instanceof BuyAction
+    ) {
+      await this.dequeueActions(400);
+    }
+  }
   private npcs_questionReceived = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -485,6 +497,7 @@ export default class ActionsManager {
     }
     if (this.currentAction instanceof ExchangePutItemAction ||
       this.currentAction instanceof ExchangeRemoveItemAction) {
+      console.log("debug exchangechanged");
       await this.dequeueActions(400);
     }
   }

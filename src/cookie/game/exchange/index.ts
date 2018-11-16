@@ -76,11 +76,11 @@ export default class Exchange {
     });
     return true;
   }
-  public addShopItem(guid: number, quantity: number, price: number): boolean {
+  public addShopItem(guid: number, qty: number, prix: number): boolean {
     this.account.network.sendMessageFree("ExchangeObjectMovePricedMessage", {
       objectUID: guid,
-      quantity: quantity,
-      price: price
+      quantity: qty,
+      price: prix
     });
     return true;
   }

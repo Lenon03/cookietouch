@@ -1,6 +1,6 @@
 import Account from "@/account";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
-import { sleep } from "@/utils/Time";
+
 
 export default class BuyAction extends ScriptAction {
   public _name: string = "BuyAction";
@@ -14,9 +14,8 @@ export default class BuyAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    const res = await account.game.npcs.buyItem(this.objectToBuyId, this.quantity);
-    if (res) {
-      await sleep(1500);
+    if (account.game.npcs.buyItem(this.objectToBuyId, this.quantity)) {
+      return ScriptAction.processingResult();
     }
     return ScriptAction.doneResult();
 

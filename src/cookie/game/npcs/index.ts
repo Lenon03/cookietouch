@@ -18,7 +18,7 @@ export default class Npcs {
   private readonly onQuestionReceived = new LiteEvent<void>();
   private readonly onDialogLeft = new LiteEvent<void>();
 
-
+  private readonly onNpcShopUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
     this.account = account;
@@ -34,6 +34,9 @@ export default class Npcs {
 
   public get DialogLeft() {
     return this.onDialogLeft.expose();
+  }
+  public get NpcShopUpdated() {
+    return this.onNpcShopUpdated.expose();
   }
 
   public reply(replyId: number): boolean {
@@ -126,20 +129,6 @@ export default class Npcs {
     if (this._objectsInSale === null) {
       return false;
     }
-    for (const obj in this._objectsInSale) {
-      if (this._objectsInSale[obj].objectGid === gid) {
-        if (this._objectsInSale[obj].objectPrice > this.account.game.character.inventory.kamas) {
-          return false;
-        }
-      }
-    }
-    console.log("taille du tableau d'items:" + this._objectsInSale.length);
-    console.log("prix 1er item :" + this._objectsInSale[0].objectPrice);
-    console.log("id 1er item: " + this._objectsInSale[0].objectGid);
-    console.log("prix 2eme item :" + this._objectsInSale[1].objectPrice);
-    console.log("id 2eme item: " + this._objectsInSale[1].objectGid);
-
-    console.log("test du buy pnj");
 
     this.account.network.sendMessageFree("ExchangeBuyMessage", {
       objectToBuyId: gid,
@@ -165,12 +154,17 @@ export default class Npcs {
   }
 
   public async UpdateNpcShopMessage(message: any) {
-
-    console.log("on rentre ici");
     this._objectsInSale = message.objectsInfos;
     this.onQuestionReceived.trigger();
   }
-
+  public async UpdateExchangeBuyOkMessage(message: any) {
+    this.account.state = AccountStates.TALKING;
+    this.onNpcShopUpdated.trigger();
+  }
+  public async UpdateExchangeSellOkMessage(message: any) {
+    this.account.state = AccountStates.TALKING;
+    this.onNpcShopUpdated.trigger();
+  }
   public async UpdateLeaveDialogMessage(message: any) {
     if (this.account.state !== AccountStates.TALKING) {
       return;

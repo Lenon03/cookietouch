@@ -1,6 +1,6 @@
 import Account from "@/account";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
-import { sleep } from "@/utils/Time";
+
 
 export default class SetQuantityAction extends ScriptAction {
   public _name: string = "SetQuantityAction";
@@ -13,10 +13,10 @@ export default class SetQuantityAction extends ScriptAction {
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    const res = await account.game.craft.setQuantity(this.count);
-    if (res) {
-      await sleep(1500);
+    if (account.game.craft.setQuantity(this.count)) {
+      return ScriptAction.processingResult();
     }
+
     return ScriptAction.doneResult();
 
   }

@@ -36,14 +36,14 @@ export default class Craft {
   }
   public setRecipe(guid: number): boolean {
     this.account.network.sendMessageFree("ExchangeSetCraftRecipeMessage", {
-      objectGID: guid,
+      objectGID: guid
 
     });
     return true;
   }
-  public setQuantity(count: number): boolean {
+  public setQuantity(qty: number): boolean {
     this.account.network.sendMessageFree("ExchangeReplayMessage", {
-      count: count,
+      count: qty,
     });
     return true;
   }

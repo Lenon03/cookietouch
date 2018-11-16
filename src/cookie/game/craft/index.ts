@@ -31,6 +31,9 @@ export default class Craft {
   public get CraftLeft() {
     return this.onCraftLeft.expose();
   }
+  public get CraftQuantityChanged() {
+    return this.onCraftQuantityChanged.expose();
+  }
   public setRecipe(guid: number): boolean {
     this.account.network.sendMessageFree("ExchangeSetCraftRecipeMessage", {
       objectGID: guid,
@@ -63,7 +66,8 @@ export default class Craft {
       this.objects.push(newObj);
       this.currentWeight += newObj.realWeight * newObj.quantity;
     }
-
+    this.onCraftStarted.trigger();
+    console.log("debug objectAddedMessage");
 
   }
   public async UpdateExchangeReplayCountModifiedMessage(

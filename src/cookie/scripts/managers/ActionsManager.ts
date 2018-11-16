@@ -29,6 +29,8 @@ import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
 import ReadyAction from "../actions/craft/ReadyAction";
 import SetRecipeAction from "../actions/craft/SetRecipeAction";
+import ExchangePutItemAction from "../actions/exchange/ExchangePutItemAction";
+import ExchangeRemoveItemAction from "../actions/exchange/ExchangeRemoveItemAction";
 // import BuyAction from "../actions/npcs/BuyAction";
 
 export interface IActionsManagerEventData {
@@ -82,6 +84,7 @@ export default class ActionsManager {
     this.account.game.exchange.ExchangeStarted.on(
       this.exchange_exchangeStarted
     );
+    this.account.game.exchange.ExchangeContentChanged.on(this.exchange_exchangeChanged);
     this.account.game.craft.CraftStarted.on(this.craft_craftStarted);
     this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft);
     this.account.game.bid.StartedBuying.on(this.bid_startedBuying);
@@ -476,7 +479,15 @@ export default class ActionsManager {
       await this.dequeueActions(200);
     }
   };
-
+  private exchange_exchangeChanged = async () => {
+    if (!this.account.scripts.running) {
+      return;
+    }
+    if (this.currentAction instanceof ExchangePutItemAction ||
+      this.currentAction instanceof ExchangeRemoveItemAction) {
+      await this.dequeueActions(400);
+    }
+  }
   private exchange_exchangeStarted = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -504,8 +515,10 @@ export default class ActionsManager {
       return;
     }
     if (
-      this.currentAction instanceof SetRecipeAction
+      this.currentAction instanceof SetRecipeAction ||
+      this.currentAction instanceof ReadyAction
     ) {
+      console.log("CraftStarted lancé");
       await this.dequeueActions(400);
     }
   }

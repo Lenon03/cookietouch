@@ -6,6 +6,7 @@ import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import MapGame from "@/game/map";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";
@@ -310,7 +311,8 @@ export default class MovementsManager implements IClearable {
       return;
     }
 
-    await sleep(this.account.config.antiAgro ? 60000 : 5000);
+    await sleep(this.account.config.antiAgro && this.account.game.character.lifeStatus !==
+      PlayerLifeStatusEnum.STATUS_PHANTOM ? 60000 : 5000);
 
     // In case one of these happen while we were waiting
     if (this.currentPath === null) {

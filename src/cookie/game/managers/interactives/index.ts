@@ -26,6 +26,7 @@ export default class InteractivesManager implements IClearable {
         this.isUseFinished(false);
       }
     });
+
     this._account.network.registerMessage(
       "InteractiveUsedMessage",
       this.handleInteractiveUsedMessage

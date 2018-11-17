@@ -64,6 +64,7 @@
     "@material-ui/core": "^3.1.1",
     "@material-ui/icons": "^3.0.1",
     "@sentry/electron": "^0.11.0",
+    "@types/semver": "^5.5.0",
     "anticaptcha": "^1.0.4",
     "axios": "^0.18.0",
     "downshift": "^2.2.3",

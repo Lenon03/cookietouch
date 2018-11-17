@@ -8,6 +8,7 @@ import ExchangeObjectModifiedMessage from "@/protocol/network/messages/ExchangeO
 import ExchangeObjectRemovedMessage from "@/protocol/network/messages/ExchangeObjectRemovedMessage";
 import ExchangeRequestedTradeMessage from "@/protocol/network/messages/ExchangeRequestedTradeMessage";
 import ExchangeStartedWithPodsMessage from "@/protocol/network/messages/ExchangeStartedWithPodsMessage";
+import ExchangeShopStockStartedMessage from "@/protocol/network/messages/ExchangeShopStockStartedMessage";
 import { sleep } from "@/utils/Time";
 
 export default class ExchangeFrame implements IFrame {
@@ -20,6 +21,11 @@ export default class ExchangeFrame implements IFrame {
     Frames.dispatcher.register(
       "ExchangeStartedWithPodsMessage",
       this.HandleExchangeStartedWithPodsMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "ExchangeShopStockStartedMessage",
+      this.HandleExchangeShopStockStartedMessage,
       this
     );
     Frames.dispatcher.register(
@@ -62,6 +68,13 @@ export default class ExchangeFrame implements IFrame {
     account.game.exchange.UpdateExchangeRequestedTradeMessage(message);
   }
 
+  private async HandleExchangeShopStockStartedMessage(
+    account: Account,
+    message: ExchangeShopStockStartedMessage
+  ) {
+
+    account.game.exchange.UpdateExchangeShopStockStarted(message);
+  }
   private async HandleExchangeStartedWithPodsMessage(
     account: Account,
     message: ExchangeStartedWithPodsMessage

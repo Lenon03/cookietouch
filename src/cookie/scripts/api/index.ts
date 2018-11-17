@@ -10,10 +10,13 @@ import MapAPI from "@/scripts/api/MapAPI";
 import MountAPI from "@/scripts/api/MountAPI";
 import NpcAPI from "@/scripts/api/NpcAPI";
 import StorageAPI from "@/scripts/api/StorageAPI";
+import CraftAPI from "@/scripts/api/CraftAPI";
 
 export default class API {
   public bid: BidAPI;
   public character: CharacterAPI;
+
+  public craft: CraftAPI;
   public exchange: ExchangeAPI;
   public fight: FightAPI;
   public gather: GatherAPI;
@@ -27,6 +30,7 @@ export default class API {
   constructor(account: Account) {
     this.bid = new BidAPI(account);
     this.character = new CharacterAPI(account);
+    this.craft = new CraftAPI(account);
     this.exchange = new ExchangeAPI(account);
     this.fight = new FightAPI(account);
     this.gather = new GatherAPI(account);

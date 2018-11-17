@@ -9,6 +9,7 @@ import AchievementsFrame from "@/frames/game/AchievementsFrames";
 import BidFrame from "@/frames/game/BidFrame";
 import CharacterFrame from "@/frames/game/CharacterFrame";
 import ChatFrame from "@/frames/game/ChatFrame";
+import CraftFrame from "@/frames/game/CraftFrame";
 import ExchangeFrame from "@/frames/game/ExchangeFrame";
 import FightFrame from "@/frames/game/FightFrame";
 import InventoryFrame from "@/frames/game/InventoryFrame";
@@ -28,6 +29,7 @@ export default class Frames {
 
   private static frames: IFrame[] = [
     new ChatFrame(),
+    new CraftFrame(),
     new QueueFrame(),
     new SecurityFrame(),
     new CharacterSelectionFrame(),

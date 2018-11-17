@@ -311,8 +311,7 @@ export default class MovementsManager implements IClearable {
       return;
     }
 
-    await sleep(this.account.config.antiAgro && this.account.game.character.lifeStatus !==
-      PlayerLifeStatusEnum.STATUS_PHANTOM ? 60000 : 5000);
+    await sleep(this.account.config.antiAgro ? 60000 : 5000);
 
     // In case one of these happen while we were waiting
     if (this.currentPath === null) {

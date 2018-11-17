@@ -531,7 +531,7 @@ export default class ActionsManager {
       this.currentAction instanceof SetRecipeAction ||
       this.currentAction instanceof ReadyAction
     ) {
-      console.log("CraftStarted lancé");
+
       await this.dequeueActions(400);
     }
   }

@@ -497,7 +497,7 @@ export default class ActionsManager {
     }
     if (this.currentAction instanceof ExchangePutItemAction ||
       this.currentAction instanceof ExchangeRemoveItemAction) {
-      console.log("debug exchangechanged");
+
       await this.dequeueActions(400);
     }
   }

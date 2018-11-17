@@ -154,6 +154,25 @@ const currentPos = API.map.currentPos.bind(API.map);
 const currentMapId = API.map.currentMapId.bind(API.map);
 const area = API.map.area.bind(API.map);
 const subArea = API.map.subArea.bind(API.map);
+// Craft
+const craft = {
+  setRecipe : async function* (guid)
+  {
+    if(await API.craft.setRecipe.bind(API.craft)(guid)){
+      yield;
+    }
+  },
+  setQuantity : async function* (count)
+  {
+    if(await API.craft.setQuantity.bind(API.craft)(count)){
+      yield;
+    }
+  },
+  ready : async function* (){
+    await API.craft.ready.bind(API.craft)()
+    yield;    
+  }
+}
 // Npc
 const npc = {
   npcBank: async function* (npcId, replyId) {
@@ -169,7 +188,20 @@ const npc = {
   reply: async function* (replyId) {
     await API.npc.reply.bind(API.npc)(replyId);
     yield;
+  },
+  buy: async function* (guid,quantity) {
+    if(await API.npc.buy.bind(API.npc)(guid,quantity))
+    {
+      yield;
+    }
+  },
+  sell: async function* (guid,quantity) {
+      if(await API.npc.sell.bind(API.npc)(guid,quantity))
+      {
+        yield;
+      }
   }
+
 }
 // Mount
 const mount = {
@@ -243,6 +275,14 @@ const exchange = {
   },
   sendReady: async function* () {
     await API.exchange.sendReady.bind(API.exchange)()
+    yield;
+  },
+  startShop: async function* () {
+    await API.exchange.startShop.bind(API.exchange)()
+    yield;
+  },
+  addItemShop: async function* (gid,qty,price) {
+    await API.exchange.addItemShop.bind(API.exchange)(gid,qty,price)
     yield;
   },
   putItem: async function* (gid, qty) {

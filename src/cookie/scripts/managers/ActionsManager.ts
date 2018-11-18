@@ -27,12 +27,11 @@ import ScriptAction, {
 import LiteEvent from "@/utils/LiteEvent";
 import { sleep } from "@/utils/Time";
 import TimerWrapper from "@/utils/TimerWrapper";
-import ReadyAction from "../actions/craft/ReadyAction";
-import SetRecipeAction from "../actions/craft/SetRecipeAction";
 import ExchangePutItemAction from "../actions/exchange/ExchangePutItemAction";
 import ExchangeRemoveItemAction from "../actions/exchange/ExchangeRemoveItemAction";
 import SellAction from "../actions/npcs/SellAction";
 import BuyAction from "../actions/npcs/BuyAction";
+import NewCraftAction from "../actions/craft/NewCraftAction";
 
 export interface IActionsManagerEventData {
   account: Account;
@@ -86,8 +85,10 @@ export default class ActionsManager {
     this.account.game.exchange.ExchangeStarted.on(
       this.exchange_exchangeStarted
     );
-    this.account.game.exchange.ExchangeContentChanged.on(this.exchange_exchangeChanged);
+
     this.account.game.craft.CraftStarted.on(this.craft_craftStarted);
+    this.account.game.craft.CraftLeft.on(this.craft_craftLeft);
+    this.account.game.exchange.ExchangeContentChanged.on(this.exchange_exchangeChanged);
     this.account.game.exchange.ExchangeLeft.on(this.exchange_exchangeLeft);
     this.account.game.bid.StartedBuying.on(this.bid_startedBuying);
     this.account.game.bid.StartedSelling.on(this.bid_startedSelling);
@@ -427,6 +428,7 @@ export default class ActionsManager {
       }
     }
   };
+
   private npcs_shopUpdated = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -438,6 +440,7 @@ export default class ActionsManager {
       await this.dequeueActions(400);
     }
   }
+
   private npcs_questionReceived = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -491,6 +494,7 @@ export default class ActionsManager {
       await this.dequeueActions(200);
     }
   };
+
   private exchange_exchangeChanged = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -501,6 +505,7 @@ export default class ActionsManager {
       await this.dequeueActions(400);
     }
   }
+
   private exchange_exchangeStarted = async () => {
     if (!this.account.scripts.running) {
       return;
@@ -516,25 +521,35 @@ export default class ActionsManager {
     }
     if (
       this.currentAction instanceof SendReadyAction ||
-      this.currentAction instanceof LeaveDialogAction ||
-      this.currentAction instanceof ReadyAction
-
+      this.currentAction instanceof LeaveDialogAction
     ) {
       await this.dequeueActions(400);
     }
   };
+
   private craft_craftStarted = async () => {
     if (!this.account.scripts.running) {
       return;
     }
     if (
-      this.currentAction instanceof SetRecipeAction ||
-      this.currentAction instanceof ReadyAction
+      this.currentAction instanceof NewCraftAction
     ) {
 
       await this.dequeueActions(400);
     }
   }
+
+  private craft_craftLeft = async () => {
+    if (!this.account.scripts.running) {
+      return;
+    }
+    if (
+      this.currentAction instanceof LeaveDialogAction
+    ) {
+      await this.dequeueActions(400);
+    }
+  };
+
   private bid_startedBuying = async () => {
     if (!this.account.scripts.running) {
       return;

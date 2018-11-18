@@ -1,11 +1,15 @@
 import Account from "@/account";
-// import { AccountStates } from "@/account/AccountStates";
+import { AccountStates } from "@/account/AccountStates";
 import LiteEvent from "@/utils/LiteEvent";
 import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
 import ObjectEntry from "@/game/character/inventory/ObjectEntry";
 import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
 import ExchangeReplayCountModifiedMessage from "@/protocol/network/messages/ExchangeReplayCountModifiedMessage";
 import ExchangeStartOkCraftWithInformationMessage from "@/protocol/network/messages/ExchangeStartOkCraftWithInformationMessage";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeIsReadyMessage from "@/protocol/network/messages/ExchangeIsReadyMessage";
+import { sleep } from "@/utils/Time";
+
 export default class Craft {
 
   public remoteObjects: ObjectEntry[];
@@ -19,35 +23,35 @@ export default class Craft {
   private readonly onCraftStarted = new LiteEvent<void>();
   private readonly onCraftLeft = new LiteEvent<void>();
   private readonly onCraftQuantityChanged = new LiteEvent<void>();
+
   constructor(account: Account) {
     this.account = account;
     this.objectsInfos = [];
     this.remoteObjects = [];
     this.objects = [];
   }
+
   public get CraftStarted() {
     return this.onCraftStarted.expose();
   }
+
   public get CraftLeft() {
     return this.onCraftLeft.expose();
   }
+
   public get CraftQuantityChanged() {
     return this.onCraftQuantityChanged.expose();
   }
-  public setRecipe(guid: number): boolean {
+
+  public async newCraft(guid: number, quantity: number): Promise<boolean> {
     this.account.network.sendMessageFree("ExchangeSetCraftRecipeMessage", {
       objectGID: guid
-
     });
-    return true;
-  }
-  public setQuantity(qty: number): boolean {
+    await sleep(600);
     this.account.network.sendMessageFree("ExchangeReplayMessage", {
-      count: qty,
+      count: quantity,
     });
-    return true;
-  }
-  public ready(): boolean {
+    await sleep(600);
     this.account.network.sendMessageFree("ExchangeReadyMessage", {
       ready: true,
       step: 2
@@ -67,9 +71,8 @@ export default class Craft {
       this.currentWeight += newObj.realWeight * newObj.quantity;
     }
     this.onCraftStarted.trigger();
-    console.log("debug objectAddedMessage");
-
   }
+
   public async UpdateExchangeReplayCountModifiedMessage(
     message: ExchangeReplayCountModifiedMessage
   ) {
@@ -82,6 +85,20 @@ export default class Craft {
     this.nbcase = message.nbCase;
     this.skillid = message.skillId;
     this.onCraftStarted.trigger();
+    this.account.state = AccountStates.CRAFTING;
   }
 
+  public async UpdateExchangeLeaveMessage(message: ExchangeLeaveMessage) {
+    if (this.account.state !== AccountStates.CRAFTING) {
+      return;
+    }
+    this.account.state = AccountStates.NONE;
+  }
+
+  public async UpdateExchangeIsReadyMessage(message: ExchangeIsReadyMessage) {
+    if (this.account.state !== AccountStates.CRAFTING) {
+      return;
+    }
+    this.onCraftLeft.trigger();
+  }
 }

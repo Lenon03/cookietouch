@@ -581,7 +581,7 @@ export default class ScriptsManager {
           let i = 0;
           i < estimatedTime &&
           this.account.game.character.stats.lifePercent <=
-            this.account.extensions.fights.config.regenEnd &&
+          this.account.extensions.fights.config.regenEnd &&
           this.running;
           i++
         ) {
@@ -726,7 +726,7 @@ export default class ScriptsManager {
       (this.account.hasGroup && this.account.isGroupChief
         ? this.account.group!.isEveryoneAliveAndKicking
         : this.account.game.character.lifeStatus ===
-          PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)
+        PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING)
     ) {
       this.account.logger.logDebug(
         LanguageManager.trans("scripts"),

@@ -1,19 +1,19 @@
 import Account from "@/account";
 import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
-// import { sleep } from "@/utils/Time";
 
-export default class SetRecipeAction extends ScriptAction {
-  public _name: string = "SetRecipeAction";
+export default class ReadyAction extends ScriptAction {
+  public _name: string = "NewCraftAction";
+  public count: number;
+  public guid: number;
 
-  public gid: number;
-
-  constructor(gid: number) {
+  constructor(guid: number, count: number) {
     super();
-    this.gid = gid;
+    this.count = count;
+    this.guid = guid;
   }
 
   public async process(account: Account): Promise<ScriptActionResults> {
-    if (account.game.craft.setRecipe(this.gid)) {
+    if (account.game.craft.newCraft(this.guid, this.count)) {
       return ScriptAction.processingResult();
     }
     return ScriptAction.doneResult();

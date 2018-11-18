@@ -3,6 +3,8 @@ import Frames, { IFrame } from "@/frames";
 import ExchangeObjectAddedMessage from "@/protocol/network/messages/ExchangeObjectAddedMessage";
 import ExchangeStartOkCraftWithInformationMessage from "@/protocol/network/messages/ExchangeStartOkCraftWithInformationMessage";
 import ExchangeReplayCountModifiedMessage from "@/protocol/network/messages/ExchangeReplayCountModifiedMessage";
+import ExchangeLeaveMessage from "@/protocol/network/messages/ExchangeLeaveMessage";
+import ExchangeIsReadyMessage from "@/protocol/network/messages/ExchangeIsReadyMessage"
 export default class CraftFrame implements IFrame {
   public register() {
     Frames.dispatcher.register(
@@ -19,9 +21,19 @@ export default class CraftFrame implements IFrame {
       "ExchangeReplayCountModifiedMessage",
       this.HandleExchangeReplayCountModifiedMessage,
       this
+    );
+    Frames.dispatcher.register(
+      "ExchangeIsReadyMessage",
+      this.HandleExchangeIsReadyMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "ExchangeLeaveMessage",
+      this.HandleExchangeLeaveMessage,
+      this
     )
-
   }
+
   private async HandleExchangeStartOkCraftWithInformationMessage(
     account: Account,
     message: ExchangeStartOkCraftWithInformationMessage
@@ -40,4 +52,17 @@ export default class CraftFrame implements IFrame {
   ) {
     account.game.craft.UpdateExchangeObjectAddedMessage(message);
   }
+  private async HandleExchangeLeaveMessage(
+    account: Account,
+    message: ExchangeLeaveMessage
+  ) {
+    account.game.craft.UpdateExchangeLeaveMessage(message);
+  }
+  private async HandleExchangeIsReadyMessage(
+    account: Account,
+    message: ExchangeIsReadyMessage
+  ) {
+    account.game.craft.UpdateExchangeIsReadyMessage(message);
+  }
+
 }

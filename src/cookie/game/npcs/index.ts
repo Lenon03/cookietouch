@@ -17,7 +17,6 @@ export default class Npcs {
   private readonly onDialogCreated = new LiteEvent<void>();
   private readonly onQuestionReceived = new LiteEvent<void>();
   private readonly onDialogLeft = new LiteEvent<void>();
-
   private readonly onNpcShopUpdated = new LiteEvent<void>();
 
   constructor(account: Account) {
@@ -35,6 +34,7 @@ export default class Npcs {
   public get DialogLeft() {
     return this.onDialogLeft.expose();
   }
+
   public get NpcShopUpdated() {
     return this.onNpcShopUpdated.expose();
   }
@@ -125,6 +125,7 @@ export default class Npcs {
     });
     return true;
   }
+
   public async buyItem(gid: number, qty: number): Promise<boolean> {
     if (this._objectsInSale === null) {
       return false;
@@ -138,7 +139,6 @@ export default class Npcs {
 
   }
 
-
   public async UpdateNpcDialogCreationMessage(message: any) {
     this.account.state = AccountStates.TALKING;
     this.onDialogCreated.trigger();
@@ -148,30 +148,44 @@ export default class Npcs {
     if (this.account.state !== AccountStates.TALKING) {
       return;
     }
-
     this.possibleReplies = message.visibleReplies;
     this.onQuestionReceived.trigger();
   }
 
   public async UpdateNpcShopMessage(message: any) {
+    this.account.state = AccountStates.TALKING;
     this._objectsInSale = message.objectsInfos;
     this.onQuestionReceived.trigger();
   }
+
   public async UpdateExchangeBuyOkMessage(message: any) {
-    this.account.state = AccountStates.TALKING;
+    if (this.account.state !== AccountStates.TALKING) {
+      return;
+    }
     this.onNpcShopUpdated.trigger();
   }
+
   public async UpdateExchangeSellOkMessage(message: any) {
-    this.account.state = AccountStates.TALKING;
+    if (this.account.state !== AccountStates.TALKING) {
+      return;
+    }
     this.onNpcShopUpdated.trigger();
   }
+
   public async UpdateLeaveDialogMessage(message: any) {
     if (this.account.state !== AccountStates.TALKING) {
       return;
     }
-
     this.account.state = AccountStates.NONE;
     this.possibleReplies = [];
+    this.onDialogLeft.trigger();
+  }
+
+  public async UpdateExchangeLeaveMessage(message: any) {
+    if (this.account.state !== AccountStates.TALKING) {
+      return;
+    }
+    this.account.state = AccountStates.NONE;
     this.onDialogLeft.trigger();
   }
 }

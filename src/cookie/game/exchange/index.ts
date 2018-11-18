@@ -446,7 +446,6 @@ export default class Exchange {
     if (this.account.state !== AccountStates.EXCHANGE) {
       return;
     }
-
     this.objects = [];
     this.remoteObjects = [];
     this.kamas = 0;
@@ -459,6 +458,7 @@ export default class Exchange {
     this.account.state = AccountStates.NONE;
     this.onExchangeLeft.trigger();
   }
+
   public async UpdateExchangeShopStockStarted(message: ExchangeShopStockStartedMessage) {
     this.objectsInfos = message.objectsInfos;
   }

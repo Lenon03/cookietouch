@@ -6,7 +6,6 @@ import MoveNode from "@/core/pathfinder/fights/MoveNode";
 import PathDuration from "@/core/pathfinder/PathDuration";
 import { MapChangeDirections } from "@/game/managers/movements/MapChangeDirections";
 import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
-import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 import MapGame from "@/game/map";
 import IClearable from "@/utils/IClearable";
 import LiteEvent from "@/utils/LiteEvent";

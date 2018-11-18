@@ -156,21 +156,11 @@ const area = API.map.area.bind(API.map);
 const subArea = API.map.subArea.bind(API.map);
 // Craft
 const craft = {
-  setRecipe : async function* (guid)
+  newCraft : async function* (guid,count)
   {
-    if(await API.craft.setRecipe.bind(API.craft)(guid)){
+    if(await API.craft.newCraft.bind(API.craft)(guid, count)){
       yield;
     }
-  },
-  setQuantity : async function* (count)
-  {
-    if(await API.craft.setQuantity.bind(API.craft)(count)){
-      yield;
-    }
-  },
-  ready : async function* (){
-    await API.craft.ready.bind(API.craft)()
-    yield;    
   }
 }
 // Npc
@@ -201,7 +191,6 @@ const npc = {
         yield;
       }
   }
-
 }
 // Mount
 const mount = {

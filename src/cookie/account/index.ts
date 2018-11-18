@@ -133,7 +133,8 @@ export default class Account implements IEntity {
       this.state === AccountStates.TALKING ||
       this.state === AccountStates.EXCHANGE ||
       this.state === AccountStates.BUYING ||
-      this.state === AccountStates.SELLING
+      this.state === AccountStates.SELLING ||
+      this.state === AccountStates.CRAFTING
     );
   }
 

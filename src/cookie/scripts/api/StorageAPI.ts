@@ -1,14 +1,13 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import StorageGetAllItemsAction from "../actions/storage/StorageGetAllItemsAction";
-import StorageGetAutoRegenStoreAction from "../actions/storage/StorageGetAutoRegenStoreAction";
-import StorageGetExistingItemsAction from "../actions/storage/StorageGetExistingItemsAction";
-import StorageGetItemAction from "../actions/storage/StorageGetItemAction";
-import StorageGetKamasAction from "../actions/storage/StorageGetKamasAction";
-import StoragePutAllItemsAction from "../actions/storage/StoragePutAllItemsAction";
-import StoragePutExistingItemsAction from "../actions/storage/StoragePutExistingItemsAction";
-import StoragePutItemAction from "../actions/storage/StoragePutItemAction";
-import StoragePutKamasAction from "../actions/storage/StoragePutKamasAction";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import StorageGetAllItemsAction from "@/scripts/actions/storage/StorageGetAllItemsAction";
+import StorageGetExistingItemsAction from "@/scripts/actions/storage/StorageGetExistingItemsAction";
+import StorageGetItemAction from "@/scripts/actions/storage/StorageGetItemAction";
+import StorageGetKamasAction from "@/scripts/actions/storage/StorageGetKamasAction";
+import StoragePutAllItemsAction from "@/scripts/actions/storage/StoragePutAllItemsAction";
+import StoragePutExistingItemsAction from "@/scripts/actions/storage/StoragePutExistingItemsAction";
+import StoragePutItemAction from "@/scripts/actions/storage/StoragePutItemAction";
+import StoragePutKamasAction from "@/scripts/actions/storage/StoragePutKamasAction";
 
 export default class StorageAPI {
   private account: Account;
@@ -17,78 +16,108 @@ export default class StorageAPI {
     this.account = account;
   }
 
-  public itemCount(gid: number): number {
-    return this.account.game.storage.objects.Where((o) => o.gid === gid).Sum((o) => o.quantity);
-  }
-
   public kamas(): number {
     return this.account.game.storage.kamas;
   }
 
-  public putItem(gid: number, quantity: number): boolean {
+  public itemCount(gid: number): number {
+    return this.account.game.storage.objects
+      .Where(o => o !== undefined && o.gid === gid)
+      .Sum(o => (o !== undefined && o.quantity) || 0);
+  }
+
+  public async putItem(gid: number, quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    if (this.account.game.character.inventory.getObjectsByGid(gid).Sum((o) => o.quantity) === 0) {
+    if (
+      this.account.game.character.inventory
+        .getObjectsByGid(gid)
+        .Sum(o => (o !== undefined && o.quantity) || 0) === 0
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StoragePutItemAction(gid, quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StoragePutItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 
-  public getItem(gid: number, quantity: number): boolean {
+  public async getItem(gid: number, quantity: number): Promise<boolean> {
     if (this.itemCount(gid) === 0) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StorageGetItemAction(gid, quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StorageGetItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 
-  public putKamas(quantity: number): boolean {
+  public async putKamas(quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StoragePutKamasAction(quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StoragePutKamasAction(quantity),
+      true
+    );
     return true;
   }
 
-  public getKamas(quantity: number): boolean {
+  public async getKamas(quantity: number): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StorageGetKamasAction(quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StorageGetKamasAction(quantity),
+      true
+    );
     return true;
   }
 
-  public putAllItems(quantity: number): boolean {
+  public async putAllItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StoragePutAllItemsAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StoragePutAllItemsAction(),
+      true
+    );
     return true;
   }
 
-  public getAllItems(quantity: number): boolean {
+  public async getAllItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StorageGetAllItemsAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StorageGetAllItemsAction(),
+      true
+    );
     return true;
   }
 
-  public putExistingItems(quantity: number): boolean {
+  public async putExistingItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StoragePutExistingItemsAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StoragePutExistingItemsAction(),
+      true
+    );
     return true;
   }
 
-  public getExistingItems(quantity: number): boolean {
+  public async getExistingItems(): Promise<boolean> {
     if (this.account.state !== AccountStates.STORAGE) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StorageGetExistingItemsAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StorageGetExistingItemsAction(),
+      true
+    );
     return true;
   }
 }

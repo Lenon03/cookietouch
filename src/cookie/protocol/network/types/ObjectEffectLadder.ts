@@ -1,4 +1,4 @@
-import ObjectEffectCreature from "./ObjectEffectCreature";
+import ObjectEffectCreature from "@/protocol/network/types/ObjectEffectCreature";
 
 export default class ObjectEffectLadder extends ObjectEffectCreature {
 

@@ -1,7 +1,9 @@
-import AdditionalTaxCollectorInformations from "./AdditionalTaxCollectorInformations";
-import EntityLook from "./EntityLook";
-import TaxCollectorComplementaryInformations from "./TaxCollectorComplementaryInformations";
-export default class TaxCollectorInformations {
+import AdditionalTaxCollectorInformations from "@/protocol/network/types/AdditionalTaxCollectorInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import TaxCollectorComplementaryInformations from "@/protocol/network/types/TaxCollectorComplementaryInformations";
+import Type from "@/protocol/network/types/Type";
+
+export default class TaxCollectorInformations extends Type {
   public complements: TaxCollectorComplementaryInformations[];
   public uniqueId: number;
   public firtNameId: number;
@@ -12,10 +14,20 @@ export default class TaxCollectorInformations {
   public subAreaId: number;
   public state: number;
   public look: EntityLook;
-  constructor(uniqueId = 0, firtNameId = 0, lastNameId = 0, additionalInfos: AdditionalTaxCollectorInformations = null,
-              worldX = 0, worldY = 0, subAreaId = 0, state = 0, look: EntityLook = null,
-              complements: TaxCollectorComplementaryInformations[] = null) {
 
+  constructor(
+    uniqueId = 0,
+    firtNameId = 0,
+    lastNameId = 0,
+    additionalInfos = new AdditionalTaxCollectorInformations(),
+    worldX = 0,
+    worldY = 0,
+    subAreaId = 0,
+    state = 0,
+    look = new EntityLook(),
+    complements: TaxCollectorComplementaryInformations[] = []
+  ) {
+    super();
     this.complements = complements;
     this.uniqueId = uniqueId;
     this.firtNameId = firtNameId;
@@ -26,6 +38,5 @@ export default class TaxCollectorInformations {
     this.subAreaId = subAreaId;
     this.state = state;
     this.look = look;
-
   }
 }

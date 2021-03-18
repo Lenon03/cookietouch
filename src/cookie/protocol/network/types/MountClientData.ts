@@ -1,5 +1,7 @@
-import ObjectEffectInteger from "./ObjectEffectInteger";
-export default class MountClientData {
+import ObjectEffectInteger from "@/protocol/network/types/ObjectEffectInteger";
+import Type from "@/protocol/network/types/Type";
+
+export default class MountClientData extends Type {
   public ancestor: number[];
   public behaviors: number[];
   public effectList: ObjectEffectInteger[];
@@ -32,17 +34,42 @@ export default class MountClientData {
   public boostMax: number;
   public reproductionCount: number;
   public reproductionCountMax: number;
-  constructor(id = 0, model = 0, name = "", sex = false,
-              ownerId = 0, experience = 0, experienceForLevel = 0,
-              experienceForNextLevel = 0, level = 0, isRideable = false,
-              maxPods = 0, isWild = false, stamina = 0, staminaMax = 0,
-              maturity = 0, maturityForAdult = 0, energy = 0, energyMax = 0,
-              serenity = 0, aggressivityMax = 0, serenityMax = 0, love = 0,
-              loveMax = 0, fecondationTime = 0, isFecondationReady = false,
-              boostLimiter = 0, boostMax = 0, reproductionCount = 0,
-              reproductionCountMax = 0, ancestor: number[] = null, behaviors: number[] = null,
-              effectList: ObjectEffectInteger[] = null) {
 
+  constructor(
+    id = 0,
+    model = 0,
+    name = "",
+    sex = false,
+    ownerId = 0,
+    experience = 0,
+    experienceForLevel = 0,
+    experienceForNextLevel = 0,
+    level = 0,
+    isRideable = false,
+    maxPods = 0,
+    isWild = false,
+    stamina = 0,
+    staminaMax = 0,
+    maturity = 0,
+    maturityForAdult = 0,
+    energy = 0,
+    energyMax = 0,
+    serenity = 0,
+    aggressivityMax = 0,
+    serenityMax = 0,
+    love = 0,
+    loveMax = 0,
+    fecondationTime = 0,
+    isFecondationReady = false,
+    boostLimiter = 0,
+    boostMax = 0,
+    reproductionCount = 0,
+    reproductionCountMax = 0,
+    ancestor: number[] = [],
+    behaviors: number[] = [],
+    effectList: ObjectEffectInteger[] = []
+  ) {
+    super();
     this.ancestor = ancestor;
     this.behaviors = behaviors;
     this.effectList = effectList;
@@ -75,6 +102,5 @@ export default class MountClientData {
     this.boostMax = boostMax;
     this.reproductionCount = reproductionCount;
     this.reproductionCountMax = reproductionCountMax;
-
   }
 }

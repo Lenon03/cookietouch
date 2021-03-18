@@ -1,4 +1,4 @@
-import InteractiveElementSkill from "@protocol/network/types/InteractiveElementSkill";
+import InteractiveElementSkill from "@/protocol/network/types/InteractiveElementSkill";
 
 export default class SkillEntry {
   public id: number;

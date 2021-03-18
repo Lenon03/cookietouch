@@ -1,8 +1,8 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class StartExchangeAction extends ScriptAction {
+  public _name: string = "StartExchangeAction";
   public playerId: number;
 
   constructor(playerId: number) {
@@ -10,12 +10,10 @@ export default class StartExchangeAction extends ScriptAction {
     this.playerId = playerId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.exchange.startExchange(this.playerId)) {
-        return ScriptAction.processingResult;
-      }
-      return ScriptAction.doneResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.exchange.startExchange(this.playerId)) {
+      return ScriptAction.processingResult();
+    }
+    return ScriptAction.doneResult();
   }
 }

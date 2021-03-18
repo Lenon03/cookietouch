@@ -1,8 +1,11 @@
-export default class AbstractContactInformations {
+import Type from "@/protocol/network/types/Type";
+
+export default class AbstractContactInformations extends Type {
   public accountId: number;
   public accountName: string;
 
   constructor(accountId = 0, accountName = "") {
+    super();
     this.accountId = accountId;
     this.accountName = accountName;
   }

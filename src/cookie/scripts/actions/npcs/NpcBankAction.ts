@@ -1,8 +1,9 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class NpcBankAction extends ScriptAction {
+  public _name: string = "NpcBankAction";
   public npcId: number;
   public replyId: number;
 
@@ -12,13 +13,11 @@ export default class NpcBankAction extends ScriptAction {
     this.replyId = replyId;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (!account.game.npcs.useNpc(this.npcId, 1)) {
-        account.scripts.stopScript("reasonstopscript");
-        return ScriptAction.failedResult;
-      }
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (!account.game.npcs.useNpc(this.npcId, 1)) {
+      account.scripts.stopScript(LanguageManager.trans("errorBankNpc"));
+      return ScriptAction.failedResult();
+    }
+    return ScriptAction.processingResult();
   }
 }

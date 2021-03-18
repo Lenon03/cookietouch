@@ -1,34 +1,94 @@
-import { app, BrowserWindow, Menu } from "electron";
-import { appUpdater } from "./Updater";
+import { captureException, init } from "@sentry/electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  MenuItemConstructorOptions,
+  screen
+} from "electron";
+import log from "electron-log";
+import { appUpdater } from "./updater";
 
-const template: any[] = [];
+app.commandLine.appendSwitch("js-flags", "--harmony-async-iteration");
+
+init({
+  dsn: "https://c2de150c591046829235a291351779b7@sentry.io/1237788"
+});
+
+const onError = (error: any) => {
+  log.transports.file.level = "error";
+  captureException(error);
+  log.error(error);
+};
+
+process.on("uncaughtException", onError);
+process.on("unhandledRejection", onError);
+
+const template: MenuItemConstructorOptions[] = [
+  {
+    label: app.getVersion(),
+    submenu: [
+      {
+        click: () => {
+          //
+        },
+        label: "Check updates"
+      }
+    ]
+  }
+];
 if (process.platform === "darwin") {
   // OS X
   const name = app.getName();
+  template.unshift({
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      { role: "pasteandmatchstyle" },
+      { role: "delete" },
+      { role: "selectall" }
+    ]
+  });
   template.unshift({
     label: name,
     submenu: [
       {
         label: "About " + name,
-        role: "about",
+        role: "about"
       },
       {
         accelerator: "Command+Q",
-        click() { app.quit(); },
-        label: "Quit",
-      },
-    ],
+        click() {
+          app.quit();
+        },
+        label: "Quit"
+      }
+    ]
   });
 }
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-let mainWindow: BrowserWindow;
+let mainWindow: BrowserWindow | null;
 
 function createMainWindow() {
-  const window = new BrowserWindow({show: false });
-  window.maximize();
-  window.show();
+  const size = screen.getPrimaryDisplay().workAreaSize;
+  const window = new BrowserWindow({
+    // frame: false,
+    height: size.height,
+    webPreferences: {
+      webSecurity: false
+    },
+    width: size.width,
+    x: 0,
+    y: 0
+  });
 
   const url = isDevelopment
     ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`
@@ -55,18 +115,29 @@ function createMainWindow() {
 }
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") { app.quit(); }
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("activate", () => {
-  if (mainWindow === null) { mainWindow = createMainWindow(); }
+  if (mainWindow === null) {
+    mainWindow = createMainWindow();
+  }
 });
 
 app.on("ready", () => {
-  if (!isDevelopment) {
-    appUpdater();
-  }
+  /*
+  BrowserWindow.addDevToolsExtension(
+    "/home/devchris/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.3.2_0"
+  );
+  */
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   mainWindow = createMainWindow();
+  if (!isDevelopment) {
+    ipcMain.on("ask-update", (event: any, channel: string) =>
+      appUpdater(mainWindow, channel)
+    );
+  }
 });

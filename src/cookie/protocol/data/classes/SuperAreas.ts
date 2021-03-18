@@ -1,6 +1,6 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class SuperAreas extends Data {
-    public nameId: string;
-    public worldmapId: number;
+  public nameId: string = "";
+  public worldmapId: number = 0;
 }

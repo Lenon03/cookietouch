@@ -1,11 +1,20 @@
-import Map from "@protocol/data/map";
-import MapPoint from "./MapPoint";
+import MapPoint from "@/core/pathfinder/MapPoint";
+import Map from "@/protocol/data/map";
 
 export default class Dofus1Line {
-  public static isLineObstructed(map: Map, sourceCellId: number, targetCellId: number,
-                                 occupiedCells: number[], diagonal = false): boolean {
+  public static isLineObstructed(
+    map: Map,
+    sourceCellId: number,
+    targetCellId: number,
+    occupiedCells: number[],
+    diagonal = false
+  ): boolean {
     const sourceMp = MapPoint.fromCellId(sourceCellId);
     const targetMp = MapPoint.fromCellId(targetCellId);
+
+    if (!sourceMp || !targetMp) {
+      return true;
+    }
 
     let x = sourceMp.x + 0.5;
     let y = sourceMp.y + 0.5;
@@ -20,17 +29,21 @@ export default class Dofus1Line {
     let cas = 0;
 
     if (Math.abs(x - targetX) === Math.abs(y - targetY)) {
+      // Diagonale parfaite
       steps = Math.abs(x - targetX);
       padX = targetX > x ? 1 : -1;
       padY = targetY > y ? 1 : -1;
       cas = 1;
     } else if (Math.abs(x - targetX) > Math.abs(y - targetY)) {
+      // On se base sur l'axe X, qui a plus de divisions que l'autre
       steps = Math.abs(x - targetX);
       padX = targetX > x ? 1 : -1;
       padY = (targetY - y) / steps;
+      padY = padY * 100;
       padY = Math.ceil(padY) / 100;
       cas = 2;
     } else {
+      // On se base sur l'axe Y, qui a plus de divisions que l'autre
       steps = Math.abs(y - targetY);
       padX = (targetX - x) / steps;
       padX = padX * 100;
@@ -39,8 +52,8 @@ export default class Dofus1Line {
       cas = 3;
     }
 
-    const errorSup = Math.round(Math.floor(3 + steps / 2));
-    const errorInf = Math.round(Math.floor(97 - steps / 2));
+    const errorSup = ~~(3 + steps / 2);
+    const errorInf = ~~(97 - steps / 2);
 
     for (let i = 0; i < steps; i++) {
       let cellX = 0;
@@ -52,50 +65,125 @@ export default class Dofus1Line {
         case 2: {
           const beforeY = Math.ceil(y * 100 + padY * 50) / 100;
           const afterY = Math.floor(y * 100 + padY * 150) / 100;
-          const diffBeforeCenterY = Math.floor(Math.abs(Math.floor(beforeY) * 100 - beforeY * 100)) / 100;
-          const diffCenterAfterY = Math.ceil(Math.abs(Math.ceil(afterY) * 100 - afterY * 100)) / 100;
+          const diffBeforeCenterY =
+            Math.floor(Math.abs(Math.floor(beforeY) * 100 - beforeY * 100)) /
+            100;
+          const diffCenterAfterY =
+            Math.ceil(Math.abs(Math.ceil(afterY) * 100 - afterY * 100)) / 100;
 
           cellX = Math.floor(xPadX);
 
           if (Math.floor(beforeY) === Math.floor(afterY)) {
             cellY = Math.floor(yPadY);
-            if (beforeY === cellY && afterY < cellY || afterY === cellY && beforeY < cellY) {
+            if (
+              (beforeY === cellY && afterY < cellY) ||
+              (afterY === cellY && beforeY < cellY)
+            ) {
               cellY = Math.ceil(yPadY);
             }
-            if (this.isCellObstructed(cellX, cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = cellY;
           } else if (Math.ceil(beforeY) === Math.ceil(afterY)) {
             cellY = Math.ceil(yPadY);
-            if (beforeY === cellY && afterY < cellY || afterY === cellY && beforeY < cellY) {
+            if (
+              (beforeY === cellY && afterY < cellY) ||
+              (afterY === cellY && beforeY < cellY)
+            ) {
               cellY = Math.floor(yPadY);
             }
-            if (this.isCellObstructed(cellX, cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = cellY;
-          } else if (Math.floor(diffBeforeCenterY * 100) <= errorSup) {
-            if (this.isCellObstructed(cellX, Math.floor(beforeY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+          } else if (~~(diffBeforeCenterY * 100) <= errorSup) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                Math.floor(beforeY),
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = Math.floor(beforeY);
-          } else if (Math.floor(diffCenterAfterY * 100) >= errorInf) {
-            if (this.isCellObstructed(cellX, Math.floor(beforeY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+          } else if (~~(diffCenterAfterY * 100) >= errorInf) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                Math.floor(beforeY),
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = Math.floor(beforeY);
           } else {
-            if (this.isCellObstructed(cellX, Math.floor(beforeY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                Math.floor(beforeY),
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = Math.floor(beforeY);
-            if (this.isCellObstructed(cellX, Math.floor(afterY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                Math.floor(afterY),
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastY = Math.floor(afterY);
@@ -105,58 +193,145 @@ export default class Dofus1Line {
         case 3: {
           const beforeX = Math.ceil(x * 100 + padX * 50) / 100;
           const afterX = Math.floor(x * 100 + padX * 150) / 100;
-          const diffBeforeCenterX = Math.floor(Math.abs(Math.floor(beforeX) * 100 - beforeX * 100)) / 100;
-          const diffCenterAfterX = Math.ceil(Math.abs(Math.ceil(afterX) * 100 - afterX * 100)) / 100;
+          const diffBeforeCenterX =
+            Math.floor(Math.abs(Math.floor(beforeX) * 100 - beforeX * 100)) /
+            100;
+          const diffCenterAfterX =
+            Math.ceil(Math.abs(Math.ceil(afterX) * 100 - afterX * 100)) / 100;
 
           cellY = Math.floor(yPadY);
 
           if (Math.floor(beforeX) === Math.floor(afterX)) {
             cellX = Math.floor(xPadX);
-            if (beforeX === cellX && afterX < cellX || afterX === cellX && beforeX < cellX) {
+            if (
+              (beforeX === cellX && afterX < cellX) ||
+              (afterX === cellX && beforeX < cellX)
+            ) {
               cellX = Math.ceil(xPadX);
             }
-            if (this.isCellObstructed(cellX, cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = cellY;
           } else if (Math.ceil(beforeX) === Math.ceil(afterX)) {
             cellX = Math.ceil(xPadX);
-            if (beforeX === cellX && afterX < cellX || afterX === cellX && beforeX < cellX) {
+            if (
+              (beforeX === cellX && afterX < cellX) ||
+              (afterX === cellX && beforeX < cellX)
+            ) {
               cellX = Math.floor(xPadX);
             }
-            if (this.isCellObstructed(cellX, cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                cellX,
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = cellX;
             lastY = cellY;
-          } else if (Math.floor(diffBeforeCenterX * 100) <= errorSup) {
-            if (this.isCellObstructed(Math.floor(afterX), cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+          } else if (~~(diffBeforeCenterX * 100) <= errorSup) {
+            if (
+              this.isCellObstructed(
+                Math.floor(afterX),
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = Math.floor(afterX);
             lastY = cellY;
-          } else if (Math.floor(diffCenterAfterX * 100) >= errorInf) {
-            if (this.isCellObstructed(Math.floor(beforeX), cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+          } else if (~~(diffCenterAfterX * 100) >= errorInf) {
+            if (
+              this.isCellObstructed(
+                Math.floor(beforeX),
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = Math.floor(beforeX);
             lastY = cellY;
           } else {
-            if (this.isCellObstructed(Math.floor(beforeX), cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                Math.floor(beforeX),
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = Math.floor(beforeX);
             lastY = cellY;
-            if (this.isCellObstructed(Math.floor(afterX), cellY, map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+            if (
+              this.isCellObstructed(
+                Math.floor(afterX),
+                cellY,
+                map,
+                occupiedCells,
+                targetCellId,
+                lastX,
+                lastY,
+                diagonal
+              )
+            ) {
               return true;
             }
             lastX = Math.floor(afterX);
           }
           break;
         }
-        default: /* cas 1 */ {
-          if (this.isCellObstructed(Math.floor(xPadX), Math.floor(yPadY), map, occupiedCells, targetCellId, lastX, lastY, diagonal)) {
+        default: /* cas 1 */
+        {
+          if (
+            this.isCellObstructed(
+              Math.floor(xPadX),
+              Math.floor(yPadY),
+              map,
+              occupiedCells,
+              targetCellId,
+              lastX,
+              lastY,
+              diagonal
+            )
+          ) {
             return true;
           }
           lastX = Math.floor(xPadX);
@@ -172,15 +347,26 @@ export default class Dofus1Line {
     return false;
   }
 
-  private static isCellObstructed(x: number, y: number, map: Map, occupiedCells: number[],
-                                  targetCellId: number, lastX: number, lastY: number, diagonal: boolean): boolean {
+  private static isCellObstructed(
+    x: number,
+    y: number,
+    map: Map,
+    occupiedCells: number[],
+    targetCellId: number,
+    lastX: number,
+    lastY: number,
+    diagonal: boolean
+  ): boolean {
     const mp = MapPoint.fromCoords(x, y);
 
     if (mp === null) {
       return true;
     }
 
-    if (map.cells[mp.cellId].isObstacle() || mp.cellId !== targetCellId && occupiedCells.includes(mp.cellId)) {
+    if (
+      map.cells[mp.cellId].isObstacle() ||
+      (mp.cellId !== targetCellId && occupiedCells.includes(mp.cellId))
+    ) {
       return true;
     }
 
@@ -191,13 +377,14 @@ export default class Dofus1Line {
         return true;
       }
 
-      return !(mp.x === lmp.x + 1 && mp.y === lmp.y + 1 ||
-        mp.x === lmp.x + 1 && mp.y === lmp.y - 1 ||
-        mp.x === lmp.x - 1 && mp.y === lmp.y + 1 ||
-        mp.x === lmp.x - 1 && mp.y === lmp.y - 1
+      return !(
+        (mp.x === lmp.x + 1 && mp.y === lmp.y + 1) ||
+        (mp.x === lmp.x + 1 && mp.y === lmp.y - 1) ||
+        (mp.x === lmp.x - 1 && mp.y === lmp.y + 1) ||
+        (mp.x === lmp.x - 1 && mp.y === lmp.y - 1)
       );
     }
 
-    return true;
+    return false;
   }
 }

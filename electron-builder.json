@@ -1,5 +1,6 @@
 {
   "appId": "me.devchris.cookietouch",
+  "productName": "CookieTouch",
   "mac": {
     "category": "public.app-category.games"
   },
@@ -17,17 +18,25 @@
     ]
   },
   "linux": {
-    "target": [
-      "AppImage",
-      "deb"
-    ]
+    "target": ["AppImage"]
   },
   "win": {
-    "target": "nsis",
+    "target": [{
+      "target": "nsis",
+      "arch": [
+        "x64",
+        "ia32"
+      ]
+    }],
     "icon": "build/icon.ico"
   },
   "nsis": {
     "oneClick": false,
     "allowToChangeInstallationDirectory": true
-  }
+  },
+  "publish": {
+    "provider": "s3",
+    "bucket": "cookietouch"
+  },
+  "generateUpdatesFilesForAllChannels": true
 }

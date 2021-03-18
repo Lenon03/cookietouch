@@ -1,6 +1,7 @@
-import Account from "@/account";
 import { FunctionTypes } from "@/scripts/FunctionTypes";
+import { staticPath } from "@/utils/staticPath";
 import * as fs from "fs";
+import * as path from "path";
 
 export interface IBankItem {
   id: number;
@@ -36,32 +37,41 @@ export interface IConfig {
 }
 
 export interface IMap {
-  map: number|string;
-  direction: string;
+  map: number | string;
+  path: string;
   gather: boolean;
   fight: boolean;
   npcBank: boolean;
   phenix: number;
   door: number;
-  custom: () => void;
+  custom: GeneratorFunction;
 }
+
 export interface IFunc {
   maps: IMap[];
 }
-export default class JsonScriptManager {
 
+export default class JsonScriptManager {
   public script: string = "";
+  private username: string = "";
 
   public get config(): IConfig {
     return eval(`${this.script};config`);
   }
 
-  public loadFromFile(filePath: string, beforeDoFile: () => void) {
+  public loadFromFile(
+    filePath: string,
+    username: string,
+    beforeDoFile: () => void
+  ) {
     this.script = "";
+    this.username = username;
     const content = fs.readFileSync(filePath);
     beforeDoFile();
-    this.script += content.toString();
-    console.log(this.script);
+    this.script +=
+      fs.readFileSync(path.join(staticPath, "./ScriptsHelpers.js")).toString() +
+      content.toString();
+    this.regexAll();
   }
 
   public getFunctionEntries(func: FunctionTypes): IFunc {
@@ -73,13 +83,19 @@ export default class JsonScriptManager {
       case FunctionTypes.PHENIX:
         return this.getFunc("phenix");
       default:
-        return null;
+        return this.getFunc("move");
     }
   }
 
   private getFunc(name: string): IFunc {
     return {
-      maps: eval(`${this.script};${name}`),
+      maps: eval(`${this.script};${name}`)
     };
+  }
+
+  private regexAll() {
+    // API
+    const regexAPI = /API/g;
+    this.script = this.script.replace(regexAPI, `API["${this.username}"]`);
   }
 }

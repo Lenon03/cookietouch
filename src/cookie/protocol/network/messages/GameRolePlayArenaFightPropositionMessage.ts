@@ -1,8 +1,10 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class GameRolePlayArenaFightPropositionMessage extends Message {
   public alliesId: number[];
   public fightId: number;
   public duration: number;
+
   constructor(fightId = 0, duration = 0, alliesId: number[]) {
     super();
     this.alliesId = alliesId;

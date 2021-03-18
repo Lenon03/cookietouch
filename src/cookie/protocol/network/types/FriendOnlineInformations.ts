@@ -1,6 +1,7 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import FriendInformations from "./FriendInformations";
-import PlayerStatus from "./PlayerStatus";
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import FriendInformations from "@/protocol/network/types/FriendInformations";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
+
 export default class FriendOnlineInformations extends FriendInformations {
   public playerId: number;
   public playerName: string;
@@ -11,6 +12,7 @@ export default class FriendOnlineInformations extends FriendInformations {
   public guildInfo: BasicGuildInformations;
   public moodSmileyId: number;
   public status: PlayerStatus;
+
   constructor(accountId = 0, accountName = "", playerState = 99, lastConnection = 0,
               achievementPoints = 0, playerId = 0, playerName = "", level = 0,
               alignmentSide = 0, breed = 0, sex = false, guildInfo: BasicGuildInformations, moodSmileyId = 0,

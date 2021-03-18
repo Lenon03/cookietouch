@@ -1,12 +1,13 @@
-import IClearable from "@utils/IClearable";
+import IClearable from "@/utils/IClearable";
 
 export default class FramesData implements IClearable {
-  public sequence: number;
-  public captchasCounter: number;
-  public key: number[];
-  public salt: string;
-  public ticket: string;
-  public initialized: boolean;
+  public sequence: number = 0;
+  public captchasCounter: number = 0;
+  public key: number[] | null = null;
+  public salt: string | null = null;
+  public ticket: string | null = null;
+  public initialized: boolean = false;
+  public serverToAutoConnectTo: number = 0;
 
   constructor() {
     this.clear();
@@ -19,5 +20,6 @@ export default class FramesData implements IClearable {
     this.salt = null;
     this.ticket = null;
     this.initialized = false;
+    this.serverToAutoConnectTo = 0;
   }
 }

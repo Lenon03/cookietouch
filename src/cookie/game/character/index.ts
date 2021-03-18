@@ -1,64 +1,82 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import DataManager from "@protocol/data";
-import Breeds from "@protocol/data/classes/Breeds";
-import Spells from "@protocol/data/classes/Spells";
-import { BreedEnum } from "@protocol/enums/BreedEnum";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
-import EntityLook from "@protocol/network/types/EntityLook";
-import LiteEvent from "@utils/LiteEvent";
-import { BoostableStats } from "./BoostableStats";
-import CharacterStats from "./CharacterStats";
-import Inventory from "./inventory";
-import Jobs from "./jobs";
-import Mount from "./mount";
-import { PlayerStatusEnum } from "./PlayerStatusEnum";
-import SpellEntry from "./SpellEntry";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import { BoostableStats } from "@/game/character/BoostableStats";
+import CharacterStats from "@/game/character/CharacterStats";
+import Inventory from "@/game/character/inventory";
+import Jobs from "@/game/character/jobs";
+import Mount from "@/game/character/mount";
+import SpellEntry from "@/game/character/SpellEntry";
+import DataManager from "@/protocol/data";
+import Breeds from "@/protocol/data/classes/Breeds";
+import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import { BreedEnum } from "@/protocol/enums/BreedEnum";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
+import { PlayerStatusEnum } from "@/protocol/enums/PlayerStatusEnum";
+import CharacterLevelUpMessage from "@/protocol/network/messages/CharacterLevelUpMessage";
+import GameRolePlayPlayerLifeStatusMessage from "@/protocol/network/messages/GameRolePlayPlayerLifeStatusMessage";
+import LifePointsRegenBeginMessage from "@/protocol/network/messages/LifePointsRegenBeginMessage";
+import LifePointsRegenEndMessage from "@/protocol/network/messages/LifePointsRegenEndMessage";
+import PlayerStatusUpdateMessage from "@/protocol/network/messages/PlayerStatusUpdateMessage";
+import SpellListMessage from "@/protocol/network/messages/SpellListMessage";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import LiteEvent from "@/utils/LiteEvent";
+import UnreachableCaseError from "@/utils/UnreachableCaseError";
 
 export default class Character {
-  public breedData: Breeds;
-  public isSelected: boolean;
-  public name: string;
-  public id: number;
-  public level: number;
-  public skinUrl: string;
-  public status: PlayerStatusEnum;
-  public sex: boolean;
-  public breed: BreedEnum;
-  public look: EntityLook;
+  public breedData: Breeds | null = null;
+  public isSelected: boolean = false;
+  public name: string = "";
+  public id: number = 0;
+  public level: number = 0;
+  public skinUrl: string = "";
+  public status: PlayerStatusEnum = PlayerStatusEnum.PLAYER_STATUS_AVAILABLE;
+  public sex: boolean = false;
+  public breed: BreedEnum = BreedEnum.Feca;
+  public look: EntityLook | null = null;
   public stats: CharacterStats;
-  public lifeStatus: PlayerLifeStatusEnum;
+  public lifeStatus: PlayerLifeStatusEnum =
+    PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
   public spells: SpellEntry[];
   public mount: Mount;
   public jobs: Jobs;
   public inventory: Inventory;
 
-  private regenTimer: NodeJS.Timer = null;
-
-  public get CharacterSelected() { return this.onCharacterSelected.expose(); }
-  public get StatsUpdated() { return this.onStatsUpdated.expose(); }
-  public get SpellsUpdated() { return this.onSpellsUpdated.expose(); }
+  private regenTimer: NodeJS.Timer | null = null;
   private readonly onCharacterSelected = new LiteEvent<void>();
   private readonly onStatsUpdated = new LiteEvent<void>();
   private readonly onSpellsUpdated = new LiteEvent<void>();
-
   private account: Account;
 
   constructor(account: Account) {
     this.account = account;
 
     this.stats = new CharacterStats();
-    this.spells = new Array<SpellEntry>();
+    this.spells = [];
     this.mount = new Mount(account);
     this.jobs = new Jobs(account);
     this.inventory = new Inventory(account);
   }
 
-  get freeSoul() {
+  public get CharacterSelected() {
+    return this.onCharacterSelected.expose();
+  }
+
+  public get StatsUpdated() {
+    return this.onStatsUpdated.expose();
+  }
+
+  public get SpellsUpdated() {
+    return this.onSpellsUpdated.expose();
+  }
+
+  public freeSoul() {
     if (this.lifeStatus !== PlayerLifeStatusEnum.STATUS_TOMBSTONE) {
       return false;
     }
 
+    this.account.network.sendMessageFree("GameRolePlayFreeSoulRequestMessage");
     return true;
   }
 
@@ -67,25 +85,17 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessage("EmotePlayRequestMessage", { emoteId: 1 });
+    this.account.network.sendMessageFree("EmotePlayRequestMessage", {
+      emoteId: 1
+    });
   }
 
-  public getSpell(id: number): SpellEntry {
-    const s = this.spells.find((f) => f.id === id);
-    if (s !== undefined) {
-      return s;
-    } else {
-      return null;
-    }
+  public getSpell(id: number): SpellEntry | null {
+    return this.spells.find(f => f.id === id) || null;
   }
 
-  public getSpellByName(name: string): SpellEntry {
-    const s = this.spells.find((f) => f.name === name);
-    if (s !== undefined) {
-      return s;
-    } else {
-      return null;
-    }
+  public getSpellByName(name: string): SpellEntry | null {
+    return this.spells.find(f => f.name === name) || null;
   }
 
   public canBoostStat(stat: BoostableStats): boolean {
@@ -101,23 +111,28 @@ export default class Character {
 
     const possiblePts = this.stats.statsPoints / neededPts;
 
-    pts = (pts === 0 ? possiblePts : pts > possiblePts ? possiblePts : pts) * neededPts;
+    pts =
+      (pts === 0 ? possiblePts : pts > possiblePts ? possiblePts : pts) *
+      neededPts;
 
-    this.account.network.sendMessage("StatsUpgradeRequestMessage", {
+    this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
-      statId: stat,
+      statId: stat
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${pts} points en ${BoostableStats[stat]}`);
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostStat", pts, BoostableStats[stat])
+    );
     return true;
   }
 
   public autoBoostStat(stat: BoostableStats): boolean {
-    if (this.stats.statsPoints === 0) {
+    if (this.stats.statsPoints === 0 || !this.breedData) {
       return false;
     }
 
-    let data: number[][] = null;
+    let data: number[][] = [];
     let baseStats = 0;
     let statsPointsLeft = this.stats.statsPoints;
     let pts = 0;
@@ -147,10 +162,16 @@ export default class Character {
         data = this.breedData.statsPointsForWisdom;
         baseStats = this.stats.wisdom.base;
         break;
+      case BoostableStats.NONE:
+        break;
+      default:
+        throw new UnreachableCaseError(stat);
     }
 
     while (statsPointsLeft > 0) {
-      const neededPts = data.find((d) => baseStats >= d[0])[1]; // TODO: Replace by findLast
+      data = data.reverse();
+      const neededPts = data.find(d => baseStats >= d[0])![1];
+      data = data.reverse();
 
       if (statsPointsLeft < neededPts) {
         break;
@@ -165,12 +186,15 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("StatsUpgradeRequestMessage", {
+    this.account.network.sendMessageFree("StatsUpgradeRequestMessage", {
       boostPoint: pts,
-      statId: stat,
+      statId: stat
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${pts} points en ${BoostableStats[stat]}`);
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostStat", pts, BoostableStats[stat])
+    );
     return true;
   }
 
@@ -187,12 +211,15 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeRequestMessage", {
       spellId: spell.id,
-      spellLevel: spell.level + 1,
+      spellLevel: spell.level + 1
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${spell.name} au level ${spell.level + 1}`);
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostSpell", spell.name, spell.level + 1)
+    );
     return true;
   }
 
@@ -236,12 +263,15 @@ export default class Character {
       return false;
     }
 
-    this.account.network.sendMessage("SpellUpgradeMessage", {
+    this.account.network.sendMessageFree("SpellUpgradeRequestMessage", {
       spellId,
-      spellLevel: level,
+      spellLevel: level
     });
 
-    this.account.logger.logDebug("", `Vous avez augmenté ${spell.name} au level ${level}`);
+    this.account.logger.logDebug(
+      LanguageManager.trans("character"),
+      LanguageManager.trans("boostSpell", spell.name, level)
+    );
     return true;
   }
 
@@ -250,19 +280,28 @@ export default class Character {
       return;
     }
 
-    this.account.network.sendMessage("PlayerStatusUpdateRequestMessage", {
+    this.account.network.sendMessageFree("PlayerStatusUpdateRequestMessage", {
       status: {
-        statusId: status,
-      },
+        statusId: status
+      }
     });
   }
 
-  // TODO: skinurl
-  public getSkinUrl(mode: string, orientation: number, width: number, height: number, zoom: number): string {
-    let text = "http://staticns.ankama.com/dofus/renderer/look/7";
-    // let text = "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
+  public getSkinUrl(
+    mode: string,
+    orientation: number,
+    width: number,
+    height: number,
+    zoom: number
+  ): string {
+    // let text = "http://staticns.ankama.com/dofus/renderer/look/7";
+    let text =
+      "https://s.ankama.com/www/static.ankama.com/dofus/renderer/look/7";
     text += "b3";
     let num = 0;
+    if (!this.look) {
+      return "";
+    }
     const array = `${this.look.bonesId}`.split("");
     const array2 = array;
     for (const c of array2) {
@@ -316,12 +355,14 @@ export default class Character {
         num2 = num4;
         num4 = num2 + 1;
         text += `${c3}`;
-        const flag5 = num4 >= array5.length && num5 < this.look.indexedColors.length;
+        const flag5 =
+          num4 >= array5.length && num5 < this.look.indexedColors.length;
         if (flag5) {
           text += "2";
           num4 = 0;
         } else {
-          const flag6 = num4 < array5.length && num5 <= this.look.indexedColors.length;
+          const flag6 =
+            num4 < array5.length && num5 <= this.look.indexedColors.length;
           if (flag6) {
             text += "3";
           }
@@ -360,7 +401,19 @@ export default class Character {
         text += "7";
       }
     }
-    text = text.concat("d/", mode, "/", `${orientation}`, "/", `${width}`, "_", `${height}`, "-", `${zoom}`, ".png");
+    text = text.concat(
+      "d/",
+      mode,
+      "/",
+      `${orientation}`,
+      "/",
+      `${width}`,
+      "_",
+      `${height}`,
+      "-",
+      `${zoom}`,
+      ".png"
+    );
     return text;
   }
 
@@ -377,10 +430,19 @@ export default class Character {
     this.sex = message.infos.sex;
     this.look = message.infos.entityLook;
     this.skinUrl = this.getSkinUrl("full", 1, 128, 256, 0);
-    const breedResponse = await DataManager.get(Breeds, message.infos.breed);
+    const breedResponse = await DataManager.get<Breeds>(
+      DataTypes.Breeds,
+      message.infos.breed
+    );
     this.breedData = breedResponse[0].object;
-    this.status = PlayerStatusEnum.AVAILABLE;
+    this.status = PlayerStatusEnum.PLAYER_STATUS_AVAILABLE;
     this.lifeStatus = PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
+
+    await this.account.config.load();
+    await this.account.extensions.fights.config.load();
+    await this.account.extensions.bid.config.load();
+    await this.account.extensions.flood.config.load();
+
     this.isSelected = true;
     this.onCharacterSelected.trigger();
   }
@@ -391,28 +453,33 @@ export default class Character {
     this.onStatsUpdated.trigger();
   }
 
-  public async UpdateCharacterLevelUpMessage(message: any) {
+  public async UpdateCharacterLevelUpMessage(message: CharacterLevelUpMessage) {
     this.level = message.newLevel;
     this.onStatsUpdated.trigger();
   }
 
-  public async UpdateGameRolePlayPlayerLifeStatusMessage(message: any) {
+  public async UpdateGameRolePlayPlayerLifeStatusMessage(
+    message: GameRolePlayPlayerLifeStatusMessage
+  ) {
     this.lifeStatus = message.state;
   }
 
-  public async UpdatePlayerStatusUpdateMessage(message: any) {
+  public async UpdatePlayerStatusUpdateMessage(
+    message: PlayerStatusUpdateMessage
+  ) {
     this.status = message.status.statusId;
   }
 
-  public async UpdateSpellListMessage(message: any) {
-    this.spells = new Array<SpellEntry>();
+  public async UpdateSpellListMessage(message: SpellListMessage) {
+    this.spells = [];
 
     const ids = message.spells.map((s: any) => s.spellId);
-    const spells = await DataManager.get(Spells, ...ids);
+    const spells = await DataManager.get<Spells>(DataTypes.Spells, ...ids);
 
     for (const sp of message.spells) {
-      const spell = spells.find((f) => f.id === sp.spellId);
-      this.spells.push(new SpellEntry(sp, spell.object));
+      const spell = spells.find(f => f.id === sp.spellId);
+      const spellx = (spell && spell.object) || sp.spellId;
+      this.spells.push(await SpellEntry.setup(sp, spellx));
     }
     this.onSpellsUpdated.trigger();
   }
@@ -422,7 +489,9 @@ export default class Character {
     if (spell !== null) {
       spell.UpdateSpellUpgradeSuccessMessage(message);
     } else {
-      this.spells.push(new SpellEntry(message.spellId, message.spellLevel));
+      this.spells.push(
+        await SpellEntry.setup(message.spellId, message.spellLevel)
+      );
       // TODO: Check if the new added spellEntry contains good data.
       console.log("SpellEntryAddedOnUpgrade => ", this.spells);
     }
@@ -434,32 +503,49 @@ export default class Character {
       return;
     }
 
-    if (message.emoteId === 1 && this.account.state !== AccountStates.REGENERATING) {
+    if (
+      message.emoteId === 1 &&
+      this.account.state !== AccountStates.REGENERATING
+    ) {
       this.account.state = AccountStates.REGENERATING;
-    } else if (message.emoteId === 0 && this.account.state === AccountStates.REGENERATING) {
+    } else if (
+      message.emoteId === 0 &&
+      this.account.state === AccountStates.REGENERATING
+    ) {
       this.account.state = AccountStates.NONE;
     }
   }
 
-  public UpdateLifePointsRegenBeginMessage(message: any) {
-    this.regenTimer = global.setInterval(this.regenTimerCallBack.bind(this), message.regenRate * 100);
+  public UpdateLifePointsRegenBeginMessage(
+    message: LifePointsRegenBeginMessage
+  ) {
+    this.regenTimer = global.setInterval(
+      this.regenTimerCallBack,
+      message.regenRate * 100
+    );
   }
 
-  public UpdateLifePointsRegenEndMessage(message: any) {
-    global.clearInterval(this.regenTimer);
+  public UpdateLifePointsRegenEndMessage(message: LifePointsRegenEndMessage) {
+    this.onStatsUpdated.trigger();
+    global.clearInterval(this.regenTimer!);
   }
 
-  private regenTimerCallBack() {
+  private regenTimerCallBack = () => {
     if (this.stats.lifePoints >= this.stats.maxLifePoints) {
-      global.clearInterval(this.regenTimer);
+      global.clearInterval(this.regenTimer!);
       return;
     }
     this.stats.lifePoints++;
-  }
+    this.onStatsUpdated.trigger();
+  };
 
   private getNeededPointsToBoostStat(stat: BoostableStats): number {
-    let data: number[][] = null;
+    let data: number[][] = [];
     let baseStats = 0;
+
+    if (!this.breedData) {
+      return 0;
+    }
 
     switch (stat) {
       case BoostableStats.AGILITY:
@@ -486,8 +572,12 @@ export default class Character {
         data = this.breedData.statsPointsForWisdom;
         baseStats = this.stats.wisdom.base;
         break;
+      case BoostableStats.NONE:
+        break;
+      default:
+        throw new UnreachableCaseError(stat);
     }
 
-    return data.find((d) => baseStats >= d[0])[1]; // TODO: Replace by findLast
+    return data.reverse().find(d => baseStats >= d[0])![1];
   }
 }

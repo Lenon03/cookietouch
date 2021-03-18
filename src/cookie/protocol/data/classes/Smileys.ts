@@ -1,8 +1,8 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class Smileys extends Data {
-    public order: number;
-    public gfxId: string;
-    public forPlayers: boolean;
-    public triggers: string[];
+  public order: number = 0;
+  public gfxId: string = "";
+  public forPlayers: boolean = false;
+  public triggers: string[] = [];
 }

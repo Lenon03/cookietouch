@@ -1,12 +1,11 @@
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { List } from "linqts";
-import BuyItemAction from "../actions/bid/BuyItemAction";
-import EditItemInSalePriceAction from "../actions/bid/EditItemInSalePriceAction";
-import RemoveItemInSaleAction from "../actions/bid/RemoveItemInSaleAction";
-import SellItemAction from "../actions/bid/SellItemAction";
-import StartBuyingAction from "../actions/bid/StartBuyingAction";
-import StartSellingAction from "../actions/bid/StartSellingAction";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import BuyItemAction from "@/scripts/actions/bid/BuyItemAction";
+import EditItemInSalePriceAction from "@/scripts/actions/bid/EditItemInSalePriceAction";
+import RemoveItemInSaleAction from "@/scripts/actions/bid/RemoveItemInSaleAction";
+import SellItemAction from "@/scripts/actions/bid/SellItemAction";
+import StartBuyingAction from "@/scripts/actions/bid/StartBuyingAction";
+import StartSellingAction from "@/scripts/actions/bid/StartSellingAction";
 
 export interface IObjectInSale {
   gid: number;
@@ -22,79 +21,107 @@ export default class BidAPI {
     this.account = account;
   }
 
-  public startBuying(): boolean {
+  public async startBuying(): Promise<boolean> {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StartBuyingAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StartBuyingAction(),
+      true
+    );
     return true;
   }
 
   public async getItemPrice(gid: number, lot: number): Promise<number> {
-    return await this.account.game.bid.getItemPrice(gid, lot);
+    return this.account.game.bid.getItemPrice(gid, lot);
   }
 
-  public buyItem(gid: number, lot: number): boolean {
+  public async buyItem(gid: number, lot: number): Promise<boolean> {
     if (this.account.state !== AccountStates.BUYING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new BuyItemAction(gid, lot), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new BuyItemAction(gid, lot),
+      true
+    );
     return true;
   }
 
-  public startSelling(): boolean {
+  public async startSelling(): Promise<boolean> {
     if (this.account.isBusy) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new StartSellingAction(), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new StartSellingAction(),
+      true
+    );
     return true;
   }
 
-  public getItemsInSale(): List<IObjectInSale> {
-    const itemsInSale = new List<IObjectInSale>();
+  public itemsInSaleCount(): number {
+    return this.account.game.bid.objectsInSale
+      ? this.account.game.bid.objectsInSale.Count()
+      : 0;
+  }
+
+  public getItemsInSale(): IObjectInSale[] {
     // This will automatically handle the list being null
     if (this.account.state !== AccountStates.SELLING) {
-      return itemsInSale;
+      return [];
     }
 
-    const tmp = this.account.game.bid.objectsInSale.Select((t) => {
+    const tmp = this.account.game.bid.objectsInSale.Select(t => {
       return {
         gid: t.objectGID,
         lot: t.quantity,
         price: t.objectPrice,
-        uid: t.objectUID,
+        uid: t.objectUID
       } as IObjectInSale;
     });
 
-    itemsInSale.AddRange(tmp.ToArray());
-
-    return itemsInSale;
+    return tmp.ToArray();
   }
 
-  public sellItem(gid: number, lot: number, price: number): boolean {
+  public async sellItem(
+    gid: number,
+    lot: number,
+    price: number
+  ): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new SellItemAction(gid, lot, price), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new SellItemAction(gid, lot, price),
+      true
+    );
     return true;
   }
 
-  public removeItemInSale(uid: number): boolean {
+  public async removeItemInSale(uid: number): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new RemoveItemInSaleAction(uid), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new RemoveItemInSaleAction(uid),
+      true
+    );
     return true;
   }
 
-  public editItemInSalePrice(uid: number, newPrice: number): boolean {
+  public async editItemInSalePrice(
+    uid: number,
+    newPrice: number
+  ): Promise<boolean> {
     if (this.account.state !== AccountStates.SELLING) {
       return false;
     }
     if (newPrice === 0) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new EditItemInSalePriceAction(uid, newPrice), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new EditItemInSalePriceAction(uid, newPrice),
+      true
+    );
     return true;
   }
 }

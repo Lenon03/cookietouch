@@ -1,15 +1,15 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class Emoticons extends Data {
-    public nameId: string;
-    public shortcutId: string;
-    public order: number;
-    public defaultAnim: string;
-    public persistancy: boolean;
-    public eight_directions: boolean;
-    public aura: boolean;
-    public anims: string[];
-    public cooldown: number;
-    public duration: number;
-    public weight: number;
+  public nameId: string = "";
+  public shortcutId: string = "";
+  public order: number = 0;
+  public defaultAnim: string = "";
+  public persistancy: boolean = false;
+  public eight_directions: boolean = false;
+  public aura: boolean = false;
+  public anims: string[] = [];
+  public cooldown: number = 0;
+  public duration: number = 0;
+  public weight: number = 0;
 }

@@ -1,40 +1,35 @@
-import GlobalConfiguration from "@/GlobalConfiguration";
-import { Mutex } from "@utils/Semaphore";
-import { isEmpty } from "@utils/String";
-import { Anticaptcha } from "./Anticaptcha";
+import GlobalConfiguration from "@/configurations/GlobalConfiguration";
+import { Mutex } from "@/utils/Semaphore";
+import { isEmpty } from "@/utils/String";
+import { AntiCaptcha } from "anticaptcha";
 
 const mutex = new Mutex();
 
 export default class RecaptchaHandler {
-  public static getResponse(sitekey: string): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      const release = await mutex.acquire();
-      if (!isEmpty(GlobalConfiguration.anticaptchaKey)) {
-        const ac = new Anticaptcha(GlobalConfiguration.anticaptchaKey);
-        try {
-          const balance = await ac.getBalance();
-          if (balance > 0) {
-            ac.websiteUrl = "https://proxyconnection.touch.dofus.com/recaptcha";
-            ac.websiteKey = sitekey;
-
-            const task = await ac.createTaskProxyless();
-            const solution = await ac.getTaskSolution(task.taskId, 0, (res) => {
-              // logger.verbose("intermediate", res);
-            });
-            // logger.verbose(`SOLUTION`, solution);
-            release();
-            return resolve(solution.solution.gRecaptchaResponse);
-          } else {
-            // logger.error("AntiCaptcha - Contact DevChris#4592 on Discord :)");
-            // return process.exit();
-          }
-        } catch (error) {
+  public static async getResponse(sitekey: string): Promise<string> {
+    const release = await mutex.acquire();
+    if (!isEmpty(GlobalConfiguration.anticaptchaKey)) {
+      try {
+        const ac = new AntiCaptcha(GlobalConfiguration.anticaptchaKey);
+        if (await !ac.isBalanceGreaterThan(0)) {
           release();
-          return reject(error);
+          return "no-balance";
+        } else {
+          const taskId = await ac.createTask(
+            "https://proxyconnection.touch.dofus.com/recaptcha",
+            sitekey
+          );
+
+          const response = await ac.getTaskResult(taskId);
+          release();
+          return response.solution.gRecaptchaResponse;
         }
+      } catch (error) {
+        release();
+        throw error;
       }
-      release();
-      return resolve(null);
-    });
+    }
+    release();
+    return "no-key";
   }
 }

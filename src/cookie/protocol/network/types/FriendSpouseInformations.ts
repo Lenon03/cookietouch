@@ -1,6 +1,8 @@
-import BasicGuildInformations from "./BasicGuildInformations";
-import EntityLook from "./EntityLook";
-export default class FriendSpouseInformations {
+import BasicGuildInformations from "@/protocol/network/types/BasicGuildInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Type from "@/protocol/network/types/Type";
+
+export default class FriendSpouseInformations extends Type {
   public spouseAccountId: number;
   public spouseId: number;
   public spouseName: string;
@@ -10,8 +12,10 @@ export default class FriendSpouseInformations {
   public spouseEntityLook: EntityLook;
   public guildInfo: BasicGuildInformations;
   public alignmentSide: number;
+
   constructor(spouseAccountId = 0, spouseId = 0, spouseName = "", spouseLevel = 0, breed = 0, sex = 0,
               spouseEntityLook: EntityLook, guildInfo: BasicGuildInformations, alignmentSide = 0) {
+    super();
     this.spouseAccountId = spouseAccountId;
     this.spouseId = spouseId;
     this.spouseName = spouseName;

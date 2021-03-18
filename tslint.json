@@ -1,24 +1,41 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended"
-  ],
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
+	"ordered-imports": [false],
+    "object-literal-sort-keys": [false],
     "no-console": false,
     "no-eval": false,
     "no-bitwise": false,
     "variable-name": [
-      true, "ban-keywords",
+      true,
+      "ban-keywords",
       "check-format",
       "allow-leading-underscore",
       "allow-snake-case"
     ],
-    "indent": [true, "spaces", 2],
-    "max-line-length": [true, 150],
-    "max-classes-per-file": 2,
+    "max-classes-per-file": [true, 2],
     "no-empty-interface": false,
-    "quotemark": [true, "double", "avoid-escape"]
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "private-static-field",
+          "public-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "no-implicit-dependencies": false,
+    "no-submodule-imports": false,
+    "no-object-literal-type-assertion": false
   },
   "rulesDirectory": []
 }

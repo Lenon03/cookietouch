@@ -1,4 +1,4 @@
-import ObjectEffect from "./ObjectEffect";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
 
 export default class ObjectEffectDice extends ObjectEffect {
 

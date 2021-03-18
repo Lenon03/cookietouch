@@ -1,29 +1,50 @@
-import CharacterBaseCharacteristic from "@protocol/network/types/CharacterBaseCharacteristic";
+import CharacterStatsListMessage from "@/protocol/network/messages/CharacterStatsListMessage";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
 
 export default class CharacterStats {
-  public lifePoints: number;
-  public maxLifePoints: number;
-  public energyPoints: number;
-  public maxEnergyPoints: number;
-  public experience: number;
-  public experienceLevelFloor: number;
-  public experienceNextLevelFloor: number;
-  public statsPoints: number;
-  public spellsPoints: number;
-  public actionPoints: CharacterBaseCharacteristic;
-  public movementPoints: CharacterBaseCharacteristic;
-  public initiative: CharacterBaseCharacteristic;
-  public prospecting: CharacterBaseCharacteristic;
-  public range: CharacterBaseCharacteristic;
-  public summonableCreaturesBoost: CharacterBaseCharacteristic;
-  public vitality: CharacterBaseCharacteristic;
-  public wisdom: CharacterBaseCharacteristic;
-  public strength: CharacterBaseCharacteristic;
-  public intelligence: CharacterBaseCharacteristic;
-  public chance: CharacterBaseCharacteristic;
-  public agility: CharacterBaseCharacteristic;
+  public lifePoints: number = 0;
+  public maxLifePoints: number = 0;
+  public energyPoints: number = 0;
+  public maxEnergyPoints: number = 0;
+  public experience: number = 0;
+  public experienceLevelFloor: number = 0;
+  public experienceNextLevelFloor: number = 0;
+  public statsPoints: number = 0;
+  public spellsPoints: number = 0;
+  public actionPoints = new CharacterBaseCharacteristic();
+  public movementPoints = new CharacterBaseCharacteristic();
+  public initiative = new CharacterBaseCharacteristic();
+  public prospecting = new CharacterBaseCharacteristic();
+  public range = new CharacterBaseCharacteristic();
+  public summonableCreaturesBoost = new CharacterBaseCharacteristic();
+  public vitality = new CharacterBaseCharacteristic();
+  public wisdom = new CharacterBaseCharacteristic();
+  public strength = new CharacterBaseCharacteristic();
+  public intelligence = new CharacterBaseCharacteristic();
+  public chance = new CharacterBaseCharacteristic();
+  public agility = new CharacterBaseCharacteristic();
 
-  public UpdateCharacterStatsListMessage(message: any) {
+  public get lifePercent(): number {
+    return this.maxLifePoints === 0
+      ? 0
+      : (this.lifePoints / this.maxLifePoints) * 100;
+  }
+
+  public get energyPercent(): number {
+    return this.maxEnergyPoints === 0
+      ? 0
+      : (this.energyPoints / this.maxEnergyPoints) * 100;
+  }
+
+  public get experiencePercent(): number {
+    return this.experienceNextLevelFloor === 0
+      ? 0
+      : ((this.experience - this.experienceLevelFloor) /
+          (this.experienceNextLevelFloor - this.experienceLevelFloor)) *
+          100;
+  }
+
+  public UpdateCharacterStatsListMessage(message: CharacterStatsListMessage) {
     this.lifePoints = message.stats.lifePoints;
     this.maxLifePoints = message.stats.maxLifePoints;
     this.energyPoints = message.stats.energyPoints;
@@ -45,19 +66,6 @@ export default class CharacterStats {
     this.intelligence = message.stats.intelligence;
     this.chance = message.stats.chance;
     this.agility = message.stats.agility;
-  }
-
-  public get lifePercent(): number {
-    return this.maxLifePoints === 0 ? 0 : this.lifePoints / this.maxLifePoints * 100;
-  }
-
-  public get energyPercent(): number {
-    return this.maxEnergyPoints === 0 ? 0 : this.energyPoints / this.maxEnergyPoints * 100;
-  }
-
-  public get experiencePercent(): number {
-    return this.experienceNextLevelFloor === 0 ? 0 :
-      (this.experience - this.experienceLevelFloor) / (this.experienceNextLevelFloor - this.experienceLevelFloor) * 100;
   }
 
   public UpdateCharacterExperienceGainMessage(message: any) {

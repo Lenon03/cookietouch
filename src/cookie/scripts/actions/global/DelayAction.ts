@@ -1,8 +1,11 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
+import { sleep } from "@/utils/Time";
 
 export default class DelayAction extends ScriptAction {
+  public _name: string = "DelayAction";
   public ms: number;
 
   constructor(ms: number) {
@@ -10,10 +13,8 @@ export default class DelayAction extends ScriptAction {
     this.ms = ms;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      await sleep(this.ms);
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    await sleep(this.ms);
+    return ScriptAction.doneResult();
   }
 }

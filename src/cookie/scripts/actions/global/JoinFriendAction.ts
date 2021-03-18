@@ -1,8 +1,8 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class JoinFriendAction extends ScriptAction {
+  public _name: string = "JoinFriendAction";
   public name: string;
 
   constructor(name: string) {
@@ -10,13 +10,13 @@ export default class JoinFriendAction extends ScriptAction {
     this.name = name;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.isBusy) {
-        return ScriptAction.failedResult;
-      }
-      account.network.sendMessage("FriendJoinRequestMessage", { name: this.name });
-      return ScriptAction.doneResult;
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.isBusy) {
+      return ScriptAction.failedResult();
+    }
+    account.network.sendMessageFree("FriendJoinRequestMessage", {
+      name: this.name
     });
+    return ScriptAction.doneResult();
   }
 }

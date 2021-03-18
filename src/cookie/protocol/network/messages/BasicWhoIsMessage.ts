@@ -1,5 +1,6 @@
-import AbstractSocialGroupInfos from "@protocol/network/types/AbstractSocialGroupInfos";
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+import AbstractSocialGroupInfos from "@/protocol/network/types/AbstractSocialGroupInfos";
+
 export default class BasicWhoIsMessage extends Message {
   public socialGroups: AbstractSocialGroupInfos[];
   public self: boolean;
@@ -11,6 +12,7 @@ export default class BasicWhoIsMessage extends Message {
   public areaId: number;
   public verbose: boolean;
   public playerState: number;
+
   constructor(self = false, position = -1, accountNickname = "", accountId = 0,
               playerName = "", playerId = 0, areaId = 0, verbose = false,
               playerState = 99, socialGroups: AbstractSocialGroupInfos[]) {

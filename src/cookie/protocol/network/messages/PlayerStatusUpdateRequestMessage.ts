@@ -1,10 +1,12 @@
-import PlayerStatus from "@protocol/network/types/PlayerStatus";
-import Message from "./Message";
-export default class PlayerStatusUpdateRequestMessage extends Message {
-public status: PlayerStatus;
-constructor(status: PlayerStatus) {
-super();
-this.status = status;
+import Message from "@/protocol/network/messages/Message";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
 
-}
+export default class PlayerStatusUpdateRequestMessage extends Message {
+  public status: PlayerStatus;
+
+  constructor(status: PlayerStatus) {
+    super();
+    this.status = status;
+
+  }
 }

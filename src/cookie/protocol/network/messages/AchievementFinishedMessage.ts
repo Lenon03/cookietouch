@@ -1,7 +1,9 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class AchievementFinishedMessage extends Message {
   public id: number;
   public finishedlevel: number;
+
   constructor(id = 0, finishedlevel = 0) {
     super();
     this.id = id;

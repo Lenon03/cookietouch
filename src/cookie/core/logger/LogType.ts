@@ -4,5 +4,5 @@ export enum LogType {
   INFO = "#387a30",
   WARNING = "#d17e32",
   DOFUS = "#1d64d6",
-  MESSAGE = "#dceffc",
+  MESSAGE = "#dceffc"
 }

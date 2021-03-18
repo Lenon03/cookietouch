@@ -1,4 +1,6 @@
-export default class GameFightMinimalStats {
+import Type from "@/protocol/network/types/Type";
+
+export default class GameFightMinimalStats extends Type {
   public lifePoints: number;
   public maxLifePoints: number;
   public baseMaxLifePoints: number;
@@ -27,6 +29,7 @@ export default class GameFightMinimalStats {
   public tackleBlock: number;
   public tackleEvade: number;
   public invisibilityState: number;
+
   constructor(lifePoints = 0, maxLifePoints = 0, baseMaxLifePoints = 0,
               permanentDamagePercent = 0, shieldPoints = 0, actionPoints = 0,
               maxActionPoints = 0, movementPoints = 0, maxMovementPoints = 0,
@@ -39,6 +42,7 @@ export default class GameFightMinimalStats {
               pushDamageFixedResist = 0, dodgePALostProbability = 0,
               dodgePMLostProbability = 0, tackleBlock = 0, tackleEvade = 0,
               invisibilityState = 0) {
+    super();
     this.lifePoints = lifePoints;
     this.maxLifePoints = maxLifePoints;
     this.baseMaxLifePoints = baseMaxLifePoints;

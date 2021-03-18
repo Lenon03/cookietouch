@@ -1,42 +1,34 @@
-const {TsConfigPathsPlugin} = require('awesome-typescript-loader');
-const webpack = require('webpack');
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+const {
+  TsConfigPathsPlugin
+} = require('awesome-typescript-loader');
 
 module.exports = {
   resolve: {
-    plugins: [new TsConfigPathsPlugin()]
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'tslint-loader',
-            options: {
-              emitErrors: true,
-              failOnHint: true
-            }
-          }
-        ],
-        enforce: 'pre',
-        exclude: /node_modules/
-      }
+    plugins: [
+      new TsConfigPathsPlugin()
     ]
   },
-  devServer: {
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
-  // plugins: [new webpack.ProvidePlugin({
-  //     $: 'jquery',
-  //     jQuery: 'jquery',
-  //     'window.jQuery': 'jquery',
-  //     Popper: [
-  //       'popper.js', 'default'
-  //     ]
-  //      In case you imported plugins individually, you must also require them here:
-  //      Util: "exports-loader?Util!bootstrap/js/dist/util",
-  //      Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-  //   })]
+  module: {
+    rules: [{
+      test: /\.tsx?$/,
+      use: [{
+        loader: 'tslint-loader',
+        options: {
+          emitErrors: true,
+          failOnHint: true
+        }
+      }],
+      enforce: 'pre',
+      exclude: /node_modules/
+    }]
+  },
+  plugins: [
+    new SentryWebpackPlugin({
+      include: '.',
+      ignoreFile: '.sentrycliignore',
+      ignore: ['node_modules', 'webpack.renderer.additions.js'],
+      configFile: 'sentry.properties'
+    })
+  ]
 }

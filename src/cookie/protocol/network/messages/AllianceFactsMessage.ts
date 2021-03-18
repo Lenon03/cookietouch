@@ -1,11 +1,12 @@
-import AllianceFactSheetInformations from "@protocol/network/types/AllianceFactSheetInformations";
-import GuildInAllianceInformations from "@protocol/network/types/GuildInAllianceInformations";
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+import AllianceFactSheetInformations from "@/protocol/network/types/AllianceFactSheetInformations";
+import GuildInAllianceInformations from "@/protocol/network/types/GuildInAllianceInformations";
 
 export default class AllianceFactsMessage extends Message {
   public guilds: GuildInAllianceInformations[];
   public controlledSubareaIds: number[];
   public infos: AllianceFactSheetInformations;
+
   constructor(infos: AllianceFactSheetInformations,
               guilds: GuildInAllianceInformations[], controlledSubareaIds: number[]) {
     super();

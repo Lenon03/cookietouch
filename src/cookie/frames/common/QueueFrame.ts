@@ -1,26 +1,40 @@
-import Account from "@account";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
+import LoginQueueStatusMessage from "@/protocol/network/messages/LoginQueueStatusMessage";
+import QueueStatusMessage from "@/protocol/network/messages/QueueStatusMessage";
 
-export default class QueueFrame {
-
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
+export default class QueueFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
+      "QueueStatusMessage",
+      this.HandleQueueStatusMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "LoginQueueStatusMessage",
+      this.HandleLoginQueueStatusMessage,
+      this
+    );
   }
 
-  private register() {
-    this.account.dispatcher.register("QueueStatusMessage", this.HandleQueueStatusMessage, this);
-    this.account.dispatcher.register("LoginQueueStatusMessage", this.HandleLoginQueueStatusMessage, this);
+  private async HandleQueueStatusMessage(
+    account: Account,
+    data: QueueStatusMessage
+  ) {
+    account.logger.logDofus(
+      "GameQueue",
+      LanguageManager.trans("queueMessage", data.position, data.total)
+    );
   }
 
-  private async HandleQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus("GameQueue",
-      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
-  }
-
-  private async HandleLoginQueueStatusMessage(account: Account, data: any) {
-    this.account.logger.logDofus("LoginQueue",
-      `Vous êtes dans la position ${data.position} sur ${data.total} dans la file d'attente.`);
+  private async HandleLoginQueueStatusMessage(
+    account: Account,
+    data: LoginQueueStatusMessage
+  ) {
+    account.logger.logDofus(
+      "LoginQueue",
+      LanguageManager.trans("queueMessage", data.position, data.total)
+    );
   }
 }

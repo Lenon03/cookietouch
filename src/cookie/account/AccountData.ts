@@ -1,25 +1,37 @@
-export default class AccountData {
-  public username: string;
-  public password: string;
-  public server: string;
-  public character: string;
-  public accountCreation: number;
-  public accountId: number;
-  public communityId: number;
-  public hasRights: boolean;
-  public login: number;
-  public nickname: string;
-  public secretQuestion: string;
-  public subscriptionEndDate: number;
-  public wasAlreadyConnected: boolean;
-  public lang: string;
+import MoneyGoultinesAmountSuccess from "@/protocol/network/messages/moneyGoultinesAmountSuccess";
+import LiteEvent from "@/utils/LiteEvent";
 
-  constructor(username: string, password: string, lang = "fr", server = "", character = "", nickname = "") {
-    this.username = username;
-    this.password = password;
-    this.lang = lang;
-    this.server = server;
-    this.character = character;
-    this.nickname = nickname;
+export default class AccountData {
+  public accountCreation: number | undefined;
+  public accountId: number | undefined;
+  public communityId: number | undefined;
+  public hasRights: boolean | undefined;
+  public login: string | undefined;
+  public secretQuestion: string | undefined;
+  public subscriptionEndDate: Date | undefined;
+  public wasAlreadyConnected: boolean | undefined;
+  public nickname: string | undefined;
+  public goultines: number | undefined;
+  public bakHardToSoftCurrentRate: number | undefined;
+  public bakSoftToHardCurrentRate: number | undefined;
+
+  get isSubscriber(): boolean {
+    if (!this.subscriptionEndDate) {
+      return false;
+    }
+    return new Date() < this.subscriptionEndDate;
+  }
+
+  private readonly onGoultinesUpdated = new LiteEvent();
+
+  public get GoultinesUpdated() {
+    return this.onGoultinesUpdated.expose();
+  }
+
+  public async UpdateMoneyGoultinesAmountSuccess(
+    message: MoneyGoultinesAmountSuccess
+  ) {
+    this.goultines = message.goultinesAmount;
+    this.onGoultinesUpdated.trigger();
   }
 }

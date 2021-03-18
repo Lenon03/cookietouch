@@ -1,4 +1,5 @@
-import FightTeamMemberInformations from "./FightTeamMemberInformations";
+import FightTeamMemberInformations from "@/protocol/network/types/FightTeamMemberInformations";
+
 export default class FightTeamMemberMonsterInformations extends FightTeamMemberInformations {
 
   public monsterId: number;

@@ -1,5 +1,5 @@
-import Account from "@account";
-import { ChatActivableChannelsEnum } from "@protocol/enums/ChatActivableChannelsEnum";
+import Account from "@/account";
+import { ChatChannelsMultiEnum } from "@/protocol/enums/ChatChannelsMultiEnum";
 
 export default class Chat {
   private account: Account;
@@ -8,21 +8,23 @@ export default class Chat {
     this.account = account;
   }
 
-  public async sendMessage(message: string,
-                           channel: ChatActivableChannelsEnum = ChatActivableChannelsEnum.CHANNEL_GLOBAL) {
+  public async sendMessage(
+    message: string,
+    channel: ChatChannelsMultiEnum = ChatChannelsMultiEnum.CHANNEL_GLOBAL
+  ) {
     if (message.length > 0) {
-      await this.account.network.sendMessage("ChatClientMultiMessage", {
+      await this.account.network.sendMessageFree("ChatClientMultiMessage", {
         channel,
-        content: message,
+        content: message
       });
     }
   }
 
   public async sendMessageTo(message: string, receiver: string) {
     if (message.length > 0 && receiver.length > 0) {
-      await this.account.network.sendMessage("ChatClientPrivateMessage", {
+      await this.account.network.sendMessageFree("ChatClientPrivateMessage", {
         content: message,
-        receiver,
+        receiver
       });
     }
   }

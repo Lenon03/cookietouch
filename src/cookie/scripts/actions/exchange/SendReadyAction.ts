@@ -1,13 +1,11 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class SendReadyAction extends ScriptAction {
+  public _name: string = "SendReadyAction";
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      account.game.exchange.sendReady();
-      return ScriptAction.processingResult;
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    account.game.exchange.sendReady();
+    return ScriptAction.processingResult();
   }
 }

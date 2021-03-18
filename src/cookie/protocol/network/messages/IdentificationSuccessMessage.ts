@@ -1,4 +1,5 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class IdentificationSuccessMessage extends Message {
   public login: string;
   public nickname: string;
@@ -9,6 +10,7 @@ export default class IdentificationSuccessMessage extends Message {
   public subscriptionEndDate: number;
   public wasAlreadyConnected: boolean;
   public accountCreation: number;
+
   constructor(login = "", nickname = "", accountId = 0, communityId = 0, hasRights = false,
               secretQuestion = "", subscriptionEndDate = 0, wasAlreadyConnected = false, accountCreation = 0) {
     super();

@@ -1,7 +1,9 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class GameRolePlayAggressionMessage extends Message {
   public attackerId: number;
   public defenderId: number;
+
   constructor(attackerId = 0, defenderId = 0) {
     super();
     this.attackerId = attackerId;

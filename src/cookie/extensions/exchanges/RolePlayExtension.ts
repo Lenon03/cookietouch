@@ -1,6 +1,7 @@
-import Account from "@account";
-import GameRolePlayPlayerFightFriendlyRequestedMessage from "@protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
-import { sleep } from "@utils/Time";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import GameRolePlayPlayerFightFriendlyRequestedMessage from "@/protocol/network/messages/GameRolePlayPlayerFightFriendlyRequestedMessage";
+import { sleep } from "@/utils/Time";
 
 export default class RolePlayExtension {
   private account: Account;
@@ -8,32 +9,43 @@ export default class RolePlayExtension {
   constructor(account: Account) {
     this.account = account;
 
-    this.account.game.exchange.ExchangeRequested.on((from) => this.exchangeRequested(from));
+    this.account.game.exchange.ExchangeRequested.on(from =>
+      this.exchangeRequested(from)
+    );
     this.account.game.exchange.RemoteReady.on(() => this.remoteReady());
 
-    this.account.dispatcher.register("GameRolePlayPlayerFightFriendlyRequestedMessage",
-    this.HandleGameRolePlayPlayerFightFriendlyRequestedMessage, this);
+    this.account.network.registerMessage(
+      "GameRolePlayPlayerFightFriendlyRequestedMessage",
+      this.handleGameRolePlayPlayerFightFriendlyRequestedMessage
+    );
   }
 
-  private exchangeRequested(from: number) {
+  private exchangeRequested(from?: number) {
+    from = from || 0;
     // If the character isn't authorized to tradus us, refuse it
     if (!this.account.config.authorizedTradesFrom.includes(from)) {
       if (this.account.config.ignoreNonAuthorizedTrades) {
         const player = this.account.game.map.getPlayer(from);
 
         if (player !== null) {
-          this.account.network.sendMessage("IgnoredAddRequestMessage", { name: player.name, session: true });
-          this.account.network.sendMessage("LeaveDialogRequestMessage");
-          this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
+          this.account.network.sendMessageFree("IgnoredAddRequestMessage", {
+            name: player.name,
+            session: true
+          });
+          this.account.network.sendMessageFree("LeaveDialogRequestMessage");
+          this.account.logger.logInfo(
+            LanguageManager.trans("rolePlayExtension"),
+            LanguageManager.trans("playerIgnored", player.name)
+          );
           return;
         }
       } else {
         // If the IgnoreNonAuthorizedTrades option is disabled or the player wasn't found on the map (somehow)
-        this.account.network.sendMessage("LeaveDialogRequestMessage");
+        this.account.network.sendMessageFree("LeaveDialogRequestMessage");
       }
     } else {
       // Otherwise accept it
-      this.account.network.sendMessage("ExchangeAcceptMessage");
+      this.account.network.sendMessageFree("ExchangeAcceptMessage");
     }
   }
 
@@ -41,7 +53,10 @@ export default class RolePlayExtension {
     this.account.game.exchange.sendReady();
   }
 
-  private async HandleGameRolePlayPlayerFightFriendlyRequestedMessage(account: Account, message: GameRolePlayPlayerFightFriendlyRequestedMessage) {
+  private handleGameRolePlayPlayerFightFriendlyRequestedMessage = async (
+    account: Account,
+    message: GameRolePlayPlayerFightFriendlyRequestedMessage
+  ) => {
     if (message.targetId !== account.game.character.id) {
       return;
     }
@@ -50,13 +65,22 @@ export default class RolePlayExtension {
 
     const player = account.game.map.getPlayer(message.sourceId);
     if (player !== null) {
-      await account.network.sendMessage("GameRolePlayPlayerFightFriendlyAnswerMessage", {
-        accept: false,
-        fightId: message.fightId,
+      await account.network.sendMessageFree(
+        "GameRolePlayPlayerFightFriendlyAnswerMessage",
+        {
+          accept: false,
+          fightId: message.fightId
+        }
+      );
+      account.network.sendMessageFree("IgnoredAddRequestMessage", {
+        name: player.name,
+        session: true
       });
-      account.network.sendMessage("IgnoredAddRequestMessage", { name: player.name, session: true });
-      account.network.sendMessage("LeaveDialogRequestMessage");
-      this.account.logger.logInfo("", `Le joueur ${player.name} a été ignoré pour la session`);
+      account.network.sendMessageFree("LeaveDialogRequestMessage");
+      this.account.logger.logInfo(
+        LanguageManager.trans("rolePlayExtension"),
+        LanguageManager.trans("playerIgnored", player.name)
+      );
     }
-  }
+  };
 }

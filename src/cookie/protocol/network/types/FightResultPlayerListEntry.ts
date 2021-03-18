@@ -1,6 +1,6 @@
-import FightLoot from "./FightLoot";
-import FightResultAdditionalData from "./FightResultAdditionalData";
-import FightResultFighterListEntry from "./FightResultFighterListEntry";
+import FightLoot from "@/protocol/network/types/FightLoot";
+import FightResultAdditionalData from "@/protocol/network/types/FightResultAdditionalData";
+import FightResultFighterListEntry from "@/protocol/network/types/FightResultFighterListEntry";
 
 export default class FightResultPlayerListEntry extends FightResultFighterListEntry {
 

@@ -1,3 +1,4 @@
+import { IDofusTouchConfig } from "@/protocol/IDofusTouchConfig";
 import axios from "axios";
 
 export default class DTConstants {
@@ -6,7 +7,16 @@ export default class DTConstants {
   public static buildVersion: string;
   public static assetsVersion: string;
   public static staticDataVersion: string;
-  public static config: any;
+  public static config: IDofusTouchConfig;
+
+  public static readonly MAP_WIDTH = 14;
+  public static readonly MAP_HEIGHT = 20;
+  public static readonly ORIGINAL_WIDTH = 1267;
+  public static readonly ORIGINAL_HEIGHT = 866;
+  // public static readonly TILE_WIDTH = DTConstants.ORIGINAL_WIDTH / DTConstants.MAP_WIDTH;
+  // public static readonly TILE_HEIGHT = DTConstats.ORIGINAL_HEIGHT / DTConstants.MAP_HEIGHT;
+  public static readonly TILE_WIDTH = 43 + 43 * 0.4;
+  public static readonly TILE_HEIGHT = 21.5 + 21.5 * 0.25;
 
   public static async Init() {
     this.config = await DTConstants.getConfig();
@@ -17,34 +27,35 @@ export default class DTConstants {
     this.buildVersion = await DTConstants.getBuildVersion();
   }
 
-  public static getConfig(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      axios.get(`${DTConstants.MAIN_URL}/config.json`)
-        .then((response) => resolve(response.data))
-        .catch((error) => reject(new Error("Error in config loading ! (" + error.message + ")")));
-    });
+  public static async getConfig(): Promise<IDofusTouchConfig> {
+    const response = await axios.get(`${DTConstants.MAIN_URL}/config.json`);
+    return response.data;
   }
 
-  public static getAssetsVersions(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      axios.get(`${DTConstants.MAIN_URL}/assetsVersions.json`)
-        .then((response) => resolve(response.data));
-    });
-  }
-  public static getAppVersion(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      axios.get("https://itunes.apple.com/lookup?id=1041406978")
-        .then((response) => resolve(response.data.results[0].version));
-    });
+  public static async getAssetsVersions(): Promise<any> {
+    const response = await axios.get(
+      `${DTConstants.MAIN_URL}/assetsVersions.json`
+    );
+    return response.data;
   }
 
-  public static getBuildVersion(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      axios.get(`${DTConstants.MAIN_URL}/build/script.js`).then((response) => {
-        const regex = /.*buildVersion=("|')([0-9]*\.[0-9]*\.[0-9]*)("|')/g;
-        const m = regex.exec(response.data.substring(1, 10000));
-        resolve(m[2]);
-      });
+  public static async getAppVersion(): Promise<string> {
+    const response = await axios.get("https://itunes.apple.com/lookup", {
+      params: {
+        country: "fr",
+        id: 1041406978,
+        lang: "fr",
+        limit: 1,
+        t: Date.now()
+      }
     });
+    return response.data.results[0].version;
+  }
+
+  public static async getBuildVersion(): Promise<string> {
+    const response = await axios.get(`${DTConstants.MAIN_URL}/build/script.js`);
+    const regex = /.*buildVersion=("|')([0-9]*\.[0-9]*\.[0-9]*)("|')/g;
+    const m = regex.exec(response.data.substring(1, 10000));
+    return m![2];
   }
 }

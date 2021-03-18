@@ -1,7 +1,8 @@
-import Message from "./Message";
-export default class HouseGuildRightsViewMessage extends Message {
-constructor() {
-super();
+import Message from "@/protocol/network/messages/Message";
 
-}
+export default class HouseGuildRightsViewMessage extends Message {
+  constructor() {
+    super();
+
+  }
 }

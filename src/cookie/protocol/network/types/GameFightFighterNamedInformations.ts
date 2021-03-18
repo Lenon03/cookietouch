@@ -1,11 +1,13 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameFightFighterInformations from "./GameFightFighterInformations";
-import GameFightMinimalStats from "./GameFightMinimalStats";
-import PlayerStatus from "./PlayerStatus";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
+
 export default class GameFightFighterNamedInformations extends GameFightFighterInformations {
   public name: string;
   public status: PlayerStatus;
+
   constructor(contextualId = 0, look: EntityLook,
               disposition: EntityDispositionInformations,
               teamId = 2, alive = false, stats: GameFightMinimalStats,

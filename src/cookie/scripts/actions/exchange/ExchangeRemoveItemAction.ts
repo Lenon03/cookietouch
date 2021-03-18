@@ -1,8 +1,11 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
+import { sleep } from "@/utils/Time";
 
 export default class ExchangeRemoveItemAction extends ScriptAction {
+  public _name: string = "ExchangeRemoveItemAction";
   public gid: number;
   public quantity: number;
 
@@ -12,12 +15,10 @@ export default class ExchangeRemoveItemAction extends ScriptAction {
     this.quantity = quantity;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      if (account.game.exchange.removeItem(this.gid, this.quantity)) {
-        await sleep(2000);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.exchange.removeItem(this.gid, this.quantity)) {
+      await sleep(2000);
+    }
+    return ScriptAction.doneResult();
   }
 }

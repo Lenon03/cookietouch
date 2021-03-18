@@ -10,7 +10,7 @@
   }
 })("Primus", this || {}, function wrapper() {
   var define, module, exports
-    , Primus = (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+    , Primus = (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -151,25 +151,43 @@ module.exports = function emits() {
 },{}],3:[function(_dereq_,module,exports){
 'use strict';
 
-var has = Object.prototype.hasOwnProperty;
-
-//
-// We store our EE objects in a plain object whose properties are event names.
-// If `Object.create(null)` is not supported we prefix the event names with a
-// `~` to make sure that the built-in object properties are not overridden or
-// used as an attack vector.
-// We also assume that `Object.create(null)` is available when the event name
-// is an ES6 Symbol.
-//
-var prefix = typeof Object.create !== 'function' ? '~' : false;
+var has = Object.prototype.hasOwnProperty
+  , prefix = '~';
 
 /**
- * Representation of a single EventEmitter function.
+ * Constructor to create a storage for our `EE` objects.
+ * An `Events` instance is a plain object whose properties are event names.
  *
- * @param {Function} fn Event handler to be called.
- * @param {Mixed} context Context for function execution.
- * @param {Boolean} [once=false] Only emit once
- * @api private
+ * @constructor
+ * @private
+ */
+function Events() {}
+
+//
+// We try to not inherit from `Object.prototype`. In some engines creating an
+// instance in this way is faster than calling `Object.create(null)` directly.
+// If `Object.create(null)` is not supported we prefix the event names with a
+// character to make sure that the built-in object properties are not
+// overridden or used as an attack vector.
+//
+if (Object.create) {
+  Events.prototype = Object.create(null);
+
+  //
+  // This hack is needed because the `__proto__` property is still inherited in
+  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
+  //
+  if (!new Events().__proto__) prefix = false;
+}
+
+/**
+ * Representation of a single event listener.
+ *
+ * @param {Function} fn The listener function.
+ * @param {*} context The context to invoke the listener with.
+ * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
+ * @constructor
+ * @private
  */
 function EE(fn, context, once) {
   this.fn = fn;
@@ -178,37 +196,70 @@ function EE(fn, context, once) {
 }
 
 /**
- * Minimal EventEmitter interface that is molded against the Node.js
- * EventEmitter interface.
+ * Add a listener for a given event.
  *
- * @constructor
- * @api public
- */
-function EventEmitter() { /* Nothing to set */ }
-
-/**
- * Hold the assigned EventEmitters by name.
- *
- * @type {Object}
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} context The context to invoke the listener with.
+ * @param {Boolean} once Specify if the listener is a one-time listener.
+ * @returns {EventEmitter}
  * @private
  */
-EventEmitter.prototype._events = undefined;
+function addListener(emitter, event, fn, context, once) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('The listener must be a function');
+  }
+
+  var listener = new EE(fn, context || emitter, once)
+    , evt = prefix ? prefix + event : event;
+
+  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
+  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
+  else emitter._events[evt] = [emitter._events[evt], listener];
+
+  return emitter;
+}
+
+/**
+ * Clear event by name.
+ *
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} evt The Event name.
+ * @private
+ */
+function clearEvent(emitter, evt) {
+  if (--emitter._eventsCount === 0) emitter._events = new Events();
+  else delete emitter._events[evt];
+}
+
+/**
+ * Minimal `EventEmitter` interface that is molded against the Node.js
+ * `EventEmitter` interface.
+ *
+ * @constructor
+ * @public
+ */
+function EventEmitter() {
+  this._events = new Events();
+  this._eventsCount = 0;
+}
 
 /**
  * Return an array listing the events for which the emitter has registered
  * listeners.
  *
  * @returns {Array}
- * @api public
+ * @public
  */
 EventEmitter.prototype.eventNames = function eventNames() {
-  var events = this._events
-    , names = []
+  var names = []
+    , events
     , name;
 
-  if (!events) return names;
+  if (this._eventsCount === 0) return names;
 
-  for (name in events) {
+  for (name in (events = this._events)) {
     if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
   }
 
@@ -220,46 +271,60 @@ EventEmitter.prototype.eventNames = function eventNames() {
 };
 
 /**
- * Return a list of assigned event listeners.
+ * Return the listeners registered for a given event.
  *
- * @param {String} event The events that should be listed.
- * @param {Boolean} exists We only need to know if there are listeners.
- * @returns {Array|Boolean}
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Array} The registered listeners.
+ * @public
  */
-EventEmitter.prototype.listeners = function listeners(event, exists) {
+EventEmitter.prototype.listeners = function listeners(event) {
   var evt = prefix ? prefix + event : event
-    , available = this._events && this._events[evt];
+    , handlers = this._events[evt];
 
-  if (exists) return !!available;
-  if (!available) return [];
-  if (available.fn) return [available.fn];
+  if (!handlers) return [];
+  if (handlers.fn) return [handlers.fn];
 
-  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
-    ee[i] = available[i].fn;
+  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+    ee[i] = handlers[i].fn;
   }
 
   return ee;
 };
 
 /**
- * Emit an event to all registered event listeners.
+ * Return the number of listeners listening to a given event.
  *
- * @param {String} event The name of the event.
- * @returns {Boolean} Indication if we've emitted an event.
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Number} The number of listeners.
+ * @public
+ */
+EventEmitter.prototype.listenerCount = function listenerCount(event) {
+  var evt = prefix ? prefix + event : event
+    , listeners = this._events[evt];
+
+  if (!listeners) return 0;
+  if (listeners.fn) return 1;
+  return listeners.length;
+};
+
+/**
+ * Calls each of the listeners registered for a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Boolean} `true` if the event had listeners, else `false`.
+ * @public
  */
 EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
   var evt = prefix ? prefix + event : event;
 
-  if (!this._events || !this._events[evt]) return false;
+  if (!this._events[evt]) return false;
 
   var listeners = this._events[evt]
     , len = arguments.length
     , args
     , i;
 
-  if ('function' === typeof listeners.fn) {
+  if (listeners.fn) {
     if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
 
     switch (len) {
@@ -287,6 +352,7 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
         case 1: listeners[i].fn.call(listeners[i].context); break;
         case 2: listeners[i].fn.call(listeners[i].context, a1); break;
         case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
         default:
           if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
             args[j - 1] = arguments[j];
@@ -301,115 +367,98 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
 };
 
 /**
- * Register a new EventListener for the given event.
+ * Add a listener for a given event.
  *
- * @param {String} event Name of the event.
- * @param {Function} fn Callback function.
- * @param {Mixed} [context=this] The context of the function.
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @public
  */
 EventEmitter.prototype.on = function on(event, fn, context) {
-  var listener = new EE(fn, context || this)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events) this._events = prefix ? {} : Object.create(null);
-  if (!this._events[evt]) this._events[evt] = listener;
-  else {
-    if (!this._events[evt].fn) this._events[evt].push(listener);
-    else this._events[evt] = [
-      this._events[evt], listener
-    ];
-  }
-
-  return this;
+  return addListener(this, event, fn, context, false);
 };
 
 /**
- * Add an EventListener that's only called once.
+ * Add a one-time listener for a given event.
  *
- * @param {String} event Name of the event.
- * @param {Function} fn Callback function.
- * @param {Mixed} [context=this] The context of the function.
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @public
  */
 EventEmitter.prototype.once = function once(event, fn, context) {
-  var listener = new EE(fn, context || this, true)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events) this._events = prefix ? {} : Object.create(null);
-  if (!this._events[evt]) this._events[evt] = listener;
-  else {
-    if (!this._events[evt].fn) this._events[evt].push(listener);
-    else this._events[evt] = [
-      this._events[evt], listener
-    ];
-  }
-
-  return this;
+  return addListener(this, event, fn, context, true);
 };
 
 /**
- * Remove event listeners.
+ * Remove the listeners of a given event.
  *
- * @param {String} event The event we want to remove.
- * @param {Function} fn The listener that we need to find.
- * @param {Mixed} context Only remove listeners matching this context.
- * @param {Boolean} once Only remove once listeners.
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn Only remove the listeners that match this function.
+ * @param {*} context Only remove the listeners that have this context.
+ * @param {Boolean} once Only remove one-time listeners.
+ * @returns {EventEmitter} `this`.
+ * @public
  */
 EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
   var evt = prefix ? prefix + event : event;
 
-  if (!this._events || !this._events[evt]) return this;
-
-  var listeners = this._events[evt]
-    , events = [];
-
-  if (fn) {
-    if (listeners.fn) {
-      if (
-           listeners.fn !== fn
-        || (once && !listeners.once)
-        || (context && listeners.context !== context)
-      ) {
-        events.push(listeners);
-      }
-    } else {
-      for (var i = 0, length = listeners.length; i < length; i++) {
-        if (
-             listeners[i].fn !== fn
-          || (once && !listeners[i].once)
-          || (context && listeners[i].context !== context)
-        ) {
-          events.push(listeners[i]);
-        }
-      }
-    }
+  if (!this._events[evt]) return this;
+  if (!fn) {
+    clearEvent(this, evt);
+    return this;
   }
 
-  //
-  // Reset the array, or remove it completely if we have no more listeners.
-  //
-  if (events.length) {
-    this._events[evt] = events.length === 1 ? events[0] : events;
+  var listeners = this._events[evt];
+
+  if (listeners.fn) {
+    if (
+      listeners.fn === fn &&
+      (!once || listeners.once) &&
+      (!context || listeners.context === context)
+    ) {
+      clearEvent(this, evt);
+    }
   } else {
-    delete this._events[evt];
+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
+      if (
+        listeners[i].fn !== fn ||
+        (once && !listeners[i].once) ||
+        (context && listeners[i].context !== context)
+      ) {
+        events.push(listeners[i]);
+      }
+    }
+
+    //
+    // Reset the array, or remove it completely if we have no more listeners.
+    //
+    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
+    else clearEvent(this, evt);
   }
 
   return this;
 };
 
 /**
- * Remove all listeners or only the listeners for the specified event.
+ * Remove all listeners, or those of the specified event.
  *
- * @param {String} event The event want to remove all listeners for.
- * @api public
+ * @param {(String|Symbol)} [event] The event name.
+ * @returns {EventEmitter} `this`.
+ * @public
  */
 EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
-  if (!this._events) return this;
+  var evt;
 
-  if (event) delete this._events[prefix ? prefix + event : event];
-  else this._events = prefix ? {} : Object.create(null);
+  if (event) {
+    evt = prefix ? prefix + event : event;
+    if (this._events[evt]) clearEvent(this, evt);
+  } else {
+    this._events = new Events();
+    this._eventsCount = 0;
+  }
 
   return this;
 };
@@ -421,16 +470,14 @@ EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
 EventEmitter.prototype.addListener = EventEmitter.prototype.on;
 
 //
-// This function doesn't apply anymore.
-//
-EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
-  return this;
-};
-
-//
 // Expose the prefix.
 //
 EventEmitter.prefixed = prefix;
+
+//
+// Allow `EventEmitter` to be imported as module namespace.
+//
+EventEmitter.EventEmitter = EventEmitter;
 
 //
 // Expose the module.
@@ -440,6 +487,31 @@ if ('undefined' !== typeof module) {
 }
 
 },{}],4:[function(_dereq_,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],5:[function(_dereq_,module,exports){
 'use strict';
 
 var regex = new RegExp('^((?:\\d+)?\\.?\\d+) *('+ [
@@ -543,7 +615,7 @@ module.exports = function millisecond(ms) {
   }
 };
 
-},{}],5:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -582,10 +654,21 @@ module.exports = function one(fn) {
   return onetime;
 };
 
-},{}],6:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
+
+/**
+ * Decode a URI encoded string.
+ *
+ * @param {String} input The URI encoded string.
+ * @returns {String} The decoded string.
+ * @api private
+ */
+function decode(input) {
+  return decodeURIComponent(input.replace(/\+/g, ' '));
+}
 
 /**
  * Simple query string parser.
@@ -595,19 +678,22 @@ var has = Object.prototype.hasOwnProperty;
  * @api public
  */
 function querystring(query) {
-  var parser = /([^=?&]+)=([^&]*)/g
+  var parser = /([^=?&]+)=?([^&]*)/g
     , result = {}
     , part;
 
-  //
-  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
-  // the lastIndex property so we can continue executing this loop until we've
-  // parsed all results.
-  //
-  for (;
-    part = parser.exec(query);
-    result[decodeURIComponent(part[1])] = decodeURIComponent(part[2])
-  );
+  while (part = parser.exec(query)) {
+    var key = decode(part[1])
+      , value = decode(part[2]);
+
+    //
+    // Prevent overriding of existing properties. This ensures that build-in
+    // methods like `toString` or __proto__ are not overriden by malicious
+    // querystrings.
+    //
+    if (key in result) continue;
+    result[key] = value;
+  }
 
   return result;
 }
@@ -645,7 +731,7 @@ function querystringify(obj, prefix) {
 exports.stringify = querystringify;
 exports.parse = querystring;
 
-},{}],7:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 'use strict';
 
 var EventEmitter = _dereq_('eventemitter3')
@@ -867,7 +953,7 @@ Recovery.prototype.destroy = destroy('timers attempt _fn');
 //
 module.exports = Recovery;
 
-},{"demolish":1,"eventemitter3":8,"millisecond":4,"one-time":5,"tick-tock":10}],8:[function(_dereq_,module,exports){
+},{"demolish":1,"eventemitter3":9,"millisecond":5,"one-time":6,"tick-tock":11}],9:[function(_dereq_,module,exports){
 'use strict';
 
 //
@@ -1131,7 +1217,7 @@ if ('undefined' !== typeof module) {
   module.exports = EventEmitter;
 }
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -1171,7 +1257,7 @@ module.exports = function required(port, protocol) {
   return port !== 0;
 };
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
@@ -1448,17 +1534,17 @@ Tick.prototype.end = Tick.prototype.destroy = function end() {
 Tick.Timer = Timer;
 module.exports = Tick;
 
-},{"millisecond":4}],11:[function(_dereq_,module,exports){
+},{"millisecond":5}],12:[function(_dereq_,module,exports){
+(function (global){
 'use strict';
 
 var required = _dereq_('requires-port')
-  , lolcation = _dereq_('./lolcation')
   , qs = _dereq_('querystringify')
-  , relativere = /^\/(?!\/)/
-  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
+  , protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i
+  , slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
 /**
- * These are the parse instructions for the URL parsers, it informs the parser
+ * These are the parse rules for the URL parser, it informs the parser
  * about:
  *
  * 0. The char it Needs to parse, if it's a string it should be done using
@@ -1469,261 +1555,15 @@ var required = _dereq_('requires-port')
  * 3. Inherit from location if non existing in the parser.
  * 4. `toLowerCase` the resulting value.
  */
-var instructions = [
+var rules = [
   ['#', 'hash'],                        // Extract from the back.
   ['?', 'query'],                       // Extract from the back.
   ['/', 'pathname'],                    // Extract from the back.
   ['@', 'auth', 1],                     // Extract from the front.
   [NaN, 'host', undefined, 1, 1],       // Set left over value.
-  [/\:(\d+)$/, 'port'],                 // RegExp the back.
+  [/:(\d+)$/, 'port', undefined, 1],    // RegExp the back.
   [NaN, 'hostname', undefined, 1, 1]    // Set left over.
 ];
-
- /**
- * @typedef ProtocolExtract
- * @type Object
- * @property {String} protocol Protocol matched in the URL, in lowercase
- * @property {Boolean} slashes Indicates whether the protocol is followed by double slash ("//")
- * @property {String} rest     Rest of the URL that is not part of the protocol
- */
-
- /**
-  * Extract protocol information from a URL with/without double slash ("//")
-  *
-  * @param  {String} address   URL we want to extract from.
-  * @return {ProtocolExtract}  Extracted information
-  * @private
-  */
-function extractProtocol(address) {
-  var match = protocolre.exec(address);
-  return {
-    protocol: match[1] ? match[1].toLowerCase() : '',
-    slashes: !!match[2],
-    rest: match[3] ? match[3] : ''
-  };
-}
-
-/**
- * The actual URL instance. Instead of returning an object we've opted-in to
- * create an actual constructor as it's much more memory efficient and
- * faster and it pleases my CDO.
- *
- * @constructor
- * @param {String} address URL we want to parse.
- * @param {Object|String} location Location defaults for relative paths.
- * @param {Boolean|Function} parser Parser for the query string.
- * @api public
- */
-function URL(address, location, parser) {
-  if (!(this instanceof URL)) {
-    return new URL(address, location, parser);
-  }
-
-  var relative = relativere.test(address)
-    , parse, instruction, index, key
-    , type = typeof location
-    , url = this
-    , i = 0;
-
-  //
-  // The following if statements allows this module two have compatibility with
-  // 2 different API:
-  //
-  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
-  //    where the boolean indicates that the query string should also be parsed.
-  //
-  // 2. The `URL` interface of the browser which accepts a URL, object as
-  //    arguments. The supplied object will be used as default values / fall-back
-  //    for relative paths.
-  //
-  if ('object' !== type && 'string' !== type) {
-    parser = location;
-    location = null;
-  }
-
-  if (parser && 'function' !== typeof parser) {
-    parser = qs.parse;
-  }
-
-  location = lolcation(location);
-
-  // extract protocol information before running the instructions
-  var extracted = extractProtocol(address);
-  url.protocol = extracted.protocol || location.protocol || '';
-  url.slashes = extracted.slashes || location.slashes;
-  address = extracted.rest;
-
-  for (; i < instructions.length; i++) {
-    instruction = instructions[i];
-    parse = instruction[0];
-    key = instruction[1];
-
-    if (parse !== parse) {
-      url[key] = address;
-    } else if ('string' === typeof parse) {
-      if (~(index = address.indexOf(parse))) {
-        if ('number' === typeof instruction[2]) {
-          url[key] = address.slice(0, index);
-          address = address.slice(index + instruction[2]);
-        } else {
-          url[key] = address.slice(index);
-          address = address.slice(0, index);
-        }
-      }
-    } else if (index = parse.exec(address)) {
-      url[key] = index[1];
-      address = address.slice(0, address.length - index[0].length);
-    }
-
-    url[key] = url[key] || (instruction[3] || ('port' === key && relative) ? location[key] || '' : '');
-
-    //
-    // Hostname, host and protocol should be lowercased so they can be used to
-    // create a proper `origin`.
-    //
-    if (instruction[4]) {
-      url[key] = url[key].toLowerCase();
-    }
-  }
-
-  //
-  // Also parse the supplied query string in to an object. If we're supplied
-  // with a custom parser as function use that instead of the default build-in
-  // parser.
-  //
-  if (parser) url.query = parser(url.query);
-
-  //
-  // We should not add port numbers if they are already the default port number
-  // for a given protocol. As the host also contains the port number we're going
-  // override it with the hostname which contains no port number.
-  //
-  if (!required(url.port, url.protocol)) {
-    url.host = url.hostname;
-    url.port = '';
-  }
-
-  //
-  // Parse down the `auth` for the username and password.
-  //
-  url.username = url.password = '';
-  if (url.auth) {
-    instruction = url.auth.split(':');
-    url.username = instruction[0] || '';
-    url.password = instruction[1] || '';
-  }
-
-  //
-  // The href is just the compiled result.
-  //
-  url.href = url.toString();
-}
-
-/**
- * This is convenience method for changing properties in the URL instance to
- * insure that they all propagate correctly.
- *
- * @param {String} prop          Property we need to adjust.
- * @param {Mixed} value          The newly assigned value.
- * @param {Boolean|Function} fn  When setting the query, it will be the function used to parse
- *                               the query.
- *                               When setting the protocol, double slash will be removed from
- *                               the final url if it is true.
- * @returns {URL}
- * @api public
- */
-URL.prototype.set = function set(part, value, fn) {
-  var url = this;
-
-  if ('query' === part) {
-    if ('string' === typeof value && value.length) {
-      value = (fn || qs.parse)(value);
-    }
-
-    url[part] = value;
-  } else if ('port' === part) {
-    url[part] = value;
-
-    if (!required(value, url.protocol)) {
-      url.host = url.hostname;
-      url[part] = '';
-    } else if (value) {
-      url.host = url.hostname +':'+ value;
-    }
-  } else if ('hostname' === part) {
-    url[part] = value;
-
-    if (url.port) value += ':'+ url.port;
-    url.host = value;
-  } else if ('host' === part) {
-    url[part] = value;
-
-    if (/\:\d+/.test(value)) {
-      value = value.split(':');
-      url.hostname = value[0];
-      url.port = value[1];
-    }
-  } else if ('protocol' === part) {
-    url.protocol = value;
-    url.slashes = !fn;
-  } else {
-    url[part] = value;
-  }
-
-  url.href = url.toString();
-  return url;
-};
-
-/**
- * Transform the properties back in to a valid and full URL string.
- *
- * @param {Function} stringify Optional query stringify function.
- * @returns {String}
- * @api public
- */
-URL.prototype.toString = function toString(stringify) {
-  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
-
-  var query
-    , url = this
-    , protocol = url.protocol;
-
-  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
-
-  var result = protocol + (url.slashes ? '//' : '');
-
-  if (url.username) {
-    result += url.username;
-    if (url.password) result += ':'+ url.password;
-    result += '@';
-  }
-
-  result += url.hostname;
-  if (url.port) result += ':'+ url.port;
-
-  result += url.pathname;
-
-  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
-  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
-
-  if (url.hash) result += url.hash;
-
-  return result;
-};
-
-//
-// Expose the URL parser and some additional properties that might be useful for
-// others.
-//
-URL.qs = qs;
-URL.location = lolcation;
-module.exports = URL;
-
-},{"./lolcation":12,"querystringify":6,"requires-port":9}],12:[function(_dereq_,module,exports){
-(function (global){
-'use strict';
-
-var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
 /**
  * These properties should not be copied or inherited from. This is only needed
@@ -1733,8 +1573,7 @@ var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
  * @type {Object}
  * @private
  */
-var ignore = { hash: 1, query: 1 }
-  , URL;
+var ignore = { hash: 1, query: 1 };
 
 /**
  * The location object differs when your code is loaded through a normal page,
@@ -1748,9 +1587,8 @@ var ignore = { hash: 1, query: 1 }
  * @returns {Object} lolcation object.
  * @api public
  */
-module.exports = function lolcation(loc) {
+function lolcation(loc) {
   loc = loc || global.location || {};
-  URL = URL || _dereq_('./');
 
   var finaldestination = {}
     , type = typeof loc
@@ -1773,10 +1611,346 @@ module.exports = function lolcation(loc) {
   }
 
   return finaldestination;
-};
+}
+
+/**
+ * @typedef ProtocolExtract
+ * @type Object
+ * @property {String} protocol Protocol matched in the URL, in lowercase.
+ * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
+ * @property {String} rest Rest of the URL that is not part of the protocol.
+ */
+
+/**
+ * Extract protocol information from a URL with/without double slash ("//").
+ *
+ * @param {String} address URL we want to extract from.
+ * @return {ProtocolExtract} Extracted information.
+ * @api private
+ */
+function extractProtocol(address) {
+  var match = protocolre.exec(address);
+
+  return {
+    protocol: match[1] ? match[1].toLowerCase() : '',
+    slashes: !!match[2],
+    rest: match[3]
+  };
+}
+
+/**
+ * Resolve a relative URL pathname against a base URL pathname.
+ *
+ * @param {String} relative Pathname of the relative URL.
+ * @param {String} base Pathname of the base URL.
+ * @return {String} Resolved pathname.
+ * @api private
+ */
+function resolve(relative, base) {
+  var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/'))
+    , i = path.length
+    , last = path[i - 1]
+    , unshift = false
+    , up = 0;
+
+  while (i--) {
+    if (path[i] === '.') {
+      path.splice(i, 1);
+    } else if (path[i] === '..') {
+      path.splice(i, 1);
+      up++;
+    } else if (up) {
+      if (i === 0) unshift = true;
+      path.splice(i, 1);
+      up--;
+    }
+  }
+
+  if (unshift) path.unshift('');
+  if (last === '.' || last === '..') path.push('');
+
+  return path.join('/');
+}
+
+/**
+ * The actual URL instance. Instead of returning an object we've opted-in to
+ * create an actual constructor as it's much more memory efficient and
+ * faster and it pleases my OCD.
+ *
+ * @constructor
+ * @param {String} address URL we want to parse.
+ * @param {Object|String} location Location defaults for relative paths.
+ * @param {Boolean|Function} parser Parser for the query string.
+ * @api public
+ */
+function URL(address, location, parser) {
+  if (!(this instanceof URL)) {
+    return new URL(address, location, parser);
+  }
+
+  var relative, extracted, parse, instruction, index, key
+    , instructions = rules.slice()
+    , type = typeof location
+    , url = this
+    , i = 0;
+
+  //
+  // The following if statements allows this module two have compatibility with
+  // 2 different API:
+  //
+  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
+  //    where the boolean indicates that the query string should also be parsed.
+  //
+  // 2. The `URL` interface of the browser which accepts a URL, object as
+  //    arguments. The supplied object will be used as default values / fall-back
+  //    for relative paths.
+  //
+  if ('object' !== type && 'string' !== type) {
+    parser = location;
+    location = null;
+  }
+
+  if (parser && 'function' !== typeof parser) parser = qs.parse;
+
+  location = lolcation(location);
+
+  //
+  // Extract protocol information before running the instructions.
+  //
+  extracted = extractProtocol(address || '');
+  relative = !extracted.protocol && !extracted.slashes;
+  url.slashes = extracted.slashes || relative && location.slashes;
+  url.protocol = extracted.protocol || location.protocol || '';
+  address = extracted.rest;
+
+  //
+  // When the authority component is absent the URL starts with a path
+  // component.
+  //
+  if (!extracted.slashes) instructions[2] = [/(.*)/, 'pathname'];
+
+  for (; i < instructions.length; i++) {
+    instruction = instructions[i];
+    parse = instruction[0];
+    key = instruction[1];
+
+    if (parse !== parse) {
+      url[key] = address;
+    } else if ('string' === typeof parse) {
+      if (~(index = address.indexOf(parse))) {
+        if ('number' === typeof instruction[2]) {
+          url[key] = address.slice(0, index);
+          address = address.slice(index + instruction[2]);
+        } else {
+          url[key] = address.slice(index);
+          address = address.slice(0, index);
+        }
+      }
+    } else if ((index = parse.exec(address))) {
+      url[key] = index[1];
+      address = address.slice(0, index.index);
+    }
+
+    url[key] = url[key] || (
+      relative && instruction[3] ? location[key] || '' : ''
+    );
+
+    //
+    // Hostname, host and protocol should be lowercased so they can be used to
+    // create a proper `origin`.
+    //
+    if (instruction[4]) url[key] = url[key].toLowerCase();
+  }
+
+  //
+  // Also parse the supplied query string in to an object. If we're supplied
+  // with a custom parser as function use that instead of the default build-in
+  // parser.
+  //
+  if (parser) url.query = parser(url.query);
+
+  //
+  // If the URL is relative, resolve the pathname against the base URL.
+  //
+  if (
+      relative
+    && location.slashes
+    && url.pathname.charAt(0) !== '/'
+    && (url.pathname !== '' || location.pathname !== '')
+  ) {
+    url.pathname = resolve(url.pathname, location.pathname);
+  }
+
+  //
+  // We should not add port numbers if they are already the default port number
+  // for a given protocol. As the host also contains the port number we're going
+  // override it with the hostname which contains no port number.
+  //
+  if (!required(url.port, url.protocol)) {
+    url.host = url.hostname;
+    url.port = '';
+  }
+
+  //
+  // Parse down the `auth` for the username and password.
+  //
+  url.username = url.password = '';
+  if (url.auth) {
+    instruction = url.auth.split(':');
+    url.username = instruction[0] || '';
+    url.password = instruction[1] || '';
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:'
+    ? url.protocol +'//'+ url.host
+    : 'null';
+
+  //
+  // The href is just the compiled result.
+  //
+  url.href = url.toString();
+}
+
+/**
+ * This is convenience method for changing properties in the URL instance to
+ * insure that they all propagate correctly.
+ *
+ * @param {String} part          Property we need to adjust.
+ * @param {Mixed} value          The newly assigned value.
+ * @param {Boolean|Function} fn  When setting the query, it will be the function
+ *                               used to parse the query.
+ *                               When setting the protocol, double slash will be
+ *                               removed from the final url if it is true.
+ * @returns {URL}
+ * @api public
+ */
+function set(part, value, fn) {
+  var url = this;
+
+  switch (part) {
+    case 'query':
+      if ('string' === typeof value && value.length) {
+        value = (fn || qs.parse)(value);
+      }
+
+      url[part] = value;
+      break;
+
+    case 'port':
+      url[part] = value;
+
+      if (!required(value, url.protocol)) {
+        url.host = url.hostname;
+        url[part] = '';
+      } else if (value) {
+        url.host = url.hostname +':'+ value;
+      }
+
+      break;
+
+    case 'hostname':
+      url[part] = value;
+
+      if (url.port) value += ':'+ url.port;
+      url.host = value;
+      break;
+
+    case 'host':
+      url[part] = value;
+
+      if (/:\d+$/.test(value)) {
+        value = value.split(':');
+        url.port = value.pop();
+        url.hostname = value.join(':');
+      } else {
+        url.hostname = value;
+        url.port = '';
+      }
+
+      break;
+
+    case 'protocol':
+      url.protocol = value.toLowerCase();
+      url.slashes = !fn;
+      break;
+
+    case 'pathname':
+    case 'hash':
+      if (value) {
+        var char = part === 'pathname' ? '/' : '#';
+        url[part] = value.charAt(0) !== char ? char + value : value;
+      } else {
+        url[part] = value;
+      }
+      break;
+
+    default:
+      url[part] = value;
+  }
+
+  for (var i = 0; i < rules.length; i++) {
+    var ins = rules[i];
+
+    if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:'
+    ? url.protocol +'//'+ url.host
+    : 'null';
+
+  url.href = url.toString();
+
+  return url;
+}
+
+/**
+ * Transform the properties back in to a valid and full URL string.
+ *
+ * @param {Function} stringify Optional query stringify function.
+ * @returns {String}
+ * @api public
+ */
+function toString(stringify) {
+  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
+
+  var query
+    , url = this
+    , protocol = url.protocol;
+
+  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+
+  var result = protocol + (url.slashes ? '//' : '');
+
+  if (url.username) {
+    result += url.username;
+    if (url.password) result += ':'+ url.password;
+    result += '@';
+  }
+
+  result += url.host + url.pathname;
+
+  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
+  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
+
+  if (url.hash) result += url.hash;
+
+  return result;
+}
+
+URL.prototype = { set: set, toString: toString };
+
+//
+// Expose the URL parser and some additional properties that might be useful for
+// others or testing.
+//
+URL.extractProtocol = extractProtocol;
+URL.location = lolcation;
+URL.qs = qs;
+
+module.exports = URL;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./":11}],13:[function(_dereq_,module,exports){
+},{"querystringify":7,"requires-port":10}],13:[function(_dereq_,module,exports){
 'use strict';
 
 var alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('')
@@ -1854,6 +2028,7 @@ var EventEmitter = _dereq_('eventemitter3')
   , TickTock = _dereq_('tick-tock')
   , Recovery = _dereq_('recovery')
   , qs = _dereq_('querystringify')
+  , inherits = _dereq_('inherits')
   , destroy = _dereq_('demolish')
   , yeast = _dereq_('yeast')
   , u2028 = /\u2028/g
@@ -1905,8 +2080,7 @@ try {
  * - manual, don't automatically call `.open` to start the connection.
  * - websockets, force the use of WebSockets, even when you should avoid them.
  * - timeout, connect timeout, server didn't respond in a timely manner.
- * - ping, The heartbeat interval for sending a ping packet to the server.
- * - pong, The heartbeat timeout for receiving a response to the ping.
+ * - pingTimeout, The maximum amount of time to wait for the server to send a ping.
  * - network, Use network events as leading method for network connection drops.
  * - strategy, Reconnection strategies.
  * - transport, Transport options.
@@ -1919,10 +2093,14 @@ try {
  */
 function Primus(url, options) {
   if (!(this instanceof Primus)) return new Primus(url, options);
+
+  Primus.Stream.call(this);
+
   if ('function' !== typeof this.client) {
-    var message = 'The client library has not been compiled correctly, ' +
-      'see https://github.com/primus/primus#client-library for more details';
-    return this.critical(new Error(message));
+    return this.critical(new Error(
+      'The client library has not been compiled correctly, see '+
+      'https://github.com/primus/primus#client-library for more details'
+    ));
   }
 
   if ('object' === typeof url) {
@@ -1930,6 +2108,12 @@ function Primus(url, options) {
     url = options.url || options.uri || defaultUrl;
   } else {
     options = options || {};
+  }
+
+  if ('ping' in options || 'pong' in options) {
+    return this.critical(new Error(
+      'The `ping` and `pong` options have been removed'
+    ));
   }
 
   var primus = this;
@@ -1944,10 +2128,7 @@ function Primus(url, options) {
   options.reconnect = 'reconnect' in options ? options.reconnect : {};
 
   // Heartbeat ping interval.
-  options.ping = 'ping' in options ? options.ping : 25000;
-
-  // Heartbeat pong response timeout.
-  options.pong = 'pong' in options ? options.pong : 10e3;
+  options.pingTimeout = 'pingTimeout' in options ? options.pingTimeout : 45000;
 
   // Reconnect strategies.
   options.strategy = 'strategy' in options ? options.strategy : [];
@@ -1963,7 +2144,6 @@ function Primus(url, options) {
   primus.options = options;                     // Reference to the supplied options.
   primus.timers = new TickTock(this);           // Contains all our timers.
   primus.socket = null;                         // Reference to the internal connection.
-  primus.latency = 0;                           // Latency between messages.
   primus.disconnect = false;                    // Did we receive a disconnect packet?
   primus.transport = options.transport;         // Transport options.
   primus.transformers = {                       // Message transformers.
@@ -1984,7 +2164,7 @@ function Primus(url, options) {
   // - online: Reconnect when we're back online.
   //
   if ('string' === typeof options.strategy) {
-    options.strategy = options.strategy.split(/\s?\,\s?/g);
+    options.strategy = options.strategy.split(/\s?,\s?/g);
   }
 
   if (false === options.strategy) {
@@ -2051,26 +2231,15 @@ Primus.requires = Primus.require = function requires(name) {
 
 //
 // It's possible that we're running in Node.js or in a Node.js compatible
-// environment. In this cases we inherit from the Stream base class.
+// environment. In this cases we try to inherit from the Stream base class.
 //
-var Stream;
-
 try {
-  Primus.Stream = Stream = Primus.requires('stream');
+  Primus.Stream = Primus.requires('stream');
+} catch (e) { }
 
-  //
-  // Normally inheritance is done in the same way as we do in our catch
-  // statement. But due to changes to the EventEmitter interface in Node 0.10
-  // this will trigger annoying memory leak warnings and other potential issues
-  // outlined in the issue linked below.
-  //
-  // @see https://github.com/joyent/node/issues/4971
-  //
-  Primus.requires('util').inherits(Primus, Stream);
-} catch (e) {
-  Primus.Stream = EventEmitter;
-  Primus.prototype = new EventEmitter();
-}
+if (!Primus.Stream) Primus.Stream = EventEmitter;
+
+inherits(Primus, Primus.Stream);
 
 /**
  * Primus readyStates, used internally to set the correct ready state.
@@ -2181,6 +2350,7 @@ Primus.prototype.reserved.events = {
   'reconnect': 1,
   'offline': 1,
   'timeout': 1,
+  'destroy': 1,
   'online': 1,
   'error': 1,
   'close': 1,
@@ -2197,8 +2367,7 @@ Primus.prototype.reserved.events = {
  * @api private
  */
 Primus.prototype.initialise = function initialise(options) {
-  var primus = this
-    , start;
+  var primus = this;
 
   primus.recovery
   .on('reconnected', primus.emits('reconnected'))
@@ -2220,8 +2389,6 @@ Primus.prototype.initialise = function initialise(options) {
     if (readyState !== primus.readyState) {
       primus.emit('readyStateChange', 'opening');
     }
-
-    start = +new Date();
   });
 
   primus.on('incoming::open', function opened() {
@@ -2252,8 +2419,6 @@ Primus.prototype.initialise = function initialise(options) {
       primus.emit('readyStateChange', 'open');
     }
 
-    primus.latency = +new Date() - start;
-    primus.timers.clear('ping', 'pong');
     primus.heartbeat();
 
     if (primus.buffer.length) {
@@ -2271,12 +2436,11 @@ Primus.prototype.initialise = function initialise(options) {
     primus.emit('open');
   });
 
-  primus.on('incoming::pong', function pong(time) {
+  primus.on('incoming::ping', function ping(time) {
     primus.online = true;
-    primus.timers.clear('pong');
     primus.heartbeat();
-
-    primus.latency = (+new Date()) - time;
+    primus.emit('outgoing::pong', time);
+    primus._write('primus::pong::'+ time);
   });
 
   primus.on('incoming::error', function error(e) {
@@ -2480,9 +2644,9 @@ Primus.prototype.protocol = function protocol(msg) {
     , value = msg.slice(last + 2);
 
   switch (msg.slice(8,  last)) {
-    case 'pong':
-      this.emit('incoming::pong', +value);
-    break;
+    case 'ping':
+      this.emit('incoming::ping', +value);
+      break;
 
     case 'server':
       //
@@ -2492,11 +2656,11 @@ Primus.prototype.protocol = function protocol(msg) {
       if ('close' === value) {
         this.disconnect = true;
       }
-    break;
+      break;
 
     case 'id':
       this.emit('incoming::id', value);
-    break;
+      break;
 
     //
     // Unknown protocol, somebody is probably sending `primus::` prefixed
@@ -2678,51 +2842,26 @@ Primus.prototype._write = function write(data) {
 };
 
 /**
- * Send a new heartbeat over the connection to ensure that we're still
- * connected and our internet connection didn't drop. We cannot use server side
- * heartbeats for this unfortunately.
+ * Set a timer that, upon expiration, closes the client.
  *
  * @returns {Primus}
  * @api private
  */
 Primus.prototype.heartbeat = function heartbeat() {
-  var primus = this;
+  if (!this.options.pingTimeout) return this;
 
-  if (!primus.options.ping) return primus;
-
-  /**
-   * Exterminate the connection as we've timed out.
-   *
-   * @api private
-   */
-  function pong() {
-    primus.timers.clear('pong');
-
+  this.timers.clear('heartbeat');
+  this.timers.setTimeout('heartbeat', function expired() {
     //
     // The network events already captured the offline event.
     //
-    if (!primus.online) return;
+    if (!this.online) return;
 
-    primus.online = false;
-    primus.emit('offline');
-    primus.emit('incoming::end');
-  }
+    this.online = false;
+    this.emit('offline');
+    this.emit('incoming::end');
+  }, this.options.pingTimeout);
 
-  /**
-   * We should send a ping message to the server.
-   *
-   * @api private
-   */
-  function ping() {
-    var value = +new Date();
-
-    primus.timers.clear('ping');
-    primus._write('primus::ping::'+ value);
-    primus.emit('outgoing::ping', value);
-    primus.timers.setTimeout('pong', pong, primus.options.pong);
-  }
-
-  primus.timers.setTimeout('ping', ping, primus.options.ping);
   return this;
 };
 
@@ -2935,11 +3074,6 @@ Primus.prototype.uri = function uri(options) {
     : +url.port || (options.secure ? 443 : 80);
 
   //
-  // Allow transformation of the options before we construct a full URL from it.
-  //
-  this.emit('outgoing::url', options);
-
-  //
   // We need to make sure that we create a unique connection URL every time to
   // prevent back forward cache from becoming an issue. We're doing this by
   // forcing an cache busting query string in to the URL.
@@ -2947,6 +3081,11 @@ Primus.prototype.uri = function uri(options) {
   var querystring = this.querystring(options.query || '');
   querystring._primuscb = yeast();
   options.query = this.querystringify(querystring);
+
+  //
+  // Allow transformation of the options before we construct a full URL from it.
+  //
+  this.emit('outgoing::url', options);
 
   //
   // Automatically suffix the protocol so we can supply `ws:` and `http:` and
@@ -3002,10 +3141,7 @@ Primus.prototype.transform = function transform(type, fn) {
  * @api private
  */
 Primus.prototype.critical = function critical(err) {
-  if (this.listeners('error').length) {
-    this.emit('error', err);
-    return this;
-  }
+  if (this.emit('error', err)) return this;
 
   throw err;
 };
@@ -3165,7 +3301,7 @@ Primus.prototype.decoder = function decoder(data, fn) {
 
   fn(err, data);
 };
-Primus.prototype.version = "5.2.2";
+Primus.prototype.version = "7.2.2";
 
 if (
      'undefined' !== typeof document
@@ -3197,7 +3333,7 @@ if (
   // lower then 5.1.4
   //
   var ua = (navigator.userAgent || '').toLowerCase()
-    , parsed = ua.match(/.+(?:rv|it|ra|ie)[\/: ](\d+)\.(\d+)(?:\.(\d+))?/) || []
+    , parsed = ua.match(/.+(?:rv|it|ra|ie)[/: ](\d+)\.(\d+)(?:\.(\d+))?/) || []
     , version = +[parsed[1], parsed[2]].join('.');
 
   if (
@@ -3214,7 +3350,8 @@ if (
 //
 module.exports = Primus;
 
-},{"demolish":1,"emits":2,"eventemitter3":3,"querystringify":6,"recovery":7,"tick-tock":10,"url-parse":11,"yeast":13}]},{},[14])(14);
+},{"demolish":1,"emits":2,"eventemitter3":3,"inherits":4,"querystringify":7,"recovery":8,"tick-tock":11,"url-parse":12,"yeast":13}]},{},[14])(14)
+;
   return Primus;
 },
 [
@@ -3231,15 +3368,15 @@ module.exports = _dereq_('./socket');
  */
 module.exports.parser = _dereq_('engine.io-parser');
 
-},{"./socket":2,"engine.io-parser":18}],2:[function(_dereq_,module,exports){
+},{"./socket":2,"engine.io-parser":16}],2:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Module dependencies.
  */
 
-var transports = _dereq_('./transports');
+var transports = _dereq_('./transports/index');
 var Emitter = _dereq_('component-emitter');
-var debug = _dereq_('debug')('engine.io-client:socket');
+
 var index = _dereq_('indexof');
 var parser = _dereq_('engine.io-parser');
 var parseuri = _dereq_('parseuri');
@@ -3253,14 +3390,6 @@ var parseqs = _dereq_('parseqs');
 module.exports = Socket;
 
 /**
- * Noop function.
- *
- * @api private
- */
-
-function noop(){}
-
-/**
  * Socket constructor.
  *
  * @param {String|Object} uri or options
@@ -3268,12 +3397,12 @@ function noop(){}
  * @api public
  */
 
-function Socket(uri, opts){
+function Socket (uri, opts) {
   if (!(this instanceof Socket)) return new Socket(uri, opts);
 
   opts = opts || {};
 
-  if (uri && 'object' == typeof uri) {
+  if (uri && 'object' === typeof uri) {
     opts = uri;
     uri = null;
   }
@@ -3281,15 +3410,15 @@ function Socket(uri, opts){
   if (uri) {
     uri = parseuri(uri);
     opts.hostname = uri.host;
-    opts.secure = uri.protocol == 'https' || uri.protocol == 'wss';
+    opts.secure = uri.protocol === 'https' || uri.protocol === 'wss';
     opts.port = uri.port;
     if (uri.query) opts.query = uri.query;
   } else if (opts.host) {
     opts.hostname = parseuri(opts.host).host;
   }
 
-  this.secure = null != opts.secure ? opts.secure :
-    (global.location && 'https:' == location.protocol);
+  this.secure = null != opts.secure ? opts.secure
+    : (global.location && 'https:' === location.protocol);
 
   if (opts.hostname && !opts.port) {
     // if no port is specified manually, use the protocol default
@@ -3299,11 +3428,11 @@ function Socket(uri, opts){
   this.agent = opts.agent || false;
   this.hostname = opts.hostname ||
     (global.location ? location.hostname : 'localhost');
-  this.port = opts.port || (global.location && location.port ?
-       location.port :
-       (this.secure ? 443 : 80));
+  this.port = opts.port || (global.location && location.port
+      ? location.port
+      : (this.secure ? 443 : 80));
   this.query = opts.query || {};
-  if ('string' == typeof this.query) this.query = parseqs.decode(this.query);
+  if ('string' === typeof this.query) this.query = parseqs.decode(this.query);
   this.upgrade = false !== opts.upgrade;
   this.path = (opts.path || '/engine.io').replace(/\/$/, '') + '/';
   this.forceJSONP = !!opts.forceJSONP;
@@ -3313,8 +3442,10 @@ function Socket(uri, opts){
   this.timestampParam = opts.timestampParam || 't';
   this.timestampRequests = opts.timestampRequests;
   this.transports = opts.transports || ['polling', 'websocket'];
+  this.transportOptions = opts.transportOptions || {};
   this.readyState = '';
   this.writeBuffer = [];
+  this.prevBufferLen = 0;
   this.policyPort = opts.policyPort || 843;
   this.rememberUpgrade = opts.rememberUpgrade || false;
   this.binaryType = null;
@@ -3334,14 +3465,29 @@ function Socket(uri, opts){
   this.ca = opts.ca || null;
   this.ciphers = opts.ciphers || null;
   this.rejectUnauthorized = opts.rejectUnauthorized === undefined ? true : opts.rejectUnauthorized;
+  this.forceNode = !!opts.forceNode;
 
   // other options for Node.js client
-  var freeGlobal = typeof global == 'object' && global;
+  var freeGlobal = typeof global === 'object' && global;
   if (freeGlobal.global === freeGlobal) {
     if (opts.extraHeaders && Object.keys(opts.extraHeaders).length > 0) {
       this.extraHeaders = opts.extraHeaders;
     }
+
+    if (opts.localAddress) {
+      this.localAddress = opts.localAddress;
+    }
   }
+
+  // set on handshake
+  this.id = null;
+  this.upgrades = null;
+  this.pingInterval = null;
+  this.pingTimeout = null;
+
+  // set on heartbeat
+  this.pingIntervalTimer = null;
+  this.pingTimeoutTimer = null;
 
   this.open();
 }
@@ -3369,7 +3515,7 @@ Socket.protocol = parser.protocol; // this is an int
 
 Socket.Socket = Socket;
 Socket.Transport = _dereq_('./transport');
-Socket.transports = _dereq_('./transports');
+Socket.transports = _dereq_('./transports/index');
 Socket.parser = _dereq_('engine.io-parser');
 
 /**
@@ -3381,7 +3527,6 @@ Socket.parser = _dereq_('engine.io-parser');
  */
 
 Socket.prototype.createTransport = function (name) {
-  debug('creating transport "%s"', name);
   var query = clone(this.query);
 
   // append engine.io protocol identifier
@@ -3390,33 +3535,40 @@ Socket.prototype.createTransport = function (name) {
   // transport name
   query.transport = name;
 
+  // per-transport options
+  var options = this.transportOptions[name] || {};
+
   // session id if we already have one
   if (this.id) query.sid = this.id;
 
   var transport = new transports[name]({
-    agent: this.agent,
-    hostname: this.hostname,
-    port: this.port,
-    secure: this.secure,
-    path: this.path,
     query: query,
-    forceJSONP: this.forceJSONP,
-    jsonp: this.jsonp,
-    forceBase64: this.forceBase64,
-    enablesXDR: this.enablesXDR,
-    timestampRequests: this.timestampRequests,
-    timestampParam: this.timestampParam,
-    policyPort: this.policyPort,
     socket: this,
-    pfx: this.pfx,
-    key: this.key,
-    passphrase: this.passphrase,
-    cert: this.cert,
-    ca: this.ca,
-    ciphers: this.ciphers,
-    rejectUnauthorized: this.rejectUnauthorized,
-    perMessageDeflate: this.perMessageDeflate,
-    extraHeaders: this.extraHeaders
+    agent: options.agent || this.agent,
+    hostname: options.hostname || this.hostname,
+    port: options.port || this.port,
+    secure: options.secure || this.secure,
+    path: options.path || this.path,
+    forceJSONP: options.forceJSONP || this.forceJSONP,
+    jsonp: options.jsonp || this.jsonp,
+    forceBase64: options.forceBase64 || this.forceBase64,
+    enablesXDR: options.enablesXDR || this.enablesXDR,
+    timestampRequests: options.timestampRequests || this.timestampRequests,
+    timestampParam: options.timestampParam || this.timestampParam,
+    policyPort: options.policyPort || this.policyPort,
+    pfx: options.pfx || this.pfx,
+    key: options.key || this.key,
+    passphrase: options.passphrase || this.passphrase,
+    cert: options.cert || this.cert,
+    ca: options.ca || this.ca,
+    ciphers: options.ciphers || this.ciphers,
+    rejectUnauthorized: options.rejectUnauthorized || this.rejectUnauthorized,
+    perMessageDeflate: options.perMessageDeflate || this.perMessageDeflate,
+    extraHeaders: options.extraHeaders || this.extraHeaders,
+    forceNode: options.forceNode || this.forceNode,
+    localAddress: options.localAddress || this.localAddress,
+    requestTimeout: options.requestTimeout || this.requestTimeout,
+    protocols: options.protocols || void (0)
   });
 
   return transport;
@@ -3439,12 +3591,12 @@ function clone (obj) {
  */
 Socket.prototype.open = function () {
   var transport;
-  if (this.rememberUpgrade && Socket.priorWebsocketSuccess && this.transports.indexOf('websocket') != -1) {
+  if (this.rememberUpgrade && Socket.priorWebsocketSuccess && this.transports.indexOf('websocket') !== -1) {
     transport = 'websocket';
   } else if (0 === this.transports.length) {
     // Emit error on next tick so it can be listened to
     var self = this;
-    setTimeout(function() {
+    setTimeout(function () {
       self.emit('error', 'No transports available');
     }, 0);
     return;
@@ -3472,12 +3624,10 @@ Socket.prototype.open = function () {
  * @api private
  */
 
-Socket.prototype.setTransport = function(transport){
-  debug('setting transport %s', transport.name);
+Socket.prototype.setTransport = function (transport) {
   var self = this;
 
   if (this.transport) {
-    debug('clearing existing transport %s', this.transport.name);
     this.transport.removeAllListeners();
   }
 
@@ -3486,16 +3636,16 @@ Socket.prototype.setTransport = function(transport){
 
   // set up transport listeners
   transport
-  .on('drain', function(){
+  .on('drain', function () {
     self.onDrain();
   })
-  .on('packet', function(packet){
+  .on('packet', function (packet) {
     self.onPacket(packet);
   })
-  .on('error', function(e){
+  .on('error', function (e) {
     self.onError(e);
   })
-  .on('close', function(){
+  .on('close', function () {
     self.onClose('transport close');
   });
 };
@@ -3508,36 +3658,31 @@ Socket.prototype.setTransport = function(transport){
  */
 
 Socket.prototype.probe = function (name) {
-  debug('probing transport "%s"', name);
-  var transport = this.createTransport(name, { probe: 1 })
-    , failed = false
-    , self = this;
+  var transport = this.createTransport(name, { probe: 1 });
+  var failed = false;
+  var self = this;
 
   Socket.priorWebsocketSuccess = false;
 
-  function onTransportOpen(){
+  function onTransportOpen () {
     if (self.onlyBinaryUpgrades) {
       var upgradeLosesBinary = !this.supportsBinary && self.transport.supportsBinary;
       failed = failed || upgradeLosesBinary;
     }
     if (failed) return;
 
-    debug('probe transport "%s" opened', name);
     transport.send([{ type: 'ping', data: 'probe' }]);
     transport.once('packet', function (msg) {
       if (failed) return;
-      if ('pong' == msg.type && 'probe' == msg.data) {
-        debug('probe transport "%s" pong', name);
+      if ('pong' === msg.type && 'probe' === msg.data) {
         self.upgrading = true;
         self.emit('upgrading', transport);
         if (!transport) return;
-        Socket.priorWebsocketSuccess = 'websocket' == transport.name;
+        Socket.priorWebsocketSuccess = 'websocket' === transport.name;
 
-        debug('pausing current transport "%s"', self.transport.name);
         self.transport.pause(function () {
           if (failed) return;
-          if ('closed' == self.readyState) return;
-          debug('changing transport and sending upgrade packet');
+          if ('closed' === self.readyState) return;
 
           cleanup();
 
@@ -3549,7 +3694,6 @@ Socket.prototype.probe = function (name) {
           self.flush();
         });
       } else {
-        debug('probe transport "%s" failed', name);
         var err = new Error('probe error');
         err.transport = transport.name;
         self.emit('upgradeError', err);
@@ -3557,7 +3701,7 @@ Socket.prototype.probe = function (name) {
     });
   }
 
-  function freezeTransport() {
+  function freezeTransport () {
     if (failed) return;
 
     // Any callback called by transport should be ignored since now
@@ -3569,37 +3713,34 @@ Socket.prototype.probe = function (name) {
     transport = null;
   }
 
-  //Handle any error that happens while probing
-  function onerror(err) {
+  // Handle any error that happens while probing
+  function onerror (err) {
     var error = new Error('probe error: ' + err);
     error.transport = transport.name;
 
     freezeTransport();
 
-    debug('probe transport "%s" failed because of error: %s', name, err);
-
     self.emit('upgradeError', error);
   }
 
-  function onTransportClose(){
-    onerror("transport closed");
+  function onTransportClose () {
+    onerror('transport closed');
   }
 
-  //When the socket is closed while we're probing
-  function onclose(){
-    onerror("socket closed");
+  // When the socket is closed while we're probing
+  function onclose () {
+    onerror('socket closed');
   }
 
-  //When the socket is upgraded while we're probing
-  function onupgrade(to){
-    if (transport && to.name != transport.name) {
-      debug('"%s" works - aborting "%s"', to.name, transport.name);
+  // When the socket is upgraded while we're probing
+  function onupgrade (to) {
+    if (transport && to.name !== transport.name) {
       freezeTransport();
     }
   }
 
-  //Remove all listeners on the transport and on self
-  function cleanup(){
+  // Remove all listeners on the transport and on self
+  function cleanup () {
     transport.removeListener('open', onTransportOpen);
     transport.removeListener('error', onerror);
     transport.removeListener('close', onTransportClose);
@@ -3615,7 +3756,6 @@ Socket.prototype.probe = function (name) {
   this.once('upgrading', onupgrade);
 
   transport.open();
-
 };
 
 /**
@@ -3625,16 +3765,14 @@ Socket.prototype.probe = function (name) {
  */
 
 Socket.prototype.onOpen = function () {
-  debug('socket open');
   this.readyState = 'open';
-  Socket.priorWebsocketSuccess = 'websocket' == this.transport.name;
+  Socket.priorWebsocketSuccess = 'websocket' === this.transport.name;
   this.emit('open');
   this.flush();
 
   // we check for `readyState` in case an `open`
   // listener already closed the socket
-  if ('open' == this.readyState && this.upgrade && this.transport.pause) {
-    debug('starting upgrade probes');
+  if ('open' === this.readyState && this.upgrade && this.transport.pause) {
     for (var i = 0, l = this.upgrades.length; i < l; i++) {
       this.probe(this.upgrades[i]);
     }
@@ -3648,8 +3786,8 @@ Socket.prototype.onOpen = function () {
  */
 
 Socket.prototype.onPacket = function (packet) {
-  if ('opening' == this.readyState || 'open' == this.readyState) {
-    debug('socket receive: type "%s", data "%s"', packet.type, packet.data);
+  if ('opening' === this.readyState || 'open' === this.readyState ||
+      'closing' === this.readyState) {
 
     this.emit('packet', packet);
 
@@ -3678,7 +3816,6 @@ Socket.prototype.onPacket = function (packet) {
         break;
     }
   } else {
-    debug('packet received with socket readyState "%s"', this.readyState);
   }
 };
 
@@ -3698,7 +3835,7 @@ Socket.prototype.onHandshake = function (data) {
   this.pingTimeout = data.pingTimeout;
   this.onOpen();
   // In case open handler closes socket
-  if  ('closed' == this.readyState) return;
+  if ('closed' === this.readyState) return;
   this.setPing();
 
   // Prolong liveness of socket on heartbeat
@@ -3716,7 +3853,7 @@ Socket.prototype.onHeartbeat = function (timeout) {
   clearTimeout(this.pingTimeoutTimer);
   var self = this;
   self.pingTimeoutTimer = setTimeout(function () {
-    if ('closed' == self.readyState) return;
+    if ('closed' === self.readyState) return;
     self.onClose('ping timeout');
   }, timeout || (self.pingInterval + self.pingTimeout));
 };
@@ -3732,7 +3869,6 @@ Socket.prototype.setPing = function () {
   var self = this;
   clearTimeout(self.pingIntervalTimer);
   self.pingIntervalTimer = setTimeout(function () {
-    debug('writing ping packet - expecting pong within %sms', self.pingTimeout);
     self.ping();
     self.onHeartbeat(self.pingTimeout);
   }, self.pingInterval);
@@ -3746,7 +3882,7 @@ Socket.prototype.setPing = function () {
 
 Socket.prototype.ping = function () {
   var self = this;
-  this.sendPacket('ping', function(){
+  this.sendPacket('ping', function () {
     self.emit('ping');
   });
 };
@@ -3757,7 +3893,7 @@ Socket.prototype.ping = function () {
  * @api private
  */
 
-Socket.prototype.onDrain = function() {
+Socket.prototype.onDrain = function () {
   this.writeBuffer.splice(0, this.prevBufferLen);
 
   // setting prevBufferLen = 0 is very important
@@ -3779,9 +3915,8 @@ Socket.prototype.onDrain = function() {
  */
 
 Socket.prototype.flush = function () {
-  if ('closed' != this.readyState && this.transport.writable &&
+  if ('closed' !== this.readyState && this.transport.writable &&
     !this.upgrading && this.writeBuffer.length) {
-    debug('flushing %d packets in socket', this.writeBuffer.length);
     this.transport.send(this.writeBuffer);
     // keep track of current length of writeBuffer
     // splice writeBuffer and callbackBuffer on `drain`
@@ -3817,17 +3952,17 @@ Socket.prototype.send = function (msg, options, fn) {
  */
 
 Socket.prototype.sendPacket = function (type, data, options, fn) {
-  if('function' == typeof data) {
+  if ('function' === typeof data) {
     fn = data;
     data = undefined;
   }
 
-  if ('function' == typeof options) {
+  if ('function' === typeof options) {
     fn = options;
     options = null;
   }
 
-  if ('closing' == this.readyState || 'closed' == this.readyState) {
+  if ('closing' === this.readyState || 'closed' === this.readyState) {
     return;
   }
 
@@ -3852,13 +3987,13 @@ Socket.prototype.sendPacket = function (type, data, options, fn) {
  */
 
 Socket.prototype.close = function () {
-  if ('opening' == this.readyState || 'open' == this.readyState) {
+  if ('opening' === this.readyState || 'open' === this.readyState) {
     this.readyState = 'closing';
 
     var self = this;
 
     if (this.writeBuffer.length) {
-      this.once('drain', function() {
+      this.once('drain', function () {
         if (this.upgrading) {
           waitForUpgrade();
         } else {
@@ -3872,19 +4007,18 @@ Socket.prototype.close = function () {
     }
   }
 
-  function close() {
+  function close () {
     self.onClose('forced close');
-    debug('socket closing - telling transport to close');
     self.transport.close();
   }
 
-  function cleanupAndClose() {
+  function cleanupAndClose () {
     self.removeListener('upgrade', cleanupAndClose);
     self.removeListener('upgradeError', cleanupAndClose);
     close();
   }
 
-  function waitForUpgrade() {
+  function waitForUpgrade () {
     // wait for upgrade to finish since we can't send packets while pausing a transport
     self.once('upgrade', cleanupAndClose);
     self.once('upgradeError', cleanupAndClose);
@@ -3900,7 +4034,6 @@ Socket.prototype.close = function () {
  */
 
 Socket.prototype.onError = function (err) {
-  debug('socket error %j', err);
   Socket.priorWebsocketSuccess = false;
   this.emit('error', err);
   this.onClose('transport error', err);
@@ -3913,8 +4046,7 @@ Socket.prototype.onError = function (err) {
  */
 
 Socket.prototype.onClose = function (reason, desc) {
-  if ('opening' == this.readyState || 'open' == this.readyState || 'closing' == this.readyState) {
-    debug('socket close with reason: "%s"', reason);
+  if ('opening' === this.readyState || 'open' === this.readyState || 'closing' === this.readyState) {
     var self = this;
 
     // clear timers
@@ -3956,14 +4088,14 @@ Socket.prototype.onClose = function (reason, desc) {
 
 Socket.prototype.filterUpgrades = function (upgrades) {
   var filteredUpgrades = [];
-  for (var i = 0, j = upgrades.length; i<j; i++) {
+  for (var i = 0, j = upgrades.length; i < j; i++) {
     if (~index(this.transports, upgrades[i])) filteredUpgrades.push(upgrades[i]);
   }
   return filteredUpgrades;
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./transport":3,"./transports":4,"component-emitter":14,"debug":16,"engine.io-parser":18,"indexof":22,"parsejson":25,"parseqs":26,"parseuri":27}],3:[function(_dereq_,module,exports){
+},{"./transport":3,"./transports/index":4,"component-emitter":14,"engine.io-parser":16,"indexof":21,"parsejson":23,"parseqs":24,"parseuri":25}],3:[function(_dereq_,module,exports){
 /**
  * Module dependencies.
  */
@@ -4005,9 +4137,11 @@ function Transport (opts) {
   this.ca = opts.ca;
   this.ciphers = opts.ciphers;
   this.rejectUnauthorized = opts.rejectUnauthorized;
+  this.forceNode = opts.forceNode;
 
   // other options for Node.js client
   this.extraHeaders = opts.extraHeaders;
+  this.localAddress = opts.localAddress;
 }
 
 /**
@@ -4039,7 +4173,7 @@ Transport.prototype.onError = function (msg, desc) {
  */
 
 Transport.prototype.open = function () {
-  if ('closed' == this.readyState || '' == this.readyState) {
+  if ('closed' === this.readyState || '' === this.readyState) {
     this.readyState = 'opening';
     this.doOpen();
   }
@@ -4054,7 +4188,7 @@ Transport.prototype.open = function () {
  */
 
 Transport.prototype.close = function () {
-  if ('opening' == this.readyState || 'open' == this.readyState) {
+  if ('opening' === this.readyState || 'open' === this.readyState) {
     this.doClose();
     this.onClose();
   }
@@ -4069,8 +4203,8 @@ Transport.prototype.close = function () {
  * @api private
  */
 
-Transport.prototype.send = function(packets){
-  if ('open' == this.readyState) {
+Transport.prototype.send = function (packets) {
+  if ('open' === this.readyState) {
     this.write(packets);
   } else {
     throw new Error('Transport not open');
@@ -4096,7 +4230,7 @@ Transport.prototype.onOpen = function () {
  * @api private
  */
 
-Transport.prototype.onData = function(data){
+Transport.prototype.onData = function (data) {
   var packet = parser.decodePacket(data, this.socket.binaryType);
   this.onPacket(packet);
 };
@@ -4120,7 +4254,7 @@ Transport.prototype.onClose = function () {
   this.emit('close');
 };
 
-},{"component-emitter":14,"engine.io-parser":18}],4:[function(_dereq_,module,exports){
+},{"component-emitter":14,"engine.io-parser":16}],4:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Module dependencies
@@ -4145,14 +4279,14 @@ exports.websocket = websocket;
  * @api private
  */
 
-function polling(opts){
+function polling (opts) {
   var xhr;
   var xd = false;
   var xs = false;
   var jsonp = false !== opts.jsonp;
 
   if (global.location) {
-    var isSSL = 'https:' == location.protocol;
+    var isSSL = 'https:' === location.protocol;
     var port = location.port;
 
     // some user agents have empty `location.port`
@@ -4160,8 +4294,8 @@ function polling(opts){
       port = isSSL ? 443 : 80;
     }
 
-    xd = opts.hostname != location.hostname || port != opts.port;
-    xs = opts.secure != isSSL;
+    xd = opts.hostname !== location.hostname || port !== opts.port;
+    xs = opts.secure !== isSSL;
   }
 
   opts.xdomain = xd;
@@ -4205,12 +4339,6 @@ var rEscapedNewline = /\\n/g;
  */
 
 var callbacks;
-
-/**
- * Callbacks count.
- */
-
-var index = 0;
 
 /**
  * Noop.
@@ -4308,21 +4436,20 @@ JSONPPolling.prototype.doPoll = function () {
 
   script.async = true;
   script.src = this.uri();
-  script.onerror = function(e){
-    self.onError('jsonp poll error',e);
+  script.onerror = function (e) {
+    self.onError('jsonp poll error', e);
   };
 
   var insertAt = document.getElementsByTagName('script')[0];
   if (insertAt) {
     insertAt.parentNode.insertBefore(script, insertAt);
-  }
-  else {
+  } else {
     (document.head || document.body).appendChild(script);
   }
   this.script = script;
 
-  var isUAgecko = 'undefined' != typeof navigator && /gecko/i.test(navigator.userAgent);
-  
+  var isUAgecko = 'undefined' !== typeof navigator && /gecko/i.test(navigator.userAgent);
+
   if (isUAgecko) {
     setTimeout(function () {
       var iframe = document.createElement('iframe');
@@ -4382,7 +4509,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 
     try {
       // ie6 dynamic iframes with target="" support (thanks Chris Lambacher)
-      var html = '<iframe src="javascript:0" name="'+ self.iframeId +'">';
+      var html = '<iframe src="javascript:0" name="' + self.iframeId + '">';
       iframe = document.createElement(html);
     } catch (e) {
       iframe = document.createElement('iframe');
@@ -4405,11 +4532,11 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 
   try {
     this.form.submit();
-  } catch(e) {}
+  } catch (e) {}
 
   if (this.iframe.attachEvent) {
-    this.iframe.onreadystatechange = function(){
-      if (self.iframe.readyState == 'complete') {
+    this.iframe.onreadystatechange = function () {
+      if (self.iframe.readyState === 'complete') {
         complete();
       }
     };
@@ -4429,7 +4556,6 @@ var XMLHttpRequest = _dereq_('xmlhttprequest-ssl');
 var Polling = _dereq_('./polling');
 var Emitter = _dereq_('component-emitter');
 var inherit = _dereq_('component-inherit');
-var debug = _dereq_('debug')('engine.io-client:polling-xhr');
 
 /**
  * Module exports.
@@ -4442,7 +4568,7 @@ module.exports.Request = Request;
  * Empty function
  */
 
-function empty(){}
+function empty () {}
 
 /**
  * XHR Polling constructor.
@@ -4451,11 +4577,13 @@ function empty(){}
  * @api public
  */
 
-function XHR(opts){
+function XHR (opts) {
   Polling.call(this, opts);
+  this.requestTimeout = opts.requestTimeout;
+  this.extraHeaders = opts.extraHeaders;
 
   if (global.location) {
-    var isSSL = 'https:' == location.protocol;
+    var isSSL = 'https:' === location.protocol;
     var port = location.port;
 
     // some user agents have empty `location.port`
@@ -4463,11 +4591,9 @@ function XHR(opts){
       port = isSSL ? 443 : 80;
     }
 
-    this.xd = opts.hostname != global.location.hostname ||
-      port != opts.port;
-    this.xs = opts.secure != isSSL;
-  } else {
-    this.extraHeaders = opts.extraHeaders;
+    this.xd = opts.hostname !== global.location.hostname ||
+      port !== opts.port;
+    this.xs = opts.secure !== isSSL;
   }
 }
 
@@ -4490,7 +4616,7 @@ XHR.prototype.supportsBinary = true;
  * @api private
  */
 
-XHR.prototype.request = function(opts){
+XHR.prototype.request = function (opts) {
   opts = opts || {};
   opts.uri = this.uri();
   opts.xd = this.xd;
@@ -4507,6 +4633,7 @@ XHR.prototype.request = function(opts){
   opts.ca = this.ca;
   opts.ciphers = this.ciphers;
   opts.rejectUnauthorized = this.rejectUnauthorized;
+  opts.requestTimeout = this.requestTimeout;
 
   // other options for Node.js client
   opts.extraHeaders = this.extraHeaders;
@@ -4522,12 +4649,12 @@ XHR.prototype.request = function(opts){
  * @api private
  */
 
-XHR.prototype.doWrite = function(data, fn){
+XHR.prototype.doWrite = function (data, fn) {
   var isBinary = typeof data !== 'string' && data !== undefined;
   var req = this.request({ method: 'POST', data: data, isBinary: isBinary });
   var self = this;
   req.on('success', fn);
-  req.on('error', function(err){
+  req.on('error', function (err) {
     self.onError('xhr post error', err);
   });
   this.sendXhr = req;
@@ -4539,14 +4666,13 @@ XHR.prototype.doWrite = function(data, fn){
  * @api private
  */
 
-XHR.prototype.doPoll = function(){
-  debug('xhr poll');
+XHR.prototype.doPoll = function () {
   var req = this.request();
   var self = this;
-  req.on('data', function(data){
+  req.on('data', function (data) {
     self.onData(data);
   });
-  req.on('error', function(err){
+  req.on('error', function (err) {
     self.onError('xhr poll error', err);
   });
   this.pollXhr = req;
@@ -4559,17 +4685,18 @@ XHR.prototype.doPoll = function(){
  * @api public
  */
 
-function Request(opts){
+function Request (opts) {
   this.method = opts.method || 'GET';
   this.uri = opts.uri;
   this.xd = !!opts.xd;
   this.xs = !!opts.xs;
   this.async = false !== opts.async;
-  this.data = undefined != opts.data ? opts.data : null;
+  this.data = undefined !== opts.data ? opts.data : null;
   this.agent = opts.agent;
   this.isBinary = opts.isBinary;
   this.supportsBinary = opts.supportsBinary;
   this.enablesXDR = opts.enablesXDR;
+  this.requestTimeout = opts.requestTimeout;
 
   // SSL options for Node.js client
   this.pfx = opts.pfx;
@@ -4598,7 +4725,7 @@ Emitter(Request.prototype);
  * @api private
  */
 
-Request.prototype.create = function(){
+Request.prototype.create = function () {
   var opts = { agent: this.agent, xdomain: this.xd, xscheme: this.xs, enablesXDR: this.enablesXDR };
 
   // SSL options for Node.js client
@@ -4614,11 +4741,10 @@ Request.prototype.create = function(){
   var self = this;
 
   try {
-    debug('xhr open %s: %s', this.method, this.uri);
     xhr.open(this.method, this.uri, this.async);
     try {
       if (this.extraHeaders) {
-        xhr.setDisableHeaderCheck(true);
+        xhr.setDisableHeaderCheck && xhr.setDisableHeaderCheck(true);
         for (var i in this.extraHeaders) {
           if (this.extraHeaders.hasOwnProperty(i)) {
             xhr.setRequestHeader(i, this.extraHeaders[i]);
@@ -4632,7 +4758,7 @@ Request.prototype.create = function(){
       xhr.responseType = 'arraybuffer';
     }
 
-    if ('POST' == this.method) {
+    if ('POST' === this.method) {
       try {
         if (this.isBinary) {
           xhr.setRequestHeader('Content-type', 'application/octet-stream');
@@ -4642,40 +4768,47 @@ Request.prototype.create = function(){
       } catch (e) {}
     }
 
+    try {
+      xhr.setRequestHeader('Accept', '*/*');
+    } catch (e) {}
+
     // ie6 check
     if ('withCredentials' in xhr) {
       xhr.withCredentials = true;
     }
 
+    if (this.requestTimeout) {
+      xhr.timeout = this.requestTimeout;
+    }
+
     if (this.hasXDR()) {
-      xhr.onload = function(){
+      xhr.onload = function () {
         self.onLoad();
       };
-      xhr.onerror = function(){
+      xhr.onerror = function () {
         self.onError(xhr.responseText);
       };
     } else {
-      xhr.onreadystatechange = function(){
-        if (4 != xhr.readyState) return;
-        if (200 == xhr.status || 1223 == xhr.status) {
+      xhr.onreadystatechange = function () {
+        if (4 !== xhr.readyState) return;
+        if (200 === xhr.status || 1223 === xhr.status) {
           self.onLoad();
         } else {
           // make sure the `error` event handler that's user-set
           // does not throw in the same tick and gets caught here
-          setTimeout(function(){
+          setTimeout(function () {
             self.onError(xhr.status);
           }, 0);
         }
       };
     }
 
-    debug('xhr data %s', this.data);
     xhr.send(this.data);
   } catch (e) {
     // Need to defer since .create() is called directly fhrom the constructor
     // and thus the 'error' event can only be only bound *after* this exception
     // occurs.  Therefore, also, we cannot throw here at all.
-    setTimeout(function() {
+    setTimeout(function () {
       self.onError(e);
     }, 0);
     return;
@@ -4693,7 +4826,7 @@ Request.prototype.create = function(){
  * @api private
  */
 
-Request.prototype.onSuccess = function(){
+Request.prototype.onSuccess = function () {
   this.emit('success');
   this.cleanup();
 };
@@ -4704,7 +4837,7 @@ Request.prototype.onSuccess = function(){
  * @api private
  */
 
-Request.prototype.onData = function(data){
+Request.prototype.onData = function (data) {
   this.emit('data', data);
   this.onSuccess();
 };
@@ -4715,7 +4848,7 @@ Request.prototype.onData = function(data){
  * @api private
  */
 
-Request.prototype.onError = function(err){
+Request.prototype.onError = function (err) {
   this.emit('error', err);
   this.cleanup(true);
 };
@@ -4726,8 +4859,8 @@ Request.prototype.onError = function(err){
  * @api private
  */
 
-Request.prototype.cleanup = function(fromError){
-  if ('undefined' == typeof this.xhr || null === this.xhr) {
+Request.prototype.cleanup = function (fromError) {
+  if ('undefined' === typeof this.xhr || null === this.xhr) {
     return;
   }
   // xmlhttprequest
@@ -4740,7 +4873,7 @@ Request.prototype.cleanup = function(fromError){
   if (fromError) {
     try {
       this.xhr.abort();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   if (global.document) {
@@ -4756,7 +4889,7 @@ Request.prototype.cleanup = function(fromError){
  * @api private
  */
 
-Request.prototype.onLoad = function(){
+Request.prototype.onLoad = function () {
   var data;
   try {
     var contentType;
@@ -4764,7 +4897,7 @@ Request.prototype.onLoad = function(){
       contentType = this.xhr.getResponseHeader('Content-Type').split(';')[0];
     } catch (e) {}
     if (contentType === 'application/octet-stream') {
-      data = this.xhr.response;
+      data = this.xhr.response || this.xhr.responseText;
     } else {
       if (!this.supportsBinary) {
         data = this.xhr.responseText;
@@ -4796,7 +4929,7 @@ Request.prototype.onLoad = function(){
  * @api private
  */
 
-Request.prototype.hasXDR = function(){
+Request.prototype.hasXDR = function () {
   return 'undefined' !== typeof global.XDomainRequest && !this.xs && this.enablesXDR;
 };
 
@@ -4806,7 +4939,7 @@ Request.prototype.hasXDR = function(){
  * @api public
  */
 
-Request.prototype.abort = function(){
+Request.prototype.abort = function () {
   this.cleanup();
 };
 
@@ -4816,9 +4949,10 @@ Request.prototype.abort = function(){
  * emitted.
  */
 
+Request.requestsCount = 0;
+Request.requests = {};
+
 if (global.document) {
-  Request.requestsCount = 0;
-  Request.requests = {};
   if (global.attachEvent) {
     global.attachEvent('onunload', unloadHandler);
   } else if (global.addEventListener) {
@@ -4826,7 +4960,7 @@ if (global.document) {
   }
 }
 
-function unloadHandler() {
+function unloadHandler () {
   for (var i in Request.requests) {
     if (Request.requests.hasOwnProperty(i)) {
       Request.requests[i].abort();
@@ -4835,7 +4969,7 @@ function unloadHandler() {
 }
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./polling":7,"component-emitter":14,"component-inherit":15,"debug":16,"xmlhttprequest-ssl":9}],7:[function(_dereq_,module,exports){
+},{"./polling":7,"component-emitter":14,"component-inherit":15,"xmlhttprequest-ssl":9}],7:[function(_dereq_,module,exports){
 /**
  * Module dependencies.
  */
@@ -4845,7 +4979,6 @@ var parseqs = _dereq_('parseqs');
 var parser = _dereq_('engine.io-parser');
 var inherit = _dereq_('component-inherit');
 var yeast = _dereq_('yeast');
-var debug = _dereq_('debug')('engine.io-client:polling');
 
 /**
  * Module exports.
@@ -4857,7 +4990,7 @@ module.exports = Polling;
  * Is XHR2 supported?
  */
 
-var hasXHR2 = (function() {
+var hasXHR2 = (function () {
   var XMLHttpRequest = _dereq_('xmlhttprequest-ssl');
   var xhr = new XMLHttpRequest({ xdomain: false });
   return null != xhr.responseType;
@@ -4870,7 +5003,7 @@ var hasXHR2 = (function() {
  * @api private
  */
 
-function Polling(opts){
+function Polling (opts) {
   var forceBase64 = (opts && opts.forceBase64);
   if (!hasXHR2 || forceBase64) {
     this.supportsBinary = false;
@@ -4897,7 +5030,7 @@ Polling.prototype.name = 'polling';
  * @api private
  */
 
-Polling.prototype.doOpen = function(){
+Polling.prototype.doOpen = function () {
   this.poll();
 };
 
@@ -4908,14 +5041,12 @@ Polling.prototype.doOpen = function(){
  * @api private
  */
 
-Polling.prototype.pause = function(onPause){
-  var pending = 0;
+Polling.prototype.pause = function (onPause) {
   var self = this;
 
   this.readyState = 'pausing';
 
-  function pause(){
-    debug('paused');
+  function pause () {
     self.readyState = 'paused';
     onPause();
   }
@@ -4924,19 +5055,15 @@ Polling.prototype.pause = function(onPause){
     var total = 0;
 
     if (this.polling) {
-      debug('we are currently polling - waiting to pause');
       total++;
-      this.once('pollComplete', function(){
-        debug('pre-pause polling complete');
+      this.once('pollComplete', function () {
         --total || pause();
       });
     }
 
     if (!this.writable) {
-      debug('we are currently writing - waiting to pause');
       total++;
-      this.once('drain', function(){
-        debug('pre-pause writing complete');
+      this.once('drain', function () {
         --total || pause();
       });
     }
@@ -4951,8 +5078,7 @@ Polling.prototype.pause = function(onPause){
  * @api public
  */
 
-Polling.prototype.poll = function(){
-  debug('polling');
+Polling.prototype.poll = function () {
   this.polling = true;
   this.doPoll();
   this.emit('poll');
@@ -4964,17 +5090,16 @@ Polling.prototype.poll = function(){
  * @api private
  */
 
-Polling.prototype.onData = function(data){
+Polling.prototype.onData = function (data) {
   var self = this;
-  debug('polling got data %s', data);
-  var callback = function(packet, index, total) {
+  var callback = function (packet, index, total) {
     // if its the first message we consider the transport open
-    if ('opening' == self.readyState) {
+    if ('opening' === self.readyState) {
       self.onOpen();
     }
 
     // if its a close packet, we close the ongoing requests
-    if ('close' == packet.type) {
+    if ('close' === packet.type) {
       self.onClose();
       return false;
     }
@@ -4984,18 +5109,17 @@ Polling.prototype.onData = function(data){
   };
 
   // decode payload
-  parser.decodePayload(data, this.socket.binaryType, callback);
+  parser.decodePayload(data, this.socket.binaryType, this.supportsBinary, callback);
 
   // if an event did not trigger closing
-  if ('closed' != this.readyState) {
+  if ('closed' !== this.readyState) {
     // if we got data we're not polling
     this.polling = false;
     this.emit('pollComplete');
 
-    if ('open' == this.readyState) {
+    if ('open' === this.readyState) {
       this.poll();
     } else {
-      debug('ignoring poll - transport state "%s"', this.readyState);
     }
   }
 };
@@ -5006,21 +5130,18 @@ Polling.prototype.onData = function(data){
  * @api private
  */
 
-Polling.prototype.doClose = function(){
+Polling.prototype.doClose = function () {
   var self = this;
 
-  function close(){
-    debug('writing close packet');
+  function close () {
     self.write([{ type: 'close' }]);
   }
 
-  if ('open' == this.readyState) {
-    debug('transport open - closing');
+  if ('open' === this.readyState) {
     close();
   } else {
     // in case we're trying to close while
     // handshaking is in progress (GH-164)
-    debug('transport not open - deferring close');
     this.once('open', close);
   }
 };
@@ -5033,16 +5154,15 @@ Polling.prototype.doClose = function(){
  * @api private
  */
 
-Polling.prototype.write = function(packets){
+Polling.prototype.write = function (packets) {
   var self = this;
   this.writable = false;
-  var callbackfn = function() {
+  var callbackfn = function () {
     self.writable = true;
     self.emit('drain');
   };
 
-  var self = this;
-  parser.encodePayload(packets, this.supportsBinary, function(data) {
+  parser.encodePayload(packets, this.supportsBinary, function (data) {
     self.doWrite(data, callbackfn);
   });
 };
@@ -5053,7 +5173,7 @@ Polling.prototype.write = function(packets){
  * @api private
  */
 
-Polling.prototype.uri = function(){
+Polling.prototype.uri = function () {
   var query = this.query || {};
   var schema = this.secure ? 'https' : 'http';
   var port = '';
@@ -5070,8 +5190,8 @@ Polling.prototype.uri = function(){
   query = parseqs.encode(query);
 
   // avoid port if default for schema
-  if (this.port && (('https' == schema && this.port != 443) ||
-     ('http' == schema && this.port != 80))) {
+  if (this.port && (('https' === schema && Number(this.port) !== 443) ||
+     ('http' === schema && Number(this.port) !== 80))) {
     port = ':' + this.port;
   }
 
@@ -5084,7 +5204,7 @@ Polling.prototype.uri = function(){
   return schema + '://' + (ipv6 ? '[' + this.hostname + ']' : this.hostname) + port + this.path + query;
 };
 
-},{"../transport":3,"component-inherit":15,"debug":16,"engine.io-parser":18,"parseqs":26,"xmlhttprequest-ssl":9,"yeast":29}],8:[function(_dereq_,module,exports){
+},{"../transport":3,"component-inherit":15,"engine.io-parser":16,"parseqs":24,"xmlhttprequest-ssl":9,"yeast":26}],8:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Module dependencies.
@@ -5095,8 +5215,14 @@ var parser = _dereq_('engine.io-parser');
 var parseqs = _dereq_('parseqs');
 var inherit = _dereq_('component-inherit');
 var yeast = _dereq_('yeast');
-var debug = _dereq_('debug')('engine.io-client:websocket');
+
 var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
+var NodeWebSocket;
+if (typeof window === 'undefined') {
+  try {
+    NodeWebSocket = _dereq_('ws');
+  } catch (e) { }
+}
 
 /**
  * Get either the `WebSocket` or `MozWebSocket` globals
@@ -5106,9 +5232,7 @@ var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 
 var WebSocket = BrowserWebSocket;
 if (!WebSocket && typeof window === 'undefined') {
-  try {
-    WebSocket = _dereq_('ws');
-  } catch (e) { }
+  WebSocket = NodeWebSocket;
 }
 
 /**
@@ -5124,12 +5248,17 @@ module.exports = WS;
  * @api public
  */
 
-function WS(opts){
+function WS (opts) {
   var forceBase64 = (opts && opts.forceBase64);
   if (forceBase64) {
     this.supportsBinary = false;
   }
   this.perMessageDeflate = opts.perMessageDeflate;
+  this.usingBrowserWebSocket = BrowserWebSocket && !opts.forceNode;
+  this.protocols = opts.protocols;
+  if (!this.usingBrowserWebSocket) {
+    WebSocket = NodeWebSocket;
+  }
   Transport.call(this, opts);
 }
 
@@ -5159,15 +5288,14 @@ WS.prototype.supportsBinary = true;
  * @api private
  */
 
-WS.prototype.doOpen = function(){
+WS.prototype.doOpen = function () {
   if (!this.check()) {
     // let probe timeout
     return;
   }
 
-  var self = this;
   var uri = this.uri();
-  var protocols = void(0);
+  var protocols = this.protocols;
   var opts = {
     agent: this.agent,
     perMessageDeflate: this.perMessageDeflate
@@ -5184,8 +5312,15 @@ WS.prototype.doOpen = function(){
   if (this.extraHeaders) {
     opts.headers = this.extraHeaders;
   }
+  if (this.localAddress) {
+    opts.localAddress = this.localAddress;
+  }
 
-  this.ws = BrowserWebSocket ? new WebSocket(uri) : new WebSocket(uri, protocols, opts);
+  try {
+    this.ws = this.usingBrowserWebSocket ? (protocols ? new WebSocket(uri, protocols) : new WebSocket(uri)) : new WebSocket(uri, protocols, opts);
+  } catch (err) {
+    return this.emit('error', err);
+  }
 
   if (this.ws.binaryType === undefined) {
     this.supportsBinary = false;
@@ -5193,7 +5328,7 @@ WS.prototype.doOpen = function(){
 
   if (this.ws.supports && this.ws.supports.binary) {
     this.supportsBinary = true;
-    this.ws.binaryType = 'buffer';
+    this.ws.binaryType = 'nodebuffer';
   } else {
     this.ws.binaryType = 'arraybuffer';
   }
@@ -5207,19 +5342,19 @@ WS.prototype.doOpen = function(){
  * @api private
  */
 
-WS.prototype.addEventListeners = function(){
+WS.prototype.addEventListeners = function () {
   var self = this;
 
-  this.ws.onopen = function(){
+  this.ws.onopen = function () {
     self.onOpen();
   };
-  this.ws.onclose = function(){
+  this.ws.onclose = function () {
     self.onClose();
   };
-  this.ws.onmessage = function(ev){
+  this.ws.onmessage = function (ev) {
     self.onData(ev.data);
   };
-  this.ws.onerror = function(e){
+  this.ws.onerror = function (e) {
     self.onError('websocket error', e);
   };
 };
@@ -5231,7 +5366,7 @@ WS.prototype.addEventListeners = function(){
  * @api private
  */
 
-WS.prototype.write = function(packets){
+WS.prototype.write = function (packets) {
   var self = this;
   this.writable = false;
 
@@ -5239,9 +5374,9 @@ WS.prototype.write = function(packets){
   // no need for encodePayload
   var total = packets.length;
   for (var i = 0, l = total; i < l; i++) {
-    (function(packet) {
-      parser.encodePacket(packet, self.supportsBinary, function(data) {
-        if (!BrowserWebSocket) {
+    (function (packet) {
+      parser.encodePacket(packet, self.supportsBinary, function (data) {
+        if (!self.usingBrowserWebSocket) {
           // always create a new object (GH-437)
           var opts = {};
           if (packet.options) {
@@ -5249,25 +5384,24 @@ WS.prototype.write = function(packets){
           }
 
           if (self.perMessageDeflate) {
-            var len = 'string' == typeof data ? global.Buffer.byteLength(data) : data.length;
+            var len = 'string' === typeof data ? global.Buffer.byteLength(data) : data.length;
             if (len < self.perMessageDeflate.threshold) {
               opts.compress = false;
             }
           }
         }
 
-        //Sometimes the websocket has already been closed but the browser didn't
-        //have a chance of informing us about it yet, in that case send will
-        //throw an error
+        // Sometimes the websocket has already been closed but the browser didn't
+        // have a chance of informing us about it yet, in that case send will
+        // throw an error
         try {
-          if (BrowserWebSocket) {
+          if (self.usingBrowserWebSocket) {
             // TypeError is thrown when passing the second argument on Safari
             self.ws.send(data);
           } else {
             self.ws.send(data, opts);
           }
-        } catch (e){
-          debug('websocket closed before onclose event');
+        } catch (e) {
         }
 
         --total || done();
@@ -5275,12 +5409,12 @@ WS.prototype.write = function(packets){
     })(packets[i]);
   }
 
-  function done(){
+  function done () {
     self.emit('flush');
 
     // fake drain
     // defer to next tick to allow Socket to clear writeBuffer
-    setTimeout(function(){
+    setTimeout(function () {
       self.writable = true;
       self.emit('drain');
     }, 0);
@@ -5293,7 +5427,7 @@ WS.prototype.write = function(packets){
  * @api private
  */
 
-WS.prototype.onClose = function(){
+WS.prototype.onClose = function () {
   Transport.prototype.onClose.call(this);
 };
 
@@ -5303,7 +5437,7 @@ WS.prototype.onClose = function(){
  * @api private
  */
 
-WS.prototype.doClose = function(){
+WS.prototype.doClose = function () {
   if (typeof this.ws !== 'undefined') {
     this.ws.close();
   }
@@ -5315,14 +5449,14 @@ WS.prototype.doClose = function(){
  * @api private
  */
 
-WS.prototype.uri = function(){
+WS.prototype.uri = function () {
   var query = this.query || {};
   var schema = this.secure ? 'wss' : 'ws';
   var port = '';
 
   // avoid port if default for schema
-  if (this.port && (('wss' == schema && this.port != 443)
-    || ('ws' == schema && this.port != 80))) {
+  if (this.port && (('wss' === schema && Number(this.port) !== 443) ||
+    ('ws' === schema && Number(this.port) !== 80))) {
     port = ':' + this.port;
   }
 
@@ -5354,16 +5488,18 @@ WS.prototype.uri = function(){
  * @api public
  */
 
-WS.prototype.check = function(){
+WS.prototype.check = function () {
   return !!WebSocket && !('__initialize' in WebSocket && this.name === WS.prototype.name);
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../transport":3,"component-inherit":15,"debug":16,"engine.io-parser":18,"parseqs":26,"ws":undefined,"yeast":29}],9:[function(_dereq_,module,exports){
+},{"../transport":3,"component-inherit":15,"engine.io-parser":16,"parseqs":24,"ws":undefined,"yeast":26}],9:[function(_dereq_,module,exports){
+(function (global){
 // browser shim for xmlhttprequest module
+
 var hasCORS = _dereq_('has-cors');
 
-module.exports = function(opts) {
+module.exports = function (opts) {
   var xdomain = opts.xdomain;
 
   // scheme must be same when usign XDomainRequest
@@ -5376,7 +5512,7 @@ module.exports = function(opts) {
 
   // XMLHttpRequest can be disabled on IE
   try {
-    if ('undefined' != typeof XMLHttpRequest && (!xdomain || hasCORS)) {
+    if ('undefined' !== typeof XMLHttpRequest && (!xdomain || hasCORS)) {
       return new XMLHttpRequest();
     }
   } catch (e) { }
@@ -5385,19 +5521,20 @@ module.exports = function(opts) {
   // because loading bar keeps flashing when using jsonp-polling
   // https://github.com/yujiosaka/socke.io-ie8-loading-example
   try {
-    if ('undefined' != typeof XDomainRequest && !xscheme && enablesXDR) {
+    if ('undefined' !== typeof XDomainRequest && !xscheme && enablesXDR) {
       return new XDomainRequest();
     }
   } catch (e) { }
 
   if (!xdomain) {
     try {
-      return new window[(['Active'].concat('Object').join('X'))]('Microsoft.XMLHTTP');
-    } catch(e) { }
+      return new global[['Active'].concat('Object').join('X')]('Microsoft.XMLHTTP');
+    } catch (e) { }
   }
-}
+};
 
-},{"has-cors":21}],10:[function(_dereq_,module,exports){
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"has-cors":20}],10:[function(_dereq_,module,exports){
 module.exports = after
 
 function after(count, callback, err_cb) {
@@ -5466,8 +5603,16 @@ module.exports = function(arraybuffer, start, end) {
  * Copyright (c) 2012 Niklas von Hertzen
  * Licensed under the MIT license.
  */
-(function(chars){
+(function(){
   "use strict";
+
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+  // Use a lookup table to find the index.
+  var lookup = new Uint8Array(256);
+  for (var i = 0; i < chars.length; i++) {
+    lookup[chars.charCodeAt(i)] = i;
+  }
 
   exports.encode = function(arraybuffer) {
     var bytes = new Uint8Array(arraybuffer),
@@ -5505,10 +5650,10 @@ module.exports = function(arraybuffer, start, end) {
     bytes = new Uint8Array(arraybuffer);
 
     for (i = 0; i < len; i+=4) {
-      encoded1 = chars.indexOf(base64[i]);
-      encoded2 = chars.indexOf(base64[i+1]);
-      encoded3 = chars.indexOf(base64[i+2]);
-      encoded4 = chars.indexOf(base64[i+3]);
+      encoded1 = lookup[base64.charCodeAt(i)];
+      encoded2 = lookup[base64.charCodeAt(i+1)];
+      encoded3 = lookup[base64.charCodeAt(i+2)];
+      encoded4 = lookup[base64.charCodeAt(i+3)];
 
       bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
       bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
@@ -5517,7 +5662,7 @@ module.exports = function(arraybuffer, start, end) {
 
     return arraybuffer;
   };
-})("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+})();
 
 },{}],13:[function(_dereq_,module,exports){
 (function (global){
@@ -5625,7 +5770,9 @@ module.exports = (function() {
  * Expose `Emitter`.
  */
 
-module.exports = Emitter;
+if (typeof module !== 'undefined') {
+  module.exports = Emitter;
+}
 
 /**
  * Initialize a new `Emitter`.
@@ -5664,7 +5811,7 @@ function mixin(obj) {
 Emitter.prototype.on =
 Emitter.prototype.addEventListener = function(event, fn){
   this._callbacks = this._callbacks || {};
-  (this._callbacks[event] = this._callbacks[event] || [])
+  (this._callbacks['$' + event] = this._callbacks['$' + event] || [])
     .push(fn);
   return this;
 };
@@ -5680,11 +5827,8 @@ Emitter.prototype.addEventListener = function(event, fn){
  */
 
 Emitter.prototype.once = function(event, fn){
-  var self = this;
-  this._callbacks = this._callbacks || {};
-
   function on() {
-    self.off(event, on);
+    this.off(event, on);
     fn.apply(this, arguments);
   }
 
@@ -5716,12 +5860,12 @@ Emitter.prototype.removeEventListener = function(event, fn){
   }
 
   // specific event
-  var callbacks = this._callbacks[event];
+  var callbacks = this._callbacks['$' + event];
   if (!callbacks) return this;
 
   // remove all handlers
   if (1 == arguments.length) {
-    delete this._callbacks[event];
+    delete this._callbacks['$' + event];
     return this;
   }
 
@@ -5748,7 +5892,7 @@ Emitter.prototype.removeEventListener = function(event, fn){
 Emitter.prototype.emit = function(event){
   this._callbacks = this._callbacks || {};
   var args = [].slice.call(arguments, 1)
-    , callbacks = this._callbacks[event];
+    , callbacks = this._callbacks['$' + event];
 
   if (callbacks) {
     callbacks = callbacks.slice(0);
@@ -5770,7 +5914,7 @@ Emitter.prototype.emit = function(event){
 
 Emitter.prototype.listeners = function(event){
   this._callbacks = this._callbacks || {};
-  return this._callbacks[event] || [];
+  return this._callbacks['$' + event] || [];
 };
 
 /**
@@ -5794,386 +5938,21 @@ module.exports = function(a, b){
   a.prototype.constructor = a;
 };
 },{}],16:[function(_dereq_,module,exports){
-
-/**
- * This is the web browser implementation of `debug()`.
- *
- * Expose `debug()` as the module.
- */
-
-exports = module.exports = _dereq_('./debug');
-exports.log = log;
-exports.formatArgs = formatArgs;
-exports.save = save;
-exports.load = load;
-exports.useColors = useColors;
-exports.storage = 'undefined' != typeof chrome
-               && 'undefined' != typeof chrome.storage
-                  ? chrome.storage.local
-                  : localstorage();
-
-/**
- * Colors.
- */
-
-exports.colors = [
-  'lightseagreen',
-  'forestgreen',
-  'goldenrod',
-  'dodgerblue',
-  'darkorchid',
-  'crimson'
-];
-
-/**
- * Currently only WebKit-based Web Inspectors, Firefox >= v31,
- * and the Firebug extension (any Firefox version) are known
- * to support "%c" CSS customizations.
- *
- * TODO: add a `localStorage` variable to explicitly enable/disable colors
- */
-
-function useColors() {
-  // is webkit? http://stackoverflow.com/a/16459606/376773
-  return ('WebkitAppearance' in document.documentElement.style) ||
-    // is firebug? http://stackoverflow.com/a/398120/376773
-    (window.console && (console.firebug || (console.exception && console.table))) ||
-    // is firefox >= v31?
-    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
-}
-
-/**
- * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
- */
-
-exports.formatters.j = function(v) {
-  return JSON.stringify(v);
-};
-
-
-/**
- * Colorize log arguments if enabled.
- *
- * @api public
- */
-
-function formatArgs() {
-  var args = arguments;
-  var useColors = this.useColors;
-
-  args[0] = (useColors ? '%c' : '')
-    + this.namespace
-    + (useColors ? ' %c' : ' ')
-    + args[0]
-    + (useColors ? '%c ' : ' ')
-    + '+' + exports.humanize(this.diff);
-
-  if (!useColors) return args;
-
-  var c = 'color: ' + this.color;
-  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
-
-  // the final "%c" is somewhat tricky, because there could be other
-  // arguments passed either before or after the %c, so we need to
-  // figure out the correct index to insert the CSS into
-  var index = 0;
-  var lastC = 0;
-  args[0].replace(/%[a-z%]/g, function(match) {
-    if ('%%' === match) return;
-    index++;
-    if ('%c' === match) {
-      // we only are interested in the *last* %c
-      // (the user may have provided their own)
-      lastC = index;
-    }
-  });
-
-  args.splice(lastC, 0, c);
-  return args;
-}
-
-/**
- * Invokes `this.account.logger.logDebug("",)` when available.
- * No-op when `console.log` is not a "function".
- *
- * @api public
- */
-
-function log() {
-  // this hackery is required for IE8/9, where
-  // the `console.log` function doesn't have 'apply'
-  return 'object' === typeof console
-    && console.log
-    && Function.prototype.apply.call(console.log, console, arguments);
-}
-
-/**
- * Save `namespaces`.
- *
- * @param {String} namespaces
- * @api private
- */
-
-function save(namespaces) {
-  try {
-    if (null == namespaces) {
-      exports.storage.removeItem('debug');
-    } else {
-      exports.storage.debug = namespaces;
-    }
-  } catch(e) {}
-}
-
-/**
- * Load `namespaces`.
- *
- * @return {String} returns the previously persisted debug modes
- * @api private
- */
-
-function load() {
-  var r;
-  try {
-    r = exports.storage.debug;
-  } catch(e) {}
-  return r;
-}
-
-/**
- * Enable namespaces listed in `localStorage.debug` initially.
- */
-
-exports.enable(load());
-
-/**
- * Localstorage attempts to return the localstorage.
- *
- * This is necessary because safari throws
- * when a user disables cookies/localstorage
- * and you attempt to access it.
- *
- * @return {LocalStorage}
- * @api private
- */
-
-function localstorage(){
-  try {
-    return window.localStorage;
-  } catch (e) {}
-}
-
-},{"./debug":17}],17:[function(_dereq_,module,exports){
-
-/**
- * This is the common logic for both the Node.js and web browser
- * implementations of `debug()`.
- *
- * Expose `debug()` as the module.
- */
-
-exports = module.exports = debug;
-exports.coerce = coerce;
-exports.disable = disable;
-exports.enable = enable;
-exports.enabled = enabled;
-exports.humanize = _dereq_('ms');
-
-/**
- * The currently active debug mode names, and names to skip.
- */
-
-exports.names = [];
-exports.skips = [];
-
-/**
- * Map of special "%n" handling functions, for the debug "format" argument.
- *
- * Valid key names are a single, lowercased letter, i.e. "n".
- */
-
-exports.formatters = {};
-
-/**
- * Previously assigned color.
- */
-
-var prevColor = 0;
-
-/**
- * Previous log timestamp.
- */
-
-var prevTime;
-
-/**
- * Select a color.
- *
- * @return {Number}
- * @api private
- */
-
-function selectColor() {
-  return exports.colors[prevColor++ % exports.colors.length];
-}
-
-/**
- * Create a debugger with the given `namespace`.
- *
- * @param {String} namespace
- * @return {Function}
- * @api public
- */
-
-function debug(namespace) {
-
-  // define the `disabled` version
-  function disabled() {
-  }
-  disabled.enabled = false;
-
-  // define the `enabled` version
-  function enabled() {
-
-    var self = enabled;
-
-    // set `diff` timestamp
-    var curr = +new Date();
-    var ms = curr - (prevTime || curr);
-    self.diff = ms;
-    self.prev = prevTime;
-    self.curr = curr;
-    prevTime = curr;
-
-    // add the `color` if not set
-    if (null == self.useColors) self.useColors = exports.useColors();
-    if (null == self.color && self.useColors) self.color = selectColor();
-
-    var args = Array.prototype.slice.call(arguments);
-
-    args[0] = exports.coerce(args[0]);
-
-    if ('string' !== typeof args[0]) {
-      // anything else let's inspect with %o
-      args = ['%o'].concat(args);
-    }
-
-    // apply any `formatters` transformations
-    var index = 0;
-    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
-      // if we encounter an escaped % then don't increase the array index
-      if (match === '%%') return match;
-      index++;
-      var formatter = exports.formatters[format];
-      if ('function' === typeof formatter) {
-        var val = args[index];
-        match = formatter.call(self, val);
-
-        // now we need to remove `args[index]` since it's inlined in the `format`
-        args.splice(index, 1);
-        index--;
-      }
-      return match;
-    });
-
-    if ('function' === typeof exports.formatArgs) {
-      args = exports.formatArgs.apply(self, args);
-    }
-    var logFn = enabled.log || exports.log || console.log.bind(console);
-    logFn.apply(self, args);
-  }
-  enabled.enabled = true;
-
-  var fn = exports.enabled(namespace) ? enabled : disabled;
-
-  fn.namespace = namespace;
-
-  return fn;
-}
-
-/**
- * Enables a debug mode by namespaces. This can include modes
- * separated by a colon and wildcards.
- *
- * @param {String} namespaces
- * @api public
- */
-
-function enable(namespaces) {
-  exports.save(namespaces);
-
-  var split = (namespaces || '').split(/[\s,]+/);
-  var len = split.length;
-
-  for (var i = 0; i < len; i++) {
-    if (!split[i]) continue; // ignore empty strings
-    namespaces = split[i].replace(/\*/g, '.*?');
-    if (namespaces[0] === '-') {
-      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
-    } else {
-      exports.names.push(new RegExp('^' + namespaces + '$'));
-    }
-  }
-}
-
-/**
- * Disable debug output.
- *
- * @api public
- */
-
-function disable() {
-  exports.enable('');
-}
-
-/**
- * Returns true if the given mode name is enabled, false otherwise.
- *
- * @param {String} name
- * @return {Boolean}
- * @api public
- */
-
-function enabled(name) {
-  var i, len;
-  for (i = 0, len = exports.skips.length; i < len; i++) {
-    if (exports.skips[i].test(name)) {
-      return false;
-    }
-  }
-  for (i = 0, len = exports.names.length; i < len; i++) {
-    if (exports.names[i].test(name)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/**
- * Coerce `val`.
- *
- * @param {Mixed} val
- * @return {Mixed}
- * @api private
- */
-
-function coerce(val) {
-  if (val instanceof Error) return val.stack || val.message;
-  return val;
-}
-
-},{"ms":24}],18:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Module dependencies.
  */
 
 var keys = _dereq_('./keys');
-var hasBinary = _dereq_('has-binary');
+var hasBinary = _dereq_('has-binary2');
 var sliceBuffer = _dereq_('arraybuffer.slice');
-var base64encoder = _dereq_('base64-arraybuffer');
 var after = _dereq_('after');
-var utf8 = _dereq_('utf8');
+var utf8 = _dereq_('./utf8');
+
+var base64encoder;
+if (global && global.ArrayBuffer) {
+  base64encoder = _dereq_('base64-arraybuffer');
+}
 
 /**
  * Check if we are running an android browser. That requires us to use
@@ -6182,7 +5961,7 @@ var utf8 = _dereq_('utf8');
  * http://ghinda.net/jpeg-blob-ajax-android/
  */
 
-var isAndroid = navigator.userAgent.match(/Android/i);
+var isAndroid = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent);
 
 /**
  * Check if we are running in PhantomJS.
@@ -6190,7 +5969,7 @@ var isAndroid = navigator.userAgent.match(/Android/i);
  * https://github.com/ariya/phantomjs/issues/11395
  * @type boolean
  */
-var isPhantomJS = /PhantomJS/i.test(navigator.userAgent);
+var isPhantomJS = typeof navigator !== 'undefined' && /PhantomJS/i.test(navigator.userAgent);
 
 /**
  * When true, avoids using Blobs to encode payloads.
@@ -6249,12 +6028,12 @@ var Blob = _dereq_('blob');
  */
 
 exports.encodePacket = function (packet, supportsBinary, utf8encode, callback) {
-  if ('function' == typeof supportsBinary) {
+  if (typeof supportsBinary === 'function') {
     callback = supportsBinary;
     supportsBinary = false;
   }
 
-  if ('function' == typeof utf8encode) {
+  if (typeof utf8encode === 'function') {
     callback = utf8encode;
     utf8encode = null;
   }
@@ -6279,7 +6058,7 @@ exports.encodePacket = function (packet, supportsBinary, utf8encode, callback) {
 
   // data fragment is optional
   if (undefined !== packet.data) {
-    encoded += utf8encode ? utf8.encode(String(packet.data)) : String(packet.data);
+    encoded += utf8encode ? utf8.encode(String(packet.data), { strict: false }) : String(packet.data);
   }
 
   return callback('' + encoded);
@@ -6384,16 +6163,18 @@ exports.encodeBase64Packet = function(packet, callback) {
  */
 
 exports.decodePacket = function (data, binaryType, utf8decode) {
+  if (data === undefined) {
+    return err;
+  }
   // String data
-  if (typeof data == 'string' || data === undefined) {
-    if (data.charAt(0) == 'b') {
+  if (typeof data === 'string') {
+    if (data.charAt(0) === 'b') {
       return exports.decodeBase64Packet(data.substr(1), binaryType);
     }
 
     if (utf8decode) {
-      try {
-        data = utf8.decode(data);
-      } catch (e) {
+      data = tryDecode(data);
+      if (data === false) {
         return err;
       }
     }
@@ -6419,6 +6200,15 @@ exports.decodePacket = function (data, binaryType, utf8decode) {
   return { type: packetslist[type], data: rest };
 };
 
+function tryDecode(data) {
+  try {
+    data = utf8.decode(data, { strict: false });
+  } catch (e) {
+    return false;
+  }
+  return data;
+}
+
 /**
  * Decodes a packet encoded in a base64 string
  *
@@ -6428,7 +6218,7 @@ exports.decodePacket = function (data, binaryType, utf8decode) {
 
 exports.decodeBase64Packet = function(msg, binaryType) {
   var type = packetslist[msg.charAt(0)];
-  if (!global.ArrayBuffer) {
+  if (!base64encoder) {
     return { type: type, data: { base64: true, data: msg.substr(1) } };
   }
 
@@ -6458,7 +6248,7 @@ exports.decodeBase64Packet = function(msg, binaryType) {
  */
 
 exports.encodePayload = function (packets, supportsBinary, callback) {
-  if (typeof supportsBinary == 'function') {
+  if (typeof supportsBinary === 'function') {
     callback = supportsBinary;
     supportsBinary = null;
   }
@@ -6482,7 +6272,7 @@ exports.encodePayload = function (packets, supportsBinary, callback) {
   }
 
   function encodeOne(packet, doneCallback) {
-    exports.encodePacket(packet, !isBinary ? false : supportsBinary, true, function(message) {
+    exports.encodePacket(packet, !isBinary ? false : supportsBinary, false, function(message) {
       doneCallback(null, setLengthHeader(message));
     });
   }
@@ -6520,8 +6310,8 @@ function map(ary, each, done) {
  * @api public
  */
 
-exports.decodePayload = function (data, binaryType, callback) {
-  if (typeof data != 'string') {
+exports.decodePayload = function (data, binaryType, utf8decode, callback) {
+  if (typeof data !== 'string') {
     return exports.decodePayloadAsBinary(data, binaryType, callback);
   }
 
@@ -6530,52 +6320,64 @@ exports.decodePayload = function (data, binaryType, callback) {
     binaryType = null;
   }
 
+  if (typeof utf8decode === 'function') {
+    callback = utf8decode;
+    utf8decode = null;
+  }
+
   var packet;
-  if (data == '') {
+  if (data === '') {
     // parser error - ignoring payload
     return callback(err, 0, 1);
   }
 
-  var length = ''
-    , n, msg;
+  if (utf8decode) {
+    data = tryDecode(data);
+    if (data === false) {
+      return callback(err, 0, 1);
+    }
+  }
+
+  var length = '', n, msg;
 
   for (var i = 0, l = data.length; i < l; i++) {
     var chr = data.charAt(i);
 
-    if (':' != chr) {
+    if (chr !== ':') {
       length += chr;
-    } else {
-      if ('' == length || (length != (n = Number(length)))) {
-        // parser error - ignoring payload
-        return callback(err, 0, 1);
-      }
-
-      msg = data.substr(i + 1, n);
-
-      if (length != msg.length) {
-        // parser error - ignoring payload
-        return callback(err, 0, 1);
-      }
-
-      if (msg.length) {
-        packet = exports.decodePacket(msg, binaryType, true);
-
-        if (err.type == packet.type && err.data == packet.data) {
-          // parser error in individual packet - ignoring payload
-          return callback(err, 0, 1);
-        }
-
-        var ret = callback(packet, i + n, l);
-        if (false === ret) return;
-      }
-
-      // advance cursor
-      i += n;
-      length = '';
+      continue;
     }
+
+    if (length === '' || (length != (n = Number(length)))) {
+      // parser error - ignoring payload
+      return callback(err, 0, 1);
+    }
+
+    msg = data.substr(i + 1, n);
+
+    if (length != msg.length) {
+      // parser error - ignoring payload
+      return callback(err, 0, 1);
+    }
+
+    if (msg.length) {
+      packet = exports.decodePacket(msg, binaryType, false);
+
+      if (err.type === packet.type && err.data === packet.data) {
+        // parser error in individual packet - ignoring payload
+        return callback(err, 0, 1);
+      }
+
+      var ret = callback(packet, i + n, l);
+      if (false === ret) return;
+    }
+
+    // advance cursor
+    i += n;
+    length = '';
   }
 
-  if (length != '') {
+  if (length !== '') {
     // parser error - ignoring payload
     return callback(err, 0, 1);
   }
@@ -6713,24 +6515,21 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
   var bufferTail = data;
   var buffers = [];
 
-  var numberTooLong = false;
   while (bufferTail.byteLength > 0) {
     var tailArray = new Uint8Array(bufferTail);
     var isString = tailArray[0] === 0;
     var msgLength = '';
 
     for (var i = 1; ; i++) {
-      if (tailArray[i] == 255) break;
+      if (tailArray[i] === 255) break;
 
+      // 310 = char length of Number.MAX_VALUE
       if (msgLength.length > 310) {
-        numberTooLong = true;
-        break;
+        return callback(err, 0, 1);
       }
 
       msgLength += tailArray[i];
     }
-
-    if(numberTooLong) return callback(err, 0, 1);
 
     bufferTail = sliceBuffer(bufferTail, 2 + msgLength.length);
     msgLength = parseInt(msgLength);
@@ -6760,7 +6559,7 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./keys":19,"after":10,"arraybuffer.slice":11,"base64-arraybuffer":12,"blob":13,"has-binary":20,"utf8":28}],19:[function(_dereq_,module,exports){
+},{"./keys":17,"./utf8":18,"after":10,"arraybuffer.slice":11,"base64-arraybuffer":12,"blob":13,"has-binary2":19}],17:[function(_dereq_,module,exports){
 
 /**
  * Gets the keys for an object.
@@ -6781,348 +6580,9 @@ module.exports = Object.keys || function keys (obj){
   return arr;
 };
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 (function (global){
-
-/*
- * Module requirements.
- */
-
-var isArray = _dereq_('isarray');
-
-/**
- * Module exports.
- */
-
-module.exports = hasBinary;
-
-/**
- * Checks for binary data.
- *
- * Right now only Buffer and ArrayBuffer are supported..
- *
- * @param {Object} anything
- * @api public
- */
-
-function hasBinary(data) {
-
-  function _hasBinary(obj) {
-    if (!obj) return false;
-
-    if ( (global.Buffer && global.Buffer.isBuffer(obj)) ||
-         (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
-         (global.Blob && obj instanceof Blob) ||
-         (global.File && obj instanceof File)
-        ) {
-      return true;
-    }
-
-    if (isArray(obj)) {
-      for (var i = 0; i < obj.length; i++) {
-          if (_hasBinary(obj[i])) {
-              return true;
-          }
-      }
-    } else if (obj && 'object' == typeof obj) {
-      if (obj.toJSON) {
-        obj = obj.toJSON();
-      }
-
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  return _hasBinary(data);
-}
-
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"isarray":23}],21:[function(_dereq_,module,exports){
-
-/**
- * Module exports.
- *
- * Logic borrowed from Modernizr:
- *
- *   - https://github.com/Modernizr/Modernizr/blob/master/feature-detects/cors.js
- */
-
-try {
-  module.exports = typeof XMLHttpRequest !== 'undefined' &&
-    'withCredentials' in new XMLHttpRequest();
-} catch (err) {
-  // if XMLHttp support is disabled in IE then it will throw
-  // when trying to create
-  module.exports = false;
-}
-
-},{}],22:[function(_dereq_,module,exports){
-
-var indexOf = [].indexOf;
-
-module.exports = function(arr, obj){
-  if (indexOf) return arr.indexOf(obj);
-  for (var i = 0; i < arr.length; ++i) {
-    if (arr[i] === obj) return i;
-  }
-  return -1;
-};
-},{}],23:[function(_dereq_,module,exports){
-module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-},{}],24:[function(_dereq_,module,exports){
-/**
- * Helpers.
- */
-
-var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var y = d * 365.25;
-
-/**
- * Parse or format the given `val`.
- *
- * Options:
- *
- *  - `long` verbose formatting [false]
- *
- * @param {String|Number} val
- * @param {Object} options
- * @return {String|Number}
- * @api public
- */
-
-module.exports = function(val, options){
-  options = options || {};
-  if ('string' == typeof val) return parse(val);
-  return options.long
-    ? long(val)
-    : short(val);
-};
-
-/**
- * Parse the given `str` and return milliseconds.
- *
- * @param {String} str
- * @return {Number}
- * @api private
- */
-
-function parse(str) {
-  str = '' + str;
-  if (str.length > 10000) return;
-  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
-  if (!match) return;
-  var n = parseFloat(match[1]);
-  var type = (match[2] || 'ms').toLowerCase();
-  switch (type) {
-    case 'years':
-    case 'year':
-    case 'yrs':
-    case 'yr':
-    case 'y':
-      return n * y;
-    case 'days':
-    case 'day':
-    case 'd':
-      return n * d;
-    case 'hours':
-    case 'hour':
-    case 'hrs':
-    case 'hr':
-    case 'h':
-      return n * h;
-    case 'minutes':
-    case 'minute':
-    case 'mins':
-    case 'min':
-    case 'm':
-      return n * m;
-    case 'seconds':
-    case 'second':
-    case 'secs':
-    case 'sec':
-    case 's':
-      return n * s;
-    case 'milliseconds':
-    case 'millisecond':
-    case 'msecs':
-    case 'msec':
-    case 'ms':
-      return n;
-  }
-}
-
-/**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function short(ms) {
-  if (ms >= d) return Math.round(ms / d) + 'd';
-  if (ms >= h) return Math.round(ms / h) + 'h';
-  if (ms >= m) return Math.round(ms / m) + 'm';
-  if (ms >= s) return Math.round(ms / s) + 's';
-  return ms + 'ms';
-}
-
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function long(ms) {
-  return plural(ms, d, 'day')
-    || plural(ms, h, 'hour')
-    || plural(ms, m, 'minute')
-    || plural(ms, s, 'second')
-    || ms + ' ms';
-}
-
-/**
- * Pluralization helper.
- */
-
-function plural(ms, n, name) {
-  if (ms < n) return;
-  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
-  return Math.ceil(ms / n) + ' ' + name + 's';
-}
-
-},{}],25:[function(_dereq_,module,exports){
-(function (global){
-/**
- * JSON parse.
- *
- * @see Based on jQuery#parseJSON (MIT) and JSON2
- * @api private
- */
-
-var rvalidchars = /^[\],:{}\s]*$/;
-var rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
-var rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
-var rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
-var rtrimLeft = /^\s+/;
-var rtrimRight = /\s+$/;
-
-module.exports = function parsejson(data) {
-  if ('string' != typeof data || !data) {
-    return null;
-  }
-
-  data = data.replace(rtrimLeft, '').replace(rtrimRight, '');
-
-  // Attempt to parse using the native JSON parser first
-  if (global.JSON && JSON.parse) {
-    return JSON.parse(data);
-  }
-
-  if (rvalidchars.test(data.replace(rvalidescape, '@')
-      .replace(rvalidtokens, ']')
-      .replace(rvalidbraces, ''))) {
-    return (new Function('return ' + data))();
-  }
-};
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],26:[function(_dereq_,module,exports){
-/**
- * Compiles a querystring
- * Returns string representation of the object
- *
- * @param {Object}
- * @api private
- */
-
-exports.encode = function (obj) {
-  var str = '';
-
-  for (var i in obj) {
-    if (obj.hasOwnProperty(i)) {
-      if (str.length) str += '&';
-      str += encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]);
-    }
-  }
-
-  return str;
-};
-
-/**
- * Parses a simple querystring into an object
- *
- * @param {String} qs
- * @api private
- */
-
-exports.decode = function(qs){
-  var qry = {};
-  var pairs = qs.split('&');
-  for (var i = 0, l = pairs.length; i < l; i++) {
-    var pair = pairs[i].split('=');
-    qry[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-  }
-  return qry;
-};
-
-},{}],27:[function(_dereq_,module,exports){
-/**
- * Parses an URI
- *
- * @author Steven Levithan <stevenlevithan.com> (MIT license)
- * @api private
- */
-
-var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
-
-var parts = [
-    'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'
-];
-
-module.exports = function parseuri(str) {
-    var src = str,
-        b = str.indexOf('['),
-        e = str.indexOf(']');
-
-    if (b != -1 && e != -1) {
-        str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ';') + str.substring(e, str.length);
-    }
-
-    var m = re.exec(str || ''),
-        uri = {},
-        i = 14;
-
-    while (i--) {
-        uri[parts[i]] = m[i] || '';
-    }
-
-    if (b != -1 && e != -1) {
-        uri.source = src;
-        uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ':');
-        uri.authority = uri.authority.replace('[', '').replace(']', '').replace(/;/g, ':');
-        uri.ipv6uri = true;
-    }
-
-    return uri;
-};
-
-},{}],28:[function(_dereq_,module,exports){
-(function (global){
-/*! https://mths.be/utf8js v2.0.0 by @mathias */
+/*! https://mths.be/utf8js v2.1.2 by @mathias */
 ;(function(root) {
 
 	// Detect free variables `exports`
@@ -7188,13 +6648,17 @@ module.exports = function parseuri(str) {
 		return output;
 	}
 
-	function checkScalarValue(codePoint) {
+	function checkScalarValue(codePoint, strict) {
 		if (codePoint >= 0xD800 && codePoint <= 0xDFFF) {
-			throw Error(
-				'Lone surrogate U+' + codePoint.toString(16).toUpperCase() +
-				' is not a scalar value'
-			);
+			if (strict) {
+				throw Error(
+					'Lone surrogate U+' + codePoint.toString(16).toUpperCase() +
+					' is not a scalar value'
+				);
+			}
+			return false;
 		}
+		return true;
 	}
 	/*--------------------------------------------------------------------------*/
 
@@ -7202,7 +6666,7 @@ module.exports = function parseuri(str) {
 		return stringFromCharCode(((codePoint >> shift) & 0x3F) | 0x80);
 	}
 
-	function encodeCodePoint(codePoint) {
+	function encodeCodePoint(codePoint, strict) {
 		if ((codePoint & 0xFFFFFF80) == 0) { // 1-byte sequence
 			return stringFromCharCode(codePoint);
 		}
@@ -7211,7 +6675,9 @@ module.exports = function parseuri(str) {
 			symbol = stringFromCharCode(((codePoint >> 6) & 0x1F) | 0xC0);
 		}
 		else if ((codePoint & 0xFFFF0000) == 0) { // 3-byte sequence
-			checkScalarValue(codePoint);
+			if (!checkScalarValue(codePoint, strict)) {
+				codePoint = 0xFFFD;
+			}
 			symbol = stringFromCharCode(((codePoint >> 12) & 0x0F) | 0xE0);
 			symbol += createByte(codePoint, 6);
 		}
@@ -7224,7 +6690,10 @@ module.exports = function parseuri(str) {
 		return symbol;
 	}
 
-	function utf8encode(string) {
+	function utf8encode(string, opts) {
+		opts = opts || {};
+		var strict = false !== opts.strict;
+
 		var codePoints = ucs2decode(string);
 		var length = codePoints.length;
 		var index = -1;
@@ -7232,7 +6701,7 @@ module.exports = function parseuri(str) {
 		var byteString = '';
 		while (++index < length) {
 			codePoint = codePoints[index];
-			byteString += encodeCodePoint(codePoint);
+			byteString += encodeCodePoint(codePoint, strict);
 		}
 		return byteString;
 	}
@@ -7255,7 +6724,7 @@ module.exports = function parseuri(str) {
 		throw Error('Invalid continuation byte');
 	}
 
-	function decodeSymbol() {
+	function decodeSymbol(strict) {
 		var byte1;
 		var byte2;
 		var byte3;
@@ -7281,7 +6750,7 @@ module.exports = function parseuri(str) {
 
 		// 2-byte sequence
 		if ((byte1 & 0xE0) == 0xC0) {
-			var byte2 = readContinuationByte();
+			byte2 = readContinuationByte();
 			codePoint = ((byte1 & 0x1F) << 6) | byte2;
 			if (codePoint >= 0x80) {
 				return codePoint;
@@ -7296,8 +6765,7 @@ module.exports = function parseuri(str) {
 			byte3 = readContinuationByte();
 			codePoint = ((byte1 & 0x0F) << 12) | (byte2 << 6) | byte3;
 			if (codePoint >= 0x0800) {
-				checkScalarValue(codePoint);
-				return codePoint;
+				return checkScalarValue(codePoint, strict) ? codePoint : 0xFFFD;
 			} else {
 				throw Error('Invalid continuation byte');
 			}
@@ -7308,7 +6776,7 @@ module.exports = function parseuri(str) {
 			byte2 = readContinuationByte();
 			byte3 = readContinuationByte();
 			byte4 = readContinuationByte();
-			codePoint = ((byte1 & 0x0F) << 0x12) | (byte2 << 0x0C) |
+			codePoint = ((byte1 & 0x07) << 0x12) | (byte2 << 0x0C) |
 				(byte3 << 0x06) | byte4;
 			if (codePoint >= 0x010000 && codePoint <= 0x10FFFF) {
 				return codePoint;
@@ -7321,13 +6789,16 @@ module.exports = function parseuri(str) {
 	var byteArray;
 	var byteCount;
 	var byteIndex;
-	function utf8decode(byteString) {
+	function utf8decode(byteString, opts) {
+		opts = opts || {};
+		var strict = false !== opts.strict;
+
 		byteArray = ucs2decode(byteString);
 		byteCount = byteArray.length;
 		byteIndex = 0;
 		var codePoints = [];
 		var tmp;
-		while ((tmp = decodeSymbol()) !== false) {
+		while ((tmp = decodeSymbol(strict)) !== false) {
 			codePoints.push(tmp);
 		}
 		return ucs2encode(codePoints);
@@ -7336,7 +6807,7 @@ module.exports = function parseuri(str) {
 	/*--------------------------------------------------------------------------*/
 
 	var utf8 = {
-		'version': '2.0.0',
+		'version': '2.1.2',
 		'encode': utf8encode,
 		'decode': utf8decode
 	};
@@ -7358,7 +6829,221 @@ module.exports = function parseuri(str) {
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],29:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
+(function (global){
+/* global Blob File */
+
+/*
+ * Module requirements.
+ */
+
+var isArray = _dereq_('isarray');
+
+/**
+ * Module exports.
+ */
+
+module.exports = hasBinary;
+
+/**
+ * Checks for binary data.
+ *
+ * Supports Buffer, ArrayBuffer, Blob and File.
+ *
+ * @param {Object} anything
+ * @api public
+ */
+
+function hasBinary (obj) {
+  if (!obj || typeof obj !== 'object') {
+    return false;
+  }
+
+  if (isArray(obj)) {
+    for (var i = 0, l = obj.length; i < l; i++) {
+      if (hasBinary(obj[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if ((typeof global.Buffer === 'function' && global.Buffer.isBuffer && global.Buffer.isBuffer(obj)) ||
+     (typeof global.ArrayBuffer === 'function' && obj instanceof ArrayBuffer) ||
+     (typeof global.Blob === 'function' && obj instanceof Blob) ||
+     (typeof global.File === 'function' && obj instanceof File)
+    ) {
+    return true;
+  }
+
+  // see: https://github.com/Automattic/has-binary/pull/4
+  if (obj.toJSON && typeof obj.toJSON === 'function' && arguments.length === 1) {
+    return hasBinary(obj.toJSON(), true);
+  }
+
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key) && hasBinary(obj[key])) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"isarray":22}],20:[function(_dereq_,module,exports){
+
+/**
+ * Module exports.
+ *
+ * Logic borrowed from Modernizr:
+ *
+ *   - https://github.com/Modernizr/Modernizr/blob/master/feature-detects/cors.js
+ */
+
+try {
+  module.exports = typeof XMLHttpRequest !== 'undefined' &&
+    'withCredentials' in new XMLHttpRequest();
+} catch (err) {
+  // if XMLHttp support is disabled in IE then it will throw
+  // when trying to create
+  module.exports = false;
+}
+
+},{}],21:[function(_dereq_,module,exports){
+
+var indexOf = [].indexOf;
+
+module.exports = function(arr, obj){
+  if (indexOf) return arr.indexOf(obj);
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) return i;
+  }
+  return -1;
+};
+},{}],22:[function(_dereq_,module,exports){
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+},{}],23:[function(_dereq_,module,exports){
+(function (global){
+/**
+ * JSON parse.
+ *
+ * @see Based on jQuery#parseJSON (MIT) and JSON2
+ * @api private
+ */
+
+var rvalidchars = /^[\],:{}\s]*$/;
+var rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+var rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+var rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
+var rtrimLeft = /^\s+/;
+var rtrimRight = /\s+$/;
+
+module.exports = function parsejson(data) {
+  if ('string' != typeof data || !data) {
+    return null;
+  }
+
+  data = data.replace(rtrimLeft, '').replace(rtrimRight, '');
+
+  // Attempt to parse using the native JSON parser first
+  if (global.JSON && JSON.parse) {
+    return JSON.parse(data);
+  }
+
+  if (rvalidchars.test(data.replace(rvalidescape, '@')
+      .replace(rvalidtokens, ']')
+      .replace(rvalidbraces, ''))) {
+    return (new Function('return ' + data))();
+  }
+};
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],24:[function(_dereq_,module,exports){
+/**
+ * Compiles a querystring
+ * Returns string representation of the object
+ *
+ * @param {Object}
+ * @api private
+ */
+
+exports.encode = function (obj) {
+  var str = '';
+
+  for (var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      if (str.length) str += '&';
+      str += encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]);
+    }
+  }
+
+  return str;
+};
+
+/**
+ * Parses a simple querystring into an object
+ *
+ * @param {String} qs
+ * @api private
+ */
+
+exports.decode = function(qs){
+  var qry = {};
+  var pairs = qs.split('&');
+  for (var i = 0, l = pairs.length; i < l; i++) {
+    var pair = pairs[i].split('=');
+    qry[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+  }
+  return qry;
+};
+
+},{}],25:[function(_dereq_,module,exports){
+/**
+ * Parses an URI
+ *
+ * @author Steven Levithan <stevenlevithan.com> (MIT license)
+ * @api private
+ */
+
+var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+
+var parts = [
+    'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'
+];
+
+module.exports = function parseuri(str) {
+    var src = str,
+        b = str.indexOf('['),
+        e = str.indexOf(']');
+
+    if (b != -1 && e != -1) {
+        str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ';') + str.substring(e, str.length);
+    }
+
+    var m = re.exec(str || ''),
+        uri = {},
+        i = 14;
+
+    while (i--) {
+        uri[parts[i]] = m[i] || '';
+    }
+
+    if (b != -1 && e != -1) {
+        uri.source = src;
+        uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ':');
+        uri.authority = uri.authority.replace('[', '').replace(']', '').replace(/;/g, ':');
+        uri.ipv6uri = true;
+    }
+
+    return uri;
+};
+
+},{}],26:[function(_dereq_,module,exports){
 'use strict';
 
 var alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('')
@@ -7428,11 +7113,11 @@ yeast.encode = encode;
 yeast.decode = decode;
 module.exports = yeast;
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 
-module.exports =  _dereq_('./lib/');
+module.exports = _dereq_('./lib/index');
 
-},{"./lib/":1}]},{},[30])(30)
+},{"./lib/index":1}]},{},[27])(27)
 });
 }
 ]);

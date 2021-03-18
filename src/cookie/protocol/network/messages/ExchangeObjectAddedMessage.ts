@@ -1,10 +1,11 @@
-import ObjectItem from "@protocol/network/types/ObjectItem";
-import ExchangeObjectMessage from "./ExchangeObjectMessage";
+import ExchangeObjectMessage from "@/protocol/network/messages/ExchangeObjectMessage";
+import ObjectItem from "@/protocol/network/types/ObjectItem";
+
 export default class ExchangeObjectAddedMessage extends ExchangeObjectMessage {
-  public objectPublic: ObjectItem;
+  public object: ObjectItem;
+
   constructor(remote = false, object: ObjectItem) {
     super(remote);
-    this.objectPublic = object;
-
+    this.object = object;
   }
 }

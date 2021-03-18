@@ -1,15 +1,15 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class SaveZaapAction extends ScriptAction {
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise((resolve, reject) => {
-      if (account.game.managers.teleportables.saveZaap()) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+  public _name: string = "SaveZaapAction";
+
+  public async process(account: Account): Promise<ScriptActionResults> {
+    if (account.game.managers.teleportables.saveZaap()) {
+      return ScriptAction.processingResult();
+    }
+    account.scripts.stopScript(LanguageManager.trans("noZaap"));
+    return ScriptAction.failedResult();
   }
 }

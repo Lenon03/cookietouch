@@ -1,20 +1,22 @@
-import Account from "@account";
-import BidAPI from "./BidAPI";
-import CharacterAPI from "./CharacterAPI";
-import ExchangeAPI from "./ExchangeAPI";
-import FightAPI from "./FightAPI";
-import GatherAPI from "./GatherAPI";
-import InventoryAPI from "./InventoryAPI";
-import JobsAPI from "./JobsAPI";
-import MapAPI from "./MapAPI";
-import MountAPI from "./MountAPI";
-import NpcAPI from "./NpcAPI";
-import StorageAPI from "./StorageAPI";
+import Account from "@/account";
+import BidAPI from "@/scripts/api/BidAPI";
+import CharacterAPI from "@/scripts/api/CharacterAPI";
+import ExchangeAPI from "@/scripts/api/ExchangeAPI";
+import FightAPI from "@/scripts/api/FightAPI";
+import GatherAPI from "@/scripts/api/GatherAPI";
+import InventoryAPI from "@/scripts/api/InventoryAPI";
+import JobsAPI from "@/scripts/api/JobsAPI";
+import MapAPI from "@/scripts/api/MapAPI";
+import MountAPI from "@/scripts/api/MountAPI";
+import NpcAPI from "@/scripts/api/NpcAPI";
+import StorageAPI from "@/scripts/api/StorageAPI";
+import CraftAPI from "@/scripts/api/CraftAPI";
 
 export default class API {
-
   public bid: BidAPI;
   public character: CharacterAPI;
+
+  public craft: CraftAPI;
   public exchange: ExchangeAPI;
   public fight: FightAPI;
   public gather: GatherAPI;
@@ -28,6 +30,7 @@ export default class API {
   constructor(account: Account) {
     this.bid = new BidAPI(account);
     this.character = new CharacterAPI(account);
+    this.craft = new CraftAPI(account);
     this.exchange = new ExchangeAPI(account);
     this.fight = new FightAPI(account);
     this.gather = new GatherAPI(account);

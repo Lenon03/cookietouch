@@ -1,6 +1,6 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class AlignmentEffect extends Data {
-    public characteristicId: number;
-    public descriptionId: string;
+  public characteristicId: number = 0;
+  public descriptionId: string = "";
 }

@@ -1,14 +1,21 @@
-import SubEntity from "./SubEntity";
+import SubEntity from "@/protocol/network/types/SubEntity";
+import Type from "@/protocol/network/types/Type";
 
-export default class EntityLook {
+export default class EntityLook extends Type {
   public skins: number[];
   public indexedColors: number[];
   public scales: number[];
   public subEntities: SubEntity[];
   public bonesId: number;
 
-  constructor(bonesId = 0, skins: number[] = null, indexedColors: number[] = null,
-              scales: number[] = null, subEntities: SubEntity[] = null) {
+  constructor(
+    bonesId = 0,
+    skins: number[] = [],
+    indexedColors: number[] = [],
+    scales: number[] = [],
+    subEntities: SubEntity[] = []
+  ) {
+    super();
     this.bonesId = bonesId;
     this.skins = skins;
     this.indexedColors = indexedColors;

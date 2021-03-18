@@ -1,11 +1,13 @@
-import Message from "./Message";
-export default class ExchangeReplyTaxVendorMessage extends Message {
-public objectValue: number;
-public totalTaxValue: number;
-constructor(objectValue = 0, totalTaxValue = 0) {
-super();
-this.objectValue = objectValue;
-this.totalTaxValue = totalTaxValue;
+import Message from "@/protocol/network/messages/Message";
 
-}
+export default class ExchangeReplyTaxVendorMessage extends Message {
+  public objectValue: number;
+  public totalTaxValue: number;
+
+  constructor(objectValue = 0, totalTaxValue = 0) {
+    super();
+    this.objectValue = objectValue;
+    this.totalTaxValue = totalTaxValue;
+
+  }
 }

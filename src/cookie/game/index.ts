@@ -1,20 +1,22 @@
-import Account from "@account";
-import IClearable from "@utils/IClearable";
-import Bid from "./bid";
-import Character from "./character";
-import Chat from "./chat";
-import Exchange from "./exchange";
-import Fight from "./fight";
-import Managers from "./managers";
-import Map from "./map";
-import Npcs from "./npcs";
-import Server from "./server";
-import Storage from "./storage";
+import Account from "@/account";
+import Bid from "@/game/bid";
+import Character from "@/game/character";
+import Craft from "@/game/craft";
+import Chat from "@/game/chat";
+import Exchange from "@/game/exchange";
+import Fight from "@/game/fight";
+import Managers from "@/game/managers";
+import Map from "@/game/map";
+import Npcs from "@/game/npcs";
+import Server from "@/game/server";
+import Storage from "@/game/storage";
+import IClearable from "@/utils/IClearable";
 
 export default class Game implements IClearable {
-
   public managers: Managers;
   public character: Character;
+
+  public craft: Craft;
   public map: Map;
   public chat: Chat;
   public server: Server;
@@ -27,6 +29,7 @@ export default class Game implements IClearable {
   constructor(account: Account) {
     this.server = new Server(account);
     this.character = new Character(account);
+    this.craft = new Craft(account);
     this.map = new Map(account);
     this.fight = new Fight(account);
     this.managers = new Managers(account, this.map);

@@ -1,22 +1,20 @@
 {
   "extends": "./node_modules/electron-webpack/tsconfig-base.json",
   "compilerOptions": {
+    "module": "commonjs",
     "target": "esnext",
+    "strict": true,
     "removeComments": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "jsx": "react",
-    "strict": false,
-    "noUnusedLocals": false,
-    "noImplicitAny": false,
+    "sourceRoot": "/",
     "baseUrl": "./src",
     "paths": {
       "@/*": ["cookie/*"],
-      "@account": ["cookie/account"],
-      "@account/*": ["cookie/account/*"],
-      "@game/*": ["cookie/game/*"],
-      "@protocol/*": ["cookie/protocol/*"],
-      "@utils/*": ["cookie/utils/*"],
+      "@main/*": ["main/*"],
       "@logger": ["cookie/core/logger"],
-      "@logger/*": ["cookie/core/logger/*"]
+      "@renderer/*": ["renderer/*"]
     }
   }
 }

@@ -1,4 +1,6 @@
-export default class ActorRestrictionsInformations {
+import Type from "@/protocol/network/types/Type";
+
+export default class ActorRestrictionsInformations extends Type {
   public cantBeAggressed: boolean;
   public cantBeChallenged: boolean;
   public cantTrade: boolean;
@@ -21,13 +23,30 @@ export default class ActorRestrictionsInformations {
   public cantAttackMonster: boolean;
   public cantWalk8Directions: boolean;
 
-  constructor(cantBeAggressed = false, cantBeChallenged = false, cantTrade = false,
-              cantBeAttackedByMutant = false, cantRun = false, forceSlowWalk = false,
-              cantMinimize = false, cantMove = false, cantAggress = false,
-              cantChallenge = false, cantExchange = false, cantAttack = false,
-              cantChat = false, cantBeMerchant = false, cantUseObject = false,
-              cantUseTaxCollector = false, cantUseInteractive = false, cantSpeakToNpc = false,
-              cantChangeZone = false, cantAttackMonster = false, cantWalk8Directions = false) {
+  constructor(
+    cantBeAggressed = false,
+    cantBeChallenged = false,
+    cantTrade = false,
+    cantBeAttackedByMutant = false,
+    cantRun = false,
+    forceSlowWalk = false,
+    cantMinimize = false,
+    cantMove = false,
+    cantAggress = false,
+    cantChallenge = false,
+    cantExchange = false,
+    cantAttack = false,
+    cantChat = false,
+    cantBeMerchant = false,
+    cantUseObject = false,
+    cantUseTaxCollector = false,
+    cantUseInteractive = false,
+    cantSpeakToNpc = false,
+    cantChangeZone = false,
+    cantAttackMonster = false,
+    cantWalk8Directions = false
+  ) {
+    super();
     this.cantBeAggressed = cantBeAggressed;
     this.cantBeChallenged = cantBeChallenged;
     this.cantTrade = cantTrade;

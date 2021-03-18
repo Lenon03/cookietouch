@@ -1,10 +1,10 @@
-import Account from "@account";
-import { CharacterInventoryPositionEnum } from "@protocol/enums/CharacterInventoryPositionEnum";
-import DeleteItemAction from "../actions/inventory/DeleteItemAction";
-import DropItemAction from "../actions/inventory/DropItemAction";
-import EquipItemAction from "../actions/inventory/EquipItemAction";
-import UnEquipItemAction from "../actions/inventory/UnEquipItemAction";
-import UseItemAction from "../actions/inventory/UseItemAction";
+import Account from "@/account";
+import { CharacterInventoryPositionEnum } from "@/protocol/enums/CharacterInventoryPositionEnum";
+import DeleteItemAction from "@/scripts/actions/inventory/DeleteItemAction";
+import DropItemAction from "@/scripts/actions/inventory/DropItemAction";
+import EquipItemAction from "@/scripts/actions/inventory/EquipItemAction";
+import UnEquipItemAction from "@/scripts/actions/inventory/UnEquipItemAction";
+import UseItemAction from "@/scripts/actions/inventory/UseItemAction";
 
 export default class InventoryAPI {
   private account: Account;
@@ -26,7 +26,9 @@ export default class InventoryAPI {
   }
 
   public itemCount(gid: number): number {
-    return this.account.game.character.inventory.getObjectsByGid(gid).Sum((o) => o.quantity);
+    return this.account.game.character.inventory
+      .getObjectsByGid(gid)
+      .Sum(o => (o !== undefined && o.quantity) || 0);
   }
 
   public itemWeight(gid: number): number {
@@ -34,48 +36,71 @@ export default class InventoryAPI {
     return o ? o.realWeight : 0;
   }
 
-  public useItem(gid: number, qty = 1): boolean {
+  public async useItem(gid: number, qty = 1): Promise<boolean> {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UseItemAction(gid, qty), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new UseItemAction(gid, qty),
+      true
+    );
     return true;
   }
 
-  public equipItem(gid: number): boolean {
+  public async equipItem(gid: number): Promise<boolean> {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
-    if (!item || item.position !== CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    if (
+      !item ||
+      item.position !==
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new EquipItemAction(gid), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new EquipItemAction(gid),
+      true
+    );
     return true;
   }
 
-  public unEquipItem(gid: number): boolean {
+  public async unEquipItem(gid: number): Promise<boolean> {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
-    if (!item || item.position === CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED) {
+    if (
+      !item ||
+      item.position ===
+        CharacterInventoryPositionEnum.ACCESSORY_POSITION_NOT_EQUIPED
+    ) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new UnEquipItemAction(gid), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new UnEquipItemAction(gid),
+      true
+    );
     return true;
   }
 
-  public dropItem(gid: number, quantity = 1): boolean {
+  public async dropItem(gid: number, quantity = 1): Promise<boolean> {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new DropItemAction(gid, quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new DropItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 
-  public deleteItem(gid: number, quantity = 1): boolean {
+  public async deleteItem(gid: number, quantity = 1): Promise<boolean> {
     const item = this.account.game.character.inventory.getObjectByGid(gid);
     if (!item) {
       return false;
     }
-    this.account.scripts.actionsManager.enqueueAction(new DeleteItemAction(gid, quantity), true);
+    await this.account.scripts.actionsManager.enqueueAction(
+      new DeleteItemAction(gid, quantity),
+      true
+    );
     return true;
   }
 }

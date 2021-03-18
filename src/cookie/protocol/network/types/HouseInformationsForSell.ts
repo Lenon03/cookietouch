@@ -1,4 +1,6 @@
-export default class HouseInformationsForSell {
+import Type from "@/protocol/network/types/Type";
+
+export default class HouseInformationsForSell extends Type {
   public skillListIds: number[];
   public modelId: number;
   public ownerName: string;
@@ -10,10 +12,21 @@ export default class HouseInformationsForSell {
   public nbChest: number;
   public isLocked: boolean;
   public price: number;
-  constructor(modelId = 0, ownerName = "", ownerConnected = false, worldX = 0,
-              worldY = 0, subAreaId = 0, nbRoom = 0, nbChest = 0, isLocked = false,
-              price = 0, skillListIds: number[] = null) {
 
+  constructor(
+    modelId = 0,
+    ownerName = "",
+    ownerConnected = false,
+    worldX = 0,
+    worldY = 0,
+    subAreaId = 0,
+    nbRoom = 0,
+    nbChest = 0,
+    isLocked = false,
+    price = 0,
+    skillListIds: number[] = []
+  ) {
+    super();
     this.skillListIds = skillListIds;
     this.modelId = modelId;
     this.ownerName = ownerName;
@@ -25,6 +38,5 @@ export default class HouseInformationsForSell {
     this.nbChest = nbChest;
     this.isLocked = isLocked;
     this.price = price;
-
   }
 }

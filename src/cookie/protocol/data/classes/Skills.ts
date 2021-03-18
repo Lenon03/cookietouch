@@ -1,16 +1,16 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class Skills extends Data {
-    public nameId: string;
-    public parentJobId: number;
-    public isForgemagus: boolean;
-    public modifiableItemType: number;
-    public gatheredRessourceItem: number;
-    public craftableItemIds: object[];
-    public interactiveId: number;
-    public useAnimation: string;
-    public isRepair: boolean;
-    public cursor: number;
-    public availableInHouse: boolean;
-    public levelMin: number;
+  public nameId: string = "";
+  public parentJobId: number = 0;
+  public isForgemagus: boolean = false;
+  public modifiableItemType: number = 0;
+  public gatheredRessourceItem: number = 0;
+  public craftableItemIds: object[] = [];
+  public interactiveId: number = 0;
+  public useAnimation: string = "";
+  public isRepair: boolean = false;
+  public cursor: number = 0;
+  public availableInHouse: boolean = false;
+  public levelMin: number = 0;
 }

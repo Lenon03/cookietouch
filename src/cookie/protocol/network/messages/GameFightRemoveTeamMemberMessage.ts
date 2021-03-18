@@ -1,8 +1,10 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class GameFightRemoveTeamMemberMessage extends Message {
   public fightId: number;
   public teamId: number;
   public charId: number;
+
   constructor(fightId = 0, teamId = 2, charId = 0) {
     super();
     this.fightId = fightId;

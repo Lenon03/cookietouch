@@ -1,34 +1,29 @@
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Pathfinder from "@/core/pathfinder";
 import MapPoint from "@/core/pathfinder/MapPoint";
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import { MovementRequestResults } from "@game/managers/movements/MovementRequestResults";
-import MapGame from "@game/map";
-import InteractiveElementEntry from "@game/map/interactives/InteractiveElementEntry";
-import Dictionary from "@utils/Dictionary";
-import IClearable from "@utils/IClearable";
-import LiteEvent from "@utils/LiteEvent";
-import MovementsManager from "../movements";
+import MovementsManager from "@/game/managers/movements";
+import { MovementRequestResults } from "@/game/managers/movements/MovementRequestResults";
+import MapGame from "@/game/map";
+import InteractiveElementEntry from "@/game/map/interactives/InteractiveElementEntry";
+import IClearable from "@/utils/IClearable";
+import LiteEvent from "@/utils/LiteEvent";
 
 export enum GatherResults {
   GATHERED,
   FAILED,
   STOLEN,
   BLACKLISTED,
-  TIMED_OUT,
+  TIMED_OUT
 }
+
 export default class GathersManager implements IClearable {
   private account: Account;
   private blacklistedElements: number[];
-  private elementToGather: InteractiveElementEntry;
-  private movementFinished: boolean;
+  private elementToGather: InteractiveElementEntry | null = null;
   private pathfinder: Pathfinder;
-  private sentUse: boolean;
-  private stolen: boolean;
-  private timeoutTimer: NodeJS.Timer;
-
-  public get GatherFinished() { return this.onGatherFinished.expose(); }
-  public get GatherStarted() { return this.onGatherStarted.expose(); }
+  private stolen: boolean = false;
   private readonly onGatherStarted = new LiteEvent<void>();
   private readonly onGatherFinished = new LiteEvent<GatherResults>();
 
@@ -36,51 +31,69 @@ export default class GathersManager implements IClearable {
     this.account = account;
     this.blacklistedElements = [];
     this.pathfinder = new Pathfinder();
-    movements.MovementFinished.on(this.onMovementFinished.bind(this));
-    map.MapChanged.on(this.mapChanged.bind(this));
-    this.account.dispatcher.register("InteractiveUsedMessage",
-      this.HandleInteractiveUsedMessage, this);
-    this.account.dispatcher.register("InteractiveUseEndedMessage",
-      this.HandleInteractiveUseEndedMessage, this);
-    this.account.dispatcher.register("InteractiveUseErrorMessage",
-      this.HandleInteractiveUseErrorMessage, this);
+    movements.MovementFinished.on(this.onMovementFinished);
+    map.MapChanged.on(this.mapChanged);
+    this.account.network.registerMessage(
+      "InteractiveUsedMessage",
+      this.handleInteractiveUsedMessage
+    );
+    this.account.network.registerMessage(
+      "InteractiveUseEndedMessage",
+      this.handleInteractiveUseEndedMessage
+    );
+    this.account.network.registerMessage(
+      "InteractiveUseErrorMessage",
+      this.handleInteractiveUseErrorMessage
+    );
+  }
+
+  public get GatherFinished() {
+    return this.onGatherFinished.expose();
+  }
+
+  public get GatherStarted() {
+    return this.onGatherStarted.expose();
   }
 
   public clear() {
     this.elementToGather = null;
     this.blacklistedElements = [];
     this.stolen = false;
-    this.movementFinished = false;
-    this.sentUse = false;
   }
 
   public canGather(...resourcesIds: number[]): boolean {
-    return this.getUsableElements(...resourcesIds).count() > 0;
+    return this.getUsableElements(...resourcesIds).size > 0;
   }
 
   public cancelGather() {
     this.elementToGather = null;
-    global.clearInterval(this.timeoutTimer);
   }
 
   public gather(...resourcesIds: number[]): boolean {
     if (this.account.isBusy || this.elementToGather !== null) {
-      this.account.logger.logWarning("GathersManager", `Is busy (${this.account.isBusy}) or is already gathering.`);
+      this.account.logger.logWarning(
+        LanguageManager.trans("gathersManager"),
+        LanguageManager.trans("gatherBusy", AccountStates[this.account.state])
+      );
       return false;
     }
-
     for (const kvp of this.getUsableElements(...resourcesIds)) {
       if (this.moveToElement(kvp)) {
         return true;
       }
     }
 
-    this.account.logger.logWarning("GathersManager", "Pas de ressources à récolter ici.");
+    this.account.logger.logWarning(
+      LanguageManager.trans("gathersManager"),
+      LanguageManager.trans("noGather")
+    );
     return false;
   }
 
-  private getUsableElements(...resourcesIds: number[]): Dictionary<number, InteractiveElementEntry> {
-    const usableElements = new Dictionary<number, InteractiveElementEntry>();
+  private getUsableElements(
+    ...resourcesIds: number[]
+  ): Map<number, InteractiveElementEntry> {
+    const usableElements = new Map<number, InteractiveElementEntry>();
     const hasFishingRod = this.account.game.character.inventory.hasFishingRod;
     const weaponRange = this.account.game.character.inventory.weaponRange;
 
@@ -90,7 +103,7 @@ export default class GathersManager implements IClearable {
         continue;
       }
       // Check if the element is blacklisted
-      if (this.blacklistedElements.includes(interactive.elementTypeId)) {
+      if (this.blacklistedElements.includes(interactive.id)) {
         continue;
       }
 
@@ -99,11 +112,29 @@ export default class GathersManager implements IClearable {
         continue;
       }
 
-      const statedElement = this.account.game.map.getStatedElement(interactive.id);
+      const statedElement = this.account.game.map.getStatedElement(
+        interactive.id
+      );
+
+      if (!statedElement || !this.account.game.map.playedCharacter) {
+        continue;
+      }
+
       const elem = MapPoint.fromCellId(statedElement.cellId);
 
-      const path = this.pathfinder.getPath(this.account.game.map.playedCharacter.cellId,
-        statedElement.cellId, this.account.game.map.occupiedCells, true, true);
+      if (!elem) {
+        continue;
+      }
+
+      const path = this.pathfinder.getPath(
+        this.account.game.map.playedCharacter.cellId,
+        statedElement.cellId,
+        this.account.game.map.occupiedCells,
+        this.account.game.map.monstersGroups,
+        true,
+        true,
+        this.account.config.antiAgro
+      );
 
       // If the path if invalid.
       if (path.length === 0) {
@@ -114,21 +145,38 @@ export default class GathersManager implements IClearable {
       // If we have a fishing rod, we need to compare if with the rod's range,
       // otherwise we'll compare it to 1
       const lastCell = MapPoint.fromCellId(path[path.length - 1]);
+
+      if (!lastCell) {
+        continue;
+      }
+
       const distToCell = lastCell.distanceToCell(elem);
       const distTo = lastCell.distanceTo(elem);
-      if (hasFishingRod && distToCell <= weaponRange || !hasFishingRod && distTo === 1) {
-        usableElements.add(statedElement.cellId, interactive);
+      if (
+        (hasFishingRod && distToCell <= weaponRange) ||
+        (!hasFishingRod && distTo === 1)
+      ) {
+        // Check if this path ends with a group of monsters
+        if (
+          this.account.game.map.monstersGroups.find(
+            mg => mg.cellId === path[path.length - 1]
+          ) !== undefined
+        ) {
+          continue;
+        }
+        usableElements.set(statedElement.cellId, interactive);
       }
     }
-
     return usableElements;
   }
 
-  private moveToElement(element: { key: number, value: InteractiveElementEntry }): boolean {
-    this.elementToGather = element.value;
+  private moveToElement(element: [number, InteractiveElementEntry]): boolean {
+    this.elementToGather = element["1"];
 
     // Assuming there is no way statedElem will be null
-    switch (this.account.game.managers.movements.moveToCell(element.key, true)) {
+    switch (
+      this.account.game.managers.movements.moveToCell(element["0"], true)
+    ) {
       case MovementRequestResults.MOVED: {
         return true;
       }
@@ -145,79 +193,79 @@ export default class GathersManager implements IClearable {
 
   private tryUsingElementToGather() {
     if (this.stolen) {
-      this.account.logger.logInfo("", "Ressource volé.");
+      this.account.logger.logInfo(
+        LanguageManager.trans("gathersManager"),
+        LanguageManager.trans("stolenResource")
+      );
       this.isGatherFinished(GatherResults.STOLEN);
     } else {
-      this.account.network.sendMessage("InteractiveUseRequestMessage", {
+      if (!this.elementToGather) {
+        return;
+      }
+      this.account.network.sendMessageFree("InteractiveUseRequestMessage", {
         elemId: this.elementToGather.id,
-        skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid,
+        skillInstanceUid: this.elementToGather.enabledSkills[0].instanceUid
       });
-      this.sentUse = true;
-      this.timeoutTimer = global.setTimeout(this.timeoutTimerCallback.bind(this), 20000);
     }
   }
 
-  private timeoutTimerCallback() {
-    if (this.elementToGather === null || !this.sentUse) {
-      return;
-    }
-
-    this.account.logger.logWarning("GathersManager", "Timeout");
-    this.isGatherFinished(GatherResults.TIMED_OUT);
-  }
-
-  private mapChanged() {
+  private mapChanged = () => {
     this.pathfinder.setMap(this.account.game.map.data);
     this.blacklistedElements = [];
-  }
+  };
 
   private isGatherFinished(result: GatherResults) {
     this.stolen = false;
-    this.movementFinished = false;
-    this.sentUse = false;
     this.elementToGather = null;
     this.onGatherFinished.trigger(result);
   }
 
-  private onMovementFinished(success: boolean) {
+  private onMovementFinished = (success?: boolean) => {
     if (this.elementToGather === null) {
       return;
     }
     if (success) {
-      this.movementFinished = true;
       this.tryUsingElementToGather();
     } else {
       this.isGatherFinished(GatherResults.FAILED);
     }
-  }
+  };
 
-  private async HandleInteractiveUsedMessage(account: Account, message: any) {
-    if (this.elementToGather === null || this.elementToGather.id !== message.elemId) {
+  private handleInteractiveUsedMessage = async (
+    account: Account,
+    message: any
+  ) => {
+    if (
+      this.elementToGather === null ||
+      this.elementToGather.id !== message.elemId
+    ) {
       return;
     }
     // Check if the element has been STOLEN
     if (message.entityId !== this.account.game.character.id) {
-      // If our movement is already done
-      if (this.movementFinished || this.sentUse) {
-        this.isGatherFinished(GatherResults.STOLEN);
-      } else {
-        this.stolen = true;
-      }
+      this.stolen = true;
     } else {
-      global.clearInterval(this.timeoutTimer);
       this.account.state = AccountStates.GATHERING;
       this.onGatherStarted.trigger();
     }
-  }
+  };
 
-  private async HandleInteractiveUseEndedMessage(account: Account, message: any) {
-    global.clearInterval(this.timeoutTimer);
+  private handleInteractiveUseEndedMessage = async (
+    account: Account,
+    message: any
+  ) => {
     this.account.state = AccountStates.NONE;
     this.isGatherFinished(GatherResults.GATHERED);
-  }
+  };
 
-  private async HandleInteractiveUseErrorMessage(account: Account, message: any) {
+  private handleInteractiveUseErrorMessage = async (
+    account: Account,
+    message: any
+  ) => {
+    if (!this.elementToGather) {
+      return;
+    }
     this.blacklistedElements.push(this.elementToGather.id);
     this.isGatherFinished(GatherResults.BLACKLISTED);
-  }
+  };
 }

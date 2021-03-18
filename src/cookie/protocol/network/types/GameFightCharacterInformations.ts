@@ -1,16 +1,18 @@
-import ActorAlignmentInformations from "./ActorAlignmentInformations";
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameFightFighterNamedInformations from "./GameFightFighterNamedInformations";
-import GameFightMinimalStats from "./GameFightMinimalStats";
-import PlayerStatus from "./PlayerStatus";
+import ActorAlignmentInformations from "@/protocol/network/types/ActorAlignmentInformations";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameFightFighterNamedInformations from "@/protocol/network/types/GameFightFighterNamedInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
+import PlayerStatus from "@/protocol/network/types/PlayerStatus";
+
 export default class GameFightCharacterInformations extends GameFightFighterNamedInformations {
   public level: number;
   public alignmentInfos: ActorAlignmentInformations;
   public breed: number;
+
   constructor(contextualId = 0, look: EntityLook,
               disposition: EntityDispositionInformations, teamId = 2,
-              alive = false, stats: GameFightMinimalStats , name = "",
+              alive = false, stats: GameFightMinimalStats, name = "",
               status: PlayerStatus, level = 0, alignmentInfos: ActorAlignmentInformations,
               breed = 0) {
     super(contextualId, look, disposition, teamId, alive, stats, name, status);

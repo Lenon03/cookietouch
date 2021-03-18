@@ -4,6 +4,7 @@ export enum DataTypes {
   AchievementObjectives,
   AchievementRewards,
   Achievements,
+  ActionDescriptions,
   AlignmentBalance,
   AlignmentEffect,
   AlignmentGift,
@@ -100,5 +101,5 @@ export enum DataTypes {
   Titles,
   TypeActions,
   Url,
-  WorldMaps,
+  WorldMaps
 }

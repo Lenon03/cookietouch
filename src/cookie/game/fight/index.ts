@@ -1,97 +1,121 @@
-import Pathfinder from "@/core/pathfinder";
+import Account from "@/account";
+import { AccountStates } from "@/account/AccountStates";
+import LanguageManager from "@/configurations/language/LanguageManager";
 import Dofus1Line from "@/core/pathfinder/Dofus1Line";
 import MapPoint from "@/core/pathfinder/MapPoint";
 import SpellShapes from "@/core/pathfinder/shapes";
-import Account from "@account";
-import { AccountStates } from "@account/AccountStates";
-import DataManager from "@protocol/data";
-import SpellLevels from "@protocol/data/classes/SpellLevels";
-import Spells from "@protocol/data/classes/Spells";
-import { FightOptionsEnum } from "@protocol/enums/FightOptionsEnum";
-import { FightTypeEnum } from "@protocol/enums/FightTypeEnum";
-import { GameActionFightInvisibilityStateEnum } from "@protocol/enums/GameActionFightInvisibilityStateEnum";
-import FighterStatsListMessage from "@protocol/network/messages/FighterStatsListMessage";
-import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
-import GameActionFightDispellableEffectMessage from "@protocol/network/messages/GameActionFightDispellableEffectMessage";
-import GameActionFightLifePointsGainMessage from "@protocol/network/messages/GameActionFightLifePointsGainMessage";
-import GameActionFightLifePointsLostMessage from "@protocol/network/messages/GameActionFightLifePointsLostMessage";
-import GameActionFightPointsVariationMessage from "@protocol/network/messages/GameActionFightPointsVariationMessage";
-import GameActionFightSlideMessage from "@protocol/network/messages/GameActionFightSlideMessage";
-import GameActionFightSpellCastMessage from "@protocol/network/messages/GameActionFightSpellCastMessage";
-import GameActionFightSummonMessage from "@protocol/network/messages/GameActionFightSummonMessage";
-import GameActionFightTeleportOnSameMapMessage from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
-import GameAction from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
-import GameEntitiesDispositionMessage from "@protocol/network/messages/GameEntitiesDispositionMessage";
-import GameFightEndMessage from "@protocol/network/messages/GameFightEndMessage";
-import GameFightJoinMessage from "@protocol/network/messages/GameFightJoinMessage";
-import GameFightLeaveMessage from "@protocol/network/messages/GameFightLeaveMessage";
-import GameFightNewRoundMessage from "@protocol/network/messages/GameFightNewRoundMessage";
-import GameFightOptionStateUpdateMessage from "@protocol/network/messages/GameFightOptionStateUpdateMessage";
-import GameFightPlacementPossiblePositionsMessage from "@protocol/network/messages/GameFightPlacementPossiblePositionsMessage";
-import GameFightShowFighterMessage from "@protocol/network/messages/GameFightShowFighterMessage";
-import GameFightStartMessage from "@protocol/network/messages/GameFightStartMessage";
-import GameFightSynchronizeMessage from "@protocol/network/messages/GameFightSynchronizeMessage";
-import GameFightTurnEndMessage from "@protocol/network/messages/GameFightTurnEndMessage";
-import GameFightTurnStartMessage from "@protocol/network/messages/GameFightTurnStartMessage";
-import GameFightUpdateTeamMessage from "@protocol/network/messages/GameFightUpdateTeamMessage";
-import GameMapMovementMessage from "@protocol/network/messages/GameMapMovementMessage";
-import TextInformationMessage from "@protocol/network/messages/TextInformationMessage";
-import FightTemporaryBoostEffect from "@protocol/network/types/FightTemporaryBoostEffect";
-import FightTemporaryBoostStateEffect from "@protocol/network/types/FightTemporaryBoostStateEffect";
-import GameFightCharacterInformations from "@protocol/network/types/GameFightCharacterInformations";
-import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
-import GameFightMonsterInformations from "@protocol/network/types/GameFightMonsterInformations";
-import Dictionary from "@utils/Dictionary";
-import IClearable from "@utils/IClearable";
-import LiteEvent from "@utils/LiteEvent";
-import { List } from "linqts";
-import FighterEntry from "./fighters/FighterEntry";
-import FightMonsterEntry from "./fighters/FightMonsterEntry";
-import FightPlayerEntry from "./fighters/FightPlayerEntry";
-import { SpellInabilityReasons } from "./SpellInabilityReasons";
+import FighterEntry from "@/game/fight/fighters/FighterEntry";
+import FightMonsterEntry from "@/game/fight/fighters/FightMonsterEntry";
+import FightPlayerEntry from "@/game/fight/fighters/FightPlayerEntry";
+import { SpellInabilityReasons } from "@/game/fight/SpellInabilityReasons";
+import DataManager from "@/protocol/data";
+import SpellLevels from "@/protocol/data/classes/SpellLevels";
+import Spells from "@/protocol/data/classes/Spells";
+import { DataTypes } from "@/protocol/data/DataTypes";
+import { FightOptionsEnum } from "@/protocol/enums/FightOptionsEnum";
+import { FightTypeEnum } from "@/protocol/enums/FightTypeEnum";
+import { GameActionFightInvisibilityStateEnum } from "@/protocol/enums/GameActionFightInvisibilityStateEnum";
+import FighterStatsListMessage from "@/protocol/network/messages/FighterStatsListMessage";
+import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
+import GameActionFightDispellableEffectMessage from "@/protocol/network/messages/GameActionFightDispellableEffectMessage";
+import GameActionFightLifePointsGainMessage from "@/protocol/network/messages/GameActionFightLifePointsGainMessage";
+import GameActionFightLifePointsLostMessage from "@/protocol/network/messages/GameActionFightLifePointsLostMessage";
+import GameActionFightPointsVariationMessage from "@/protocol/network/messages/GameActionFightPointsVariationMessage";
+import GameActionFightSlideMessage from "@/protocol/network/messages/GameActionFightSlideMessage";
+import GameActionFightSpellCastMessage from "@/protocol/network/messages/GameActionFightSpellCastMessage";
+import GameActionFightSummonMessage from "@/protocol/network/messages/GameActionFightSummonMessage";
+import GameActionFightTeleportOnSameMapMessage from "@/protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
+import GameEntitiesDispositionMessage from "@/protocol/network/messages/GameEntitiesDispositionMessage";
+import GameFightEndMessage from "@/protocol/network/messages/GameFightEndMessage";
+import GameFightJoinMessage from "@/protocol/network/messages/GameFightJoinMessage";
+import GameFightLeaveMessage from "@/protocol/network/messages/GameFightLeaveMessage";
+import GameFightNewRoundMessage from "@/protocol/network/messages/GameFightNewRoundMessage";
+import GameFightOptionStateUpdateMessage from "@/protocol/network/messages/GameFightOptionStateUpdateMessage";
+import GameFightPlacementPossiblePositionsMessage from "@/protocol/network/messages/GameFightPlacementPossiblePositionsMessage";
+import GameFightShowFighterMessage from "@/protocol/network/messages/GameFightShowFighterMessage";
+import GameFightStartMessage from "@/protocol/network/messages/GameFightStartMessage";
+import GameFightSynchronizeMessage from "@/protocol/network/messages/GameFightSynchronizeMessage";
+import GameFightTurnEndMessage from "@/protocol/network/messages/GameFightTurnEndMessage";
+import GameFightTurnStartMessage from "@/protocol/network/messages/GameFightTurnStartMessage";
+import GameFightUpdateTeamMessage from "@/protocol/network/messages/GameFightUpdateTeamMessage";
+import GameMapMovementMessage from "@/protocol/network/messages/GameMapMovementMessage";
+import TextInformationMessage from "@/protocol/network/messages/TextInformationMessage";
+import CharacterBaseCharacteristic from "@/protocol/network/types/CharacterBaseCharacteristic";
+import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBoostEffect";
+import FightTemporaryBoostStateEffect from "@/protocol/network/types/FightTemporaryBoostStateEffect";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
+import GameFightMonsterInformations from "@/protocol/network/types/GameFightMonsterInformations";
+import IClearable from "@/utils/IClearable";
+import LiteEvent from "@/utils/LiteEvent";
+import { List } from "linqts";
 
 export default class Fight implements IClearable {
-  public type: FightTypeEnum;
+  public type: FightTypeEnum = FightTypeEnum.FIGHT_TYPE_CHALLENGE;
   public options: FightOptionsEnum[];
-  public isFightStarted: boolean;
-  public playedFighter: FightPlayerEntry = null;
-  public isOurTurn: boolean;
-  public roundNumber: number;
+  public isFightStarted: boolean = false;
+  public playedFighter: FightPlayerEntry | null = null;
+  public isOurTurn: boolean = false;
+  public roundNumber: number = 0;
   public positionsForChallengers = new List<number>();
   public positionsForDefenders = new List<number>();
-  public fightId: number;
+  public fightId: number = 0;
+  private account: Account;
+  private _allies: Map<number, FighterEntry>;
+  private _enemies: Map<number, FighterEntry>;
+  private _fighters: Map<number, FighterEntry>;
+  private _effectsDurations: Map<number, number>;
+  private _spellsIntervals: Map<number, number>;
+  private _totalSpellLaunches: Map<number, number>;
+  private _totalSpellLaunchesInCells: Map<number, Map<number, number>>;
+  private readonly onFightJoined = new LiteEvent<void>();
+  private readonly onFightIDReceived = new LiteEvent<void>();
+  private readonly onFightStarted = new LiteEvent<void>();
+  private readonly onFightEnded = new LiteEvent<void>();
+  private readonly onSpectatorJoined = new LiteEvent<void>();
+  private readonly onTurnStarted = new LiteEvent<void>();
+  private readonly onTurnEnded = new LiteEvent<void>();
+  private readonly onFightersUpdated = new LiteEvent<void>();
+  private readonly onFighterStatsUpdated = new LiteEvent<void>();
+  private readonly onPossiblePositionsReceived = new LiteEvent<void>();
+  private readonly onPlayedFighterMoving = new LiteEvent<number[]>();
 
-  get allies() {
-    return this._allies.values().filter((a) => a.alive);
-  }
+  constructor(account: Account) {
+    this.account = account;
 
-  get enemies() {
-    return this._enemies.values().filter((e) => e.alive && e.stats.invisibilityState !== GameActionFightInvisibilityStateEnum.INVISIBLE);
+    this._allies = new Map<number, FighterEntry>();
+    this._effectsDurations = new Map<number, number>();
+    this._enemies = new Map<number, FighterEntry>();
+    this._fighters = new Map<number, FighterEntry>();
+    this._spellsIntervals = new Map<number, number>();
+    this._totalSpellLaunches = new Map<number, number>();
+    this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
+    this.options = [];
   }
 
   get monsters() {
-    return this._enemies.values().map((a) => a as FightMonsterEntry);
-  }
-
-  get fighters() {
-    return this._fighters.values().filter((a) => a.alive);
+    return Array.from(this._enemies.values()).map(a => a as FightMonsterEntry);
   }
 
   get invocationsCount() {
-    return this.fighters.filter((f) => f.stats.summoner === this.playedFighter.contextualId).length;
+    if (!this.playedFighter) {
+      return 0;
+    }
+    return this.fighters.filter(
+      f => f.stats.summoner === this.playedFighter!.contextualId
+    ).length;
   }
 
   get aliveEnemiesCount() {
-    return this.enemies.filter((e) => e.alive).length;
+    return this.enemies.filter(e => e.alive).length;
   }
 
   get occupiedCells() {
-    return this.fighters.map((f) => f.cellId);
+    return this.fighters.map(f => f.cellId);
   }
 
-  get weakestEnemy(): FighterEntry {
+  get weakestEnemy(): FighterEntry | null {
     let lp = -1;
-    let enemy: FighterEntry = null;
+    let enemy: FighterEntry | null = null;
 
     for (const enemyEntry of this.enemies) {
       if (!enemyEntry.alive) {
@@ -107,9 +131,9 @@ export default class Fight implements IClearable {
     return enemy;
   }
 
-  get weakestAlly(): FighterEntry {
+  get weakestAlly(): FighterEntry | null {
     let lp = -1;
-    let ally: FighterEntry = null;
+    let ally: FighterEntry | null = null;
 
     for (const allyEntry of this.allies) {
       if (!allyEntry.alive) {
@@ -125,60 +149,75 @@ export default class Fight implements IClearable {
     return ally;
   }
 
-  private account: Account;
+  get allies() {
+    return Array.from(this._allies.values()).filter(a => a.alive);
+  }
 
-  private _allies: Dictionary<number, FighterEntry>;
-  private _effectsDurations: Dictionary<number, number>;
-  private _enemies: Dictionary<number, FighterEntry>;
-  private _fighters: Dictionary<number, FighterEntry>;
-  private _spellsIntervals: Dictionary<number, number>;
-  private _totalSpellLaunches: Dictionary<number, number>;
-  private _totalSpellLaunchesInCells: Dictionary<number, Dictionary<number, number>>;
+  get enemies() {
+    return Array.from(this._enemies.values()).filter(
+      e =>
+        e.alive &&
+        e.stats.invisibilityState !==
+          GameActionFightInvisibilityStateEnum.INVISIBLE
+    );
+  }
 
-  public get FightJoined() { return this.onFightJoined.expose(); }
-  private readonly onFightJoined = new LiteEvent<void>();
-  public get FightIDReceived() { return this.onFightIDReceived.expose(); }
-  private readonly onFightIDReceived = new LiteEvent<void>();
-  public get FightStarted() { return this.onFightStarted.expose(); }
-  private readonly onFightStarted = new LiteEvent<void>();
-  public get FightEnded() { return this.onFightEnded.expose(); }
-  private readonly onFightEnded = new LiteEvent<void>();
-  public get SpectatorJoined() { return this.onSpectatorJoined.expose(); }
-  private readonly onSpectatorJoined = new LiteEvent<void>();
-  public get TurnStarted() { return this.onTurnStarted.expose(); }
-  private readonly onTurnStarted = new LiteEvent<void>();
-  public get TurnEnded() { return this.onTurnEnded.expose(); }
-  private readonly onTurnEnded = new LiteEvent<void>();
-  public get FightersUpdated() { return this.onFightersUpdated.expose(); }
-  private readonly onFightersUpdated = new LiteEvent<void>();
-  public get FightersStatsUpdated() { return this.onFightersStatsUpdated.expose(); }
-  private readonly onFightersStatsUpdated = new LiteEvent<void>();
-  public get PossiblePositionsReceived() { return this.onPossiblePositionsReceived.expose(); }
-  private readonly onPossiblePositionsReceived = new LiteEvent<void>();
-  public get PlayerFighterMoving() { return this.onPlayerFighterMoving.expose(); }
-  private readonly onPlayerFighterMoving = new LiteEvent<number[]>();
+  get fighters() {
+    return Array.from(this._fighters.values()).filter(a => a.alive);
+  }
 
-  constructor(account: Account) {
-    this.account = account;
+  public get FightJoined() {
+    return this.onFightJoined.expose();
+  }
 
-    this._allies = new Dictionary<number, FighterEntry>();
-    this._effectsDurations = new Dictionary<number, number>();
-    this._enemies = new Dictionary<number, FighterEntry>();
-    this._fighters = new Dictionary<number, FighterEntry>();
-    this._spellsIntervals = new Dictionary<number, number>();
-    this._totalSpellLaunches = new Dictionary<number, number>();
-    this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
-    this.options = [];
+  public get FightIDReceived() {
+    return this.onFightIDReceived.expose();
+  }
+
+  public get FightStarted() {
+    return this.onFightStarted.expose();
+  }
+
+  public get FightEnded() {
+    return this.onFightEnded.expose();
+  }
+
+  public get SpectatorJoined() {
+    return this.onSpectatorJoined.expose();
+  }
+
+  public get TurnStarted() {
+    return this.onTurnStarted.expose();
+  }
+
+  public get TurnEnded() {
+    return this.onTurnEnded.expose();
+  }
+
+  public get FightersUpdated() {
+    return this.onFightersUpdated.expose();
+  }
+
+  public get FighterStatsUpdated() {
+    return this.onFighterStatsUpdated.expose();
+  }
+
+  public get PossiblePositionsReceived() {
+    return this.onPossiblePositionsReceived.expose();
+  }
+
+  public get PlayedFighterMoving() {
+    return this.onPlayedFighterMoving.expose();
   }
 
   public clear() {
-    this._allies = new Dictionary<number, FighterEntry>();
-    this._effectsDurations = new Dictionary<number, number>();
-    this._enemies = new Dictionary<number, FighterEntry>();
-    this._fighters = new Dictionary<number, FighterEntry>();
-    this._spellsIntervals = new Dictionary<number, number>();
-    this._totalSpellLaunches = new Dictionary<number, number>();
-    this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
+    this._allies = new Map<number, FighterEntry>();
+    this._effectsDurations = new Map<number, number>();
+    this._enemies = new Map<number, FighterEntry>();
+    this._fighters = new Map<number, FighterEntry>();
+    this._spellsIntervals = new Map<number, number>();
+    this._totalSpellLaunches = new Map<number, number>();
+    this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
 
     this.isFightStarted = false;
     this.options = [];
@@ -196,7 +235,10 @@ export default class Fight implements IClearable {
     }
 
     if (!this.options.includes(option)) {
-      await this.account.network.sendMessage("GameFightOptionToggleMessage", { option });
+      await this.account.network.sendMessageFree(
+        "GameFightOptionToggleMessage",
+        { option }
+      );
     }
   }
 
@@ -207,50 +249,70 @@ export default class Fight implements IClearable {
 
     // TODO: Check why DT always sends CastRequest
     // if (this.getFighterInCell(cellId) !== null) {
-    //   await this.account.network.sendMessage("GameActionFightCastOnTargetRequestMessage", {
+    //   await this.account.network.sendMessageFree("GameActionFightCastOnTargetRequestMessage", {
     //     spellId,
     //     targetId: cellId,
     //   });
     // } else {
-    await this.account.network.sendMessage("GameActionFightCastRequestMessage", { spellId, cellId });
+    await this.account.network.sendMessageFree(
+      "GameActionFightCastRequestMessage",
+      { spellId, cellId }
+    );
+    // await this.account.network.sendMessage(new GameActionFightCastRequestMessage(spellId, cellId));
     // }
   }
 
   public hasState(stateId: number): boolean {
-    return this._effectsDurations.containsKey(stateId);
+    return this._effectsDurations.has(stateId);
   }
 
-  public getFighter(id: number): FighterEntry {
+  public getFighter(id: number): FighterEntry | null {
     if (this.playedFighter !== null && this.playedFighter.contextualId === id) {
       return this.playedFighter;
     }
 
-    return this._fighters.getValue(id);
+    return this._fighters.get(id) || null;
   }
 
-  public getFighterInCell(cellId: number): FighterEntry {
+  public getFighterInCell(cellId: number): FighterEntry | null {
     if (this.playedFighter !== null && this.playedFighter.cellId === cellId) {
       return this.playedFighter;
     }
-    const tmp = this.fighters.find((f) => f.alive && f.cellId === cellId);
-    return tmp === undefined ? null : tmp;
+    const tmp = this.fighters.find(f => f.alive && f.cellId === cellId);
+    return tmp || null;
   }
 
   public isCellFree(cellId: number): boolean {
     return this.getFighterInCell(cellId) === null;
   }
 
-  public getNearestEnemy(cellId = -1, filter: (value: FighterEntry, index: number, array: FighterEntry[]) => any = null): FighterEntry {
-    const charMp = MapPoint.fromCellId(cellId === -1 ? this.playedFighter.cellId : cellId);
+  public getNearestEnemy(
+    cellId = -1,
+    filter?: (value: FighterEntry | null) => boolean
+  ): FighterEntry | null {
+    if (!this.playedFighter) {
+      return null;
+    }
+    const charMp = MapPoint.fromCellId(
+      cellId === -1 ? this.playedFighter.cellId : cellId
+    );
+    if (!charMp) {
+      return null;
+    }
     let distance = -1;
-    let enemy: FighterEntry = null;
+    let enemy: FighterEntry | null = null;
 
-    for (const enemyEntry of filter === null ? this.enemies : this.enemies.filter(filter)) {
+    for (const enemyEntry of !filter
+      ? this.enemies
+      : this.enemies.filter(filter)) {
       if (!enemyEntry.alive) {
         continue;
       }
 
       const enemyMp = MapPoint.fromCellId(enemyEntry.cellId);
+      if (!enemyMp) {
+        continue;
+      }
       const tempDistance = charMp.distanceToCell(enemyMp);
 
       if (distance === -1 || tempDistance < distance) {
@@ -262,17 +324,30 @@ export default class Fight implements IClearable {
     return enemy;
   }
 
-  public getNearestAlly(filter: (value: FighterEntry, index: number, array: FighterEntry[]) => any = null): FighterEntry {
+  public getNearestAlly(
+    filter: (value: FighterEntry | null) => boolean
+  ): FighterEntry | null {
+    if (!this.playedFighter) {
+      return null;
+    }
     const charMp = MapPoint.fromCellId(this.playedFighter.cellId);
+    if (!charMp) {
+      return null;
+    }
     let distance = -1;
-    let ally: FighterEntry = null;
+    let ally: FighterEntry | null = null;
 
-    for (const allyEntry of filter === null ? this.allies : this.allies.filter(filter)) {
+    for (const allyEntry of filter === null
+      ? this.allies
+      : this.allies.filter(filter)) {
       if (!allyEntry.alive) {
         continue;
       }
 
       const allyMp = MapPoint.fromCellId(allyEntry.cellId);
+      if (!allyMp) {
+        return null;
+      }
       const tempDistance = charMp.distanceToCell(allyMp);
 
       if (distance === -1 || tempDistance < distance) {
@@ -285,13 +360,41 @@ export default class Fight implements IClearable {
   }
 
   public getHandToHandEnemies(cellId = -1): FighterEntry[] {
-    const charMp = MapPoint.fromCellId(cellId === -1 ? this.playedFighter.cellId : cellId);
-    return this.enemies.filter((e) => e.alive && charMp.distanceToCell(MapPoint.fromCellId(e.cellId)) === 1);
+    if (!this.playedFighter) {
+      return [];
+    }
+    const charMp = MapPoint.fromCellId(
+      cellId === -1 ? this.playedFighter.cellId : cellId
+    );
+    if (!charMp) {
+      return [];
+    }
+    return this.enemies.filter(e => {
+      const eMp = MapPoint.fromCellId(e.cellId);
+      if (!eMp) {
+        return false;
+      }
+      return e.alive && charMp.distanceToCell(eMp) === 1;
+    });
   }
 
   public getHandToHandAllies(cellId = -1): FighterEntry[] {
-    const charMp = MapPoint.fromCellId(cellId === -1 ? this.playedFighter.cellId : cellId);
-    return this.allies.filter((a) => a.alive && charMp.distanceToCell(MapPoint.fromCellId(a.cellId)) === 1);
+    if (!this.playedFighter) {
+      return [];
+    }
+    const charMp = MapPoint.fromCellId(
+      cellId === -1 ? this.playedFighter.cellId : cellId
+    );
+    if (!charMp) {
+      return [];
+    }
+    return this.allies.filter(a => {
+      const mp = MapPoint.fromCellId(a.cellId);
+      if (!mp) {
+        return false;
+      }
+      return a.alive && charMp.distanceToCell(mp) === 1;
+    });
   }
 
   public isHandToHandWithAnEnemy(cellId = -1) {
@@ -302,121 +405,167 @@ export default class Fight implements IClearable {
     return this.getHandToHandAllies(cellId).length > 0;
   }
 
-  public getSpellZone(spellId: number, fromCellId: number, targetCellId: number, spellLevel: SpellLevels = null) {
-    if (spellLevel === null) {
+  public async getSpellZone(
+    spellId: number,
+    fromCellId: number,
+    targetCellId: number,
+    spellLevel?: SpellLevels
+  ) {
+    if (!spellLevel) {
       const spellEntry = this.account.game.character.getSpell(spellId);
       if (spellEntry === null) {
         return null;
       }
 
-      DataManager.get(Spells, spellId).then((response) => {
-        const spell = response[0].object;
+      const response = await DataManager.get<Spells>(DataTypes.Spells, spellId);
+      const spell = response[0].object;
 
-        if (spell === null) {
-          return null;
-        }
+      if (spell === null) {
+        return null;
+      }
 
-        DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
-          spellLevel = response2[0].object;
-        });
-      });
+      const response2 = await DataManager.get<SpellLevels>(
+        DataTypes.SpellLevels,
+        spell.spellLevels[spellEntry.level - 1]
+      );
+      spellLevel = response2[0].object;
     }
-    return SpellShapes.getSpellEffectZone(this.account.game.map.data, spellLevel, fromCellId, targetCellId);
+    return SpellShapes.getSpellEffectZone(
+      this.account.game.map.data!,
+      spellLevel,
+      fromCellId,
+      targetCellId
+    );
   }
 
-  public canLaunchSpell(spellId: number): SpellInabilityReasons {
+  public async canLaunchSpell(spellId: number): Promise<SpellInabilityReasons> {
+    const spellEntry = this.account.game.character.getSpell(spellId);
+
+    if (!spellEntry || !this.playedFighter) {
+      return SpellInabilityReasons.UNKNOWN;
+    }
+
+    const spellResp = await DataManager.get<Spells>(DataTypes.Spells, spellId);
+    const spell = spellResp[0].object;
+    const spellLevelResp = await DataManager.get<SpellLevels>(
+      DataTypes.SpellLevels,
+      spell.spellLevels[spellEntry.level - 1]
+    );
+    const spellLevel = spellLevelResp[0].object;
+
+    if (this.playedFighter.actionPoints < spellLevel.apCost) {
+      return SpellInabilityReasons.ACTION_POINTS;
+    }
+
+    if (
+      spellLevel.maxCastPerTurn > 0 &&
+      this._totalSpellLaunches.has(spellId) &&
+      this._totalSpellLaunches.get(spellId)! >= spellLevel.maxCastPerTurn
+    ) {
+      return SpellInabilityReasons.TOO_MANY_LAUNCHES;
+    }
+
+    if (this._spellsIntervals.has(spellId)) {
+      return SpellInabilityReasons.COOLDOWN;
+    }
+
+    if (
+      spellLevel.initialCooldown > 0 &&
+      this.roundNumber <= spellLevel.initialCooldown
+    ) {
+      return SpellInabilityReasons.COOLDOWN;
+    }
+
+    if (
+      spellLevel.effects.length > 0 &&
+      spellLevel.effects[0].effectId === 181 &&
+      this.invocationsCount >=
+        this.totalStat(
+          this.account.game.character.stats.summonableCreaturesBoost
+        )
+    ) {
+      return SpellInabilityReasons.TOO_MANY_INVOCATIONS;
+    }
+
+    const tmp = spellLevel.statesRequired.filter(
+      s => !this._effectsDurations.has(s)
+    );
+    if (tmp !== undefined && tmp.length > 0) {
+      return SpellInabilityReasons.REQUIRED_STATE;
+    }
+
+    const tmp2 = spellLevel.statesForbidden.filter(s =>
+      this._effectsDurations.has(s)
+    );
+    if (tmp2 !== undefined && tmp2.length > 0) {
+      return SpellInabilityReasons.FORBIDDEN_STATE;
+    }
+
+    return SpellInabilityReasons.NONE;
+  }
+
+  public async canLaunchSpellOnTarget(
+    spellId: number,
+    characterCellId: number,
+    targetCellId: number
+  ): Promise<SpellInabilityReasons> {
     const spellEntry = this.account.game.character.getSpell(spellId);
 
     if (spellEntry === null) {
       return SpellInabilityReasons.UNKNOWN;
     }
 
-    DataManager.get(Spells, spellId).then((response) => {
-      const spell = response[0].object;
-      DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
-        const spellLevel = response2[0].object;
+    const response = await DataManager.get<Spells>(DataTypes.Spells, spellId);
+    const spell = response[0].object;
 
-        if (this.playedFighter.actionPoints < spellLevel.apCost) {
-          return SpellInabilityReasons.ACTION_POINTS;
-        }
+    const response2 = await DataManager.get<SpellLevels>(
+      DataTypes.SpellLevels,
+      spell.spellLevels[spellEntry.level - 1]
+    );
 
-        if (spellLevel.maxCastPerTurn > 0 && this._totalSpellLaunches.containsKey(spellId)
-          && this._totalSpellLaunches.getValue(spellId) >= spellLevel.maxCastPerTurn) {
-          return SpellInabilityReasons.TOO_MANY_LAUNCHES;
-        }
+    const spellLevel = response2[0].object;
 
-        if (this._spellsIntervals.containsKey(spellId)) {
-          return SpellInabilityReasons.COOLDOWN;
-        }
-
-        if (spellLevel.initialCooldown > 0 && this.roundNumber <= spellLevel.initialCooldown) {
-          return SpellInabilityReasons.COOLDOWN;
-        }
-
-        if (spellLevel.effects.length > 0 && spellLevel.effects[0].effectId === 181
-          && this.invocationsCount >= this.account.game.character.stats.summonableCreaturesBoost.total) {
-          return SpellInabilityReasons.TOO_MANY_INVOCATIONS;
-        }
-
-        const tmp = spellLevel.statesRequired.filter((s) => !this._effectsDurations.containsKey(s));
-        if (tmp !== undefined && tmp.length > 0) {
-          return SpellInabilityReasons.REQUIRED_STATE;
-        }
-
-        const tmp2 = spellLevel.statesForbidden.filter((s) => this._effectsDurations.containsKey(s));
-        if (tmp2 !== undefined && tmp2.length > 0) {
-          return SpellInabilityReasons.FORBIDDEN_STATE;
-        }
-
-        return SpellInabilityReasons.NONE; // TODO: needed?
-      });
-    });
-
-    return SpellInabilityReasons.NONE;
-  }
-
-  public canLaunchSpellOnTarget(spellId: number, characterCellId: number, targetCellId: number): SpellInabilityReasons {
-    const spellEntry = this.account.game.character.getSpell(spellId);
-
-    if (spellEntry === null) {
-      return SpellInabilityReasons.UNKNOWN;
+    if (
+      spellLevel.maxCastPerTarget > 0 &&
+      this._totalSpellLaunchesInCells.has(spellId) &&
+      this._totalSpellLaunchesInCells.get(spellId)!.has(targetCellId) &&
+      this._totalSpellLaunchesInCells.get(spellId)!.get(targetCellId)! >=
+        spellLevel.maxCastPerTarget
+    ) {
+      return SpellInabilityReasons.TOO_MANY_LAUNCHES_ON_CELL;
     }
 
-    DataManager.get(Spells, spellId).then((response) => {
-      const spell = response[0].object;
+    if (spellLevel.needFreeCell && !this.isCellFree(targetCellId)) {
+      return SpellInabilityReasons.NEED_FREE_CELL;
+    }
 
-      DataManager.get(SpellLevels, spell.spellLevels[spellEntry.level - 1]).then((response2) => {
-        const spellLevel = response2[0].object;
+    if (
+      spellLevel.needTakenCell &&
+      this.isCellFree(targetCellId) /* && characterCellId !== targetCellId */
+    ) {
+      return SpellInabilityReasons.NEED_TAKEN_CELL;
+    }
 
-        if (spellLevel.maxCastPerTarget > 0 && this._totalSpellLaunchesInCells.containsKey(spellId)
-          && this._totalSpellLaunchesInCells.getValue(spellId).containsKey(targetCellId)
-          && this._totalSpellLaunchesInCells.getValue(spellId).getValue(targetCellId) >= spellLevel.maxCastPerTarget) {
-          return SpellInabilityReasons.TOO_MANY_LAUNCHES_ON_CELL;
-        }
-
-        if (spellLevel.needFreeCell && !this.isCellFree(targetCellId)) {
-          return SpellInabilityReasons.NEED_FREE_CELL;
-        }
-
-        if (spellLevel.needTakenCell && this.isCellFree(targetCellId) /* && characterCellId !== targetCellId */) {
-          return SpellInabilityReasons.NEED_TAKEN_CELL;
-        }
-
-        // TODO: Not 100% sure this works flawlessly
-        if (!this.getSpellRange(characterCellId, spellLevel).includes(targetCellId)) {
-          return SpellInabilityReasons.NOT_IN_RANGE;
-        }
-
-        return SpellInabilityReasons.NONE; // TODO: needed?
-      });
-    });
+    // TODO: Not 100% sure this works flawlessly
+    if (
+      !this.getSpellRange(characterCellId, spellLevel).includes(targetCellId)
+    ) {
+      return SpellInabilityReasons.NOT_IN_RANGE;
+    }
 
     return SpellInabilityReasons.NONE;
   }
 
-  public getSpellRange(characterCellId: number, spellLevel: SpellLevels): number[] {
-    const range = new Array<number>();
-    for (const mp of SpellShapes.getSpellRange(characterCellId, spellLevel, this.account.game.character.stats.range.total)) {
+  public getSpellRange(
+    characterCellId: number,
+    spellLevel: SpellLevels
+  ): number[] {
+    const range: number[] = [];
+    for (const mp of SpellShapes.getSpellRange(
+      characterCellId,
+      spellLevel,
+      this.totalStat(this.account.game.character.stats.range)
+    )) {
       if (mp === null || range.includes(mp.cellId)) {
         continue;
       }
@@ -425,14 +574,22 @@ export default class Fight implements IClearable {
         continue;
       }
 
-      if ((this.account.game.map.data.cells[mp.cellId].l & 7) === 3) {
+      if ((this.account.game.map.data!.cells[mp.cellId].l! & 7) === 3) {
         range.push(mp.cellId);
       }
     }
 
     if (spellLevel.castTestLos) {
       for (let i = range.length - 1; i >= 0; i--) {
-        if (Dofus1Line.isLineObstructed(this.account.game.map.data, characterCellId, range[i], this.occupiedCells, spellLevel.castInDiagonal)) {
+        if (
+          Dofus1Line.isLineObstructed(
+            this.account.game.map.data!,
+            characterCellId,
+            range[i],
+            this.occupiedCells,
+            spellLevel.castInDiagonal
+          )
+        ) {
           range.splice(i, 1);
         }
       }
@@ -448,7 +605,9 @@ export default class Fight implements IClearable {
     this.onFightJoined.trigger();
   }
 
-  public async UpdateGameFightPlacementPossiblePositionsMessage(message: GameFightPlacementPossiblePositionsMessage) {
+  public async UpdateGameFightPlacementPossiblePositionsMessage(
+    message: GameFightPlacementPossiblePositionsMessage
+  ) {
     this.positionsForChallengers = new List(message.positionsForChallengers);
     this.positionsForDefenders = new List(message.positionsForDefenders);
     this.onPossiblePositionsReceived.trigger();
@@ -462,80 +621,110 @@ export default class Fight implements IClearable {
   }
 
   public async UpdateTextInformationMessage(message: TextInformationMessage) {
-    if (message.msgType === 36) {
+    if (message.msgId === 36) {
       this.onSpectatorJoined.trigger();
     }
   }
 
-  public async UpdateGameFightShowFighterMessage(message: GameFightShowFighterMessage) {
+  public async UpdateGameFightShowFighterMessage(
+    message: GameFightShowFighterMessage
+  ) {
     if (message.informations.contextualId === this.account.game.character.id) {
-      this.playedFighter = new FightPlayerEntry(message.informations as GameFightCharacterInformations, message.informations);
+      this.playedFighter = new FightPlayerEntry(message.informations);
     } else {
-      this.addFighter(message.informations);
+      await this.addFighter(message.informations);
     }
     this.sortFighters();
     this.onFightersUpdated.trigger();
   }
 
-  public async UpdateGameFightUpdateTeamMessage(message: GameFightUpdateTeamMessage) {
-    if (this.account.state === AccountStates.FIGHTING && message.team.leaderId === this.account.game.character.id && this.fightId === 0) {
+  public async UpdateGameFightUpdateTeamMessage(
+    message: GameFightUpdateTeamMessage
+  ) {
+    if (
+      this.account.state === AccountStates.FIGHTING &&
+      message.team.leaderId === this.account.game.character.id &&
+      this.fightId === 0
+    ) {
       this.fightId = message.fightId;
       this.onFightIDReceived.trigger();
     }
   }
 
-  public async UpdateGameFightOptionStateUpdateMessage(message: GameFightOptionStateUpdateMessage) {
+  public async UpdateGameFightOptionStateUpdateMessage(
+    message: GameFightOptionStateUpdateMessage
+  ) {
     if (!message.state && this.options.includes(message.option)) {
-      this.options = this.options.filter((o) => o !== message.option);
+      this.options = this.options.filter(o => o !== message.option);
     } else if (message.state && !this.options.includes(message.option)) {
       this.options.push(message.option);
     }
   }
 
-  public async UpdateGameEntitiesDispositionMessage(message: GameEntitiesDispositionMessage) {
+  public async UpdateGameEntitiesDispositionMessage(
+    message: GameEntitiesDispositionMessage
+  ) {
     // TODO: Check the next line...
-    message.dispositions.forEach((d) => this.getFighter(d.id) !== null ? this.getFighter(d.id).UpdateIdentifiedEntityDispositionInformations(d) : d);
+    message.dispositions.forEach(
+      d =>
+        this.getFighter(d.id) !== null
+          ? this.getFighter(
+              d.id
+            )!.UpdateIdentifiedEntityDispositionInformations(d)
+          : d
+    );
     this.onFightersUpdated.trigger();
   }
 
-  public async UpdateGameFightSynchronizeMessage(message: GameFightSynchronizeMessage) {
-    message.fighters.forEach((f) => {
+  public async UpdateGameFightSynchronizeMessage(
+    message: GameFightSynchronizeMessage
+  ) {
+    for (const f of message.fighters) {
       const fighter = this.getFighter(f.contextualId);
 
       if (fighter === null) {
-        this.addFighter(f);
+        await this.addFighter(f);
         this.sortFighters();
       } else {
         fighter.UpdateGameFightFighterInformations(f);
       }
-    });
+    }
+
     this.onFightersUpdated.trigger();
   }
 
   public async UpdateFighterStatsListMessage(message: FighterStatsListMessage) {
     if (this.playedFighter !== null) {
-      this.playedFighter.UpdateCharacterCharacteristicsInformations(message.stats);
+      this.playedFighter.UpdateCharacterCharacteristicsInformations(
+        message.stats
+      );
       this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
       this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-      this.onFightersStatsUpdated.trigger();
+      this.onFighterStatsUpdated.trigger();
     }
   }
 
-  public async UpdateGameActionFightPointsVariationMessage(message: GameActionFightPointsVariationMessage) {
+  public async UpdateGameActionFightPointsVariationMessage(
+    message: GameActionFightPointsVariationMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightPointsVariationMessage(message);
     }
   }
 
-  public async UpdateGameActionFightDeathMessage(message: GameActionFightDeathMessage) {
+  public async UpdateGameActionFightDeathMessage(
+    message: GameActionFightDeathMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightDeathMessage(message);
     }
   }
 
-  public async UpdateGameActionFightTeleportOnSameMapMessage(message: GameActionFightTeleportOnSameMapMessage) {
+  public async UpdateGameActionFightTeleportOnSameMapMessage(
+    message: GameActionFightTeleportOnSameMapMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightTeleportOnSameMapMessage(message);
@@ -547,15 +736,20 @@ export default class Fight implements IClearable {
     if (f !== null) {
       f.UpdateGameMapMovementMessage(message);
 
-      if (f.contextualId === this.playedFighter.contextualId) {
-        this.onPlayerFighterMoving.trigger(message.keyMovements);
+      if (
+        this.playedFighter &&
+        f.contextualId === this.playedFighter.contextualId
+      ) {
+        this.onPlayedFighterMoving.trigger(message.keyMovements);
       } else {
         this.onFightersUpdated.trigger();
       }
     }
   }
 
-  public async UpdateGameActionFightSlideMessage(message: GameActionFightSlideMessage) {
+  public async UpdateGameActionFightSlideMessage(
+    message: GameActionFightSlideMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightSlideMessage(message);
@@ -563,58 +757,78 @@ export default class Fight implements IClearable {
     }
   }
 
-  public async UpdateGameActionFightSummonMessage(message: GameActionFightSummonMessage) {
-    this.addFighter(message.summon);
+  public async UpdateGameActionFightSummonMessage(
+    message: GameActionFightSummonMessage
+  ) {
+    await this.addFighter(message.summon);
     this.sortFighters();
     this.onFightersUpdated.trigger();
   }
 
-  public async UpdateGameActionFightLifePointsLostMessage(message: GameActionFightLifePointsLostMessage) {
+  public async UpdateGameActionFightLifePointsLostMessage(
+    message: GameActionFightLifePointsLostMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightLifePointsLostMessage(message);
 
       // Trigger update event if its our character
-      if (message.targetId === this.playedFighter.contextualId) {
+      if (
+        this.playedFighter &&
+        message.targetId === this.playedFighter.contextualId
+      ) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-        this.onFightersStatsUpdated.trigger();
+        this.onFighterStatsUpdated.trigger();
       }
     }
   }
 
-  public async UpdateGameActionFightLifePointsGainMessage(message: GameActionFightLifePointsGainMessage) {
+  public async UpdateGameActionFightLifePointsGainMessage(
+    message: GameActionFightLifePointsGainMessage
+  ) {
     const f = this.getFighter(message.targetId);
     if (f !== null) {
       f.UpdateGameActionFightLifePointsGainMessage(message);
 
       // Trigger update event if its our character
-      if (message.targetId === this.playedFighter.contextualId) {
+      if (
+        this.playedFighter &&
+        message.targetId === this.playedFighter.contextualId
+      ) {
         this.account.game.character.stats.maxLifePoints = this.playedFighter.maxLifePoints;
         this.account.game.character.stats.lifePoints = this.playedFighter.lifePoints;
-        this.onFightersStatsUpdated.trigger();
+        this.onFighterStatsUpdated.trigger();
       }
     }
   }
 
   public async UpdateGameFightLeaveMessage(message: GameFightLeaveMessage) {
-    if (this.playedFighter.contextualId === message.charId) {
+    if (
+      this.playedFighter &&
+      this.playedFighter.contextualId === message.charId
+    ) {
       this.isFightStarted = false;
     } else {
       const f = this.getFighter(message.charId);
       if (f !== null) {
-        this._fighters.remove(f.contextualId);
+        this._fighters.delete(f.contextualId);
         if (this.allies.includes(f)) {
-          this._allies.remove(f.contextualId);
+          this._allies.delete(f.contextualId);
         } else if (this.enemies.includes(f)) {
-          this._enemies.remove(f.contextualId);
+          this._enemies.delete(f.contextualId);
         }
       }
     }
   }
 
-  public async UpdateGameFightTurnStartMessage(message: GameFightTurnStartMessage) {
-    if (this.playedFighter !== null && this.playedFighter.contextualId === message.id) {
+  public async UpdateGameFightTurnStartMessage(
+    message: GameFightTurnStartMessage
+  ) {
+    if (
+      this.playedFighter !== null &&
+      this.playedFighter.contextualId === message.id
+    ) {
       this.isOurTurn = true;
       this.onTurnStarted.trigger();
     }
@@ -622,48 +836,68 @@ export default class Fight implements IClearable {
 
   public async UpdateGameFightTurnEndMessage(message: GameFightTurnEndMessage) {
     const fighter = this.getFighter(message.id);
-    if (fighter !== null) {
-      if (fighter === this.playedFighter) {
-        this.isOurTurn = false;
-        this._totalSpellLaunches = new Dictionary<number, number>();
-        this._totalSpellLaunchesInCells = new Dictionary<number, Dictionary<number, number>>();
-
-        // Effects
-        for (let i = this._effectsDurations.count() - 1; i >= 0; i--) {
-          const key = this._effectsDurations.keys()[i];
-          this._effectsDurations.changeValueForKey(key, this._effectsDurations.getValue(key) - 1);
-          if (this._effectsDurations.getValue(key) === 0) {
-            this._effectsDurations.remove(key);
-          }
-        }
-
-        // Spells
-        for (let i = this._spellsIntervals.count() - 1; i >= 0; i--) {
-          const key = this._spellsIntervals.keys()[i];
-          this._spellsIntervals.changeValueForKey(key, this._spellsIntervals.getValue(key) - 1);
-          if (this._spellsIntervals.getValue(key) === 0) {
-            this._spellsIntervals.remove(key);
-          }
-        }
-
-        this.onTurnEnded.trigger();
-      }
-      fighter.UpdateGameFightTurnEndMessage(message);
+    if (fighter === null) {
+      return;
     }
+    if (fighter === this.playedFighter) {
+      this.isOurTurn = false;
+      this._totalSpellLaunches = new Map<number, number>();
+      this._totalSpellLaunchesInCells = new Map<number, Map<number, number>>();
+
+      // Effects
+      const effectsKeys = Array.from(this._effectsDurations.keys()).reverse();
+      for (const key of effectsKeys) {
+        const actualValue = this._effectsDurations.get(key)!;
+        this._effectsDurations.set(key, actualValue - 1);
+        if (actualValue - 1 === 0) {
+          this._effectsDurations.delete(key);
+        }
+      }
+
+      // Spells
+      const spellsIntervalsKeys = Array.from(
+        this._spellsIntervals.keys()
+      ).reverse();
+      for (const key of spellsIntervalsKeys) {
+        const actualValue = this._spellsIntervals.get(key)!;
+        this._spellsIntervals.set(key, actualValue - 1);
+        if (actualValue - 1 === 0) {
+          this._spellsIntervals.delete(key);
+        }
+      }
+
+      this.onTurnEnded.trigger();
+    }
+    fighter.UpdateGameFightTurnEndMessage(message);
   }
 
-  public async UpdateGameActionFightDispellableEffectMessage(message: GameActionFightDispellableEffectMessage) {
-    if (message.effect instanceof FightTemporaryBoostStateEffect) {
-      if (message.effect.targetId === this.playedFighter.contextualId) {
-        if (this._effectsDurations.containsKey(message.effect.stateId)) {
-          this._effectsDurations.remove(message.effect.stateId);
-          this.account.logger.logWarning("", `Added state ${message.effect.stateId} for ${message.effect.turnDuration} turns`);
-          this._effectsDurations.add(message.effect.stateId, message.effect.turnDuration);
+  public async UpdateGameActionFightDispellableEffectMessage(
+    message: GameActionFightDispellableEffectMessage
+  ) {
+    if (message.effect._type === "FightTemporaryBoostStateEffect") {
+      const effect = message.effect as FightTemporaryBoostStateEffect;
+      if (this.playedFighter) {
+        if (effect.targetId === this.playedFighter.contextualId) {
+          if (this._effectsDurations.has(effect.stateId)) {
+            this._effectsDurations.delete(effect.stateId);
+            this.account.logger.logWarning(
+              LanguageManager.trans("fight"),
+              LanguageManager.trans(
+                "fightAddedState",
+                effect.stateId,
+                effect.turnDuration
+              )
+            );
+            this._effectsDurations.set(effect.stateId, effect.turnDuration);
+          }
         }
       }
-    } else if (message.effect instanceof FightTemporaryBoostEffect) {
-      if (message.effect.targetId === this.playedFighter.contextualId) {
-        this.playedFighter.Update(message.actionId, message.effect);
+    } else if (message.effect._type === "FightTemporaryBoostEffect") {
+      const effect = message.effect as FightTemporaryBoostEffect;
+      if (this.playedFighter) {
+        if (effect.targetId === this.playedFighter.contextualId) {
+          this.playedFighter.Update(message.actionId, effect);
+        }
       }
     }
   }
@@ -674,43 +908,67 @@ export default class Fight implements IClearable {
     this.onFightEnded.trigger();
   }
 
-  public async UpdateGameActionFightSpellCastMessage(message: GameActionFightSpellCastMessage) {
+  public async UpdateGameActionFightSpellCastMessage(
+    message: GameActionFightSpellCastMessage
+  ) {
     // TODO: Check next line
-    if (this.playedFighter !== null && this.playedFighter.contextualId === message.sourceId) {
-      const spellResp = await DataManager.get(Spells, message.spellId);
+    if (
+      this.playedFighter !== null &&
+      this.playedFighter.contextualId === message.sourceId
+    ) {
+      const spellResp = await DataManager.get<Spells>(
+        DataTypes.Spells,
+        message.spellId
+      );
       const spell = spellResp[0].object;
-      const spellLevelResp = await DataManager.get(SpellLevels, spell.spellLevels[message.spellLevel - 1]);
+      const spellLevelResp = await DataManager.get<SpellLevels>(
+        DataTypes.SpellLevels,
+        spell.spellLevels[message.spellLevel - 1]
+      );
       const spellLevel = spellLevelResp[0].object;
 
-      if (spellLevel.minCastInterval > 0 && !this._spellsIntervals.containsKey(spell.id)) {
-        this._spellsIntervals.add(spell.id, spellLevel.minCastInterval);
+      if (
+        spellLevel.minCastInterval > 0 &&
+        !this._spellsIntervals.has(spell.id)
+      ) {
+        this._spellsIntervals.set(spell.id, spellLevel.minCastInterval);
       }
 
-      if (!this._totalSpellLaunches.containsKey(spell.id)) {
-        this._totalSpellLaunches.add(spell.id, 0);
+      if (!this._totalSpellLaunches.has(spell.id)) {
+        this._totalSpellLaunches.set(spell.id, 0);
       }
-      this._totalSpellLaunches.changeValueForKey(spell.id, this._totalSpellLaunches.getValue(spell.id) + 1);
+      this._totalSpellLaunches.set(
+        spell.id,
+        this._totalSpellLaunches.get(spell.id)! + 1
+      );
 
-      if (this._totalSpellLaunchesInCells.containsKey(spell.id)) {
-        if (this._totalSpellLaunchesInCells.getValue(spell.id).containsKey(message.destinationCellId)) {
-          // NOTE: Check if its right ...
-          if (this._totalSpellLaunchesInCells.getValue(spell.id).containsKey(message.destinationCellId)) {
-            this._totalSpellLaunchesInCells.getValue(spell.id).changeValueForKey(message.destinationCellId, 0);
-          } else {
-            this._totalSpellLaunchesInCells.getValue(spell.id).add(message.destinationCellId, 0);
-          }
+      if (this._totalSpellLaunchesInCells.has(spell.id)) {
+        if (
+          !this._totalSpellLaunchesInCells
+            .get(spell.id)!
+            .has(message.destinationCellId)
+        ) {
+          this._totalSpellLaunchesInCells
+            .get(spell.id)!
+            .set(message.destinationCellId, 0);
         }
-        const value = this._totalSpellLaunchesInCells.getValue(spell.id);
-        value.changeValueForKey(message.destinationCellId, value.getValue(message.destinationCellId) + 1);
+        const value = this._totalSpellLaunchesInCells.get(spell.id)!;
+        value.set(
+          message.destinationCellId,
+          value.get(message.destinationCellId)! + 1
+        );
       } else {
-        this._totalSpellLaunchesInCells.add(spell.id, new Dictionary<number, number>([
-          { key: message.destinationCellId, value: 1 },
-        ]));
+        this._totalSpellLaunchesInCells.set(
+          spell.id,
+          new Map<number, number>([[message.destinationCellId, 1]])
+        );
       }
     }
   }
 
-  public async UpdateGameFightNewRoundMessage(message: GameFightNewRoundMessage) {
+  public async UpdateGameFightNewRoundMessage(
+    message: GameFightNewRoundMessage
+  ) {
     this.roundNumber = message.roundNumber;
   }
 
@@ -720,24 +978,44 @@ export default class Fight implements IClearable {
     }
 
     for (const fighter of this.fighters) {
-      if (this._allies.containsKey(fighter.contextualId) || this._enemies.containsKey(fighter.contextualId)) {
+      if (
+        this._allies.has(fighter.contextualId) ||
+        this._enemies.has(fighter.contextualId)
+      ) {
         continue;
       }
 
       if (fighter.team === this.playedFighter.team) {
-        this._allies.add(fighter.contextualId, fighter);
+        this._allies.set(fighter.contextualId, fighter);
       } else {
-        this._enemies.add(fighter.contextualId, fighter);
+        this._enemies.set(fighter.contextualId, fighter);
       }
     }
   }
 
-  private addFighter(infos: GameFightFighterInformations) {
-    // TODO: Check this method ...
-    if ((infos as any)._type === "GameFightCharacterInformations") {
-      this._fighters.add(infos.contextualId, new FightPlayerEntry(infos as GameFightCharacterInformations, infos));
-    } else if ((infos as any)._type === "GameFightMonsterInformations") {
-      this._fighters.add(infos.contextualId, new FightMonsterEntry(infos as GameFightMonsterInformations, infos));
+  private async addFighter(infos: GameFightFighterInformations) {
+    if (
+      infos._type === "GameFightCharacterInformations" ||
+      infos._type === "GameFightMutantInformations"
+    ) {
+      this._fighters.set(infos.contextualId, new FightPlayerEntry(infos));
+    } else if (infos._type === "GameFightMonsterInformations") {
+      this._fighters.set(
+        infos.contextualId,
+        await FightMonsterEntry.setup(
+          infos as GameFightMonsterInformations,
+          infos
+        )
+      );
     }
+  }
+
+  private totalStat(stat: CharacterBaseCharacteristic): number {
+    return (
+      stat.base +
+      stat.objectsAndMountBonus +
+      stat.alignGiftBonus +
+      stat.contextModif
+    );
   }
 }

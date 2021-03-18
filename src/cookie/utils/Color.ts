@@ -1,13 +1,11 @@
 export const RGB_COLOR_REGEX = /\((\d+),\s*(\d+),\s*(\d+)(,\s*(\d*.\d*))?\)/;
 
 export default class Color {
-  public r: number;
-  public g: number;
-  public b: number;
-  public a: number;
+  public r: number | undefined;
+  public g: number | undefined;
+  public b: number | undefined;
+  public a: number = 1;
 
-  constructor(colorStr?: string)
-  constructor(r?: string | number, g?: number, b?: number)
   constructor(r?: string | number, g?: number, b?: number, a?: number) {
     if (typeof r === "string") {
       r = r.trim();
@@ -17,7 +15,7 @@ export default class Color {
         this.g = parseInt(r.substr(2, 2), 16);
         this.b = parseInt(r.substr(4, 2), 16);
       } else if (r.indexOf("rgb") === 0) {
-        const res = RGB_COLOR_REGEX.exec(r);
+        const res = RGB_COLOR_REGEX.exec(r)!;
         this.r = parseInt(res[1], 10);
         this.g = parseInt(res[2], 10);
         this.b = parseInt(res[3], 10);
@@ -29,10 +27,21 @@ export default class Color {
       this.b = b;
       this.a = a || 1;
     }
+    if (this.a > 1) {
+      this.a /= 255;
+    }
   }
 
   public toHex() {
-    return "#" + this.r.toString(16) + this.g.toString(16) + this.b.toString(16);
+    if (!this.r || !this.g || !this.b) {
+      return "#000";
+    }
+    return (
+      "#" +
+      ("0" + this.r.toString(16)).slice(-2) +
+      ("0" + this.g.toString(16)).slice(-2) +
+      ("0" + this.b.toString(16)).slice(-2)
+    );
   }
 
   public toRgb() {

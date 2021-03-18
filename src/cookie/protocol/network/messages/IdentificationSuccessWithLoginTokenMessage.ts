@@ -1,6 +1,8 @@
-import IdentificationSuccessMessage from "./IdentificationSuccessMessage";
+import IdentificationSuccessMessage from "@/protocol/network/messages/IdentificationSuccessMessage";
+
 export default class IdentificationSuccessWithLoginTokenMessage extends IdentificationSuccessMessage {
   public loginToken: string;
+
   constructor(login = "", nickname = "", accountId = 0, communityId = 0,
               hasRights = false, secretQuestion = "", subscriptionEndDate = 0,
               wasAlreadyConnected = false, accountCreation = 0, loginToken = "") {

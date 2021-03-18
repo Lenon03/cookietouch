@@ -1,14 +1,20 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import Type from "@/protocol/network/types/Type";
 
-export default class GameContextActorInformations {
-    public contextualId: number;
-    public look: EntityLook;
-    public disposition: EntityDispositionInformations;
+export default class GameContextActorInformations extends Type {
+  public contextualId: number;
+  public look: EntityLook;
+  public disposition: EntityDispositionInformations;
 
-    constructor(contextualId = 0, look: EntityLook = null, disposition: EntityDispositionInformations = null) {
-      this.contextualId = contextualId;
-      this.look = look;
-      this.disposition = disposition;
-    }
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations()
+  ) {
+    super();
+    this.contextualId = contextualId;
+    this.look = look;
+    this.disposition = disposition;
+  }
 }

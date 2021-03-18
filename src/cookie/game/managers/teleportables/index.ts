@@ -1,59 +1,102 @@
-import Account from "@account";
-import MapGame from "@game/map";
-import LiteEvent from "@utils/LiteEvent";
-import { sleep } from "@utils/Time";
-import InteractivesManager from "../interactives";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import InteractivesManager from "@/game/managers/interactives";
+import MapGame from "@/game/map";
+import LiteEvent from "@/utils/LiteEvent";
+import { sleep } from "@/utils/Time";
 
-export enum TeleportablesEnum { ZAAP, ZAAPI, NONE }
+export enum TeleportablesEnum {
+  ZAAP,
+  ZAAPI,
+  NONE
+}
 
 export default class TeleportablesManager {
   private _account: Account;
-  private _destinationMapId: number;
+  private _destinationMapId: number = 0;
   private _teleportable: TeleportablesEnum;
-
-  public get UseFinished() { return this.onUseFinished.expose(); }
   private readonly onUseFinished = new LiteEvent<boolean>();
 
-  constructor(account: Account, interactives: InteractivesManager, map: MapGame) {
+  constructor(
+    account: Account,
+    interactives: InteractivesManager,
+    map: MapGame
+  ) {
     this._account = account;
     this._teleportable = TeleportablesEnum.NONE;
-    this._account.dispatcher.register("ZaapListMessage", this.HandleZaapListMessage, this);
-    this._account.dispatcher.register("TeleportDestinationsListMessage",
-      this.HandleTeleportDestinationsListMessage, this);
-    map.MapChanged.on((success) => this.mapChanged.bind(this));
-    interactives.UseFinished.on((success) => this.interactivesUseFinished.bind(this));
+    this._account.network.registerMessage(
+      "ZaapListMessage",
+      this.handleZaapListMessage
+    );
+    this._account.network.registerMessage(
+      "TeleportDestinationsListMessage",
+      this.handleTeleportDestinationsListMessage
+    );
+    map.MapChanged.on(this.mapChanged);
+    interactives.UseFinished.on(this.interactivesUseFinished);
+  }
+
+  public get UseFinished() {
+    return this.onUseFinished.expose();
   }
 
   public saveZaap(): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("characterBusy")
+      );
       return false;
     }
 
     if (this._account.game.map.zaap === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaap sur cette map.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaap")
+      );
+      return false;
+    }
+
+    const skill = this._account.game.map.zaap.element.enabledSkills.find(
+      s => s.id === 44
+    );
+
+    if (!skill) {
+      // TODO: ??
       return false;
     }
 
     return this._account.game.managers.interactives.moveToUseInteractive(
-      this._account.game.map.zaap.element, this._account.game.map.zaap.cellId,
-      this._account.game.map.zaap.element.enabledSkills.find((s) => s.id === 44).instanceUid,
+      this._account.game.map.zaap.element,
+      this._account.game.map.zaap.cellId,
+      skill.instanceUid
     );
   }
 
   public useZaap(desinationMapId: number): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("characterBusy")
+      );
       return false;
     }
 
     if (this._account.game.map.zaap === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaap sur cette map.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaap")
+      );
       return false;
     }
 
-    if (!this._account.game.managers.interactives.moveToUseInteractive(this._account.game.map.zaap.element,
-      this._account.game.map.zaap.cellId, -1)) {
+    if (
+      !this._account.game.managers.interactives.moveToUseInteractive(
+        this._account.game.map.zaap.element,
+        this._account.game.map.zaap.cellId,
+        -1
+      )
+    ) {
       return false;
     }
 
@@ -64,17 +107,28 @@ export default class TeleportablesManager {
 
   public useZaapi(desinationMapId: number): boolean {
     if (this._account.isBusy) {
-      this._account.logger.logWarning("TeleportablesManagers", "Le personnage est occupé.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("characterBusy")
+      );
       return false;
     }
 
     if (this._account.game.map.zaapi === null) {
-      this._account.logger.logWarning("TeleportablesManagers", "Pas de zaapi sur cette map.");
+      this._account.logger.logWarning(
+        LanguageManager.trans("teleportablesManagers"),
+        LanguageManager.trans("noZaapi")
+      );
       return false;
     }
 
-    if (!this._account.game.managers.interactives.moveToUseInteractive(this._account.game.map.zaapi.element,
-      this._account.game.map.zaapi.cellId, -1)) {
+    if (
+      !this._account.game.managers.interactives.moveToUseInteractive(
+        this._account.game.map.zaapi.element,
+        this._account.game.map.zaapi.cellId,
+        -1
+      )
+    ) {
       return false;
     }
 
@@ -93,10 +147,13 @@ export default class TeleportablesManager {
     this.onUseFinished.trigger(success);
   }
 
-  private async HandleZaapListMessage(account: Account, message: any) {
+  private handleZaapListMessage = async (account: Account, message: any) => {
     await sleep(1000);
 
-    if (this._teleportable !== TeleportablesEnum.ZAAP || this._destinationMapId === 0) {
+    if (
+      this._teleportable !== TeleportablesEnum.ZAAP ||
+      this._destinationMapId === 0
+    ) {
       return;
     }
 
@@ -105,16 +162,22 @@ export default class TeleportablesManager {
       return;
     }
 
-    await this._account.network.sendMessage("TeleportableRequestMessage", {
+    await this._account.network.sendMessageFree("TeleportRequestMessage", {
       mapId: this._destinationMapId,
-      teleporterType: this._teleportable,
+      teleporterType: this._teleportable
     });
-  }
+  };
 
-  private async HandleTeleportDestinationsListMessage(account: Account, message: any) {
+  private handleTeleportDestinationsListMessage = async (
+    account: Account,
+    message: any
+  ) => {
     await sleep(1000);
 
-    if (this._teleportable !== TeleportablesEnum.ZAAPI || this._destinationMapId === 0) {
+    if (
+      this._teleportable !== TeleportablesEnum.ZAAPI ||
+      this._destinationMapId === 0
+    ) {
       return;
     }
 
@@ -123,27 +186,33 @@ export default class TeleportablesManager {
       return;
     }
 
-    await this._account.network.sendMessage("TeleportableRequestMessage", {
+    await this._account.network.sendMessageFree("TeleportRequestMessage", {
       mapId: this._destinationMapId,
-      teleporterType: this._teleportable,
+      teleporterType: this._teleportable
     });
-  }
+  };
 
-  private mapChanged(success: boolean) {
-    if (this._teleportable === TeleportablesEnum.NONE || this._destinationMapId === 0) {
+  private mapChanged = () => {
+    if (
+      this._teleportable === TeleportablesEnum.NONE ||
+      this._destinationMapId === 0
+    ) {
       return;
     }
 
     this.isUseFinished(true);
-  }
+  };
 
-  private interactivesUseFinished(success: boolean) {
-    if (this._teleportable === TeleportablesEnum.NONE || this._destinationMapId === 0) {
+  private interactivesUseFinished = (success?: boolean) => {
+    if (
+      this._teleportable === TeleportablesEnum.NONE ||
+      this._destinationMapId === 0
+    ) {
       return;
     }
 
     if (!success) {
       this.isUseFinished(false);
     }
-  }
+  };
 }

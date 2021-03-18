@@ -1,6 +1,6 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class MapCoordinates extends Data {
-    public compressedCoords: number;
-    public mapIds: number[];
+  public compressedCoords: number = 0;
+  public mapIds: number[] = [];
 }

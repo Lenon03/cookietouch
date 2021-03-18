@@ -1,5 +1,5 @@
-import ObjectEffect from "./ObjectEffect";
-import ObjectItemToSell from "./ObjectItemToSell";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
+import ObjectItemToSell from "@/protocol/network/types/ObjectItemToSell";
 
 export default class ObjectItemToSellInBid extends ObjectItemToSell {
 

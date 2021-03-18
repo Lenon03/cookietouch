@@ -1,6 +1,8 @@
-import GameFightTurnStartMessage from "./GameFightTurnStartMessage";
+import GameFightTurnStartMessage from "@/protocol/network/messages/GameFightTurnStartMessage";
+
 export default class GameFightTurnStartSlaveMessage extends GameFightTurnStartMessage {
   public idSummoner: number;
+
   constructor(id = 0, waitTime = 0, idSummoner = 0) {
     super(id, waitTime);
     this.idSummoner = idSummoner;

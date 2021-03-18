@@ -1,4 +1,6 @@
-export default class FightResultExperienceData {
+import Type from "@/protocol/network/types/Type";
+
+export default class FightResultExperienceData extends Type {
 
   public experience: number;
   public showexperience: boolean;
@@ -21,6 +23,7 @@ export default class FightResultExperienceData {
               showexperiencefightdelta = false, experienceforguild = 0, showexperienceforguild = false,
               experienceformount = 0, showexperienceformount = false, isincarnationexperience = false,
               rerollexperiencemul = 0) {
+    super();
     this.experience = experience;
     this.showexperience = showexperience;
     this.experiencelevelfloor = experiencelevelfloor;

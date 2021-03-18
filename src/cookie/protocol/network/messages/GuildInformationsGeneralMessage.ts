@@ -1,4 +1,5 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class GuildInformationsGeneralMessage extends Message {
   public enabled: boolean;
   public abandonnedPaddock: boolean;
@@ -7,6 +8,7 @@ export default class GuildInformationsGeneralMessage extends Message {
   public experience: number;
   public expNextLevelFloor: number;
   public creationDate: number;
+
   constructor(enabled = false, abandonnedPaddock = false, level = 0, expLevelFloor = 0, experience = 0, expNextLevelFloor = 0, creationDate = 0) {
     super();
     this.enabled = enabled;

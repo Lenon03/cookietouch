@@ -12,4 +12,5 @@ export enum AccountStates {
   SELLING,
   RECAPTCHA,
   REGENERATING,
+  CRAFTING
 }

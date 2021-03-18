@@ -1,10 +1,11 @@
-import GuildEmblem from "@protocol/network/types/GuildEmblem";
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+import GuildEmblem from "@/protocol/network/types/GuildEmblem";
+
 export default class AllianceModificationEmblemValidMessage extends Message {
   public alliancemblem: GuildEmblem;
-  constructor(alliancemblem: GuildEmblem = null) {
+
+  constructor(alliancemblem = new GuildEmblem()) {
     super();
     this.alliancemblem = alliancemblem;
-
   }
 }

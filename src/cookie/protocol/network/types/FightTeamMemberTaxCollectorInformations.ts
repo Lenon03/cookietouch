@@ -1,4 +1,5 @@
-import FightTeamMemberInformations from "./FightTeamMemberInformations";
+import FightTeamMemberInformations from "@/protocol/network/types/FightTeamMemberInformations";
+
 export default class FightTeamMemberTaxCollectorInformations extends FightTeamMemberInformations {
 
   public firstNameDd: number;

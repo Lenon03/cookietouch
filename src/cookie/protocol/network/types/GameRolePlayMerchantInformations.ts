@@ -1,15 +1,22 @@
-import EntityDispositionInformations from "./EntityDispositionInformations";
-import EntityLook from "./EntityLook";
-import GameRolePlayNamedActorInformations from "./GameRolePlayNamedActorInformations";
-import HumanOption from "./HumanOption";
+import EntityDispositionInformations from "@/protocol/network/types/EntityDispositionInformations";
+import EntityLook from "@/protocol/network/types/EntityLook";
+import GameRolePlayNamedActorInformations from "@/protocol/network/types/GameRolePlayNamedActorInformations";
+import HumanOption from "@/protocol/network/types/HumanOption";
+
 export default class GameRolePlayMerchantInformations extends GameRolePlayNamedActorInformations {
   public options: HumanOption[];
   public sellType: number;
-  constructor(contextualId = 0, look: EntityLook, disposition: EntityDispositionInformations,
-              name = "", sellType = 0, options: HumanOption[] = null) {
+
+  constructor(
+    contextualId = 0,
+    look = new EntityLook(),
+    disposition = new EntityDispositionInformations(),
+    name = "",
+    sellType = 0,
+    options: HumanOption[] = []
+  ) {
     super(contextualId, look, disposition, name);
     this.options = options;
     this.sellType = sellType;
-
   }
 }

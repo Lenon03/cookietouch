@@ -6,8 +6,14 @@ export default class PathNode {
   public tackleAp: number;
   public distance: number;
 
-  constructor(cellId: number, ap: number, mp: number,
-              tackleAp: number, tackleMp: number, distance: number) {
+  constructor(
+    cellId: number,
+    ap: number,
+    mp: number,
+    tackleAp: number,
+    tackleMp: number,
+    distance: number
+  ) {
     this.cellId = cellId;
     this.availableAp = ap;
     this.availableMp = mp;

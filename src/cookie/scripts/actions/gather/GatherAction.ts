@@ -1,8 +1,9 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import ScriptAction, { ScriptActionResults } from "@/scripts/actions/ScriptAction";
 
 export default class GatherAction extends ScriptAction {
+  public _name: string = "GatherAction";
   public elements: number[];
 
   constructor(elements: number[]) {
@@ -10,17 +11,15 @@ export default class GatherAction extends ScriptAction {
     this.elements = elements;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      // In case there is no elements to gather in this map, just pass
-      if (!account.game.managers.gathers.canGather(...this.elements)) {
-        return ScriptAction.doneResult;
+  public async process(account: Account): Promise<ScriptActionResults> {
+    // In case there is no elements to gather in this map, just pass
+    if (account.game.managers.gathers.canGather(...this.elements)) {
+      if (!account.game.managers.gathers.gather(...this.elements)) {
+        account.scripts.stopScript(LanguageManager.trans("gatherError"));
+        return ScriptAction.failedResult();
       }
-      if (account.game.managers.gathers.gather(...this.elements)) {
-        return ScriptAction.processingResult;
-      }
-      account.scripts.stopScript("reasonstopscript");
-      return ScriptAction.failedResult;
-    });
+      return ScriptAction.processingResult();
+    }
+    return ScriptAction.doneResult();
   }
 }

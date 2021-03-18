@@ -1,31 +1,29 @@
-import Account from "@account";
+import Account from "@/account";
 
 export enum ScriptActionResults {
   DONE,
   PROCESSING,
-  FAILED,
+  FAILED
 }
 
 export default abstract class ScriptAction {
-  protected static doneResult(): Promise<ScriptActionResults> {
-    return new Promise((resolve, reject) => {
-      return resolve(ScriptActionResults.DONE);
-    });
-  }
-  protected static processingResult(): Promise<ScriptActionResults> {
-    return new Promise((resolve, reject) => {
-      return resolve(ScriptActionResults.PROCESSING);
-    });
-  }
-  protected static failedResult(): Promise<ScriptActionResults> {
-    return new Promise((resolve, reject) => {
-      return resolve(ScriptActionResults.FAILED);
-    });
+  public abstract _name: string;
+
+  protected static async doneResult(): Promise<ScriptActionResults> {
+    return ScriptActionResults.DONE;
   }
 
-  public get name(): string {
-    return this.constructor.toString().match(/\w+/g)[1];
+  protected static async processingResult(): Promise<ScriptActionResults> {
+    return ScriptActionResults.PROCESSING;
   }
 
-  public abstract process(account: Account): Promise<ScriptActionResults>;
+  protected static async failedResult(): Promise<ScriptActionResults> {
+    return ScriptActionResults.FAILED;
+  }
+
+  // public get name(): string {
+  //   return this.constructor.toString().match(/\w+/g)[1];
+  // }
+
+  public abstract async process(account: Account): Promise<ScriptActionResults>;
 }

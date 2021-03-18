@@ -1,5 +1,5 @@
-import Item from "./Item";
-import ObjectEffect from "./ObjectEffect";
+import Item from "@/protocol/network/types/Item";
+import ObjectEffect from "@/protocol/network/types/ObjectEffect";
 
 export default class ObjectItemNotInContainer extends Item {
 

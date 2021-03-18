@@ -1,8 +1,10 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class AlignmentSubAreaUpdateMessage extends Message {
   public subAreaId: number;
   public side: number;
   public quiet: boolean;
+
   constructor(subAreaId = 0, side = 0, quiet = false) {
     super();
     this.subAreaId = subAreaId;

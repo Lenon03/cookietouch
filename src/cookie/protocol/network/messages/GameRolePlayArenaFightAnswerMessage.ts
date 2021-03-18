@@ -1,7 +1,9 @@
-import Message from "./Message";
+import Message from "@/protocol/network/messages/Message";
+
 export default class GameRolePlayArenaFightAnswerMessage extends Message {
   public fightId: number;
   public accept: boolean;
+
   constructor(fightId = 0, accept = false) {
     super();
     this.fightId = fightId;

@@ -1,48 +1,41 @@
-import { TeamEnum } from "@protocol/enums/TeamEnum";
-import GameActionFightDeathMessage from "@protocol/network/messages/GameActionFightDeathMessage";
-import GameActionFightLifePointsGainMessage from "@protocol/network/messages/GameActionFightLifePointsGainMessage";
-import GameActionFightLifePointsLostMessage from "@protocol/network/messages/GameActionFightLifePointsLostMessage";
-import GameActionFightPointsVariationMessage from "@protocol/network/messages/GameActionFightPointsVariationMessage";
-import GameActionFightSlideMessage from "@protocol/network/messages/GameActionFightSlideMessage";
-import GameActionFightTeleportOnSameMapMessage from "@protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
-import GameFightTurnEndMessage from "@protocol/network/messages/GameFightTurnEndMessage";
-import GameMapMovementMessage from "@protocol/network/messages/GameMapMovementMessage";
-import CharacterCharacteristicsInformations from "@protocol/network/types/CharacterCharacteristicsInformations";
-import FightTemporaryBoostEffect from "@protocol/network/types/FightTemporaryBoostEffect";
-import GameFightFighterInformations from "@protocol/network/types/GameFightFighterInformations";
-import GameFightMinimalStats from "@protocol/network/types/GameFightMinimalStats";
-import IdentifiedEntityDispositionInformations from "@protocol/network/types/IdentifiedEntityDispositionInformations";
-import FightMonsterEntry from "./FightMonsterEntry";
-import FightPlayerEntry from "./FightPlayerEntry";
+import { TeamEnum } from "@/protocol/enums/TeamEnum";
+import GameActionFightDeathMessage from "@/protocol/network/messages/GameActionFightDeathMessage";
+import GameActionFightLifePointsGainMessage from "@/protocol/network/messages/GameActionFightLifePointsGainMessage";
+import GameActionFightLifePointsLostMessage from "@/protocol/network/messages/GameActionFightLifePointsLostMessage";
+import GameActionFightPointsVariationMessage from "@/protocol/network/messages/GameActionFightPointsVariationMessage";
+import GameActionFightSlideMessage from "@/protocol/network/messages/GameActionFightSlideMessage";
+import GameActionFightTeleportOnSameMapMessage from "@/protocol/network/messages/GameActionFightTeleportOnSameMapMessage";
+import GameFightTurnEndMessage from "@/protocol/network/messages/GameFightTurnEndMessage";
+import GameMapMovementMessage from "@/protocol/network/messages/GameMapMovementMessage";
+import CharacterCharacteristicsInformations from "@/protocol/network/types/CharacterCharacteristicsInformations";
+import FightTemporaryBoostEffect from "@/protocol/network/types/FightTemporaryBoostEffect";
+import GameFightFighterInformations from "@/protocol/network/types/GameFightFighterInformations";
+import GameFightMinimalStats from "@/protocol/network/types/GameFightMinimalStats";
+import IdentifiedEntityDispositionInformations from "@/protocol/network/types/IdentifiedEntityDispositionInformations";
 
-export default class FighterEntry {
-  public contextualId: number;
-  public alive: boolean;
-  public cellId: number;
-  public team: TeamEnum;
-  public stats: GameFightMinimalStats;
-  public lifePoints: number;
-  public maxLifePoints: number;
-  public actionPoints: number;
-  public movementPoints: number;
-
-  get lifePercent() {
-    return this.lifePoints / this.maxLifePoints * 100;
-  }
-
-  // get name(): string {
-  //   if (this as FightMonsterEntry) {
-  //     return this.name;
-  //   } else if (this instanceof FightPlayerEntry) {
-  //     return this.name;
-  //   }
-  // }
+export default abstract class FighterEntry {
+  public contextualId: number = 0;
+  public alive: boolean = false;
+  public cellId: number = 0;
+  public team: TeamEnum = TeamEnum.TEAM_CHALLENGER;
+  public stats: GameFightMinimalStats = new GameFightMinimalStats();
+  public lifePoints: number = 0;
+  public maxLifePoints: number = 0;
+  public actionPoints: number = 0;
+  public movementPoints: number = 0;
+  public name: string = "";
 
   constructor(infos: GameFightFighterInformations) {
     this.UpdateGameFightFighterInformations(infos);
   }
 
-  public UpdateGameFightFighterInformations(infos: GameFightFighterInformations) {
+  get lifePercent() {
+    return (this.lifePoints / this.maxLifePoints) * 100;
+  }
+
+  public UpdateGameFightFighterInformations(
+    infos: GameFightFighterInformations
+  ) {
     this.contextualId = infos.contextualId;
     this.alive = infos.alive;
     this.cellId = infos.disposition.cellId;
@@ -54,21 +47,27 @@ export default class FighterEntry {
     this.movementPoints = this.stats.movementPoints;
   }
 
-  public UpdateIdentifiedEntityDispositionInformations(infos: IdentifiedEntityDispositionInformations) {
+  public UpdateIdentifiedEntityDispositionInformations(
+    infos: IdentifiedEntityDispositionInformations
+  ) {
     this.cellId = infos.cellId;
   }
 
-  public UpdateCharacterCharacteristicsInformations(stats: CharacterCharacteristicsInformations) {
+  public UpdateCharacterCharacteristicsInformations(
+    stats: CharacterCharacteristicsInformations
+  ) {
     this.lifePoints = stats.lifePoints;
     this.maxLifePoints = stats.maxLifePoints;
     this.actionPoints = stats.actionPointsCurrent;
     this.movementPoints = stats.movementPointsCurrent;
   }
 
-  public UpdateGameActionFightPointsVariationMessage(message: GameActionFightPointsVariationMessage) {
+  public UpdateGameActionFightPointsVariationMessage(
+    message: GameActionFightPointsVariationMessage
+  ) {
     switch (message.actionId) {
       case 101:
-      case 101:
+      case 102:
       case 120:
         this.actionPoints += message.delta;
         break;
@@ -81,7 +80,9 @@ export default class FighterEntry {
     }
   }
 
-  public UpdateGameActionFightDeathMessage(message: GameActionFightDeathMessage) {
+  public UpdateGameActionFightDeathMessage(
+    message: GameActionFightDeathMessage
+  ) {
     this.lifePoints = 0;
     this.alive = false;
   }
@@ -90,20 +91,28 @@ export default class FighterEntry {
     this.cellId = message.keyMovements[message.keyMovements.length - 1];
   }
 
-  public UpdateGameActionFightTeleportOnSameMapMessage(message: GameActionFightTeleportOnSameMapMessage) {
+  public UpdateGameActionFightTeleportOnSameMapMessage(
+    message: GameActionFightTeleportOnSameMapMessage
+  ) {
     this.cellId = message.cellId;
   }
 
-  public UpdateGameActionFightSlideMessage(message: GameActionFightSlideMessage) {
+  public UpdateGameActionFightSlideMessage(
+    message: GameActionFightSlideMessage
+  ) {
     this.cellId = message.endCellId;
   }
 
-  public UpdateGameActionFightLifePointsLostMessage(message: GameActionFightLifePointsLostMessage) {
+  public UpdateGameActionFightLifePointsLostMessage(
+    message: GameActionFightLifePointsLostMessage
+  ) {
     this.lifePoints -= message.loss;
     this.maxLifePoints -= message.permanentDamages;
   }
 
-  public UpdateGameActionFightLifePointsGainMessage(message: GameActionFightLifePointsGainMessage) {
+  public UpdateGameActionFightLifePointsGainMessage(
+    message: GameActionFightLifePointsGainMessage
+  ) {
     this.lifePoints += message.delta;
     if (this.lifePoints > this.maxLifePoints) {
       this.lifePoints = this.maxLifePoints;

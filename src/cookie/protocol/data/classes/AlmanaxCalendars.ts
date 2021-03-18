@@ -1,7 +1,7 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class AlmanaxCalendars extends Data {
-    public nameId: string;
-    public descId: string;
-    public npcId: number;
+  public nameId: string = "";
+  public descId: string = "";
+  public npcId: number = 0;
 }

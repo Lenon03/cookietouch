@@ -1,32 +1,65 @@
+import Account from "@/account";
+import LanguageManager from "@/configurations/language/LanguageManager";
+import Frames, { IFrame } from "@/frames";
 import { NetworkPhases } from "@/network/NetworkPhases";
-import Account from "@account";
-import DTConstants from "@protocol/DTConstants";
+import DTConstants from "@/protocol/DTConstants";
+import { IdentificationFailureReasonEnum } from "@/protocol/enums/IdentificationFailureReasonEnum";
+import ConnectionFailedMessage from "@/protocol/network/messages/ConnectionFailedMessage";
+import HelloConnectMessage from "@/protocol/network/messages/HelloConnectMessage";
+import IdentificationFailedBannedMessage from "@/protocol/network/messages/IdentificationFailedBannedMessage";
+import IdentificationFailedMessage from "@/protocol/network/messages/IdentificationFailedMessage";
+import IdentificationSuccessMessage from "@/protocol/network/messages/IdentificationSuccessMessage";
+import moment from "moment";
 
-export default class IdentificationFrame {
-
-  private account: Account;
-
-  constructor(account: Account) {
-    this.account = account;
-    this.register();
+export default class IdentificationFrame implements IFrame {
+  public register() {
+    Frames.dispatcher.register(
+      "HelloConnectMessage",
+      this.HandleHelloConnectMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "assetsVersionChecked",
+      this.HandleassetsVersionChecked,
+      this
+    );
+    Frames.dispatcher.register(
+      "ConnectionFailedMessage",
+      this.HandleConnectionFailedMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "IdentificationSuccessMessage",
+      this.HandleIdentificationSuccessMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "IdentificationFailedBannedMessage",
+      this.HandleIdentificationFailedBannedMessage,
+      this
+    );
+    Frames.dispatcher.register(
+      "IdentificationFailedMessage",
+      this.HandleIdentificationFailedMessage,
+      this
+    );
   }
 
-  private register() {
-    this.account.dispatcher.register("HelloConnectMessage", this.HandleHelloConnectMessage, this);
-    this.account.dispatcher.register("assetsVersionChecked", this.HandleassetsVersionChecked, this);
-    this.account.dispatcher.register("ConnectionFailedMessage", this.HandleConnectionFailedMessage, this);
-    this.account.dispatcher.register("IdentificationSuccessMessage", this.HandleIdentificationSuccessMessage, this);
-  }
-
-  private async HandleHelloConnectMessage(account: Account, message: any) {
+  private async HandleHelloConnectMessage(
+    account: Account,
+    message: HelloConnectMessage
+  ) {
     account.network.phase = NetworkPhases.LOGIN;
     account.framesData.key = message.key;
     account.framesData.salt = message.salt;
 
-    this.account.logger.logDebug("", "Connecté au serveur d'authentification");
+    account.logger.logDebug(
+      LanguageManager.trans("identificationFrame"),
+      LanguageManager.trans("connectedAuth")
+    );
     account.network.send("checkAssetsVersion", {
       assetsVersion: DTConstants.assetsVersion,
-      staticDataVersion: DTConstants.staticDataVersion,
+      staticDataVersion: DTConstants.staticDataVersion
     });
   }
 
@@ -35,15 +68,24 @@ export default class IdentificationFrame {
       key: account.framesData.key,
       salt: account.framesData.salt,
       token: account.haapi.token,
-      username: account.data.username,
+      username: account.accountConfig.username
     });
   }
 
-  private async HandleConnectionFailedMessage(account: Account, message: any) {
-    account.logger.logError("", message.reason);
+  private async HandleConnectionFailedMessage(
+    account: Account,
+    message: ConnectionFailedMessage
+  ) {
+    account.logger.logError(
+      LanguageManager.trans("identificationFrame"),
+      message.reason
+    );
   }
 
-  private async HandleIdentificationSuccessMessage(account: Account, message: any) {
+  private async HandleIdentificationSuccessMessage(
+    account: Account,
+    message: IdentificationSuccessMessage
+  ) {
     account.data.accountCreation = message.accountCreation;
     account.data.accountId = message.accountId;
     account.data.communityId = message.communityId;
@@ -51,9 +93,45 @@ export default class IdentificationFrame {
     account.data.login = message.login;
     account.data.nickname = message.nickname;
     account.data.secretQuestion = message.secretQuestion;
-    account.data.subscriptionEndDate = message.subscriptionEndDate;
+    account.data.subscriptionEndDate =
+      message.subscriptionEndDate === 0
+        ? undefined
+        : moment()
+            .add(message.subscriptionEndDate - Date.now(), "ms")
+            .toDate();
     account.data.wasAlreadyConnected = message.wasAlreadyConnected;
+  }
 
-    console.log("Account", account);
+  private async HandleIdentificationFailedBannedMessage(
+    account: Account,
+    message: IdentificationFailedBannedMessage
+  ) {
+    const date = new Date(message.banEndDate);
+    account.logger.logError(
+      LanguageManager.trans("identificationFrame"),
+      `${
+        IdentificationFailureReasonEnum[message.reason]
+      } [${date.toDateString()}]`
+    );
+  }
+
+  private async HandleIdentificationFailedMessage(
+    account: Account,
+    message: IdentificationFailedMessage
+  ) {
+    switch (message.reason as IdentificationFailureReasonEnum) {
+      case IdentificationFailureReasonEnum.BANNED:
+        account.logger.logError(
+          LanguageManager.trans("identificationFrame"),
+          LanguageManager.trans("accountBan")
+        );
+        break;
+      case IdentificationFailureReasonEnum.EMAIL_UNVALIDATED:
+        account.logger.logError(
+          LanguageManager.trans("identificationFrame"),
+          LanguageManager.trans("emailUnvalidated")
+        );
+        break;
+    }
   }
 }

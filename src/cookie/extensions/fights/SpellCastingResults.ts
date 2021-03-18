@@ -1,5 +1,5 @@
 export enum SpellCastingResults {
   CASTED,
   MOVED,
-  NOT_CASTED,
+  NOT_CASTED
 }

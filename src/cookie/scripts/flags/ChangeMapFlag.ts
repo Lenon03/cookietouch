@@ -1,4 +1,4 @@
-import { IFlag, IFlagType } from "./IFlag";
+import { IFlag, IFlagType } from "@/scripts/flags/IFlag";
 
 export default class ChangeMapFlag implements IFlag {
   public type = IFlagType.ChangeMapFlag;

@@ -1,5 +1,5 @@
-import Account from "@account";
-import { PlayerLifeStatusEnum } from "@protocol/enums/PlayerLifeStatusEnum";
+import Account from "@/account";
+import { PlayerLifeStatusEnum } from "@/protocol/enums/PlayerLifeStatusEnum";
 
 export default class CharacterAPI {
   private account: Account;
@@ -9,15 +9,24 @@ export default class CharacterAPI {
   }
 
   public isAlive(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_ALIVE_AND_KICKING
+    );
   }
 
   public isTombstone(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_TOMBSTONE;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_TOMBSTONE
+    );
   }
 
   public isPhantom(): boolean {
-    return this.account.game.character.lifeStatus === PlayerLifeStatusEnum.STATUS_PHANTOM;
+    return (
+      this.account.game.character.lifeStatus ===
+      PlayerLifeStatusEnum.STATUS_PHANTOM
+    );
   }
 
   public name(): string {
@@ -60,15 +69,15 @@ export default class CharacterAPI {
     return this.account.game.character.stats.energyPercent;
   }
 
-  public get kamas(): number {
+  public kamas(): number {
     return this.account.game.character.inventory.kamas;
+  }
+
+  public freeSoul(): boolean {
+    return this.account.game.character.freeSoul();
   }
 
   public sit() {
     this.account.game.character.sit();
-  }
-
-  public freeSoul(): boolean {
-    return this.account.game.character.freeSoul;
   }
 }

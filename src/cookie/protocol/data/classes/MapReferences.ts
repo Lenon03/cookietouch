@@ -1,6 +1,6 @@
-import Data from "../Data";
+import Data from "@/protocol/data/Data";
 
 export default class MapReferences extends Data {
-    public mapId: number;
-    public cellId: number;
+  public mapId: number = 0;
+  public cellId: number = 0;
 }

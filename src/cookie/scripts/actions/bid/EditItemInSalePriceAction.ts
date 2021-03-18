@@ -1,8 +1,11 @@
-import Account from "@account";
-import { sleep } from "@utils/Time";
-import ScriptAction, { ScriptActionResults } from "../ScriptAction";
+import Account from "@/account";
+import ScriptAction, {
+  ScriptActionResults
+} from "@/scripts/actions/ScriptAction";
+import { sleep } from "@/utils/Time";
 
 export default class EditItemInSalePriceAction extends ScriptAction {
+  public _name: string = "EditItemInSalePriceAction";
   public uid: number;
   public newPrice: number;
 
@@ -12,13 +15,14 @@ export default class EditItemInSalePriceAction extends ScriptAction {
     this.newPrice = newPrice;
   }
 
-  public process(account: Account): Promise<ScriptActionResults> {
-    return new Promise(async (resolve, reject) => {
-      const res = await account.game.bid.editItemInSalePrice(this.uid, this.newPrice);
-      if (res) {
-        await sleep(3000);
-      }
-      return resolve(ScriptActionResults.DONE);
-    });
+  public async process(account: Account): Promise<ScriptActionResults> {
+    const res = await account.game.bid.editItemInSalePrice(
+      this.uid,
+      this.newPrice
+    );
+    if (res) {
+      await sleep(3000);
+    }
+    return ScriptAction.doneResult();
   }
 }

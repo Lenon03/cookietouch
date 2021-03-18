@@ -1,5 +1,5 @@
-import InteractiveElement from "@protocol/network/types/InteractiveElement";
-import SkillEntry from "./skills/SkillEntry";
+import SkillEntry from "@/game/map/interactives/skills/SkillEntry";
+import InteractiveElement from "@/protocol/network/types/InteractiveElement";
 
 export default class InteractiveElementEntry {
   public id: number;
@@ -7,10 +7,6 @@ export default class InteractiveElementEntry {
   public name: string;
   public enabledSkills: SkillEntry[] = [];
   public disabledSkills: SkillEntry[] = [];
-
-  get usable(): boolean {
-    return this.enabledSkills.length > 0;
-  }
 
   constructor(elem: InteractiveElement) {
     this.id = elem.elementId;
@@ -24,5 +20,9 @@ export default class InteractiveElementEntry {
     for (const e of elem.disabledSkills) {
       this.disabledSkills.push(new SkillEntry(e));
     }
+  }
+
+  get usable(): boolean {
+    return this.enabledSkills.length > 0;
   }
 }
